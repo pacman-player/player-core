@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import spring.app.configuration.initializator.TestDataInit;
 
+import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileReader;
