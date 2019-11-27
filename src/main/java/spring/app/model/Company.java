@@ -43,12 +43,16 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> companyGenres;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
+    @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_that_play_now",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    private Song songThatPayNow;
-//to Ref
+    private Set<Song> songThatPayNow;
+
+    @OneToMany(mappedBy = "company")
+    private Set<SongQueue> songQueues;
+
+
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
         this.startTime = startTime;
@@ -139,11 +143,19 @@ public class Company {
         return companyGenres;
     }
 
-    public void setSongThatPayNow(Song songThatPayNow) {
+    public Set<Song> getSongThatPayNow() {
+        return songThatPayNow;
+    }
+
+    public void setSongThatPayNow(Set<Song> songThatPayNow) {
         this.songThatPayNow = songThatPayNow;
     }
 
-    public Song getSongThatPayNow() {
-        return songThatPayNow;
+    public Set<SongQueue> getSongQueues() {
+        return songQueues;
+    }
+
+    public void setSongQueues(Set<SongQueue> songQueues) {
+        this.songQueues = songQueues;
     }
 }

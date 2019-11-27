@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -15,6 +16,9 @@ public class Song {
 
     public Song() {
     }
+
+    @OneToMany(mappedBy = "song")
+    private Set<SongQueue> song;
 
     public void setId(Long id) {
         Id = id;
