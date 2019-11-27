@@ -10,7 +10,7 @@ public class Author {
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Company.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

@@ -11,7 +11,7 @@ public class OrgType {
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Company.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinTable(name = "org_type_on_related_genre",
             joinColumns = {@JoinColumn(name = "org_type_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

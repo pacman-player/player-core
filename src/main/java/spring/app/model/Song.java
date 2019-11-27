@@ -10,7 +10,7 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Song.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     private Author author;
 
     public Song() {
