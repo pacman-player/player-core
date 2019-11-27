@@ -1,27 +1,26 @@
 package spring.app.model;
 
-
-
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class OrgType {
+@Table(name = "author")
+public class Author {
     @Id
     private Long id;
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Company.class)
-    @JoinTable(name = "org_type_on_related_genre",
-            joinColumns = {@JoinColumn(name = "org_type_id")},
+    @JoinTable(name = "author_on_genre",
+            joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> genres;
+    private Set<Genre> authorGenres;
 
-    public OrgType(String name) {
+    public Author(){}
+
+    public Author(String name) {
         this.name = name;
     }
-
-    public OrgType(){}
 
     public void setId(Long id) {
         this.id = id;
@@ -39,12 +38,11 @@ public class OrgType {
         return name;
     }
 
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
+    public Set<Genre> getAuthorGenres() {
+        return authorGenres;
     }
 
-    public Set<Genre> getGenres() {
-        return genres;
+    public void setAuthorGenres(Set<Genre> authorGenres) {
+        this.authorGenres = authorGenres;
     }
 }
-
