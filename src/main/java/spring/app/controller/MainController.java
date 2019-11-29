@@ -40,6 +40,12 @@ public class MainController {
 		return new ModelAndView("login");
 	}
 
+	@RequestMapping(value = {"/p"}, method = RequestMethod.GET)
+	public ModelAndView showPlayerPage() throws NoHandlerFoundException {
+
+		return new ModelAndView("player");
+	}
+
 	@RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
 	public ModelAndView getAdminPage(HttpSession httpSession) throws NoHandlerFoundException {
 		List<User> users = userService.getAllUsers();
