@@ -93,6 +93,13 @@ public class MainController {
 		return model;
 	}
 
+	 @RequestMapping(value = "/all_playlist", method = RequestMethod.GET)
+	 public ModelAndView getAllPlaylisr(ModelAndView model){
+		 model.addObject("all_playlist", null);
+		 return model;
+	 }
+
+
 
 	private Set<Role> getRoles(String role) {
 		Set<Role> roles = new HashSet<>();
