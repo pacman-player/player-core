@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 public class OrgType {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
 
@@ -44,7 +45,29 @@ public class OrgType {
     }
 
     public Set<Genre> getGenres() {
+
+
         return genres;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrgType orgType = (OrgType) o;
+
+        if (id != null ? !id.equals(orgType.id) : orgType.id != null) return false;
+        if (name != null ? !name.equals(orgType.name) : orgType.name != null) return false;
+        return genres != null ? genres.equals(orgType.genres) : orgType.genres == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (genres != null ? genres.hashCode() : 0);
+        return result;
     }
 }
 

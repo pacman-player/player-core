@@ -7,6 +7,7 @@ import java.util.Set;
 @Table(name = "author")
 public class Author {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
 
@@ -44,5 +45,25 @@ public class Author {
 
     public void setAuthorGenres(Set<Genre> authorGenres) {
         this.authorGenres = authorGenres;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Author author = (Author) o;
+
+        if (id != null ? !id.equals(author.id) : author.id != null) return false;
+        if (name != null ? !name.equals(author.name) : author.name != null) return false;
+        return authorGenres != null ? authorGenres.equals(author.authorGenres) : author.authorGenres == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (authorGenres != null ? authorGenres.hashCode() : 0);
+        return result;
     }
 }
