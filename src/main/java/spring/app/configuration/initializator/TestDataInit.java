@@ -1,8 +1,10 @@
 package spring.app.configuration.initializator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import spring.app.model.PlayList;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.PlayListService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
@@ -17,6 +19,9 @@ public class TestDataInit {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private PlayListService playListService;
 
 
 	private void init() throws Exception {
@@ -49,6 +54,19 @@ public class TestDataInit {
 		user.setRoles(userRoles);
 
 		userService.addUser(user);
+
+		PlayList classicList = new PlayList();
+		classicList.setName("classic");
+		playListService.addPlayList(classicList);
+
+		PlayList rockList = new PlayList();
+		rockList.setName("rock");
+		playListService.addPlayList(rockList);
+
+		PlayList punkList = new PlayList();
+		punkList.setName("punk");
+		playListService.addPlayList(punkList);
+
 
 	}
 }

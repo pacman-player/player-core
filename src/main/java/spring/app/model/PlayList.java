@@ -2,11 +2,11 @@ package spring.app.model;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "palyList")
 public class PlayList {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,5 +31,19 @@ public class PlayList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayList playList = (PlayList) o;
+        return Objects.equals(id, playList.id) &&
+                Objects.equals(name, playList.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

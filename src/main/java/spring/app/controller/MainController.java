@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import spring.app.model.PlayList;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.PlayListService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
@@ -20,14 +22,15 @@ import java.util.Set;
 public class MainController {
 
 	private final RoleService roleService;
-
 	private final UserService userService;
+	private final PlayListService playListService;
 
 	@Autowired
-	public MainController(RoleService roleService, UserService userService) {
+	public MainController(RoleService roleService, UserService userService, PlayListService playListService) {
 		this.roleService = roleService;
 		this.userService = userService;
-	}
+        this.playListService = playListService;
+    }
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public String redirectToLoginPage() {
@@ -94,9 +97,8 @@ public class MainController {
 	}
 
 	 @RequestMapping(value = "/all_playlist", method = RequestMethod.GET)
-	 public ModelAndView getAllPlaylisr(ModelAndView model){
-		 model.addObject("all_playlist", null);
-		 return model;
+	 public @ResponseBody List<PlayList> getAllPlaylist(){
+		 return playListService.getAllPlayList() ;
 	 }
 
 
