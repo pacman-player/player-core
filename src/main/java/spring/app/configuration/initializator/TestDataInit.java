@@ -3,7 +3,6 @@ package spring.app.configuration.initializator;
 import org.springframework.beans.factory.annotation.Autowired;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.PlayListService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
@@ -18,9 +17,7 @@ public class TestDataInit {
 
 	@Autowired
 	private RoleService roleService;
-
-	@Autowired
-	private PlayListService playListService;
+	
 
 
 	private void init() throws Exception {

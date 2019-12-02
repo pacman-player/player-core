@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.PlayListService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
