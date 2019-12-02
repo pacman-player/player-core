@@ -49,7 +49,5 @@ public class TestDataInit {
 		user.setRoles(userRoles);
 
 		userService.addUser(user);
-
-
 	}
 }
