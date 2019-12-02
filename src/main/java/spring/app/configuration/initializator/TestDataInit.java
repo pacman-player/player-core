@@ -18,6 +18,7 @@ public class TestDataInit {
 	@Autowired
 	private RoleService roleService;
 
+
 	private void init() throws Exception {
 
 		Role roleAdmin = new Role();
@@ -48,5 +49,6 @@ public class TestDataInit {
 		user.setRoles(userRoles);
 
 		userService.addUser(user);
+
 	}
 }
