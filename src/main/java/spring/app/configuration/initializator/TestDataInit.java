@@ -17,8 +17,6 @@ public class TestDataInit {
 
 	@Autowired
 	private RoleService roleService;
-	
-
 
 	private void init() throws Exception {
 

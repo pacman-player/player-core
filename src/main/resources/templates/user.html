@@ -14,29 +14,19 @@
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
-            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="admin-page">
+        <h1>Admin panel</h1>
+
+        <ul class="nav nav-tabs nav-content" role="tablist">
+            <li id="user-table-nav" class="active">
+                <a href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Users table</a>
+            </li>
+            <li id="add-user-nav">
+                <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">New User</a>
+            </li>
+        </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin">Admin</a>
-                </li>
-                <li class="active">
-                    <a>User</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-lg-9 col-md-10 col-xs-10">
-            <h1>User panel</h1>
-            <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
-        </div>
-    </div>
 </div>
 
 </body>
