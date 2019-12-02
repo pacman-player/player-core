@@ -46,8 +46,9 @@ public class Company {
     private Set<Genre> bannedGenres;
 
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = SongThatPlayNow.class, mappedBy = "company")
+    @OneToMany(mappedBy = "company")
     private SongThatPlayNow songThatPayNow;
+
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;

@@ -18,8 +18,8 @@ public class Song {
 
 
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = SongThatPlayNowId.class, mappedBy = "song")
-    private SongThatPlayNowId songThatPayNow;
+    @OneToMany(mappedBy = "song")
+    private SongThatPlayNow songThatPayNow;
 
     public Song() {
     }
@@ -33,6 +33,22 @@ public class Song {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public SongThatPlayNow getSongThatPayNow() {
+        return songThatPayNow;
+    }
+
+    public void setSongThatPayNow(SongThatPlayNow songThatPayNow) {
+        this.songThatPayNow = songThatPayNow;
+    }
+
+    public Set<SongQueue> getSong() {
+        return song;
+    }
+
+    public void setSong(Set<SongQueue> song) {
+        this.song = song;
     }
 
     public void setAuthor(Author author) {

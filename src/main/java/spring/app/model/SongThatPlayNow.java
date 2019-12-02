@@ -7,12 +7,13 @@ public class SongThatPlayNow {
     @EmbeddedId
     private SongThatPlayNowId songThatPlayNowId;
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
+    @ManyToOne
+    @MapsId("company_id")
     @JoinColumn(name = "company_id")
     private Company company;
 
-
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Song.class)
+    @ManyToOne
+    @MapsId("song_id")
     @JoinColumn(name = "song_id")
     private Song song;
 
