@@ -4,7 +4,6 @@ import spring.app.model.User;
 
 import java.util.List;
 
-
 public interface UserService {
 	User getUserByLogin(String login);
 

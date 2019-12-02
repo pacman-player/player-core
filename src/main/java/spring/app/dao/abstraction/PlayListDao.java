@@ -1,4 +1,8 @@
 package spring.app.dao.abstraction;
 
-public interface PlayListDao extends GenericDao<Long, PlayList>{
+
+import spring.app.model.PlayList;
+
+public interface PlayListDao extends GenericDao<Long, PlayList> {
 }
+

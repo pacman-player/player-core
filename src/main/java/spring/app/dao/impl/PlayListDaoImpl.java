@@ -2,6 +2,7 @@ package spring.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.PlayListDao;
+import spring.app.model.PlayList;
 
 import java.util.List;
 
