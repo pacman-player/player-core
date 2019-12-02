@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import spring.app.model.PlayList;
 import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.PlayListService;
@@ -95,13 +94,6 @@ public class MainController {
 		model.addObject("userAuth", user);
 		return model;
 	}
-
-	 @RequestMapping(value = "/all_playlist", method = RequestMethod.GET)
-	 public @ResponseBody List<PlayList> getAllPlaylist(){
-		 return playListService.getAllPlayList() ;
-	 }
-
-
 
 	private Set<Role> getRoles(String role) {
 		Set<Role> roles = new HashSet<>();

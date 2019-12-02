@@ -1,7 +1,5 @@
 package spring.app.service.abstraction;
 
-import spring.app.model.PlayList;
-
 import java.util.List;
 
 

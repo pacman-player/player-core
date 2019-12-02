@@ -3,7 +3,6 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.PlayListDao;
-import spring.app.model.PlayList;
 import spring.app.service.abstraction.PlayListService;
 
 import java.util.List;
