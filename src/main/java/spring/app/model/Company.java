@@ -14,8 +14,8 @@ public class Company {
     private LocalTime startTime;
     private LocalTime closeTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
@@ -45,7 +45,15 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-    @EmbeddedId
+    @ManyToMany(targetEntity = Song.class)
+    @JoinTable(name = "song_that_play_now",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+    private Set<Song> songThatPayNow;
+
+    @OneToMany(mappedBy = "company")
+    private Set<SongQueue> songQueues;
+
     private SongThatPlayNowId songThatPlayNowId;
 
     public SongThatPlayNowId getSongThatPlayNowId() {
@@ -55,10 +63,6 @@ public class Company {
     public void setSongThatPlayNowId(SongThatPlayNowId songThatPlayNowId) {
         this.songThatPlayNowId = songThatPlayNowId;
     }
-
-    @OneToMany(mappedBy = "company")
-    private Set<SongQueue> songQueues;
-
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -150,6 +154,14 @@ public class Company {
         return bannedGenres;
     }
 
+    public Set<Song> getSongThatPayNow() {
+        return songThatPayNow;
+    }
+
+    public void setSongThatPayNow(Set<Song> songThatPayNow) {
+        this.songThatPayNow = songThatPayNow;
+    }
+
     public Set<SongQueue> getSongQueues() {
         return songQueues;
     }
@@ -157,6 +169,4 @@ public class Company {
     public void setSongQueues(Set<SongQueue> songQueues) {
         this.songQueues = songQueues;
     }
-
-
 }
