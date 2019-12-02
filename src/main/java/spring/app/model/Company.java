@@ -14,7 +14,8 @@ public class Company {
     private LocalTime startTime;
     private LocalTime closeTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
@@ -42,13 +43,18 @@ public class Company {
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> companyGenres;
+    private Set<Genre> bannedGenres;
 
-    @ManyToMany(targetEntity = Song.class)
-    @JoinTable(name = "song_that_play_now",
-            joinColumns = {@JoinColumn(name = "company_id")},
-            inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    private Set<Song> songThatPayNow;
+    @EmbeddedId
+    private SongThatPlayNowId songThatPlayNowId;
+
+    public SongThatPlayNowId getSongThatPlayNowId() {
+        return songThatPlayNowId;
+    }
+
+    public void setSongThatPlayNowId(SongThatPlayNowId songThatPlayNowId) {
+        this.songThatPlayNowId = songThatPlayNowId;
+    }
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
@@ -124,8 +130,8 @@ public class Company {
         this.eveningPlayList = eveningPlayList;
     }
 
-    public void setCompanyGenres(Set<Genre> companyGenres) {
-        this.companyGenres = companyGenres;
+    public void setBannedGenres(Set<Genre> bannedGenres) {
+        this.bannedGenres = bannedGenres;
     }
 
     public Set<PlayList> getMorningPlayList() {
@@ -140,16 +146,8 @@ public class Company {
         return eveningPlayList;
     }
 
-    public Set<Genre> getCompanyGenres() {
-        return companyGenres;
-    }
-
-    public Set<Song> getSongThatPayNow() {
-        return songThatPayNow;
-    }
-
-    public void setSongThatPayNow(Set<Song> songThatPayNow) {
-        this.songThatPayNow = songThatPayNow;
+    public Set<Genre> getBannedGenres() {
+        return bannedGenres;
     }
 
     public Set<SongQueue> getSongQueues() {
@@ -160,46 +158,5 @@ public class Company {
         this.songQueues = songQueues;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Company company = (Company) o;
-
-        if (id != null ? !id.equals(company.id) : company.id != null) return false;
-        if (name != null ? !name.equals(company.name) : company.name != null) return false;
-        if (startTime != null ? !startTime.equals(company.startTime) : company.startTime != null) return false;
-        if (closeTime != null ? !closeTime.equals(company.closeTime) : company.closeTime != null) return false;
-        if (user != null ? !user.equals(company.user) : company.user != null) return false;
-        if (orgType != null ? !orgType.equals(company.orgType) : company.orgType != null) return false;
-        if (morningPlayList != null ? !morningPlayList.equals(company.morningPlayList) : company.morningPlayList != null)
-            return false;
-        if (middayPlayList != null ? !middayPlayList.equals(company.middayPlayList) : company.middayPlayList != null)
-            return false;
-        if (eveningPlayList != null ? !eveningPlayList.equals(company.eveningPlayList) : company.eveningPlayList != null)
-            return false;
-        if (companyGenres != null ? !companyGenres.equals(company.companyGenres) : company.companyGenres != null)
-            return false;
-        if (songThatPayNow != null ? !songThatPayNow.equals(company.songThatPayNow) : company.songThatPayNow != null)
-            return false;
-        return songQueues != null ? songQueues.equals(company.songQueues) : company.songQueues == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        result = 31 * result + (closeTime != null ? closeTime.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (orgType != null ? orgType.hashCode() : 0);
-        result = 31 * result + (morningPlayList != null ? morningPlayList.hashCode() : 0);
-        result = 31 * result + (middayPlayList != null ? middayPlayList.hashCode() : 0);
-        result = 31 * result + (eveningPlayList != null ? eveningPlayList.hashCode() : 0);
-        result = 31 * result + (companyGenres != null ? companyGenres.hashCode() : 0);
-        result = 31 * result + (songThatPayNow != null ? songThatPayNow.hashCode() : 0);
-        result = 31 * result + (songQueues != null ? songQueues.hashCode() : 0);
-        return result;
-    }
 }
