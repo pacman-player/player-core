@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 
@@ -14,6 +15,11 @@ public class Song {
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     private Author author;
+
+
+
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = SongThatPlayNowId.class, mappedBy = "song")
+    private SongThatPlayNowId songThatPayNow;
 
     public Song() {
     }

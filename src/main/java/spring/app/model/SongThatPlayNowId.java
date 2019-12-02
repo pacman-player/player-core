@@ -1,9 +1,10 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Embeddable
-public class SongThatPlayNowId {
+public class SongThatPlayNowId implements Serializable {
     private long companyId;
     private long songId;
 

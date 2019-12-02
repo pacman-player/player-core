@@ -45,20 +45,16 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
+    public void setSongThatPayNow(SongThatPlayNowId songThatPayNow) {
+        this.songThatPayNow = songThatPayNow;
+    }
 
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = SongThatPlayNowId.class, mappedBy = "company")
+    private SongThatPlayNowId songThatPayNow;
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
-    public SongThatPlayNowId getSongThatPlayNow() {
-        return songThatPlayNow;
-    }
-
-    public void setSongThatPlayNow(SongThatPlayNowId songThatPlayNow) {
-        this.songThatPlayNow = songThatPlayNow;
-    }
-
-    private SongThatPlayNowId songThatPlayNow;
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
