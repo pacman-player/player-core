@@ -45,24 +45,20 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-    @ManyToMany(targetEntity = Song.class)
-    @JoinTable(name = "song_that_play_now",
-            joinColumns = {@JoinColumn(name = "company_id")},
-            inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    private Set<Song> songThatPayNow;
+
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
-    private SongThatPlayNowId songThatPlayNowId;
-
-    public SongThatPlayNowId getSongThatPlayNowId() {
-        return songThatPlayNowId;
+    public SongThatPlayNowId getSongThatPlayNow() {
+        return songThatPlayNow;
     }
 
-    public void setSongThatPlayNowId(SongThatPlayNowId songThatPlayNowId) {
-        this.songThatPlayNowId = songThatPlayNowId;
+    public void setSongThatPlayNow(SongThatPlayNowId songThatPlayNow) {
+        this.songThatPlayNow = songThatPlayNow;
     }
+
+    private SongThatPlayNowId songThatPlayNow;
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -154,13 +150,6 @@ public class Company {
         return bannedGenres;
     }
 
-    public Set<Song> getSongThatPayNow() {
-        return songThatPayNow;
-    }
-
-    public void setSongThatPayNow(Set<Song> songThatPayNow) {
-        this.songThatPayNow = songThatPayNow;
-    }
 
     public Set<SongQueue> getSongQueues() {
         return songQueues;
