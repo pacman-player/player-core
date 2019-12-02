@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 public class OrgType {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
 

@@ -8,12 +8,14 @@ import java.util.Set;
 @Table(name = "company")
 public class Company {
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private LocalTime startTime;
     private LocalTime closeTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
@@ -41,7 +43,7 @@ public class Company {
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> companyGenres;
+    private Set<Genre> bannedGenres;
 
     @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_that_play_now",
@@ -52,6 +54,15 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
+    private SongThatPlayNowId songThatPlayNowId;
+
+    public SongThatPlayNowId getSongThatPlayNowId() {
+        return songThatPlayNowId;
+    }
+
+    public void setSongThatPlayNowId(SongThatPlayNowId songThatPlayNowId) {
+        this.songThatPlayNowId = songThatPlayNowId;
+    }
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -123,8 +134,8 @@ public class Company {
         this.eveningPlayList = eveningPlayList;
     }
 
-    public void setCompanyGenres(Set<Genre> companyGenres) {
-        this.companyGenres = companyGenres;
+    public void setBannedGenres(Set<Genre> bannedGenres) {
+        this.bannedGenres = bannedGenres;
     }
 
     public Set<PlayList> getMorningPlayList() {
@@ -139,8 +150,8 @@ public class Company {
         return eveningPlayList;
     }
 
-    public Set<Genre> getCompanyGenres() {
-        return companyGenres;
+    public Set<Genre> getBannedGenres() {
+        return bannedGenres;
     }
 
     public Set<Song> getSongThatPayNow() {

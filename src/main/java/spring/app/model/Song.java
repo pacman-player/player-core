@@ -7,6 +7,7 @@ import java.util.Set;
 @Entity
 public class Song {
     @Id
+    @GeneratedValue
     private Long Id;
 
     private String name;
