@@ -12,7 +12,7 @@ public class SongThatPlayNow {
     private Company company;
 
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;
 
