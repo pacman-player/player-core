@@ -17,10 +17,6 @@ public class Song {
     private Author author;
 
 
-
-    @OneToMany(mappedBy = "song")
-    private SongThatPlayNow songThatPayNow;
-
     public Song() {
     }
 
@@ -33,14 +29,6 @@ public class Song {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public SongThatPlayNow getSongThatPayNow() {
-        return songThatPayNow;
-    }
-
-    public void setSongThatPayNow(SongThatPlayNow songThatPayNow) {
-        this.songThatPayNow = songThatPayNow;
     }
 
     public Set<SongQueue> getSong() {
