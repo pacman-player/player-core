@@ -16,6 +16,7 @@ public class Song {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     private Author author;
 
+
     public Song() {
     }
 
@@ -29,7 +30,6 @@ public class Song {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public Set<SongQueue> getSong() {
         return song;

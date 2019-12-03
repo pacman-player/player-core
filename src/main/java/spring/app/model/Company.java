@@ -45,10 +45,9 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-
-
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
+
 
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {

@@ -21,13 +21,11 @@ public class MainController {
 
 	private final RoleService roleService;
 	private final UserService userService;
-	private final PlayListService playListService;
 
 	@Autowired
-	public MainController(RoleService roleService, UserService userService, PlayListService playListService) {
+	public MainController(RoleService roleService, UserService userService ) {
 		this.roleService = roleService;
 		this.userService = userService;
-        this.playListService = playListService;
     }
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
