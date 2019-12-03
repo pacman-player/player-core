@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="utf-8"/>
-    <title>Admin page</title>
+    <title>Pacman-player</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
@@ -22,13 +22,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-xs-2 left-bar left-menu">
+
+        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a  href="#my-establishment" aria-controls="my-establishment" role="tab" data-toggle="tab">Моё заведение</a>
+                    <a href="#my-establishment" aria-controls="my-establishment" role="tab" data-toggle="tab">Моё
+                        заведение</a>
                 </li>
                 <li>
-                    <a  href="#my-selection" aria-controls="my-selection" role="tab" data-toggle="tab">Моя подборка</a>
+                    <a href="#my-selection" aria-controls="my-selection" role="tab" data-toggle="tab">Моя подборка</a>
                 </li>
                 <li>
                     <a href="#music-filter" aria-controls="music-filter" role="tab" data-toggle="tab">Фильтр музыки</a>
@@ -37,7 +39,8 @@
         </div>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
-                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моя подборка</p>
+
+                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Мой плейлист</p>
                 <div class="col-fhd-4 col-xl-5 col-lg-6">
                     <ul class="nav nav-tabs nav-content " role="tablist">
                         <li id="morning-music-nav" class="active">
@@ -84,23 +87,26 @@
                     </div>
                 </div>
                 <div class="col-fhd-8 col-xl-7 col-lg-6">
-                    <h3>Плейлисты</h3>
+
+                    <h3>Подборка</h3>
                     <del class="row">
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Все плейлисты</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный рок</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский рок</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный поп</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский поп</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Музыка стран</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Lounge</a>
-                        <a href="#"  class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Клубная танцевальная</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Все плейлисты</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный рок</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский рок</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный поп</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский поп</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Музыка стран</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Lounge</a>
+                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Клубная танцевальная</a>
                     </del>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="my-establishment">
+            <div role="tabpanel" class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment">
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>
             </div>
-            <div role="tabpanel" class="tab-pane" id="music-filter">
+            <div role="tabpanel" class="tab-pane col-md-10 col-xs-10 " id="music-filter">
+
+            
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Фильтр музыки</p>
             </div>
         </div>

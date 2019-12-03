@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -68,6 +69,7 @@ public class SongThatPlayNow {
         this.song = song;
     }
 
+
     public Company getCompany() {
         return company;
     }
@@ -86,6 +88,4 @@ public class SongThatPlayNow {
     public void setSongThatPlayNow(SongThatPlayNowId songThatPlayNow) {
         this.songThatPlayNow = songThatPlayNow;
     }
-
-
 }

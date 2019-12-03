@@ -16,7 +16,6 @@ public class Song {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     private Author author;
 
-
     public Song() {
     }
 
