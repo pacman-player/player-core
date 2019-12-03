@@ -47,19 +47,8 @@ public class Company {
 
 
     @OneToMany(mappedBy = "company")
-    private SongThatPlayNow songThatPayNow;
-
-
-    @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
-    public SongThatPlayNow getSongThatPayNow() {
-        return songThatPayNow;
-    }
-
-    public void setSongThatPayNow(SongThatPlayNow songThatPayNow) {
-        this.songThatPayNow = songThatPayNow;
-    }
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
