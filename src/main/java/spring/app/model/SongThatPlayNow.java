@@ -1,21 +1,13 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class SongThatPlayNow {
-    @EmbeddedId
-    private SongThatPlayNowId songThatPlayNowId;
-
-    @ManyToOne
-    @MapsId("company_id")
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @ManyToOne
-    @MapsId("song_id")
-    @JoinColumn(name = "song_id")
-    private Song song;
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
 
     public Company getCompany() {
         return company;
@@ -25,13 +17,21 @@ public class SongThatPlayNow {
         this.company = company;
     }
 
-    public Song getSong() {
-        return song;
+    @MapsId("companyId")
+    @ManyToOne
+    private Company company;
+
+    public int getId() {
+        return id;
     }
 
-    public void setSong(Song song) {
-        this.song = song;
+    public void setId(int id) {
+        this.id = id;
     }
+
+    @EmbeddedId
+    private SongThatPlayNowId songThatPlayNowId;
+
 
     public SongThatPlayNowId getSongThatPlayNowId() {
         return songThatPlayNowId;
@@ -40,4 +40,6 @@ public class SongThatPlayNow {
     public void setSongThatPlayNowId(SongThatPlayNowId songThatPlayNowId) {
         this.songThatPlayNowId = songThatPlayNowId;
     }
+
+
 }

@@ -2,9 +2,11 @@ package spring.app.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Embeddable
-public class SongThatPlayNowId implements Serializable {
+public class SongThatPlayNowId implements Serializable
+{
     private long companyId;
     private long songId;
 
@@ -41,4 +43,6 @@ public class SongThatPlayNowId implements Serializable {
         result = 31 * result + (int) (songId ^ (songId >>> 32));
         return result;
     }
+
 }
+

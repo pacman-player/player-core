@@ -16,11 +16,6 @@ public class Song {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     private Author author;
 
-
-
-    @OneToMany(mappedBy = "song")
-    private SongThatPlayNow songThatPayNow;
-
     public Song() {
     }
 
@@ -35,13 +30,6 @@ public class Song {
         this.name = name;
     }
 
-    public SongThatPlayNow getSongThatPayNow() {
-        return songThatPayNow;
-    }
-
-    public void setSongThatPayNow(SongThatPlayNow songThatPayNow) {
-        this.songThatPayNow = songThatPayNow;
-    }
 
     public Set<SongQueue> getSong() {
         return song;
