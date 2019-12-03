@@ -12,10 +12,8 @@ public class SongThatPlayNow {
         protected long companyId;
         @Column(name = "songId")
         protected long songId;
-
         public SongThatPlayNowId() {
         }
-
         public long getCompanyId() {
             return companyId;
         }
