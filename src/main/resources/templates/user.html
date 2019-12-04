@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Pacman-player</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -88,16 +90,14 @@
                 </div>
                 <div class="col-fhd-8 col-xl-7 col-lg-6">
 
-                    <h3>Подборка</h3>
+                    <h3>Жанры</h3>
                     <del class="row">
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Все плейлисты</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный рок</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский рок</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Зарубежный поп</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Русский поп</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Музыка стран</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Lounge</a>
-                        <a href="#" class="col-fhd-2 col-xl-3 col-lg-4 col-md-6 col-sm-4 col-6">Клубная танцевальная</a>
+                        <div class="col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm"
+                             th:each="genre : ${allGenre}">
+                            <a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">
+                                <img th:src="@{img/{name}(name=${genre.name}+'.svg')}" width="50" height="50"
+                                     th:alt="${genre.name}" th:text="${genre.name}"></img></a>
+                        </div>
                     </del>
                 </div>
             </div>
@@ -106,7 +106,7 @@
             </div>
             <div role="tabpanel" class="tab-pane col-md-10 col-xs-10 " id="music-filter">
 
-            
+
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Фильтр музыки</p>
             </div>
         </div>

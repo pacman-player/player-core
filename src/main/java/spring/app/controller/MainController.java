@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import spring.app.model.Genre;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
@@ -21,12 +23,14 @@ public class MainController {
 
 	private final RoleService roleService;
 	private final UserService userService;
+	private final GenreService genreService;
 
 	@Autowired
-	public MainController(RoleService roleService, UserService userService ) {
+	public MainController(RoleService roleService, UserService userService, GenreService genreService) {
 		this.roleService = roleService;
 		this.userService = userService;
-    }
+		this.genreService = genreService;
+	}
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public String redirectToLoginPage() {
@@ -95,6 +99,7 @@ public class MainController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		ModelAndView model = new ModelAndView("user");
 		model.addObject("userAuth", user);
+		model.addObject("allGenre", genreService.getAllGenre());
 		return model;
 	}
 

@@ -1,8 +1,10 @@
 package spring.app.configuration.initializator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import spring.app.model.Genre;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
@@ -17,6 +19,9 @@ public class TestDataInit {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private GenreService genreService;
 
 
 	private void init() throws Exception {
@@ -49,5 +54,30 @@ public class TestDataInit {
 		user.setRoles(userRoles);
 
 		userService.addUser(user);
+
+		Genre rock =new Genre();
+		rock.setName("rock");
+
+		genreService.addGenre(rock);
+
+		Genre pop =new Genre();
+		pop.setName("pop");
+
+		genreService.addGenre(pop);
+
+		Genre classic =new Genre();
+		classic.setName("classic");
+
+		genreService.addGenre(classic);
+
+		Genre rep =new Genre();
+		rep.setName("rep");
+
+		genreService.addGenre(rep);
+
+		Genre retro =new Genre();
+		retro.setName("retro");
+
+		genreService.addGenre(retro);
 	}
 }
