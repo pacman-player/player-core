@@ -28,6 +28,14 @@ public class SongQueue {
         this.id = id;
     }
 
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
+    }
+
     public Song getSong() {
         return song;
     }

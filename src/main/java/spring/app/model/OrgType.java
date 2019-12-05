@@ -1,7 +1,5 @@
 package spring.app.model;
 
-
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -45,8 +43,6 @@ public class OrgType {
     }
 
     public Set<Genre> getGenres() {
-
-
         return genres;
     }
 
