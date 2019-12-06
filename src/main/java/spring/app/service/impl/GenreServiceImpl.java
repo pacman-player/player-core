@@ -17,6 +17,12 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public void addGenre(Genre genre) {
+        genreDao.save(genre);
+    }
+}
+
+    @Override
     public Genre getByName(String name) {
         return genreDao.getByName(name);
     }

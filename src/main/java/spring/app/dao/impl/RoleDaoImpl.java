@@ -7,7 +7,6 @@ import spring.app.model.Role;
 
 import javax.persistence.TypedQuery;
 
-
 @Repository
 @Transactional
 public class RoleDaoImpl extends AbstractDao<Long, Role> implements RoleDao {

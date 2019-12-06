@@ -4,4 +4,5 @@ import spring.app.model.Song;
 
 public interface SongService {
     Song getByName(String name);
+    void addSong(Song song);
 }

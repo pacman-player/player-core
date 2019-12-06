@@ -6,9 +6,11 @@ import java.util.Set;
 @Entity
 @Table(name = "author")
 public class Author {
+
     @Id
     @GeneratedValue
     private Long id;
+
     private String name;
 
     @ManyToMany(targetEntity = Genre.class)

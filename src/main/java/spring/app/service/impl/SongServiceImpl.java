@@ -17,6 +17,12 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public void addSong(Song song) {
+        songDao.save(song);
+    }
+}
+
+    @Override
     public Song getByName(String name) {
         return songDao.getByName(name);
     }
