@@ -10,11 +10,11 @@ $("#userFileUploadForm").submit(function(e){
         cache: false,
         contentType: false,
         processData: false,
-        success: function() {
-            $('#answer').val("Файл загружен");
+        success: function(ans) {
+            $('#answer').val(ans);
         },
-        error: function () {
-            $('#answer').val("Ошибка загрузки файла");
+        error: function (ans) {
+            $('#answer').val(ans);
         }
     })
 })

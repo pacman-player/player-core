@@ -3,14 +3,15 @@ package spring.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import spring.app.model.Author;
 import spring.app.model.Genre;
+import spring.app.model.Song;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
@@ -30,7 +31,7 @@ public class UserFileUploadRestController {
     private final SongService songService;
 
     @Value("${path}")
-    String filePath;
+    String fileFolder;
 
     @Autowired
     public UserFileUploadRestController(GenreService genreService, AuthorService authorService, SongService songService) {
@@ -40,7 +41,7 @@ public class UserFileUploadRestController {
     }
 
     @PostMapping("/fileUpload")
-    public ResponseEntity<?> fileUpload(
+    public ResponseEntity<String> fileUpload(
             @RequestParam("songAuthor") String songAuthor,
             @RequestParam("songGenre") String songGenre,
             @RequestParam("songName") String songName,
@@ -48,18 +49,45 @@ public class UserFileUploadRestController {
 
         try {
             if (file.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().body("Выберите файл");
             }
+
+            if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {
+                return ResponseEntity.badRequest().body("Поля не могут быть пустыми");
+            }
+
+            if (songService.isExist(songName)) {
+                return ResponseEntity.badRequest().body("Песня с таким названием существует");
+            }
+
             Genre genre = genreService.getByName(songGenre);
             if (genre == null) {
+                genreService.addGenre(new Genre(songGenre));
+                genre = genreService.getByName(songGenre);
             }
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(filePath + "");
 
+            Author author = authorService.getByName(songAuthor);
+            if (author == null) {
+                Author author1 = new Author(songAuthor);
+                author1.getAuthorGenres().add(genre);
+                authorService.addAuthor(author1);
+                author = authorService.getByName(songAuthor);
+            } else {
+                author.getAuthorGenres().add(genre);
+            }
+
+            Song song = new Song(songName);
+            song.setAuthor(author);
+            songService.addSong(song);
+            song = songService.getByName(songName);
+
+            byte[] bytes = file.getBytes();
+            String fileName = file.getOriginalFilename().replaceAll(".*[.]", author.getId() + "_" + song.getId() + ".");
+            Path path = Paths.get(fileFolder + fileName);
             Files.write(path, bytes);
         } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("Ошибка ввода");
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.ok("Файл добавлен");
     }
 }
