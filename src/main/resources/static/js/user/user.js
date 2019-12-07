@@ -17,21 +17,19 @@ $(document).ready(function () {
 
             success: function (listGenre) {
 
-                //  alert(listGenre[i].name);
                 var htmlGenres = "Need to add genres";
                 if (0 < listGenre.length) {
                     var htmlGenres = "";
                     for (var i = 0; i < listGenre.length; i++) {
-                        htmlGenres += ('<div id="genres" class="col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm">');
+                        htmlGenres += ('<div id="genres" class="col-3 pt-3">');
                         htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlGenres += ('<img src="img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
-                            listGenre[i].name + '" >');
-                        htmlGenres += ('</img></a></div>');
+                        listGenre[i].name + '" >');
+                        htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
                     }
                 }
 
-                $("#getGenres #genres").remove();
-
+                $("#getGenres #genres").remove();//очистка перед выводом
                 $("#getGenres").after(htmlGenres);
 
             }
