@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
@@ -18,6 +19,12 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     public Genre getByName(String name) {
         TypedQuery<Genre> query = entityManager.createQuery("FROM Genre WHERE name = :name", Genre.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        Genre genre;
+        try {
+            genre = query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return genre;
     }
 }

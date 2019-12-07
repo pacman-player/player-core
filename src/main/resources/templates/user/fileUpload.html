@@ -14,8 +14,7 @@
 
 <body>
 <div class="container-fluid" align="center">
-    <form enctype="multipart/form-data" id="userFileUploadForm" style="width: 30%"
-          method="post" action="/user/fileUpload">
+    <form enctype="multipart/form-data" id="userFileUploadForm" style="width: 30%">
         <div class="form-group">
             <label for="songAuthor">Исполнитель</label>
             <input class="form-control" type="text" name="songAuthor" id="songAuthor"/>
@@ -41,7 +40,29 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/userFileUpload.js" rel="script"></script>
+<!--<script type="text/javascript" src="js/userFileUpload.js" rel="script"></script>-->
+<script>
+    $("#userFileUploadForm").submit(function(e){
+        e.preventDefault();
+        var form_data = new FormData(this);
+
+        $.ajax({
+            type: 'post',
+            url: '/api/user/fileUpload',
+            enctype: 'multipart/form-data',
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(ans) {
+                $('#answer').val(ans);
+            },
+            error: function (ans) {
+                $('#answer').val(ans);
+            }
+        })
+    })
+</script>
 
 </body>
 </html>
