@@ -30,10 +30,4 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		}
 		return user;
 	}
-
-	@Override
-	public List<User> getAllUsers() {
-
-		return (List<User>) entityManager.createNativeQuery("SELECT * FROM users", User.class).getResultList();
-	}
 }

@@ -164,7 +164,6 @@ public class User implements UserDetails {
 		if (login != null ? !login.equals(user.login) : user.login != null) return false;
 		if (email != null ? !email.equals(user.email) : user.email != null) return false;
 		if (password != null ? !password.equals(user.password) : user.password != null) return false;
-		if (roles != null ? !roles.equals(user.roles) : user.roles != null) return false;
 		return enabled != null ? enabled.equals(user.enabled) : user.enabled == null;
 	}
 
@@ -174,7 +173,6 @@ public class User implements UserDetails {
 		result = 31 * result + (login != null ? login.hashCode() : 0);
 		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (roles != null ? roles.hashCode() : 0);
 		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
 		return result;
 	}
