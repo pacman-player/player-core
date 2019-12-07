@@ -65,15 +65,13 @@ public class Song {
         Song song = (Song) o;
 
         if (id != null ? !id.equals(song.id) : song.id != null) return false;
-        if (name != null ? !name.equals(song.name) : song.name != null) return false;
-        return author != null ? author.equals(song.author) : song.author == null;
+        return name != null ? !name.equals(song.name) : song.name != null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (author != null ? author.hashCode() : 0);
         return result;
     }
 }

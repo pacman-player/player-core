@@ -58,15 +58,13 @@ public class PlayList {
         PlayList playList = (PlayList) o;
 
         if (id != null ? !id.equals(playList.id) : playList.id != null) return false;
-        if (name != null ? !name.equals(playList.name) : playList.name != null) return false;
-        return songs != null ? songs.equals(playList.songs) : playList.songs == null;
+        return name != null ? !name.equals(playList.name) : playList.name != null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (songs != null ? songs.hashCode() : 0);
         return result;
     }
 }
