@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     getAllGenre();
+    showLinkAdmin();
 
     function getAllGenre() {
         $.ajax({
@@ -24,7 +25,7 @@ $(document).ready(function () {
                         htmlGenres += ('<div id="genres" class="col-3 pt-3">');
                         htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlGenres += ('<img src="img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
-                        listGenre[i].name + '" >');
+                            listGenre[i].name + '" >');
                         htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
                     }
                 }
@@ -34,6 +35,22 @@ $(document).ready(function () {
 
             }
         });
+    };
+
+    function showLinkAdmin() {
+        $.ajax({
+            type: "post",
+            url: "/api/user/show_admin",
+
+            success: function (role) {
+                if (role != "admin") {
+                    alert(role);
+                    $("#adminLink").hide();
+                }
+            }
+
+        });
+
     };
 
 });

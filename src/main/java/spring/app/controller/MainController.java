@@ -51,7 +51,7 @@ public class MainController {
         return new ModelAndView("player");
     }
 
-    @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
+    /*@RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
     public ModelAndView getAdminPage(HttpSession httpSession) throws NoHandlerFoundException {
         List<User> users = userService.getAllUsers();
 
@@ -59,7 +59,7 @@ public class MainController {
         model.addObject("users", users);
 
         return model;
-    }
+    }*/
 
     @RequestMapping(value = {"/admin/addUser"}, method = RequestMethod.POST)
     public String addUser(@RequestParam("email") String email, @RequestParam("login") String login,
@@ -96,14 +96,6 @@ public class MainController {
         return "redirect:/admin";
     }
 
-    @RequestMapping(value = {"/user"}, method = RequestMethod.GET)
-    public ModelAndView userPage() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ModelAndView model = new ModelAndView("user");
-        model.addObject("userAuth", user);
-        model.addObject("allGenre", genreService.getAllGenre());
-        return model;
-    }
 
     private Set<Role> getRoles(String role) {
         Set<Role> roles = new HashSet<>();

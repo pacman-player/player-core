@@ -1,5 +1,8 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Set;
@@ -14,6 +17,7 @@ public class Company {
     private LocalTime startTime;
     private LocalTime closeTime;
 
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
@@ -58,7 +62,8 @@ public class Company {
         this.orgType = orgType;
     }
 
-    public Company(){}
+    public Company() {
+    }
 
     public Long getId() {
         return id;
@@ -139,7 +144,6 @@ public class Company {
     public Set<Genre> getBannedGenres() {
         return bannedGenres;
     }
-
 
     public Set<SongQueue> getSongQueues() {
         return songQueues;
