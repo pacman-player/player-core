@@ -37,7 +37,7 @@ public class User implements UserDetails {
 			inverseJoinColumns = {@JoinColumn(name = "role_id")})
 	private Set<Role> roles;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER, optional = false)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
 	private Company company;
 
 	//@Column(name = "enabled", nullable = false)

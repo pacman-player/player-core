@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,11 +14,11 @@ public class Author {
 
     private String name;
 
-    @ManyToMany(targetEntity = Genre.class)
+    @ManyToMany
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> authorGenres;
+    private Set<Genre> authorGenres = new HashSet<>();
 
     public Author(){}
 

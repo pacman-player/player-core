@@ -56,7 +56,7 @@ public class UserFileUploadRestController {
                 return ResponseEntity.badRequest().body("Поля не могут быть пустыми");
             }
 
-            if (songService.isExist(songName)) {
+            /*if (songService.isExist(songName)) {
                 return ResponseEntity.badRequest().body("Песня с таким названием существует");
             }
 
@@ -74,7 +74,16 @@ public class UserFileUploadRestController {
                 author = authorService.getByName(songAuthor);
             } else {
                 author.getAuthorGenres().add(genre);
-            }
+            }*/
+
+            Genre genre = new Genre(songGenre);
+            genreService.addGenre(new Genre(songGenre));
+            genre = genreService.getByName(songGenre);
+
+            Author author = new Author(songAuthor);
+            author.getAuthorGenres().add(genre);
+            authorService.addAuthor(author);
+            author = authorService.getByName(songAuthor);
 
             Song song = new Song(songName);
             song.setAuthor(author);

@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -16,7 +17,7 @@ public class Role implements GrantedAuthority {
 	@Column(name = "name", length = 20, nullable = false)
 	private String name;
 
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "permissions",
 			joinColumns = {@JoinColumn(name = "role_id")},
 			inverseJoinColumns = {@JoinColumn(name = "user_id")})

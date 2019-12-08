@@ -1,11 +1,11 @@
 package spring.app.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "song")
 public class Song {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -13,10 +13,8 @@ public class Song {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @JoinColumn(name = "author_id")
     private Author author;
-
-    @OneToMany(mappedBy = "song")
-    private Set<SongQueue> song;
 
     public Song() {
     }
@@ -31,14 +29,6 @@ public class Song {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<SongQueue> getSong() {
-        return song;
-    }
-
-    public void setSong(Set<SongQueue> song) {
-        this.song = song;
     }
 
     public void setAuthor(Author author) {
