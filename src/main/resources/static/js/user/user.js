@@ -29,10 +29,8 @@ $(document).ready(function () {
                         htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
                     }
                 }
-
                 $("#getGenres #genres").remove();//очистка перед выводом
                 $("#getGenres").after(htmlGenres);
-
             }
         });
     };
