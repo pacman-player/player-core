@@ -14,7 +14,7 @@ public class Author {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

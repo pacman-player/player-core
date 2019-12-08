@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "song")
@@ -15,6 +16,9 @@ public class Song {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
+
+    @OneToMany(mappedBy = "song")
+    private Set<SongQueue> song;
 
     public Song() {
     }

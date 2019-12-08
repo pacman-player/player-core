@@ -13,7 +13,7 @@ public class PlayList {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_on_play_list",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "play_list_id")})

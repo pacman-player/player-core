@@ -17,7 +17,7 @@ public class Role implements GrantedAuthority {
 	@Column(name = "name", length = 20, nullable = false)
 	private String name;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
 	@JoinTable(name = "permissions",
 			joinColumns = {@JoinColumn(name = "role_id")},
 			inverseJoinColumns = {@JoinColumn(name = "user_id")})
