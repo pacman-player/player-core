@@ -11,10 +11,10 @@ $("#userFileUploadForm").submit(function(e){
         contentType: false,
         processData: false,
         success: function(ans) {
-            $('#answer').text(ans);
+            alert(ans.responseText);
         },
         error: function (ans) {
-            $('#answer').text(ans);
+            alert(ans.responseText);
         }
     })
 });

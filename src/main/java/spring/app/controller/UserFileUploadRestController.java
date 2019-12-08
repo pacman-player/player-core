@@ -56,34 +56,25 @@ public class UserFileUploadRestController {
             return new ResponseEntity<>("Поля не могут быть пустыми", HttpStatus.BAD_REQUEST);
         }
 
-            /*if (songService.isExist(songName)) {
-                return ResponseEntity.badRequest().body("Песня с таким названием существует");
-            }
+        if (songService.isExist(songName)) {
+            return new ResponseEntity<>("Песня с таким названием существует", HttpStatus.BAD_REQUEST);
+        }
 
-            Genre genre = genreService.getByName(songGenre);
-            if (genre == null) {
-                genreService.addGenre(new Genre(songGenre));
-                genre = genreService.getByName(songGenre);
-            }
+        Genre genre = genreService.getByName(songGenre);
+        if (genre == null) {
+            genreService.addGenre(new Genre(songGenre));
+            genre = genreService.getByName(songGenre);
+        }
 
-            Author author = authorService.getByName(songAuthor);
-            if (author == null) {
-                Author author1 = new Author(songAuthor);
-                author1.getAuthorGenres().add(genre);
-                authorService.addAuthor(author1);
-                author = authorService.getByName(songAuthor);
-            } else {
-                author.getAuthorGenres().add(genre);
-            }*/
-
-        Genre genre = new Genre();
-        genreService.addGenre(new Genre(songGenre));
-        genre = genreService.getByName(songGenre);
-
-        Author author = new Author(songAuthor);
-        author.getAuthorGenres().add(genre);
-        authorService.addAuthor(author);
-        author = authorService.getByName(songAuthor);
+        Author author = authorService.getByName(songAuthor);
+        if (author == null) {
+            Author author1 = new Author(songAuthor);
+            author1.getAuthorGenres().add(genre);
+            authorService.addAuthor(author1);
+            author = authorService.getByName(songAuthor);
+        } else {
+            author.getAuthorGenres().add(genre);
+        }
 
         Song song = new Song(songName);
         song.setAuthor(author);
@@ -96,7 +87,7 @@ public class UserFileUploadRestController {
             Path path = Paths.get(fileFolder + fileName);
             Files.write(path, bytes);
         } catch (IOException e) {
-            return new ResponseEntity<>("Ошибка ввода", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Ошибка ввода вывода", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Файл добавлен", HttpStatus.OK);
     }
