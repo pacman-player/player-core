@@ -1,4 +1,4 @@
-package spring.app.controller.restController;
+package spring.app.controller.restControler;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

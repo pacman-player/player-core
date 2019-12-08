@@ -33,15 +33,8 @@ $(document).ready(function () {
                 $("#getGenres #genres").remove();//очистка перед выводом
                 $("#getGenres").after(htmlGenres);
 
-            success: function (role) {
-                if (role != "admin") {
-                    alert(role);
-                    $("#adminLink").hide();
-                }
             }
-
         });
-
     };
 
     function showLinkAdmin() {
