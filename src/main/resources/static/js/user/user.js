@@ -29,10 +29,19 @@ $(document).ready(function () {
                         htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
                     }
                 }
+
                 $("#getGenres #genres").remove();//очистка перед выводом
                 $("#getGenres").after(htmlGenres);
+
+            success: function (role) {
+                if (role != "admin") {
+                    alert(role);
+                    $("#adminLink").hide();
+                }
             }
+
         });
+
     };
 
     function showLinkAdmin() {
@@ -42,7 +51,6 @@ $(document).ready(function () {
 
             success: function (role) {
                 if (role != "admin") {
-                    alert(role);
                     $("#adminLink").hide();
                 }
             }
