@@ -138,4 +138,12 @@ public class Company {
     public Set<Genre> getBannedGenres() {
         return bannedGenres;
     }
+
+    public Set<SongQueue> getSongQueues() {
+        return songQueues;
+    }
+
+    public void setSongQueues(Set<SongQueue> songQueues) {
+        this.songQueues = songQueues;
+    }
 }

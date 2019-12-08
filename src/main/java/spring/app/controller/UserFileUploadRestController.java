@@ -3,6 +3,7 @@ package spring.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,14 +48,13 @@ public class UserFileUploadRestController {
             @RequestParam("songName") String songName,
             @RequestParam("file") MultipartFile file) {
 
-        try {
-            if (file.isEmpty()) {
-                return ResponseEntity.badRequest().body("Выберите файл");
-            }
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("Выберите файл", HttpStatus.BAD_REQUEST);
+        }
 
-            if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {
-                return ResponseEntity.badRequest().body("Поля не могут быть пустыми");
-            }
+        if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {
+            return new ResponseEntity<>("Поля не могут быть пустыми", HttpStatus.BAD_REQUEST);
+        }
 
             /*if (songService.isExist(songName)) {
                 return ResponseEntity.badRequest().body("Песня с таким названием существует");
@@ -76,27 +76,28 @@ public class UserFileUploadRestController {
                 author.getAuthorGenres().add(genre);
             }*/
 
-            Genre genre = new Genre(songGenre);
-            genreService.addGenre(new Genre(songGenre));
-            genre = genreService.getByName(songGenre);
+        Genre genre = new Genre();
+        genreService.addGenre(new Genre(songGenre));
+        genre = genreService.getByName(songGenre);
 
-            Author author = new Author(songAuthor);
-            author.getAuthorGenres().add(genre);
-            authorService.addAuthor(author);
-            author = authorService.getByName(songAuthor);
+        Author author = new Author(songAuthor);
+        author.getAuthorGenres().add(genre);
+        authorService.addAuthor(author);
+        author = authorService.getByName(songAuthor);
 
-            Song song = new Song(songName);
-            song.setAuthor(author);
-            songService.addSong(song);
-            song = songService.getByName(songName);
+        Song song = new Song(songName);
+        song.setAuthor(author);
+        songService.addSong(song);
+        song = songService.getByName(songName);
 
+        try {
             byte[] bytes = file.getBytes();
             String fileName = file.getOriginalFilename().replaceAll(".*[.]", author.getId() + "_" + song.getId() + ".");
             Path path = Paths.get(fileFolder + fileName);
             Files.write(path, bytes);
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Ошибка ввода");
+            return new ResponseEntity<>("Ошибка ввода", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok("Файл добавлен");
+        return new ResponseEntity<>("Файл добавлен", HttpStatus.OK);
     }
 }

@@ -51,6 +51,14 @@ public class Song {
         return author;
     }
 
+    public Set<SongQueue> getSong() {
+        return song;
+    }
+
+    public void setSong(Set<SongQueue> song) {
+        this.song = song;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
