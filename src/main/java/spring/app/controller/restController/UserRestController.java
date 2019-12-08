@@ -1,4 +1,4 @@
-package spring.app.controller.restControler;
+package spring.app.controller.restController;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.GenreService;
 
+import java.util.List;
+
 @Service
 public class GenreServiceImpl implements GenreService {
 
@@ -19,5 +21,10 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public void addGenre(Genre genre) {
         genreDao.save(genre);
+    }
+
+    @Override
+    public List<Genre> getAllGenre() {
+        return genreDao.getAll();
     }
 }
