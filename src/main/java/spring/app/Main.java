@@ -19,10 +19,10 @@ public class Main extends WebMvcConfigurerAdapter {
 		SpringApplication.run(Main.class, args);
 	}
 
-//	@Bean(initMethod = "init")
-//	@PostConstruct
-//	public TestDataInit initTestData() {
-//		return new TestDataInit();
-//	}
+	@Bean(initMethod = "init")
+	@PostConstruct
+	public TestDataInit initTestData() {
+		return new TestDataInit();
+	}
 
 }
