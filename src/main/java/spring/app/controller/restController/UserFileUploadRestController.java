@@ -1,4 +1,4 @@
-package spring.app.controller;
+package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +18,15 @@ import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/somePage")
 @PropertySource("classpath:uploadedFilesPath.properties")
 public class UserFileUploadRestController {
 
@@ -46,18 +49,18 @@ public class UserFileUploadRestController {
             @RequestParam("songAuthor") String songAuthor,
             @RequestParam("songGenre") String songGenre,
             @RequestParam("songName") String songName,
-            @RequestParam("file") MultipartFile file) {
-
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("Выберите файл", HttpStatus.BAD_REQUEST);
-        }
+            @RequestParam("file") MultipartFile file) throws UnsupportedEncodingException {
 
         if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {
-            return new ResponseEntity<>("Поля не могут быть пустыми", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(encode("Поля не могут быть пустыми"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (file.isEmpty()) {
+            return new ResponseEntity<>(encode("Выберите файл"), HttpStatus.BAD_REQUEST);
         }
 
         if (songService.isExist(songName)) {
-            return new ResponseEntity<>("Песня с таким названием существует", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(encode("Файл с таким названием существует"), HttpStatus.BAD_REQUEST);
         }
 
         Genre genre = genreService.getByName(songGenre);
@@ -87,8 +90,18 @@ public class UserFileUploadRestController {
             Path path = Paths.get(fileFolder + fileName);
             Files.write(path, bytes);
         } catch (IOException e) {
-            return new ResponseEntity<>("Ошибка ввода вывода", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(encode("Ошибка ввода вывода"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Файл добавлен", HttpStatus.OK);
+        return new ResponseEntity<>(encode("Файл добавлен"), HttpStatus.OK);
+    }
+
+    private String encode(String line) throws UnsupportedEncodingException {
+        return URLEncoder.encode(line, "UTF-8")
+                .replaceAll("\\+", "%20")
+                .replaceAll("\\%21", "!")
+                .replaceAll("\\%27", "'")
+                .replaceAll("\\%28", "(")
+                .replaceAll("\\%29", ")")
+                .replaceAll("\\%7E", "~");
     }
 }

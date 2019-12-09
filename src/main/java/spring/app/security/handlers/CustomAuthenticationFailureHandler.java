@@ -18,7 +18,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-										AuthenticationException exception) throws IOException, ServletException {
+										AuthenticationException exception) throws IOException {
 		String targetUrl = determineTargetUrl();
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}

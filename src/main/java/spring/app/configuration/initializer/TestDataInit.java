@@ -37,7 +37,7 @@ public class TestDataInit {
 	@Autowired
 	private SongQueueService songQueueService;
 
-	private void init() throws Exception {
+	private void init() {
 
 		Role roleAdmin = new Role();
 		roleAdmin.setName("ADMIN");

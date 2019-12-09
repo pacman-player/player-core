@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8"/>
 
     <title>Admin Panel</title>
 
@@ -32,7 +32,9 @@
         </div>
         <button type="submit" class="btn btn-primary" id="fileUploadButton">Отправить</button>
     </form>
-    <label id="answer"></label>
+
+    <label id="error" class="label-warning"></label>
+    <label id="success" class="label-success"></label>
 </div>
 
 <!-- Bootstrap core JavaScript
@@ -40,29 +42,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--<script type="text/javascript" src="js/userFileUpload.js" rel="script"></script>-->
-<script>
-    $("#userFileUploadForm").submit(function(e){
-        e.preventDefault();
-        var form_data = new FormData(this);
-
-        $.ajax({
-            type: 'post',
-            url: '/api/user/fileUpload',
-            enctype: 'multipart/form-data',
-            data: form_data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(ans) {
-                $('#answer').val(ans);
-            },
-            error: function (ans) {
-                $('#answer').val(ans);
-            }
-        })
-    })
-</script>
+<script type="text/javascript" src="/js/user/userFileUpload.js" rel="script"></script>
 
 </body>
 </html>

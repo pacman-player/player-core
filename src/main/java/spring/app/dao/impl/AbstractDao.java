@@ -15,7 +15,6 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 
 	private final Class<T> persistentClass;
 
-	@SuppressWarnings("unchecked")
 	AbstractDao(Class<T> persistentClass){
 		this.persistentClass = persistentClass;
 	}
