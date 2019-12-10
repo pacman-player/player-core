@@ -34,39 +34,13 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage() throws NoHandlerFoundException {
-
+    public ModelAndView showLoginPage() {
         return new ModelAndView("login");
     }
 
-    //непонял зачем жтот метод и куда его перенести.
-    /*@RequestMapping(value = {"/p"}, method = RequestMethod.GET)
+    /*непонял зачем жтот метод и куда его перенести.
+    @RequestMapping(value = {"/p"}, method = RequestMethod.GET)
     public ModelAndView showPlayerPage() throws NoHandlerFoundException {
-
         return new ModelAndView("player");
     }*/
-
-
-
-    private Set<Role> getRoles(String role) {
-        Set<Role> roles = new HashSet<>();
-
-        switch (role.toLowerCase()) {
-            case "admin":
-                roles.add(roleService.getRoleById(1L));
-                break;
-            case "user":
-                roles.add(roleService.getRoleById(2L));
-                break;
-            case "admin, user":
-                roles.add(roleService.getRoleById(1L));
-                roles.add(roleService.getRoleById(2L));
-                break;
-            default:
-                roles.add(roleService.getRoleById(2L));
-                break;
-        }
-
-        return roles;
-    }
 }

@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.UserDto;
@@ -54,9 +53,6 @@ public class AdminRestController {
     public void deleteUser(@RequestBody Long id) {
         userService.deleteUserById(id);
     }
-
-
-
 
     private Set<Role> getRoles(String role) {
         Set<Role> roles = new HashSet<>();
