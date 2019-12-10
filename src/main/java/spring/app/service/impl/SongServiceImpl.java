@@ -28,10 +28,6 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public boolean isExist(String name) {
-        Song song = getByName(name);
-        if (song == null) {
-            return false;
-        }
-        return true;
+        return getByName(name) != null;
     }
 }

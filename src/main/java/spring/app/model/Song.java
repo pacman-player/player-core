@@ -17,6 +17,10 @@ public class Song {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @ManyToOne(targetEntity = Genre.class)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
+
     @OneToMany(mappedBy = "song")
     private Set<SongQueue> song;
 
@@ -49,6 +53,14 @@ public class Song {
 
     public Author getAuthor() {
         return author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public Set<SongQueue> getSong() {

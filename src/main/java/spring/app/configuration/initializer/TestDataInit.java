@@ -85,6 +85,7 @@ public class TestDataInit {
 
 		Song song = new Song("Desert Rose");
 		song.setAuthor(author);
+		song.setGenre(genre);
 		songService.addSong(song);
 
 		PlayList playList = new PlayList();

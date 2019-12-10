@@ -34,8 +34,8 @@ public class UserFileUploadRestController {
     private final AuthorService authorService;
     private final SongService songService;
 
-    @Value("${path}")
-    String fileFolder;
+    @Value("${uploaded_files_path}")
+    private String fileFolder;
 
     @Autowired
     public UserFileUploadRestController(GenreService genreService, AuthorService authorService, SongService songService) {
@@ -81,6 +81,7 @@ public class UserFileUploadRestController {
 
         Song song = new Song(songName);
         song.setAuthor(author);
+        song.setGenre(genre);
         songService.addSong(song);
         song = songService.getByName(songName);
 
