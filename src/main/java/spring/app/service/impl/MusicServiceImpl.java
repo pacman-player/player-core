@@ -1,6 +1,7 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.MusicService;
 
@@ -13,7 +14,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
+@PropertySource("classpath:uploadedFilesPath.properties")
 public class MusicServiceImpl implements MusicService {
+
     @Value("${uploaded_files_path}")
     private String filePath;
     @Override
@@ -26,7 +29,7 @@ public class MusicServiceImpl implements MusicService {
         BufferedInputStream buf = null;
         try {
 
-            File mp3 = new File("C:\\Users\\g\\IdeaProjects\\player-core\\src\\main\\resources\\" + file);
+            File mp3 = new File(filePath + file);
 
             //set response headers
             stream = response.getOutputStream();
