@@ -13,11 +13,11 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
