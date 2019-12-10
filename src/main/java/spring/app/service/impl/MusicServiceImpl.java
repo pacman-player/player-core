@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.MusicService;
 
@@ -13,21 +14,25 @@ import java.io.IOException;
 
 @Service
 public class MusicServiceImpl implements MusicService {
+    @Value("${uploaded_files_path}")
+    private String filePath;
     @Override
     public ServletOutputStream fileToStream(String musicName, HttpServletResponse response) throws ServletException, IOException {
-        String filePath = musicName + ".mp3";
+        String file = musicName + ".mp3";
+
+
 
         ServletOutputStream stream = null;
         BufferedInputStream buf = null;
         try {
 
-            File mp3 = new File("C:\\Users\\g\\IdeaProjects\\player-core\\src\\main\\resources\\" + filePath);
+            File mp3 = new File("C:\\Users\\g\\IdeaProjects\\player-core\\src\\main\\resources\\" + file);
 
             //set response headers
             stream = response.getOutputStream();
             response.setContentType("audio/mpeg");
 
-            response.addHeader("Content-Disposition", "attachment; filename=" + filePath);
+            response.addHeader("Content-Disposition", "attachment; filename=" + file);
 
             response.setContentLength((int) mp3.length());
 
