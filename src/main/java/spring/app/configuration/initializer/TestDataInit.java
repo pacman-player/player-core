@@ -72,6 +72,15 @@ public class TestDataInit {
 		Genre genre1 = new Genre("hard rock");
 		genreService.addGenre(genre1);
 
+		Genre genre2 = new Genre("classic");
+		genreService.addGenre(genre2);
+
+		Genre genre3 = new Genre("folk");
+		genreService.addGenre(genre3);
+
+		Genre genre4 = new Genre("punk");
+		genreService.addGenre(genre4);
+
 		Author author = new Author();
 		author.setName("Sting");
 		Set<Genre> genres = new HashSet<>();

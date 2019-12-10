@@ -18,4 +18,4 @@ const makeImageButton = (audioMP3) =>
 
 makeImageButton(
     'media/GorProject_LA.mp3',
-)
+);

@@ -1,5 +1,10 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,178 +15,184 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Long id;
 
-	//@Column(name = "login",  nullable = false, unique = true)
-	private String login;
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Long id;
 
-	//@Column(name = "email",  nullable = false, unique = true)
-	private String email;
+    //@Column(name = "login",  nullable = false, unique = true)
+    private String login;
 
+    //@Column(name = "email",  nullable = false, unique = true)
+    private String email;
 
-	//@Column(name = "password", length = 30, nullable = false)
-	private String password;
+    //@Column(name = "password", length = 30, nullable = false)
+    private String password;
 
-	@Lob
-	@Column(name="profile_pic")
-	private Blob profilePic;
+    @Lob
+    @Column(name = "profile_pic")
+    private Blob profilePic;
 
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @JoinTable(name = "permissions",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
-	@JoinTable(name = "permissions",
-			joinColumns = {@JoinColumn(name = "user_id")},
-			inverseJoinColumns = {@JoinColumn(name = "role_id")})
-	private Set<Role> roles;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
-	private Company company;
-
-	//@Column(name = "enabled", nullable = false)
-	private Boolean enabled = true;
+   @JsonBackReference
+   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private Company company;
 
 
-	public User() {
-	}
+    //@Column(name = "enabled", nullable = false)
+    private Boolean enabled = true;
 
-	public User(Long id) {
-		this.id = id;
-	}
 
-	public User(String email, String login, String password, boolean enabled) {
-		this.email = email;
-		this.login = login;
-		this.password = password;
-		this.enabled = enabled;
-	}
+    public User() {
+    }
 
-	public User(Long id, String email, String login, String password, boolean enabled) {
-		this.id = id;
-		this.email = email;
-		this.login = login;
-		this.password = password;
-		this.enabled = enabled;
-	}
+    public User(Long id) {
+        this.id = id;
+    }
 
-	public Blob getProfilePic() {
-		return profilePic;
-	}
+    public User(String email, String login, String password, boolean enabled) {
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.enabled = enabled;
+    }
 
-	public void setProfilePic(Blob profilePic) {
-		this.profilePic = profilePic;
-	}
+    public User(Long id, String email, String login, String password, boolean enabled) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        this.enabled = enabled;
+    }
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Blob getProfilePic() {
+        return profilePic;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public void setProfilePic(Blob profilePic) {
+        this.profilePic = profilePic;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	@Override
-	public String getUsername() {
-		return login;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
 
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return login;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public String toString() {
-		return login;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public Boolean getEnabled() {
-		return enabled;
-	}
+    public String toString() {
+        return login;
+    }
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-		User user = (User) o;
 
-		if (id != null ? !id.equals(user.id) : user.id != null) return false;
-		if (login != null ? !login.equals(user.login) : user.login != null) return false;
-		if (email != null ? !email.equals(user.email) : user.email != null) return false;
-		if (password != null ? !password.equals(user.password) : user.password != null) return false;
-		return enabled != null ? enabled.equals(user.enabled) : user.enabled == null;
-	}
+    public Company getCompany() {
+        return company;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + (login != null ? login.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-		return result;
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	public Company getCompany() {
-		return company;
-	}
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        return enabled != null ? enabled.equals(user.enabled) : user.enabled == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
+        return result;
+    }
+
 }

@@ -1,5 +1,7 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -14,18 +16,15 @@ public class Role implements GrantedAuthority {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", length = 20, nullable = false)
-	private String name;
+    @Column(name = "name", length = 20, nullable = false)
+    private String name;
 
+    @JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
 	@JoinTable(name = "permissions",
 			joinColumns = {@JoinColumn(name = "role_id")},
 			inverseJoinColumns = {@JoinColumn(name = "user_id")})
 	private List<User> users;
-
-	public Role() {
-	}
-
 	public List<User> getUsers() {
 		return users;
 	}
@@ -34,53 +33,56 @@ public class Role implements GrantedAuthority {
 		this.users = users;
 	}
 
-	public Role(String name) {
-		this.name = name;
-	}
+    public Role() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Role(String name) {
+        this.name = name;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		if (name.contains("ADMIN") && name.contains("USER")) {
-			return "admin, user";
-		} else if (name.contains("ADMIN")) {
-			return "admin";
-		}
-		return "user";
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getAuthority() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        if (name.contains("ADMIN") && name.contains("USER")) {
+            return "admin, user";
+        } else if (name.contains("ADMIN")) {
+            return "admin";
+        }
+        return "user";
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Role role = (Role) o;
-		return name.equals(role.name);
-	}
+    public String getAuthority() {
+        return name;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = 1;
-		result = 31 * result + name.hashCode();
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return name.equals(role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 
 }
