@@ -1,21 +1,41 @@
+$(() => {
+    let sound = new Howl({
+        src : '',
+        format: ['mp3', 'aac'],
+        volume: 0.2
+    })
 
-const log = console.log;
-const app = new PIXI.Application();
-document.body.appendChild(app.view);
 
-const buttonsHolder = new PIXI.Container();
-buttonsHolder.scale.set(0.5);
-app.stage.addChild(buttonsHolder);
-
-// buttonsHolder
-const makeImageButton = (audioMP3) =>
-{
-    const sound = new Howl({
-        src: [audioMP3]
-    });
-    sound.play()
-};
-
-makeImageButton(
-    'media/GorProject_LA.mp3',
-);
+    $(".btn1").click(function () {
+        let sound = new Howl({
+            src : 'https://freesound.org/data/previews/335/335571_5942333-lq.mp3',
+            format: ['mp3', 'aac'],
+            volume: 0.2,
+        })
+        sound.play();
+    $(".btnStop").click(function () {
+        sound.stop();
+    })
+    })
+    $(".btn2").click(function () {
+        let sound = new Howl({
+            src : 'http://localhost:8080/api/download/GorProject_LA',
+            format: ['mp3', 'aac'],
+            volume: 0.2
+        })
+        sound.play();
+        $(".btnStop").click(function () {
+            sound.stop();
+        })
+    })
+    $(".btn3").click(function () {
+    let sound = new Howl({
+        src : 'http://localhost:8080/api/download/Florence',
+        format: ['mp3', 'aac'],
+        volume: 0.2
+    })
+    sound.play();
+        $(".btnStop").click(function () {
+            sound.stop();
+        })
+})
