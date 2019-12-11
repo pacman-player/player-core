@@ -17,54 +17,34 @@ import java.util.Set;
 @Controller("/test")
 public class MainController {
 
-	private final RoleService roleService;
-	private final UserService userService;
-	private final GenreService genreService;
+    private final RoleService roleService;
+    private final UserService userService;
+    private final GenreService genreService;
 
-	@Autowired
-	public MainController(RoleService roleService, UserService userService, GenreService genreService) {
-		this.roleService = roleService;
-		this.userService = userService;
-		this.genreService = genreService;
-	}
+    @Autowired
+    public MainController(RoleService roleService, UserService userService, GenreService genreService) {
+        this.roleService = roleService;
+        this.userService = userService;
+        this.genreService = genreService;
+    }
 
 
-	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
-	public String redirectToLoginPage() {
-		return "redirect:/login";
-	}
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    public String redirectToLoginPage() {
+        return "redirect:/login";
+    }
 
-	@RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-	public ModelAndView showLoginPage() throws NoHandlerFoundException {
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+    public ModelAndView showLoginPage() throws NoHandlerFoundException {
 
-		return new ModelAndView("login");
-	}
+        return new ModelAndView("login");
+    }
 
-	@RequestMapping(value = {"/translation"}, method = RequestMethod.GET)
-	public ModelAndView showPlayerPage() throws NoHandlerFoundException {
+    @RequestMapping(value = {"/translation"}, method = RequestMethod.GET)
+    public ModelAndView showPlayerPage() throws NoHandlerFoundException {
 
-		return new ModelAndView("translation");
-	}
+        return new ModelAndView("translation");
+    }
 
-		private Set<Role> getRoles(String role) {
-			Set<Role> roles = new HashSet<>();
 
-			switch (role.toLowerCase()) {
-				case "admin":
-					roles.add(roleService.getRoleById(1L));
-					break;
-				case "user":
-					roles.add(roleService.getRoleById(2L));
-					break;
-				case "admin, user":
-					roles.add(roleService.getRoleById(1L));
-					roles.add(roleService.getRoleById(2L));
-					break;
-				default:
-					roles.add(roleService.getRoleById(2L));
-					break;
-			}
-
-			return roles;
-		}
-	}
+}
