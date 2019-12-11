@@ -3,18 +3,23 @@ package spring.app.model;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "song")
 public class Song {
+
     @Id
     @GeneratedValue
     private Long id;
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @JoinColumn(name = "author_id")
     private Author author;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
     @OneToMany(mappedBy = "song")
     private Set<SongQueue> song;
@@ -34,14 +39,6 @@ public class Song {
         this.name = name;
     }
 
-    public Set<SongQueue> getSong() {
-        return song;
-    }
-
-    public void setSong(Set<SongQueue> song) {
-        this.song = song;
-    }
-
     public void setAuthor(Author author) {
         this.author = author;
     }
@@ -56,6 +53,22 @@ public class Song {
 
     public Author getAuthor() {
         return author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Set<SongQueue> getSong() {
+        return song;
+    }
+
+    public void setSong(Set<SongQueue> song) {
+        this.song = song;
     }
 
     @Override

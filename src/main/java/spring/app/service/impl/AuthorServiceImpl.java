@@ -20,4 +20,9 @@ public class AuthorServiceImpl implements AuthorService {
     public void addAuthor(Author author) {
         authorDao.save(author);
     }
+
+    @Override
+    public Author getByName(String name) {
+        return authorDao.getByName(name);
+    }
 }
