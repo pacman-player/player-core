@@ -9,11 +9,11 @@ public class SongQueue {
     private Long id;
     private Long position;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id")
     private Company company;
 

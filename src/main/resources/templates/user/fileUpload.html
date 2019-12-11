@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+</head>
+
+<body>
+<div class="container-fluid" align="center">
+    <form enctype="multipart/form-data" id="userFileUploadForm" style="width: 30%">
+        <div class="form-group">
+            <label for="songAuthor">Исполнитель</label>
+            <input class="form-control" type="text" name="songAuthor" id="songAuthor"/>
+        </div>
+        <div class="form-group">
+            <label for="songGenre">Жанр</label>
+            <input class="form-control" type="text" name="songGenre" id="songGenre"/>
+        </div>
+        <div class="form-group">
+            <label for="songName">Название</label>
+            <input class="form-control" type="text" name="songName" id="songName"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control-file" type="file" id="file-input" name="file" accept="audio/*"/>
+        </div>
+        <button type="submit" class="btn btn-primary" id="fileUploadButton">Отправить</button>
+    </form>
+
+    <label id="error" class="label-warning"></label>
+    <label id="success" class="label-success"></label>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/user/userFileUpload.js" rel="script"></script>
+
+</body>
+</html>

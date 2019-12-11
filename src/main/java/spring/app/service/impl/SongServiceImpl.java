@@ -20,4 +20,14 @@ public class SongServiceImpl implements SongService {
     public void addSong(Song song) {
         songDao.save(song);
     }
+
+    @Override
+    public Song getByName(String name) {
+        return songDao.getByName(name);
+    }
+
+    @Override
+    public boolean isExist(String name) {
+        return getByName(name) != null;
+    }
 }

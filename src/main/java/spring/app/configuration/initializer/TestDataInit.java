@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class TestDataInit {
 
 	@Autowired
@@ -38,7 +37,7 @@ public class TestDataInit {
 	@Autowired
 	private SongQueueService songQueueService;
 
-	private void init() throws Exception {
+	private void init() {
 
 		Role roleAdmin = new Role();
 		roleAdmin.setName("ADMIN");
@@ -95,6 +94,7 @@ public class TestDataInit {
 
 		Song song = new Song("Desert Rose");
 		song.setAuthor(author);
+		song.setGenre(genre);
 		songService.addSong(song);
 
 		PlayList playList = new PlayList();

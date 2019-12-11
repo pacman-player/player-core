@@ -1,10 +1,6 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -47,10 +43,8 @@ public class User implements UserDetails {
    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Company company;
 
-
     //@Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
-
 
     public User() {
     }
@@ -73,7 +67,6 @@ public class User implements UserDetails {
         this.password = password;
         this.enabled = enabled;
     }
-
 
     public Blob getProfilePic() {
         return profilePic;
@@ -154,7 +147,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-
     public Company getCompany() {
         return company;
     }
@@ -194,5 +186,4 @@ public class User implements UserDetails {
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         return result;
     }
-
 }

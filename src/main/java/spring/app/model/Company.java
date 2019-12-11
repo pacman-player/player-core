@@ -24,6 +24,7 @@ public class Company {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
+    @JoinColumn(name = "org_type_id")
     private OrgType orgType;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
@@ -50,10 +51,8 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
-
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;

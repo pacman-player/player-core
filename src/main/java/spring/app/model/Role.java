@@ -1,7 +1,6 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -10,10 +9,11 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private Long id;
 
     @Column(name = "name", length = 20, nullable = false)
     private String name;
@@ -24,13 +24,6 @@ public class Role implements GrantedAuthority {
 			joinColumns = {@JoinColumn(name = "role_id")},
 			inverseJoinColumns = {@JoinColumn(name = "user_id")})
 	private List<User> users;
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
 
     public Role() {
     }
@@ -53,6 +46,14 @@ public class Role implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -83,5 +84,4 @@ public class Role implements GrantedAuthority {
         result = 31 * result + name.hashCode();
         return result;
     }
-
 }
