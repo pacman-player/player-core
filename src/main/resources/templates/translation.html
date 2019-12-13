@@ -10,6 +10,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/b391af638d.js"></script>
     <script src="../static/js/howler.js" th:src="@{/js/howler.js}"></script>
     <script src="../static/js/sound.js" th:src="@{/js/sound.js}"></script>
     <link rel="stylesheet" th:href="@{style.css}"/>
@@ -34,13 +35,15 @@
     <div class="col-lg-9 col-md-10 col-xs-10">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-            Launch demo modal
+            <span style="font-size: 5em; color: darkseagreen;">
+             <i class="fas fa-th-list"></i>
+            </span>
         </button>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document" style="max-width: 1350px!important;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
@@ -48,24 +51,64 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
 
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Cras justo odio
-                                <span class="badge badge-primary badge-pill">14</span>
+
+                    <div class="modal-body ">
+                        <ul class="list-group borderless">
+                            <li class="list-group-item borderless">
+                                <button type="button" id="sound" class="static">
+                                    <i class="fas fa-play play"></i>
+                                    <i class="fas fa-pause pause hide"></i>
+                                </button>
+                                Florence
+                                <div class="audio-progress hide">
+                                    <div id="progress"></div>
+                                    <div class="time">
+                                        <span id="timer">0:00 </span>/
+                                        <span id="duration">0:00</span>
+                                    </div>
+                                </div>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Dapibus ac facilisis in
-                                <span class="badge badge-primary badge-pill">2</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Morbi leo risus
-                                <span class="badge badge-primary badge-pill">U+25B6</span>
-                            </li>
+
+                            <li class="list-group-item borderless"> </li>
+<!--                            <li class="list-group-item borderless">-->
+<!--                                <button type="button" id="sound" class="static">-->
+<!--                                    <i class="fas fa-play play"></i>-->
+<!--                                    <i class="fas fa-pause pause hide"></i>-->
+<!--                                </button>-->
+<!--                                Florence-->
+<!--                                <div class="audio-progress hide">-->
+<!--                                    <div id="progress"></div>-->
+<!--                                    <div class="time">-->
+<!--                                        <span id="timer">0:00 </span>/-->
+<!--                                        <span id="duration">0:00</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </li>-->
+<!--                           -->
+                            <li class="list-group-item borderless">This is a light list group item</li>
+                            <li class="list-group-item borderless">This is a light list group item</li>
+                            <li class="list-group-item borderless">This is a light list group item</li>
+
                         </ul>
 
-
+                        <div style="font-size: 3rem;">
+                            <i class="fas fa-music"></i>
+                            <i class="fas fa-stop"></i>
+                            <i class="fas fa-pause"></i>
+                            <i class="fas fa-backward"></i>
+                            <i class="fas fa-fast-backward"></i>
+                            <i class="fas fa-forward"></i>
+                            <i class="fas fa-fast-forward"></i>
+                            <i class="fas fa-redo"></i>
+                            <i class="fas fa-repeat"></i>
+                            <i class="fas fa-volume"></i>
+                            <i class="fas fa-volume-up"></i>
+                            <i class="fas fa-volume-mute"></i>
+                            <i class="fas fa-list"></i>
+                            <i class="fas fa-th-list"></i>
+                            <i class="fas fa-bars"></i>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
