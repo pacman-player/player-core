@@ -2,6 +2,7 @@ package spring.app.service.impl;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,12 +32,18 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
         }
 
        // Elements playList =  document.getElementsByClass("musicset-track-list");
-      //  Elements playList1 =  document.getElementsByClass("search-page__tracks");//lisy search!!!
+      //  Elements playList1 =  document.getElementsByClass("search-page__tracks");//list search!!!
         Elements playList1 =  document.getElementsByClass("musicset-track clearfix ");
         //Elements playList2 =  playList1.
 
+        playList1.forEach(a-> {
+            Element divId = a.child(0);
+            String idSong = divId.attr("title");
+            System.out.println(idSong);
+                });
+
       // System.out.println(playList.html());
-        System.out.println(playList1.html());
+      //  System.out.println(playList1.html());
       //  System.out.println(playList1.html());
 
 
