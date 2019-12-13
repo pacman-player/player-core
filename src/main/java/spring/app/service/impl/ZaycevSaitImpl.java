@@ -30,7 +30,14 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
             e.printStackTrace();
         }
 
-        Elements playList =  document.select("meta");
+       // Elements playList =  document.getElementsByClass("musicset-track-list");
+      //  Elements playList1 =  document.getElementsByClass("search-page__tracks");//lisy search!!!
+        Elements playList1 =  document.getElementsByClass("musicset-track clearfix ");
+        //Elements playList2 =  playList1.
+
+      // System.out.println(playList.html());
+        System.out.println(playList1.html());
+      //  System.out.println(playList1.html());
 
 
         //https://zaycev.net/search.html?query_search=
