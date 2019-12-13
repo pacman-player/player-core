@@ -1,4 +1,7 @@
 package spring.app.service.abstraction;
 
-public class ZaycevSaitServise {
+import java.io.IOException;
+
+public interface ZaycevSaitServise {
+    void searchSongByAuthorOrSongs(String author, String song ) throws IOException;
 }
