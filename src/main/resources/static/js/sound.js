@@ -51,7 +51,7 @@ $(() => {
     };
 
     var sound = new Howl({
-        src: ['http://localhost:8080/api/download/Florence'],
+        src: ['http://localhost:8080/api/download/'+$('#sound').click().parent().attr("id")],
         format: ['mp3', 'aac'],
         onplay: function () {
             audioPlayed = true;
@@ -83,6 +83,7 @@ $(() => {
         $(this).toggleClass('playing');
         if ($(this).hasClass('playing')) {
             sound.play();
+
         } else {
             sound.pause();
         }

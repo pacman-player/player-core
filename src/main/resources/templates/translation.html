@@ -55,31 +55,37 @@
 
                     <div class="modal-body ">
                         <ul class="list-group borderless">
-                            <li class="list-group-item borderless">
-                                <button type="button" id="sound1" class="static">
+                            <li class="list-group-item borderless" id="GorProject_LA">
+                                <button type="button" id="sound" class="static">
                                     <i class="fas fa-play play"></i>
                                     <i class="fas fa-pause pause hide"></i>
                                 </button>
                                 Florence
-
+                                <div class="audio-progress hide">
+                                    <div id="progress"></div>
+                                    <div class="time">
+                                        <span id="timer">0:00 </span>/
+                                        <span id="duration">0:00</span>
+                                    </div>
+                                </div>
                             </li>
 
                             <li class="list-group-item borderless"> </li>
-                            <li class="list-group-item borderless">
-                                <button type="button" id="sound2" class="static">
-                                    <i class="fas fa-play play"></i>
-                                    <i class="fas fa-pause pause hide"></i>
-                                </button>
-                                Florence2
-
-                            </li>
-                            <div class="audio-progress hide">
-                                <div id="progress"></div>
-                                <div class="time">
-                                    <span id="timer">0:00 </span>/
-                                    <span id="duration">0:00</span>
-                                </div>
-                            </div>
+                            <!--                            <li class="list-group-item borderless">-->
+                            <!--                                <button type="button" id="sound" class="static">-->
+                            <!--                                    <i class="fas fa-play play"></i>-->
+                            <!--                                    <i class="fas fa-pause pause hide"></i>-->
+                            <!--                                </button>-->
+                            <!--                                Florence-->
+                            <!--                                <div class="audio-progress hide">-->
+                            <!--                                    <div id="progress"></div>-->
+                            <!--                                    <div class="time">-->
+                            <!--                                        <span id="timer">0:00 </span>/-->
+                            <!--                                        <span id="duration">0:00</span>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </li>-->
+                            <!--                           -->
                             <li class="list-group-item borderless">This is a light list group item</li>
                             <li class="list-group-item borderless">This is a light list group item</li>
                             <li class="list-group-item borderless">This is a light list group item</li>
@@ -106,7 +112,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
