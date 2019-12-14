@@ -1,34 +1,27 @@
-package spring.app.controller.restController;
+package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
-import spring.app.service.abstraction.AuthorService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.SongService;
+import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@RestController
-@RequestMapping("/api/user/somePage")
+@Service
 @PropertySource("classpath:uploadedFilesPath.properties")
-public class UserFileUploadRestController {
+public class FileUploadServiceImpl implements FileUploadService {
 
     private final GenreService genreService;
     private final AuthorService authorService;
@@ -38,19 +31,15 @@ public class UserFileUploadRestController {
     private String fileFolder;
 
     @Autowired
-    public UserFileUploadRestController(GenreService genreService, AuthorService authorService, SongService songService) {
+    public FileUploadServiceImpl(GenreService genreService, AuthorService authorService, SongService songService) {
         this.genreService = genreService;
         this.authorService = authorService;
         this.songService = songService;
     }
 
-    @PostMapping("/fileUpload")
-    public ResponseEntity<String> fileUpload(
-            @RequestParam("songAuthor") String songAuthor,
-            @RequestParam("songGenre") String songGenre,
-            @RequestParam("songName") String songName,
-            @RequestParam("file") MultipartFile file) throws UnsupportedEncodingException {
-
+    @Override
+    public ResponseEntity<String> upload(String songAuthor, String songGenre, String songName, MultipartFile file)
+            throws UnsupportedEncodingException {
         if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {
             return new ResponseEntity<>(encode("Поля не могут быть пустыми"), HttpStatus.BAD_REQUEST);
         }
