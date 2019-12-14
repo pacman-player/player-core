@@ -51,9 +51,7 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
                     link[0] = "https://zaycev.net" + divId.attr("href") + "?spa=false";
                     break;
                 }
-
             }
-
         }
 
         return link[0];
