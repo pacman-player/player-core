@@ -1,34 +1,4 @@
 $(() => {
- /*
-    pCount = 0;
-    playlistUrls = [
-        'https://freesound.org/data/previews/335/335571_5942333-lq.mp3',
-        'http://localhost:8080/api/download/GorProject_LA',
-        'http://localhost:8080/api/download/2_2'
-    ];
-    howlerBank = [],
-        loop = true;
-    var onEnd = function(e) {
-        if (loop === true ) {
-            pCount = (pCount + 1 !== howlerBank.length)? pCount + 1 : 0;
-        } else {
-            pCount = pCount + 1;
-        }
-        howlerBank[pCount].play();
-    };
-
-    // build up howlerBank:
-    playlistUrls.forEach(
-        function(current, i) {
-            howlerBank.push(new Howl({
-                urls: [playlistUrls[i]],
-                onend: onEnd,
-                buffer: true
-            }))
-    });
-*/
-    // initiate the whole :
- //   howlerBank[0].play();
 
     var utils = {
         formatTime: function (secs) {
@@ -51,7 +21,7 @@ $(() => {
     };
 
     var sound = new Howl({
-        src: ['http://localhost:8080/api/download/'+$('#sound').click().parent().attr("id")],
+        src: ['http://localhost:8080/api/download/'+$('.soundBtn').click().parent().attr("id")],
         format: ['mp3', 'aac'],
         onplay: function () {
             audioPlayed = true;
@@ -79,13 +49,21 @@ $(() => {
     });
 
 // Play/Pause btn
-    $('#sound').click(function () {
+    $('.soundBtn').click(function () {
         $(this).toggleClass('playing');
         if ($(this).hasClass('playing')) {
             sound.play();
-
+                $("<div class=\"audio-progress\">\n" +
+                    "<div id=\"progress\"></div>\n" +
+                    "<div class=\"time\">\n" +
+                    "<span id=\"timer\">0:00 </span>/\n" +
+                    "<span id=\"duration\">0:00</span>\n" +
+                    "</div>\n" +
+                    "</div>").addClass("pl").insertAfter($(this).next());
         } else {
             sound.pause();
+                $(".audio-progress").remove();
+
         }
     });
 
