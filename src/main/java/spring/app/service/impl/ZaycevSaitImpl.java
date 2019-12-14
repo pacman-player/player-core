@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.MusicService;
@@ -16,19 +17,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
+@PropertySource("classpath:uploadedFilesPath.properties")
 public class ZaycevSaitImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-   // @Value("${uploaded_files_path}")
-    private String fileFolder = "D:/songs/";
+   // @Value("${uploaded_files_path}") - не работает с аннотацией
+    private String fileFolder =  "D:/songs/";
 
     @Override
     public String searchSongByAuthorOrSongs(String author, String song) {
 
         String url = "https://zaycev.net/search.html?query_search=";
         Document document = null;
-        final String[] link = new String[1];
+       // String[] link = new String[1];
+        String link = "";
 
         try {
             document = Jsoup.connect(url + author + " " + song).get();
@@ -48,13 +51,16 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
                 String[] authorAndSong = delStr.split(" – ");
 
                 if (author.toLowerCase().equals(authorAndSong[0]) && song.toLowerCase().equals(authorAndSong[1])) {
-                    link[0] = "https://zaycev.net" + divId.attr("href") + "?spa=false";
+                    link = "https://zaycev.net" + divId.attr("href") + "?spa=false";
+                    if (link.isEmpty()){
+                        System.err.println("Ссылка пустая!!!");
+                    }
                     break;
                 }
             }
         }
 
-        return link[0];
+        return link;
     }
 
 
@@ -73,7 +79,6 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
         }
 
         return bytes;
-
     }
 
 }
