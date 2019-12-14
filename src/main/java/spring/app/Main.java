@@ -22,7 +22,7 @@ public class Main extends WebMvcConfigurerAdapter {
 
 		//для стирования
 		ZaycevSaitImpl zaycevSaitServise = new ZaycevSaitImpl();
-		zaycevSaitServise.searchSongByAuthorOrSongs("король и шут", "жаль нет ружья");
+		zaycevSaitServise.searchSongByAuthorOrSongs("", "улица роз");
 
 	}
 

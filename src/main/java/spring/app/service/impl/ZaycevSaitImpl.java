@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.ZaycevSaitServise;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ZaycevSaitImpl implements ZaycevSaitServise {
@@ -16,37 +18,30 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
     RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public void searchSongByAuthorOrSongs(String author, String song) {
+    public Map<String[], String> searchSongByAuthorOrSongs(String author, String song) {
 
         String url = "https://zaycev.net/search.html?query_search=";
-
-      //  Document document = restTemplate.getForObject("https://zaycev.net/search.html?query_search=" + song, Document.class);
-
-
         Document document = null;
+        Map<String[], String> aftorSongLink = new HashMap<>();
 
         try {
-            document = Jsoup.connect(url + song).get();
+            document = Jsoup.connect(url + author + " " + song).get();
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error search on zaycev.net");
         }
 
-       // Elements playList =  document.getElementsByClass("musicset-track-list");
-      //  Elements playList1 =  document.getElementsByClass("search-page__tracks");//list search!!!
-        Elements playList1 =  document.getElementsByClass("musicset-track clearfix ");
-        //Elements playList2 =  playList1.
+        Elements playList1 = document.getElementsByClass("musicset-track__download track-geo");
 
-        playList1.forEach(a-> {
+        playList1.forEach(a -> {
             Element divId = a.child(0);
-            String idSong = divId.attr("title");
-            System.out.println(idSong);
-                });
+            String title = divId.attr("title");
+            String delStr = title.replace("Скачать трек ", "");
+            String[] avtorAndSong = delStr.split(" – ", 2);
+            String linkOnSong = "https://zaycev.net" + divId.attr("href") + "?spa=false";
+            aftorSongLink.put(avtorAndSong, linkOnSong);
+        });
 
-      // System.out.println(playList.html());
-      //  System.out.println(playList1.html());
-      //  System.out.println(playList1.html());
-
-
-        //https://zaycev.net/search.html?query_search=
+        return aftorSongLink;
     }
 }
