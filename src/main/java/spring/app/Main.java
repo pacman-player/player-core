@@ -11,24 +11,26 @@ import spring.app.service.abstraction.ZaycevSaitServise;
 import spring.app.service.impl.ZaycevSaitImpl;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 @EnableAsync
 @EnableCaching
 public class Main extends WebMvcConfigurerAdapter {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Main.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
 
-		//для стирования
-		ZaycevSaitImpl zaycevSaitServise = new ZaycevSaitImpl();
-		zaycevSaitServise.searchSongByAuthorOrSongs("", "улица роз");
+        //для тестирования
+        ZaycevSaitImpl zaycevSaitServise = new ZaycevSaitImpl();
+        zaycevSaitServise.getSong("ария", "штиль");
 
-	}
+    }
 
-	@Bean(initMethod = "init")
-	@PostConstruct
-	public TestDataInit initTestData() {
-		return new TestDataInit();
-	}
+    @Bean(initMethod = "init")
+    @PostConstruct
+    public TestDataInit initTestData() {
+        return new TestDataInit();
+    }
 }
