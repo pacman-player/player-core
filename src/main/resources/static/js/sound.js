@@ -21,7 +21,7 @@ $(() => {
     };
 
     var sound = new Howl({
-        src: ['http://localhost:8080/api/download/'+$('.soundBtn').click().parent().attr("id")],
+        src: ['http://localhost:8080/api/download/' + $('.soundBtn').click().parent().attr("id")],
         format: ['mp3', 'aac'],
         onplay: function () {
             audioPlayed = true;
@@ -45,6 +45,11 @@ $(() => {
             $('#sound').toggleClass('playing');
             $('div.audio-progress').addClass('hide');
 
+        },
+        onstop: function () {
+            $('i.play').removeClass('hide');
+            $('i.pause').addClass('hide');
+
         }
     });
 
@@ -53,18 +58,27 @@ $(() => {
         $(this).toggleClass('playing');
         if ($(this).hasClass('playing')) {
             sound.play();
-                $("<div class=\"audio-progress\">\n" +
-                    "<div id=\"progress\"></div>\n" +
-                    "<div class=\"time\">\n" +
-                    "<span id=\"timer\">0:00 </span>/\n" +
-                    "<span id=\"duration\">0:00</span>\n" +
-                    "</div>\n" +
-                    "</div>").addClass("pl").insertAfter($(this).next());
+            $("<div class=\"audio-progress\">\n" +
+                "<div id=\"progress\"></div>\n" +
+                "<div class=\"time\">\n" +
+                "<span id=\"timer\">0:00 </span>/\n" +
+                "<span id=\"duration\">0:00</span>\n" +
+                "</div>\n" +
+                "</div>").addClass("pl").insertAfter($(this).next());
         } else {
             sound.pause();
-                $(".audio-progress").remove();
+            $(".audio-progress").remove();
 
         }
     });
-
+    $('.soundBtnStop').click(function () {
+        $(".soundBtn").toggleClass('playing');
+        sound.stop();
+        $(".audio-progress").remove();
+    });
+    $('.modal').on('hidden.bs.modal', function () {
+        sound.stop();
+        console.log("asd")
+        $(".audio-progress").remove();
+    });
 });
