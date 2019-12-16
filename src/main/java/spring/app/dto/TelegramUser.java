@@ -4,6 +4,7 @@ package spring.app.dto;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.File;
+import java.util.Objects;
 
 public class TelegramUser {
 
@@ -11,21 +12,9 @@ public class TelegramUser {
     private Long chatId;
     private String songName;
     private Long songId;
-    @Transient
     private File track;
 
-    private String messageFromServer;
-
-
     public TelegramUser() {
-    }
-
-    public TelegramUser(Long chatId, String songName, Long songId, File track, String messageFromServer) {
-        this.chatId = chatId;
-        this.songName = songName;
-        this.songId = songId;
-        this.track = track;
-        this.messageFromServer = messageFromServer;
     }
 
     public Long getChatId() {
@@ -60,11 +49,22 @@ public class TelegramUser {
         this.track = track;
     }
 
-    public String getMessageFromServer() {
-        return messageFromServer;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TelegramUser telegramUser = (TelegramUser) o;
+
+        if (chatId != null ? !chatId.equals(telegramUser.chatId) : telegramUser.chatId != null) return false;
+        return songName != null ? !songName.equals(telegramUser.songName) : telegramUser.songName != null;
+
     }
 
-    public void setMessageFromServer(String messageFromServer) {
-        this.messageFromServer = messageFromServer;
+    @Override
+    public int hashCode() {
+        int result = chatId != null ? chatId.hashCode() : 0;
+        result = 31 * result + (songName != null ? songName.hashCode() : 0);
+        return result;
     }
 }
