@@ -30,7 +30,6 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
 
         String url = "https://zaycev.net/search.html?query_search=";
         Document document = null;
-       // String[] link = new String[1];
         String link = "";
 
         try {
@@ -42,8 +41,8 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
 
         Elements playList1 = document.getElementsByClass("musicset-track__download track-geo");
 
-        for (Element a : playList1) {
-            Element divId = a.child(0);
+        for (Element div : playList1) {
+            Element divId = div.child(0);
             String title = divId.attr("title");
 
             if (title != null) {
