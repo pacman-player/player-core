@@ -29,7 +29,7 @@ public class Main extends WebMvcConfigurerAdapter {
 
         //для тестирования Krolik
         KrolikSaitImpl krolikSait = new KrolikSaitImpl();
-        krolikSait.searchSongByAuthorOrSongs("ария", "штиль");
+        krolikSait.getSong("король и шут", "сосиска");
 
     }
 
