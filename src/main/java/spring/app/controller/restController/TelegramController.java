@@ -9,7 +9,7 @@ import spring.app.dto.TelegramUser;
 import spring.app.service.TelegramService;
 
 @RestController
-@RequestMapping(value = "/tlg")
+@RequestMapping(value = "/api/tlg")
 public class TelegramController {
 
     private final TelegramService telegramService;
@@ -22,14 +22,10 @@ public class TelegramController {
     @PostMapping(value = "/song")
     public void add(@RequestBody TelegramUser tlgUser) {
         telegramService.sendSongToBot(tlgUser);
-            String songName = tlgUser.getSongName();
-        System.out.println(tlgUser.getChatId() + " song: "+ songName);
     }
 
     @PostMapping(value = "/approve")
     public void approve (@RequestBody TelegramUser tlgUser) {
-        String songName = tlgUser.getSongName();
         telegramService.approve(tlgUser);
-        System.out.println(tlgUser.getChatId() + " song: "+ songName);
     }
 }
