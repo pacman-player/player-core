@@ -19,11 +19,10 @@ public class MusicServiceImpl implements MusicService {
 
     @Value("${uploaded_files_path}")
     private String filePath;
+
     @Override
     public ServletOutputStream fileToStream(String musicName, HttpServletResponse response) throws ServletException, IOException {
         String file = musicName + ".mp3";
-
-
 
         ServletOutputStream stream = null;
         BufferedInputStream buf = null;
@@ -55,4 +54,6 @@ public class MusicServiceImpl implements MusicService {
                 buf.close();
         }
     }
+
+
 }
