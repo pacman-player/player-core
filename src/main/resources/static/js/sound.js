@@ -1,4 +1,4 @@
-$(() => {
+$(() => { 
 
     var utils = {
         formatTime: function (secs) {
@@ -79,5 +79,5 @@ $(() => {
     $('.modal').on('hidden.bs.modal', function () {
         sound.stop();
         $(".audio-progress").remove();
-    });
+    }); 
 });
