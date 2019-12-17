@@ -1,5 +1,7 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,10 +11,12 @@ public class SongQueue {
     private Long id;
     private Long position;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id")
     private Company company;
