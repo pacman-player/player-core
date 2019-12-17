@@ -49,6 +49,7 @@ $(() => {
         onstop: function () {
             $('i.play').removeClass('hide');
             $('i.pause').addClass('hide');
+            $('#sound').removeClass('playing');
 
         }
     });
@@ -72,13 +73,11 @@ $(() => {
         }
     });
     $('.soundBtnStop').click(function () {
-        $(".soundBtn").toggleClass('playing');
         sound.stop();
         $(".audio-progress").remove();
     });
     $('.modal').on('hidden.bs.modal', function () {
         sound.stop();
-        console.log("asd")
         $(".audio-progress").remove();
     });
 });
