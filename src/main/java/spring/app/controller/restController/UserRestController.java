@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.CompanyDto;
 import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.Role;
@@ -13,6 +14,7 @@ import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
@@ -57,9 +59,18 @@ public class UserRestController {
 
     @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany() {
-        // long id = ((User) getContext().getAuthentication().getPrincipal()).getId();
-        Company company = companyService.getById((long) 1);
-        return ResponseEntity.ok(company);
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        return ResponseEntity.ok(companyService.getById(id));
+    }
+
+    @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void updateCompany(@RequestBody CompanyDto company) {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        Company companyForUpdate = companyService.getById(id);
+        companyForUpdate.setName(company.getName());
+        companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
+        companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
+        companyService.updateCompany(companyForUpdate);
     }
 
 }
