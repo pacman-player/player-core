@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import spring.app.configuration.initializer.TestDataInit;
 import spring.app.service.abstraction.ZaycevSaitServise;
+import spring.app.service.impl.DownloadMusicVKImpl;
 import spring.app.service.impl.ZaycevSaitImpl;
 
 import javax.annotation.PostConstruct;
@@ -25,6 +26,10 @@ public class Main extends WebMvcConfigurerAdapter {
         //для тестирования
         ZaycevSaitImpl zaycevSaitServise = new ZaycevSaitImpl();
         zaycevSaitServise.getSong("ария", "штиль");
+
+        //для тестирования
+        DownloadMusicVKImpl downloadMusicVK = new DownloadMusicVKImpl();
+        downloadMusicVK.getSong("триада", "Дежавю");
 
     }
 
