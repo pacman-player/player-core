@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.TelegramUser;
-import spring.app.service.TelegramService;
+import spring.app.service.impl.TelegramServiceImpl;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramController {
 
-    private final TelegramService telegramService;
+    private final TelegramServiceImpl telegramService;
 
     @Autowired
-    public TelegramController(TelegramService telegramService) {
+    public TelegramController(TelegramServiceImpl telegramService) {
         this.telegramService = telegramService;
     }
 
