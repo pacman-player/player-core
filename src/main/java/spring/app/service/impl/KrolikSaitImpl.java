@@ -4,14 +4,19 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.KrolikSaitService;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,11 +25,9 @@ public class KrolikSaitImpl implements KrolikSaitService {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    // @Value("${uploaded_files_path}") - не работает с аннотацией
-    private String fileFolder = "D:/songs/";
-
     @Override
     public String searchSongByAuthorOrSongs(String author, String song) {
+
         String urlSearch = "https://krolik.biz/search/?q=";
         Document document = null;
         Document documentDownload = null;
@@ -101,11 +104,20 @@ public class KrolikSaitImpl implements KrolikSaitService {
     @Override
     public byte[] getSong(String author, String song) {
 
+        FileInputStream fis;
+        Properties property = new Properties();
+
+        try {
+            fis = new FileInputStream("src/main/resources/uploadedFilesPath.properties");
+            property.load(fis);
+        } catch (IOException e) {
+            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        }
+
         String link = searchSongByAuthorOrSongs(author, song);
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
-        //сожранение в папку D:/songs/ для тестирования
-        Path path = Paths.get(fileFolder + author + " " + song + ".mp3");
+        Path path = Paths.get(property.getProperty("downloadSongsPath") + author + " " + song + ".mp3");
         try {
             Files.write(path, bytes);
         } catch (IOException e) {

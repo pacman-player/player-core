@@ -3,6 +3,8 @@ package spring.app.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
@@ -21,4 +23,5 @@ public class ApplicationContextConfig {
 		resolver.setCacheable(false);
 		return resolver;
 	}
+
 }

@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-@PropertySource("classpath:uploadedFilesPath.properties")
 public class ZaycevSaitImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();

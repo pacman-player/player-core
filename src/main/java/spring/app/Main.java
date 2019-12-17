@@ -1,5 +1,6 @@
 package spring.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -32,6 +33,7 @@ public class Main extends WebMvcConfigurerAdapter {
         krolikSait.getSong("король и шут", "сосиска");
 
     }
+
 
     @Bean(initMethod = "init")
     @PostConstruct
