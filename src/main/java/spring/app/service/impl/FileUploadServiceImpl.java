@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-@PropertySource("classpath:uploadedFilesPath.properties")
 public class FileUploadServiceImpl implements FileUploadService {
 
     private final GenreService genreService;

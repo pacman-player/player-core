@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import spring.app.service.abstraction.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
@@ -23,7 +24,7 @@ public class UserSomePageRestController {
     }
 
     @PostMapping("/search")
-    public void search(@RequestParam String artist, @RequestParam String track) {
+    public void search(@RequestParam String artist, @RequestParam String track) throws IOException {
         searchService.search(artist, track);
     }
 
