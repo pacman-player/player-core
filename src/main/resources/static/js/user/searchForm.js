@@ -1,5 +1,7 @@
 $("#searchForm").submit(function (e) {
     e.preventDefault();
+    $("#error").text("");
+    $("#success").text("");
 
     $.ajax({
         type: "POST",
