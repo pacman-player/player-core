@@ -6,6 +6,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import spring.app.exceptions.DownloadMusicVkRuException;
 import spring.app.model.Author;
@@ -19,6 +21,7 @@ import spring.app.service.abstraction.SongService;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,7 +46,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
     }
 
     @Override
-    public void search(String artist, String track) throws DownloadMusicVkRuException {
+    public ResponseEntity<String> search(String artist, String track) throws DownloadMusicVkRuException {
 
         final String SEARCH_BASE_URL = "https://downloadmusicvk.ru/audio/search?q=";
         boolean success = false;
@@ -103,8 +106,19 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
             if (!success) {
                 throw new DownloadMusicVkRuException("Не возможно загрузить по этому запросу");
             }
+            return new ResponseEntity<>(encode("Файл загружен"), HttpStatus.OK);
         } catch (Exception e) {
             throw new DownloadMusicVkRuException(e.getMessage());
         }
+    }
+
+    private String encode(String line) throws UnsupportedEncodingException {
+        return URLEncoder.encode(line, "UTF-8")
+                .replaceAll("\\+", "%20")
+                .replaceAll("\\%21", "!")
+                .replaceAll("\\%27", "'")
+                .replaceAll("\\%28", "(")
+                .replaceAll("\\%29", ")")
+                .replaceAll("\\%7E", "~");
     }
 }

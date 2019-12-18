@@ -23,8 +23,8 @@ public class UserSomePageRestController {
     }
 
     @PostMapping("/search")
-    public void search(@RequestParam String artist, @RequestParam String track) throws DownloadMusicVkRuException {
-        downloadMusicVkRuService.search(artist, track);
+    public ResponseEntity<String> search(@RequestParam String artist, @RequestParam String track) throws DownloadMusicVkRuException {
+        return downloadMusicVkRuService.search(artist, track);
     }
 
     @PostMapping("/fileUpload")

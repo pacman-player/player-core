@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
 
-    <title>Search from Spotify</title>
+    <title>Search form</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -14,8 +14,8 @@
 
 <body>
 <div class="container-fluid" align="center">
-    <h2 align="center">Поиск из Spotify</h2>
-    <form enctype="multipart/form-data" id="searchFromSpotifyForm" style="width: 30%">
+    <h2 align="center">Поисковая форма</h2>
+    <form enctype="multipart/form-data" id="searchForm" style="width: 30%">
         <div class="form-group">
             <label for="artist">Исполнитель</label>
             <input class="form-control" type="text" name="artist" id="artist"/>
@@ -36,31 +36,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--<script type="text/javascript" src="/js/user/searchForm.js" rel="script"></script>-->
-<script>
-    $("#searchFromSpotifyForm").submit(function (e) {
-    e.preventDefault();
-
-    $.ajax({
-        type: "POST",
-        url: "/api/user/somePage/search",
-        data: {
-            "artist": document.getElementById("artist").value,
-            "track": document.getElementById("track").value
-        },
-        cache: false,
-        success: function (data) {
-            $("#error").text("");
-            $("#success").text(decodeURI(data));
-            $("#userFileUploadForm").trigger('reset');
-        },
-        error: function (e) {
-            $("#success").text("");
-            $("#error").text(decodeURI(e.responseText));
-        }
-    })
-});
-</script>
+<script type="text/javascript" src="/js/user/searchForm.js" rel="script"></script>
 
 </body>
 </html>

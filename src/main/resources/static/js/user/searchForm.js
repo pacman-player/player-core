@@ -1,17 +1,18 @@
-$("#searchFromSpotifyForm").submit(function (e) {
+$("#searchForm").submit(function (e) {
     e.preventDefault();
-    var form_data = new FormData(this);
 
     $.ajax({
-        type: 'post',
-        url: '/api/user/somePage/search',
-        contentType: 'application/json',
-        data: form_data,
+        type: "POST",
+        url: "/api/user/somePage/search",
+        data: {
+            "artist": document.getElementById("artist").value,
+            "track": document.getElementById("track").value
+        },
         cache: false,
         success: function (data) {
             $("#error").text("");
             $("#success").text(decodeURI(data));
-            $("#userFileUploadForm").trigger('reset');
+            $("#searchForm").trigger('reset');
         },
         error: function (e) {
             $("#success").text("");
