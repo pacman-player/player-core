@@ -5,10 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import spring.app.service.abstraction.MusicService;
 import spring.app.service.abstraction.ZaycevSaitServise;
 
 import java.io.IOException;
@@ -17,12 +15,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-@PropertySource("classpath:uploadedFilesPath.properties")
 public class ZaycevSaitImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-   // @Value("${uploaded_files_path}") - не работает с аннотацией
+    @Value("${uploaded_files_path}")
     private String fileFolder =  "D:/songs/";
 
     @Override

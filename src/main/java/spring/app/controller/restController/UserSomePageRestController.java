@@ -4,28 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import spring.app.exceptions.DownloadMusicVkRuException;
 import spring.app.service.abstraction.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/user/somePage")
 public class UserSomePageRestController {
 
-    private final SearchService searchService;
+    private final DownloadMusicVkRuService downloadMusicVkRuService;
     private final FileUploadService fileUploadService;
 
     @Autowired
-    public UserSomePageRestController(SearchService searchService, FileUploadService fileUploadService) {
-        this.searchService = searchService;
+    public UserSomePageRestController(DownloadMusicVkRuService downloadMusicVkRuService, FileUploadService fileUploadService) {
+        this.downloadMusicVkRuService = downloadMusicVkRuService;
         this.fileUploadService = fileUploadService;
     }
 
     @PostMapping("/search")
-    public void search(@RequestParam String artist, @RequestParam String track) throws IOException {
-        searchService.search(artist, track);
+    public void search(@RequestParam String artist, @RequestParam String track) throws DownloadMusicVkRuException {
+        downloadMusicVkRuService.search(artist, track);
     }
 
     @PostMapping("/fileUpload")

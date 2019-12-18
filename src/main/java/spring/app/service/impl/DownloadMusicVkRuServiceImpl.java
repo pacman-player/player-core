@@ -1,0 +1,110 @@
+package spring.app.service.impl;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import spring.app.exceptions.DownloadMusicVkRuException;
+import spring.app.model.Author;
+import spring.app.model.Genre;
+import spring.app.model.Song;
+import spring.app.service.abstraction.AuthorService;
+import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.DownloadMusicVkRuService;
+import spring.app.service.abstraction.SongService;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
+@Service
+public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
+
+    @Value("${uploaded_files_path}")
+    private String fileFolder;
+
+    private final GenreService genreService;
+    private final AuthorService authorService;
+    private final SongService songService;
+
+    @Autowired
+    public DownloadMusicVkRuServiceImpl(GenreService genreService, AuthorService authorService, SongService songService) {
+        this.genreService = genreService;
+        this.authorService = authorService;
+        this.songService = songService;
+    }
+
+    @Override
+    public void search(String artist, String track) throws DownloadMusicVkRuException {
+
+        final String SEARCH_BASE_URL = "https://downloadmusicvk.ru/audio/search?q=";
+        boolean success = false;
+
+        try {
+            String searchUrl = SEARCH_BASE_URL + artist.trim().toLowerCase().replaceAll("\\s", "+") +
+                    "+" + track.trim().toLowerCase().replaceAll("\\s", "+");
+
+            Document document = Jsoup.connect(searchUrl).get();
+            if (document == null) {
+                throw new DownloadMusicVkRuException("Нет коннекта с сайтом");
+            }
+
+            Elements aElements = document.getElementsByAttributeValue("class", "btn btn-primary btn-xs download");
+            for (Element aElement : aElements) {
+                String[] arr = aElement.attr("href").substring(19).split("&");
+                if (arr.length < 6) {
+                    continue;
+                }
+                String downloadUrl = "https://downloadmusicvk.ru/audio/download?" +
+                        arr[1] + "&" + arr[2] + "&" + arr[5] + "&" + arr[0];
+
+                URL obj = new URL(downloadUrl);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                int responseCode = con.getResponseCode();
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    InputStream in = con.getInputStream();
+
+                    genreService.addGenre(new Genre("undefined"));
+                    Genre genre = genreService.getByName("undefined");
+
+                    Author author = authorService.getByName(artist);
+                    if (author == null) {
+                        Author author1 = new Author(artist);
+                        authorService.addAuthor(author1);
+                        author = authorService.getByName(artist);
+                    }
+
+                    Song song = new Song(track);
+                    song.setAuthor(author);
+                    song.setGenre(genre);
+                    songService.addSong(song);
+                    song = songService.getByName(track);
+
+                    String fileName = author.getId() + "_" + song.getId() + ".mp3";
+                    Path path = Paths.get(fileFolder + fileName);
+                    Files.deleteIfExists(path);
+                    Files.copy(in, Files.createFile(path), REPLACE_EXISTING);
+                    in.close();
+                    success = true;
+                    break;
+                }
+            }
+
+            if (!success) {
+                throw new DownloadMusicVkRuException("Не возможно загрузить по этому запросу");
+            }
+        } catch (Exception e) {
+            throw new DownloadMusicVkRuException(e.getMessage());
+        }
+    }
+}
