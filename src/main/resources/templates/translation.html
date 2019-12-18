@@ -10,6 +10,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/b391af638d.js"></script>
     <script src="../static/js/howler.js" th:src="@{/js/howler.js}"></script>
     <script src="../static/js/sound.js" th:src="@{/js/sound.js}"></script>
     <link rel="stylesheet" th:href="@{style.css}"/>
@@ -32,16 +33,81 @@
         </ul>
     </div>
     <div class="col-lg-9 col-md-10 col-xs-10">
-        <h1>User panel</h1>
-        <button type="button" class="btn btnStop">Stop</button>
-        песня 1
-        <button type="button" class="btn btn1">Play</button>
-        песня 2
-        <button type="button" class="btn btn2">Play</button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+            <span style="font-size: 5em; color: darkseagreen;">
+             <i class="fas fa-th-list"></i>
+            </span>
+        </button>
 
-        песня 3
-        <button type="button" class="btn btn3">Play</button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document" style="max-width: 1350px!important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
+
+                    <div class="modal-body">
+                        <ul class="list-group borderless">
+                            <li class="list-group-item borderless" id="GorProject_LA">
+                                <button type="button" id="sound" class="static soundBtn">
+                                    <i class="fas fa-play play"></i>
+                                    <i class="fas fa-pause pause hide"></i>
+                                </button>
+                                <button type="button"  class="static soundBtnStop">
+                                    <i class="fas fa-stop"></i>
+                                </button>
+                                <p class="songName">GorProject_LA</p>
+
+                            </li>
+
+                            <li class="list-group-item borderless" id="Florence">
+                                <button type="button"  class="static soundBtn">
+                                    <i class="fas fa-play play"></i>
+                                    <i class="fas fa-pause pause hide"></i>
+                                </button>
+                                <button type="button"  class="static soundBtnStop">
+                                    <i class="fas fa-stop"></i>
+                                </button>
+                                <p class="songName">Florence</p>
+                            </li>
+
+                            <li class="list-group-item borderless">This is a light list group item</li>
+                            <li class="list-group-item borderless">This is a light list group item</li>
+                            <li class="list-group-item borderless">This is a light list group item</li>
+
+                        </ul>
+
+                        <div style="font-size: 3rem;">
+                            <i class="fas fa-music"></i>
+                            <i class="fas fa-stop"></i>
+                            <i class="fas fa-pause"></i>
+                            <i class="fas fa-backward"></i>
+                            <i class="fas fa-fast-backward"></i>
+                            <i class="fas fa-forward"></i>
+                            <i class="fas fa-fast-forward"></i>
+                            <i class="fas fa-redo"></i>
+                            <i class="fas fa-repeat"></i>
+                            <i class="fas fa-volume"></i>
+                            <i class="fas fa-volume-up"></i>
+                            <i class="fas fa-volume-mute"></i>
+                            <i class="fas fa-list"></i>
+                            <i class="fas fa-th-list"></i>
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--<script type="text/javascript" src="/js/howler.js"></script>-->

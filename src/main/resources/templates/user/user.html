@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Pacman-player</title>
@@ -113,11 +113,25 @@
 
             </div>
 
-            <!--Кто писал удалите,если ненужно-->
-            <!--<div role="tabpanel" class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment">
+            <div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>
+                <H3> Моё заведение</H3>
+                <div class="col-fhd-4 col-xl-5 col-lg-6">
+
+                    <form class="form-group">
+                        <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
+                                                                                   type="text"/></label><br/>
+                        <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
+                                                                                       required="required" type="time"/><br/>
+                        <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
+                                                                                       required="required" type="time"/><br/>
+                        <button class="btn btn-primary" id="est-save-data" type="button">Сохранить</button>
+                    </form>
+
+                </div>
             </div>
-            <div role="tabpanel" class="tab-pane col-md-10 col-xs-10 " id="music-filter">
+
+            <!--<div role="tabpanel" class="tab-pane col-md-10 col-xs-10 " id="music-filter">
 
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Фильтр музыки</p>
             </div>-->
