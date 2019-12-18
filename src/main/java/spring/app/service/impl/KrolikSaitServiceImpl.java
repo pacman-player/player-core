@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class KrolikSaitImpl implements KrolikSaitService {
+public class KrolikSaitServiceImpl implements KrolikSaitService {
 
     RestTemplate restTemplate = new RestTemplate();
 
