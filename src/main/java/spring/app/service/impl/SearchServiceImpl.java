@@ -6,7 +6,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.SearchService;
 
@@ -14,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -49,13 +56,40 @@ public class SearchServiceImpl implements SearchService {
             break;
         }
 
-        byte[] bytes = restTemplate.getForObject(downloadUrl, byte[].class);
+        /*HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM));
+        headers.set("Content-Type","application/json");
+        headers.set("user-agent", "PostmanRuntime/7.20.1");
+        headers.set("COOKIE", "__cfduid=d9497a0b3f24a74b42b4cfabb808a31681576589130");
+        headers.set("HOST", "downloadmusicvk.ru");
+        headers.set("CONNECTION", "keep-alive");
+        HttpEntity entity = new HttpEntity(headers);
+
+        byte[] bytes = restTemplate.exchange(downloadUrl, HttpMethod.GET, entity, byte[].class).getBody();
+        //byte[] bytes = restTemplate.getForObject(downloadUrl, byte[].class);
         Path path = Paths.get(fileFolder + artist + " " + track + ".mp3");
         try {
             Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        RequestCallback requestCallback = request -> {
+            request.getHeaders().clear();
+            //request.getHeaders().set("user-agent", "PostmanRuntime/7.20.1");
+            request.getHeaders()
+                    .setAccept(Arrays.asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL));
+            request.getHeaders().set("HOST", "downloadmusicvk.ru");
+            request.getHeaders().set("Cookie", "__cfduid=d9497a0b3f24a74b42b4cfabb808a31681576589130");
+        };
+
+        // Streams the response instead of loading it all in memory
+        ResponseExtractor<Void> responseExtractor = response -> {
+            // Here I write the response to a file but do what you like
+            Path path = Paths.get(fileFolder + artist + " " + track + ".mp3");
+            Files.copy(response.getBody(), path);
+            return null;
+        };
+        restTemplate.execute(downloadUrl, HttpMethod.GET, requestCallback, responseExtractor);
     }
 
     private String getDownloadUrl(String url){
