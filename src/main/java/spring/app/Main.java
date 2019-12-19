@@ -22,10 +22,6 @@ public class Main extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
-        //для тестирования
-        ZaycevSaitImpl zaycevSaitServise = new ZaycevSaitImpl();
-        zaycevSaitServise.getSong("ария", "штиль");
-
     }
 
     @Bean(initMethod = "init")
