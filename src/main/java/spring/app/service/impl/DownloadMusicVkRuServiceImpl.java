@@ -52,6 +52,10 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
         boolean success = false;
         boolean found = false;
 
+        if (track.isEmpty()) {
+            return new ResponseEntity<>(encode("Введите название песни"), HttpStatus.BAD_REQUEST);
+        }
+
         if (songService.isExist(track)) {
             return new ResponseEntity<>(encode("Файл с таким названием существует в базе"), HttpStatus.BAD_REQUEST);
         }
@@ -65,8 +69,8 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
         }
 
         Elements aElements = document.getElementsByAttributeValue("class", "btn btn-primary btn-xs download");
-        for (Element aElement : aElements) {
 
+        for (Element aElement : aElements) {
             String[] arr = aElement.attr("href").substring(19).split("&");
             if (arr.length < 6) {
                 continue;
