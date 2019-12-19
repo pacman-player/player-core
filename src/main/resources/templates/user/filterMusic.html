@@ -57,17 +57,36 @@
 
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
-                    <div id="forJsScript">
+                    <div id="forGenreTable">
                         <!-- скрипт заполнения таблицы в файле filterMusic.js -->
                     </div>
                 </div>
 
+                <!-- поиск и генерация таблицы найденых песен будет производиться в filterMusic.js -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    ...
+
+                    <form class="form-inline authorSearch">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
+                    <div id="forAuthorTable">
+                        <!-- скрипт заполнения таблицы в файле filterMusic.js -->
+                    </div>
+
                 </div>
 
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    ...
+
+                    <form class="form-inline musicSearch">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
+                    <div id="forMusicTable">
+                        <!-- скрипт заполнения таблицы в файле filterMusic.js -->
+                    </div>
+
                 </div>
 
             </div>
