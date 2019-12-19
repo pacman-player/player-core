@@ -69,7 +69,6 @@ $(document).ready(function () {
         };
 
         $.ajax({
-
             type: 'POST',
             url: "/api/admin/add_user",
 
@@ -82,7 +81,6 @@ $(document).ready(function () {
             async: true,
             cache: false,
             dataType: 'JSON',
-
         });
     }
 
@@ -90,8 +88,6 @@ $(document).ready(function () {
     $("#editUserBtn").click(function (event) {
         event.preventDefault();
         updateForm();
-        getTable();
-
     });
 
     function updateForm() {
@@ -117,10 +113,6 @@ $(document).ready(function () {
             async: true,
             cache: false,
             dataType: 'JSON',
-            success: function () {
-                getTable();
-            }
-
         });
         location.reload();
     };
@@ -129,8 +121,6 @@ $(document).ready(function () {
     $("#editCompanyBtn").click(function (event) {
         event.preventDefault();
         updateCompanyForm();
-        getTable();
-
     });
 
     function updateCompanyForm() {
@@ -156,10 +146,6 @@ $(document).ready(function () {
             async: true,
             cache: false,
             dataType: 'JSON',
-            success: function () {
-                getTable();
-            }
-
         });
         location.reload();
     };
@@ -168,12 +154,10 @@ $(document).ready(function () {
     $(document).on('click', '#deleteUser', function () {
         var id = $(this).closest("tr").find("#tableId").text();
         deleteUser(id);
-        getTable();
     });
 
     function deleteUser(id) {
         $.ajax({
-
             type: 'delete',
             url: "/api/admin/delete_user",
 
@@ -186,12 +170,8 @@ $(document).ready(function () {
             async: true,
             cache: false,
             dataType: 'JSON',
-            success: function () {
-                getTable();
-            }
         });
         location.reload();
-
     };
 
     //modal form заполнение
