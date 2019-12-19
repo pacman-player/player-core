@@ -17,4 +17,9 @@ public class UserController {
     public String fileUpload() {
         return "user/fileUpload";
     }
+
+    @GetMapping("/filterMusic")
+    public String filterMusicPage() {
+        return "user/filterMusic";
+    }
 }
