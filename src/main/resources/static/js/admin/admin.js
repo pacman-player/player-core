@@ -33,6 +33,10 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableName">' + listUsers[i].login + '</td>');
                     htmlTable += ('<td id="tablePass">' + listUsers[i].password + '</td>');
                     htmlTable += ('<td id="tableEmail">' + listUsers[i].email + '</td>');
+                    // htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                    //     ' data-target="#editCompany" onclick = "fillUpdateModalForm(${listUsers[i].id})">company</button></td>');
+                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                        ' data-target="#editCompany">company</button></td>');
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editUser">Edit</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">Delete</button></td>');
@@ -121,6 +125,45 @@ $(document).ready(function () {
         location.reload();
     };
 
+
+    $("#editCompanyBtn").click(function (event) {
+        event.preventDefault();
+        updateCompanyForm();
+        getTable();
+
+    });
+
+    function updateCompanyForm() {
+        var companyDto = {
+            id: $("#updateCompanyId").val(),
+            name: $("#updateNameCompany").val(),
+            startTime: $("#updateStartTime").val(),
+            closeTime: $("#updateCloseTime").val(),
+            orgType: $("#updateOrgType").val(),
+            userId: $("#updateIdUser").val()
+        };
+
+        $.ajax({
+
+            type: 'POST',
+            url: "/api/admin/company",
+            contentType: 'application/json;',
+            data: JSON.stringify(companyDto),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
+            success: function () {
+                getTable();
+            }
+
+        });
+        location.reload();
+    };
+
     //deleteForm
     $(document).on('click', '#deleteUser', function () {
         var id = $(this).closest("tr").find("#tableId").text();
@@ -172,6 +215,41 @@ $(document).ready(function () {
                 $("#updateUserRole").val("admin, user");
                 break;
         }
+
+    });
+
+    //modal company form заполнение
+    $(document).on('click', '#editCompanyBtn', function () {
+
+        // $(this).trigger('form').reset();
+
+        $('#updateCompanyId').val('');
+        $('#updateNameCompany').val('');
+        $('#updateStartTime').val('');
+        $('#updateCloseTime').val('');
+
+        $("#updateIdUser").val($(this).closest("tr").find("#tableId").text());
+
+        $.ajax({
+            url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
+            method: "GET",
+            dataType: "json",
+
+            success: function (data) {
+                $('#updateCompanyId').val(data.id);
+                $('#updateNameCompany').val(data.name);
+                $('#updateStartTime').val(data.startTime);
+                $('#updateCloseTime').val(data.closeTime);
+                // $('#updateOrgType').val(data.orgType.name);
+                // $('#updateIdUser').val(data.user.id);
+
+                switch ($(data.orgType.id).text()) {
+                    case '1':
+                        $("#updateOrgType").val("Ресторан");
+                        break;
+                }
+            }
+        })
 
     });
 

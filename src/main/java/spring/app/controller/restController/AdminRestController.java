@@ -1,17 +1,26 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
+import spring.app.model.Company;
+import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -19,12 +28,14 @@ public class AdminRestController {
 
     private final RoleService roleService;
     private final UserService userService;
+    private final CompanyService companyService;
     private final GenreService genreService;
 
     @Autowired
-    public AdminRestController(RoleService roleService, UserService userService, GenreService genreService) {
+    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService) {
         this.roleService = roleService;
         this.userService = userService;
+        this.companyService = companyService;
         this.genreService = genreService;
     }
 
@@ -54,6 +65,21 @@ public class AdminRestController {
         userService.deleteUserById(id);
     }
 
+    @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
+        User user = userService.getUserById(userId);
+        return ResponseEntity.ok(user.getCompany());
+    }
+
+    @PostMapping(value = "/company")
+    public void updateUserCompany(@RequestBody CompanyDto companyDto) {
+        User userId = new User(companyDto.getUserId());
+        OrgType orgType = new OrgType(companyDto.getOrgType());
+        Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+        companyService.updateCompany(company);
+    }
+
     private Set<Role> getRoles(String role) {
         Set<Role> roles = new HashSet<>();
 
@@ -74,4 +100,6 @@ public class AdminRestController {
         }
         return roles;
     }
+
+
 }

@@ -6,6 +6,9 @@ public class CompanyDto {
     private String name;
     private String startTime;
     private String closeTime;
+    private Long orgType;
+    private Long userId;
+
 
     public Long getId() {
         return id;
@@ -38,4 +41,22 @@ public class CompanyDto {
     public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
+
+    public Long getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(Long orgType) {
+        this.orgType = orgType;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
 }
+
