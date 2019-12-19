@@ -68,6 +68,9 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
+    public User(String email, String userId, String pass, Set<Role> roleSet) {
+    }
+
     public Blob getProfilePic() {
         return profilePic;
     }

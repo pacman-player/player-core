@@ -4,19 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import spring.app.Repository.UserDetailsRepoGoogle;
+import spring.app.model.GoogleUsers;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
 import spring.app.security.handlers.CustomLogoutSuccessHandler;
@@ -24,6 +32,7 @@ import spring.app.security.service.UserDetailsServiceImpl;
 
 import javax.servlet.DispatcherType;
 
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 
 import static org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME;
@@ -31,68 +40,85 @@ import static org.springframework.security.web.context.AbstractSecurityWebApplic
 @Configuration
 @ComponentScan("spring.app")
 @EnableWebSecurity
-//@EnableOAuth2Sso
+@EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final UserDetailsServiceImpl authenticationService;
-	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-	private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final UserDetailsServiceImpl authenticationService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
-	@Autowired
-	public SecurityConfig(UserDetailsServiceImpl authenticationService,
-						  CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-						  CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
-						  CustomLogoutSuccessHandler customLogoutSuccessHandler) {
-		this.authenticationService = authenticationService;
-		this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-		this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
-		this.customLogoutSuccessHandler = customLogoutSuccessHandler;
-	}
+    @Autowired
+    public SecurityConfig(UserDetailsServiceImpl authenticationService,
+                          CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
+                          CustomLogoutSuccessHandler customLogoutSuccessHandler) {
+        this.authenticationService = authenticationService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		CharacterEncodingFilter filter = new CharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		filter.setForceEncoding(true);
-		http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
 
-		http
-				.authorizeRequests()
-				.antMatchers("/api/**").permitAll()
-				//.antMatchers("/test").hasAnyAuthority()
-				//.antMatchers("/error").authenticated()
-				//.antMatchers("/user/**").hasAnyAuthority("USER")
-				//.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-				//.antMatchers("/google/**").authenticated()
-				.and()
-				.formLogin()
-				.loginPage("/login")
-				.loginProcessingUrl("/processing-url")
-				.successHandler(customAuthenticationSuccessHandler)
-				.failureHandler(customAuthenticationFailureHandler)
-				.usernameParameter("login")
-				.passwordParameter("password")
-				.and()
-				.logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
-				.invalidateHttpSession(true)
-				.logoutSuccessHandler(customLogoutSuccessHandler)
-				.permitAll();
+        http
+                .authorizeRequests()
+                .antMatchers("/api/**")
+                .permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/processing-url")
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true)
+                .logoutSuccessHandler(customLogoutSuccessHandler)
+                .permitAll();
 
 		/*
 				/*.and()
 				.exceptionHandling()
 				.accessDeniedPage("/error");*/
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        //The name of the configureGlobal method is not important. However,
+        // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
+        auth.userDetailsService(authenticationService);
+    }
+
+    @Bean
+    public PrincipalExtractor principalExtractor(UserDetailsRepoGoogle userDetailsRepo) {
+		return map -> {
+			String id = (String) map.get("sub");
+
+			GoogleUsers user = userDetailsRepo.findById(id).orElseGet(() -> {
+				GoogleUsers newUser = new GoogleUsers();
+
+				newUser.setId(id);
+				newUser.setName((String) map.get("name"));
+				newUser.setEmail((String) map.get("email"));
+				newUser.setLocale((String) map.get("locale"));
+				return newUser;
+			});
+			user.setLastVisit(LocalDateTime.now());
+			return userDetailsRepo.save(user);
+		};
+
 	}
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		//The name of the configureGlobal method is not important. However,
-		// it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
-		auth.userDetailsService(authenticationService);
-	}
 
 	/*@Bean
 	public FilterRegistrationBean myFilter() {
@@ -117,4 +143,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				DispatcherType.ASYNC);
 		return registration;
 	}*/
-}
+    }
+

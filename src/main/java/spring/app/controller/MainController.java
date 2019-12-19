@@ -1,16 +1,35 @@
 package spring.app.controller;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.vk.api.sdk.client.TransportClient;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vk.api.sdk.objects.UserAuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +64,52 @@ public class MainController {
 
         return new ModelAndView("translation");
     }
+
+
+    @RequestMapping(value = "/googleAuth")
+    public String GoogleAuthorization() {
+        final String redirectUri = "http://localhost:8080/google";
+        final String clientId = "302577676814-07bvhpq9k8r5qngg223csrf81d17qu9j.apps.googleusercontent.com";
+        final String responseType = "code";
+        final String scope = "https://www.googleapis.com/auth/userinfo.email";
+        StringBuilder url = new StringBuilder();
+        url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
+                .append(redirectUri)
+                .append("&response_type=")
+                .append(responseType)
+                .append("&client_id=")
+                .append(clientId)
+                .append("&scope=")
+                .append(scope);
+        return "redirect:" + url.toString();
+    }
+
+    @RequestMapping(value = "/google")
+    public String GoogleAuthorization(@RequestParam("code") String code) throws IOException {
+        final String clientId = "302577676814-07bvhpq9k8r5qngg223csrf81d17qu9j.apps.googleusercontent.com";
+        final String clientSecret = "VADOrvY9rXwm5N-1Y1zdU-rq";
+        final String redirectUri = "http://localhost:8080/google";
+        final HttpTransport transport = new NetHttpTransport();
+        final JacksonFactory jsonFactory = new JacksonFactory();
+
+        GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(transport, jsonFactory,
+                clientId, clientSecret, code, redirectUri).execute();
+
+        GoogleIdToken idToken = tokenResponse.parseIdToken();
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        String email = payload.getEmail();
+        String userId = payload.getSubject();
+
+        Role role = roleService.getRoleById((long) 2);
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+        User newUser = new User(email, userId, "pass", roleSet);
+        userService.addUser(newUser);
+        Authentication auth = new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return "redirect:/user";
+    }
+
 
 
 }
