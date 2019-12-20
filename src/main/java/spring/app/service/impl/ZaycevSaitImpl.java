@@ -22,7 +22,7 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
     private RestTemplate restTemplate = new RestTemplate();
 
    // @Value("${uploaded_files_path}") - не работает с аннотацией
-   private String fileFolder = "E:/songs";
+   private String fileFolder = "D:/songs";
 
     @Override
     public String searchSongByAuthorOrSongs(String author, String song) {
