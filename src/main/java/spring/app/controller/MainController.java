@@ -6,13 +6,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.vk.api.sdk.client.TransportClient;
-import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.UserActor;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.UserAuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
@@ -39,12 +33,14 @@ public class MainController {
     private final RoleService roleService;
     private final UserService userService;
     private final GenreService genreService;
+    private final CompanyService companyService;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
+        this.companyService = companyService;
     }
 
 
@@ -98,18 +94,19 @@ public class MainController {
         GoogleIdToken idToken = tokenResponse.parseIdToken();
         GoogleIdToken.Payload payload = idToken.getPayload();
         String email = payload.getEmail();
-        String userId = payload.getSubject();
-
-        Role role = roleService.getRoleById((long) 2);
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
-        User newUser = new User(email, userId, "pass", roleSet);
-        userService.addUser(newUser);
-        Authentication auth = new UsernamePasswordAuthenticationToken(newUser, null, newUser.getAuthorities());
+        String googleId = payload.getSubject();
+        User user = userService.getUserByGoogleId(googleId);
+        if (user == null) {
+            Role role = roleService.getRoleById((long) 2);
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(role);
+            user = new User(googleId, email, roleSet, true);
+            user.setCompany(companyService.getById(1L));
+            userService.addUser(user);
+            user = userService.getUserByGoogleId(googleId);
+        }
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
-
-
-
 }

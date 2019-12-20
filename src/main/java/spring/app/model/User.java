@@ -29,6 +29,10 @@ public class User implements UserDetails {
     //@Column(name = "password", length = 30, nullable = false)
     private String password;
 
+
+
+    private String googleId;
+
     @Lob
     @Column(name = "profile_pic")
     private Blob profilePic;
@@ -68,7 +72,12 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(String email, String userId, String pass, Set<Role> roleSet) {
+    public User(String googleId,String email, Set<Role> roleSet,boolean enabled) {
+        this.email = email;
+        this.googleId = googleId;
+        this.login = email;
+        this.roles=roleSet;
+        this.enabled = enabled;
     }
 
     public Blob getProfilePic() {
@@ -95,6 +104,7 @@ public class User implements UserDetails {
         this.login = login;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -103,6 +113,14 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     @Override
