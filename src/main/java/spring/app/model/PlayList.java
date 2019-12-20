@@ -14,16 +14,16 @@ public class PlayList {
     private String name;
 
     @ManyToMany(targetEntity = Song.class)
-    @JoinTable(name = "song_on_play_list",
-            joinColumns = {@JoinColumn(name = "song_id")},
+    @JoinTable(name = "songСompilation_on_play_list",
+            joinColumns = {@JoinColumn(name = "songСompilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
-    private Set<Song> songs;
+    private Set<SongСompilation> songСompilation;
 
     public PlayList(){}
 
-    public PlayList(String name, Set<Song> songs) {
+    public PlayList(String name, Set<SongСompilation> songСompilation) {
         this.name = name;
-        this.songs = songs;
+        this.songСompilation = songСompilation;
     }
 
     public Long getId() {
@@ -42,12 +42,12 @@ public class PlayList {
         this.name = name;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    public Set<SongСompilation> getSongs() {
+        return songСompilation;
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
+    public void setSongs(Set<SongСompilation> songs) {
+        this.songСompilation = songСompilation;
     }
 
     @Override

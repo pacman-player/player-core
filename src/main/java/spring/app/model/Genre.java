@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "genre")
@@ -11,10 +12,21 @@ public class Genre {
 
     private String name;
 
+    @OneToMany(mappedBy = "genre")
+    private Set<SongСompilation> songСompilation;
+
     public Genre(){}
 
     public Genre(String name) {
         this.name = name;
+    }
+
+    public Set<SongСompilation> getSongСompilation() {
+        return songСompilation;
+    }
+
+    public void setSongСompilation(Set<SongСompilation> songСompilation) {
+        this.songСompilation = songСompilation;
     }
 
     public void setId(Long id) {
