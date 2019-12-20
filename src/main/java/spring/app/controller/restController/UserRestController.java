@@ -41,27 +41,24 @@ public class UserRestController {
         return genreService.getAllGenre();
     }
 
-//    @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
-//    public String getUserRoles(){
-//        String role = "user";
-//        User user = (User) getContext().getAuthentication().getPrincipal();
-//        if (user==null){
-//            new GoogleUsers();
-//        }
-//        for (Role roles : user.getRoles()){
-//            if (roles.getName().equals("ADMIN")){
-//                role = "admin";
-//                return role;
-//            }
-//        }
-//        return role;
-//    }
-//
-//    @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<Company> getUserCompany() {
-//        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-//        return ResponseEntity.ok(companyService.getById(id));
-//    }
+    @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
+    public String getUserRoles(){
+        String role = "user";
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        for (Role roles : user.getRoles()){
+            if (roles.getName().equals("ADMIN")){
+                role = "admin";
+                return role;
+            }
+        }
+        return role;
+    }
+
+    @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Company> getUserCompany() {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        return ResponseEntity.ok(companyService.getById(id));
+    }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {

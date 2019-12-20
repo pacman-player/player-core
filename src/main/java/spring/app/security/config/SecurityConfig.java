@@ -1,41 +1,19 @@
 package spring.app.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
-import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import spring.app.Repository.UserDetailsRepoGoogle;
-import spring.app.model.GoogleUsers;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
 import spring.app.security.handlers.CustomLogoutSuccessHandler;
 import spring.app.security.service.UserDetailsServiceImpl;
-
-import javax.servlet.DispatcherType;
-
-import java.time.LocalDateTime;
-import java.util.EnumSet;
-
-import static org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME;
 
 @Configuration
 @ComponentScan("spring.app")
@@ -99,25 +77,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(authenticationService);
     }
 
-    @Bean
-    public PrincipalExtractor principalExtractor(UserDetailsRepoGoogle userDetailsRepo) {
-		return map -> {
-			String id = (String) map.get("sub");
-
-			GoogleUsers user = userDetailsRepo.findById(id).orElseGet(() -> {
-				GoogleUsers newUser = new GoogleUsers();
-
-				newUser.setId(id);
-				newUser.setName((String) map.get("name"));
-				newUser.setEmail((String) map.get("email"));
-				newUser.setLocale((String) map.get("locale"));
-				return newUser;
-			});
-			user.setLastVisit(LocalDateTime.now());
-			return userDetailsRepo.save(user);
-		};
-
-	}
 
 
 	/*@Bean
