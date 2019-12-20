@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/user/somePage")
-@PropertySource("classpath:uploadedFilesPath.properties")
+@PropertySource("classpath:/uploadedFilesPath.properties")
 public class UserFileUploadRestController {
 
     private final GenreService genreService;
