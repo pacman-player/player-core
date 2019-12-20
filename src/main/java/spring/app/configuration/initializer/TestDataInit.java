@@ -37,6 +37,9 @@ public class TestDataInit {
 	@Autowired
 	private SongQueueService songQueueService;
 
+	@Autowired
+	private SongСompilationServuce songСompilationServuce;
+
 	private void init() {
 
 		Role roleAdmin = new Role();
