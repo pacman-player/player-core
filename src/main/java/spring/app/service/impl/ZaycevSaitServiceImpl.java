@@ -4,31 +4,33 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import spring.app.service.abstraction.MusicService;
 import spring.app.service.abstraction.ZaycevSaitServise;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 @Service
-public class ZaycevSaitImpl implements ZaycevSaitServise {
+public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();
 
    // @Value("${uploaded_files_path}") - не работает с аннотацией
-   private String fileFolder = "D:/songs";
+    private String fileFolder =  "D:/songs/";
 
     @Override
     public String searchSongByAuthorOrSongs(String author, String song) {
 
         String url = "https://zaycev.net/search.html?query_search=";
         Document document = null;
-       // String[] link = new String[1];
         String link = "";
 
         try {
@@ -38,11 +40,10 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
             System.err.println("Error search on zaycev.net");
         }
 
-        assert document != null;
         Elements playList1 = document.getElementsByClass("musicset-track__download track-geo");
 
-        for (Element a : playList1) {
-            Element divId = a.child(0);
+        for (Element div : playList1) {
+            Element divId = div.child(0);
             String title = divId.attr("title");
 
             if (title != null) {
@@ -66,34 +67,27 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
     @Override
     public byte[] getSong(String author, String song) {
 
-        String link = searchSongByAuthorOrSongs(author, song);
-        byte[] bytes =  restTemplate.getForObject(link,byte[].class);
+        FileInputStream fis;
+        Properties property = new Properties();
 
-        //сожранение в папку D:/songs/ для тестирования
-        String path2 = String.format("%s%s%s %s.mp3", getDir().toString(), File.separator, author, song);
-        Path path = Paths.get(path2);
         try {
-            Files.write(path,bytes);
+            fis = new FileInputStream("src/main/resources/uploadedFilesPath.properties");
+            property.load(fis);
+        } catch (IOException e) {
+            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        }
+
+        String link = searchSongByAuthorOrSongs(author, song);
+        byte[] bytes = restTemplate.getForObject(link, byte[].class);
+
+        Path path = Paths.get(property.getProperty("downloadSongsPath") + author + " " + song + ".mp3");
+        try {
+            Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return bytes;
-    }
-
-    private Path getDir() {
-        if (System.getProperty("os.name").toLowerCase().equals("linux")) {
-            Path path = Paths.get(System.getProperty("user.home") + File.separator + "songs");
-            if (!Files.exists(path)) {
-                try {
-                    Files.createDirectory(path);
-                } catch (IOException ignored) {
-                    // Под Linux может не хватать прав на создание директории
-                }
-            }
-            return path;
-        }
-        return Paths.get(fileFolder);
     }
 
 }
