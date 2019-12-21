@@ -2,6 +2,7 @@ package spring.app.model;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,11 +14,11 @@ public class PlayList {
 
     private String name;
 
-    @ManyToMany(targetEntity = Song.class)
+    @ManyToMany(targetEntity = SongСompilation.class)
     @JoinTable(name = "songСompilation_on_play_list",
-            joinColumns = {@JoinColumn(name = "songСompilation_id")},
-            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
-    private Set<SongСompilation> songСompilation;
+            joinColumns = {@JoinColumn(name = "play_list_id")},
+            inverseJoinColumns = {@JoinColumn(name = "songСompilation_id")})
+    private Set<SongСompilation> songСompilation = new HashSet<>();
 
     public PlayList(){}
 
@@ -42,11 +43,11 @@ public class PlayList {
         this.name = name;
     }
 
-    public Set<SongСompilation> getSongs() {
+    public Set<SongСompilation> getSongСompilation() {
         return songСompilation;
     }
 
-    public void setSongs(Set<SongСompilation> songs) {
+    public void setSongСompilation(Set<SongСompilation> songs) {
         this.songСompilation = songСompilation;
     }
 

@@ -1,12 +1,13 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 
 @Entity
-@Table(name = "songСompilation")
+@Table(name = "song_compilation")
 public class SongСompilation {
 
     @Id
@@ -19,11 +20,11 @@ public class SongСompilation {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
-    @JoinTable(name = "songСompilation_on_song",
-            joinColumns = {@JoinColumn(name = "songСompilation_id")},
+    @ManyToMany(targetEntity = Song.class)
+    @JoinTable(name = "song_compilation_on_song",
+            joinColumns = {@JoinColumn(name = "song_compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    private Set<Song> song;
+    private Set<Song> song = new HashSet<>();
 
     public SongСompilation() {
     }

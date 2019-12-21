@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.SongСompilationDao;
 import spring.app.model.SongСompilation;
-import spring.app.service.abstraction.SongСompilationServuce;
+import spring.app.service.abstraction.SongСompilationService;
 
 
 
 @Service
-public class SongСompilationServiseImpl implements SongСompilationServuce {
+public class SongСompilationServiseImpl implements SongСompilationService {
 
     private SongСompilationDao songСompilationDao;
 
