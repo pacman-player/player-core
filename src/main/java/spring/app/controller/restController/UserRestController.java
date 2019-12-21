@@ -3,9 +3,11 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Role;
 import spring.app.model.User;
+import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
@@ -19,14 +21,18 @@ public class UserRestController {
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
     private final UserService userService;
-
+    private final AuthorService authorService;
     private final GenreService genreService;
 
     @Autowired
-    public UserRestController(RoleService roleService, UserService userService, GenreService genreService) {
+    public UserRestController(RoleService roleService,
+                              UserService userService,
+                              GenreService genreService,
+                              AuthorService authorService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
+        this.authorService = authorService;
     }
 
     @GetMapping(value = "/all_genre")
@@ -34,6 +40,11 @@ public class UserRestController {
     List<Genre> getAllGenre() {
         List<Genre> genres = genreService.getAllGenre();
         return genres;
+    }
+
+    @GetMapping(value = "allAuthors")
+    public List<Author> getAllAuthor() {
+        return authorService.getAllAuthors();
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user

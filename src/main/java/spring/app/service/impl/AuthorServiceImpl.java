@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
 
+import java.util.List;
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
@@ -24,5 +26,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getByName(String name) {
         return authorDao.getByName(name);
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        return authorDao.getAll();
     }
 }

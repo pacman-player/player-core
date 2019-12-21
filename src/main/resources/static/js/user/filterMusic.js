@@ -55,23 +55,18 @@
         });
     }
 
-    // код для поиска и вывода артистов
+    // код для поиска и вывода авторов
     var $authorForms = $(".authorSearch");
     $authorForms.on("submit", function(searchAuthor){
 
         searchAuthor.preventDefault();
+        let name = $(this).find(".nameForAuthor").val();
 
         $.ajax({
             type: 'get',
             url: '/api/user/allAuthors',
             contentType: 'application/json;',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
+            data: JSON.stringify(name),
 
             success: function (allAuthors) {
                 var tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
