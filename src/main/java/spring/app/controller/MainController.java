@@ -6,6 +6,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.vk.api.sdk.client.VkApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,16 +37,16 @@ public class MainController {
     private final GenreService genreService;
     private final CompanyService companyService;
 
-    @Value("${redirectUri}")
-    private String redirectUri;
-    @Value("${clientId}")
-    private String clientId;
-    @Value("${responseType}")
-    private String responseType;
-    @Value("${scope}")
-    private String scope;
-    @Value("${clientSecret}")
-    private String clientSecret;
+    @Value("${googleRedirectUri}")
+    private String googleRedirectUri;
+    @Value("${googleClientId}")
+    private String googleClientId;
+    @Value("${googleResponseType}")
+    private String googleResponseType;
+    @Value("${googleScope}")
+    private String googleScope;
+    @Value("${googleClientSecret}")
+    private String googleClientSecret;
 
 
 
@@ -76,18 +77,19 @@ public class MainController {
     }
 
 
+
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
 
         StringBuilder url = new StringBuilder();
         url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
-                .append(redirectUri)
+                .append(googleRedirectUri)
                 .append("&response_type=")
-                .append(responseType)
+                .append(googleResponseType)
                 .append("&client_id=")
-                .append(clientId)
+                .append(googleClientId)
                 .append("&scope=")
-                .append(scope);
+                .append(googleScope);
         return "redirect:" + url.toString();
     }
 
@@ -97,7 +99,7 @@ public class MainController {
         final JacksonFactory jsonFactory = new JacksonFactory();
 
         GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(transport, jsonFactory,
-                clientId, clientSecret, code, redirectUri).execute();
+                googleClientId, googleClientSecret, code, googleRedirectUri).execute();
 
         GoogleIdToken idToken = tokenResponse.parseIdToken();
         GoogleIdToken.Payload payload = idToken.getPayload();
