@@ -45,11 +45,11 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
-    public String getUserRoles(){
+    public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
-            if (roles.getName().equals("ADMIN")){
+        for (Role roles : user.getRoles()) {
+            if (roles.getName().equals("ADMIN")) {
                 role = "admin";
                 return role;
             }
