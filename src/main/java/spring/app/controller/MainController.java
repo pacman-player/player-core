@@ -7,6 +7,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,19 @@ public class MainController {
     private final UserService userService;
     private final GenreService genreService;
     private final CompanyService companyService;
+
+    @Value("${redirectUri}")
+    private String redirectUri;
+    @Value("${clientId}")
+    private String clientId;
+    @Value("${responseType}")
+    private String responseType;
+    @Value("${scope}")
+    private String scope;
+    @Value("${clientSecret}")
+    private String clientSecret;
+
+
 
     @Autowired
     public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService) {
@@ -64,10 +78,7 @@ public class MainController {
 
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
-        final String redirectUri = "http://localhost:8080/google";
-        final String clientId = "302577676814-07bvhpq9k8r5qngg223csrf81d17qu9j.apps.googleusercontent.com";
-        final String responseType = "code";
-        final String scope = "https://www.googleapis.com/auth/userinfo.email";
+
         StringBuilder url = new StringBuilder();
         url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
                 .append(redirectUri)
@@ -82,9 +93,6 @@ public class MainController {
 
     @RequestMapping(value = "/google")
     public String GoogleAuthorization(@RequestParam("code") String code) throws IOException {
-        final String clientId = "302577676814-07bvhpq9k8r5qngg223csrf81d17qu9j.apps.googleusercontent.com";
-        final String clientSecret = "VADOrvY9rXwm5N-1Y1zdU-rq";
-        final String redirectUri = "http://localhost:8080/google";
         final HttpTransport transport = new NetHttpTransport();
         final JacksonFactory jsonFactory = new JacksonFactory();
 
