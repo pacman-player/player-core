@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "song_compilation")
-public class SongСompilation {
+public class SongCompilation {
 
     @Id
     @GeneratedValue
@@ -26,7 +26,7 @@ public class SongСompilation {
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> song = new HashSet<>();
 
-    public SongСompilation() {
+    public SongCompilation() {
     }
 
     public Long getId() {
@@ -65,7 +65,7 @@ public class SongСompilation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SongСompilation that = (SongСompilation) o;
+        SongCompilation that = (SongCompilation) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(genre, that.genre);

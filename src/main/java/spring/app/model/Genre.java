@@ -3,7 +3,6 @@ package spring.app.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +16,7 @@ public class Genre {
 
     @JsonIgnore
     @OneToMany(mappedBy = "genre")
-    private Set<SongСompilation> songСompilation;
+    private Set<SongCompilation> songCompilation;
 
     public Genre(){}
 
@@ -25,12 +24,12 @@ public class Genre {
         this.name = name;
     }
 
-    public Set<SongСompilation> getSongСompilation() {
-        return songСompilation;
+    public Set<SongCompilation> getSongCompilation() {
+        return songCompilation;
     }
 
-    public void setSongСompilation(Set<SongСompilation> songСompilation) {
-        this.songСompilation = songСompilation;
+    public void setSongCompilation(Set<SongCompilation> songCompilation) {
+        this.songCompilation = songCompilation;
     }
 
     public void setId(Long id) {

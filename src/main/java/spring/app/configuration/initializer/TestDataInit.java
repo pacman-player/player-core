@@ -38,7 +38,7 @@ public class TestDataInit {
     private SongQueueService songQueueService;
 
     @Autowired
-    private SongСompilationService songСompilationService;
+    private SongCompilationService songCompilationService;
 
     private void init() {
 
@@ -100,45 +100,45 @@ public class TestDataInit {
         song.setGenre(genre);
         songService.addSong(song);
 
-        SongСompilation songСompilation = new SongСompilation();
+        SongCompilation songCompilation = new SongCompilation();
         Set<Song> songs = new HashSet<>();
         songs.add(song);
-        songСompilation.setName("compilation0");
-        songСompilation.setGenre(genre);
-        songСompilation.setSong(songs);
-        songСompilationService.addSongСompilation(songСompilation);
+        songCompilation.setName("compilation0");
+        songCompilation.setGenre(genre);
+        songCompilation.setSong(songs);
+        songCompilationService.addSongСompilation(songCompilation);
 
-        SongСompilation songСompilation1 = new SongСompilation();
+        SongCompilation songCompilation1 = new SongCompilation();
         Set<Song> songs1 = new HashSet<>();
         songs1.add(song);
-        songСompilation1.setName("compilation1");
-        songСompilation1.setGenre(genre1);
-        songСompilation1.setSong(songs1);
-        songСompilationService.addSongСompilation(songСompilation1);
+        songCompilation1.setName("compilation1");
+        songCompilation1.setGenre(genre1);
+        songCompilation1.setSong(songs1);
+        songCompilationService.addSongСompilation(songCompilation1);
 
-        SongСompilation songСompilation2 = new SongСompilation();
+        SongCompilation songCompilation2 = new SongCompilation();
         Set<Song> songs2 = new HashSet<>();
         songs2.add(song);
-        songСompilation2.setName("compilation2");
-        songСompilation2.setGenre(genre2);
-        songСompilation2.setSong(songs2);
-        songСompilationService.addSongСompilation(songСompilation2);
+        songCompilation2.setName("compilation2");
+        songCompilation2.setGenre(genre2);
+        songCompilation2.setSong(songs2);
+        songCompilationService.addSongСompilation(songCompilation2);
 
-        SongСompilation songСompilation3 = new SongСompilation();
+        SongCompilation songCompilation3 = new SongCompilation();
         Set<Song> songs3 = new HashSet<>();
         songs3.add(song);
-        songСompilation3.setName("compilation3");
-        songСompilation3.setGenre(genre3);
-        songСompilation3.setSong(songs3);
-        songСompilationService.addSongСompilation(songСompilation3);
+        songCompilation3.setName("compilation3");
+        songCompilation3.setGenre(genre3);
+        songCompilation3.setSong(songs3);
+        songCompilationService.addSongСompilation(songCompilation3);
 
-        SongСompilation songСompilation4 = new SongСompilation();
+        SongCompilation songCompilation4 = new SongCompilation();
         Set<Song> songs4 = new HashSet<>();
         songs4.add(song);
-        songСompilation4.setName("compilation4");
-        songСompilation4.setGenre(genre4);
-        songСompilation4.setSong(songs);
-        songСompilationService.addSongСompilation(songСompilation4);
+        songCompilation4.setName("compilation4");
+        songCompilation4.setGenre(genre4);
+        songCompilation4.setSong(songs4);
+        songCompilationService.addSongСompilation(songCompilation4);
 
 
         PlayList playList = new PlayList();

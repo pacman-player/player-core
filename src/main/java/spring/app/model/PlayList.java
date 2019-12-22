@@ -14,17 +14,17 @@ public class PlayList {
 
     private String name;
 
-    @ManyToMany(targetEntity = SongСompilation.class)
-    @JoinTable(name = "songСompilation_on_play_list",
+    @ManyToMany(targetEntity = SongCompilation.class)
+    @JoinTable(name = "song_compilation_on_play_list",
             joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "songСompilation_id")})
-    private Set<SongСompilation> songСompilation = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
+    private Set<SongCompilation> songCompilation = new HashSet<>();
 
     public PlayList(){}
 
-    public PlayList(String name, Set<SongСompilation> songСompilation) {
+    public PlayList(String name, Set<SongCompilation> songCompilation) {
         this.name = name;
-        this.songСompilation = songСompilation;
+        this.songCompilation = songCompilation;
     }
 
     public Long getId() {
@@ -43,12 +43,12 @@ public class PlayList {
         this.name = name;
     }
 
-    public Set<SongСompilation> getSongСompilation() {
-        return songСompilation;
+    public Set<SongCompilation> getSongCompilation() {
+        return songCompilation;
     }
 
-    public void setSongСompilation(Set<SongСompilation> songs) {
-        this.songСompilation = songСompilation;
+    public void setSongCompilation(Set<SongCompilation> songs) {
+        this.songCompilation = songCompilation;
     }
 
     @Override
