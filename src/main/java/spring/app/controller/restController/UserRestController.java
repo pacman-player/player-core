@@ -3,15 +3,10 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.Role;
-import spring.app.model.User;
-import spring.app.service.abstraction.AuthorService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.model.*;
+import spring.app.service.abstraction.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -23,16 +18,19 @@ public class UserRestController {
     private final UserService userService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final SongService songService;
 
     @Autowired
     public UserRestController(RoleService roleService,
                               UserService userService,
                               GenreService genreService,
-                              AuthorService authorService) {
+                              AuthorService authorService,
+                              SongService songService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.authorService = authorService;
+        this.songService = songService;
     }
 
     @GetMapping(value = "/all_genre")
@@ -42,9 +40,19 @@ public class UserRestController {
         return genres;
     }
 
-    @GetMapping(value = "allAuthors")
+    @GetMapping("allAuthors")
     public List<Author> getAllAuthor() {
         return authorService.getAllAuthors();
+    }
+
+    @GetMapping("allAuthorsByName/{name}")
+    public List<Author> searchByNameInAuthors(@PathVariable String name) {
+        return authorService.findAuthorsByNameContaining(name);
+    }
+
+    @GetMapping("allSongsByName/{name}")
+    public List<Song> searchByNameInSongs(@PathVariable String name) {
+        return songService.findSongsByNameContaining(name);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user

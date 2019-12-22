@@ -1,5 +1,9 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,15 +17,26 @@ public class Song {
 
     private String name;
 
+    /*
+     @JsonIgnore нужна для того, что бы запрос на получение списка песен работал корректно
+     без этой аннотации запрос на выбор сущностей данных падает с ошибкой, скорее всего это связанно с неверным
+     мапингом на другие таблицы. С этой аннотацией в получаемой сущности не будет этих полей.
+     Предпологаемое решение :)
+     https://stackoverflow.com/questions/36983215/failed-to-write-http-message-org-springframework-http-converter-httpmessagenotw/45822490
+    */
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
+    @JsonIgnore
     private Genre genre;
 
     @OneToMany(mappedBy = "song")
+    @JsonIgnore
     private Set<SongQueue> song;
 
     public Song() {

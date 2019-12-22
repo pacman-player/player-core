@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
 import spring.app.service.abstraction.SongService;
 
+import java.util.List;
+
 @Service
 public class SongServiceImpl implements SongService {
 
@@ -29,5 +31,10 @@ public class SongServiceImpl implements SongService {
     @Override
     public boolean isExist(String name) {
         return getByName(name) != null;
+    }
+
+    @Override
+    public List<Song> findSongsByNameContaining(String name) {
+        return songDao.findSongsByNameContaining(name);
     }
 }

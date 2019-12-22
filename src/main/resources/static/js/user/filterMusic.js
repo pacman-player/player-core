@@ -14,10 +14,10 @@
 
         success: function (allGenre) {
 
-            var tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
+            let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
 
-            for (var i = 0; i < allGenre.length; i++) {
-                var genreId = allGenre[i].id;
+            for (let i = 0; i < allGenre.length; i++) {
+                const genreId = allGenre[i].id;
                 tbl +=
                     `
                     <tr>
@@ -56,23 +56,22 @@
     }
 
     // код для поиска и вывода авторов
-    var $authorForms = $(".authorSearch");
+    let $authorForms = $(".authorSearch");
     $authorForms.on("submit", function(searchAuthor){
 
         searchAuthor.preventDefault();
-        let name = $(this).find(".nameForAuthor").val();
+        const authorName = $(this).find(".nameForAuthor").val();
 
         $.ajax({
             type: 'get',
-            url: '/api/user/allAuthors',
+            url: '/api/user/allAuthorsByName/' + authorName,
             contentType: 'application/json;',
-            data: JSON.stringify(name),
 
             success: function (allAuthors) {
-                var tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
+                let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
 
-                for (var i = 0; i < allAuthors.length; ++i) {
-                    var authorId = allAuthors[i].id;
+                for (let i = 0; i < allAuthors.length; ++i) {
+                    const authorId = allAuthors[i].id;
                     tbl +=
                         `
                         <tr>
@@ -112,28 +111,22 @@
     }
 
     // код для поиска и вывода песен
-    var $musicForm = $(".musicSearch");
+    let $musicForm = $(".musicSearch");
     $musicForm.on("submit", function(searchMusics){
 
         searchMusics.preventDefault();
+        const musicName = $(this).find(".nameForMusic").val();
 
         $.ajax({
             type: 'get',
-            url: '/api/user/allMusic',
+            url: '/api/user/allSongsByName/' + musicName ,
             contentType: 'application/json;',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
 
             success: function (allMusics) {
-                var tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
+                let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
 
-                for (var i = 0; i < allMusics.length; ++i) {
-                    var musicId = allMusics[i].id;
+                for (let i = 0; i < allMusics.length; ++i) {
+                    const musicId = allMusics[i].id;
                     tbl +=
                         `
                         <tr>

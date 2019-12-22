@@ -7,6 +7,7 @@ import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -26,5 +27,13 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
             return null;
         }
         return song;
+    }
+
+    @Override
+    public List<Song> findSongsByNameContaining(String param) {
+        TypedQuery<Song> query = entityManager.createQuery("from Song e where e.name like :param", Song.class);
+        // знак % обозначает, что перед передаваемым значение может быть, или колько угодно символов, или ноль.
+        query.setParameter("param", '%' + param + '%');
+        return query.getResultList();
     }
 }

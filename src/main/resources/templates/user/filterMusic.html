@@ -20,9 +20,9 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active"
-                       id="nav-home-tab"
+                       id="nav-genre-tab"
                        data-toggle="tab"
-                       href="#nav-home"
+                       href="#nav-genre"
                        role="tab" aria-controls="nav-home"
                        aria-selected="true"
                     >
@@ -30,8 +30,9 @@
                     </a>
 
                     <a class="nav-item nav-link"
-                       id="nav-profile-tab"
-                       data-toggle="tab" href="#nav-profile"
+                       id="nav-artists-tab"
+                       data-toggle="tab"
+                       href="#nav-artists"
                        role="tab"
                        aria-controls="nav-profile"
                        aria-selected="false"
@@ -40,9 +41,9 @@
                     </a>
 
                     <a class="nav-item nav-link"
-                       id="nav-contact-tab"
+                       id="nav-song-tab"
                        data-toggle="tab"
-                       href="#nav-contact"
+                       href="#nav-song"
                        role="tab"
                        aria-controls="nav-contact"
                        aria-selected="false"
@@ -52,18 +53,21 @@
 
                 </div>
             </nav>
+
             <!-- контент для меню -->
             <div class="tab-content" id="nav-tabContent">
 
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <!-- контент для "По жанрам" -->
+                <div class="tab-pane fade show active" id="nav-genre" role="tabpanel" aria-labelledby="nav-home-tab">
 
                     <div id="forGenreTable">
                         <!-- скрипт заполнения таблицы в файле filterMusic.js -->
                     </div>
                 </div>
 
-                <!-- поиск и генерация таблицы найденых песен будет производиться в filterMusic.js -->
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <!-- поиск и генерация таблиц найденых песен и артистов будет производиться в filterMusic.js -->
+                <!-- контент для "По артистам" -->
+                <div class="tab-pane fade" id="nav-artists" role="tabpanel" aria-labelledby="nav-profile-tab">
 
                     <form class="form-inline authorSearch">
                         <input class="form-control mr-sm-2 nameForAuthor" type="search" placeholder="Search" aria-label="Search"/>
@@ -76,10 +80,11 @@
 
                 </div>
 
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <!-- контент для "По песням" -->
+                <div class="tab-pane fade" id="nav-song" role="tabpanel" aria-labelledby="nav-contact-tab">
 
                     <form class="form-inline musicSearch">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <input class="form-control mr-sm-2 nameForMusic" type="search" placeholder="Search" aria-label="Search"/>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
 
