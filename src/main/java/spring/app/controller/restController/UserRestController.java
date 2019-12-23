@@ -5,14 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
-import spring.app.model.Company;
-import spring.app.model.Genre;
-import spring.app.model.Role;
-import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.model.*;
+import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -29,13 +23,15 @@ public class UserRestController {
 
     private final CompanyService companyService;
     private final GenreService genreService;
+    private final SongCompilationService songCompilation;
 
     @Autowired
-    public UserRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService) {
+    public UserRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongCompilationService songCompilation) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
+        this.songCompilation = songCompilation;
     }
 
     @GetMapping(value = "/all_genre")
@@ -44,12 +40,26 @@ public class UserRestController {
         return genreService.getAllGenre();
     }
 
+    @PostMapping(value = "/song_compilation")
+    public @ResponseBody
+    List<SongCompilation> getSongCompilation(@RequestBody String genre) {
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        if (genre.equals("Все подборки")) {
+            return songCompilation.getAllSongCompilations();
+        } else {
+            Genre genres = genreService.getByName(genre);
+            List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            System.out.println(list.size());
+            return songCompilation.getListSongCompilationsByGenreId(genres.getId());
+        }
+    }
+
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
-    public String getUserRoles(){
+    public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
-            if (roles.getName().equals("ADMIN")){
+        for (Role roles : user.getRoles()) {
+            if (roles.getName().equals("ADMIN")) {
                 role = "admin";
                 return role;
             }
