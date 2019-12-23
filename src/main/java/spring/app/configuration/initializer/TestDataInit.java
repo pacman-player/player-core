@@ -100,6 +100,26 @@ public class TestDataInit {
         song.setGenre(genre);
         songService.addSong(song);
 
+        Song song1 = new Song("Desert Rose");
+        song1.setAuthor(author);
+        song1.setGenre(genre1);
+        songService.addSong(song1);
+
+        Song song2 = new Song("Desert Rose");
+        song2.setAuthor(author);
+        song2.setGenre(genre2);
+        songService.addSong(song2);
+
+        Song song3 = new Song("Desert Rose");
+        song3.setAuthor(author);
+        song3.setGenre(genre3);
+        songService.addSong(song3);
+
+        Song song4 = new Song("Desert Rose");
+        song4.setAuthor(author);
+        song4.setGenre(genre4);
+        songService.addSong(song4);
+
         SongCompilation songCompilation = new SongCompilation();
         Set<Song> songs = new HashSet<>();
         songs.add(song);
@@ -110,7 +130,7 @@ public class TestDataInit {
 
         SongCompilation songCompilation1 = new SongCompilation();
         Set<Song> songs1 = new HashSet<>();
-        songs1.add(song);
+        songs1.add(song1);
         songCompilation1.setName("compilation1");
         songCompilation1.setGenre(genre1);
         songCompilation1.setSong(songs1);
@@ -118,7 +138,7 @@ public class TestDataInit {
 
         SongCompilation songCompilation2 = new SongCompilation();
         Set<Song> songs2 = new HashSet<>();
-        songs2.add(song);
+        songs2.add(song2);
         songCompilation2.setName("compilation2");
         songCompilation2.setGenre(genre2);
         songCompilation2.setSong(songs2);
@@ -126,7 +146,7 @@ public class TestDataInit {
 
         SongCompilation songCompilation3 = new SongCompilation();
         Set<Song> songs3 = new HashSet<>();
-        songs3.add(song);
+        songs3.add(song3);
         songCompilation3.setName("compilation3");
         songCompilation3.setGenre(genre3);
         songCompilation3.setSong(songs3);
@@ -134,7 +154,7 @@ public class TestDataInit {
 
         SongCompilation songCompilation4 = new SongCompilation();
         Set<Song> songs4 = new HashSet<>();
-        songs4.add(song);
+        songs4.add(song4);
         songCompilation4.setName("compilation4");
         songCompilation4.setGenre(genre4);
         songCompilation4.setSong(songs4);

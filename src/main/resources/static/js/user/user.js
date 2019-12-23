@@ -28,8 +28,9 @@ $(document).ready(function () {
             dataType: 'JSON',
 
             success: function (listSongCompilation) {
+                console.log(listSongCompilation);
 
-                alert(listSongCompilation[0].id + "-" + listSongCompilation[0].name);
+             //   alert(listSongCompilation[0].id + "-" + listSongCompilation[0].name);
 
                 var htmlCompilation = "Need to add Compilation";
                 if (0 < listSongCompilation.length) {
