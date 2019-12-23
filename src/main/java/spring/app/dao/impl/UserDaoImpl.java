@@ -41,4 +41,22 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		}
 		return user;
 	}
+
+	@Override
+	public String findByEmail(String email) {
+
+		User user = null;
+		try {
+			TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+			query.setParameter("email", email);
+			user = query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return email;
+
+
+//		return userDao.findByEmail(email);
+
+	}
 }

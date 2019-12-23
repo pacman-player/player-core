@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 
+import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public interface UserService {
 
 	void addUser(User user);
 
+
+    String findByEmail(String email);
+
+    User save(UserRegistrationDto registration);
 
 	List<User> getAllUsers();
 
