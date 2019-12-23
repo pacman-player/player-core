@@ -5,10 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
-import spring.app.model.Company;
-import spring.app.model.Genre;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.RoleService;
@@ -48,7 +45,7 @@ public class UserRestController {
     public String getUserRoles(){
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
+        for (Role roles : user.getRoles()){
             if (roles.getName().equals("ADMIN")){
                 role = "admin";
                 return role;

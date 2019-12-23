@@ -28,4 +28,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		}
 		return user;
 	}
+
+	@Override
+	public User getUserByGoogleId(String googleId) {
+		User user = null;
+		try {
+			TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.googleId = :googleId", User.class);
+			query.setParameter("googleId", googleId);
+			user = query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return user;
+	}
 }
