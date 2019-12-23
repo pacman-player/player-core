@@ -27,12 +27,35 @@
     </div>
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+
+            <!--меню слева-->
             <ul class="nav nav-pills nav-stacked nav-content">
-                <li class="active">
-                    <a href="/admin">Admin</a>
-                </li>
                 <li>
-                    <a href="/user">User</a>
+                    <a href="#list-users">Пользователи</a>
+                </li>
+
+                <li>
+                    <a href="#companies">Компании</a>
+                </li>
+
+                <li>
+                    <a href="#types-establishments">Типы заведений</a>
+                </li>
+
+                <li>
+                    <a href="#genres">Жанры</a>
+                </li>
+
+                <li>
+                    <a href="#performers">Исполнители</a>
+                </li>
+
+                <li>
+                    <a href="#songs">Песни</a>
+                </li>
+
+                <li>
+                    <a href="/user">Меню пользователя</a>
                 </li>
             </ul>
         </div>
@@ -69,12 +92,13 @@
                                                 <th>Login</th>
                                                 <th>Password</th>
                                                 <th>Email</th>
+                                                <th>Company</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
                                             </tr>
                                             </thead>
 
-                                            <!--обновление юзеров-->
+                                            <!--модалка - обновление юзеров-->
                                             <div id="editUser" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -135,6 +159,68 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                             <button id="editUserBtn" class="btn btn-primary">Edit User</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--модалка - компания-->
+                                            <div id="editCompany" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">Информация о компании</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <form id="company-form">
+                                                                            <div class="form-group text-center edit-form">
+
+                                                                                <label for="updateCompanyId">ID компании</label>
+                                                                                <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+
+                                                                                <label for="updateIdUser">ID пользователя</label>
+                                                                                <input id="updateIdUser" class="form-control" disabled="disabled"
+                                                                                       type="text" name="id-user" required=""/>
+
+                                                                                <label for="updateNameCompany">Компания</label>
+                                                                                <input id="updateNameCompany" class="form-control" type="text" name="company"
+                                                                                       required=""/>
+
+                                                                                <label for="updateStartTime">Время открытия</label>
+                                                                                <input id="updateStartTime" class="form-control" type="time" name="start-time"
+                                                                                       required=""/>
+
+                                                                                <label for="updateCloseTime">Время закрытия</label>
+                                                                                <input id="updateCloseTime" class="form-control" type="time" name="close-time"
+                                                                                       required=""/>
+
+                                                                                <label for="updateOrgType">Тип компании</label>
+                                                                                <select id="updateOrgType" class="form-control" name="role">
+                                                                                    <option value="1">Ресторан</option>
+                                                                                </select>
+<!--                                                                                <input id="updateOrgType" class="form-control" type="text" name="org-type"-->
+<!--                                                                                       required=""/>-->
+
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
                                                         </div>
 
 
@@ -223,50 +309,7 @@
         </div>
     </div>
 
-
 </div>
-
-<!--старые скрипты для страницы сейчас вынесен в js/admin/admin.js,если ничего отсюда ненужно-УДАЛИТЬ,после проверки!!!!-->
-<!--<script type="text/javascript">
-    function putValues(id, login, pas, email) {
-        $('#id-input-edit').val(id);
-        $('#id-input-edit-hidden').val(id);
-        /*$('#hiddenId').val(id);*/
-        $('#email-input-edit').val(email);
-        $('#login-input-edit').val(login);
-        $('#pass-input-edit').val(pas);
-        /*$('#inputRole').val(roles);*/
-    }
-
-    $(document).ready(function () {
-        $("#edit-submit").click(function () {
-            $("#edit-form").submit();
-        })
-    })
-</script>
-
-
-<script type="text/javascript" th:if="${addError != null || addSuccess != null}">
-    $("#user-table-nav").removeClass('active');
-    $("#add-user-nav").addClass('active');
-    $("#user-panel").removeClass('active');
-    $("#add-user-panel").addClass('active');
-</script>
-
-<script type="text/javascript" th:if="${addError}">
-    $("#error-add-message").removeClass('hidden');
-</script>
-
-<script type="text/javascript" th:if="${addSuccess}">
-    $("#success-add-message").removeClass('hidden');
-</script>
-
-
-<script th:inline="javascript" type="text/javascript" th:if="${editError}">
-    putValues([[${editedUser.id}]], [[${editedUser.login}]], [[${editedUser.password}]], [[${editedUser.email}]]);
-    $("#myModal").modal('show');
-    $("#error-edit-message").removeClass('hidden');
-</script>-->
 
 <script type="text/javascript" src="js/admin/admin.js" rel="stylesheet"></script>
 </body>
