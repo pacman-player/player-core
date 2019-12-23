@@ -16,4 +16,10 @@ public interface SongService {
      * @return List<Author>
      */
     List<Song> findSongsByNameContaining(String name);
+
+    /**
+     * Возвращает песню по id
+     * @return Song
+     */
+    Song getById(long songId);
 }

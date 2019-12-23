@@ -41,4 +41,9 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> findAuthorsByNameContaining(String name) {
         return authorRepository.findAuthorsByNameContaining(name);
     }
+
+    @Override
+    public Author getById(long authorsId) {
+        return authorRepository.findOne(authorsId);
+    }
 }

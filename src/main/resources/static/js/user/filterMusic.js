@@ -44,10 +44,12 @@
     });
 
     // функция для добавления жанра в список запрещеных вызываеться при клике на кнопку
-    function addGenreToFilter(id) {
+    function addGenreToFilter(genreId) {
         $.ajax({
-            method: 'get',
-            url: '/filterForGenre/' + id, //TODO сделать методы
+            method: 'post',
+            url: '/api/user/genreBan',
+            contentType : "application/json",
+            data:JSON.stringify(genreId),
             dataType: 'json',
             success: function () {
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена
@@ -82,6 +84,7 @@
                             <td>
                                 <button
                                     type="button"
+                                    id="buttonAuthor"
                                     class="btn btn-outline-danger"
                                     onclick="addAuthorToFilter(${authorId})"
                                 >
@@ -99,13 +102,17 @@
     });
 
     // функция для добавления исполнителя в список запрещеных вызываеться при клике на кнопку
-    function addAuthorToFilter(id) {
+    function addAuthorToFilter(authorId) {
         $.ajax({
-            method: 'get',
-            url: '/filterForAuthor/' + id, //TODO сделать методы
+            method: 'post',
+            url: '/api/user/authorsBan',
+            contentType : "application/json",
+            data:JSON.stringify(authorId),
             dataType: 'json',
+
             success: function () {
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена
+                $('#buttonAuthor').toggleClass('click');
             }
         });
     }
@@ -154,10 +161,12 @@
     });
 
     // функция для добавления песни(ен) в список запрещеных вызываеться при клике на кнопку
-    function addMusicToFilter(id) {
+    function addMusicToFilter(musicId) {
         $.ajax({
-            method: 'get',
-            url: '/filterForMusic/' + id, //TODO сделать методы
+            method: 'post',
+            url: '/api/user/songsBan',
+            contentType : "application/json",
+            data:JSON.stringify(musicId),
             dataType: 'json',
             success: function () {
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена

@@ -37,4 +37,9 @@ public class SongServiceImpl implements SongService {
     public List<Song> findSongsByNameContaining(String name) {
         return songDao.findSongsByNameContaining(name);
     }
+
+    @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
 }

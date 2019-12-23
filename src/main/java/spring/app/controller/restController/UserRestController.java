@@ -1,12 +1,12 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -53,6 +53,25 @@ public class UserRestController {
     @GetMapping("allSongsByName/{name}")
     public List<Song> searchByNameInSongs(@PathVariable String name) {
         return songService.findSongsByNameContaining(name);
+    }
+
+    @PostMapping("authorsBan")
+    public void addAuthorInBan(@AuthenticationPrincipal User user,
+                               @RequestBody long authorsId) {
+
+        user.getCompany().addBannedAuthor(authorService.getById(authorsId));
+    }
+
+    @PostMapping("songsBan")
+    public void addSongInBan(@AuthenticationPrincipal User user,
+                             @RequestBody long songId) {
+        user.getCompany().addBannedSong(songService.getById(songId));
+    }
+
+    @PostMapping("genreBan")
+    public void addGenreInBan(@AuthenticationPrincipal User user,
+                              @RequestBody long genreId) {
+        user.getCompany().addBannedGenre(genreService.getById(genreId));
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user

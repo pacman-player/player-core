@@ -19,4 +19,10 @@ public interface AuthorService {
      * @return list<Author>
      */
     List<Author> findAuthorsByNameContaining(String name);
+
+    /**
+     * Возвращает автора по id
+     * @return Author
+     */
+    Author getById(long authorsId);
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -51,6 +52,18 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
+    @JoinTable(name = "company_on_banned_song",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+    private Set<Song> bannedSong;
+
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @JoinTable(name = "company_on_banned_author",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "author_id")})
+    private Set<Author> bannedAuthor;
+
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
@@ -87,6 +100,14 @@ public class Company {
 
     public OrgType getOrgType() {
         return orgType;
+    }
+
+    public Set<Author> getBannedAuthor() {
+        return bannedAuthor;
+    }
+
+    public Set<Song> getBannedSong() {
+        return bannedSong;
     }
 
     public void setId(Long id) {
@@ -129,6 +150,14 @@ public class Company {
         this.bannedGenres = bannedGenres;
     }
 
+    public void setBannedSong(Set<Song> bannedSong) {
+        this.bannedSong = bannedSong;
+    }
+
+    public void setBannedAuthor(Set<Author> bannedAuthor) {
+        this.bannedAuthor = bannedAuthor;
+    }
+
     public Set<PlayList> getMorningPlayList() {
         return morningPlayList;
     }
@@ -151,5 +180,17 @@ public class Company {
 
     public void setSongQueues(Set<SongQueue> songQueues) {
         this.songQueues = songQueues;
+    }
+
+    public void addBannedAuthor(Author author) {
+        this.bannedAuthor.add(author);
+    }
+
+    public void addBannedSong(Song song) {
+        this.bannedSong.add(song);
+    }
+
+    public void addBannedGenre(Genre genre) {
+        this.bannedGenres.add(genre);
     }
 }

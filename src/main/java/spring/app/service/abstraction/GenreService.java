@@ -11,4 +11,10 @@ public interface GenreService {
     List<Genre> getAllGenre();
 
     Genre getByName(String name);
+
+    /**
+     * Возвращает жанр по id
+     * @return Genre
+     */
+    Genre getById(long genreId);
 }
