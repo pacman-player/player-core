@@ -4,27 +4,19 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import spring.app.service.abstraction.MusicService;
 import spring.app.service.abstraction.ZaycevSaitServise;
+import spring.app.util.PlayerPaths;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
 
 @Service
 public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();
-
-   // @Value("${uploaded_files_path}") - не работает с аннотацией
-    private String fileFolder =  "D:/songs/";
 
     @Override
     public String searchSongByAuthorOrSongs(String author, String song) {
@@ -59,29 +51,19 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
                 }
             }
         }
-
         return link;
     }
 
 
     @Override
     public byte[] getSong(String author, String song) {
-
-        FileInputStream fis;
-        Properties property = new Properties();
-
-        try {
-            fis = new FileInputStream("src/main/resources/uploadedFilesPath.properties");
-            property.load(fis);
-        } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл свойств отсуствует!");
-        }
-
         String link = searchSongByAuthorOrSongs(author, song);
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
-        Path path = Paths.get(property.getProperty("downloadSongsPath") + author + " " + song + ".mp3");
+        Path path = PlayerPaths.getSongsDir(author + " " + song + ".mp3");
+
         try {
+            assert path != null;
             Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();
