@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,25 +12,27 @@ import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
 import spring.app.service.abstraction.AuthorService;
-import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.DownloadMusicVkRuService;
+import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
+import spring.app.util.PlayerPaths;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
 
-    @Value("${uploaded_files_path}")
+    //@Value("${uploaded_files_path}")
     private String fileFolder;
 
     private final GenreService genreService;
@@ -46,7 +47,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
     }
 
     @Override
-    public ResponseEntity<String> search(String artist, String track) throws IOException, UnsupportedEncodingException {
+    public ResponseEntity<String> search(String artist, String track) throws IOException {
 
         final String SEARCH_BASE_URL = "https://downloadmusicvk.ru/audio/search?q=";
         boolean success = false;
@@ -97,7 +98,9 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 InputStream in = con.getInputStream();
                 String fileName = addToDatabase(artist, track);
-                Path path = Paths.get(fileFolder + fileName);
+                //Path path = Paths.get(fileFolder + fileName);
+                Path path = PlayerPaths.getSongsDir(fileName);
+                assert path != null;
                 Files.deleteIfExists(path);
                 Files.copy(in, Files.createFile(path), REPLACE_EXISTING);
                 in.close();
