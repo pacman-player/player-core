@@ -14,7 +14,11 @@ import javax.validation.constraints.AssertTrue;
 public class UserRegistrationDto {
 
     @NotEmpty
-    private String firstName;
+    private String login;
+
+    @Email
+    @NotEmpty
+    private String email;
 
     @NotEmpty
     private String password;
@@ -22,27 +26,31 @@ public class UserRegistrationDto {
     @NotEmpty
     private String confirmPassword;
 
-    @Email
-    @NotEmpty
-    private String email;
-
-    @Email
-    @NotEmpty
-    private String confirmEmail;
-
-    @AssertTrue
-    private Boolean terms;
-
-    public String getFirstName() {
-        return firstName;
+    public UserRegistrationDto() {
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public UserRegistrationDto(String login, String email, String password, String confirmPassword) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
     }
 
+    public String getLogin() {
+        return login;
+    }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getPassword() {
         return password;
@@ -59,29 +67,4 @@ public class UserRegistrationDto {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getConfirmEmail() {
-        return confirmEmail;
-    }
-
-    public void setConfirmEmail(String confirmEmail) {
-        this.confirmEmail = confirmEmail;
-    }
-
-    public Boolean getTerms() {
-        return terms;
-    }
-
-    public void setTerms(Boolean terms) {
-        this.terms = terms;
-    }
-
 }

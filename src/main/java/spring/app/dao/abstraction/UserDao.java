@@ -5,5 +5,5 @@ import spring.app.model.User;
 public interface UserDao extends GenericDao<Long, User> {
 	User getUserByLogin(String login);
 	User getUserByGoogleId(String googleId);
-	String findByEmail(String email);
+	User getByEmail(String email);
 }
