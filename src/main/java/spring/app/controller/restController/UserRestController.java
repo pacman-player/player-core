@@ -3,6 +3,7 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
@@ -33,7 +34,7 @@ public class UserRestController {
                               GenreService genreService,
                               AuthorService authorService,
                               SongService songService,
-                              SongCompilationService songCompilation;) {
+                              SongCompilationService songCompilation) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
