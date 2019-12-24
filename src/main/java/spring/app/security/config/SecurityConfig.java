@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
@@ -17,68 +18,66 @@ import spring.app.security.service.UserDetailsServiceImpl;
 @Configuration
 @ComponentScan("spring.app")
 @EnableWebSecurity
-//@EnableOAuth2Sso
+@EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final UserDetailsServiceImpl authenticationService;
-	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-	private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final UserDetailsServiceImpl authenticationService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
-	@Autowired
-	public SecurityConfig(UserDetailsServiceImpl authenticationService,
-						  CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-						  CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
-						  CustomLogoutSuccessHandler customLogoutSuccessHandler) {
-		this.authenticationService = authenticationService;
-		this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-		this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
-		this.customLogoutSuccessHandler = customLogoutSuccessHandler;
-	}
+    @Autowired
+    public SecurityConfig(UserDetailsServiceImpl authenticationService,
+                          CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
+                          CustomLogoutSuccessHandler customLogoutSuccessHandler) {
+        this.authenticationService = authenticationService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		CharacterEncodingFilter filter = new CharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		filter.setForceEncoding(true);
-		http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
 
-		http
-				.authorizeRequests()
-				.antMatchers("/api/**").permitAll()
-				//.antMatchers("/test").hasAnyAuthority()
-				//.antMatchers("/error").authenticated()
-				//.antMatchers("/user/**").hasAnyAuthority("USER")
-				//.antMatchers("/admin/**").hasAnyAuthority("ADMIN")
-				//.antMatchers("/google/**").authenticated()
-				.and()
-				.formLogin()
-				.loginPage("/login")
-				.loginProcessingUrl("/processing-url")
-				.successHandler(customAuthenticationSuccessHandler)
-				.failureHandler(customAuthenticationFailureHandler)
-				.usernameParameter("login")
-				.passwordParameter("password")
-				.and()
-				.logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
-				.invalidateHttpSession(true)
-				.logoutSuccessHandler(customLogoutSuccessHandler)
-				.permitAll();
+        http
+                .authorizeRequests()
+                .antMatchers("/api/**")
+                .permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/processing-url")
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true)
+                .logoutSuccessHandler(customLogoutSuccessHandler)
+                .permitAll();
 
 		/*
 				/*.and()
 				.exceptionHandling()
 				.accessDeniedPage("/error");*/
-	}
+    }
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		//The name of the configureGlobal method is not important. However,
-		// it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
-		auth.userDetailsService(authenticationService);
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        //The name of the configureGlobal method is not important. However,
+        // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
+        auth.userDetailsService(authenticationService);
+    }
+
+
 
 	/*@Bean
 	public FilterRegistrationBean myFilter() {
@@ -103,4 +102,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				DispatcherType.ASYNC);
 		return registration;
 	}*/
-}
+    }
+

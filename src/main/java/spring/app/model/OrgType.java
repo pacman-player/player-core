@@ -20,6 +20,8 @@ public class OrgType {
         this.name = name;
     }
 
+    public OrgType(Long id) {this.id = id;}
+
     public OrgType(){}
 
     public void setId(Long id) {

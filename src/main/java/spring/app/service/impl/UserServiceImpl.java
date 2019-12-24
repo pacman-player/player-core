@@ -23,7 +23,12 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserByLogin(login);
 	}
 
-	@Override
+    @Override
+    public User getUserByGoogleId(String googleId) {
+        return userDao.getUserByGoogleId(googleId);
+    }
+
+    @Override
 	public User getUserById(Long id) {
 		return userDao.getById(id);
 	}

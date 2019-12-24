@@ -21,8 +21,8 @@ public class Company {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime closeTime;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+//    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -65,8 +65,18 @@ public class Company {
         this.orgType = orgType;
     }
 
+    public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.orgType = orgType;
+    }
+
     public Company() {
     }
+
 
     public Long getId() {
         return id;
