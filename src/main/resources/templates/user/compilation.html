@@ -2,7 +2,7 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Pacman-player</title>
+    <title>Подборки</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -11,7 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" th:href="@{style.css}"/>
+    <link rel="stylesheet" href="сcs/style.css"/>
 
 </head>
 
@@ -30,26 +30,25 @@
         <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a href="#my-statistic" aria-controls="my-statistic" role="tab" data-toggle="tab">Статистика</a>
+                    <a href="/user/statistics" >Статистика</a>
                 </li>
                 <li>
-                    <a href="#my-selection" aria-controls="my-selection" role="tab" data-toggle="tab">Моя подборка</a>
+                    <a href="/user/compilation" >Моя подборка</a>
                 </li>
                 <li>
-                    <a href="#music-filter" aria-controls="music-filter" role="tab" data-toggle="tab">Фильтр музыки</a>
+                    <a href="/user/filter" >Фильтр музыки</a>
                 </li>
                 <li>
-                    <a href="#my-top" aria-controls="my-top" role="tab" data-toggle="tab">Топ популярных</a>
+                    <a href="/user/top" >Топ популярных</a>
                 </li>
                 <li>
-                    <a href="#my-establishment" aria-controls="my-establishment" role="tab" data-toggle="tab">Моё
-                        заведение</a>
+                    <a href="/user/company" >Моё заведение</a>
                 </li>
                 <li>
-                    <a href="#my-material" aria-controls="my-material" role="tab" data-toggle="tab">Промо - материалы</a>
+                    <a href="/user/promo">Промо - материалы</a>
                 </li>
                 <li id="adminLink">
-                    <a href="/admin" >Администратор</a>
+                    <a href="/admin/users">Администратор</a>
                 </li>
             </ul>
         </div>
@@ -107,40 +106,19 @@
                 </div>
 
                 <!--подборка по жанрам-->
-                <div class="col-fhd-8 col-xl-7 col-lg-6 row">
-                    <h3 id="getGenres">Жанры</h3>
+                <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
+
                 </div>
 
             </div>
 
-            <div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">
-                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>
-                <H3> Моё заведение</H3>
-                <div class="col-fhd-4 col-xl-5 col-lg-6">
 
-                    <form class="form-group">
-                        <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
-                                                                                   type="text"/></label><br/>
-                        <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
-                                                                                       required="required" type="time"/><br/>
-                        <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
-                                                                                       required="required" type="time"/><br/>
-                        <button class="btn btn-primary" id="est-save-data" type="button">Сохранить</button>
-                    </form>
-
-                </div>
-            </div>
-
-            <!--<div role="tabpanel" class="tab-pane col-md-10 col-xs-10 " id="music-filter">
-
-                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Фильтр музыки</p>
-            </div>-->
         </div>
 
     </div>
 </div>
 
-<script type="text/javascript" src="js/user/user.js" rel="stylesheet"></script>
+<script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
 
 </body>
 </html>

@@ -34,9 +34,11 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+
         </dependency>
 
         <dependency>
@@ -140,7 +142,6 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
-
 
     </dependencies>
 

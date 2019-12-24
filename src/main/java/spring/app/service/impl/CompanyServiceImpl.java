@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Company;
 import spring.app.service.abstraction.CompanyService;
 
+import java.util.List;
+
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
@@ -38,5 +40,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void removeById(Long id) {
         companyDao.deleteById(id);
+    }
+
+    @Override
+    public List<Company> getAllCompanies() {
+        return companyDao.getAll();
     }
 }
