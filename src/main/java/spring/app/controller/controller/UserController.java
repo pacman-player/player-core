@@ -10,7 +10,7 @@ public class UserController {
 
     @GetMapping
     public String getUserPage() {
-        return "user/user";
+        return "user/statistics";
     }
 
     @GetMapping("/top")
