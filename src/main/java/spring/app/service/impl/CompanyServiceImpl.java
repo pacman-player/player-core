@@ -20,4 +20,14 @@ public class CompanyServiceImpl implements CompanyService {
     public void addCompany(Company company) {
         companyDao.save(company);
     }
+
+    @Override
+    public void updateCompany(Company company) {
+        companyDao.update(company);
+    }
+
+    @Override
+    public Company getById(long id) {
+        return companyDao.getById(id);
+    }
 }

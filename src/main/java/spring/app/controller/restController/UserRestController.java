@@ -19,18 +19,21 @@ public class UserRestController {
     private final AuthorService authorService;
     private final GenreService genreService;
     private final SongService songService;
+    private final CompanyService companyService;
 
     @Autowired
     public UserRestController(RoleService roleService,
                               UserService userService,
                               GenreService genreService,
                               AuthorService authorService,
-                              SongService songService) {
+                              SongService songService,
+                              CompanyService companyService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.authorService = authorService;
         this.songService = songService;
+        this.companyService = companyService;
     }
 
     @GetMapping(value = "/all_genre")
@@ -59,19 +62,30 @@ public class UserRestController {
     public void addAuthorInBan(@AuthenticationPrincipal User user,
                                @RequestBody long authorsId) {
 
-        user.getCompany().addBannedAuthor(authorService.getById(authorsId));
+        Company company = companyService.getById(user.getCompany().getId());
+        company.addBannedAuthor(authorService.getById(authorsId));
+
+        companyService.updateCompany(company);
     }
 
     @PostMapping("songsBan")
     public void addSongInBan(@AuthenticationPrincipal User user,
                              @RequestBody long songId) {
-        user.getCompany().addBannedSong(songService.getById(songId));
+
+        Company company = companyService.getById(user.getCompany().getId());
+        company.addBannedSong(songService.getById(songId));
+
+        companyService.updateCompany(company);
     }
 
     @PostMapping("genreBan")
     public void addGenreInBan(@AuthenticationPrincipal User user,
                               @RequestBody long genreId) {
-        user.getCompany().addBannedGenre(genreService.getById(genreId));
+
+        Company company = companyService.getById(user.getCompany().getId());
+        company.addBannedGenre(genreService.getById(genreId));
+
+        companyService.updateCompany(company);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user

@@ -8,6 +8,7 @@ import spring.app.model.Company;
 @Repository
 @Transactional
 public class CompanyDaoImpl  extends AbstractDao<Long, Company> implements CompanyDao {
+
     CompanyDaoImpl() {
         super(Company.class);
     }
