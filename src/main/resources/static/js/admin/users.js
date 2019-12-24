@@ -197,14 +197,13 @@ $(document).ready(function () {
         $.ajax({
             type: 'delete',
             url: "/api/admin/delete_user",
-
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            async: true,
+            async: false,
             cache: false,
             dataType: 'JSON',
         });
