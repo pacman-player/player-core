@@ -46,6 +46,13 @@ public class AdminRestController {
         return list;
     }
 
+    @GetMapping(value = "/all_companies")
+    public @ResponseBody
+    List<Company> getAllCompanies() {
+        List<Company> list = companyService.getAllCompanies();
+        return list;
+    }
+
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
