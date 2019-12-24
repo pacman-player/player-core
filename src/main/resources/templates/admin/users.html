@@ -7,12 +7,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <link rel="shortcut icon" href="#"/>
-    <link href="css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
 
 </head>
 
@@ -21,7 +17,7 @@
 
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#">Панель администратора</a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
         </div>
     </div>
@@ -30,28 +26,28 @@
 
             <!--меню слева-->
             <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="#list-users">Пользователи</a>
+                <li class="active">
+                    <a href="/admin/users">Пользователи</a>
                 </li>
 
                 <li>
-                    <a href="#companies">Компании</a>
+                    <a href="/admin/companies">Компании</a>
                 </li>
 
                 <li>
-                    <a href="#types-establishments">Типы заведений</a>
+                    <a href="/admin/establishments">Типы заведений</a>
                 </li>
 
                 <li>
-                    <a href="#genres">Жанры</a>
+                    <a href="/admin/genres">Жанры</a>
                 </li>
 
                 <li>
-                    <a href="#performers">Исполнители</a>
+                    <a href="/admin/performers">Исполнители</a>
                 </li>
 
                 <li>
-                    <a href="#songs">Песни</a>
+                    <a href="/admin/songs">Песни</a>
                 </li>
 
                 <li>
@@ -59,23 +55,21 @@
                 </li>
             </ul>
         </div>
+
+        <!--центральный блок-->
         <div class="col-lg-9 col-md-10 col-xs-10">
-
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="admin-page">
-                    <h1>Admin panel</h1>
 
+                <div role="tabpanel" class="tab-pane active" id="list-users">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Users table</a>
-
+                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Все пользователи</a>
                         </li>
                         <li id="add-user-nav">
-                            <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">New
-                                User</a>
+                            <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">
+                            Новый пользователь</a>
                         </li>
                     </ul>
-
 
                     <div class="tab-content">
                         <!--таблица юзеров-->
@@ -83,18 +77,17 @@
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <h4>All users</h4>
                                         <table id="UserTable" class="table">
                                             <thead id="getUserTable">
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Role</th>
-                                                <th>Login</th>
-                                                <th>Password</th>
-                                                <th>Email</th>
-                                                <th>Company</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
+                                                <th>Роль</th>
+                                                <th>Логин</th>
+                                                <th>Пароль</th>
+                                                <th>Почта</th>
+                                                <th>Компания</th>
+                                                <th>Изменить</th>
+                                                <th>удалить</th>
                                             </tr>
                                             </thead>
 
@@ -105,7 +98,7 @@
 
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            <h4 class="modal-title">Edit user</h4>
+                                                            <h4 class="modal-title">Изменить пользователя</h4>
                                                         </div>
 
                                                         <div class="modal-body">
@@ -131,19 +124,19 @@
                                                                                        name="id" required=""/>
                                                                                 <input type="hidden" id="id-input-edit-hidden" name="id"/>
 
-                                                                                <label for="updateUserEmail">Email</label>
+                                                                                <label for="updateUserEmail">Почта</label>
                                                                                 <input id="updateUserEmail" class="form-control" type="email" name="email"
                                                                                        required=""/>
 
-                                                                                <label for="updateUserName">Login</label>
+                                                                                <label for="updateUserName">Логин</label>
                                                                                 <input id="updateUserName" class="form-control" type="text" name="login"
                                                                                        required=""/>
 
-                                                                                <label for="updateUserPass">Password</label>
+                                                                                <label for="updateUserPass">Пароль</label>
                                                                                 <input id="updateUserPass" class="form-control" type="text" name="password"
                                                                                        required=""/>
 
-                                                                                <label for="updateUserRole">Role</label>
+                                                                                <label for="updateUserRole">Роль</label>
                                                                                 <select class="form-control" id="updateUserRole" name="role">
                                                                                     <option value="user">USER</option>
                                                                                     <option value="admin">ADMIN</option>
@@ -157,78 +150,12 @@
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button id="editUserBtn" class="btn btn-primary">Edit User</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!--модалка - компания-->
-                                            <div id="editCompany" class="modal fade">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                            <h4 class="modal-title">Информация о компании</h4>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                                        <form id="company-form">
-                                                                            <div class="form-group text-center edit-form">
-
-                                                                                <label for="updateCompanyId">ID компании</label>
-                                                                                <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
-                                                                                       name="id" required=""/>
-
-                                                                                <label for="updateIdUser">ID пользователя</label>
-                                                                                <input id="updateIdUser" class="form-control" disabled="disabled"
-                                                                                       type="text" name="id-user" required=""/>
-
-                                                                                <label for="updateNameCompany">Компания</label>
-                                                                                <input id="updateNameCompany" class="form-control" type="text" name="company"
-                                                                                       required=""/>
-
-                                                                                <label for="updateStartTime">Время открытия</label>
-                                                                                <input id="updateStartTime" class="form-control" type="time" name="start-time"
-                                                                                       required=""/>
-
-                                                                                <label for="updateCloseTime">Время закрытия</label>
-                                                                                <input id="updateCloseTime" class="form-control" type="time" name="close-time"
-                                                                                       required=""/>
-
-                                                                                <label for="updateOrgType">Тип компании</label>
-                                                                                <select id="updateOrgType" class="form-control" name="role">
-                                                                                    <option value="1">Ресторан</option>
-                                                                                </select>
-<!--                                                                                <input id="updateOrgType" class="form-control" type="text" name="org-type"-->
-<!--                                                                                       required=""/>-->
-
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
                                         </table>
                                     </div>
 
@@ -241,41 +168,40 @@
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <h4>Add new User</h4>
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
                                                     <!--Если ненужно удалить-->
-                                                    <div id="error-add-message" class="alert alert-danger hidden">
-                                                        <h3>Error!</h3>
-                                                        <div id="error-message">Введёные данные не валидны или
-                                                            пользователь
-                                                            с таким email уже существует
-                                                        </div>
-                                                    </div>
+<!--                                                    <div id="error-add-message" class="alert alert-danger hidden">-->
+<!--                                                        <h3>Error!</h3>-->
+<!--                                                        <div id="error-message">Введёные данные не валидны или-->
+<!--                                                            пользователь-->
+<!--                                                            с таким email уже существует-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
                                                     <!--Если ненужно удалить-->
-                                                    <div id="success-add-message" class="alert alert-success hidden">
-                                                        <h3>Success!</h3>
-                                                        <div id="success-message">Пользователь успешно добавлен!</div>
-                                                    </div>
+<!--                                                    <div id="success-add-message" class="alert alert-success hidden">-->
+<!--                                                        <h3>Success!</h3>-->
+<!--                                                        <div id="success-message">Пользователь успешно добавлен!</div>-->
+<!--                                                    </div>-->
 
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
 
-                                                            <label for="addEmail">Email</label>
+                                                            <label for="addEmail">Почта</label>
                                                             <input id="addEmail" class="form-control" type="text"
                                                                    placeholder="Enter email" name="email" />
 
-                                                            <label for="addLogin">Login</label>
+                                                            <label for="addLogin">Логин</label>
                                                             <input id="addLogin" class="form-control" type="text"
                                                                    placeholder="Login" name="login"/>
 
-                                                            <label for="addPassword">Password</label>
+                                                            <label for="addPassword">Пароль</label>
                                                             <input id="addPassword" class="form-control"
                                                                    type="password" placeholder="Password"
                                                                    name="password" />
 
-                                                            <label for="addRole">Role</label>
+                                                            <label for="addRole">Роль</label>
                                                             <select class="form-control" id="addRole"
                                                                     name="role">
                                                                 <option value="user">User</option>
@@ -285,7 +211,7 @@
 
                                                             <button type="submit" id="addUserBtn"
                                                                     class="btn btn-success btn-lg">
-                                                                Add new user
+                                                                Добавить
                                                             </button>
                                                         </div>
                                                     </form>
@@ -299,18 +225,71 @@
                     </div>
                 </div>
 
-                <!--если ненужно-УДАЛИТЬ,после проверки!!!-->
-                <!--<div role="tabpanel" class="tab-pane" id="user-page">
-                    <h1>User panel</h1>
-                    <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
-                </div>-->
+                <!--модалка - компания-->
+                <div id="editCompany" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Информация о компании</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="company-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="updateCompanyId">ID компании</label>
+                                                    <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
+                                                           name="id" required=""/>
+
+                                                    <label for="updateIdUser">ID пользователя</label>
+                                                    <input id="updateIdUser" class="form-control" disabled="disabled"
+                                                           type="text" name="id-user" required=""/>
+
+                                                    <label for="updateNameCompany">Компания</label>
+                                                    <input id="updateNameCompany" class="form-control" type="text" name="company"
+                                                           required=""/>
+
+                                                    <label for="updateStartTime">Время открытия</label>
+                                                    <input id="updateStartTime" class="form-control" type="time" name="start-time"
+                                                           required=""/>
+
+                                                    <label for="updateCloseTime">Время закрытия</label>
+                                                    <input id="updateCloseTime" class="form-control" type="time" name="close-time"
+                                                           required=""/>
+
+                                                    <label for="updateOrgType">Тип компании</label>
+                                                    <select id="updateOrgType" class="form-control" name="role">
+                                                        <option value="1">Ресторан</option>
+                                                    </select>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<script type="text/javascript" src="js/admin/admin.js" rel="stylesheet"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
+
 </body>
 </html>
