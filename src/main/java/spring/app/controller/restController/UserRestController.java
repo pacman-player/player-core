@@ -32,8 +32,7 @@ public class UserRestController {
                               CompanyService companyService,
                               GenreService genreService,
                               AuthorService authorService,
-                              SongService songService,
-                              CompanyService companyService) {
+                              SongService songService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
