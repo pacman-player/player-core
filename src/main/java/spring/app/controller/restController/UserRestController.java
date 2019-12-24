@@ -1,7 +1,6 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,7 @@ public class UserRestController {
     private final GenreService genreService;
     private final SongService songService;
     private final CompanyService companyService;
+    private final SongCompilationService songCompilation;
 
     @Autowired
     public UserRestController(RoleService roleService,
@@ -32,19 +32,35 @@ public class UserRestController {
                               CompanyService companyService,
                               GenreService genreService,
                               AuthorService authorService,
-                              SongService songService) {
+                              SongService songService,
+                              SongCompilationService songCompilation;) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.authorService = authorService;
         this.songService = songService;
         this.companyService = companyService;
+        this.songCompilation = songCompilation;
     }
 
     @GetMapping(value = "/all_genre")
     public @ResponseBody
     List<Genre> getAllGenre() {
         return genreService.getAllGenre();
+    }
+
+    @PostMapping(value = "/song_compilation")
+    public @ResponseBody
+    List<SongCompilation> getSongCompilation(@RequestBody String genre) {
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+
+        if (genre.equals("Все подборки")) {
+            return songCompilation.getAllSongCompilations();
+        } else {
+            Genre genres = genreService.getByName(genre);
+            List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            return songCompilation.getListSongCompilationsByGenreId(genres.getId());
+        }
     }
 
     @GetMapping("allAuthors")
@@ -93,10 +109,10 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
-    public String getUserRoles(){
+    public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles : user.getRoles()){
+        for (Role roles: user.getRoles()){
             if (roles.getName().equals("ADMIN")){
                 role = "admin";
                 return role;
