@@ -27,22 +27,22 @@
     <div class="row">
 
         <!--меню слева-->
-        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+        <div id="leftMenu" th:fragment="leftMenu"  class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a href="/user/statistics" >Статистика</a>
+                    <a href="/user/statistics">Статистика</a>
                 </li>
                 <li>
-                    <a href="/user/compilation" >Моя подборка</a>
+                    <a href="/user/compilation">Моя подборка</a>
                 </li>
                 <li>
-                    <a href="/user/filter" >Фильтр музыки</a>
+                    <a href="/user/filter">Фильтр музыки</a>
                 </li>
                 <li>
-                    <a href="/user/top" >Топ популярных</a>
+                    <a href="/user/top">Топ популярных</a>
                 </li>
                 <li>
-                    <a href="/user/establishment" >Моё заведение</a>
+                    <a href="/user/company">Моё заведение</a>
                 </li>
                 <li>
                     <a href="/user/promo">Промо - материалы</a>
@@ -57,79 +57,9 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
 
-                <H3> Мой плейлист</H3>
-                <div class="col-fhd-4 col-xl-5 col-lg-6">
-                    <ul class="nav nav-tabs nav-content " role="tablist">
-                        <li id="morning-music-nav" class="active">
-                            <a href="#morning" aria-controls="morning-music-nav" role="tab" data-toggle="tab">
-                                <h5>Утро</h5>8:00 - 12:00</a>
-                        </li>
-                        <li id="day-music-nav">
-                            <a href="#day" aria-controls="day-music" role="tab" data-toggle="tab">
-                                <h5>День</h5>12:00 - 18:00</a>
-                        </li>
-                        <li id="evening-music-nav">
-                            <a href="#evening" aria-controls="evening-music" role="tab" data-toggle="tab">
-                                <h5>Вечер</h5>18:00 - 8:00</a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane" id="morning">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <h3>Morning music</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane active" id="day">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <h3>Day music</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="evening">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <h3>Evening music</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--подборка по жанрам-->
-                <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
-
-                </div>
+                <H3> Статистика</H3>
 
             </div>
-
-            <div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">
-                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>
-                <H3> Моё заведение</H3>
-                <div class="col-fhd-4 col-xl-5 col-lg-6">
-
-                    <form class="form-group">
-                        <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
-                                                                                   type="text"/></label><br/>
-                        <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
-                                                                                       required="required" type="time"/><br/>
-                        <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
-                                                                                       required="required" type="time"/><br/>
-                        <button class="btn btn-primary" id="est-save-data" type="button">Сохранить</button>
-                    </form>
-
-                </div>
-            </div>
-
         </div>
 
     </div>

@@ -28,9 +28,9 @@ public class UserController {
         return "user/promo";
     }
 
-    @GetMapping("/establishment")
+    @GetMapping("/company")
     public String getUserEstablishment() {
-        return "user/establishment";
+        return "user/company";
     }
 
     @GetMapping("/filter")

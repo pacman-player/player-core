@@ -1,17 +1,9 @@
 package spring.app.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,12 +13,6 @@ import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
 import spring.app.security.handlers.CustomLogoutSuccessHandler;
 import spring.app.security.service.UserDetailsServiceImpl;
-
-import javax.servlet.DispatcherType;
-
-import java.util.EnumSet;
-
-import static org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME;
 
 @Configuration
 @ComponentScan("spring.app")

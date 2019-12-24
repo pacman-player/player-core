@@ -50,7 +50,6 @@ public class UserRestController {
         } else {
             Genre genres = genreService.getByName(genre);
             List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
-            System.out.println(list.size());
             return songCompilation.getListSongCompilationsByGenreId(genres.getId());
         }
     }
