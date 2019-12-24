@@ -11,14 +11,15 @@ import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.MusicService;
 import spring.app.service.abstraction.ZaycevSaitServise;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 @Service
-@PropertySource("classpath:uploadedFilesPath.properties")
-public class ZaycevSaitImpl implements ZaycevSaitServise {
+public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -30,7 +31,6 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
 
         String url = "https://zaycev.net/search.html?query_search=";
         Document document = null;
-       // String[] link = new String[1];
         String link = "";
 
         try {
@@ -42,8 +42,8 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
 
         Elements playList1 = document.getElementsByClass("musicset-track__download track-geo");
 
-        for (Element a : playList1) {
-            Element divId = a.child(0);
+        for (Element div : playList1) {
+            Element divId = div.child(0);
             String title = divId.attr("title");
 
             if (title != null) {
@@ -67,13 +67,22 @@ public class ZaycevSaitImpl implements ZaycevSaitServise {
     @Override
     public byte[] getSong(String author, String song) {
 
-        String link = searchSongByAuthorOrSongs(author, song);
-        byte[] bytes =  restTemplate.getForObject(link,byte[].class);
+        FileInputStream fis;
+        Properties property = new Properties();
 
-        //сожранение в папку D:/songs/ для тестирования
-        Path path = Paths.get(fileFolder +author +" "+ song+".mp3");
         try {
-            Files.write(path,bytes);
+            fis = new FileInputStream("src/main/resources/uploadedFilesPath.properties");
+            property.load(fis);
+        } catch (IOException e) {
+            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        }
+
+        String link = searchSongByAuthorOrSongs(author, song);
+        byte[] bytes = restTemplate.getForObject(link, byte[].class);
+
+        Path path = Paths.get(property.getProperty("downloadSongsPath") + author + " " + song + ".mp3");
+        try {
+            Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }

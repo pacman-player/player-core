@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content">
+                <li>
+                    <a href="/admin/users">Пользователи</a>
+                </li>
+
+                <li>
+                    <a href="/admin/companies">Компании</a>
+                </li>
+
+                <li>
+                    <a href="/admin/establishments">Типы заведений</a>
+                </li>
+
+                <li class="active">
+                    <a href="/admin/genres">Жанры</a>
+                </li>
+
+                <li>
+                    <a href="/admin/performers">Исполнители</a>
+                </li>
+
+                <li>
+                    <a href="/admin/songs">Песни</a>
+                </li>
+
+                <li>
+                    <a href="/user">Меню пользователя</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--центральный блок-->
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
+
+</body>
+</html>

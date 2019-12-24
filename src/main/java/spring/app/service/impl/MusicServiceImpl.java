@@ -14,7 +14,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
-@PropertySource("classpath:uploadedFilesPath.properties")
 public class MusicServiceImpl implements MusicService {
 
     @Value("${uploaded_files_path}")
