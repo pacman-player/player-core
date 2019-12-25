@@ -35,4 +35,5 @@ public class AuthorRestController {
     public void deleteAuthor(@RequestBody Long id){
         authorService.deleteAuthorById(id);
     }
+
 }
