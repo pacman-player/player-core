@@ -1,13 +1,13 @@
 $(document).ready(function () {
 
     getTable();
+    getCompaniesTable();
 
     function getTable() {
 
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_users",
-
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -36,16 +36,54 @@ $(document).ready(function () {
                     // htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                     //     ' data-target="#editCompany" onclick = "fillUpdateModalForm(${listUsers[i].id})">company</button></td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
-                        ' data-target="#editCompany">company</button></td>');
+                        ' data-target="#editCompany">компания</button></td>');
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
-                        ' data-target="#editUser">Edit</button></td>');
-                    htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">Delete</button></td>');
+                        ' data-target="#editUser">изменить</button></td>');
+                    htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
-
                 }
 
                 $("#UserTable #list").remove();
                 $("#getUserTable").after(htmlTable);
+            }
+
+        });
+    };
+
+    function getCompaniesTable() {
+
+        $.ajax({
+            type: 'GET',
+            url: "/api/admin/all_companies",
+
+            contentType: 'application/json;',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
+            success: function (listCompanies) {
+                var htmlTable = "";
+
+                for (var i = 0; i < listCompanies.length; i++) {
+
+                    htmlTable += ('<tr id="listCompanies">');
+                    htmlTable += ('<td id="tableCompaniesId">' + listCompanies[i].id + '</td>');
+                    htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
+                    htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
+                    htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
+                    htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
+                    htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
+                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                        ' data-target="#editCompany">изменить</button></td>');
+                    htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
+                    htmlTable += ('</tr>');
+                }
+
+                $("#companiesTable #list").remove();
+                $("#getCompaniesTable").after(htmlTable);
             }
 
         });
@@ -82,6 +120,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
+        location.reload();
     }
 
     //updateForm
@@ -100,10 +139,8 @@ $(document).ready(function () {
         };
 
         $.ajax({
-
             type: 'PUT',
             url: "/api/admin/update_user",
-
             contentType: 'application/json;',
             data: JSON.stringify(user),
             headers: {
@@ -160,14 +197,13 @@ $(document).ready(function () {
         $.ajax({
             type: 'delete',
             url: "/api/admin/delete_user",
-
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            async: true,
+            async: false,
             cache: false,
             dataType: 'JSON',
         });
@@ -187,11 +223,11 @@ $(document).ready(function () {
                 $("#updateUserRole").val("user");
                 break;
             case 'ADMIN':
-               // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
+                // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
                 $("#updateUserRole").val("admin");
                 break;
             default:
-              // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
+                // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
                 $("#updateUserRole").val("admin, user");
                 break;
         }
@@ -208,8 +244,6 @@ $(document).ready(function () {
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
 
-        $("#updateIdUser").val($(this).closest("tr").find("#tableId").text());
-
         $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
@@ -220,8 +254,9 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
+                $('#updateIdUser').val(data.user.id);
                 // $('#updateOrgType').val(data.orgType.name);
-                // $('#updateIdUser').val(data.user.id);
+
 
                 switch ($(data.orgType.id).text()) {
                     case '1':
@@ -233,9 +268,8 @@ $(document).ready(function () {
 
     });
 
-    function clicKTable() {//для обновления таблицы юзеров
-        getTable();
-        $("#tab-user-panel").click();
-    }
-
+    // function clicKTable() {//для обновления таблицы юзеров
+    //     getTable();
+    //     $("#tab-user-panel").click();
+    // }
 });

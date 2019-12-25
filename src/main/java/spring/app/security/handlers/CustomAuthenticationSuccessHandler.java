@@ -40,9 +40,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
 		if (authorities.contains(new Role("ADMIN"))){
-			return "/admin";
+			return "/admin/users";
 		} else if (authorities.contains(new Role("USER"))) {
-			return "/user";
+			return "user/statistics";
 		} else {
 			return "/public/error";
 		}

@@ -21,8 +21,8 @@ public class Company {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime closeTime;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+//    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
