@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
 import spring.app.service.abstraction.SongService;
 
+import java.util.List;
+
 @Service
 public class SongServiceImpl implements SongService {
 
@@ -14,6 +16,16 @@ public class SongServiceImpl implements SongService {
     @Autowired
     public SongServiceImpl(SongDao songDao) {
         this.songDao = songDao;
+    }
+
+    @Override
+    public List<Song> getAllSong() {
+        return songDao.getAll();
+    }
+
+    @Override
+    public void deleteSongById(Long id) {
+        songDao.deleteById(id);
     }
 
     @Override

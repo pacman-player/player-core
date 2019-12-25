@@ -6,14 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.Role;
-import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.model.*;
+import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -30,13 +24,15 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final GenreService genreService;
+    private final SongService songService;
 
     @Autowired
-    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService) {
+    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongService songService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
+        this.songService = songService;
     }
 
     @GetMapping(value = "/all_users")
@@ -51,6 +47,18 @@ public class AdminRestController {
     List<Company> getAllCompanies() {
         List<Company> list = companyService.getAllCompanies();
         return list;
+    }
+
+    @GetMapping(value = "/all_songs")
+    public @ResponseBody
+    List<Song> getAllSongs() {
+        List<Song> list = songService.getAllSong();
+        return list;
+    }
+
+    @DeleteMapping(value = "/delete_song")
+    public void deleteSong(@RequestBody Long id) {
+        songService.deleteSongById(id);
     }
 
     @PostMapping(value = "/add_user")

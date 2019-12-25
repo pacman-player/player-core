@@ -60,6 +60,133 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
+                <div role="tabpanel" class="tab-pane active" id="list-song">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="song-table-nav" class="active">
+                            <a id="tab-song-panel" href="#song-panel" aria-controls="song-panel" role="tab" data-toggle="tab">Все песни</a>
+                        </li>
+                        <li id="add-song-nav">
+                            <a href="#add-song-panel" aria-controls="add-song-panel" role="tab" data-toggle="tab">
+                                Новая песня</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--таблица песен-->
+                        <div role="tabpanel" class="tab-pane active" id="song-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="songsTable" class="table">
+                                            <thead id="getSongsTable">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Автор</th>
+                                                <th>Жанр</th>
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
+                                            </tr>
+                                            </thead>
+
+                                            <!--модалка - обновление песни-->
+                                            <div id="editSong" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">Изменить песню</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
+                                                                        </div>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="updateSongId">ID</label>
+                                                                                <input id="updateSongId" class="form-control" disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden" id="id-input-edit-hidden" name="id"/>
+
+                                                                                <label for="updateSongName">Название</label>
+                                                                                <input id="updateSongName" class="form-control" type="text" name="name"
+                                                                                       required=""/>
+
+                                                                                <label for="updateSongAuthor">Автор</label>
+                                                                                <input id="updateSongAuthor" class="form-control" type="text" name="author"
+                                                                                       required=""/>
+
+                                                                                <label for="updateSongGenre">Жанр</label>
+                                                                                <input id="updateSongGenre" class="form-control" type="text" name="genre"
+                                                                                       required=""/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                            <button id="editSongBtn" class="btn btn-primary">Изменить</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--добавление песни-->
+                        <div role="tabpanel" class="tab-pane" id="add-song-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
+
+                                                            <label for="addSongName">Название</label>
+                                                            <input id="addSongName" class="form-control" type="text"
+                                                                   placeholder="Enter song name" name="songName" />
+
+                                                            <label for="addAuthor">Автор</label>
+                                                            <input id="addAuthor" class="form-control" type="text"
+                                                                   placeholder="Enter author name" name="author"/>
+
+                                                            <label for="addGenre">Жанр</label>
+                                                            <input id="addGenre" class="form-control" type="text"
+                                                                   placeholder="Entry genre name" name="genre" />
+
+                                                            <button type="submit" id="addSongBtn"
+                                                                    class="btn btn-success btn-lg">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
             </div>
         </div>
     </div>
@@ -67,7 +194,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/songs.js" rel="script"></script>
 
 </body>
 </html>

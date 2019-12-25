@@ -13,11 +13,11 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
@@ -27,13 +27,27 @@ public class Song {
     public Song() {
     }
 
+    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
+        this.id = id;
+        this.author = author;
+        this.genre = genre;
+        this.song = song;
+    }
+
+    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.song = song;
+    }
+
     public Song(String name) {
         this.name = name;
     }
 
-    public void setId(Long id) {
-        id = id;
-    }
+//    public void setId(Long id) {
+//        id = id;
+//    }
 
     public void setName(String name) {
         this.name = name;

@@ -7,6 +7,7 @@ import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -27,4 +28,14 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         }
         return song;
     }
+
+//    @Override
+//    public List<Song> getAll() {
+//        return super.getAll();
+//    }
+//
+//    @Override
+//    public void deleteById(Long id) {
+//        super.deleteById(id);
+//    }
 }

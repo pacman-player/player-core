@@ -99,7 +99,6 @@ $(document).ready(function () {
                 $('#updateIdUser').val(data.user.id);
                 // $('#updateOrgType').val(data.orgType.name);
 
-
                 switch ($(data.orgType.id).text()) {
                     case '1':
                         $("#updateOrgType").val("Ресторан");
