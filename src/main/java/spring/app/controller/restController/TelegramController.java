@@ -1,31 +1,34 @@
 package spring.app.controller.restController;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.TelegramUser;
-import spring.app.service.impl.TelegramServiceImpl;
+import spring.app.dto.SongRequest;
+import spring.app.dto.SongResponce;
+import spring.app.service.abstraction.TelegramService;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramController {
 
-    private final TelegramServiceImpl telegramService;
+    private final TelegramService telegramService;
 
-    @Autowired
-    public TelegramController(TelegramServiceImpl telegramService) {
+    public TelegramController(TelegramService telegramService) {
         this.telegramService = telegramService;
     }
 
     @PostMapping(value = "/song")
-    public void add(@RequestBody TelegramUser tlgUser) {
-        telegramService.sendSongToBot(tlgUser);
+    public SongResponce searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
+
+        return telegramService.getSong(songRequest);
+
     }
 
     @PostMapping(value = "/approve")
-    public void approve (@RequestBody TelegramUser tlgUser) {
-        telegramService.approve(tlgUser);
+    public void approve (@RequestBody SongRequest songRequest) {
+        System.out.println(songRequest.getSongId());
     }
 }
