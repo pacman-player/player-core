@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserByGoogleId(googleId);
     }
 
-    public User getByEmail(String email) {
+    public User getUserByEmail(String email) {
         return userDao.getByEmail(email);
     }
 

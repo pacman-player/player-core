@@ -30,8 +30,8 @@ public class RegistrationRestController {
 
     @PostMapping("/first")
     public String saveUser(UserRegistrationDto userDto) {
-        User userByEmail = userService.getByEmail(userDto.getEmail());
-        User userByLogin = userService.getByEmail(userDto.getLogin());
+        User userByEmail = userService.getUserByEmail(userDto.getEmail());
+        User userByLogin = userService.getUserByLogin(userDto.getLogin());
         if (userByEmail != null || userByLogin != null) {
             return "exist";
         }
