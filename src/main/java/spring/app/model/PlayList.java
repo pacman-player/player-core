@@ -2,6 +2,7 @@ package spring.app.model;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,17 +14,17 @@ public class PlayList {
 
     private String name;
 
-    @ManyToMany(targetEntity = Song.class)
-    @JoinTable(name = "song_on_play_list",
-            joinColumns = {@JoinColumn(name = "song_id")},
-            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
-    private Set<Song> songs;
+    @ManyToMany(targetEntity = SongCompilation.class)
+    @JoinTable(name = "song_compilation_on_play_list",
+            joinColumns = {@JoinColumn(name = "play_list_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
+    private Set<SongCompilation> songCompilation = new HashSet<>();
 
     public PlayList(){}
 
-    public PlayList(String name, Set<Song> songs) {
+    public PlayList(String name, Set<SongCompilation> songCompilation) {
         this.name = name;
-        this.songs = songs;
+        this.songCompilation = songCompilation;
     }
 
     public Long getId() {
@@ -42,12 +43,12 @@ public class PlayList {
         this.name = name;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    public Set<SongCompilation> getSongCompilation() {
+        return songCompilation;
     }
 
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
+    public void setSongCompilation(Set<SongCompilation> songs) {
+        this.songCompilation = songCompilation;
     }
 
     @Override

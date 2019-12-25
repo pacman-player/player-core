@@ -1,3 +1,35 @@
-.test {
+button {
+    margin: 25px 0 0 25px;
+}
+
+.hide{
     display: none;
 }
+
+.time{
+    text-align: right;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    left: 0;
+    color: #335fb8;
+    z-index: 2;
+}
+.audio-progress{
+    height: 22px;
+    position: relative;
+    margin-top: 15px;
+    background-color: #e5eff1;
+
+}
+#progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #006182;
+    z-index: 1;
+}
+
+

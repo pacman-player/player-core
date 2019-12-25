@@ -1,8 +1,7 @@
 package spring.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -15,11 +14,15 @@ public class Company {
     @GeneratedValue
     private Long id;
     private String name;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime startTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime closeTime;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+//    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -62,8 +65,18 @@ public class Company {
         this.orgType = orgType;
     }
 
+    public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.orgType = orgType;
+    }
+
     public Company() {
     }
+
 
     public Long getId() {
         return id;

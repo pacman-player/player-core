@@ -1,6 +1,9 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "genre")
@@ -11,10 +14,22 @@ public class Genre {
 
     private String name;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "genre")
+    private Set<SongCompilation> songCompilation;
+
     public Genre(){}
 
     public Genre(String name) {
         this.name = name;
+    }
+
+    public Set<SongCompilation> getSongCompilation() {
+        return songCompilation;
+    }
+
+    public void setSongCompilation(Set<SongCompilation> songCompilation) {
+        this.songCompilation = songCompilation;
     }
 
     public void setId(Long id) {
