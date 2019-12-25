@@ -22,6 +22,7 @@ public class PlayerPaths {
             }
             return Paths.get(pathDownload + separator + filename);
         } catch (URISyntaxException | IOException ignored) {
+            //throw new IOException("Error creating directory.");
         }
         return null;
     }

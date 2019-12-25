@@ -102,13 +102,13 @@ public class KrolikSaitServiceImpl implements KrolikSaitService {
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
         Path path = PlayerPaths.getSongsDir(author + " " + song + ".mp3");
-        try {
-            assert path != null;
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (path != null) {
+            try {
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
         return bytes;
     }
 }
