@@ -41,4 +41,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		}
 		return user;
 	}
+
+	@Override
+	public User getUserByVkId(int vkId) {
+		User user = null;
+		try {
+			TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.vkId = :vkId", User.class);
+			query.setParameter("vkId", vkId);
+			user = query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return user;
+	}
 }

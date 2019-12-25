@@ -29,9 +29,10 @@ public class User implements UserDetails {
     //@Column(name = "password", length = 30, nullable = false)
     private String password;
 
-
-
     private String googleId;
+
+    //@Column(unique = true)
+    private int vkId;
 
     @Lob
     @Column(name = "profile_pic")
@@ -77,6 +78,12 @@ public class User implements UserDetails {
         this.googleId = googleId;
         this.login = email;
         this.roles=roleSet;
+        this.enabled = enabled;
+    }
+
+    public User(int vkId, Set<Role> roles, Boolean enabled) {
+        this.vkId = vkId;
+        this.roles = roles;
         this.enabled = enabled;
     }
 
@@ -182,6 +189,14 @@ public class User implements UserDetails {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public int getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(int vkId) {
+        this.vkId = vkId;
     }
 
     @Override
