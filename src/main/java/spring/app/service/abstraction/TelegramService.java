@@ -1,11 +1,11 @@
 package spring.app.service.abstraction;
 
-import spring.app.dto.TelegramUser;
+import spring.app.dto.SongRequest;
+import spring.app.dto.SongResponce;
 
-import java.io.File;
+import java.io.IOException;
 
 public interface TelegramService {
-    TelegramUser sendSongToBot(TelegramUser telegramUser);
+    SongResponce getSong(SongRequest telegramUser) throws IOException;
 
-    TelegramUser approve(TelegramUser telegramUser);
 }
