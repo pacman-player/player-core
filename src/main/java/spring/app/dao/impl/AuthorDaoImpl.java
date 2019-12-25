@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 @Repository
 @Transactional
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
-    AuthorDaoImpl() {
+    public AuthorDaoImpl() {
         super(Author.class);
     }
 
