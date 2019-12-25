@@ -7,8 +7,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    @GetMapping
-    public String getAdminPage() {
-        return "admin/admin";
+    @GetMapping("/users")
+    public String getUsers() {
+        return "admin/users";
+    }
+
+    @GetMapping("/companies")
+    public String getCompanies() {
+        return "admin/companies";
+    }
+
+    @GetMapping("/establishments")
+    public String getEstablishments() {
+        return "admin/establishments";
+    }
+
+    @GetMapping("/genres")
+    public String getGenres() {
+        return "admin/genres";
+    }
+
+    @GetMapping("/performers")
+    public String getPerformers() {
+        return "admin/performers";
+    }
+
+    @GetMapping("/songs")
+    public String getSongs() {
+        return "admin/songs";
     }
 }
+
+
