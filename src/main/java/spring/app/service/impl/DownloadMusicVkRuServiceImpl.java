@@ -100,11 +100,12 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
                 String fileName = addToDatabase(artist, track);
                 //Path path = Paths.get(fileFolder + fileName);
                 Path path = PlayerPaths.getSongsDir(fileName);
-                assert path != null;
-                Files.deleteIfExists(path);
-                Files.copy(in, Files.createFile(path), REPLACE_EXISTING);
-                in.close();
-                success = true;
+                if (path != null) {
+                    Files.deleteIfExists(path);
+                    Files.copy(in, Files.createFile(path), REPLACE_EXISTING);
+                    in.close();
+                    success = true;
+                }
                 break;
             }
         }
