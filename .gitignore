@@ -58,3 +58,4 @@ crashlytics-build.properties
 Будет удалено .gitignore
 Будет удалено pom.xml
 Будет удалено src/
+/resources/
