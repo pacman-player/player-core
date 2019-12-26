@@ -10,4 +10,10 @@ public interface OrgTypeService {
     List<OrgType> getAllOrgTypes();
 
     OrgType getOrgTypeById(long id);
+
+    void deleteOrgTypeById(Long id);
+
+    void updateOrgType(OrgType orgType);
+
+    List<OrgType> getAllOrgType();
 }
