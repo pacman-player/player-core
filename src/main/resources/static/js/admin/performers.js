@@ -19,7 +19,7 @@ $(document).ready(function () {
 
                 for (var i = 0; i < listAuthors.length; i++){
                     htmlTable += ('<tr id="list">');
-                    htmlTable += ('<td id="authorID">' + listAuthors[i].id + '</td>');
+                    htmlTable += ('<td id="authorId">' + listAuthors[i].id + '</td>');
                     htmlTable += ('<td id="authorName">' + listAuthors[i].name + '</td>');
                     htmlTable += ('<td><button id="editAuthorBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#editAuthor">Изменить</button></td>');
                     htmlTable += ('<td><button id="deleteAuthor" class="btn btn-sm btn-info" type="button">Удалить</button> </td>');
@@ -86,16 +86,15 @@ $(document).ready(function () {
     });
 
     function updateAuthor() {
-        var author = {
-            "id":$("#updateAutorId").val(),
-            "name":$("#updateAutorName").val()
-        };
+
+        var name = $("#editAuthorName").val();
+        var id = $("#editAuthorId").val();
 
         $.ajax({
             type: 'put',
             url: "/api/admin/author/update_author",
             contentType: 'application/json',
-            data: JSON.stringify(author),
+            data: JSON.stringify(name, id),
             headers:{
                 'Accept':'application/json',
                 'Content-Type': 'application/json'
