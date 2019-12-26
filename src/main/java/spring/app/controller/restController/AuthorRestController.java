@@ -24,6 +24,17 @@ public class AuthorRestController {
         return authorService.getAllAuthor();
     }
 
+    @PostMapping(value = "/add_author")
+    public void addAuthor(@RequestBody String name){
+        name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+
+        if(authorService.getByName(name) == null){
+            Author author = new Author();
+            author.setName(name);
+            authorService.addAuthor(author);
+        }
+    }
+
     @PutMapping(value = "/update_author")
     public void updateAuthor(@RequestBody AuthorDto authorDto){
         Author author = authorService.getById(authorDto.getId());
