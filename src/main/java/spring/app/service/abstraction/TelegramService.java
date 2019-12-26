@@ -6,6 +6,6 @@ import spring.app.dto.SongResponce;
 import java.io.IOException;
 
 public interface TelegramService {
-    SongResponce getSong(SongRequest telegramUser) throws IOException;
+    SongResponce getSong(SongRequest songRequest) throws IOException;
 
 }
