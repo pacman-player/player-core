@@ -16,7 +16,7 @@ public class Role implements GrantedAuthority {
 	@Column(name = "id")
 	private Long id;
 
-    @Column(name = "name", length = 20, nullable = false)
+    @Column(name = "name", length = 20, nullable = false, unique = true)
     private String name;
 
     @JsonIgnore
@@ -76,12 +76,11 @@ public class Role implements GrantedAuthority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id.equals(role.id) &&
-                name.equals(role.name);
+        return name.equals(role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(name);
     }
 }
