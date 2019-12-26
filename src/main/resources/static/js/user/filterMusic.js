@@ -13,36 +13,32 @@
         dataType: 'JSON',
 
         success: function (allGenre) {
+            $("#forGenreTable").html(`<table class="table table-borderless">
+            ${allGenre.map(renderGenre).join('')}
+            </table>`);
+        }
+    });
 
-            let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
-
-            for (let i = 0; i < allGenre.length; i++) {
-                const genreId = allGenre[i].id;
-                tbl +=
-                    `
+    function renderGenre(genre) {
+        return `
                     <tr>
                         <td>
-                            ${allGenre[i].name}
+                            ${genre.name}
                         </td>
                         
                         <!-- кнопка по добавлению в фильтр жанра -->
                         <td>
                             <button
                                 type="button"
-                                class="btn btn-outline-danger"
-                                onclick="addGenreToFilter(${genreId})"
+                                class="btn btn-warning"
+                                onclick="addGenreToFilter(${genre.id})"
                             >
                                 Заблокировать
                             </button>
                         </td>
                     </tr>
                     `;
-            }
-            tbl += "</table>";
-            $("#forGenreTable").html(tbl);
-        }
-    });
-
+    }
     // функция для добавления жанра в список запрещеных вызываеться при клике на кнопку
     function addGenreToFilter(genreId) {
         $.ajax({
@@ -50,9 +46,9 @@
             url: '/api/user/genreBan',
             contentType : "application/json",
             data:JSON.stringify(genreId),
-            dataType: 'json',
             success: function () {
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена
+                console.log("ВЫПОЛНЕНИЕ");
             }
         });
     }
@@ -70,7 +66,7 @@
             contentType: 'application/json;',
 
             success: function (allAuthors) {
-                let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
+                let tbl = `<table class="table table-borderless">`;
 
                 for (let i = 0; i < allAuthors.length; ++i) {
                     const authorId = allAuthors[i].id;
@@ -85,13 +81,12 @@
                                 <button
                                     type="button"
                                     id="buttonAuthor"
-                                    class="btn btn-outline-danger"
+                                    class="btn btn-warning"
                                     onclick="addAuthorToFilter(${authorId})"
                                 >
                                     Заблокировать
                                 </button>
                             </td>
-                        
                         </tr>
                         `;
                 }
@@ -112,6 +107,7 @@
 
             success: function () {
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена
+                console.log("ВЫПОЛНЕНИЕ");
                 $('#buttonAuthor').toggleClass('click');
             }
         });
@@ -130,7 +126,7 @@
             contentType: 'application/json;',
 
             success: function (allMusics) {
-                let tbl = "<table class=\"table table-responsive{max-width 768px} table-borderless\">";
+                let tbl = `<table class="table table-borderless">`;
 
                 for (let i = 0; i < allMusics.length; ++i) {
                     const musicId = allMusics[i].id;
@@ -144,7 +140,7 @@
                             <td>
                                 <button
                                     type="button"
-                                    class="btn btn-outline-danger"
+                                    class="btn btn-warning"
                                     onclick="addMusicToFilter(${musicId})"
                                 >
                                     Заблокировать
@@ -169,6 +165,7 @@
             data:JSON.stringify(musicId),
             dataType: 'json',
             success: function () {
+                console.log("ВЫПОЛНЕНИЕ");
                 //TODO после добавления жанра в бан кнопка напротив этого жанра должна быть помечена
             }
         });

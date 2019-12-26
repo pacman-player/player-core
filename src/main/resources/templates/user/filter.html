@@ -2,7 +2,7 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Фильтр песен</title>
+    <title>Промо материалы</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -57,8 +57,95 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
 
-                <H3> Фильтр песен</H3>
+                <H3>Страница Фильтров</H3>
 
+                <div class="col-fhd-4 col-xl-5 col-lg-6">
+                    <ul class="nav nav-tabs nav-content " role="tablist">
+
+                        <li id="morning-music-nav" class="active">
+                            <a href="#morning"
+                               aria-controls="morning-music-nav"
+                               role="tab"
+                               data-toggle="tab"
+                            >
+                                По жанрам
+                            </a>
+                        </li>
+
+                        <li id="day-music-nav">
+                            <a href="#day"
+                               aria-controls="day-music"
+                               role="tab"
+                               data-toggle="tab"
+                            >
+                                По артистам
+                            </a>
+                        </li>
+
+                        <li id="evening-music-nav">
+                            <a href="#evening"
+                               aria-controls="evening-music"
+                               role="tab"
+                               data-toggle="tab"
+                            >
+                                По песням
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content active">
+                        <div role="tabpanel" class="tab-pane active" id="morning">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+
+                                        <div id="forGenreTable">
+                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="day">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+
+                                        <form class="form-inline authorSearch">
+                                            <input class="form-control mr-sm-2 nameForAuthor" type="search" placeholder="Search" aria-label="Search"/>
+                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                        </form>
+
+                                        <div id="forAuthorTable">
+                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="evening">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+
+                                        <form class="form-inline musicSearch">
+                                            <input class="form-control mr-sm-2 nameForMusic" type="search" placeholder="Search" aria-label="Search"/>
+                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                        </form>
+
+                                        <div id="forMusicTable">
+                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -66,7 +153,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/user/filter.js" rel="stylesheet"></script>
+<script type="text/javascript" src="/js/user/promo.js" rel="stylesheet"></script>
+<script type="text/javascript" src="/js/user/filterMusic.js"></script>
 
 </body>
 </html>
