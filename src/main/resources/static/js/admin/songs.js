@@ -58,7 +58,35 @@ $(document).ready(function () {
             dataType: 'JSON'
         });
         location.reload();
-    };
+    }
 
+    //edit song
+    $('#editSongBtn').click(function (event) {
+        event.preventDefault();
+        updateSongForm();
+    });
 
+    function updateSongForm() {
+        var songDto = {
+            'id': $('#updateSongId').val(),
+            'name': $('#updateSongName').val(),
+            'author': $('#updateSongAuthor').val(),
+            'genre': $('#updateSongGenre').val()
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/admin/update_song',
+            contentType: 'application/json',
+            data: JSON.stringify(songDto),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
+        });
+        location.reload();
+    }
 });
