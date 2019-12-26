@@ -102,15 +102,41 @@
                                                                     <div id="success-edit-message" class="alert alert-danger hidden">
                                                                         <div id="message"></div>
                                                                     </div>
+                                                                    <form id="edit-form">
+                                                                        <div class="form-group text-center edit-form">
+                                                                            <label for="updateAutorId">ID</label>
+                                                                            <input id="updateAutorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
+                                                                            <input id="id-input-edit-hidden" name="id" type="hidden"/>
 
+                                                                            <label for="updateAutorName">Имя</label>
+                                                                            <input id="updateAutorName" class="form-control" name="name" type="text" required=""/>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
+                                                        <button id="editAuthorBtn" class="btn btn-primary">Изменить</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 <!--                ///////-->
             </div>
         </div>
     </div>
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/admin/performers.js" rel="script"></script>
