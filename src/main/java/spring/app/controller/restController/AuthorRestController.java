@@ -36,9 +36,9 @@ public class AuthorRestController {
     }
 
     @PutMapping(value = "/update_author")
-    public void updateAuthor(@RequestBody String name, Long id){
-        Author author = authorService.getById(id);
-        author.setName(name);
+    public void updateAuthor(@RequestBody AuthorDto authorDto){
+        Author author = authorService.getById(authorDto.getId());
+        author.setName(authorDto.getName());
         authorService.updateAuthor(author);
     }
 

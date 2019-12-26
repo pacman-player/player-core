@@ -87,14 +87,16 @@ $(document).ready(function () {
 
     function updateAuthor() {
 
-        var name = $("#editAuthorName").val();
-        var id = $("#editAuthorId").val();
+        var author = {
+            "id":$("#editAuthorId").val(),
+            "name":$("#editAuthorName").val()
+        }
 
         $.ajax({
             type: 'put',
             url: "/api/admin/author/update_author",
             contentType: 'application/json',
-            data: JSON.stringify(name, id),
+            data: JSON.stringify(author),
             headers:{
                 'Accept':'application/json',
                 'Content-Type': 'application/json'
@@ -105,5 +107,14 @@ $(document).ready(function () {
         });
         location.reload();
     }
+
+    //modal form заполнение
+    $(document).on('click', '#editAuthorBtn', function () {
+
+        $("#editAuthorId").val($(this).closest("tr").find("#authorId").text());
+        $("#editAuthorName").val($(this).closest("tr").find("#authorName").text());
+
+
+    });
 
 });
