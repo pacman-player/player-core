@@ -26,6 +26,10 @@ public class User implements UserDetails {
     //@Column(name = "email",  nullable = false, unique = true)
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
     //@Column(name = "password", length = 30, nullable = false)
     private String password;
 
@@ -81,9 +85,12 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(int vkId, Set<Role> roles, Boolean enabled) {
+    public User(String firstName, String lastName, int vkId, Set<Role> roles, Company company, Boolean enabled) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.vkId = vkId;
         this.roles = roles;
+        this.company = company;
         this.enabled = enabled;
     }
 
@@ -197,6 +204,22 @@ public class User implements UserDetails {
 
     public void setVkId(int vkId) {
         this.vkId = vkId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override

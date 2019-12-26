@@ -13,6 +13,9 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vk.api.sdk.objects.users.UserXtrCounters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -32,11 +35,13 @@ import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller("/test")
 @PropertySource("classpath:application.properties")
 public class MainController {
+    private final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
     private final RoleService roleService;
     private final UserService userService;
@@ -138,7 +143,7 @@ public class MainController {
         StringBuilder url = new StringBuilder();
         url.append("https://oauth.vk.com/authorize?client_id=").append(appId)
                 .append("&display=page&redirect_uri=").append(redirectUri)
-                .append("&scope=email&response_type=code&v=5.103");
+                .append("&scope=status,email&response_type=code&v=5.103");
         return "redirect:" + url.toString();
     }
 
@@ -155,8 +160,13 @@ public class MainController {
             Role role = roleService.getRoleById((long) 2);
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
-            user = new User(actor.getId(), roleSet, true);
-            user.setCompany(companyService.getById(1L));
+            List<UserXtrCounters> list = vk.users().get(actor).execute();
+            user = new User(list.get(0).getFirstName(),
+                    list.get(0).getLastName(),
+                    list.get(0).getId(),
+                    roleSet,
+                    companyService.getById(1L),
+                    true);
             userService.addUser(user);
             user = userService.getUserByVkId(actor.getId());
         }
