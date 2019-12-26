@@ -49,7 +49,7 @@ public class GenreRestController {
 
     @DeleteMapping(value = "/delete_genre")
     public void deleteGenre(@RequestBody Long id) {
-        songCompilationService.deleteValByGenreId(id);
+      //  songCompilationService.deleteValByGenreId(id);
         genreService.deleteGenreById(id);
     }
 
