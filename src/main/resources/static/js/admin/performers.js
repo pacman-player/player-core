@@ -25,7 +25,7 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="deleteAuthor" class="btn btn-sm btn-info" type="button">Удалить</button> </td>');
                     htmlTable += ('</tr>');
                 }
-                $("#AuthorTable #list-authors").remove();
+                $("#AuthorTable #list").remove();
                 $("#getAuthorTable").after(htmlTable);
             }
         });

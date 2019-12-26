@@ -67,7 +67,7 @@
                             <a id="tab-author-panel" href="#author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Все исполнители</a>
                         </li>
                         <li id="add-authors-nav">
-                            <a href="#add-authors-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Новый исполнитель</a>
+                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Новый исполнитель</a>
                         </li>
                     </ul>
 
@@ -97,29 +97,31 @@
 
                                                         <div class="modal-body">
                                                             <div class="container-fluid">
-                                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                                    <div id="success-edit-message" class="alert alert-danger hidden">
-                                                                        <div id="message"></div>
-                                                                    </div>
-                                                                    <form id="edit-form">
-                                                                        <div class="form-group text-center edit-form">
-                                                                            <label for="editAuthorId">ID</label>
-                                                                            <input id="editAuthorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
-                                                                            <input id="id-input-edit-hidden" name="id" type="hidden"/>
-
-                                                                            <label for="editAuthorName">Имя</label>
-                                                                            <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
                                                                         </div>
-                                                                    </form>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="editAuthorId">ID</label>
+                                                                                <input id="editAuthorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
+                                                                                <input id="id-input-edit-hidden" name="id" type="hidden"/>
+
+                                                                                <label for="editAuthorName">Имя</label>
+                                                                                <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
-                                                        <button id="editAuthorBtn" class="btn btn-primary">Изменить</button>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
+                                                            <button id="editAuthorBtn" class="btn btn-primary">Изменить</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
