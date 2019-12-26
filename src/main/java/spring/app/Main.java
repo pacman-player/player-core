@@ -8,8 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import spring.app.configuration.initializer.TestDataInit;
-import spring.app.service.impl.KrolikSaitServiceImpl;
-import spring.app.service.impl.ZaycevSaitServiceImpl;
 
 import javax.annotation.PostConstruct;
 
@@ -21,8 +19,8 @@ public class Main extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
-       /* //для тестирования Zaycev
-        ZaycevSaitServiceImpl zaycevSaitServise = new ZaycevSaitServiceImpl();
+        //для тестирования Zaycev
+       /* ZaycevSaitServiceImpl zaycevSaitServise = new ZaycevSaitServiceImpl();
         zaycevSaitServise.getSong("ария", "штиль");
 
         //для тестирования Krolik
