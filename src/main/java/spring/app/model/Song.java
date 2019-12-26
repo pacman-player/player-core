@@ -1,5 +1,8 @@
 package spring.app.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,10 +16,12 @@ public class Song {
 
     private String name;
 
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
@@ -41,13 +46,13 @@ public class Song {
         this.song = song;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Song(String name) {
         this.name = name;
     }
-
-//    public void setId(Long id) {
-//        id = id;
-//    }
 
     public void setName(String name) {
         this.name = name;

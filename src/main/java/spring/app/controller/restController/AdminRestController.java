@@ -50,8 +50,8 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/all_songs")
-    public @ResponseBody
-    List<Song> getAllSongs() {
+    @ResponseBody
+    public List<Song> getAllSongs() {
         List<Song> list = songService.getAllSong();
         return list;
     }

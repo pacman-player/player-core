@@ -10,6 +10,22 @@ public class SongDto {
     private Author author;
     private Genre genre;
 
+    public SongDto(Long id, String name, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public SongDto(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public SongDto() {
+    }
+
     public Long getId() {
         return id;
     }
