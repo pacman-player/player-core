@@ -38,15 +38,13 @@ public class GenreRestController {
         name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genreService.getByName(name) == null) {
-
             Genre genre = new Genre();
             genre.setName(name);
             genreService.addGenre(genre);
 
-            Notification notification = new Notification();
-            notification.setUser((User) getContext().getAuthentication().getPrincipal());
-            notification.setMessage("Was added genre " + name);
-            notificationService.addNotification(notification);
+            String message = "Was added genre " + name;
+            User user = (User) getContext().getAuthentication().getPrincipal();
+            notificationService.addNotification(message,user.getId());
         }
 
     }
@@ -57,10 +55,9 @@ public class GenreRestController {
         genre.setName(genreDto.getName());
         genreService.updateGenre(genre);
 
-        Notification notification = new Notification();
-        notification.setUser((User) getContext().getAuthentication().getPrincipal());
-        notification.setMessage("Genre name " + genre.getName() + " has been changed to " + genreDto.getName());
-        notificationService.addNotification(notification);
+        String message = "Genre name " + genre.getName() + " has been changed to " + genreDto.getName();
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        notificationService.addNotification(message,user.getId());
     }
 
     @DeleteMapping(value = "/delete_genre")
@@ -68,10 +65,9 @@ public class GenreRestController {
         Genre genre = genreService.getById(id);
         genreService.deleteGenreById(id);
 
-        Notification notification = new Notification();
-        notification.setUser((User) getContext().getAuthentication().getPrincipal());
-        notification.setMessage("Was delete genre " + genre.getName());
-        notificationService.addNotification(notification);
+        String message = "Was delete genre " + genre.getName();
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        notificationService.addNotification(message,user.getId());
     }
 
 

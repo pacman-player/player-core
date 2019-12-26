@@ -20,6 +20,11 @@ public class Notification {
     public Notification() {
     }
 
+    public Notification(String message, User user) {
+        this.message = message;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

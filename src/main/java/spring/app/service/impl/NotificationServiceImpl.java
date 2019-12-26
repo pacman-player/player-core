@@ -1,8 +1,11 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.NotificationDao;
+import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Notification;
+import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
 import java.util.List;
@@ -11,14 +14,28 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
+    private UserDao userDao;
 
-    public NotificationServiceImpl(NotificationDao notificationDao) {
+    @Autowired
+    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
         this.notificationDao = notificationDao;
+        this.userDao = userDao;
     }
 
     @Override
     public void addNotification(Notification notification) {
         notificationDao.save(notification);
+    }
+
+    @Override
+    public void addNotification(String message, Long user_id) {
+        List<User> users = userDao.getAll();
+        for (User user: users){
+            if(user.getId() != user_id){
+                Notification notification = new Notification(message,user);
+                notificationDao.save(notification);
+            }
+        }
     }
 
     @Override
