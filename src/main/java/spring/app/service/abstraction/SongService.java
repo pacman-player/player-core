@@ -8,6 +8,7 @@ public interface SongService {
     List<Song> getAllSong();
     Song getByName(String name);
     void addSong(Song song);
+    void updateSong(Song song);
     void deleteSongById(Long id);
     boolean isExist(String name);
 }

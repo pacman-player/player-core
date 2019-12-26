@@ -28,24 +28,27 @@ public class Song {
     private Genre genre;
 
     @OneToMany(mappedBy = "song")
-    private Set<SongQueue> song;
+    private Set<SongQueue> songQueues;
 
     public Song() {
     }
 
-    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
-        this.id = id;
-        this.author = author;
-        this.genre = genre;
-        this.song = song;
+    public Song(Long id, String name, Author author, Genre genre) {
     }
 
-    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
-        this.name = name;
-        this.author = author;
-        this.genre = genre;
-        this.song = song;
-    }
+//    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
+//        this.id = id;
+//        this.author = author;
+//        this.genre = genre;
+//        this.song = song;
+//    }
+//
+//    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
+//        this.name = name;
+//        this.author = author;
+//        this.genre = genre;
+//        this.song = song;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -83,12 +86,12 @@ public class Song {
         this.genre = genre;
     }
 
-    public Set<SongQueue> getSong() {
-        return song;
+    public Set<SongQueue> getSongQueues() {
+        return songQueues;
     }
 
-    public void setSong(Set<SongQueue> song) {
-        this.song = song;
+    public void setSongQueues(Set<SongQueue> songQueues) {
+        this.songQueues = songQueues;
     }
 
     @Override

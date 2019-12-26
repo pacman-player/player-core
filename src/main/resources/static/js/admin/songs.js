@@ -19,6 +19,8 @@ $(document).ready(function () {
                 var htmlTable = "";
 
                 for (var i = 0; i < listSongs.length; i++) {
+                    // var htmlGenre = document.getElementById('updateSongGenre').selectedIndex;
+
 
                     htmlTable += ('<tr id="listSongs">');
                     htmlTable += ('<td id="tableSongId">' + listSongs[i].id + '</td>');
@@ -68,19 +70,19 @@ $(document).ready(function () {
         $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
         $("#updateSongGenre").val($(this).closest("tr").find("#tableSongGenre").text());
 
-        switch ($(this).closest("tr").find("#tableRole").text()) {
-            case 'USER':
-                $("#updateUserRole").val("user");
-                break;
-            case 'ADMIN':
-                // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
-                $("#updateUserRole").val("admin");
-                break;
-            default:
-                // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
-                $("#updateUserRole").val("admin, user");
-                break;
-        }
+        // switch ($(this).closest("tr").find("#tableSongGenre").text()) {
+        //     case 'USER':
+        //         $("#updateUserRole").val("user");
+        //         break;
+        //     case 'ADMIN':
+        //         // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
+        //         $("#updateUserRole").val("admin");
+        //         break;
+        //     default:
+        //         // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
+        //         $("#updateUserRole").val("admin, user");
+        //         break;
+        // }
 
     });
 
@@ -100,7 +102,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'PUT',
-            url: '/api/admin/update_song',
+            url: 'http://localhost:8080/api/admin/update_song',
             contentType: 'application/json',
             data: JSON.stringify(song),
             headers: {

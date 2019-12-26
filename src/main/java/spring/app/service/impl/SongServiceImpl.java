@@ -42,4 +42,9 @@ public class SongServiceImpl implements SongService {
     public boolean isExist(String name) {
         return getByName(name) != null;
     }
+
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
 }

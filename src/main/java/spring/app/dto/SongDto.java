@@ -2,6 +2,9 @@ package spring.app.dto;
 
 import spring.app.model.Author;
 import spring.app.model.Genre;
+import spring.app.model.SongQueue;
+
+import java.util.Set;
 
 public class SongDto {
 
@@ -9,19 +12,20 @@ public class SongDto {
     private String name;
     private Author author;
     private Genre genre;
+    private Set<SongQueue> songQueue;
 
-    public SongDto(Long id, String name, Author author, Genre genre) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.genre = genre;
-    }
-
-    public SongDto(String name, Author author, Genre genre) {
-        this.name = name;
-        this.author = author;
-        this.genre = genre;
-    }
+//    public SongDto(Long id, String name, Author author, Genre genre) {
+//        this.id = id;
+//        this.name = name;
+//        this.author = author;
+//        this.genre = genre;
+//    }
+//
+//    public SongDto(String name, Author author, Genre genre) {
+//        this.name = name;
+//        this.author = author;
+//        this.genre = genre;
+//    }
 
     public SongDto() {
     }
@@ -56,5 +60,13 @@ public class SongDto {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Set<SongQueue> getSongQueue() {
+        return songQueue;
+    }
+
+    public void setSongQueue(Set<SongQueue> songQueue) {
+        this.songQueue = songQueue;
     }
 }

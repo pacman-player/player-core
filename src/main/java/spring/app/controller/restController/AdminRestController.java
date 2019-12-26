@@ -78,8 +78,8 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
-//        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor());
-
+        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor(), songDto.getGenre());
+        songService.updateSong(song);
     }
 
     @DeleteMapping(value = "/delete_user")
