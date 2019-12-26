@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.SongCompilationService;
 
 import java.util.List;
 
@@ -14,10 +15,12 @@ import java.util.List;
 public class GenreRestController {
 
     private GenreService genreService;
+    private SongCompilationService songCompilationService;
 
     @Autowired
-    public GenreRestController(GenreService genreService) {
+    public GenreRestController(GenreService genreService, SongCompilationService songCompilationService) {
         this.genreService = genreService;
+        this.songCompilationService = songCompilationService;
     }
 
     @GetMapping(value = "/all_genres")
@@ -46,6 +49,7 @@ public class GenreRestController {
 
     @DeleteMapping(value = "/delete_genre")
     public void deleteGenre(@RequestBody Long id) {
+        songCompilationService.deleteValByGenreId(id);
         genreService.deleteGenreById(id);
     }
 
