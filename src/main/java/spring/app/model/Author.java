@@ -23,6 +23,10 @@ public class Author {
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> authorGenres = new HashSet<>();
 
+//    @OneToMany(targetEntity = Song.class)
+//    @JoinColumn(name = "song_id")
+//    private Song song;
+
     public Author(){}
 
     public Author(String name) {
@@ -52,6 +56,14 @@ public class Author {
     public void setAuthorGenres(Set<Genre> authorGenres) {
         this.authorGenres = authorGenres;
     }
+
+//    public Song getSong() {
+//        return song;
+//    }
+//
+//    public void setSong(Song song) {
+//        this.song = song;
+//    }
 
     @Override
     public boolean equals(Object o) {

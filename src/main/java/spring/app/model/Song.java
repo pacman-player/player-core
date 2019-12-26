@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "song")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Song {
 
     @Id
@@ -16,13 +17,13 @@ public class Song {
 
     private String name;
 
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "author_id")
     private Author author;
 
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 

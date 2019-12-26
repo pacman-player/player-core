@@ -21,13 +21,13 @@ $(document).ready(function () {
                 for (var i = 0; i < listSongs.length; i++) {
 
                     htmlTable += ('<tr id="listSongs">');
-                    htmlTable += ('<td id="listSongId">' + listSongs[i].id + '</td>');
+                    htmlTable += ('<td id="tableSongId">' + listSongs[i].id + '</td>');
                     htmlTable += ('<td id="tableSongName">' + listSongs[i].name + '</td>');
                     htmlTable += ('<td id="tableSongAuthor">' + listSongs[i].author.name + '</td>');
                     htmlTable += ('<td id="tableSongGenre">' + listSongs[i].genre.name + '</td>');
                     htmlTable += ('<td><button id="editSongBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editSong">Изменить</button></td>');
-                    htmlTable += ('<td><button id="deleteSong" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
+                    htmlTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
                     htmlTable += ('</tr>');
                 }
 
@@ -35,11 +35,11 @@ $(document).ready(function () {
                 $("#getSongsTable").after(htmlTable);
             }
         });
-    };
+    }
 
     //delete song
-    $(document).on('click', '#deleteSong', function () {
-        var id = $(this).closest('tr').find('#listSongId').text();
+    $(document).on('click', '#deleteSongBtn', function () {
+        var id = $(this).closest('tr').find('#tableSongId').text();
         deleteSong(id);
     });
 
@@ -60,25 +60,49 @@ $(document).ready(function () {
         location.reload();
     }
 
-    //edit song
-    $('#editSongBtn').click(function (event) {
+    //edit song GET
+    $(document).on('click', '#editSongBtn', function () {
+
+        $("#updateSongId").val($(this).closest("tr").find("#tableSongId").text());
+        $("#updateSongName").val($(this).closest("tr").find("#tableSongName").text());
+        $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
+        $("#updateSongGenre").val($(this).closest("tr").find("#tableSongGenre").text());
+
+        switch ($(this).closest("tr").find("#tableRole").text()) {
+            case 'USER':
+                $("#updateUserRole").val("user");
+                break;
+            case 'ADMIN':
+                // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
+                $("#updateUserRole").val("admin");
+                break;
+            default:
+                // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
+                $("#updateUserRole").val("admin, user");
+                break;
+        }
+
+    });
+
+    //edit song PUT
+    $("#editSongBtn").click(function (event) {
         event.preventDefault();
         updateSongForm();
     });
 
     function updateSongForm() {
-        var songDto = {
-            'id': $('#updateSongId').val(),
-            'name': $('#updateSongName').val(),
-            'author': $('#updateSongAuthor').val(),
-            'genre': $('#updateSongGenre').val()
+        var song = {
+            'id': $("#updateSongId").val(),
+            'name': $("#updateSongName").val(),
+            'author': $("#updateSongAuthor").val(),
+            'genre': $("#updateSongGenre").val()
         };
 
         $.ajax({
             type: 'PUT',
             url: '/api/admin/update_song',
             contentType: 'application/json',
-            data: JSON.stringify(songDto),
+            data: JSON.stringify(song),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

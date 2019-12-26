@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.SongDto;
 import spring.app.dto.UserDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
@@ -73,6 +74,12 @@ public class AdminRestController {
         User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
+    }
+
+    @PutMapping(value = "/update_song")
+    public void updateSong(@RequestBody SongDto songDto) {
+//        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor());
+
     }
 
     @DeleteMapping(value = "/delete_user")
