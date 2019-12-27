@@ -5,7 +5,7 @@ $(document).ready(function () {
     function getTable(){
         $.ajax({
             type: 'get',
-            url: "/api/admin/all_authors",
+            url: "/api/admin/author/all_authors",
             contentType: 'application/json',
             headers: {
                 'Accept':'application/json',
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'post',
-            url: "/api/admin/add_author",
+            url: "/api/admin/author/add_author",
             contentType: 'application/json',
             data: JSON.stringify(name),
             headers: {
@@ -65,7 +65,7 @@ $(document).ready(function () {
     function deleteAuthor(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/delete_author",
+            url: "/api/admin/author/delete_author",
             contentType: 'application/json',
             data: JSON.stringify(id),
             headers: {
@@ -94,7 +94,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'put',
-            url: "/api/admin/update_author",
+            url: "/api/admin/author/update_author",
             contentType: 'application/json',
             data: JSON.stringify(author),
             headers:{

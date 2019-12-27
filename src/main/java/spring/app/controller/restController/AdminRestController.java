@@ -24,15 +24,13 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final GenreService genreService;
-    private final AuthorService authorService;
 
     @Autowired
-    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, AuthorService authorService) {
+    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
-        this.authorService = authorService;
     }
 
     @GetMapping(value = "/all_users")
@@ -49,27 +47,11 @@ public class AdminRestController {
         return list;
     }
 
-    @GetMapping(value = "/all_authors")
-    public List<Author> getAllAuthor(){
-        List<Author> list = authorService.getAllAuthor();
-        return list;
-    }
-
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.addUser(user);
-    }
-
-    @PostMapping(value = "/add_author")
-    public void addAuthor(@RequestBody String name){
-        name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
-        if (genreService.getByName(name) == null) {
-            Author author = new Author();
-            author.setName(name);
-            authorService.addAuthor(author);
-        }
     }
 
     @PutMapping(value = "/update_user")
@@ -79,21 +61,9 @@ public class AdminRestController {
         userService.updateUser(user);
     }
 
-    @PutMapping(value = "/update_author")
-    public void updateAuthor(@RequestBody Author newAuthor){
-        Author author = authorService.getById(newAuthor.getId());
-        author.setName(newAuthor.getName());
-        authorService.updateAuthor(author);
-    }
-
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         userService.deleteUserById(id);
-    }
-
-    @DeleteMapping(value = "/delete_author")
-    public void deleteAuthor(@RequestBody Long id){
-        authorService.deleteAuthorById(id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
