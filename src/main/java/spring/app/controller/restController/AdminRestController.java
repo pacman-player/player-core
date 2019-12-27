@@ -10,10 +10,7 @@ import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
