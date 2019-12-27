@@ -13,12 +13,6 @@ public interface AuthorService {
     void addAuthor(Author author);
 
     /**
-     * Возвращает всех авторов
-     * @return list<Author>
-     */
-    List<Author> getAllAuthors();
-
-    /**
      * Возвращает всех авторов, у которых совпадает передаваемое значение
      * @return list<Author>
      */

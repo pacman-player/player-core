@@ -66,7 +66,7 @@ public class UserRestController {
 
     @GetMapping("allAuthors")
     public List<Author> getAllAuthor() {
-        return authorService.getAllAuthors();
+        return authorService.getAllAuthor();
     }
 
     @GetMapping("allAuthorsByName/{name}")
