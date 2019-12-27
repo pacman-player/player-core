@@ -19,23 +19,24 @@ public class UserEditRestController {
         this.userService = userService;
     }
 
-//    @GetMapping(value = "/get_user")
-//    public User getUserData(@RequestBody User user){
-//        return userService.getUserById(id);
-//    }
+    @GetMapping(value = "/get_user")
+    public User getUserData(){
+        return ((User) getContext().getAuthentication().getPrincipal());
+    }
 
     @PutMapping(value = "/edit_data")
-    public void editUserData(@RequestBody User user, String login, String email){
-//        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-
-        user.setLogin(login);
-        user.setEmail(email);
+    public void editUserData(@RequestBody User newUser){
+        User user = ((User) getContext().getAuthentication().getPrincipal());
+        user.setLogin(newUser.getLogin());
+        user.setEmail(newUser.getEmail());
         userService.updateUser(user);
     }
 
     @PutMapping(value = "/edit_pass")
-    public void editUserPass(@RequestBody User user, String password){
-        user.setPassword(password);
+    public void editUserPass(@RequestBody String newPassword){
+        newPassword = newPassword.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        User user = ((User) getContext().getAuthentication().getPrincipal());
+        user.setPassword(newPassword);
         userService.updateUser(user);
     }
 }

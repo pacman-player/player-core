@@ -69,13 +69,13 @@
 
                             <h4>Персональные данные</h4>
 
-                            <label for="updateUserName">Логин</label>
-                            <input id="updateUserName" class="form-control" type="text" name="login" placeholder="login" required=""/>
+                            <label for="login">Логин</label>
+                            <input id="login" class="form-control" type="text" name="login" required="" />
 
-                            <label for="updateUserEmail">Почта</label>
-                            <input id="updateUserEmail" class="form-control" type="email" name="email"  placeholder="email" required=""/>
+                            <label for="email">Почта</label>
+                            <input id="email" class="form-control" type="email" name="email" required="1"/>
 
-                            <button class="btn btn-primary" id="updateUserDataBtn" type="button">Сохранить</button>
+                            <button id="updateUserDataBtn" class="btn btn-primary" type="button">Сохранить</button>
 
                         </div>
                     </form>
@@ -86,11 +86,19 @@
 
                             <h4>Сменить пароль</h4>
 
-                            <label for="updateUserPass">Пароль</label>
+                            <label for="oldUserPass">Текущий пароль</label>
+                            <input id="oldUserPass" class="form-control" type="text" name="password"
+                                   required=""/>
+
+                            <label for="newUserPass">Новый пароль</label>
+                            <input id="newUserPass" class="form-control" type="text" name="password"
+                                   required=""/>
+
+                            <label for="updateUserPass">Подтвердите пароль</label>
                             <input id="updateUserPass" class="form-control" type="text" name="password"
                                    required=""/>
 
-                            <button class="btn btn-primary" id="updateUserPasswordBtn" type="button">Сохранить</button>
+                            <button id="updateUserPasswordBtn" class="btn btn-primary" type="button">Сохранить</button>
 
                         </div>
                     </form>
