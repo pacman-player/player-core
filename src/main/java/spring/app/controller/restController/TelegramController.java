@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongRequest;
-import spring.app.dto.SongResponce;
+import spring.app.dto.SongResponse;
 import spring.app.service.abstraction.TelegramService;
 
 import java.io.IOException;
@@ -21,10 +21,8 @@ public class TelegramController {
     }
 
     @PostMapping(value = "/song")
-    public SongResponce searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
-
+    public SongResponse searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
         return telegramService.getSong(songRequest);
-
     }
 
     @PostMapping(value = "/approve")
