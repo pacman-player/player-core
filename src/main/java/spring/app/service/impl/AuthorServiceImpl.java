@@ -23,6 +23,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public List<Author> getAllAuthor() {
+        return authorDao.getAll();
+    }
+
+    @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
     }
@@ -30,11 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getByName(String name) {
         return authorDao.getByName(name);
-    }
-
-    @Override
-    public List<Author> getAllAuthors() {
-        return authorDao.getAll();
     }
 
     @Override
@@ -46,4 +46,15 @@ public class AuthorServiceImpl implements AuthorService {
     public Author getById(long authorsId) {
         return authorRepository.findOne(authorsId);
     }
+
+    @Override
+    public void updateAuthor(Author author) {
+        authorDao.update(author);
+    }
+
+    @Override
+    public void deleteAuthorById(Long id) {
+        authorDao.deleteById(id);
+    }
+
 }
