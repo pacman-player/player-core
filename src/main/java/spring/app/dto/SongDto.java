@@ -14,18 +14,26 @@ public class SongDto {
     private Genre genre;
     private Set<SongQueue> songQueue;
 
-//    public SongDto(Long id, String name, Author author, Genre genre) {
-//        this.id = id;
-//        this.name = name;
-//        this.author = author;
-//        this.genre = genre;
-//    }
-//
-//    public SongDto(String name, Author author, Genre genre) {
-//        this.name = name;
-//        this.author = author;
-//        this.genre = genre;
-//    }
+    public SongDto(Long id, String name, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public SongDto(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public SongDto(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueue) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.songQueue = songQueue;
+    }
 
     public SongDto() {
     }
@@ -69,4 +77,5 @@ public class SongDto {
     public void setSongQueue(Set<SongQueue> songQueue) {
         this.songQueue = songQueue;
     }
+
 }

@@ -47,4 +47,9 @@ public class SongServiceImpl implements SongService {
     public void updateSong(Song song) {
         songDao.update(song);
     }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
+    }
 }

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+// $(document).ready(function () {
 
     getSongsTable();
 
@@ -15,18 +15,18 @@ $(document).ready(function () {
             async: true,
             cache: false,
             dataType: 'JSON',
-            success: function (listSongs) {
+            success: function (listSong) {
                 var htmlTable = "";
 
-                for (var i = 0; i < listSongs.length; i++) {
+                for (var i = 0; i < listSong.length; i++) {
 
                     htmlTable += ('<tr id="listSongs">');
-                    htmlTable += ('<td id="tableSongId">' + listSongs[i].id + '</td>');
-                    htmlTable += ('<td id="tableSongName">' + listSongs[i].name + '</td>');
-                    htmlTable += ('<td id="tableSongAuthor">' + listSongs[i].author.name + '</td>');
-                    htmlTable += ('<td id="tableSongGenre">' + listSongs[i].genre.name + '</td>');
-                    htmlTable += ('<td><button id="editSongBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
-                        ' data-target="#editSong">Изменить</button></td>');
+                    htmlTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
+                    htmlTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
+                    htmlTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
+                    htmlTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
+                    htmlTable += ('<td><a id="editSongBtn' + listSong[i].id  + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
+                        ' data-target="#editSong">Изменить</a></td>');
                     htmlTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
                     htmlTable += ('</tr>');
                 }
@@ -38,44 +38,56 @@ $(document).ready(function () {
     }
 
     //edit song GET
-    $(document).on('click', '#editSongBtn', function () {
+    function editSong(id) {
 
-        //заполняем модалку
-        $("#updateSongId").val($(this).closest("tr").find("#tableSongId").text());
-        $("#updateSongName").val($(this).closest("tr").find("#tableSongName").text());
-        $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
+        //полючаю песню по id
+        $.ajax({
+            url: 'http://localhost:8080/api/admin/song/' + id,
+            method: 'GET',
+            success: function (editData) {
 
-        //получаю жанр песни из таблицы по нажатию Изменить
-        var genre = ($(this).closest("tr").find("#tableSongGenre").text());
+                //заполняю модалку
+                $("#updateSongId").val(editData.id);
+                $("#updateSongName").val(editData.name);
+                $("#updateSongAuthor").val(editData.author.name);
+                $("#updateSongGenre").val(editData.genre.name);
 
-        //получаю жанры из бд
-        getAllGenre();
+                var authorObj = editData.author;
 
-        //получение всех жанров из БД
-        function getAllGenre() {
+                //получаем жанр песни и список жанров из БД на выбор
+                getAllGenre(editData.genre.name);
 
-            //очищаю option в модалке
-            $('#updateSongGenre').empty();
+            },
+            error: function (error) {
+                alert("err: " + error);
+            }
+        });
+    }
 
-            var genreRow = '';
-            $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
-                $.each(data, function (key, value) {
-                    genreRow += '<option ';
+    //получаем жанр песни и список жанров из БД на выбор
+    function getAllGenre(genreName) {
 
-                    //если жанр из таблицы совпадает с жанром из БД - устанавлваем в selected
-                    if (genre == value.name) {
-                        genreRow += 'selected';
-                    }
-                    genreRow += ' value="' + value.name + '">' + value.name + '</option>';
-                });
-                $('#updateSongGenre').append(genreRow);
+        //очищаю option в модалке
+        $('#updateSongGenre').empty();
+
+        var genreRow = '';
+        $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
+            $.each(data, function (key, value) {
+                genreRow += '<option ';
+
+                //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
+                if (genreName == value.name) {
+                    genreRow += 'selected';
+                }
+                genreRow += ' value="' + value.name + '">' + value.name + '</option>';
             });
-        }
-    });
+            $('#updateSongGenre').append(genreRow);
+        });
+    }
 
     //ОСТАНОВИЛСЯ ЗДЕСЬ!
     //edit song PUT
-    $("#editSongBtn").click(function (event) {
+    $("#updateSongBtn").click(function (event) {
         event.preventDefault();
         updateSongForm();
     });
@@ -86,6 +98,7 @@ $(document).ready(function () {
         editSong.name = $("#updateSongName").val();
         editSong.author = $("#updateSongAuthor").val();
         editSong.genre = $("#updateSongGenre").val();
+        alert(JSON.stringify(editSong));
 
         $.ajax({
             type: 'PUT',
@@ -125,4 +138,4 @@ $(document).ready(function () {
         });
         location.reload();
     }
-});
+// });

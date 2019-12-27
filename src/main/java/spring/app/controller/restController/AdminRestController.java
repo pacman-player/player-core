@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
@@ -87,6 +85,13 @@ public class AdminRestController {
     public void updateSong(@RequestBody SongDto songDto) {
         Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor(), songDto.getGenre());
         songService.updateSong(song);
+    }
+
+    @GetMapping(value = "/song/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<Song> getSongById(@PathVariable(value = "id") Long id) {
+        Song song = songService.getSongById(id);
+        return ResponseEntity.ok(song);
     }
 
     @DeleteMapping(value = "/delete_user")
