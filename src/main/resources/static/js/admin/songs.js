@@ -20,8 +20,6 @@ $(document).ready(function () {
 
                 for (var i = 0; i < listSongs.length; i++) {
 
-
-
                     htmlTable += ('<tr id="listSongs">');
                     htmlTable += ('<td id="tableSongId">' + listSongs[i].id + '</td>');
                     htmlTable += ('<td id="tableSongName">' + listSongs[i].name + '</td>');
@@ -42,32 +40,40 @@ $(document).ready(function () {
     //edit song GET
     $(document).on('click', '#editSongBtn', function () {
 
+        //заполняем модалку
         $("#updateSongId").val($(this).closest("tr").find("#tableSongId").text());
         $("#updateSongName").val($(this).closest("tr").find("#tableSongName").text());
         $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
-        // $("#updateSongGenre").val($(this).closest("tr").find("#tableSongGenre").text());
 
-        var genre = $('#tableSongGenre').text();
-        alert("1: " + genre);
-        genre.val($(this).closest("tr").find("#tableSongGenre").text());
-        alert("2: " + genre);
-        getAllGenre(); //получаю жанры из бд
-        $('select option[value=genre]').prop('selected', true);
-        // var htmlGenre = document.getElementById('updateSongGenre').selectedIndex;
+        //получаю жанр песни из таблицы по нажатию Изменить
+        var genre = ($(this).closest("tr").find("#tableSongGenre").text());
 
-        // аякс запрос на получение всех жанров
+        //получаю жанры из бд
+        getAllGenre();
+
+        //получение всех жанров из БД
         function getAllGenre() {
-            $('#updateSongGenre').empty(); //очищаю option
+
+            //очищаю option в модалке
+            $('#updateSongGenre').empty();
+
             var genreRow = '';
             $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
                 $.each(data, function (key, value) {
-                    genreRow += '<option value="' + value.name + '">' + value.name + '</option>';
+                    genreRow += '<option ';
+
+                    //если жанр из таблицы совпадает с жанром из БД - устанавлваем в selected
+                    if (genre == value.name) {
+                        genreRow += 'selected';
+                    }
+                    genreRow += ' value="' + value.name + '">' + value.name + '</option>';
                 });
                 $('#updateSongGenre').append(genreRow);
             });
         }
     });
 
+    //ОСТАНОВИЛСЯ ЗДЕСЬ!
     //edit song PUT
     $("#editSongBtn").click(function (event) {
         event.preventDefault();
