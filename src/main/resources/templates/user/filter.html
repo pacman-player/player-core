@@ -59,12 +59,13 @@
 
                 <H3>Страница Фильтров</H3>
 
+                <!-- меню выбора выриантов для блокировки -->
                 <div class="col-fhd-4 col-xl-5 col-lg-6">
                     <ul class="nav nav-tabs nav-content " role="tablist">
 
                         <li id="morning-music-nav" class="active">
-                            <a href="#morning"
-                               aria-controls="morning-music-nav"
+                            <a href="#genre"
+                               aria-controls="genre-music-nav"
                                role="tab"
                                data-toggle="tab"
                             >
@@ -73,8 +74,8 @@
                         </li>
 
                         <li id="day-music-nav">
-                            <a href="#day"
-                               aria-controls="day-music"
+                            <a href="#artists"
+                               aria-controls="artists-music"
                                role="tab"
                                data-toggle="tab"
                             >
@@ -83,7 +84,7 @@
                         </li>
 
                         <li id="evening-music-nav">
-                            <a href="#evening"
+                            <a href="#songs"
                                aria-controls="evening-music"
                                role="tab"
                                data-toggle="tab"
@@ -93,8 +94,9 @@
                         </li>
                     </ul>
 
+                    <!-- контент для меню "По жанрам" -->
                     <div class="tab-content active">
-                        <div role="tabpanel" class="tab-pane active" id="morning">
+                        <div role="tabpanel" class="tab-pane active" id="genre">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -108,7 +110,8 @@
                             </div>
                         </div>
 
-                        <div role="tabpanel" class="tab-pane" id="day">
+                        <!-- контент для меню "По артистам" -->
+                        <div role="tabpanel" class="tab-pane" id="artists">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -126,7 +129,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="evening">
+
+                        <!-- контент для меню "По песням" -->
+                        <div role="tabpanel" class="tab-pane" id="songs">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
