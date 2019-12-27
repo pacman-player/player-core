@@ -40,9 +40,12 @@ $(document).ready(function () {
                 data: JSON.stringify(newUser),
                 dataType: 'json',
                 async: true,
-                cache: false
+                cache: false,
+                success: function () {
+                    getUserData();
+                    alert("Ok");
+                }
             });
-            location.reload();
         }
 
     $('#updateUserDataBtn').click(function (event) {
@@ -50,7 +53,13 @@ $(document).ready(function () {
         updateUserData();
     });
 
+    $('#newUserPass').click(function () {
+        alert("Пароль не должен содержать символов");
+    });
+
     function updateUserPassword() {
+
+        getUserData();
 
         var old = $("#oldUserPass").val();
         if(password !== old){
@@ -72,9 +81,12 @@ $(document).ready(function () {
             data: JSON.stringify(n),
             dataType: 'json',
             async: true,
-            cache: false
+            cache: false,
+            success: function () {
+                getUserData();
+                alert("Ok");
+            }
         });
-        location.reload();
     }
 
     $('#updateUserPasswordBtn').click(function (event) {
