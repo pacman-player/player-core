@@ -57,6 +57,13 @@ public class AdminRestController {
         return list;
     }
 
+    @GetMapping(value = "/all_genre")
+    @ResponseBody
+    public List<Genre> getAllGenre() {
+        List<Genre> list = genreService.getAllGenre();
+        return list;
+    }
+
     @DeleteMapping(value = "/delete_song")
     public void deleteSong(@RequestBody Long id) {
         songService.deleteSongById(id);

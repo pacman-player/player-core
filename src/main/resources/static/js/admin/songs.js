@@ -19,7 +19,7 @@ $(document).ready(function () {
                 var htmlTable = "";
 
                 for (var i = 0; i < listSongs.length; i++) {
-                    // var htmlGenre = document.getElementById('updateSongGenre').selectedIndex;
+
 
 
                     htmlTable += ('<tr id="listSongs">');
@@ -37,6 +37,64 @@ $(document).ready(function () {
                 $("#getSongsTable").after(htmlTable);
             }
         });
+    }
+
+    //edit song GET
+    $(document).on('click', '#editSongBtn', function () {
+
+        $("#updateSongId").val($(this).closest("tr").find("#tableSongId").text());
+        $("#updateSongName").val($(this).closest("tr").find("#tableSongName").text());
+        $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
+        // $("#updateSongGenre").val($(this).closest("tr").find("#tableSongGenre").text());
+
+        var genre = $('#tableSongGenre').text();
+        alert("1: " + genre);
+        genre.val($(this).closest("tr").find("#tableSongGenre").text());
+        alert("2: " + genre);
+        getAllGenre(); //получаю жанры из бд
+        $('select option[value=genre]').prop('selected', true);
+        // var htmlGenre = document.getElementById('updateSongGenre').selectedIndex;
+
+        // аякс запрос на получение всех жанров
+        function getAllGenre() {
+            $('#updateSongGenre').empty(); //очищаю option
+            var genreRow = '';
+            $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
+                $.each(data, function (key, value) {
+                    genreRow += '<option value="' + value.name + '">' + value.name + '</option>';
+                });
+                $('#updateSongGenre').append(genreRow);
+            });
+        }
+    });
+
+    //edit song PUT
+    $("#editSongBtn").click(function (event) {
+        event.preventDefault();
+        updateSongForm();
+    });
+
+    function updateSongForm() {
+        var editSong = {};
+        editSong.id = $("#updateSongId").val();
+        editSong.name = $("#updateSongName").val();
+        editSong.author = $("#updateSongAuthor").val();
+        editSong.genre = $("#updateSongGenre").val();
+
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:8080/api/admin/update_song',
+            contentType: 'application/json',
+            data: JSON.stringify(editSong),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
+        });
+        location.reload();
     }
 
     //delete song
@@ -58,60 +116,6 @@ $(document).ready(function () {
             async: false,
             cache: false,
             dataType: 'JSON'
-        });
-        location.reload();
-    }
-
-    //edit song GET
-    $(document).on('click', '#editSongBtn', function () {
-
-        $("#updateSongId").val($(this).closest("tr").find("#tableSongId").text());
-        $("#updateSongName").val($(this).closest("tr").find("#tableSongName").text());
-        $("#updateSongAuthor").val($(this).closest("tr").find("#tableSongAuthor").text());
-        $("#updateSongGenre").val($(this).closest("tr").find("#tableSongGenre").text());
-
-        // switch ($(this).closest("tr").find("#tableSongGenre").text()) {
-        //     case 'USER':
-        //         $("#updateUserRole").val("user");
-        //         break;
-        //     case 'ADMIN':
-        //         // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
-        //         $("#updateUserRole").val("admin");
-        //         break;
-        //     default:
-        //         // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
-        //         $("#updateUserRole").val("admin, user");
-        //         break;
-        // }
-
-    });
-
-    //edit song PUT
-    $("#editSongBtn").click(function (event) {
-        event.preventDefault();
-        updateSongForm();
-    });
-
-    function updateSongForm() {
-        var song = {
-            'id': $("#updateSongId").val(),
-            'name': $("#updateSongName").val(),
-            'author': $("#updateSongAuthor").val(),
-            'genre': $("#updateSongGenre").val()
-        };
-
-        $.ajax({
-            type: 'PUT',
-            url: 'http://localhost:8080/api/admin/update_song',
-            contentType: 'application/json',
-            data: JSON.stringify(song),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
         });
         location.reload();
     }
