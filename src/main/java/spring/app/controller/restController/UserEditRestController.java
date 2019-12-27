@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.model.User;
 import spring.app.service.abstraction.UserService;
 
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+
 
 @RestController
 @RequestMapping(value = "/api/user/edit/")
@@ -24,6 +26,8 @@ public class UserEditRestController {
 
     @PutMapping(value = "/edit_data")
     public void editUserData(@RequestBody User user, String login, String email){
+//        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+
         user.setLogin(login);
         user.setEmail(email);
         userService.updateUser(user);
