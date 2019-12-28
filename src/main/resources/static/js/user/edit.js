@@ -63,11 +63,18 @@ $(document).ready(function () {
             return;
         }
 
+        var pass1 = newPass.replace(/"/g, '##@##');
+        var pass2 = pass1.replace(/\\/g, '##@@##');
+
         $.ajax({
             contentType: "application/json;",
             url: "/api/user/edit/edit_pass",
             type: "PUT",
-            data: JSON.stringify(newPass),
+            data: JSON.stringify(pass2),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             dataType: 'json',
             async: true,
             cache: false
