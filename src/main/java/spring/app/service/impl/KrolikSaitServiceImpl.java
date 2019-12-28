@@ -4,11 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import spring.app.model.SongDownloadRequestInfo;
 import spring.app.service.abstraction.KrolikSaitService;
 
 import java.io.FileInputStream;
@@ -16,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,16 +25,19 @@ public class KrolikSaitServiceImpl implements KrolikSaitService {
 
     RestTemplate restTemplate = new RestTemplate();
 
+    public KrolikSaitServiceImpl() {
+    }
+
     @Override
-    public String searchSongByAuthorOrSongs(String author, String song) {
+    public List<SongDownloadRequestInfo> searchSongByAuthorOrSongs(String author, String song) {
 
         String urlSearch = "https://krolik.biz/search/?q=";
         Document document = null;
         Document documentDownload = null;
         Document documentDownload2 = null;
-        String linkDownload = "";
         String linkDownload2 = "";
         String link = "";
+        List<SongDownloadRequestInfo> songDownloadRequestInfos = new ArrayList<>();
 
         try {
             document = Jsoup.connect(urlSearch + author + "+" + song).get();
@@ -48,19 +51,20 @@ public class KrolikSaitServiceImpl implements KrolikSaitService {
         //получение ссылки для редеректа 1
         //прверка на совпадение  автора и песни
         for (Element div : playList1) {
+            SongDownloadRequestInfo songDownloadRequestInfo=new SongDownloadRequestInfo();
             Elements mark = div.child(1).select("mark");
-            String[] authorAndSong = new String[3];
+            songDownloadRequestInfo.setAuthorName(div.child(1).select("div.artist_name").text());
             for (Element item : mark) {
                 {
-                    authorAndSong[0] = mark.first().text().toLowerCase();
-                    authorAndSong[1] = mark.last().text().toLowerCase();
+                    songDownloadRequestInfo.setSongName(mark.last().text().toLowerCase());
                 }
                 Element a = div.child(0).child(1);
-                authorAndSong[2] = a.attr("href");
-                if (author.toLowerCase().equals(authorAndSong[0]) && song.toLowerCase().equals(authorAndSong[1])) {
-                    linkDownload = authorAndSong[2];
+                songDownloadRequestInfo.setLink(a.attr("href") + "&push");
+             //   if (author.toLowerCase().equals(authorAndSong[0]) && song.toLowerCase().equals(authorAndSong[1])) {
+                    System.out.println("123123123123");
+                    songDownloadRequestInfos.add(songDownloadRequestInfo);
                     break;
-                }
+               // }
             }
 
         }
@@ -68,36 +72,36 @@ public class KrolikSaitServiceImpl implements KrolikSaitService {
         //----------------------1
 
         //получение ссылки для редеректа 2
-        try {
-            documentDownload = Jsoup.connect(linkDownload).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error search on krolic.biz");
-        }
+//        try {
+//            documentDownload = Jsoup.connect(linkDownload).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.err.println("Error search on krolic.biz");
+//        }
+//
+//        Element playList = documentDownload.select("script").get(2);
+//
+//        Pattern p = Pattern.compile("(?is)window.location=\"(.+?)\"");
+//        Matcher m = p.matcher(playList.html());
+//
+//        while (m.find()) {
+//            linkDownload2 = m.group(1);
+//            break;
+//        }
+//
+//        //----------------------2
+//
+//        //ссылка на песню
+//        try {
+//            documentDownload2 = Jsoup.connect(linkDownload2).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.err.println("Error search on krolic.biz");
+//        }
+//
+//        link = documentDownload2.getElementsByClass("btn").attr("href");
 
-        Element playList = documentDownload.select("script").get(2);
-
-        Pattern p = Pattern.compile("(?is)window.location=\"(.+?)\"");
-        Matcher m = p.matcher(playList.html());
-
-        while (m.find()) {
-            linkDownload2 = m.group(1);
-            break;
-        }
-
-        //----------------------2
-
-        //ссылка на песню
-        try {
-            documentDownload2 = Jsoup.connect(linkDownload2).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error search on krolic.biz");
-        }
-
-        link = documentDownload2.getElementsByClass("btn").attr("href");
-
-        return link;
+        return songDownloadRequestInfos;
 
     }
 
@@ -114,7 +118,7 @@ public class KrolikSaitServiceImpl implements KrolikSaitService {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
         }
 
-        String link = searchSongByAuthorOrSongs(author, song);
+        String link = searchSongByAuthorOrSongs(author, song).get(0).getLink();
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
         Path path = Paths.get(property.getProperty("downloadSongsPath") + author + " " + song + ".mp3");

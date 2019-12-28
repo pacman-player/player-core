@@ -1,7 +1,11 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.SongDownloadRequestInfo;
+
+import java.util.List;
+
 public interface KrolikSaitService {
-    String searchSongByAuthorOrSongs(String author, String song);
+    List<SongDownloadRequestInfo> searchSongByAuthorOrSongs(String author, String song);
 
     byte[] getSong(String avtor, String song);
 }
