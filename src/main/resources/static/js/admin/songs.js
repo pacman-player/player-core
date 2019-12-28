@@ -23,8 +23,8 @@
                     htmlTable += ('<tr id="listSongs">');
                     htmlTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
                     htmlTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
-                    htmlTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
                     htmlTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
+                    htmlTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
                     htmlTable += ('<td><a id="editSongBtn' + listSong[i].id  + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                         ' data-target="#editSong">Изменить</a></td>');
                     htmlTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
@@ -52,7 +52,7 @@
                 $("#updateSongAuthor").val(editData.author.name);
                 $("#updateSongGenre").val(editData.genre.name);
 
-                var authorObj = editData.author;
+                // var authorObj = editData.author;
 
                 //получаем жанр песни и список жанров из БД на выбор
                 getAllGenre(editData.genre.name);
@@ -73,7 +73,7 @@
         var genreRow = '';
         $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
             $.each(data, function (key, value) {
-                genreRow += '<option ';
+                genreRow += '<option id="' + value.id + '" ';
 
                 //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
                 if (genreName == value.name) {
@@ -94,11 +94,26 @@
 
     function updateSongForm() {
         var editSong = {};
+
+        // $.ajax({
+        //     url: 'http://localhost:8080/api/admin/song/' + $("#updateSongId").val(),
+        //     method: 'GET',
+        //     success: function (editData) {
+        //         editSong = editData;
+        //         alert("editSong=editData " + JSON.stringify(editSong));
+        //     },
+        //     error: function (error) {
+        //         alert("err: " + error);
+        //     }
+        // });
+
+
         editSong.id = $("#updateSongId").val();
         editSong.name = $("#updateSongName").val();
         editSong.author = $("#updateSongAuthor").val();
-        editSong.genre = $("#updateSongGenre").val();
-        alert(JSON.stringify(editSong));
+        editSong.genre = $("#updateSongGenre option:selected").val();
+
+        alert("editSong before put " + JSON.stringify(editSong));
 
         $.ajax({
             type: 'PUT',
@@ -112,6 +127,11 @@
             async: true,
             cache: false,
             dataType: 'JSON',
+            success: function () {
+                $('#songsTable').empty();
+                $('#editSong').modal('hide');
+                getSongsTable();
+            }
         });
         location.reload();
     }
@@ -138,4 +158,12 @@
         });
         location.reload();
     }
+
+    // function getSelectedGenre() {
+    //     var genre = {};
+    //     var selectedGenre = $("#updateSongGenre option:selected").val();
+    //     genre.id = selectedGenre.id;
+    //     genre.name = selectedGenre.name;
+    //     return genre;
+    // }
 // });
