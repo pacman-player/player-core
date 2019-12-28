@@ -34,7 +34,6 @@ function getSongsTable() {
 
 //edit song GET
 function editSong(id) {
-    //полючаю песню по id
     $.ajax({
         url: 'http://localhost:8080/api/admin/song/' + id,
         method: 'GET',
@@ -135,7 +134,6 @@ $('#add-song-nav').click(function () {
 $('#addSongBtn').click(function (event) {
     event.preventDefault();
     addSongForm();
-    // setTimeout(clicKTable, 300)
 });
 
 function addSongForm() {
@@ -155,13 +153,6 @@ function addSongForm() {
         async: true,
         cache: false,
         dataType: 'JSON',
-        // success: function () {
-        //     $('#songsTable').empty();
-        //     // $('#add-song-nav').tab('hide');
-        //     $('#song-table-nav').tab('show');
-        //     getSongsTable();
-        //     location.reload;
-        // }
     });
     location.reload();
 }
