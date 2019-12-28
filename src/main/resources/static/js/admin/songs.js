@@ -153,13 +153,11 @@
     });
 
     function addSongForm() {
-
-
         var addSong = {};
 
         addSong.name = $('#addSongName').val();
         addSong.author = $('#addSongAuthor').val();
-        addSong.genre = $('#addSongGenre option:selected').val();
+        addSong.genre = $('#addSongGenre').val();
 
         $.ajax({
             type: 'POST',
