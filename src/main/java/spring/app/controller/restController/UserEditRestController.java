@@ -34,7 +34,7 @@ public class UserEditRestController {
 
     @PutMapping(value = "/edit_pass")
     public void editUserPass(@RequestBody String newPassword){
-        newPassword = newPassword.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        newPassword = newPassword.replaceAll("\"", "");
         User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
         userService.updateUser(user);

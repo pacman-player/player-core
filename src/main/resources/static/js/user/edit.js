@@ -40,12 +40,10 @@ $(document).ready(function () {
                 data: JSON.stringify(newUser),
                 dataType: 'json',
                 async: true,
-                cache: false,
-                success: function () {
-                    getUserData();
-                    alert("Ok");
-                }
+                cache: false
             });
+            alert("Данные изменены");
+            getUserData();
         }
 
     $('#updateUserDataBtn').click(function (event) {
@@ -53,23 +51,19 @@ $(document).ready(function () {
         updateUserData();
     });
 
-    $('#newUserPass').click(function () {
-        alert("Пароль не должен содержать символов");
-    });
-
     function updateUserPassword() {
 
         getUserData();
 
-        var old = $("#oldUserPass").val();
-        if(password !== old){
+        var oldPass = $("#oldUserPass").val();
+        if(password !== oldPass){
             alert("Неверно введен текущий пароль");
             return;
         }
 
-        var n = $("#newUserPass").val();
-        var up = $("#updateUserPass").val();
-        if (n !== up){
+        var newPass = $("#newUserPass").val();
+        var checkPass = $("#updateUserPass").val();
+        if (newPass !== checkPass){
             alert("Новый пароль не совпадает с подтвержденным");
             return;
         }
@@ -78,15 +72,13 @@ $(document).ready(function () {
             contentType: "application/json;",
             url: "/api/user/edit/edit_pass",
             type: "PUT",
-            data: JSON.stringify(n),
+            data: JSON.stringify(newPass),
             dataType: 'json',
             async: true,
-            cache: false,
-            success: function () {
-                getUserData();
-                alert("Ok");
-            }
+            cache: false
         });
+        alert("Пароль изменен");
+        location.reload();
     }
 
     $('#updateUserPasswordBtn').click(function (event) {
