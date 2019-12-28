@@ -10,6 +10,7 @@ import java.util.List;
 
 @Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
+
 	@PersistenceContext
 	EntityManager entityManager;
 

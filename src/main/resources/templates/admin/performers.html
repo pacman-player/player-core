@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content">
+                <li>
+                    <a href="/admin/users">Пользователи</a>
+                </li>
+
+                <li>
+                    <a href="/admin/companies">Компании</a>
+                </li>
+
+                <li>
+                    <a href="/admin/establishments">Типы заведений</a>
+                </li>
+
+                <li>
+                    <a href="/admin/genres">Жанры</a>
+                </li>
+
+                <li class="active">
+                    <a href="/admin/performers">Исполнители</a>
+                </li>
+
+                <li>
+                    <a href="/admin/songs">Песни</a>
+                </li>
+
+                <li>
+                    <a href="/user">Меню пользователя</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--центральный блок-->
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+              <!--общий список и добавление нового автора-->
+                <div id="list-authors" class="tab-pane active" role="tabpanel">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="authors-table-nav" class="active">
+                            <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Все исполнители</a>
+                        </li>
+                        <li id="add-authors-nav">
+                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Новый исполнитель</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--общий список авторов-->
+                        <div id="authors-panel" class="tab-pane active" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="AuthorTable" class="table">
+                                            <thead id="getAuthorTable">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Имя</th>
+                                                    <th>Изменить</th>
+                                                    <th>Удалить</th>
+                                                </tr>
+                                            </thead>
+
+                                            <!--модальное окно обновления автора-->
+                                            <div id="editAuthor" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                            <h4 class="modal-title">Изменить исполнителя</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
+                                                                        </div>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="editAuthorId">ID</label>
+                                                                                <input id="editAuthorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
+                                                                                <input id="id-input-edit-hidden" name="id" type="hidden"/>
+
+                                                                                <label for="editAuthorName">Имя</label>
+                                                                                <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
+                                                            <button id="editAuthorBtn" class="btn btn-primary">Изменить</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--добавление автора-->
+                        <div id="add-author-panel" class="tab-pane" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="addAuthor">Исполнитель</label>
+                                                            <input id="addAuthor" class="form-control" type="text" placeholder="Enter performer" name="author"/>
+                                                            <button id="addAuthorBtn" class="btn btn-success btn-lg" type="button" style="margin-top: 20px;">Добавить исполнителя</button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/performers.js" rel="script"></script>
+
+</body>
+</html>
