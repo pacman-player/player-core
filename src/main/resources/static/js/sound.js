@@ -27,6 +27,7 @@ $(() => {
             audioPlayed = true;
             var time = Math.round(sound.duration());
 
+
             $('#duration').html(utils.formatTime(time));
             requestAnimationFrame(utils.updateTimeTracker.bind(this));
             $('i.play').addClass('hide');
