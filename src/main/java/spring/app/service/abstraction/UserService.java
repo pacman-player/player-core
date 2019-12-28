@@ -10,10 +10,11 @@ public interface UserService {
 
 	User getUserByGoogleId(String googleId);
 
+    User getUserByVkId(int vkId);
+
 	User getUserById(Long id);
 
 	void addUser(User user);
-
 
 	List<User> getAllUsers();
 

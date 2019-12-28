@@ -1,5 +1,7 @@
 package spring.app.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
@@ -11,6 +13,7 @@ import javax.persistence.TypedQuery;
 @Repository
 @Transactional
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
+	private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
 	public UserDaoImpl() {
 		super(User.class);
@@ -24,7 +27,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			query.setParameter("login", login);
 			user = query.getSingleResult();
 		} catch (NoResultException e) {
-			//logger
+			LOGGER.error(e.getMessage(), e);
 		}
 		return user;
 	}
@@ -37,6 +40,20 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			query.setParameter("googleId", googleId);
 			user = query.getSingleResult();
 		} catch (NoResultException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return user;
+	}
+
+	@Override
+	public User getUserByVkId(int vkId) {
+		User user;
+		try {
+			TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.vkId = :vkId", User.class);
+			query.setParameter("vkId", vkId);
+			user = query.getSingleResult();
+		} catch (NoResultException e) {
+			LOGGER.error(e.getMessage(), e);
 			return null;
 		}
 		return user;

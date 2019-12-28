@@ -5,11 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import spring.app.configuration.initializer.TestDataInit;
-import spring.app.service.impl.KrolikSaitServiceImpl;
-import spring.app.service.impl.ZaycevSaitServiceImpl;
 
 import javax.annotation.PostConstruct;
 
@@ -21,24 +18,15 @@ public class Main extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
-//        //для тестирования Zaycev
-//        ZaycevSaitServiceImpl zaycevSaitServise = new ZaycevSaitServiceImpl();
-//        zaycevSaitServise.getSong("ария", "штиль");
-//
-//        //для тестирования Krolik
-//        KrolikSaitServiceImpl krolikSait = new KrolikSaitServiceImpl();
-//        krolikSait.getSong("король и шут", "сосиска");
-
+        // Тест загрузки одного песни из списка результатов поиска
+        /*MuzofondfmMusicSearchImpl search = new MuzofondfmMusicSearchImpl();
+        List<Track> tracks = search.searchSong("Within Temptation", "Frozen");
+        search.getSong(tracks.get((int) (Math.random() * tracks.size())));*/
     }
 
     @Bean(initMethod = "init")
     @PostConstruct
     public TestDataInit initTestData() {
         return new TestDataInit();
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 }
