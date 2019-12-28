@@ -93,23 +93,32 @@
     });
 
     function updateSongForm() {
-
         var editSong = {};
-        $.ajax({
-            url: 'http://localhost:8080/api/admin/song/' + $("#updateSongId").val(),
-            method: 'GET',
-            success: function (editData) {
-                editSong = editData;
-                alert("editSong=editData " + editSong);
-            },
-            error: function (error) {
-                alert("err: " + error);
-            }
-        });
+        // var url = 'http://localhost:8080/api/admin/song/' + $("#updateSongId").val();
+        // $.getJSON(url, function (key, value) {
+        //
+        // })
+        // $.ajax({
+        //     url: 'http://localhost:8080/api/admin/song/' + $("#updateSongId").val(),
+        //     method: 'GET',
+        //     success: function (editData) {
+        //         editSong.id = editData.id;
+        //         editSong.name = $("#updateSongName").val();
+        //         // editSong.author = editData.author;
+        //         editSong.genre = $("#updateSongGenre option:selected").val();
+        //         alert("editSong=editData " + editSong);
+        //
+        //
+        //
+        //     },
+        //     error: function (error) {
+        //         alert("err: " + error);
+        //     }
+        // });
 
         editSong.id = $("#updateSongId").val();
         editSong.name = $("#updateSongName").val();
-        editSong.author.name = $("#updateSongAuthor").val();
+        editSong.author = $("#updateSongAuthor").val();
         editSong.genre = $("#updateSongGenre option:selected").val();
 
 

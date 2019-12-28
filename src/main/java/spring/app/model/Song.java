@@ -44,14 +44,18 @@ public class Song {
         this.songQueues = songQueues;
     }
 
-    //    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
-//        this.id = id;
-//        this.author = author;
-//        this.genre = genre;
-//        this.song = song;
-//    }
-//
-//    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
+    public Song(Long id, String name, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.genre = genre;
+    }
+
+    public Song(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    //    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
 //        this.name = name;
 //        this.author = author;
 //        this.genre = genre;

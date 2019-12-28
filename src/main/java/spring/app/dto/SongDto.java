@@ -27,6 +27,11 @@ public class SongDto {
         this.genre = genre;
     }
 
+    public SongDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public SongDto(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueue) {
         this.id = id;
         this.name = name;
@@ -35,7 +40,11 @@ public class SongDto {
         this.songQueue = songQueue;
     }
 
-
+    public SongDto(Long id, String name, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.genre = genre;
+    }
 
     public SongDto() {
     }

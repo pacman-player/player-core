@@ -1,5 +1,6 @@
 package spring.app.controller.restController;
 
+import com.vk.api.sdk.exceptions.ApiMessagesUserBlockedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +25,16 @@ public class AdminRestController {
     private final CompanyService companyService;
     private final GenreService genreService;
     private final SongService songService;
+    private final AuthorService authorService;
 
     @Autowired
-    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongService songService) {
+    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongService songService, AuthorService authorService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
         this.songService = songService;
+        this.authorService = authorService;
     }
 
     @GetMapping(value = "/all_users")
@@ -83,7 +86,12 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
-        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor(), songDto.getGenre(), songDto.getSongQueue());
+        Song oldSong = songService.getSongById(songDto.getId());
+        Author author = oldSong.getAuthor();
+        Genre genre = genreService.getByName(songDto.getGenre().getName());
+        Song song = new Song(songDto.getId(), songDto.getName());
+        song.setAuthor(author);
+        song.setGenre(genre);
         songService.updateSong(song);
     }
 
@@ -133,6 +141,10 @@ public class AdminRestController {
                 break;
         }
         return roles;
+    }
+
+    private Genre getGenre(String genreName) {
+        return genreService.getByName(genreName);
     }
 
 
