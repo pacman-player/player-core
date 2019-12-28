@@ -83,7 +83,7 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
-        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor(), songDto.getGenre());
+        Song song = new Song(songDto.getId(), songDto.getName(), songDto.getAuthor(), songDto.getGenre(), songDto.getSongQueue());
         songService.updateSong(song);
     }
 

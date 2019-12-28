@@ -36,7 +36,15 @@ public class Song {
     public Song(Long id, String name, Author author, Genre genre) {
     }
 
-//    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
+    public Song(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueues) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.songQueues = songQueues;
+    }
+
+    //    public Song(Long id, Author author, Genre genre, Set<SongQueue> song) {
 //        this.id = id;
 //        this.author = author;
 //        this.genre = genre;
