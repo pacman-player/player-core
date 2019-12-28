@@ -82,10 +82,11 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(int vkId, String firstName, String lastName, Set<Role> roles, Company company, Boolean enabled) {
+    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled) {
         this.vkId = vkId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.roles = roles;
         this.company = company;
         this.enabled = enabled;

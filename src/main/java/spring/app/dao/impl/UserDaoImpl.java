@@ -27,7 +27,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			query.setParameter("login", login);
 			user = query.getSingleResult();
 		} catch (NoResultException e) {
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage());
 		}
 		return user;
 	}
@@ -40,21 +40,20 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			query.setParameter("googleId", googleId);
 			user = query.getSingleResult();
 		} catch (NoResultException e) {
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage());
 		}
 		return user;
 	}
 
 	@Override
 	public User getUserByVkId(int vkId) {
-		User user;
+		User user = null;
 		try {
 			TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.vkId = :vkId", User.class);
 			query.setParameter("vkId", vkId);
 			user = query.getSingleResult();
 		} catch (NoResultException e) {
-			LOGGER.error(e.getMessage(), e);
-			return null;
+			LOGGER.error(e.getMessage());
 		}
 		return user;
 	}

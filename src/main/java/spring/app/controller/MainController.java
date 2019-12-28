@@ -133,6 +133,7 @@ public class MainController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
+
     @GetMapping("/player")
     public String player() {
         return "player";
@@ -163,14 +164,15 @@ public class MainController {
             user = new User(list.get(0).getId(),
                     new String(list.get(0).getFirstName().getBytes(StandardCharsets.UTF_8)),
                     new String(list.get(0).getLastName().getBytes(StandardCharsets.UTF_8)),
+                    authResponse.getEmail(),
                     roleSet,
                     companyService.getById(1L),
                     true);
             userService.addUser(user);
             user = userService.getUserByVkId(actor.getId());
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
 
