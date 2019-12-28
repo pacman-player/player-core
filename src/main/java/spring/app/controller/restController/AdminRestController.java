@@ -80,16 +80,13 @@ public class AdminRestController {
     @PostMapping(value = "/add_song")
     public void addSong(@RequestBody SongDto songDto) {
         Song song = new Song(songDto.getName());
-
         Author author = authorService.getByName(songDto.getAuthor().getName());
         if (author != null) {
             song.setAuthor(author);
+        } else {
+            authorService.addAuthor(new Author(songDto.getAuthor().getName()));
+            song.setAuthor(authorService.getByName(songDto.getAuthor().getName()));
         }
-//        else {
-//            authorService.addAuthor(songDto.getAuthor().getName());
-//            song.setAuthor(authorService.getByName(songDto.getAuthor().getName()));
-//        }
-
         Genre genre = genreService.getByName(songDto.getGenre().getName());
         if (genre != null) {
             song.setGenre(genre);
