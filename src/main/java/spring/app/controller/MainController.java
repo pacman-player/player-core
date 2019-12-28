@@ -34,6 +34,7 @@ import spring.app.model.User;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -93,8 +94,6 @@ public class MainController {
 
         return new ModelAndView("translation");
     }
-
-
 
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
@@ -161,8 +160,8 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             List<UserXtrCounters> list = vk.users().get(actor).execute();
-            user = new User(list.get(0).getFirstName(),
-                    list.get(0).getLastName(),
+            user = new User(new String(list.get(0).getFirstName().getBytes(StandardCharsets.UTF_8)),
+                    new String(list.get(0).getLastName().getBytes(StandardCharsets.UTF_8)),
                     list.get(0).getId(),
                     roleSet,
                     companyService.getById(1L),
