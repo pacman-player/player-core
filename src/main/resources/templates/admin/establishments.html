@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title>Admin page</title>
@@ -60,35 +60,109 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="list-users">
+                <div class="tab-pane active" id="list-establishments" role="tabpanel">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Все заведения</a>
+                            <a aria-controls="establishments-panel" data-toggle="tab" href="#establishments-panel"
+                               id="tab-user-panel" role="tab">Все заведения</a>
                         </li>
                         <li id="add-user-nav">
-                            <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">
+                            <a aria-controls="add-establishments-panel" data-toggle="tab"
+                               href="#add-establishments-panel" role="tab">
                                 Новое заведение</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!--таблица юзеров-->
-                        <div role="tabpanel" class="tab-pane active" id="user-panel">
+                        <!--таблица заведений-->
+                        <div class="tab-pane active" id="establishments-panel" role="tabpanel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <table id="UserTable" class="table">
-                                            <thead id="getUserTable">
+                                        <table class="table" id="establishmentsTable">
+                                            <thead id="getEstablishmentsTable">
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Название</th>
-                                                <th>Жанры</th>
                                                 <th>Изменить</th>
                                                 <th>удалить</th>
                                             </tr>
                                             </thead>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--добавление заведения-->
+                        <div class="tab-pane" id="add-establishments-panel" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="addName">Название</label>
+                                                            <input class="form-control" id="addName" name="name"
+                                                                   placeholder="Название" type="text"/>
+
+                                                            <button class="btn btn-success btn-lg"
+                                                                    id="addEstablishmentBtn"
+                                                                    type="submit">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--модалка - заведения-->
+                        <div class="modal fade" id="editEstablishment">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×
+                                        </button>
+                                        <h4 class="modal-title">Информация о заведении</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="establishment-form">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="updateEstablishmentId">ID заведения</label>
+                                                            <input class="form-control" disabled="disabled"
+                                                                   id="updateEstablishmentId" name="id"
+                                                                   required="" type="text"/>
+
+                                                            <label for="updateEstablishmentName">Компания</label>
+                                                            <input class="form-control" id="updateEstablishmentName"
+                                                                   name="company" required=""
+                                                                   type="text"/>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть
+                                        </button>
+                                        <button class="btn btn-primary" id="editEstablishmentBtn">Изменить</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -101,7 +175,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>-->
+<script rel="script" src="/js/admin/establishments.js" type="text/javascript"></script>
 
 </body>
 </html>

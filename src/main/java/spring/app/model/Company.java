@@ -1,11 +1,12 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "company")
@@ -21,8 +22,8 @@ public class Company {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime closeTime;
 
-//    @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 

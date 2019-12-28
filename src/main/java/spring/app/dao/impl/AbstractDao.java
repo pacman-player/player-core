@@ -10,7 +10,8 @@ import java.util.List;
 
 @Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
-	@PersistenceContext
+
+    @PersistenceContext
 	EntityManager entityManager;
 
 	private final Class<T> persistentClass;

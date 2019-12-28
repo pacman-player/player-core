@@ -48,8 +48,7 @@ $(document).ready(function () {
             }
 
         });
-    };
-
+    }
     function getCompaniesTable() {
 
         $.ajax({
@@ -87,8 +86,7 @@ $(document).ready(function () {
             }
 
         });
-    };
-
+    }
     //addUser
     $("#addUserBtn").click(function (event) {
         event.preventDefault();
@@ -152,9 +150,7 @@ $(document).ready(function () {
             dataType: 'JSON',
         });
         location.reload();
-    };
-
-
+    }
     $("#editCompanyBtn").click(function (event) {
         event.preventDefault();
         updateCompanyForm();
@@ -185,8 +181,7 @@ $(document).ready(function () {
             dataType: 'JSON',
         });
         location.reload();
-    };
-
+    }
     //deleteForm
     $(document).on('click', '#deleteUser', function () {
         var id = $(this).closest("tr").find("#tableId").text();
@@ -208,8 +203,7 @@ $(document).ready(function () {
             dataType: 'JSON',
         });
         location.reload();
-    };
-
+    }
     //modal form заполнение
     $(document).on('click', '#editUserBtn', function () {
 
@@ -240,6 +234,7 @@ $(document).ready(function () {
         // $(this).trigger('form').reset();
 
         $('#updateCompanyId').val('');
+        $('#updateIdUser').val('');
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');

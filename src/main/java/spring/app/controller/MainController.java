@@ -174,4 +174,9 @@ public class MainController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
+
+    @GetMapping("/player")
+    public String player() {
+        return "player";
+    }
 }

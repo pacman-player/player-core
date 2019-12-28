@@ -10,17 +10,12 @@ import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -30,13 +25,16 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final GenreService genreService;
+    private final OrgTypeService orgTypeService;
 
     @Autowired
-    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService) {
+    public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
+                               GenreService genreService, OrgTypeService orgTypeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
+        this.orgTypeService = orgTypeService;
     }
 
     @GetMapping(value = "/all_users")
@@ -50,6 +48,13 @@ public class AdminRestController {
     public @ResponseBody
     List<Company> getAllCompanies() {
         List<Company> list = companyService.getAllCompanies();
+        return list;
+    }
+
+    @GetMapping(value = "/all_establishments")
+    public @ResponseBody
+    List<OrgType> getAllEstablishments() {
+        List<OrgType> list = orgTypeService.getAllOrgType();
         return list;
     }
 
@@ -86,6 +91,22 @@ public class AdminRestController {
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         companyService.updateCompany(company);
     }
+
+    @PostMapping(value = "/add_establishment")
+    public void addEstablishment(@RequestBody OrgType orgType) {
+        orgTypeService.addOrgType(orgType);
+    }
+
+    @PutMapping(value = "/update_establishment")
+    public void updateEstablishment(@RequestBody OrgType orgType) {
+        orgTypeService.updateOrgType(orgType);
+    }
+
+    @DeleteMapping(value = "/delete_establishment")
+    public void deleteEstablishment(@RequestBody Long id) {
+        orgTypeService.deleteOrgTypeById(id);
+    }
+
 
     private Set<Role> getRoles(String role) {
         Set<Role> roles = new HashSet<>();
