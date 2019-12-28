@@ -46,11 +46,6 @@ $(document).ready(function () {
             getUserData();
         }
 
-    $('#updateUserDataBtn').click(function (event) {
-        event.preventDefault();
-        updateUserData();
-    });
-
     function updateUserPassword() {
 
         getUserData();
@@ -81,11 +76,6 @@ $(document).ready(function () {
         location.reload();
     }
 
-    $('#updateUserPasswordBtn').click(function (event) {
-        event.preventDefault();
-        updateUserPassword();
-    });
-
     function showLinkAdmin() {
         $.ajax({
             type: "post",
@@ -100,5 +90,15 @@ $(document).ready(function () {
         });
 
     }
+
+    $('#updateUserDataBtn').click(function (event) {
+        event.preventDefault();
+        updateUserData();
+    });
+
+    $('#updateUserPasswordBtn').click(function (event) {
+        event.preventDefault();
+        updateUserPassword();
+    })
 
 });
