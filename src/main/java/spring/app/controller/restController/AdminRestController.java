@@ -77,6 +77,26 @@ public class AdminRestController {
         userService.addUser(user);
     }
 
+    @PostMapping(value = "/add_song")
+    public void addSong(@RequestBody SongDto songDto) {
+        Song song = new Song(songDto.getName());
+
+        Author author = authorService.getByName(songDto.getAuthor().getName());
+        if (author != null) {
+            song.setAuthor(author);
+        }
+//        else {
+//            authorService.addAuthor(songDto.getAuthor().getName());
+//            song.setAuthor(authorService.getByName(songDto.getAuthor().getName()));
+//        }
+
+        Genre genre = genreService.getByName(songDto.getGenre().getName());
+        if (genre != null) {
+            song.setGenre(genre);
+        }
+        songService.addSong(song);
+    }
+
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
         User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
@@ -143,9 +163,6 @@ public class AdminRestController {
         return roles;
     }
 
-    private Genre getGenre(String genreName) {
-        return genreService.getByName(genreName);
-    }
 
 
 }

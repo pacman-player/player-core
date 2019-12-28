@@ -55,12 +55,11 @@ public class Song {
         this.name = name;
     }
 
-    //    public Song(String name, Author author, Genre genre, Set<SongQueue> song) {
-//        this.name = name;
-//        this.author = author;
-//        this.genre = genre;
-//        this.song = song;
-//    }
+        public Song(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 
     public void setId(Long id) {
         this.id = id;
