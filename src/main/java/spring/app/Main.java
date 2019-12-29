@@ -23,7 +23,6 @@ public class Main extends WebMvcConfigurerAdapter {
 
     @Value("${portNotification}")
     private int portNotification;
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
