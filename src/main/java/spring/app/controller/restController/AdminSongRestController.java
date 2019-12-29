@@ -40,46 +40,37 @@ public class AdminSongRestController {
         songService.deleteSongById(id);
     }
 
+    /*
+    Чтобы добавить новую песню сначала проверяю автора на наличие в бд.
+     */
     @PostMapping(value = "/add_song")
     public void addSong(@RequestBody SongDto songDto) {
-        //достаю песню по названию
         Song song = new Song(songDto.getName());
-        //достаю автора(со своими полями) по имени
         Author author = authorService.getByName(songDto.getAuthor().getName());
-        //если автор есть, сетим к песне
         if (author != null) {
             song.setAuthor(author);
         } else {
-            //если автора по имени нет - создаем нового по этому же имени
             authorService.addAuthor(new Author(songDto.getAuthor().getName()));
-            //сетим этого нового автора песне
             song.setAuthor(authorService.getByName(songDto.getAuthor().getName()));
         }
-        //достаю жанр песни
         Genre genre = genreService.getByName(songDto.getGenre().getName());
-        //если жанр есть, сетим к песне (по сути лишняя проверка тк жанр берем из бд)
         if (genre != null) {
             song.setGenre(genre);
         }
-        //добавляем новую песню
         songService.addSong(song);
     }
 
+    /*
+    Чтобы изменить песню сначала достаю исходную песню со всеми полями.
+     */
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
-        //достаю исходную песню по id до изменения
         Song oldSong = songService.getSongById(songDto.getId());
-        //достаю исходного автора до изменения
         Author author = oldSong.getAuthor();
-        //достаю жанр по названию
         Genre genre = genreService.getByName(songDto.getGenre().getName());
-        //создаю новую песню
         Song song = new Song(songDto.getId(), songDto.getName());
-        //добавляю ей автора
         song.setAuthor(author);
-        //добавляю ей жанр
         song.setGenre(genre);
-        //обновляю
         songService.updateSong(song);
     }
 
