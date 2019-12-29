@@ -8,6 +8,7 @@ public interface SongDownloadRequestInfoServiceDao  extends GenericDao<Long, Son
     public void save(SongDownloadRequestInfo songDownloadRequestInfo);
     public List<SongDownloadRequestInfo> getBySongName(String songName);
     public List<SongDownloadRequestInfo> getByAuthorName(String authorName);
+    public SongDownloadRequestInfo getBySongNameAndAuthorName(String songName, String authorName);
     public SongDownloadRequestInfo getById(String id);
     public void deleteById(String id);
     public void deleteAll();

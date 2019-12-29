@@ -27,6 +27,5 @@ public class TelegramController {
 
     @PostMapping(value = "/approve")
     public void approve (@RequestBody SongRequest songRequest) {
-
     }
 }

@@ -66,12 +66,7 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
 //                    }
 //                    break;
 //                }
-
-
                     songDownloadRequestInfos.add(new SongDownloadRequestInfo(link,authorName,songName));
-
-
-
             }
         }
 

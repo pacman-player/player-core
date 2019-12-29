@@ -6,6 +6,7 @@ import spring.app.dao.abstraction.SongDownloadRequestInfoServiceDao;
 import spring.app.model.SongDownloadRequestInfo;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -46,6 +47,20 @@ public class SongDownloadRequestInfoServiceDaoImpl extends AbstractDao<Long, Son
         }
 
         return resultList;
+    }
+
+    @Override
+    public SongDownloadRequestInfo getBySongNameAndAuthorName(String songName, String authorName) {
+        SongDownloadRequestInfo songDownloadRequestInfo = null;
+        try {
+            Query query = entityManager.createQuery("SELECT s FROM SongDownloadRequestInfo s WHERE s.author_name = :author_name and s.song_name = :song_name", SongDownloadRequestInfo.class);
+            query.setParameter("author_name", authorName);
+            query.setParameter("song_name", songName);
+            songDownloadRequestInfo= (SongDownloadRequestInfo) query.getResultList().get(0);
+        } catch (NoResultException e) {
+            //logger
+        }
+        return songDownloadRequestInfo;
     }
 
     @Override

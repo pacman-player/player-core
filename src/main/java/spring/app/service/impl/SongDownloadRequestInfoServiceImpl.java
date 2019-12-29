@@ -33,6 +33,16 @@ public class SongDownloadRequestInfoServiceImpl implements SongDownloadRequestIn
     }
 
     @Override
+    public List<SongDownloadRequestInfo> getAll() {
+        return songDownloadRequestInfoServiceDao.getAll();
+    }
+
+    @Override
+    public SongDownloadRequestInfo getBySongNameAndAuthorName(String songName, String authorName) {
+        return songDownloadRequestInfoServiceDao.getBySongNameAndAuthorName( songName,  authorName);
+    }
+
+    @Override
     public SongDownloadRequestInfo getById(String id) {
         return songDownloadRequestInfoServiceDao.getById(id);
     }
