@@ -47,9 +47,4 @@ public class UserController {
     public String fileUpload() {
         return "user/fileUpload";
     }
-
-    @GetMapping("/searchForm")
-    public String searchForm() {
-        return "user/searchForm";
-    }
 }
