@@ -1,10 +1,10 @@
-//отрисовываю таблоицу с песнями.
+//отрисовываем таблицу с песнями
 getSongsTable();
 
 function getSongsTable() {
     $.ajax({
         type: 'GET',
-        url: "http://localhost:8080/api/admin/all_songs",
+        url: "http://localhost:8080/api/admin/song/all_songs",
         contentType: 'application/json;',
         headers: {
             'Accept': 'application/json',
@@ -14,25 +14,25 @@ function getSongsTable() {
         cache: false,
         dataType: 'JSON',
         success: function (listSong) {
-            var htmlTable = "";
+            var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
-                htmlTable += ('<tr id="listSongs">');
-                htmlTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
-                htmlTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
-                htmlTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
-                htmlTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
-                htmlTable += ('<td><a id="editSongBtn' + listSong[i].id + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
+                songTable += ('<tr id="listSongs">');
+                songTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
+                songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
+                songTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
+                songTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
+                songTable += ('<td><a id="editSongBtn' + listSong[i].id + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
-                htmlTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
-                htmlTable += ('</tr>');
+                songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
+                songTable += ('</tr>');
             }
             $("#songsTable #list").remove();
-            $("#getSongsTable").after(htmlTable);
+            $("#getSongsTable").after(songTable);
         }
     });
 }
 
-//edit song GET
+//заполняем модалку edit song
 function editSong(id) {
     $.ajax({
         url: 'http://localhost:8080/api/admin/song/' + id,
@@ -43,7 +43,7 @@ function editSong(id) {
             $("#updateSongName").val(editData.name);
             $("#updateSongAuthor").val(editData.author.name);
             $("#updateSongGenre").val(editData.genre.name);
-            //получаем жанр песни и список жанров из БД на выбор
+            //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genre.name);
         },
         error: function (error) {
@@ -52,12 +52,12 @@ function editSong(id) {
     });
 }
 
-//получаем жанр песни и список жанров из БД на выбор
+//получаем жанр песни и список жанров из БД для edit song
 function getAllGenreForEdit(genreName) {
-    //очищаю option в модалке
+    //очищаем option в модалке
     $('#updateSongGenre').empty();
     var genreForEdit = '';
-    $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
+    $.getJSON("http://localhost:8080/api/admin/song/all_genre", function (data) {
         $.each(data, function (key, value) {
             genreForEdit += '<option id="' + value.id + '" ';
             //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
@@ -70,7 +70,7 @@ function getAllGenreForEdit(genreName) {
     });
 }
 
-//PUT song
+//обновляем песню PUT song
 $("#updateSongBtn").click(function (event) {
     event.preventDefault();
     updateSongForm();
@@ -84,7 +84,7 @@ function updateSongForm() {
     editSong.genre = $("#updateSongGenre option:selected").val();
     $.ajax({
         type: 'PUT',
-        url: 'http://localhost:8080/api/admin/update_song',
+        url: 'http://localhost:8080/api/admin/song/update_song',
         contentType: 'application/json',
         data: JSON.stringify(editSong),
         headers: {
@@ -102,7 +102,7 @@ function updateSongForm() {
     location.reload();
 }
 
-//DELETE song
+//удаляем песню DELETE song
 $(document).on('click', '#deleteSongBtn', function () {
     var id = $(this).closest('tr').find('#tableSongId').text();
     deleteSong(id);
@@ -111,7 +111,7 @@ $(document).on('click', '#deleteSongBtn', function () {
 function deleteSong(id) {
     $.ajax({
         type: 'delete',
-        url: 'http://localhost:8080/api/admin/delete_song',
+        url: 'http://localhost:8080/api/admin/song/delete_song',
         contentType: 'application/json',
         data: JSON.stringify(id),
         headers: {
@@ -125,12 +125,7 @@ function deleteSong(id) {
     location.reload();
 }
 
-//GET add-form
-$('#add-song-nav').click(function () {
-    getAllGenreForAdd();
-});
-
-//POST song
+//добавляем новую песню POST song
 $('#addSongBtn').click(function (event) {
     event.preventDefault();
     addSongForm();
@@ -143,7 +138,7 @@ function addSongForm() {
     addSong.genre = $('#addSongGenre').val();
     $.ajax({
         type: 'POST',
-        url: 'http://localhost:8080/api/admin/add_song',
+        url: 'http://localhost:8080/api/admin/song/add_song',
         contentType: 'application/json',
         data: JSON.stringify(addSong),
         headers: {
@@ -157,12 +152,16 @@ function addSongForm() {
     location.reload();
 }
 
-//получаем все жанры из БД на выбор
+//получаем все жанры песни из БД на выбор
+$('#add-song-nav').click(function () {
+    getAllGenreForAdd();
+});
+
 function getAllGenreForAdd() {
     //очищаю жанры option
     $('#addSongGenre').empty();
     var genreForAdd = '';
-    $.getJSON("http://localhost:8080/api/admin/all_genre", function (data) {
+    $.getJSON("http://localhost:8080/api/admin/song/all_genre", function (data) {
         $.each(data, function (key, value) {
             genreForAdd += '<option ';
             genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';

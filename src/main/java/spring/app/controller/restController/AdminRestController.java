@@ -10,10 +10,7 @@ import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -31,8 +28,6 @@ public class AdminRestController {
     private final CompanyService companyService;
     private final GenreService genreService;
     private final OrgTypeService orgTypeService;
-    private final SongService songService;
-    private final AuthorService authorService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
@@ -41,8 +36,6 @@ public class AdminRestController {
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
-        this.songService = songService;
-        this.authorService = authorService;
         this.orgTypeService = orgTypeService;
     }
 
