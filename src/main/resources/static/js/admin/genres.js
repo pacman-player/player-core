@@ -146,11 +146,8 @@ $(document).ready(function () {
 
     //modal form заполнение
     $(document).on('click', '#editGenresBtn', function () {
-
         $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
         $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
-
-
     });
 
 
