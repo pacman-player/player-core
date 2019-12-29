@@ -27,6 +27,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -46,11 +47,12 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
     }
 
     @Override
-    public List<SongDownloadRequestInfo> search(String artist, String track) throws IOException {
+    public List<SongDownloadRequestInfo> searchSongByAuthorOrSongs(String artist, String track) throws IOException {
 
         final String SEARCH_BASE_URL = "https://downloadmusicvk.ru/audio/search?q=";
         boolean success = false;
         boolean found = false;
+        List<SongDownloadRequestInfo> list = new ArrayList<>();
 
         if (artist.isEmpty() && track.isEmpty()) {
             return null;

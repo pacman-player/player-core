@@ -7,5 +7,5 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface DownloadMusicVkRuService {
-    List<SongDownloadRequestInfo> search(String artist, String track) throws IOException, UnsupportedEncodingException;
+    List<SongDownloadRequestInfo> searchSongByAuthorOrSongs(String artist, String track) throws IOException, UnsupportedEncodingException;
 }
