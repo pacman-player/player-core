@@ -240,6 +240,7 @@ $(document).ready(function () {
         // $(this).trigger('form').reset();
 
         $('#updateCompanyId').val('');
+        $('#updateIdUser').val('');
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');

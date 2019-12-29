@@ -13,7 +13,6 @@ $(document).ready(function () {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            async: true,
             cache: false,
             dataType: 'JSON',
             success: function (listCompanies) {
@@ -30,8 +29,8 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
-                    htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
-                    htmlTable += ('</tr>');
+                    // htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
+                    // htmlTable += ('</tr>');
                 }
 
                 $("#companiesTable #list").remove();
@@ -69,7 +68,7 @@ $(document).ready(function () {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            async: true,
+            async: false,
             cache: false,
             dataType: 'JSON',
         });

@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
 
+import java.util.List;
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
@@ -14,6 +16,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     public AuthorServiceImpl(AuthorDao authorDao) {
         this.authorDao = authorDao;
+    }
+
+    @Override
+    public List<Author> getAllAuthor() {
+        return authorDao.getAll();
     }
 
     @Override
@@ -27,7 +34,18 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getAuthorById(Long id) {
+    public Author getById(Long id) {
         return authorDao.getById(id);
     }
+
+    @Override
+    public void updateAuthor(Author author) {
+        authorDao.update(author);
+    }
+
+    @Override
+    public void deleteAuthorById(Long id) {
+        authorDao.deleteById(id);
+    }
+
 }
