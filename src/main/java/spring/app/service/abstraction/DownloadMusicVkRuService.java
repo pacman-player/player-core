@@ -1,10 +1,11 @@
 package spring.app.service.abstraction;
 
-import org.springframework.http.ResponseEntity;
+import spring.app.model.SongDownloadRequestInfo;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public interface DownloadMusicVkRuService {
-    ResponseEntity<String> search(String artist, String track) throws IOException, UnsupportedEncodingException;
+    List<SongDownloadRequestInfo> search(String artist, String track) throws IOException, UnsupportedEncodingException;
 }

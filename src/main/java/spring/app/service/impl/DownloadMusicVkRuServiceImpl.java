@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
+import spring.app.model.SongDownloadRequestInfo;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.DownloadMusicVkRuService;
 import spring.app.service.abstraction.GenreService;
@@ -26,14 +27,12 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
-
-    //@Value("${uploaded_files_path}")
-    private String fileFolder;
 
     private final GenreService genreService;
     private final AuthorService authorService;
@@ -47,26 +46,29 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
     }
 
     @Override
-    public ResponseEntity<String> search(String artist, String track) throws IOException {
+    public List<SongDownloadRequestInfo> search(String artist, String track) throws IOException {
 
         final String SEARCH_BASE_URL = "https://downloadmusicvk.ru/audio/search?q=";
         boolean success = false;
         boolean found = false;
 
-        if (track.isEmpty()) {
-            return new ResponseEntity<>(encode("Введите название песни"), HttpStatus.BAD_REQUEST);
-        }
-
-        if (songService.isExist(track)) {
-            return new ResponseEntity<>(encode("Файл с таким названием существует в базе"), HttpStatus.BAD_REQUEST);
+        if (artist.isEmpty() && track.isEmpty()) {
+            return null;
         }
 
         String searchUrl = SEARCH_BASE_URL + artist.trim().toLowerCase().replaceAll("\\s", "+") +
                 "+" + track.trim().toLowerCase().replaceAll("\\s", "+");
 
+        if (track.isEmpty()) {
+            searchUrl += "&performer_only=1&search_sort=2";
+        }
+        if (artist.isEmpty()) {
+            searchUrl += "&performer_only=0&search_sort=2";
+        }
+
         Document document = Jsoup.connect(searchUrl).get();
         if (document == null) {
-            return new ResponseEntity<>(encode("Нет коннекта с сайтом"), HttpStatus.BAD_REQUEST);
+            return null;
         }
 
         Elements aElements = document.getElementsByAttributeValue("class", "btn btn-primary btn-xs download");
@@ -75,17 +77,6 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
             String[] arr = aElement.attr("href").substring(19).split("&");
             if (arr.length < 6) {
                 continue;
-            }
-
-            if (!decode(arr[1].substring(7)).replaceAll("\\+", " ").toLowerCase().contains(artist.trim().toLowerCase()) ||
-                    !decode(arr[2].substring(6)).replaceAll("\\+", " ").toLowerCase().contains(track.trim().toLowerCase())) {
-                found = false;
-                continue;
-            }
-
-            found=true;
-            if (artist.isEmpty()) {
-                artist = decode(arr[1].substring(7)).replaceAll("\\+", " ").toLowerCase();
             }
             String downloadUrl = "https://downloadmusicvk.ru/audio/download?" +
                     arr[1] + "&" + arr[2] + "&" + arr[5] + "&" + arr[0];
@@ -98,7 +89,6 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 InputStream in = con.getInputStream();
                 String fileName = addToDatabase(artist, track);
-                //Path path = Paths.get(fileFolder + fileName);
                 Path path = PlayerPaths.getSongsDir(fileName);
                 if (path != null) {
                     Files.deleteIfExists(path);
