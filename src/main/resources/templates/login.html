@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8"/>
     <title>Login page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -12,13 +14,16 @@
         body {
             background: #eeeeee;
         }
+
         .login-form {
             /*margin-top: 100px;*/
             margin-top: 12px;
         }
+
         .login-group :last-child {
             margin-top: 5px;
         }
+
         .empty-block {
             height: 88px;
         }
@@ -29,7 +34,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-xs-11 col-md-offset-3 col-xs-offset-2 login-form">
+        <div class="col-lg-6 col-md-6 col-xs-11 col-md-offset-3 col-xs-offset-2 login-form text-center">
             <div class="col-xs-8 col-md-offset-2">
 
                 <div class="empty-block" th:if="${isNotValid == null and logout == null}"></div>
@@ -54,20 +59,24 @@
                 <h2>Please sign in</h2>
                 <form action="/processing-url" method="POST">
                     <div class="form-group login-group">
-                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email adress"
-                               required="" th:value="admin"/>
+                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
+                               required="" th:value="user"/>
                         <input type="password" class="form-control" id="uPass" name="password"
-                               required="" th:value="admin" placeholder="Password" />
+                               required="" th:value="user" placeholder="Password"/>
                     </div>
                     <input type="submit" class="btn btn-primary btn-block" value="Sign in"/>
                     <!--<a href="/google/login">Click here to Google Login</a>-->
                 </form>
+                <div class="form-group">
+                    <span>New user? <a href="/registration/first">Register here</a></span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<form style="margin-left: 500px;margin-right: 500px;margin-top: 15px" id="google" th:action="@{/googleAuth}" method="GET">
+<form style="margin-left: 500px;margin-right: 500px;margin-top: 15px" id="google" th:action="@{/googleAuth}"
+      method="GET">
     <button type="submit" class="btn btn-primary btn-block btn-pull-center">
         Google Authorization
     </button>
