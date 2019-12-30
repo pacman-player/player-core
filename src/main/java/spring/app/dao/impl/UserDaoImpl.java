@@ -39,6 +39,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
             query.setParameter("googleId", googleId);
             user = query.getSingleResult();
         } catch (NoResultException e) {
+            LOGGER.warn(e.getMessage(), e);
             return null;
         }
         return user;
@@ -48,6 +49,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     public User getByEmail(String email) {
         List<User> userList = entityManager.createQuery("FROM User WHERE email = :email", User.class)
                 .setParameter("email", email)
+                .getResultList();
+        if (userList.isEmpty()) {
+            return null;
+        }
+        return userList.get(0);
+    }
+
+    @Override
+    public User getUserByVkId(int vkId) {
+        List<User> userList = entityManager.createQuery("FROM User WHERE vkId = :vkId", User.class)
+                .setParameter("vkId", vkId)
                 .getResultList();
         if (userList.isEmpty()) {
             return null;
