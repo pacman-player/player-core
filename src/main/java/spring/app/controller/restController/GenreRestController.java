@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
-import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.impl.NotificationServiceImpl;
