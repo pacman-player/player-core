@@ -28,7 +28,6 @@ public class User implements UserDetails {
     private String password;
 
 
-
     private String googleId;
 
     @Lob
@@ -41,8 +40,8 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
-   @JsonBackReference
-   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Company company;
 
     //@Column(name = "enabled", nullable = false)
@@ -70,11 +69,11 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(String googleId,String email, Set<Role> roleSet,boolean enabled) {
+    public User(String googleId, String email, Set<Role> roleSet, boolean enabled) {
         this.email = email;
         this.googleId = googleId;
         this.login = email;
-        this.roles=roleSet;
+        this.roles = roleSet;
         this.enabled = enabled;
     }
 
