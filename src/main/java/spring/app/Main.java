@@ -16,6 +16,7 @@ import spring.app.service.impl.MusicSearchAndStorageImpl;
 import spring.app.service.impl.ZaycevSaitServiceImpl;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 
 @SpringBootApplication
 @EnableAsync
