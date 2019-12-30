@@ -20,7 +20,6 @@ public class GenreRestController {
 
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
-    //private User user = (User) getContext().getAuthentication().getPrincipal();
 
     @Autowired
     public GenreRestController(GenreService genreService, NotificationServiceImpl notificationService) {

@@ -1,4 +1,4 @@
 $(function () {
-    let socet = new WebSocket("wss://localhost");
+   // let socet = new WebSocket("wss://localhost");
     
 });

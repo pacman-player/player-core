@@ -18,18 +18,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
     private UserDao userDao;
-    private ServerSocket serverSocket;
+
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao, ServerSocket serverSocket) {
+    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
         this.notificationDao = notificationDao;
         this.userDao = userDao;
-        this.serverSocket = serverSocket;
     }
 
-    public void sendMessage() throws IOException {
-        serverSocket.accept();
-    }
 
     @Override
     public void addNotification(Notification notification) {
