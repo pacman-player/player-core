@@ -17,11 +17,6 @@ public class Main extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-
-        // Тест загрузки одного песни из списка результатов поиска
-        /*MuzofondfmMusicSearchImpl search = new MuzofondfmMusicSearchImpl();
-        List<Track> tracks = search.searchSong("Within Temptation", "Frozen");
-        search.getSong(tracks.get((int) (Math.random() * tracks.size())));*/
     }
 
     @Bean(initMethod = "init")
