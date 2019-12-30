@@ -20,6 +20,8 @@
     });
 
     function renderGenre(genre) {
+        let checkBanned = Boolean(genre.banned);
+
         return `
                     <tr>
                         <td>
@@ -27,40 +29,69 @@
                         </td>
                         
                         <!-- кнопка по добавлению в фильтр жанра -->
+                        <!-- если в артрибут передается название функции, то она будет вызвана с this = кнопки,
+                         которую нажали -->
                         <td>
                             <button
                                 type="button"
-                                class="btn btn-warning"
-                                onclick="addGenreToFilter(${genre.id})"
+                                class="btn ${checkBanned ? 'btn-success' : 'btn-warning'}"
+                                onclick="addGenreToFilter"
+                                <!-- писать data перед собсвенными атрибутами - правило -->
+                                data-banned="${checkBanned}"
+                                data-genre-id="${genre.id}"
                             >
-                                Заблокировать
+                                ${checkBanned ? 'Разблокировать': 'Заблокировать'}
                             </button>
                         </td>
                     </tr>
                     `;
     }
-    // функция для добавления жанра в список запрещеных вызываеться при клике на кнопку
-    function addGenreToFilter(genreId) {
+
+    // функция для добавления/удаления жанра в/из список(а) запрещеных
+    function addGenreToFilter() {
+
+        const $button = $(this);
+        // ищем в кнопке атрибут и достаем его значение
+        // преобразовываем их в тип соответсвующей функцией
+        const genreId = Number($button.data('genre-id'));
+        const banned = Boolean($button.data('banned'));
+
         $.ajax({
             method: 'post',
-            url: '/api/user/genreBan',
-            contentType : "application/json",
-            data:JSON.stringify(genreId),
+            url: banned ? '/api/user/genreUnBan' : '/api/user/genreBan',
+            contentType: "application/json",
+            data: JSON.stringify(genreId),
             success: function () {
-                /*TODO должна быть вторая кнопка, которая будет убирать данные из списка запрещенных:
-                если кнопки две, то одна должна скрываться, в зависимости от того, находиться эти данные
-                 в запрете или нет.
-                */
-                console.log("ВЫПОЛНЕНИЕ");
+
+                // если переменная banned была true, то мы разблокировали объект и наоборот
+                if (banned) {
+                    $button
+                        .html('Заблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', false);
+                } else {
+                    // html = поменять содержимое
+                    $button
+                        .html('Разблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', true);
+                }
             }
         });
     }
 
-    // код для поиска и вывода авторов
+    // код для поиска и генерации таблицы авторов
     let $authorForms = $(".authorSearch");
+    // при клике на кнопку ".on" перехватывает событие и вызывает вместо него функцию
     $authorForms.on("submit", function(searchAuthor){
 
+        // блокирует стандартный ход исполнения события "submit"
         searchAuthor.preventDefault();
+
         const authorName = $(this).find(".nameForAuthor").val();
 
         $.ajax({
@@ -69,51 +100,71 @@
             contentType: 'application/json;',
 
             success: function (allAuthors) {
-                let tbl = `<table class="table table-borderless">`;
-
-                for (let i = 0; i < allAuthors.length; ++i) {
-                    const authorId = allAuthors[i].id;
-                    tbl +=
-                        `
-                        <tr>
-                            <td>
-                                ${allAuthors[i].name}                        
-                            </td> 
-                            <!-- кнопка по добавлению в фильтр автора -->
-                            <td>
-                                <button
-                                    type="button"
-                                    id="buttonAuthor"
-                                    class="btn btn-warning"
-                                    onclick="addAuthorToFilter(${authorId})"
-                                >
-                                    Заблокировать
-                                </button>
-                            </td>
-                        </tr>
-                        `;
-                }
-                tbl += "</table>";
-                $("#forAuthorTable").html(tbl);
+                $("#forAuthorTable").html(`<table class="table table-borderless">
+                ${allAuthors.map(renderAuthors).join('')}
+                </table>`);
             }
         });
     });
 
+    function renderAuthors(author) {
+        let checkBanned = Boolean(author.banned);
+
+        return `
+                 <tr>
+                     <td>
+                         ${author.name}                        
+                     </td> 
+                     <!-- кнопка по добавлению в фильтр автора -->
+                     <td>
+                         <button
+                             type="button"
+                             id="buttonAuthor"
+                             class="${checkBanned ? 'btn-success' : 'btn-warning'}"
+                             onclick="addAuthorToFilter"
+                             data-banned="${checkBanned}"
+                             data-author-id="${author.id}"
+                         >
+                             ${checkBanned ? 'Разблокировать' : 'Заблокировать'}
+                        </button>
+                     </td>
+                 </tr>
+                `;
+    }
+
     // функция для добавления исполнителя в список запрещеных вызываеться при клике на кнопку
-    function addAuthorToFilter(authorId) {
+    function addAuthorToFilter() {
+        const $button = $(this);
+        // ищем в кнопке атрибут и достаем его значение
+        // преобразовываем их в тип соответсвующей функцией
+        const authorId = Number($button.data('author-id'));
+        const banned = Boolean($button.data('banned'));
+
         $.ajax({
             method: 'post',
-            url: '/api/user/authorsBan',
+            url: banned ? '/api/user/authorsUnBan' : '/api/user/authorsBan',
             contentType : "application/json",
             data:JSON.stringify(authorId),
             dataType: 'json',
 
             success: function () {
-                /*TODO должна быть вторая кнопка, которая будет убирать данные из списка запрещенных:
-                если кнопки две, то одна должна скрываться, в зависимости от того, находиться эти данные
-                 в запрете или нет.
-                */
-                console.log("ВЫПОЛНЕНИЕ");
+
+                if (banned) {
+                    $button
+                        .html('Заблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', false);
+                } else {
+                    // html = поменять содержимое
+                    $button
+                        .html('Разблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', true);
+                }
             }
         });
     }
@@ -131,50 +182,69 @@
             contentType: 'application/json;',
 
             success: function (allMusics) {
-                let tbl = `<table class="table table-borderless">`;
-
-                for (let i = 0; i < allMusics.length; ++i) {
-                    const musicId = allMusics[i].id;
-                    tbl +=
-                        `
-                        <tr>
-                            <td>
-                                ${allMusics[i].name}                        
-                            </td> 
-                            <!-- кнопка по добавлению в фильтр автора -->
-                            <td>
-                                <button
-                                    type="button"
-                                    class="btn btn-warning"
-                                    onclick="addMusicToFilter(${musicId})"
-                                >
-                                    Заблокировать
-                                </button>
-                            </td>
-                        
-                        </tr>
-                        `;
-                }
-                tbl += "</table>";
-                $("#forMusicTable").html(tbl);
+                $("#forMusicTable").html(`<table class="table table-borderless">
+                ${allMusics.map(renderMusics).join('')}
+                </table>`);
             }
         });
     });
 
+    function renderMusics(music) {
+        let checkBanned = Boolean(music.banned);
+
+        return `
+                   <tr>
+                       <td>
+                           ${music.name}                        
+                       </td> 
+                       <!-- кнопка по добавлению в фильтр автора -->
+                       <td>
+                           <button
+                               type="button"
+                               class="${checkBanned ? 'btn-success' : 'btn-warning'}"
+                               onclick="addMusicToFilter"
+                               data-banned="${checkBanned}"
+                               data-music-id="${music.id}"
+                           >
+                               ${checkBanned ? 'Разблокировать' : 'Заблокировать'}
+                           </button>
+                       </td> 
+                   </tr> 
+                `;
+    }
+
     // функция для добавления песни(ен) в список запрещеных вызываеться при клике на кнопку
-    function addMusicToFilter(musicId) {
+    function addMusicToFilter() {
+
+        const $button = $(this);
+        const musicId = Number($button.data('music-id'));
+        const banned = Boolean($button.data('banned'));
+
         $.ajax({
             method: 'post',
-            url: '/api/user/songsBan',
+            url: banned ? "/api/user/songsUnBan" : '/api/user/songsBan',
             contentType : "application/json",
             data:JSON.stringify(musicId),
             dataType: 'json',
             success: function () {
-                /*TODO должна быть вторая кнопка, которая будет убирать данные из списка запрещенных:
-                если кнопки две, то одна должна скрываться, в зависимости от того, находиться эти данные
-                 в запрете или нет.
-                */
-                console.log("ВЫПОЛНЕНИЕ");
+
+                if (banned) {
+                    
+                    $button
+                        .html('Заблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', false);
+                } else {
+                    // html = поменять содержимое
+                    $button
+                        .html('Разблокировать')
+                        .removeClass('btn-success')
+                        .addClass('btn-warning')
+                        //устанавливаем атрибуту значение
+                        .data('banned', true);
+                }
             }
         });
     }
