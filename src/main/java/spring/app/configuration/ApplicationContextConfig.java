@@ -5,9 +5,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
@@ -15,7 +15,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 @Configuration
 @ComponentScan("spring.app")
 @EnableTransactionManagement
-@PropertySource("classpath:uploadedFilesPath.properties")
+@PropertySource("classpath:application.properties")
 public class ApplicationContextConfig {
 
 	@Bean

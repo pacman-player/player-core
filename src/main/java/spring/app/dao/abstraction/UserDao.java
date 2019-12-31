@@ -6,4 +6,5 @@ public interface UserDao extends GenericDao<Long, User> {
 	User getUserByLogin(String login);
 	User getUserByGoogleId(String googleId);
 	User getByEmail(String email);
+    User getUserByVkId(int vkId);
 }
