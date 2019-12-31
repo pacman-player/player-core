@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     getTable();
-   // getCompaniesTable();
+    getCompaniesTable();
 
     function getTable() {
         $.ajax({
@@ -277,25 +277,32 @@ $(document).ready(function () {
         $('#updateCloseTime').val('');
 
         $.ajax({
+            url: "/api/admin/all_establishments",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var selectBody = $('#updateOrgType');
+                $(data).each(function (i, org) {
+                    selectBody.append(`
+            <option value="${org.id}" >${org.name}</option>
+            `);
+                })
+            },
+        })
+
+        $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
-
             success: function (data) {
                 $('#updateCompanyId').val(data.id);
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
                 $('#updateIdUser').val(data.user.id);
-                // $('#updateOrgType').val(data.orgType.name);
-                switch ($(data.orgType.id).text()) {
-                    case '1':
-                        $("#updateOrgType").val("Ресторан");
-                        break;
-                }
+                $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
             }
         })
-
     });
 
     function notification(notifyId, message) {

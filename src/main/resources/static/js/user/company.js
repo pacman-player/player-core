@@ -30,6 +30,7 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
+        location.reload();
     }
 
     function getCompanyData() {
@@ -53,15 +54,12 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "/api/user/show_admin",
-
             success: function (role) {
                 if (role !== "admin") {
                     $("#adminLink").hide();
                 }
             }
-
         });
-
     }
 
     function notification(notifyId, message) {
