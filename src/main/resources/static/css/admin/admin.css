@@ -38,4 +38,21 @@ body {
 .list{
     padding-top: 20px;
 }
+.notify {
+    padding: 5px 5px;
+    margin-top: 10px;
+    font-size: 15px;
+    border-radius: 4px;
+    text-align: center;
+    opacity: 0.9;
+    width: 25%;
+    position: relative;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+#field{
+    padding: 10px 10px;
+}
+
 

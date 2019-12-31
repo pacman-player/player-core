@@ -17,7 +17,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listCompanies) {
                 var htmlTable = "";
-
+                $("#companiesTable tbody").empty();
                 for (var i = 0; i < listCompanies.length; i++) {
 
                     htmlTable += ('<tr id="listCompanies">');
@@ -27,20 +27,15 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
-                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                    htmlTable += ('<td><button id="showEditModalCompaniesBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     // htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     // htmlTable += ('</tr>');
                 }
-
-                $("#companiesTable #list").remove();
-                $("#getCompaniesTable").after(htmlTable);
+                $("#companiesTable tbody").append(htmlTable);
             }
-
         });
     };
-
-
 
 
     $("#editCompanyBtn").click(function (event) {
@@ -59,7 +54,6 @@ $(document).ready(function () {
         };
 
         $.ajax({
-
             type: 'POST',
             url: "/api/admin/company",
             contentType: 'application/json;',
@@ -70,13 +64,24 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getCompaniesTable();
+                },
+            success:
+                function () {
+                    notification("edit-company" + companyDto.id,
+                        "  Изменения компании c id " + companyDto.id + "сохранены");
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     };
 
     //modal company form заполнение
-    $(document).on('click', '#editCompanyBtn', function () {
+    $(document).on('click', '#showEditModalCompaniesBtn', function () {
 
         // $(this).trigger('form').reset();
 
@@ -89,7 +94,6 @@ $(document).ready(function () {
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
-
             success: function (data) {
                 $('#updateCompanyId').val(data.id);
                 $('#updateNameCompany').val(data.name);
@@ -104,9 +108,34 @@ $(document).ready(function () {
                         $("#updateOrgType").val("Ресторан");
                         break;
                 }
+            },
+            error:  function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
             }
         })
 
     });
 
+    function notification(notifyId, message) {
+        let notify = document.createElement('div');
+        notify.setAttribute('id', 'success-alert-' + notifyId);
+        notify.classList.add("alert");
+        notify.classList.add("alert-success");
+        notify.classList.add("notify");
+        notify.classList.add("alert-dismissible");
+        notify.setAttribute("role", "alert");
+        notify.setAttribute("hidden", "true");
+        notify.innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message;
+
+        if (!document.querySelector('#field')) {
+            let field = document.createElement('div');
+            field.id = 'field';
+            document.getElementById('companies-panel').appendChild(field);
+        }
+        document.querySelector('#field').appendChild(notify)
+        $('#success-alert-' + notifyId).fadeIn(300, "linear");
+        setTimeout(() => {
+            $('#success-alert-' + notifyId).fadeOut(300, "linear", $(this).remove());
+        }, 1000);
+    }
 });

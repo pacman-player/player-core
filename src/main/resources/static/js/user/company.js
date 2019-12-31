@@ -16,9 +16,19 @@ $(document).ready(function () {
             url: "/api/user/company",
             type: "PUT",
             data: JSON.stringify(formData),
-            dataType: 'json',
-            complete: function () {
-            }
+            complete:
+                function () {
+                    getCompanyData();
+                },
+            success:
+                function () {
+                    notification("edit-company-data" + formData.name.replace(/[^\w]|_/g, ''),
+                        "  Изменения сохранены");
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
     }
 
@@ -54,5 +64,17 @@ $(document).ready(function () {
 
     }
 
+    function notification(notifyId, message) {
+        let notify = document.getElementById('notify');
+        notify.innerHTML =
+            '<div class="alert alert-success notify alert-dismissible"' +
+            'role="alert" hidden="true" id="success-alert-' + notifyId + '">' +
+            '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message +
+            '</div>';
+        $('#success-alert-' + notifyId).fadeIn(300, "linear");
+        setTimeout(() => {
+            $('#success-alert-' + notifyId).fadeOut(400, "linear", $(this).remove());
+        }, 1000);
+    }
 });
 
