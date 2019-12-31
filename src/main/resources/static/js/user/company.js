@@ -30,7 +30,6 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-        location.reload();
     }
 
     function getCompanyData() {
