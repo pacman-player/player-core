@@ -74,4 +74,9 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
     }
 
+	@Override
+	public User getUserByVkId(int vkId) {
+		return userDao.getUserByVkId(vkId);
+	}
+
 }
