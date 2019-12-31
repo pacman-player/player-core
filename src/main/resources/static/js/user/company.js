@@ -20,6 +20,7 @@ $(document).ready(function () {
             complete: function () {
             }
         });
+        location.reload();
     }
 
     function getCompanyData() {
@@ -43,15 +44,12 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "/api/user/show_admin",
-
             success: function (role) {
                 if (role !== "admin") {
                     $("#adminLink").hide();
                 }
             }
-
         });
-
     }
 
 });
