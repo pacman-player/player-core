@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,11 @@ public class User implements UserDetails {
     //@Column(name = "password", length = 30, nullable = false)
     private String password;
 
+    private int vkId;
+
+    private String firstName;
+
+    private String lastName;
 
     private String googleId;
 
@@ -62,11 +68,8 @@ public class User implements UserDetails {
     }
 
     public User(Long id, String email, String login, String password, boolean enabled) {
+        this(email, login, password, enabled);
         this.id = id;
-        this.email = email;
-        this.login = login;
-        this.password = password;
-        this.enabled = enabled;
     }
 
     public User(String googleId, String email, Set<Role> roleSet, boolean enabled) {
@@ -74,6 +77,16 @@ public class User implements UserDetails {
         this.googleId = googleId;
         this.login = email;
         this.roles = roleSet;
+        this.enabled = enabled;
+    }
+
+    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled) {
+        this.vkId = vkId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.roles = roles;
+        this.company = company;
         this.enabled = enabled;
     }
 
@@ -181,27 +194,49 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
+    public int getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(int vkId) {
+        this.vkId = vkId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return enabled != null ? enabled.equals(user.enabled) : user.enabled == null;
+        return vkId == user.vkId &&
+                id.equals(user.id) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(googleId, user.googleId) &&
+                Objects.equals(company, user.company) &&
+                enabled.equals(user.enabled);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-        return result;
+        return Objects.hash(id, login, email, password, vkId, firstName, lastName, googleId, company, enabled);
     }
 }
