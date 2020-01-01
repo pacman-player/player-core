@@ -53,6 +53,13 @@ public class AdminRestController {
         return list;
     }
 
+    @GetMapping(value = "/all_establishments")
+    public @ResponseBody
+    List<OrgType> getAllEstablishments() {
+        List<OrgType> list = orgTypeService.getAllOrgType();
+        return list;
+    }
+
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
@@ -86,6 +93,22 @@ public class AdminRestController {
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         companyService.updateCompany(company);
     }
+
+    @PostMapping(value = "/add_establishment")
+    public void addEstablishment(@RequestBody OrgType orgType) {
+        orgTypeService.addOrgType(orgType);
+    }
+
+    @PutMapping(value = "/update_establishment")
+    public void updateEstablishment(@RequestBody OrgType orgType) {
+        orgTypeService.updateOrgType(orgType);
+    }
+
+    @DeleteMapping(value = "/delete_establishment")
+    public void deleteEstablishment(@RequestBody Long id) {
+        orgTypeService.deleteOrgTypeById(id);
+    }
+
 
     private Set<Role> getRoles(String role) {
         Set<Role> roles = new HashSet<>();
