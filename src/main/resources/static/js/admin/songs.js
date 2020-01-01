@@ -3,17 +3,10 @@ getSongsTable();
 
 function getSongsTable() {
     $.ajax({
-        type: 'GET',
+        method: 'GET',
         url: "http://localhost:8080/api/admin/song/all_songs",
-        contentType: 'application/json;',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        async: true,
-        cache: false,
-        dataType: 'JSON',
         success: function (listSong) {
+            $('#all-songs').empty();
             var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
                 songTable += ('<tr id="listSongs">');
@@ -26,8 +19,11 @@ function getSongsTable() {
                 songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
                 songTable += ('</tr>');
             }
-            $("#songsTable #list").remove();
-            $("#getSongsTable").after(songTable);
+            //добавил тег tbody
+            $('#all-songs').append(songTable);
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     });
 }
@@ -46,8 +42,8 @@ function editSong(id) {
             //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genre.name);
         },
-        error: function (error) {
-            alert("err: " + error);
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     });
 }
@@ -83,23 +79,19 @@ function updateSongForm() {
     editSong.author = $("#updateSongAuthor").val();
     editSong.genre = $("#updateSongGenre option:selected").val();
     $.ajax({
-        type: 'PUT',
+        method: 'PUT',
         url: 'http://localhost:8080/api/admin/song/update_song',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(editSong),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        async: true,
-        cache: false,
-        dataType: 'JSON',
         success: function () {
-            $('#songsTable').empty();
+            $('#editSong').modal('hide');
+            $('#song-table-nav').tab('show');
             getSongsTable();
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     });
-    location.reload();
 }
 
 //удаляем песню DELETE song
@@ -110,19 +102,15 @@ $(document).on('click', '#deleteSongBtn', function () {
 
 function deleteSong(id) {
     $.ajax({
-        type: 'delete',
-        url: 'http://localhost:8080/api/admin/song/delete_song',
-        contentType: 'application/json',
-        data: JSON.stringify(id),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+        method: 'DELETE',
+        url: 'http://localhost:8080/api/admin/song/delete_song/' + id,
+        success: function() {
+            getSongsTable();
         },
-        async: false,
-        cache: false,
-        dataType: 'JSON'
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+        }
     });
-    location.reload();
 }
 
 //добавляем новую песню POST song
@@ -137,19 +125,20 @@ function addSongForm() {
     addSong.author = $('#addSongAuthor').val();
     addSong.genre = $('#addSongGenre').val();
     $.ajax({
-        type: 'POST',
+        method: 'POST',
         url: 'http://localhost:8080/api/admin/song/add_song',
-        contentType: 'application/json',
+        contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(addSong),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+        success: function () {
+            $('#addSongName').val('');
+            $('#addSongAuthor').val('');
+            $('#tab-song-panel').tab('show');
+            getSongsTable();
         },
-        async: true,
-        cache: false,
-        dataType: 'JSON',
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+        }
     });
-    location.reload();
 }
 
 //получаем все жанры песни из БД на выбор

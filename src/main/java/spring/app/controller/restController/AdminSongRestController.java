@@ -35,8 +35,8 @@ public class AdminSongRestController {
         return list;
     }
 
-    @DeleteMapping(value = "/delete_song")
-    public void deleteSong(@RequestBody Long id) {
+    @DeleteMapping(value = "/delete_song/{id}")
+    public void deleteSong(@PathVariable("id") Long id) {
         songService.deleteSongById(id);
     }
 
