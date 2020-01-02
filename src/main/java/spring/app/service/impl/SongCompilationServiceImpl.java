@@ -39,4 +39,9 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     public void addSongCompilationToMorningPlaylist(Long id) {
         //HQL request
     }
+
+    @Override
+    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
+        return null;
+    }
 }

@@ -36,10 +36,11 @@ $(document).ready(function () {
                         htmlCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="80" height="80" alt="' +
                             listSongCompilation[i].name + '" >');
-                        htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a></div>');
-                        htmlCompilation += ('<a id="addMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="link">M</a>');
+                        htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a>');
+                        htmlCompilation += ('<a class="btn btn-primary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="button">M</a>');
                         htmlCompilation += ('<a id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')" role="link">D</a>');
                         htmlCompilation += ('<a id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')" role="link">E</a>');
+                        htmlCompilation += ('</div>');
                     }
                 }
                 $("#getGenres #genres").remove();
@@ -50,8 +51,21 @@ $(document).ready(function () {
 
     });
 
+    //INSERT row to table db
+    //добавляем запись в бд
     function addMorningPlaylist(idCompilation) {
-
+        $.ajax({
+            method: 'POST',
+            url: '/api/user/add_song_compilation_to_morning_playlist/' + idCompilation,
+            success: function () {
+                alert("in add_song_compilation_to_morning_playlist/id");
+                //+обновить утренний плейлист
+                getAllCompilationsInMorningPlaylist();
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText, status, error);
+            }
+        })
     }
 
     function addDayPlaylist(idCompilation) {
@@ -59,6 +73,12 @@ $(document).ready(function () {
     }
 
     function addEveningPlaylist(idCompilation) {
+
+    }
+
+    //SELECT row from table db
+    //обновляем утренний плейлист
+    function getAllCompilationsInMorningPlaylist() {
 
     }
 

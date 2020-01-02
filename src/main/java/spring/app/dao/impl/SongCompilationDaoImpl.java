@@ -25,4 +25,9 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         List<SongCompilation> list = query.getResultList();
         return list;
     }
+
+    @Override
+    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
+        return null;
+    }
 }
