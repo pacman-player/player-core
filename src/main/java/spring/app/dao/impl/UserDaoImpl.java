@@ -1,5 +1,7 @@
 package spring.app.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
@@ -12,6 +14,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
+	private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl() {
         super(User.class);
@@ -36,6 +39,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
             query.setParameter("googleId", googleId);
             user = query.getSingleResult();
         } catch (NoResultException e) {
+            LOGGER.warn(e.getMessage(), e);
             return null;
         }
         return user;
@@ -45,6 +49,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     public User getByEmail(String email) {
         List<User> userList = entityManager.createQuery("FROM User WHERE email = :email", User.class)
                 .setParameter("email", email)
+                .getResultList();
+        if (userList.isEmpty()) {
+            return null;
+        }
+        return userList.get(0);
+    }
+
+    @Override
+    public User getUserByVkId(int vkId) {
+        List<User> userList = entityManager.createQuery("FROM User WHERE vkId = :vkId", User.class)
+                .setParameter("vkId", vkId)
                 .getResultList();
         if (userList.isEmpty()) {
             return null;
