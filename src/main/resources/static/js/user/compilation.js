@@ -8,17 +8,17 @@ $(document).ready(function () {
         var genre = $(this).text();
 
         $.ajax({
-            type: 'post',
+            method: 'GET',
             url: '/api/user/song_compilation',
-            contentType: 'application/json;',
-            data: JSON.stringify(genre),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
+            // contentType: 'application/json;',
+            // data: JSON.stringify(genre),
+            // headers: {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // },
+            // async: true,
+            // cache: false,
+            // dataType: 'JSON',
 
             success: function (listSongCompilation) {
                 console.log(listSongCompilation);
@@ -37,7 +37,8 @@ $(document).ready(function () {
                         htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="80" height="80" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a>');
-                        htmlCompilation += ('<a class="btn btn-primary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="button">M</a>');
+                        // htmlCompilation += ('<a class="btn btn-primary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="button">M</a>');
+                        htmlCompilation += ('<button id="btnAddMorningPlaylist" class="btn btn-sm btn-info" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" type="button">M</button>');
                         htmlCompilation += ('<a id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')" role="link">D</a>');
                         htmlCompilation += ('<a id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')" role="link">E</a>');
                         htmlCompilation += ('</div>');
