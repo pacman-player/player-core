@@ -33,6 +33,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public void updateNotification(Notification notification) {
+        notificationDao.update(notification);
+    }
+
+    @Override
+    public Notification getNotificationById(Long id) {
+        return notificationDao.getById(id);
+    }
+
+    @Override
     public void addNotification(String message, Long id) {
         List<User> users = userDao.getAll();
         for (User user : users) {

@@ -21,8 +21,8 @@ import java.net.ServerSocket;
 @EnableCaching
 public class Main extends WebMvcConfigurerAdapter {
 
-    @Value("${portNotification}")
-    private int portNotification;
+    /*@Value("${portNotification}")
+    private int portNotification;*/
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -48,8 +48,8 @@ public class Main extends WebMvcConfigurerAdapter {
         return new RestTemplate();
     }
 
-    @Bean
+   /* @Bean
     public ServerSocket getServer() throws IOException {
         return new ServerSocket(portNotification);
-    }
+    }*/
 }

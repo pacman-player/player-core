@@ -1,9 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
@@ -27,5 +25,14 @@ public class NotificationRestController {
     public List<Notification> getNotificationByUserId() {
         User user = (User) getContext().getAuthentication().getPrincipal();
         return notificationService.getByUserId(user.getId());
+    }
+
+    @PostMapping(value = "/read")
+    public void readNotificationById(@RequestBody String Id) {
+        Id = Id.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        Long id = Long.parseLong(Id);
+        Notification notification = notificationService.getNotificationById(id);
+        notification.setFlag(false);
+        notificationService.updateNotification(notification);
     }
 }

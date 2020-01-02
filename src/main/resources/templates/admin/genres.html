@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Admin page</title>
@@ -9,6 +9,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
 
@@ -19,8 +20,11 @@
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#">Project name</a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
 
@@ -82,7 +86,7 @@
                                             <thead id="getGenresTable">
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Жанр </th>
+                                                <th>Жанр</th>
 
                                             </tr>
                                             </thead>
@@ -127,7 +131,6 @@
                                                                                        required=""/>
 
 
-
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -170,7 +173,8 @@
                                                                    placeholder="Enter genre" name="genre"/>
 
                                                             <button type="submit" id="addGenreBtn"
-                                                                    class="btn btn-success btn-lg" style="margin-top: 20px;">
+                                                                    class="btn btn-success btn-lg"
+                                                                    style="margin-top: 20px;">
                                                                 Добавить жанр
                                                             </button>
                                                         </div>

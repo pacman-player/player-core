@@ -1,32 +1,6 @@
 $(document).ready(function () {
 
     getTable();
-    getNotification();
-
-    function getNotification() {
-        $.ajax({
-            type: 'GET',
-            url: "/api/admin/notification",
-            contentType: 'application/json;',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
-            success: function (listNotification) {
-                var notification = "";
-                if (0 < listNotification.length) {
-                    for (var i = 0; i < listNotification.length; i++) {
-                        notification += listNotification[i].message;
-                    }
-                    alert(notification);
-                }
-            }
-        });
-    }
-
 
     function getTable() {
 
@@ -143,12 +117,10 @@ $(document).ready(function () {
         location.reload();
     };
 
-
     //modal form заполнение
     $(document).on('click', '#editGenresBtn', function () {
         $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
         $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
     });
-
 
 });
