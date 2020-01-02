@@ -54,6 +54,11 @@ public class UserRestController {
         }
     }
 
+    @PostMapping(value = "/add_song_compilation_to_morning_playlist/{id}")
+    public void addSongCompilationToMorningPlaylist(@RequestBody Long id) {
+        songCompilation.addSongCompilationToMorningPlaylist(id);
+    }
+
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
     public String getUserRoles() {
         String role = "user";

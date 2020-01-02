@@ -34,4 +34,9 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
         return songCompilationDao.getListSongCompilationsByGenreId(id);
     }
+
+    @Override
+    public void addSongCompilationToMorningPlaylist(Long id) {
+        //HQL request
+    }
 }

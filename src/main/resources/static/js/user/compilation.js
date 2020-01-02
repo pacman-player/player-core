@@ -34,9 +34,12 @@ $(document).ready(function () {
                     for (var i = 0; i < listSongCompilation.length; i++) {
                         htmlCompilation += ('<div id="songCompilation" class="col-3 pt-3">');
                         htmlCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                        htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
+                        htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="80" height="80" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a></div>');
+                        htmlCompilation += ('<a id="addMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="link">M</a>');
+                        htmlCompilation += ('<a id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')" role="link">D</a>');
+                        htmlCompilation += ('<a id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')" role="link">E</a>');
                     }
                 }
                 $("#getGenres #genres").remove();
@@ -46,6 +49,18 @@ $(document).ready(function () {
         });
 
     });
+
+    function addMorningPlaylist(idCompilation) {
+
+    }
+
+    function addDayPlaylist(idCompilation) {
+
+    }
+
+    function addEveningPlaylist(idCompilation) {
+
+    }
 
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
@@ -106,6 +121,11 @@ $(document).ready(function () {
         });
 
     }
+
+    //получаем подборки из плейлиста утро
+    $(document).on('click', '#morning-music-nav', function () {
+        alert('morning-music-nav');
+    })
 
 });
 
