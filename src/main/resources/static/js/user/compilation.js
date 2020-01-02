@@ -1,4 +1,4 @@
-// $(document).ready(function () {
+$(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
@@ -8,17 +8,17 @@
         var genre = $(this).text();
 
         $.ajax({
-            method: 'GET',
+            type: 'post',
             url: '/api/user/song_compilation',
-            // contentType: 'application/json;',
-            // data: JSON.stringify(genre),
-            // headers: {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json'
-            // },
-            // async: true,
-            // cache: false,
-            // dataType: 'JSON',
+            contentType: 'application/json;',
+            data: JSON.stringify(genre),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
 
             success: function (listSongCompilation) {
                 console.log(listSongCompilation);
@@ -52,36 +52,7 @@
 
     });
 
-    //INSERT row to table db
-    //добавляем запись в бд
-    function addMorningPlaylist(idCompilation) {
-        $.ajax({
-            method: 'POST',
-            url: '/api/user/add_song_compilation_to_morning_playlist/' + idCompilation,
-            success: function () {
-                alert("in add_song_compilation_to_morning_playlist/id");
-                //+обновить утренний плейлист
-                getAllCompilationsInMorningPlaylist();
-            },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText, status, error);
-            }
-        })
-    }
 
-    function addDayPlaylist(idCompilation) {
-
-    }
-
-    function addEveningPlaylist(idCompilation) {
-
-    }
-
-    //SELECT row from table db
-    //обновляем утренний плейлист
-    function getAllCompilationsInMorningPlaylist() {
-
-    }
 
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
@@ -148,5 +119,36 @@
         alert('morning-music-nav');
     });
 
-// });
+});
+
+//INSERT row to table db
+//добавляем запись в бд
+function addMorningPlaylist(idCompilation) {
+    $.ajax({
+        method: 'GET',
+        url: '/api/user/add_song_compilation_to_morning_playlist/' + idCompilation,
+        success: function () {
+            alert("in add_song_compilation_to_morning_playlist/id");
+            //+обновить утренний плейлист
+            getAllCompilationsInMorningPlaylist();
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText, status, error);
+        }
+    })
+}
+
+function addDayPlaylist(idCompilation) {
+
+}
+
+function addEveningPlaylist(idCompilation) {
+
+}
+
+//SELECT row from table db
+//обновляем утренний плейлист
+function getAllCompilationsInMorningPlaylist() {
+
+}
 
