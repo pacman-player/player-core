@@ -4,8 +4,9 @@ $(document).ready(function () {
     showLinkAdmin();
 
     //получение и вывод подборок
-    $(document).on('click', '#genres', function () {
-        var genre = $(this).text();
+    // $(document).on('click', '#genres', function () {
+    //     var genre = $(this).text();
+    function getAllGenres() {
 
         $.ajax({
             method: 'GET',
@@ -44,13 +45,13 @@ $(document).ready(function () {
                         htmlCompilation += ('</div>');
                     }
                 }
-                $("#getGenres #genres").remove();
-                $("#getGenres").append(htmlCompilation);
+                // $("#getGenres #genres").remove();
+                // $("#getGenres").append(htmlCompilation);
             }
 
         });
 
-    });
+    }
 
     //INSERT row to table db
     //добавляем запись в бд
