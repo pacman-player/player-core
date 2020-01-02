@@ -1,12 +1,11 @@
-$(document).ready(function () {
+// $(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
 
     //получение и вывод подборок
-    // $(document).on('click', '#genres', function () {
-    //     var genre = $(this).text();
-    function getAllGenres() {
+    $(document).on('click', '#genres', function () {
+        var genre = $(this).text();
 
         $.ajax({
             method: 'GET',
@@ -39,19 +38,19 @@ $(document).ready(function () {
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a>');
                         // htmlCompilation += ('<a class="btn btn-primary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="button">M</a>');
-                        htmlCompilation += ('<button id="btnAddMorningPlaylist" class="btn btn-sm btn-info" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" type="button">M</button>');
+                        htmlCompilation += ('<a id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" type="button">M</a>');
                         htmlCompilation += ('<a id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')" role="link">D</a>');
                         htmlCompilation += ('<a id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')" role="link">E</a>');
                         htmlCompilation += ('</div>');
                     }
                 }
-                // $("#getGenres #genres").remove();
-                // $("#getGenres").append(htmlCompilation);
+                $("#getGenres #genres").remove();
+                $("#getGenres").append(htmlCompilation);
             }
 
         });
 
-    }
+    });
 
     //INSERT row to table db
     //добавляем запись в бд
@@ -147,7 +146,7 @@ $(document).ready(function () {
     //получаем подборки из плейлиста утро
     $(document).on('click', '#morning-music-nav', function () {
         alert('morning-music-nav');
-    })
+    });
 
-});
+// });
 
