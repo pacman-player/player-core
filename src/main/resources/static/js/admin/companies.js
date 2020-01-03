@@ -3,7 +3,6 @@ $(document).ready(function () {
     getCompaniesTable();
 
     function getCompaniesTable() {
-
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_companies",
@@ -71,7 +70,8 @@ $(document).ready(function () {
             success:
                 function () {
                     notification("edit-company" + companyDto.id,
-                        "  Изменения компании c id " + companyDto.id + "сохранены");
+                        "  Изменения компании c id " + companyDto.id + "сохранены",
+                        'companies-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -82,9 +82,7 @@ $(document).ready(function () {
 
     //modal company form заполнение
     $(document).on('click', '#showEditModalCompaniesBtn', function () {
-
         // $(this).trigger('form').reset();
-
         $('#updateCompanyId').val('');
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
@@ -103,7 +101,7 @@ $(document).ready(function () {
                     `);
                 })
             },
-        })
+        });
 
         $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
@@ -122,27 +120,4 @@ $(document).ready(function () {
             }
         })
     });
-
-    function notification(notifyId, message) {
-        let notify = document.createElement('div');
-        notify.setAttribute('id', 'success-alert-' + notifyId);
-        notify.classList.add("alert");
-        notify.classList.add("alert-success");
-        notify.classList.add("notify");
-        notify.classList.add("alert-dismissible");
-        notify.setAttribute("role", "alert");
-        notify.setAttribute("hidden", "true");
-        notify.innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message;
-
-        if (!document.querySelector('#field')) {
-            let field = document.createElement('div');
-            field.id = 'field';
-            document.getElementById('companies-panel').appendChild(field);
-        }
-        document.querySelector('#field').appendChild(notify)
-        $('#success-alert-' + notifyId).fadeIn(300, "linear");
-        setTimeout(() => {
-            $('#success-alert-' + notifyId).fadeOut(300, "linear", $(this).remove());
-        }, 1000);
-    }
 });

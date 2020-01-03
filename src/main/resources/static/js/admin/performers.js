@@ -38,7 +38,6 @@ $(document).ready(function () {
 
     function addAuthor(){
         var name = $("#addAuthor").val();
-
         $.ajax({
             type: 'post',
             url: "/api/admin/author/add_author",
@@ -58,7 +57,8 @@ $(document).ready(function () {
             success:
                 function () {
                     notification("add-author" + name.replace(/[^\w]|_/g,''),
-                        " Исполнитель " + name + " добавлен");
+                        " Исполнитель " + name + " добавлен",
+                        'authors-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -91,7 +91,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("delete-author" + id, "  Исполнитель c id " + id + " удален");
+                    notification("delete-author" + id,
+                        "  Исполнитель c id " + id + " удален",
+                        'authors-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -107,12 +109,10 @@ $(document).ready(function () {
     });
 
     function updateAuthor() {
-
         var author = {
             "id":$("#editAuthorId").val(),
             "name":$("#editAuthorName").val()
         };
-
         $.ajax({
             type: 'put',
             url: "/api/admin/author/update_author",
@@ -130,7 +130,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-author" + author.id, "  Изменения исполнителя с id  " + author.id + " сохранены");
+                    notification("edit-author" + author.id,
+                        "  Изменения исполнителя с id  " + author.id + " сохранены",
+                        'authors-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -141,35 +143,7 @@ $(document).ready(function () {
 
     //modal form заполнение
     $(document).on('click', '#editAuthorBtn', function () {
-
         $("#editAuthorId").val($(this).closest("tr").find("#authorId").text());
         $("#editAuthorName").val($(this).closest("tr").find("#authorName").text());
-
-
     });
-
-    function notification(notifyId, message) {
-        let notify = document.createElement('div');
-        notify.setAttribute('id', 'success-alert-' + notifyId);
-        notify.classList.add("alert");
-        notify.classList.add("alert-success");
-        notify.classList.add("notify");
-        notify.classList.add("alert-dismissible");
-        notify.setAttribute("role", "alert");
-        notify.setAttribute("hidden", "true");
-        notify.innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message;
-
-        if(!document.querySelector('#field')){
-            let field = document.createElement('div');
-            field.id='field';
-            document.getElementById('authors-panel').appendChild(field);
-        }
-        document.querySelector('#field').appendChild(notify)
-        $('#success-alert-' + notifyId).fadeIn(400, "linear");
-        setTimeout(() => {
-            $('#success-alert-' + notifyId).fadeOut(500, "linear", $(this).remove());
-        }, 1500);
-    }
-
-
 });

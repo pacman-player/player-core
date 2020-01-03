@@ -25,7 +25,6 @@ $(document).ready(function () {
                     } else {
                         var htmlRole = listUsers[i].roles[0].name;
                     }
-
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="tableId">' + listUsers[i].id + '</td>');
                     htmlTable += ('<td id="tableRole">' + htmlRole + '</td>');
@@ -96,7 +95,6 @@ $(document).ready(function () {
             'password': $("#addPassword").val(),
             'roles': $("#addRole").val()
         };
-
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",
@@ -116,7 +114,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("add-user" + user.login.replace(/[^\w]|_/g,''), " Пользователь " + user.login + "добавлен ");
+                    notification("add-user" + user.login.replace(/[^\w]|_/g, ''),
+                        " Пользователь " + user.login + " добавлен ",
+                        'user-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -139,7 +139,6 @@ $(document).ready(function () {
             'password': $("#updateUserPass").val(),
             'roles': $("#updateUserRole").val()
         };
-
         $.ajax({
             type: 'PUT',
             url: "/api/admin/update_user",
@@ -157,15 +156,16 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-user" + user.id, "  Изменения пользователя c id  " + user.id + " сохранены");
+                    notification("edit-user" + user.id,
+                        "  Изменения пользователя c id  " + user.id + " сохранены",
+                        'user-panel');
                 },
             error:
                 function (xhr, status, error) {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-    };
-
+    }
 
     $("#editCompanyBtn").click(function (event) {
         event.preventDefault();
@@ -181,7 +181,6 @@ $(document).ready(function () {
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
         };
-
         $.ajax({
             type: 'POST',
             url: "/api/admin/company",
@@ -199,7 +198,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-company" + companyDto.id, "  Изменения компании " + companyDto.name + " сохранены");
+                    notification("edit-company" + companyDto.id,
+                        "  Изменения компании сохранены",
+                        'user-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -232,7 +233,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("delete-user" + id, "  Пользователь c id " + id + " удален");
+                    notification("delete-user" + id,
+                        "  Пользователь c id " + id + " удален",
+                        'user-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -262,7 +265,6 @@ $(document).ready(function () {
                 $("#updateUserRole").val("admin, user");
                 break;
         }
-
     });
 
     //modal company form заполнение
@@ -304,30 +306,6 @@ $(document).ready(function () {
             }
         })
     });
-
-    function notification(notifyId, message) {
-        let notify = document.createElement('div');
-        notify.setAttribute('id', 'success-alert-' + notifyId);
-        notify.classList.add("alert");
-        notify.classList.add("alert-success");
-        notify.classList.add("notify");
-        notify.classList.add("alert-dismissible");
-        notify.setAttribute("role", "alert");
-        notify.setAttribute("hidden", "true");
-        notify.innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message;
-
-        if (!document.querySelector('#field')) {
-            let field = document.createElement('div');
-            field.id = 'field';
-            document.getElementById('user-panel').appendChild(field);
-        }
-        document.querySelector('#field').appendChild(notify)
-        $('#success-alert-' + notifyId).fadeIn(300, "linear");
-        setTimeout(() => {
-            $('#success-alert-' + notifyId).fadeOut(300, "linear", $(this).remove());
-        }, 1000);
-    }
-
     // function clicKTable() {//для обновления таблицы юзеров
     //     getTable();
     //     $("#tab-user-panel").click();

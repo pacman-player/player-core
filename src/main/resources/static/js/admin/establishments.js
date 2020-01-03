@@ -3,7 +3,6 @@ $(document).ready(function () {
     getEstablishmentsTable();
 
     function getEstablishmentsTable() {
-
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_establishments",
@@ -32,7 +31,6 @@ $(document).ready(function () {
         });
     };
 
-
     //addEstablishment
     $("#addEstablishmentBtn").click(function (event) {
         event.preventDefault();
@@ -44,7 +42,6 @@ $(document).ready(function () {
         var establishment = {
             'name': $("#addName").val()
         };
-
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_establishment",
@@ -64,7 +61,8 @@ $(document).ready(function () {
             success:
                 function () {
                     notification("add-establishment" + establishment.name.replace(/[^\w]|_/g,''),
-                        "  Заведение " + establishment.name + " добавлено");
+                        "  Заведение " + establishment.name + " добавлено",
+                        'establishments-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -84,7 +82,6 @@ $(document).ready(function () {
             'id': $("#updateEstablishmentId").val(),
             'name': $("#updateEstablishmentName").val()
         };
-
         $.ajax({
             type: 'PUT',
             url: "/api/admin/update_establishment",
@@ -102,7 +99,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-establishment" + establishment.id, "  Изменения сохранены");
+                    notification("edit-establishment" + establishment.id,
+                        "  Изменения сохранены",
+                        'establishments-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -110,7 +109,6 @@ $(document).ready(function () {
                 }
         });
     };
-
 
     //deleteForm
     $(document).on('click', '#deleteEstablishment', function () {
@@ -136,7 +134,9 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("delete-establishment" + id, "  Заведение c id " + id + " удалено");
+                    notification("delete-establishment" + id,
+                        "  Заведение c id " + id + " удалено",
+                        'establishments-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -150,30 +150,6 @@ $(document).ready(function () {
         $("#updateEstablishmentId").val($(this).closest("tr").find("#tableId").text());
         $("#updateEstablishmentName").val($(this).closest("tr").find("#tableName").text());
     });
-
-    function notification(notifyId, message) {
-        let notify = document.createElement('div');
-        notify.setAttribute('id', 'success-alert-' + notifyId);
-        notify.classList.add("alert");
-        notify.classList.add("alert-success");
-        notify.classList.add("notify");
-        notify.classList.add("alert-dismissible");
-        notify.setAttribute("role", "alert");
-        notify.setAttribute("hidden", "true");
-        notify.innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + message;
-
-        if (!document.querySelector('#field')) {
-            let field = document.createElement('div');
-            field.id = 'field';
-            document.getElementById('establishments-panel').appendChild(field);
-        }
-        document.querySelector('#field').appendChild(notify)
-        $('#success-alert-' + notifyId).fadeIn(400, "linear");
-        setTimeout(() => {
-            $('#success-alert-' + notifyId).fadeOut(500, "linear", $(this).remove());
-        }, 1500);
-    }
-
     // function clicKTable() {//для обновления таблицы юзеров
     //     getTable();
     //     $("#tab-user-panel").click();

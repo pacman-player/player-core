@@ -2,7 +2,6 @@ $(document).ready(function () {
 
     //доступ к  ссылки админа
     showLinkAdmin();
-
     getCompanyData();
 
     function updateCompany() {
@@ -71,7 +70,7 @@ $(document).ready(function () {
         $('#success-alert-' + notifyId).fadeIn(300, "linear");
         setTimeout(() => {
             $('#success-alert-' + notifyId).fadeOut(400, "linear", $(this).remove());
-        }, 1000);
+        }, 2000);
     }
 });
 
