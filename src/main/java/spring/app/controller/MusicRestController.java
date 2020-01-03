@@ -19,7 +19,6 @@ public class MusicRestController {
 
     @RequestMapping(value = "/download/{name}", method = RequestMethod.GET)
     public void download(@PathVariable("name") String musicName,HttpServletResponse response) throws IOException, ServletException {
-        musicService.fileToStream(musicName, response);
-
+            musicService.fileToStream(musicName, response);
     }
 }

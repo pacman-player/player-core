@@ -52,9 +52,4 @@ public class UserController {
     public String filterMusicPage() {
         return "user/filterMusic";
     }
-
-    @GetMapping("/searchForm")
-    public String searchForm() {
-        return "user/searchForm";
-    }
 }

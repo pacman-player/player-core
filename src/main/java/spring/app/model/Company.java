@@ -208,4 +208,21 @@ public class Company {
     public void addBannedGenre(Genre genre) {
         this.bannedGenres.add(genre);
     }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startTime=" + startTime +
+                ", closeTime=" + closeTime +
+                ", user=" + user +
+                ", orgType=" + orgType +
+                ", morningPlayList=" + morningPlayList +
+                ", middayPlayList=" + middayPlayList +
+                ", eveningPlayList=" + eveningPlayList +
+                ", bannedGenres=" + bannedGenres +
+                ", songQueues=" + songQueues +
+                '}';
+    }
 }
