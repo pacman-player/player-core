@@ -16,6 +16,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listGenres) {
+                $("#getGenresTable #list").empty();
 
                 var htmlTable = "";
 
@@ -29,8 +30,10 @@ $(document).ready(function () {
                     htmlTable += ('</tr>');
                 }
 
-                $("#GenresTable #list").remove();
-                $("#getGenresTable").after(htmlTable);
+               /* $("#GenresTable #list").remove();
+                $("#getGenresTable").after(htmlTable);*/
+
+                $("#getGenresTable").append(htmlTable);
                 $("#tab-genres-panel").tab('show');
             }
 
