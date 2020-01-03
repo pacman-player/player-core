@@ -1,5 +1,6 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "author")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Author {
+public class Author implements Bannable{
 
     @Id
     @GeneratedValue
@@ -22,6 +23,13 @@ public class Author {
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> authorGenres = new HashSet<>();
+
+    /**
+     * Поле, которое заполняеться вручную.
+     * Нужно для определение находится ли автор в "бане" у компании.
+     */
+    @Transient
+    private Boolean banned;
 
     public Author(){}
 
@@ -54,20 +62,33 @@ public class Author {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Author author = (Author) o;
-
-        if (id != null ? !id.equals(author.id) : author.id != null) return false;
-        return name != null ? !name.equals(author.name) : author.name != null;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedAuthor().contains(this);
+    }
+
+    public Boolean getBanned() {
+        return banned;
+    }
+
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id.equals(author.id) &&
+                name.equals(author.name);
     }
 }

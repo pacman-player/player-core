@@ -1,5 +1,6 @@
 package spring.app.controller.restController;
 
+import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -46,8 +48,15 @@ public class UserRestController {
 
     @GetMapping(value = "/all_genre")
     public @ResponseBody
-    List<Genre> getAllGenre() {
-        return genreService.getAllGenre();
+    List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
+
+        List<Genre> allGenre = genreService.getAllGenre();
+
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                user.getCompany(),
+                allGenre);
+
+        return allGenre;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -70,13 +79,23 @@ public class UserRestController {
     }
 
     @GetMapping("allAuthorsByName/{name}")
-    public List<Author> searchByNameInAuthors(@PathVariable String name) {
-        return authorService.findAuthorsByNameContaining(name);
+    public List<Author> searchByNameInAuthors(@PathVariable String name,
+                                              @AuthenticationPrincipal User user) {
+        List<Author> authors = authorService.findAuthorsByNameContaining(name);
+
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                user.getCompany(),
+                        authors);
+        return authors;
     }
 
     @GetMapping("allSongsByName/{name}")
-    public List<Song> searchByNameInSongs(@PathVariable String name) {
-        return songService.findSongsByNameContaining(name);
+    public List<Song> searchByNameInSongs(@PathVariable String name,
+                                          @AuthenticationPrincipal User user) {
+        List<Song> songs = songService.findSongsByNameContaining(name);
+
+        companyService.checkAndMarkAllBlockedByTheCompany(user.getCompany(), songs);
+        return songs;
     }
 
     @PostMapping("authorsBan")
@@ -87,6 +106,12 @@ public class UserRestController {
         company.addBannedAuthor(authorService.getById(authorsId));
 
         companyService.updateCompany(company);
+        user.setCompany(company);
+    }
+
+    @PostMapping("authorsUnBan")
+    public void authorUnBan(@AuthenticationPrincipal User user,
+                            @RequestBody long authorsId) {
     }
 
     @PostMapping("songsBan")
@@ -97,6 +122,12 @@ public class UserRestController {
         company.addBannedSong(songService.getById(songId));
 
         companyService.updateCompany(company);
+        user.setCompany(company);
+    }
+
+    @PostMapping("songsUnBan")
+    public void songUnBan(@AuthenticationPrincipal User user,
+                          @RequestBody long songId) {
     }
 
     @PostMapping("genreBan")
@@ -107,14 +138,20 @@ public class UserRestController {
         company.addBannedGenre(genreService.getById(genreId));
 
         companyService.updateCompany(company);
+        user.setCompany(company);
+    }
+
+    @PostMapping("genreUnBan")
+    public void genreUnBan(@AuthenticationPrincipal User user,
+                           @RequestBody long genreId) {
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
     public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
-            if (roles.getName().equals("ADMIN")){
+        for (Role roles : user.getRoles()) {
+            if (roles.getName().equals("ADMIN")) {
                 role = "admin";
                 return role;
             }

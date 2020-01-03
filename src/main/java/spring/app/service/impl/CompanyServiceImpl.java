@@ -3,10 +3,14 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.CompanyDao;
+import spring.app.model.Author;
+import spring.app.model.Bannable;
 import spring.app.model.Company;
+import spring.app.model.Genre;
 import spring.app.service.abstraction.CompanyService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -41,5 +45,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> getAllCompanies() {
         return companyDao.getAll();
+    }
+
+    @Override
+    public void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannables) {
+
+        bannables.forEach(
+                bannable -> bannable.setBanned(
+                        bannable.isBannedBy(company)
+                )
+        );
     }
 }
