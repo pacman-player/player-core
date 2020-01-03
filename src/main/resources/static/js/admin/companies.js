@@ -70,7 +70,7 @@ $(document).ready(function () {
             success:
                 function () {
                     notification("edit-company" + companyDto.id,
-                        "  Изменения компании c id " + companyDto.id + "сохранены",
+                        "  Изменения компании c id " + companyDto.id + " сохранены",
                         'companies-panel');
                 },
             error:
