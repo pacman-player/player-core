@@ -112,6 +112,11 @@ public class UserRestController {
     @PostMapping("authorsUnBan")
     public void authorUnBan(@AuthenticationPrincipal User user,
                             @RequestBody long authorsId) {
+        Company company = user.getCompany();
+        company.getBannedAuthor().removeIf(author -> author.getId().equals(authorsId));
+        companyService.updateCompany(company);
+
+        user.setCompany(company);
     }
 
     @PostMapping("songsBan")
@@ -128,6 +133,11 @@ public class UserRestController {
     @PostMapping("songsUnBan")
     public void songUnBan(@AuthenticationPrincipal User user,
                           @RequestBody long songId) {
+        Company company = user.getCompany();
+        company.getBannedSong().removeIf(song -> song.getId().equals(songId));
+        companyService.updateCompany(company);
+
+        user.setCompany(company);
     }
 
     @PostMapping("genreBan")
@@ -144,6 +154,11 @@ public class UserRestController {
     @PostMapping("genreUnBan")
     public void genreUnBan(@AuthenticationPrincipal User user,
                            @RequestBody long genreId) {
+        Company company = user.getCompany();
+        company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
+        companyService.updateCompany(company);
+
+        user.setCompany(company);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
