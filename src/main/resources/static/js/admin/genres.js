@@ -31,6 +31,7 @@ $(document).ready(function () {
 
                 $("#GenresTable #list").remove();
                 $("#getGenresTable").after(htmlTable);
+                $("#tab-genres-panel").tab('show');
             }
 
         });
@@ -40,7 +41,6 @@ $(document).ready(function () {
     $("#addGenreBtn").click(function (event) {
         event.preventDefault();
         addGenre();
-
     });
 
     function addGenre() {
@@ -61,7 +61,8 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
-        location.reload();
+        getTable();
+        $("#addGenre").val("");
     }
 
     //deleteForm
@@ -84,7 +85,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
-        location.reload();
+        getTable();
     };
 
 
@@ -114,7 +115,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
-        location.reload();
+        getTable();
     };
 
     //modal form заполнение
