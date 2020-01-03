@@ -1,6 +1,8 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.User;
 import spring.app.service.abstraction.UserService;
@@ -25,11 +27,24 @@ public class UserEditRestController {
     }
 
     @PutMapping(value = "/edit_data")
-    public void editUserData(@RequestBody User newUser){
+    public ResponseEntity<User> editUserData(@RequestBody User newUser){
         User user = ((User) getContext().getAuthentication().getPrincipal());
-        user.setLogin(newUser.getLogin());
-        user.setEmail(newUser.getEmail());
+        if(!newUser.getLogin().equals(user.getLogin())) {
+            if (userService.getUserByLogin(newUser.getLogin()) == null) {
+                user.setLogin(newUser.getLogin());
+            }else{
+                return ResponseEntity.badRequest().body(user);
+            }
+        }
+        if(!newUser.getEmail().equals(user.getEmail())){
+            if(userService.getUserByEmail(newUser.getEmail()) == null){
+                user.setEmail(newUser.getEmail());
+            }else{
+                return ResponseEntity.badRequest().body(user);
+            }
+        }
         userService.updateUser(user);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping(value = "/edit_pass")

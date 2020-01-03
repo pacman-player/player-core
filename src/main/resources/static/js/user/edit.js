@@ -40,10 +40,16 @@ $(document).ready(function () {
                 data: JSON.stringify(newUser),
                 dataType: 'json',
                 async: true,
-                cache: false
+                cache: false,
+                success: function () {
+                    alert("Данные изменены");
+                    getUserData();
+                },
+                error: function () {
+                    alert("Пользователь с такими данными уже существует");
+                    getUserData();
+                }
             });
-            alert("Данные изменены");
-            getUserData();
         }
 
     function updateUserPassword() {
