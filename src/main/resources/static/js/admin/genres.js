@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     getTable();
 
+
     function getTable() {
 
         $.ajax({
@@ -16,7 +17,6 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listGenres) {
-                $("#genresTable tbody").empty();
 
                 var htmlTable = "";
 
@@ -30,11 +30,8 @@ $(document).ready(function () {
                     htmlTable += ('</tr>');
                 }
 
-               /* $("#GenresTable #list").remove();
-                $("#getGenresTable").after(htmlTable);*/
-
-                $("#genresTable tbody").append(htmlTable);
-                $("#tab-genres-panel").tab('show');
+                $("#GenresTable #list").remove();
+                $("#getGenresTable").after(htmlTable);
             }
 
         });
@@ -44,6 +41,7 @@ $(document).ready(function () {
     $("#addGenreBtn").click(function (event) {
         event.preventDefault();
         addGenre();
+
     });
 
     function addGenre() {
@@ -64,8 +62,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
-        getTable();
-        $("#addGenre").val("");
+        location.reload();
     }
 
     //deleteForm
@@ -88,43 +85,48 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
         });
-        getTable();
+        location.reload();
     };
 
 
-    //updateForm
-    $("#editGenresBtn").click(function (event) {
-        event.preventDefault();
-        updateForm();
-    });
+       //updateForm
+      $("#editGenresBtn").click(function (event) {
+          event.preventDefault();
+          updateForm();
+      });
 
-    function updateForm() {
-        var genre = {
-            "id": $("#updateGenresId").val(),
-            "name": $("#updateGenresName").val()
-        };
+      function updateForm() {
+          var genre = {
+              "id":$("#updateGenresId").val(),
+              "name":$("#updateGenresName").val()
+          };
 
-        $.ajax({
-            type: 'put',
-            url: "/api/admin/genre/update_genre",
+          $.ajax({
+              type: 'put',
+              url: "/api/admin/genre/update_genre",
 
-            contentType: 'application/json;',
-            data: JSON.stringify(genre),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
-        });
-        getTable();
-    };
+              contentType: 'application/json;',
+              data: JSON.stringify(genre),
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              async: true,
+              cache: false,
+              dataType: 'JSON',
+          });
+          location.reload();
+      };
 
-    //modal form заполнение
-    $(document).on('click', '#editGenresBtn', function () {
-        $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
-        $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
-    });
+
+      //modal form заполнение
+      $(document).on('click', '#editGenresBtn', function () {
+
+          $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
+          $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
+
+
+      });
+
 
 });
