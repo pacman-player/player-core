@@ -32,7 +32,7 @@ public class GenreRestController {
     }
 
     @PostMapping(value = "/add_genre")
-    public void addGenre(@RequestBody String name) {
+    public void addGenre(@RequestBody String name) throws InterruptedException {
         name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genreService.getByName(name) == null) {
@@ -48,7 +48,7 @@ public class GenreRestController {
     }
 
     @PutMapping(value = "/update_genre")
-    public void updateGenre(@RequestBody GenreDto genreDto) {
+    public void updateGenre(@RequestBody GenreDto genreDto) throws InterruptedException {
         Genre genre = genreService.getById(genreDto.getId());
         genre.setName(genreDto.getName());
         genreService.updateGenre(genre);
@@ -59,7 +59,7 @@ public class GenreRestController {
     }
 
     @DeleteMapping(value = "/delete_genre")
-    public void deleteGenre(@RequestBody Long id) {
+    public void deleteGenre(@RequestBody Long id) throws InterruptedException {
         Genre genre = genreService.getById(id);
         genreService.deleteGenreById(id);
 

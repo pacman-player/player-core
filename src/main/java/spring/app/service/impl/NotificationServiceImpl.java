@@ -2,15 +2,13 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spring.app.controller.controller.NotificationController;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.List;
 
 @Service
@@ -18,12 +16,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
     private UserDao userDao;
+    private NotificationController notificationController;
 
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
+    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao, NotificationController notificationController) {
         this.notificationDao = notificationDao;
         this.userDao = userDao;
+        this.notificationController = notificationController;
     }
 
 
@@ -43,7 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void addNotification(String message, Long id) {
+    public void addNotification(String message, Long id) throws InterruptedException {
         List<User> users = userDao.getAll();
         for (User user : users) {
             if (!user.getId().equals(id)) {
@@ -51,6 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationDao.save(notification);
             }
         }
+        notificationController.getNotification();
     }
 
     @Override

@@ -24,7 +24,8 @@ public class NotificationRestController {
     @GetMapping
     public List<Notification> getNotificationByUserId() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        return notificationService.getByUserId(user.getId());
+        List<Notification> list = notificationService.getByUserId(user.getId());
+        return list;
     }
 
     @PostMapping(value = "/read")

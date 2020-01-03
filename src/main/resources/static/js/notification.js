@@ -1,7 +1,23 @@
 $(document).ready(function () {
 
+    let socket = new SockJS('/notification');
+    let stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log("connected: " + frame);
+        /*stompClient.subscribe('/notification', function(response) {
+            var data = JSON.parse(response.body);
+            alert(data);
+        });
+        alert("dfghjk");*/
+    });
+
+  //  stompClient.subscribe('/notification',alert("dfghjk"));
+
+    ////////////////////////////////////////////////
 
     getNotificationNumber();
+
     //Уведомления
     function getNotificationNumber() {
         $.ajax({
@@ -17,6 +33,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listNotification) {
                 let text = $('#notification').text();
+             //   alert(listNotification.length);
                 var numb = 0;
                 for (var i = 0; i < listNotification.length; i++) {
                     if (listNotification[i].flag === true) {
@@ -110,11 +127,4 @@ $(document).ready(function () {
         $("#notification").text(str);
 
     }
-
-    //сокет соединение
-    var socet = new SockJS('/ws');
-    stompClient = Stomp.over(socet);
-    stompClient.connect({}, onConnected, onError);
-
-
 });

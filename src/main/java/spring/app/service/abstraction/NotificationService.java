@@ -10,7 +10,7 @@ public interface NotificationService {
 
     void updateNotification(Notification notification);
 
-    void addNotification(String message,Long id);
+    void addNotification(String message,Long id) throws InterruptedException;
 
     List<Notification> getAllNotification();
 
