@@ -2,7 +2,6 @@ $(document).ready(function () {
 
 
     getNotificationNumber();
-
     //Уведомления
     function getNotificationNumber() {
         $.ajax({
@@ -111,6 +110,11 @@ $(document).ready(function () {
         $("#notification").text(str);
 
     }
+
+    //сокет соединение
+    var socet = new SockJS('/ws');
+    stompClient = Stomp.over(socet);
+    stompClient.connect({}, onConnected, onError);
 
 
 });

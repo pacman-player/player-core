@@ -56,7 +56,6 @@ public class GenreRestController {
         String message = "Genre name " + genre.getName() + " has been changed to " + genreDto.getName();
         User user = (User) getContext().getAuthentication().getPrincipal();
         notificationService.addNotification(message, user.getId());
-
     }
 
     @DeleteMapping(value = "/delete_genre")
@@ -67,7 +66,6 @@ public class GenreRestController {
         String message = "Was delete genre " + genre.getName();
         User user = (User) getContext().getAuthentication().getPrincipal();
         notificationService.addNotification(message, user.getId());
-
     }
 
 
