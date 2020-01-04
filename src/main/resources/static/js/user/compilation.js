@@ -154,30 +154,26 @@ function getAllCompilationsInMorningPlaylist() {
         url: '/api/user/get_all_compilations_in_morning_playlist',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
-            htmlMorningCompilation += ('<div class="row row-cols-1 row-cols-md-2" id="morningCompilations">');
+            htmlMorningCompilation += ('<div class="card-deck" id="morningCompilations">');
             for (var i = 0; i < morningPlayList.length; i++) {
-                // htmlMorningCompilation += ('<div id="morningCompilations">');
-                htmlMorningCompilation += ('<div class="col mb-4">');
-                htmlMorningCompilation += ('<div class="card">');
-                htmlMorningCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                htmlMorningCompilation += ('<div class="card pt-10">');
+                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
                 htmlMorningCompilation += ('<div class="card-body">');
-                htmlMorningCompilation += ('<h5 class="card-title">' + morningPlayList[i].name + '</h5>');
-                htmlMorningCompilation += ('<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>');
-                htmlMorningCompilation += ('<button class="btn btn-secondary pl-1" id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')">M</button>');
+                htmlMorningCompilation += ('<h4 class="card-title">' + morningPlayList[i].name + '</h4>');
+                htmlMorningCompilation += ('<p class="card-text">Some text1</p>');
+                htmlMorningCompilation += ('</div>');
+                htmlMorningCompilation += ('<div class="card-footer">');
+                htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Some text2</small></p>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')">M</button>');
+                htmlMorningCompilation += ('&nbsp;');
                 htmlMorningCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')">D</button>');
+                htmlMorningCompilation += ('&nbsp;');
                 htmlMorningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist2" onclick="addEveningPlaylist2(' + morningPlayList[i].id + ')">E</button>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('</div>');
-                htmlMorningCompilation += ('</div>');
-                // htmlMorningCompilation += ('<br>');
-                // htmlMorningCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                // htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" alt="' +
-                //     morningPlayList[i].name + '" >');
-                // htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
-                // htmlMorningCompilation += ('</div>');
             }
             htmlMorningCompilation += ('</div>');
 
