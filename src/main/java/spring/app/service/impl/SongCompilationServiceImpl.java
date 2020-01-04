@@ -114,4 +114,8 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         return allCompilationsInMorningPlaylist;
     }
 
+    @Override
+    public SongCompilation getSongCompilationById(Long id) {
+        return songCompilationDao.getById(id);
+    }
 }

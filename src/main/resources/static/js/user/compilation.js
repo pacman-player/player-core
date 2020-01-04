@@ -158,16 +158,17 @@ function getAllCompilationsInMorningPlaylist() {
             htmlMorningCompilation += ('<div class="card-deck" id="morningCompilations">');
             for (var i = 0; i < morningPlayList.length; i++) {
                 htmlMorningCompilation += ('<div class="card pt-10">');
-                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" data-toggle="modal"' +
+                    ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
                 htmlMorningCompilation += ('<div class="card-body">');
                 htmlMorningCompilation += ('<h4 class="card-title">Title:' + morningPlayList[i].name + '</h4>');
-                htmlMorningCompilation += ('<p class="card-text">Some text1</p>');
+                htmlMorningCompilation += ('<p class="card-text">Discription: Some text1</p>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('<div class="card-footer">');
-                htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Some text2</small></p>');
+                htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text2</small></p>');
                 htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')">M</button>');
                 htmlMorningCompilation += ('&nbsp;');
                 htmlMorningCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')">D</button>');
@@ -188,8 +189,18 @@ function getAllCompilationsInMorningPlaylist() {
     })
 }
 
+//достаю все песни подборки и отображаю в модалке
 function showAllSongInSongCompilation(id) {
-alert("show modal for " + id);
+$.ajax({
+    method: 'GET',
+    url: '/api/user/all_song_in_song_compilation/' + id,
+    success: function (dataSong) {
+        alert(JSON.stringify(dataSong))
+    },
+    error: function (xhr, status, error) {
+        alert(xhr.responseText, status, error);
+    }
+})
 }
 
 

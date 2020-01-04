@@ -11,4 +11,6 @@ public interface SongCompilationService {
 
     void addSongCompilationToMorningPlaylist(Long id);
     List<SongCompilation> getAllCompilationsInMorningPlaylist();
+
+    SongCompilation getSongCompilationById(Long id);
 }
