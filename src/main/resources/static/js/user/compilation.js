@@ -154,6 +154,7 @@ function getAllCompilationsInMorningPlaylist() {
         url: '/api/user/get_all_compilations_in_morning_playlist',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
+            //bootstrap card
             htmlMorningCompilation += ('<div class="card-deck" id="morningCompilations">');
             for (var i = 0; i < morningPlayList.length; i++) {
                 htmlMorningCompilation += ('<div class="card pt-10">');
@@ -175,11 +176,11 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('</div>');
             }
+            //закрываю bootstrap card
             htmlMorningCompilation += ('</div>');
 
             $("#morning #morningCompilations").remove();
             $("#morning").append(htmlMorningCompilation);
-
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
