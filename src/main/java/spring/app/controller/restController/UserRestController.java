@@ -59,6 +59,11 @@ public class UserRestController {
         songCompilation.addSongCompilationToMorningPlaylist(id);
     }
 
+//    @GetMapping(value = "/add_song_compilation_to_morning_playlist/{id}")
+//    public void addSongCompilationToMorningPlaylist(@PathVariable("id") Long id) {
+//        songCompilation.addSongCompilationToMorningPlaylist(id);
+//    }
+
     @GetMapping(value = "/get_all_compilations_in_morning_playlist")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
         return songCompilation.getAllCompilationsInMorningPlaylist();

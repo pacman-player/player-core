@@ -116,8 +116,10 @@ $(document).ready(function () {
 
     //получаем подборки из плейлиста утро
     $(document).on('click', '#morning-music-nav', function () {
-        alert('morning-music-nav');
+        getAllCompilationsInMorningPlaylist();
     });
+
+
 
 });
 
@@ -128,7 +130,6 @@ function addMorningPlaylist(idCompilation) {
         method: 'GET',
         url: '/api/user/add_song_compilation_to_morning_playlist/' + idCompilation,
         success: function () {
-            alert("in add_song_compilation_to_morning_playlist/id");
             //+обновить утренний плейлист
             getAllCompilationsInMorningPlaylist();
         },
@@ -149,6 +150,29 @@ function addEveningPlaylist(idCompilation) {
 //SELECT row from table db
 //обновляем утренний плейлист
 function getAllCompilationsInMorningPlaylist() {
-
+    $.ajax({
+        method: "GET",
+        url: '/api/user/get_all_compilations_in_morning_playlist',
+        success: function (morningPlayList) {
+            var htmlMorningCompilation = '';
+            for (var i = 0; i < morningPlayList.length; i++) {
+                htmlMorningCompilation += ('<div id="morningCompilations" class="col-3 pt-3">');
+                htmlMorningCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="80" height="80" alt="' +
+                    morningPlayList[i].name + '" >');
+                htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
+                htmlMorningCompilation += ('<a id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')" type="button">M</a>');
+                htmlMorningCompilation += ('<a id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')" role="link">D</a>');
+                htmlMorningCompilation += ('<a id="addEveningPlaylist2" onclick="addEveningPlaylist2(' + morningPlayList[i].id + ')" role="link">E</a>');
+                htmlMorningCompilation += ('</div>');
+            }
+            $("#morning #morningCompilations").remove();
+            $("#morning").append(htmlMorningCompilation);
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText, status, error);
+        }
+    })
 }
+
 

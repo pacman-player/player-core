@@ -2,6 +2,7 @@ package spring.app.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,15 +17,22 @@ public class SongCompilation {
 
     private String name;
 
-    @ManyToOne(targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(targetEntity = Song.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> song = new HashSet<>();
+
+    //add Igor Khilkevich
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
+//    @JoinTable(name = "song_compilation_on_play_list",
+//            joinColumns = {@JoinColumn(name = "song_compilation_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
+    private List<PlayList> playLists;
 
     public SongCompilation() {
     }
@@ -59,6 +67,14 @@ public class SongCompilation {
 
     public void setSong(Set<Song> song) {
         this.song = song;
+    }
+
+    public List<PlayList> getPlayLists() {
+        return playLists;
+    }
+
+    public void setPlayLists(List<PlayList> playLists) {
+        this.playLists = playLists;
     }
 
     @Override
