@@ -157,12 +157,12 @@ function getAllCompilationsInMorningPlaylist() {
             htmlMorningCompilation += ('<div class="card-deck" id="morningCompilations">');
             for (var i = 0; i < morningPlayList.length; i++) {
                 htmlMorningCompilation += ('<div class="card pt-10">');
-                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
                 htmlMorningCompilation += ('<div class="card-body">');
-                htmlMorningCompilation += ('<h4 class="card-title">' + morningPlayList[i].name + '</h4>');
+                htmlMorningCompilation += ('<h4 class="card-title">Title:' + morningPlayList[i].name + '</h4>');
                 htmlMorningCompilation += ('<p class="card-text">Some text1</p>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('<div class="card-footer">');
@@ -185,6 +185,10 @@ function getAllCompilationsInMorningPlaylist() {
             alert(xhr.responseText, status, error);
         }
     })
+}
+
+function showAllSongInSongCompilation(id) {
+alert("show modal for " + id);
 }
 
 
