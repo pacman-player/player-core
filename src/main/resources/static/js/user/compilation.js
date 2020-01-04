@@ -33,14 +33,13 @@ $(document).ready(function () {
 
                     for (var i = 0; i < listSongCompilation.length; i++) {
                         htmlCompilation += ('<div id="songCompilation" class="col-3 pt-3">');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">M</button>');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')">D</button>');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">E</button>');
                         htmlCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                        htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="80" height="80" alt="' +
+                        htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a>');
-                        // htmlCompilation += ('<a class="btn btn-primary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" role="button">M</a>');
-                        htmlCompilation += ('<a id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')" type="button">M</a>');
-                        htmlCompilation += ('<a id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')" role="link">D</a>');
-                        htmlCompilation += ('<a id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')" role="link">E</a>');
                         htmlCompilation += ('</div>');
                     }
                 }
@@ -155,19 +154,36 @@ function getAllCompilationsInMorningPlaylist() {
         url: '/api/user/get_all_compilations_in_morning_playlist',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
+            htmlMorningCompilation += ('<div class="row row-cols-1 row-cols-md-2" id="morningCompilations">');
             for (var i = 0; i < morningPlayList.length; i++) {
-                htmlMorningCompilation += ('<div id="morningCompilations" class="col-3 pt-3">');
+                // htmlMorningCompilation += ('<div id="morningCompilations">');
+                htmlMorningCompilation += ('<div class="col mb-4">');
+                htmlMorningCompilation += ('<div class="card">');
                 htmlMorningCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="80" height="80" alt="' +
-                    morningPlayList[i].name + '" >');
+                htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
+                    morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
-                htmlMorningCompilation += ('<a id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')" type="button">M</a>');
-                htmlMorningCompilation += ('<a id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')" role="link">D</a>');
-                htmlMorningCompilation += ('<a id="addEveningPlaylist2" onclick="addEveningPlaylist2(' + morningPlayList[i].id + ')" role="link">E</a>');
+                htmlMorningCompilation += ('<div class="card-body">');
+                htmlMorningCompilation += ('<h5 class="card-title">' + morningPlayList[i].name + '</h5>');
+                htmlMorningCompilation += ('<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary pl-1" id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')">M</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')">D</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist2" onclick="addEveningPlaylist2(' + morningPlayList[i].id + ')">E</button>');
                 htmlMorningCompilation += ('</div>');
+                htmlMorningCompilation += ('</div>');
+                htmlMorningCompilation += ('</div>');
+                // htmlMorningCompilation += ('<br>');
+                // htmlMorningCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                // htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" alt="' +
+                //     morningPlayList[i].name + '" >');
+                // htmlMorningCompilation += ('</img><p>' + morningPlayList[i].name + '</p></a>');
+                // htmlMorningCompilation += ('</div>');
             }
+            htmlMorningCompilation += ('</div>');
+
             $("#morning #morningCompilations").remove();
             $("#morning").append(htmlMorningCompilation);
+
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
