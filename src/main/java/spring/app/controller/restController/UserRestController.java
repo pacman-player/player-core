@@ -23,16 +23,16 @@ public class UserRestController {
 
     private final CompanyService companyService;
     private final GenreService genreService;
-    private final SongCompilationService songCompilation;
+    private final SongCompilationService songCompilationService;
     private final SongService songService;
 
     @Autowired
-    public UserRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongCompilationService songCompilation, SongService songService) {
+    public UserRestController(RoleService roleService, UserService userService, CompanyService companyService, GenreService genreService, SongCompilationService songCompilationService, SongService songService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
-        this.songCompilation = songCompilation;
+        this.songCompilationService = songCompilationService;
         this.songService = songService;
     }
 
@@ -48,27 +48,32 @@ public class UserRestController {
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genre.equals("Все подборки")) {
-            return songCompilation.getAllSongCompilations();
+            return songCompilationService.getAllSongCompilations();
         } else {
             Genre genres = genreService.getByName(genre);
-            List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
-            return songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            List<SongCompilation> list = songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            return songCompilationService.getListSongCompilationsByGenreId(genres.getId());
         }
     }
 
     @GetMapping(value = "/add_song_compilation_to_morning_playlist/{id}")
     public void addSongCompilationToMorningPlaylist(@PathVariable("id") Long id) {
-        songCompilation.addSongCompilationToMorningPlaylist(id);
+        songCompilationService.addSongCompilationToMorningPlaylist(id);
     }
 
     @GetMapping(value = "/get_all_compilations_in_morning_playlist")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
-        return songCompilation.getAllCompilationsInMorningPlaylist();
+        return songCompilationService.getAllCompilationsInMorningPlaylist();
     }
 
     @GetMapping(value = "/all_song_in_song_compilation/{id}")
     public List<Song> getAllSongInSongCompilation(@PathVariable("id") Long id) {
         return songService.getAllSongInSongCompilation(id);
+    }
+
+    @GetMapping(value = "/song_compilation/{id}")
+    public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
+        return songCompilationService.getSongCompilationById(id);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user

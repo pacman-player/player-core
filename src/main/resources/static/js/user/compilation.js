@@ -51,8 +51,6 @@ $(document).ready(function () {
 
     });
 
-
-
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
         getAllGenre();
@@ -122,8 +120,7 @@ $(document).ready(function () {
 
 });
 
-//INSERT row to table db
-//добавляем запись в бд
+//добавляем подборку в утренний плейлист
 function addMorningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
@@ -146,8 +143,8 @@ function addEveningPlaylist(idCompilation) {
 
 }
 
-//SELECT row from table db
-//обновляем утренний плейлист
+
+//получаем все подборки в утреннем плейлисте
 function getAllCompilationsInMorningPlaylist() {
     $.ajax({
         method: "GET",
@@ -191,16 +188,30 @@ function getAllCompilationsInMorningPlaylist() {
 
 //достаю все песни подборки и отображаю в модалке
 function showAllSongInSongCompilation(id) {
-$.ajax({
-    method: 'GET',
-    url: '/api/user/all_song_in_song_compilation/' + id,
-    success: function (dataSong) {
-        alert(JSON.stringify(dataSong))
-    },
-    error: function (xhr, status, error) {
-        alert(xhr.responseText, status, error);
-    }
-})
+    //достаю название подборки для модалки
+    $.getJSON('http://localhost:8080/api/user/song_compilation/' + id, function (data) {
+        $('#titleSongCompilation').text("Подборка: " + data.name);
+    });
+    //достаю все песни из подборки
+    $.ajax({
+        method: 'GET',
+        url: '/api/user/all_song_in_song_compilation/' + id,
+        success: function (dataSong) {
+            var htmlSongRow = '';
+            for (var i = 0; i < dataSong.length; i++) {
+                htmlSongRow += ('<div id="allSong">');
+                htmlSongRow += ('<div id="MusicTrack-name-title-' + dataSong[i].id+ '">' + dataSong[i].author.name + '</div>');
+                htmlSongRow += ('<div id="MusicTrack-name-artist-' + dataSong[i].id+ '">' + dataSong[i].name + '</div>');
+                htmlSongRow += ('</div>');
+            }
+            $('#modalBodyAllSong #allSong').remove();
+            $('#musicList').append(htmlSongRow);
+
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText, status, error);
+        }
+    })
 }
 
 
