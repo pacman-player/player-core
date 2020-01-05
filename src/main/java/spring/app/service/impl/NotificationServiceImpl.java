@@ -51,7 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationDao.save(notification);
             }
         }
-        notificationController.getNotification();
+      //  notificationController.getNotification();
     }
 
     @Override

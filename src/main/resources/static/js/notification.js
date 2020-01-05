@@ -1,20 +1,64 @@
-$(document).ready(function () {
+var stompClient = null;
 
-    let socket = new SockJS('/notification');
-    let stompClient = Stomp.over(socket);
-
+function connect() {
+    var socket = new SockJS('/notification');
+    stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        console.log("connected: " + frame);
-        /*stompClient.subscribe('/notification', function(response) {
-            var data = JSON.parse(response.body);
-            alert(data);
-        });
-        alert("dfghjk");*/
+        console.log("Соединенеие установлено---" + frame);
+        clientSub();
     });
 
-  //  stompClient.subscribe('/notification',alert("dfghjk"));
+}
 
-    ////////////////////////////////////////////////
+function clientSub() {
+    stompClient.subscribe("/topic/notification", function () {
+        getNotificationNumber();
+    });
+}
+
+function sendMessage() {
+    stompClient.send("/app/notification", {}, "Send message ");
+}
+
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    console.log("Disconnected");
+}
+
+//Уведомления
+function getNotificationNumber() {
+    $.ajax({
+        type: 'GET',
+        url: "/api/admin/notification",
+        contentType: 'application/json;',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        async: true,
+        cache: false,
+        dataType: 'JSON',
+        success: function (listNotification) {
+            let text = $('#notification').text();
+         //  $('#notification').val("");
+            //   alert(listNotification.length);
+            var numb = 0;
+            for (var i = 0; i < listNotification.length; i++) {
+                if (listNotification[i].flag === true) {
+                    numb++;
+                }
+            }
+            $("#notification").text(numb + "  Уведомлений");
+        }
+    });
+}
+
+
+$(document).ready(function () {
+
+    connect();
 
     getNotificationNumber();
 
@@ -33,7 +77,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listNotification) {
                 let text = $('#notification').text();
-             //   alert(listNotification.length);
+                //   alert(listNotification.length);
                 var numb = 0;
                 for (var i = 0; i < listNotification.length; i++) {
                     if (listNotification[i].flag === true) {

@@ -43,6 +43,7 @@ $(document).ready(function () {
         addGenre();
         $(':input', '#addForm').val('');
         getTable();
+        sendMessage();
     });
 
     function addGenre() {
@@ -73,6 +74,7 @@ $(document).ready(function () {
         var id = $(this).closest("tr").find("#genresId").text();
         deleteUser(id);
         getTable();
+        sendMessage();
     });
 
     function deleteUser(id) {
@@ -97,6 +99,7 @@ $(document).ready(function () {
         event.preventDefault();
         updateForm();
         getTable();
+        sendMessage();
         $(this).parent().find("#closeEditGenres").click();
     });
 
@@ -121,7 +124,7 @@ $(document).ready(function () {
             dataType: 'JSON',
         });
 
-         location.reload();
+        location.reload();
     };
 
     //modal form заполнение
