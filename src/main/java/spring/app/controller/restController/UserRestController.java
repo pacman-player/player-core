@@ -61,9 +61,29 @@ public class UserRestController {
         songCompilationService.addSongCompilationToMorningPlaylist(id);
     }
 
+    @GetMapping(value = "/add_song_compilation_to_midday_playlist/{id}")
+    public void addSongCompilationToMiddayPlaylist(@PathVariable("id") Long id) {
+        songCompilationService.addSongCompilationToMiddayPlaylist(id);
+    }
+
+    @GetMapping(value = "/add_song_compilation_to_evening_playlist/{id}")
+    public void addSongCompilationToEveningPlaylist(@PathVariable("id") Long id) {
+        songCompilationService.addSongCompilationToEveningPlaylist(id);
+    }
+
     @GetMapping(value = "/get_all_compilations_in_morning_playlist")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
         return songCompilationService.getAllCompilationsInMorningPlaylist();
+    }
+
+    @GetMapping(value = "/get_all_compilations_in_midday_playlist")
+    public List<SongCompilation> getAllCompilationsInMiddayPlaylist() {
+        return songCompilationService.getAllCompilationsInMiddayPlaylist();
+    }
+
+    @GetMapping(value = "/get_all_compilations_in_evening_playlist")
+    public List<SongCompilation> getAllCompilationsInEveningPlaylist() {
+        return songCompilationService.getAllCompilationsInEveningPlaylist();
     }
 
     @GetMapping(value = "/all_song_in_song_compilation/{id}")

@@ -5,7 +5,9 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TestDataInit {
@@ -161,16 +163,39 @@ public class TestDataInit {
         songCompilationService.addSongСompilation(songCompilation4);
 
 
-        PlayList playList = new PlayList();
-        playList.setName("All day playlist");
-        playListService.addPlayList(playList);
+        PlayList playList1 = new PlayList();
+        playList1.setName("All day playlist");
+        playListService.addPlayList(playList1);
+
+        PlayList playList2 = new PlayList();
+        playList2.setName("Morning playlist");
+        playListService.addPlayList(playList2);
+
+        PlayList playList3 = new PlayList();
+        playList3.setName("Midday playlist");
+        playListService.addPlayList(playList3);
+
+        PlayList playList4 = new PlayList();
+        playList4.setName("Evening playlist");
+        playListService.addPlayList(playList4);
 
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
-        Set<PlayList> playLists = new HashSet<>();
-        playLists.add(playList);
-        company.setMorningPlayList(playLists);
-        company.setMiddayPlayList(playLists);
-        company.setEveningPlayList(playLists);
+
+        Set<PlayList> allDayPlayLists = new HashSet<>();
+        allDayPlayLists.add(playList1);
+
+        Set<PlayList> morningPlayLists = new HashSet<>();
+        morningPlayLists.add(playList2);
+
+        Set<PlayList> middayPlayLists = new HashSet<>();
+        middayPlayLists.add(playList3);
+
+        Set<PlayList> eveningPlayLists = new HashSet<>();
+        eveningPlayLists.add(playList4);
+
+        company.setMorningPlayList(morningPlayLists);
+        company.setMiddayPlayList(middayPlayLists);
+        company.setEveningPlayList(eveningPlayLists);
         Set<Genre> bannedGenres = new HashSet<>();
         bannedGenres.add(genre1);
         company.setBannedGenres(bannedGenres);
