@@ -55,20 +55,15 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
 
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
-        int sizePlayList = setOldMorningPlayList.size();
 
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldMorningPlayList);
         PlayList oldPlayList = oldListPlayLists.get(0);
-        String namePlayList = oldPlayList.getName();
         Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
 
         //добавляем новую подборку в старое множество подборок
@@ -84,10 +79,10 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         oldCompany.setMorningPlayList(setOldMorningPlayList);
 
         //добавляем юзеру обновленную компанию
-        user.setCompany(oldCompany);
+        authUser.setCompany(oldCompany);
 
         //обновляем юзера
-        userDao.update(user);
+        userDao.update(authUser);
 
 //        songCompilationDao.addSongCompilationToMorningPlaylist(id);
     }
@@ -97,20 +92,15 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
 
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
-        int sizePlayList = setOldMiddayPlayList.size();
 
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldMiddayPlayList);
         PlayList oldPlayList = oldListPlayLists.get(0);
-        String namePlayList = oldPlayList.getName();
         Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
 
         //добавляем новую подборку в старое множество подборок
@@ -126,10 +116,10 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         oldCompany.setMiddayPlayList(setOldMiddayPlayList);
 
         //добавляем юзеру обновленную компанию
-        user.setCompany(oldCompany);
+        authUser.setCompany(oldCompany);
 
         //обновляем юзера
-        userDao.update(user);
+        userDao.update(authUser);
     }
 
     @Override
@@ -137,20 +127,15 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
 
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
-        int sizePlayList = setOldEveningPlayList.size();
 
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldEveningPlayList);
         PlayList oldPlayList = oldListPlayLists.get(0);
-        String namePlayList = oldPlayList.getName();
         Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
 
         //добавляем новую подборку в старое множество подборок
@@ -166,22 +151,19 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         oldCompany.setEveningPlayList(setOldEveningPlayList);
 
         //добавляем юзеру обновленную компанию
-        user.setCompany(oldCompany);
+        authUser.setCompany(oldCompany);
 
         //обновляем юзера
-        userDao.update(user);
+        userDao.update(authUser);
     }
 
     @Override
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
 
         //достаем пока один единственный плейлист и его множество подборок
@@ -197,13 +179,10 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getAllCompilationsInMiddayPlaylist() {
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
 
         //достаем пока один единственный плейлист и его множество подборок
@@ -219,13 +198,10 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getAllCompilationsInEveningPlaylist() {
         //достаем юзера
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        Long idAuthUser = authUser.getId();
-        User user = userDao.getById(idAuthUser);
+        User authUser = userDao.getById(getAuthUserId());
 
         //достаем множество утренних плейлистов
-        Company oldCompany = user.getCompany();
+        Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
 
         //достаем пока один единственный плейлист и его множество подборок
@@ -241,5 +217,12 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public SongCompilation getSongCompilationById(Long id) {
         return songCompilationDao.getById(id);
+    }
+
+    //Достаем id авторизованного юзера
+    public Long getAuthUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User authUser = (User) principal;
+        return authUser.getId();
     }
 }
