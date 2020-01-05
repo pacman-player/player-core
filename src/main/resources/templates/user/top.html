@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="сcs/style.css"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
 
@@ -19,8 +20,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
 
@@ -64,6 +67,9 @@
 </div>
 
 <script type="text/javascript" src="/js/user/top.js" rel="stylesheet"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
 </body>
 </html>

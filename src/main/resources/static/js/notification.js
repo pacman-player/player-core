@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     getNotificationNumber();
 
-    //Уведомления
+    //Уведомления номер
     function getNotificationNumber() {
         $.ajax({
             type: 'GET',
@@ -113,15 +113,16 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listNotification) {
-                var notification = '';
+                let notification = '';
                 if (0 < listNotification.length) {
+                    let length = listNotification.length - 1;
                     for (var i = 0; i < listNotification.length; i++) {
-                        if (listNotification[i].flag === true) {
-                            notification += ('<div class="elemNotification" id="' + listNotification[i].id + '"><input type = "button" ' +
-                                'class = "btnNotificationActive" >' + listNotification[i].message + '</div>');
+                        if (listNotification[length-i].flag === true) {
+                            notification += ('<div class="elemNotification" id="' + listNotification[length-i].id + '"><input type = "button" ' +
+                                'class = "btnNotificationActive" >' + listNotification[length-i].message + '</div>');
                         } else {
-                            notification += ('<div class="elemNotification" id="' + listNotification[i].id + '"><input type = "button" ' +
-                                'class = "btnNotificationNotActive" >' + listNotification[i].message + '</div>');
+                            notification += ('<div class="elemNotification" id="' + listNotification[length-i].id + '"><input type = "button" ' +
+                                'class = "btnNotificationNotActive" >' + listNotification[length-i].message + '</div>');
                         }
                     }
                     $("#listNotification").html(notification);
