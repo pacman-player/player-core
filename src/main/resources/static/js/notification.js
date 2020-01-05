@@ -27,7 +27,7 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-//Уведомления
+//Уведомления показать номер
 function getNotificationNumber() {
     $.ajax({
         type: 'GET',
@@ -39,11 +39,9 @@ function getNotificationNumber() {
         },
         async: true,
         cache: false,
-        dataType: 'JSON',
+       dataType: 'JSON',
         success: function (listNotification) {
             let text = $('#notification').text();
-         //  $('#notification').val("");
-            //   alert(listNotification.length);
             var numb = 0;
             for (var i = 0; i < listNotification.length; i++) {
                 if (listNotification[i].flag === true) {
@@ -51,7 +49,11 @@ function getNotificationNumber() {
                 }
             }
             $("#notification").text(numb + "  Уведомлений");
-        }
+        },
+        error:
+            function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
     });
 }
 
@@ -61,33 +63,6 @@ $(document).ready(function () {
     connect();
 
     getNotificationNumber();
-
-    //Уведомления номер
-    function getNotificationNumber() {
-        $.ajax({
-            type: 'GET',
-            url: "/api/admin/notification",
-            contentType: 'application/json;',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
-            success: function (listNotification) {
-                let text = $('#notification').text();
-                //   alert(listNotification.length);
-                var numb = 0;
-                for (var i = 0; i < listNotification.length; i++) {
-                    if (listNotification[i].flag === true) {
-                        numb++;
-                    }
-                }
-                $("#notification").text(numb + " " + text);
-            }
-        });
-    }
 
     //показать уведомления
     $(document).on('click', '#notification', function (event) {
@@ -111,7 +86,7 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+          //  dataType: 'JSON',
             success: function (listNotification) {
                 let notification = '';
                 if (0 < listNotification.length) {
@@ -127,7 +102,11 @@ $(document).ready(function () {
                     }
                     $("#listNotification").html(notification);
                 }
-            }
+            },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
         $("#listNotification").css("display", "block");
         $(this).parent().next().slideToggle();
@@ -147,6 +126,7 @@ $(document).ready(function () {
         event.preventDefault();
         $(this).attr("class", "btnNotificationNotActive");
         readNotification($(this).closest("div").attr("id"));
+       // getNotificationNumber();
     });
 
     //пометить как прочитаное
@@ -162,14 +142,10 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
-
+            //dataType: 'JSON',
+            success: function () {
+                getNotificationNumber();
+            },
         });
-
-        let text = $('#notification').text();
-        let numb = $('#notification').html().replace(/[^+\d]/g, '');
-        let str = (numb - 1) + " Уведомлений";
-        $("#notification").text(str);
-
     }
 });

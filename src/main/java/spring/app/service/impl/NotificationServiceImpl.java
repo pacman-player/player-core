@@ -16,14 +16,12 @@ public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
     private UserDao userDao;
-    private NotificationController notificationController;
 
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao, NotificationController notificationController) {
+    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
         this.notificationDao = notificationDao;
         this.userDao = userDao;
-        this.notificationController = notificationController;
     }
 
 
@@ -51,7 +49,6 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationDao.save(notification);
             }
         }
-      //  notificationController.getNotification();
     }
 
     @Override

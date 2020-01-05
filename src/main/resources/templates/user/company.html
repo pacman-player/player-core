@@ -18,6 +18,7 @@
 
 <body>
 <div class="container-fluid">
+
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
@@ -33,19 +34,19 @@
         <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a href="/user/statistics" >Статистика</a>
+                    <a href="/user/statistics">Статистика</a>
                 </li>
                 <li>
-                    <a href="/user/compilation" >Моя подборка</a>
+                    <a href="/user/compilation">Моя подборка</a>
                 </li>
                 <li>
-                    <a href="/user/filter" >Фильтр музыки</a>
+                    <a href="/user/filter">Фильтр музыки</a>
                 </li>
                 <li>
-                    <a href="/user/top" >Топ популярных</a>
+                    <a href="/user/top">Топ популярных</a>
                 </li>
                 <li>
-                    <a href="/user/establishment" >Моё заведение</a>
+                    <a href="/user/establishment">Моё заведение</a>
                 </li>
                 <li>
                     <a href="/user/promo">Промо - материалы</a>
@@ -61,21 +62,23 @@
 
             <!--<div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>-->
-                <H3> Моё заведение</H3>
-                <div class="col-fhd-4 col-xl-5 col-lg-6">
+            <H3> Моё заведение</H3>
+            <div class="col-fhd-4 col-xl-5 col-lg-6">
 
-                    <form class="form-group">
-                        <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
-                                                                                   type="text"/></label><br/>
-                        <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
-                                                                                       required="required" type="time"/><br/>
-                        <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
-                                                                                       required="required" type="time"/><br/>
-                        <button class="btn btn-primary" id="est-save-data" type="button">Сохранить</button>
-                    </form>
+                <form class="form-group">
+                    <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
+                                                                               type="text"/></label><br/>
+                    <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
+                                                                                   required="required"
+                                                                                   type="time"/><br/>
+                    <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
+                                                                                   required="required"
+                                                                                   type="time"/><br/>
+                    <button class="btn btn-primary" id="est-save-data" type="button">Сохранить</button>
+                </form>
 
-                </div>
-           <!-- </div>-->
+            </div>
+            <!-- </div>-->
 
         </div>
 

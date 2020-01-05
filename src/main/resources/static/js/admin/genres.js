@@ -14,9 +14,7 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
             success: function (listGenres) {
-
                 var htmlTable = "";
                 //  $("#GenresTable #list").remove();
                 $("#genresTable tbody").empty();
@@ -42,8 +40,6 @@ $(document).ready(function () {
         event.preventDefault();
         addGenre();
         $(':input', '#addForm').val('');
-        getTable();
-        sendMessage();
     });
 
     function addGenre() {
@@ -62,10 +58,22 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendMessage();
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
 
-        $("#tab-genres-panel").tab('show');
+        //  $("#tab-genres-panel").tab('show');
         // location.reload();
     }
 
@@ -73,8 +81,7 @@ $(document).ready(function () {
     $(document).on('click', '#deleteGenres', function () {
         var id = $(this).closest("tr").find("#genresId").text();
         deleteUser(id);
-        getTable();
-        sendMessage();
+       // getTable();
     });
 
     function deleteUser(id) {
@@ -89,7 +96,19 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendMessage();
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
         // location.reload();
     };
@@ -98,8 +117,6 @@ $(document).ready(function () {
     $("#editGenresBtn").click(function (event) {
         event.preventDefault();
         updateForm();
-        getTable();
-        sendMessage();
         $(this).parent().find("#closeEditGenres").click();
     });
 
@@ -121,10 +138,22 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                   // $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                 sendMessage();
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
 
-        location.reload();
+      //  location.reload();
     };
 
     //modal form заполнение
