@@ -27,6 +27,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Song getSongById(long id) {
+        return songDao.getById(id);
+    }
+
+    @Override
     public boolean isExist(String name) {
         return getByName(name) != null;
     }
