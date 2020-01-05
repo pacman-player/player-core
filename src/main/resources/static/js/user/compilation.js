@@ -32,25 +32,36 @@ $(document).ready(function () {
                         '<h3 style="display:inline">Подборки песен</h3></div>');
 
                     for (var i = 0; i < listSongCompilation.length; i++) {
-                        htmlCompilation += ('<div id="songCompilation" class="col-3 pt-3">');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">M</button>');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')">D</button>');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">E</button>');
+                        // htmlCompilation += ('<div id="songCompilation" class="col-3 pt-3">');
+                        htmlCompilation += ('<div id="songCompilation" class="card-deck">');
+                        htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>' + listSongCompilation[i].name + '</p></a>');
+                        htmlCompilation += ('<div class="card-body">');
+                        htmlCompilation += ('<h4 class="card-title">Title:' + listSongCompilation[i].name + '</h4>');
+                        htmlCompilation += ('<p class="card-text">Discription: Some text1</p>');
+                        htmlCompilation += ('</div>');
+                        htmlCompilation += ('<div class="card-footer">');
+                        htmlCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text2</small></p>');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">M</button>');
+                        htmlCompilation += ('&nbsp;');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist" onclick="addDayPlaylist(' + listSongCompilation[i].id + ')">D</button>');
+                        htmlCompilation += ('&nbsp;');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">E</button>');
+                        htmlCompilation += ('</div>');
+                        htmlCompilation += ('</div>');
                         htmlCompilation += ('</div>');
                     }
                 }
                 $("#getGenres #genres").remove();
                 $("#getGenres").append(htmlCompilation);
             }
-
         });
-
     });
 
+    //назад к жанрам
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
         getAllGenre();
@@ -91,7 +102,6 @@ $(document).ready(function () {
                 // $("#getGenres #genres").remove();//очистка перед выводом
                 // $("#getGenres").after(htmlGenres);
                 $("#getGenres").append(htmlGenres);
-
             }
         });
     }
@@ -106,18 +116,13 @@ $(document).ready(function () {
                     $("#adminLink").hide();
                 }
             }
-
         });
-
     }
 
     //получаем подборки из плейлиста утро
     $(document).on('click', '#morning-music-nav', function () {
         getAllCompilationsInMorningPlaylist();
     });
-
-
-
 });
 
 //добавляем подборку в утренний плейлист
@@ -166,11 +171,11 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('<div class="card-footer">');
                 htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text2</small></p>');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist2" onclick="addMorningPlaylist2(' + morningPlayList[i].id + ')">M</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + morningPlayList[i].id + '" onclick="addMorningPlaylist(' + morningPlayList[i].id + ')">M</button>');
                 htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist2" onclick="addDayPlaylist2(' + morningPlayList[i].id + ')">D</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addDayPlaylist2-' + morningPlayList[i].id + '" onclick="addDayPlaylist(' + morningPlayList[i].id + ')">D</button>');
                 htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist2" onclick="addEveningPlaylist2(' + morningPlayList[i].id + ')">E</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">E</button>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('</div>');
             }
@@ -206,7 +211,6 @@ function showAllSongInSongCompilation(id) {
             }
             $('#modalBodyAllSong #allSong').remove();
             $('#musicList').append(htmlSongRow);
-
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
