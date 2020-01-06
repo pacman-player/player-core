@@ -39,4 +39,9 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     public void deleteValByGenreId(Long id) {
         songCompilationDao.deleteValByGenreId(id);
     }
+
+    @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        return songCompilationDao.getSongCompilationByCompilationName(compilationName);
+    }
 }

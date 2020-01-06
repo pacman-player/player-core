@@ -32,4 +32,12 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         query.setParameter("id", id);
         query.executeUpdate();
     }
+
+    @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        List<SongCompilation> songCompilationList = entityManager.createQuery("FROM SongCompilation WHERE name = :compilationName", SongCompilation.class)
+                .setParameter("compilationName", compilationName)
+                .getResultList();
+        return songCompilationList.isEmpty() ? null : songCompilationList.get(0);
+    }
 }

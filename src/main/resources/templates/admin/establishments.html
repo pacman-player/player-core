@@ -67,7 +67,7 @@
                 <div role="tabpanel" class="tab-pane active" id="list-establishments">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-user-panel" href="#establishments-panel" aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
+                            <a id="tab-establishments-panel" href="#establishments-panel" aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
                         </li>
                         <li id="add-user-nav">
                             <a href="#add-establishments-panel" aria-controls="add-establishments-panel" role="tab" data-toggle="tab">
@@ -90,6 +90,7 @@
                                                 <th>удалить</th>
                                             </tr>
                                             </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -157,7 +158,7 @@
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                        <button id="editEstablishmentBtn" class="btn btn-primary">Изменить</button>
+                                        <button id="editEstablishmentBtn" class="btn btn-primary" data-dismiss="modal">Изменить</button>
                                     </div>
 
                                 </div>
@@ -173,6 +174,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/establishments.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>

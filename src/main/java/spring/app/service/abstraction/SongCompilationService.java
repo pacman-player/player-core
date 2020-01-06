@@ -9,4 +9,5 @@ public interface SongCompilationService {
     List<SongCompilation> getAllSongCompilations ();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
     void deleteValByGenreId(Long id);
+    SongCompilation getSongCompilationByCompilationName(String compilationName);
 }
