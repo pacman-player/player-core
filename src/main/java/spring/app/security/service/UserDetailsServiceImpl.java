@@ -20,9 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 		this.userService = userService;
 	}
 
-	@Autowired
-	public EmailSender emailSender;
-
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		User user = userService.getUserByLogin(login);
@@ -33,16 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 		return user;
 	}
 
-	public void SendMail(User user){
-		if(!StringUtils.isEmpty(user.getEmail())){
-			String message = String.format(
-					"Hello %s! \n" +
-							"Body of message",
-					user.getEmail()
-			);
-			emailSender.send(user.getEmail(), "Test", message);
-		}
-	}
+
+
 
 
 }

@@ -3,8 +3,10 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.User;
+import spring.app.service.EmailSender;
 import spring.app.service.abstraction.UserService;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
@@ -20,6 +22,9 @@ public class UserEditRestController {
     public UserEditRestController(UserService userService) {
         this.userService = userService;
     }
+
+    @Autowired
+    public EmailSender emailSender;
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
@@ -56,5 +61,17 @@ public class UserEditRestController {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
         userService.updateUser(user);
+        sendMail(user);
+    }
+
+    public void sendMail(User user){
+        if(!StringUtils.isEmpty(user.getEmail())){
+            String message = String.format(
+                    "Hello %s! \n" +
+                            "Body of message",
+                    user.getEmail()
+            );
+            emailSender.send("evgenykalashnikov26@gmail.com", "Test", message);
+        }
     }
 }
