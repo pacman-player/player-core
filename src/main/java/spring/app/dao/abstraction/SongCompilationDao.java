@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface SongCompilationDao extends GenericDao<Long, SongCompilation> {
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
-
-//    List<SongCompilation> getAllCompilationsInMorningPlaylist();
-//    void addSongCompilationToMorningPlaylist(Long id);
+    SongCompilation getSongCompilationByCompilationName(String compilationName);
 }

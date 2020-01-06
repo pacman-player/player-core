@@ -18,4 +18,5 @@ public interface SongCompilationService {
     List<SongCompilation> getAllCompilationsInEveningPlaylist();
 
     SongCompilation getSongCompilationById(Long id);
+    SongCompilation getSongCompilationByCompilationName(String compilationName);
 }

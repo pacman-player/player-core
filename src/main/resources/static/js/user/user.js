@@ -30,7 +30,7 @@ $(document).ready(function () {
             success: function (listSongCompilation) {
                 console.log(listSongCompilation);
 
-             //   alert(listSongCompilation[0].id + "-" + listSongCompilation[0].name);
+                //   alert(listSongCompilation[0].id + "-" + listSongCompilation[0].name);
 
                 var htmlCompilation = "Need to add Compilation";
                 if (0 < listSongCompilation.length) {
@@ -72,7 +72,8 @@ $(document).ready(function () {
             data: JSON.stringify(formData),
             dataType: 'json',
             complete: function () {
-            }
+            },
+
         });
     }
 

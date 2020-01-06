@@ -5,11 +5,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.SongDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -100,8 +104,8 @@ public class UserRestController {
     public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
-            if (roles.getName().equals("ADMIN")){
+        for (Role roles : user.getRoles()) {
+            if (roles.getName().equals("ADMIN")) {
                 role = "admin";
                 return role;
             }

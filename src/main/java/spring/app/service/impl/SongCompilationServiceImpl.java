@@ -225,4 +225,9 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         User authUser = (User) principal;
         return authUser.getId();
     }
+
+    @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        return songCompilationDao.getSongCompilationByCompilationName(compilationName);
+    }
 }

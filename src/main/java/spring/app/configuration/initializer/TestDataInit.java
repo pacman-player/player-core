@@ -97,27 +97,27 @@ public class TestDataInit {
         orgType.setGenres(genres);
         orgTypeService.addOrgType(orgType);
 
-        Song song = new Song("Desert Rose");
+        Song song = new Song("Attack on titan - Silence");
         song.setAuthor(author);
         song.setGenre(genre);
         songService.addSong(song);
 
-        Song song1 = new Song("Desert Rose");
+        Song song1 = new Song("Naruto OST - Hero");
         song1.setAuthor(author);
         song1.setGenre(genre1);
         songService.addSong(song1);
 
-        Song song2 = new Song("Desert Rose");
+        Song song2 = new Song("Hunter X Hunter - Jokers theme");
         song2.setAuthor(author);
         song2.setGenre(genre2);
         songService.addSong(song2);
 
-        Song song3 = new Song("Desert Rose");
+        Song song3 = new Song("Death Note - Laits theme");
         song3.setAuthor(author);
         song3.setGenre(genre3);
         songService.addSong(song3);
 
-        Song song4 = new Song("Desert Rose");
+        Song song4 = new Song("One punch man - Hero");
         song4.setAuthor(author);
         song4.setGenre(genre4);
         songService.addSong(song4);

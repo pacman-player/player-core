@@ -63,7 +63,7 @@ $(document).ready(function () {
     function getAllGenre() {
         $.ajax({
             type: 'get',
-            url: '/api/user/all_genre',
+            url: '/api/user/compilation/all_genre',
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -343,3 +343,18 @@ function showAllSongInSongCompilation(id) {
 }
 
 
+function playOrPauseMusic(musicId) {
+    let currentImage = $("#playMusic" + musicId + " img");
+    let currentImageSrc = currentImage.prop("src");
+    let currentUrlHost = location.origin;
+    if (currentImageSrc === currentUrlHost + "/img/play.svg") {
+        currentImage.attr("src", currentUrlHost + "/img/pause.svg")
+    } else currentImage.attr("src", currentUrlHost + "/img/play.svg")
+
+    // код для проигрывания музыки
+}
+
+function downloadMusic(musicId) {
+    alert("downloading...")
+    // код для загрузки
+}
