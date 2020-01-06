@@ -3,7 +3,6 @@ $(document).ready(function () {
     getEstablishmentsTable();
 
     function getEstablishmentsTable() {
-
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_establishments",
@@ -17,7 +16,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (list) {
                 var htmlTable = "";
-
+                $("#establishmentsTable tbody").empty();
                 for (var i = 0; i < list.length; i++) {
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="tableId">' + list[i].id + '</td>');
@@ -27,28 +26,22 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="deleteEstablishment" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
                 }
-
-                $("#establishmentsTable #list").remove();
-                $("#getEstablishmentsTable").after(htmlTable);
+                $("#establishmentsTable tbody").append(htmlTable);
             }
-
         });
     };
-
 
     //addEstablishment
     $("#addEstablishmentBtn").click(function (event) {
         event.preventDefault();
         addEstablishment();
         $(':input', '#addForm').val('');
-        setTimeout(clicKTable, 300)
     });
 
     function addEstablishment() {
         var establishment = {
             'name': $("#addName").val()
         };
-
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_establishment",
@@ -60,9 +53,22 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getEstablishmentsTable();
+                    $("#tab-establishments-panel").tab('show');
+                },
+            success:
+                function () {
+                    notification("add-establishment" + establishment.name.replace(/[^\w]|_/g,''),
+                        "  Заведение " + establishment.name + " добавлено",
+                        'establishments-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     }
 
     //updateForm
@@ -76,7 +82,6 @@ $(document).ready(function () {
             'id': $("#updateEstablishmentId").val(),
             'name': $("#updateEstablishmentName").val()
         };
-
         $.ajax({
             type: 'PUT',
             url: "/api/admin/update_establishment",
@@ -88,11 +93,22 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getEstablishmentsTable();
+                },
+            success:
+                function () {
+                    notification("edit-establishment" + establishment.id,
+                        "  Изменения сохранены",
+                        'establishments-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     };
-
 
     //deleteForm
     $(document).on('click', '#deleteEstablishment', function () {
@@ -112,9 +128,21 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getEstablishmentsTable();
+                },
+            success:
+                function () {
+                    notification("delete-establishment" + id,
+                        "  Заведение c id " + id + " удалено",
+                        'establishments-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     };
 
     //modal form заполнение
@@ -122,7 +150,6 @@ $(document).ready(function () {
         $("#updateEstablishmentId").val($(this).closest("tr").find("#tableId").text());
         $("#updateEstablishmentName").val($(this).closest("tr").find("#tableName").text());
     });
-
     // function clicKTable() {//для обновления таблицы юзеров
     //     getTable();
     //     $("#tab-user-panel").click();

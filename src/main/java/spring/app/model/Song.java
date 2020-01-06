@@ -104,8 +104,6 @@ public class Song implements Bannable{
         return banned;
     }
 
-
-
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
@@ -120,5 +118,16 @@ public class Song implements Bannable{
         Song song1 = (Song) o;
         return id.equals(song1.id) &&
                 name.equals(song1.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                ", song=" + song +
+                '}';
     }
 }
