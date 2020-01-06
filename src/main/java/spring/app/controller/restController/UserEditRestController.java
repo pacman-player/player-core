@@ -1,14 +1,12 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import spring.app.model.User;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.UserService;
-
+import spring.app.model.User;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 

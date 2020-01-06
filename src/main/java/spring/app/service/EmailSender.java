@@ -3,17 +3,12 @@ package spring.app.service;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
@@ -33,6 +28,10 @@ public class EmailSender {
 
     private JavaMailSender emailSender;
 
+    public EmailSender(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
     public void send(String emailTo, String subject, String message){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -43,8 +42,6 @@ public class EmailSender {
         mailMessage.setText(message);
 
         Properties properties = mailSender.getJavaMailProperties();
-//        properties.setProperty("mail.transport.protocol", protocol);
-//        properties.setProperty("mail.debag", debag);
         properties.setProperty("mail.smtp.auth", "true");
 
         emailSender.send(mailMessage);
