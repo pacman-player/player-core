@@ -65,7 +65,10 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    sendMessage();
+                    sendNotification();
+                    notification("add-user" + name,
+                        " Жанр " + name+ " добавлен ",
+                        'genres-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -103,7 +106,10 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    sendMessage();
+                    sendNotification();
+                    notification("delete-user" + id,
+                        "  Жанр c id " + id + " удален",
+                        'genres-panel');
                 },
             error:
                 function (xhr, status, error) {
@@ -145,7 +151,10 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                 sendMessage();
+                 sendNotification();
+                    notification("add-user" + name,
+                        " Жанр " + name+ " обнавлен ",
+                        'genres-panel');
                 },
             error:
                 function (xhr, status, error) {

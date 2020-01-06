@@ -16,7 +16,7 @@ function clientSub() {
     });
 }
 
-function sendMessage() {
+function sendNotification() {
     stompClient.send("/app/notification", {}, "Send message ");
 }
 

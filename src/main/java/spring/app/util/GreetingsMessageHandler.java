@@ -34,7 +34,7 @@
 //
 //    private void sendMessageToClient(TextMessage message, WebSocketSession webSocketSession) {
 //        try {
-//            webSocketSession.sendMessage(new TextMessage(message.getPayload()));
+//            webSocketSession.sendNotification(new TextMessage(message.getPayload()));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
