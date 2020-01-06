@@ -4,7 +4,6 @@ $(document).ready(function () {
     getCompaniesTable();
 
     function getTable() {
-
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_users",
@@ -18,7 +17,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listUsers) {
                 var htmlTable = "";
-
+                $("#UserTable tbody").empty();
                 for (var i = 0; i < listUsers.length; i++) {
 
                     if (listUsers[i].roles.length > 1) {
@@ -26,7 +25,6 @@ $(document).ready(function () {
                     } else {
                         var htmlRole = listUsers[i].roles[0].name;
                     }
-
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="tableId">' + listUsers[i].id + '</td>');
                     htmlTable += ('<td id="tableRole">' + htmlRole + '</td>');
@@ -35,23 +33,19 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableEmail">' + listUsers[i].email + '</td>');
                     // htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                     //     ' data-target="#editCompany" onclick = "fillUpdateModalForm(${listUsers[i].id})">company</button></td>');
-                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                    htmlTable += ('<td><button id="showEditModalCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">компания</button></td>');
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editUser">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
                 }
-
-                $("#UserTable #list").remove();
-                $("#getUserTable").after(htmlTable);
+                $("#UserTable tbody").append(htmlTable);
             }
-
         });
     };
 
     function getCompaniesTable() {
-
         $.ajax({
             type: 'GET',
             url: "/api/admin/all_companies",
@@ -68,7 +62,6 @@ $(document).ready(function () {
                 var htmlTable = "";
 
                 for (var i = 0; i < listCompanies.length; i++) {
-
                     htmlTable += ('<tr id="listCompanies">');
                     htmlTable += ('<td id="tableCompaniesId">' + listCompanies[i].id + '</td>');
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
@@ -76,7 +69,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
-                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                    htmlTable += ('<td><button id="editCompanyBtn1" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
@@ -85,7 +78,6 @@ $(document).ready(function () {
                 $("#companiesTable #list").remove();
                 $("#getCompaniesTable").after(htmlTable);
             }
-
         });
     };
 
@@ -94,18 +86,15 @@ $(document).ready(function () {
         event.preventDefault();
         addUser();
         $(':input', '#addForm').val('');
-        setTimeout(clicKTable, 300)
     });
 
     function addUser() {
-
         var user = {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
             'roles': $("#addRole").val()
         };
-
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",
@@ -118,13 +107,26 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-user-panel").tab('show');
+                },
+            success:
+                function () {
+                    notification("add-user" + user.login.replace(/[^\w]|_/g, ''),
+                        " Пользователь " + user.login + " добавлен ",
+                        'user-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     }
 
     //updateForm
-    $("#editUserBtn").click(function (event) {
+    $("#editUserBtnm").click(function (event) {
         event.preventDefault();
         updateForm();
     });
@@ -137,7 +139,6 @@ $(document).ready(function () {
             'password': $("#updateUserPass").val(),
             'roles': $("#updateUserRole").val()
         };
-
         $.ajax({
             type: 'PUT',
             url: "/api/admin/update_user",
@@ -149,11 +150,22 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                },
+            success:
+                function () {
+                    notification("edit-user" + user.id,
+                        "  Изменения пользователя c id  " + user.id + " сохранены",
+                        'user-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
-    };
-
+    }
 
     $("#editCompanyBtn").click(function (event) {
         event.preventDefault();
@@ -169,9 +181,7 @@ $(document).ready(function () {
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
         };
-
         $.ajax({
-
             type: 'POST',
             url: "/api/admin/company",
             contentType: 'application/json;',
@@ -182,9 +192,21 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                },
+            success:
+                function () {
+                    notification("edit-company" + companyDto.id,
+                        "  Изменения компании сохранены",
+                        'user-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     };
 
     //deleteForm
@@ -205,9 +227,21 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                },
+            success:
+                function () {
+                    notification("delete-user" + id,
+                        "  Пользователь c id " + id + " удален",
+                        'user-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     };
 
     //modal form заполнение
@@ -231,11 +265,10 @@ $(document).ready(function () {
                 $("#updateUserRole").val("admin, user");
                 break;
         }
-
     });
 
     //modal company form заполнение
-    $(document).on('click', '#editCompanyBtn', function () {
+    $(document).on('click', '#showEditModalCompanyBtn', function () {
 
         // $(this).trigger('form').reset();
 
@@ -273,7 +306,6 @@ $(document).ready(function () {
             }
         })
     });
-
     // function clicKTable() {//для обновления таблицы юзеров
     //     getTable();
     //     $("#tab-user-panel").click();

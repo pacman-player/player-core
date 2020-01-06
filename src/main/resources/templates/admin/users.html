@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-
-
     <meta charset="utf-8"/>
     <title>Admin page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -12,11 +10,9 @@
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
 
-
 </head>
 
 <body>
-
 <div class="container-fluid">
 
     <div class="row">
@@ -155,11 +151,12 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>
+                                                            <button type="button" id="editUserBtnm" class="btn btn-primary" data-dismiss="modal">Изменить</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
 
@@ -271,7 +268,6 @@
                                                     <select id="updateOrgType" class="form-control" name="role">
 
                                                     </select>
-
                                                 </div>
                                             </form>
                                         </div>
@@ -281,7 +277,7 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
+                                <button id="editCompanyBtn" class="btn btn-primary" data-dismiss="modal">Edit company</button>
                             </div>
                         </div>
                     </div>
@@ -291,12 +287,10 @@
     </div>
 </div>
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
-
-
 
 
 </body>
