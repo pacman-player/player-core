@@ -13,13 +13,13 @@ import spring.app.service.abstraction.MyMailSender;
 import java.util.List;
 
 @Component
-public class MyMailSenderInpl implements MyMailSender {
+public class MyMailSenderImpl implements MyMailSender {
 
     private final JavaMailSender emailSender;
     private final UserDao userDao;
 
     @Autowired
-    public MyMailSenderInpl(JavaMailSender emailSender, UserDao userDao) {
+    public MyMailSenderImpl(JavaMailSender emailSender, UserDao userDao) {
         this.emailSender = emailSender;
         this.userDao = userDao;
     }
