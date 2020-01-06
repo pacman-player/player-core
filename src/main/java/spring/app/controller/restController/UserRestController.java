@@ -100,8 +100,8 @@ public class UserRestController {
     public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        for (Role roles: user.getRoles()){
-            if (roles.getName().equals("ADMIN")){
+        for (Role roles : user.getRoles()) {
+            if (roles.getName().equals("ADMIN")) {
                 role = "admin";
                 return role;
             }

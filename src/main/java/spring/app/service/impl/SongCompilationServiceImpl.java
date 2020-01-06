@@ -51,6 +51,11 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        return songCompilationDao.getSongCompilationByCompilationName(compilationName);
+    }
+
+    @Override
     public void addSongCompilationToMorningPlaylist(Long id) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера

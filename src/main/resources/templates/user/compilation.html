@@ -30,19 +30,19 @@
         <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a href="/user/statistics" >Статистика</a>
+                    <a href="/user/statistics">Статистика</a>
                 </li>
                 <li>
-                    <a href="/user/compilation" >Моя подборка</a>
+                    <a href="/user/compilation">Моя подборка</a>
                 </li>
                 <li>
-                    <a href="/user/filter" >Фильтр музыки</a>
+                    <a href="/user/filter">Фильтр музыки</a>
                 </li>
                 <li>
-                    <a href="/user/top" >Топ популярных</a>
+                    <a href="/user/top">Топ популярных</a>
                 </li>
                 <li>
-                    <a href="/user/company" >Моё заведение</a>
+                    <a href="/user/company">Моё заведение</a>
                 </li>
                 <li>
                     <a href="/user/promo">Промо - материалы</a>
@@ -107,7 +107,35 @@
 
                 <!--подборка по жанрам-->
                 <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
-
+                </div>
+            </div>
+        </div>
+    </div>
+    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open
+        button
+    </button>
+    <div class="modal" id="compilationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b id="compilationModalCompilationName" class="text-uppercase"></b>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th rowspan="2">Options</th>
+                        </tr>
+                        </thead>
+                        <tbody id="compilationModalTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -175,9 +203,11 @@
 <!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
 <!--                </div>-->
             </div>
-        </div>
-    </div>
 
+
+        </div>
+
+    </div>
 </div>
 
 <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
