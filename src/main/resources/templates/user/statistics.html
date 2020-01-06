@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="utf-8"/>
     <title>Статистика</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -12,22 +13,24 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="сcs/style.css"/>
-
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 </head>
 
 <body>
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
 
     <div class="row">
 
         <!--меню слева-->
-        <div id="leftMenu" th:fragment="leftMenu"  class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+        <div id="leftMenu" th:fragment="leftMenu" class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
                     <a href="/user/statistics">Статистика</a>
@@ -66,6 +69,10 @@
 </div>
 
 <script type="text/javascript" src="/js/user/statistics.js" rel="stylesheet"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+
 
 </body>
 </html>
