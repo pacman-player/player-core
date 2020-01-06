@@ -319,7 +319,7 @@ function showAllSongInSongCompilation(id) {
         }
         $('#titleSongCompilation').text("Подборка: " + songCompilation.name);
         $("#aboutCompilations").remove();
-        $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалку почему-то выводится только текст...
+        $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалке картинки не отображаются...
     });
     //достаю все песни из подборки
     $.ajax({
