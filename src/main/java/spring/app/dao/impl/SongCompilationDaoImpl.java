@@ -20,7 +20,7 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
-        TypedQuery<SongCompilation> query = entityManager.createQuery("from SongCompilation where genre_id = :id", SongCompilation.class);
+        TypedQuery<SongCompilation> query = entityManager.createQuery("FROM SongCompilation WHERE genre_id = :id", SongCompilation.class);
         query.setParameter("id", id);
         List<SongCompilation> list = query.getResultList();
         return list;
