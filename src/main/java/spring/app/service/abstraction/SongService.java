@@ -9,4 +9,12 @@ public interface SongService {
     void addSong(Song song);
     boolean isExist(String name);
     List<Song> getAllSongInSongCompilation(Long id);
+
+    List<Song> getAllSong();
+
+    void deleteSongById(Long id);
+
+    Song getSongById(long id);
+
+    void updateSong(Song song);
 }
