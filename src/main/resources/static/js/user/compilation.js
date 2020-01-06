@@ -40,9 +40,9 @@ $(document).ready(function () {
                         htmlCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
                         htmlCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + listSongCompilation[i].id + '" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">Утро</button>');
                         htmlCompilation += ('&nbsp;');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="addMiddayPlaylist-' + listSongCompilation[i].id + '" onclick="addMiddayPlaylist(' + listSongCompilation[i].id + ')">День</button>');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + listSongCompilation[i].id + '" onclick="addMiddayPlaylist(' + listSongCompilation[i].id + ')">День</button>');
                         htmlCompilation += ('&nbsp;');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + listSongCompilation[i].id + '" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">Вечер</button>');
+                        htmlCompilation += ('<button class="btn btn-secondary" id="btndEveningPlaylist-' + listSongCompilation[i].id + '" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">Вечер</button>');
                         htmlCompilation += ('</div>');
                         htmlCompilation += ('</div>');
                         htmlCompilation += ('</div>');
@@ -190,9 +190,9 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
                 htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + morningPlayList[i].id + '" onclick="addMorningPlaylist(' + morningPlayList[i].id + ')">Утро</button>');
                 htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addMiddayPlaylist-' + morningPlayList[i].id + '" onclick="addDayPlaylist(' + morningPlayList[i].id + ')">День</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + morningPlayList[i].id + '" onclick="addMiddayPlaylist(' + morningPlayList[i].id + ')">День</button>');
                 htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">Вечер</button>');
+                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">Вечер</button>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('</div>');
             }
@@ -231,9 +231,9 @@ function getAllCompilationsInMiddayPlaylist() {
                 htmlMiddayCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
                 htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + middayPlayList[i].id + '" onclick="addMorningPlaylist(' + middayPlayList[i].id + ')">Утро</button>');
                 htmlMiddayCompilation += ('&nbsp;');
-                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="addMiddayPlaylist-' + middayPlayList[i].id + '" onclick="addDayPlaylist(' + middayPlayList[i].id + ')">День</button>');
+                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + middayPlayList[i].id + '" onclick="addMiddayPlaylist(' + middayPlayList[i].id + ')">День</button>');
                 htmlMiddayCompilation += ('&nbsp;');
-                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + middayPlayList[i].id + '" onclick="addEveningPlaylist(' + middayPlayList[i].id + ')">Вечер</button>');
+                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + middayPlayList[i].id + '" onclick="addEveningPlaylist(' + middayPlayList[i].id + ')">Вечер</button>');
                 htmlMiddayCompilation += ('</div>');
                 htmlMiddayCompilation += ('</div>');
             }
@@ -272,9 +272,9 @@ function getAllCompilationsInEveningPlaylist() {
                 htmlEveningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
                 htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + eveningPlayList[i].id + '" onclick="addMorningPlaylist(' + eveningPlayList[i].id + ')">Утро</button>');
                 htmlEveningCompilation += ('&nbsp;');
-                htmlEveningCompilation += ('<button class="btn btn-secondary" id="addMiddayPlaylist-' + eveningPlayList[i].id + '" onclick="addDayPlaylist(' + eveningPlayList[i].id + ')">День</button>');
+                htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + eveningPlayList[i].id + '" onclick="addMiddayPlaylist(' + eveningPlayList[i].id + ')">День</button>');
                 htmlEveningCompilation += ('&nbsp;');
-                htmlEveningCompilation += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + eveningPlayList[i].id + '" onclick="addEveningPlaylist(' + eveningPlayList[i].id + ')">Вечер</button>');
+                htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + eveningPlayList[i].id + '" onclick="addEveningPlaylist(' + eveningPlayList[i].id + ')">Вечер</button>');
                 htmlEveningCompilation += ('</div>');
                 htmlEveningCompilation += ('</div>');
             }
@@ -310,9 +310,9 @@ function showAllSongInSongCompilation(id) {
             htmlAboutSongCompilationForModal += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
             htmlAboutSongCompilationForModal += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + songCompilation[i].id + '" onclick="addMorningPlaylist(' + songCompilation[i].id + ')">Утро</button>');
             htmlAboutSongCompilationForModal += ('&nbsp;');
-            htmlAboutSongCompilationForModal += ('<button class="btn btn-secondary" id="addMiddayPlaylist-' + songCompilation[i].id + '" onclick="addDayPlaylist(' + songCompilation[i].id + ')">День</button>');
+            htmlAboutSongCompilationForModal += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + songCompilation[i].id + '" onclick="addMiddayPlaylist(' + songCompilation[i].id + ')">День</button>');
             htmlAboutSongCompilationForModal += ('&nbsp;');
-            htmlAboutSongCompilationForModal += ('<button class="btn btn-secondary" id="addEveningPlaylist-' + songCompilation[i].id + '" onclick="addEveningPlaylist(' + songCompilation[i].id + ')">Вечер</button>');
+            htmlAboutSongCompilationForModal += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + songCompilation[i].id + '" onclick="addEveningPlaylist(' + songCompilation[i].id + ')">Вечер</button>');
             htmlAboutSongCompilationForModal += ('</div>');
             htmlAboutSongCompilationForModal += ('</div>');
             htmlAboutSongCompilationForModal += ('</div>');
