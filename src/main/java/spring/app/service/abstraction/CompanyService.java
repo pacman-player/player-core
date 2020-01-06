@@ -11,6 +11,8 @@ public interface CompanyService {
 
     Company getById(Long id);
 
+    Company getByCompanyName(String companyName);
+
     void removeById(Long id);
 
     List<Company> getAllCompanies();

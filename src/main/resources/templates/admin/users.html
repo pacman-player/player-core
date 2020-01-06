@@ -151,11 +151,12 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>
+                                                            <button type="button" id="editUserBtnm" class="btn btn-primary" data-dismiss="modal">Изменить</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
 
@@ -265,9 +266,8 @@
 
                                                     <label for="updateOrgType">Тип компании</label>
                                                     <select id="updateOrgType" class="form-control" name="role">
-                                                        <option value="1">Ресторан</option>
-                                                    </select>
 
+                                                    </select>
                                                 </div>
                                             </form>
                                         </div>
@@ -277,7 +277,7 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
+                                <button id="editCompanyBtn" class="btn btn-primary" data-dismiss="modal">Edit company</button>
                             </div>
                         </div>
                     </div>
@@ -289,7 +289,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
+
 
 </body>
 </html>

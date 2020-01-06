@@ -8,4 +8,5 @@ public interface SongCompilationService {
     void addSongСompilation(SongCompilation songCompilation);
     List<SongCompilation> getAllSongCompilations ();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
+    SongCompilation getSongCompilationByCompilationName(String compilationName);
 }
