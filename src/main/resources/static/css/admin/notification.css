@@ -45,6 +45,10 @@
     color: white;
 }
 
+.elemNotification{
+    text-align: left;
+}
+
 .btnNotificationNotActive{
     display: inline-block;
     width: 15px;
