@@ -31,7 +31,7 @@ public class MyMailSenderImpl implements MyMailSender {
             for (User user : users) {
                 String message = String.format(
                         "Привет, %s! \n" +
-                                "Унас появилась новая подборка %s",
+                                "У нас появилась новая подборка %s",
                         user.getFirstName(),
                         nameCompilation
                 );
