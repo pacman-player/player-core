@@ -1,11 +1,9 @@
 package spring.app.service.impl;
 
-import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.StringUtils;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.User;
 import spring.app.service.abstraction.MyMailSender;
@@ -37,7 +35,7 @@ public class MyMailSenderImpl implements MyMailSender {
                         user.getFirstName(),
                         nameCompilation
                 );
-                mailMessage.setFrom(user.getFirstName());
+                mailMessage.setFrom(user.getLogin());
                 mailMessage.setTo(user.getEmail());
                 mailMessage.setSubject("Новая подборка");
                 mailMessage.setText(message);
