@@ -38,8 +38,6 @@ public class User implements UserDetails {
 
     private String googleId;
 
-    private String activationCode;
-
     @Lob
     @Column(name = "profile_pic")
     private Blob profilePic;
@@ -220,14 +218,6 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
     }
 
     @Override

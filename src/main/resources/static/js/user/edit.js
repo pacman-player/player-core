@@ -104,6 +104,26 @@ $(document).ready(function () {
 
     }
 
+    function checkForm() {
+
+        var code = $("#checkUserCodeId").val();
+
+        $.ajax({
+            type: 'PUT',
+            url: "/api/admin/code_check",
+            contentType: 'application/json;',
+            data: JSON.stringify(code),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            dataType: 'JSON',
+        });
+
+    }
+
     $('#updateUserDataBtn').click(function (event) {
         event.preventDefault();
         updateUserData();
@@ -112,6 +132,11 @@ $(document).ready(function () {
     $('#updateUserPasswordBtn').click(function (event) {
         event.preventDefault();
         updateUserPassword();
-    })
+    });
+
+    $("#checkUserPasswordBtn").click(function (event) {
+        event.preventDefault();
+        checkForm();
+    });
 
 });
