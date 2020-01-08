@@ -130,7 +130,7 @@ public class Song {
                 ", name='" + name + '\'' +
                 ", author=" + author +
                 ", genre=" + genre +
-                ", song=" + song +
+                ", song=" + songQueues +
                 '}';
     }
 }

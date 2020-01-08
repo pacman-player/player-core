@@ -1,30 +1,23 @@
 package spring.app.dto;
 
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.SongQueue;
-
-import java.util.Set;
-
 public class SongDto {
 
     private Long id;
     private String name;
-    private Author author;
-    private Genre genre;
-    private Set<SongQueue> songQueue;
+    private String authorName;
+    private String genreName;
 
-    public SongDto(Long id, String name, Author author, Genre genre) {
+    public SongDto(Long id, String name, String authorName, String genreName) {
         this.id = id;
         this.name = name;
-        this.author = author;
-        this.genre = genre;
+        this.authorName = authorName;
+        this.genreName = genreName;
     }
 
-    public SongDto(String name, Author author, Genre genre) {
+    public SongDto(String name, String authorName, String genreName) {
         this.name = name;
-        this.author = author;
-        this.genre = genre;
+        this.authorName = authorName;
+        this.genreName = genreName;
     }
 
     public SongDto(Long id, String name) {
@@ -32,18 +25,10 @@ public class SongDto {
         this.name = name;
     }
 
-    public SongDto(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueue) {
+    public SongDto(Long id, String name, String genreName) {
         this.id = id;
         this.name = name;
-        this.author = author;
-        this.genre = genre;
-        this.songQueue = songQueue;
-    }
-
-    public SongDto(Long id, String name, Genre genre) {
-        this.id = id;
-        this.name = name;
-        this.genre = genre;
+        this.genreName = genreName;
     }
 
     public SongDto() {
@@ -65,28 +50,19 @@ public class SongDto {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public String getGenreName() {
+        return genreName;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
-
-    public Set<SongQueue> getSongQueue() {
-        return songQueue;
-    }
-
-    public void setSongQueue(Set<SongQueue> songQueue) {
-        this.songQueue = songQueue;
-    }
-
 }
