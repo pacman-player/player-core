@@ -1,15 +1,15 @@
 package spring.app.dto;
 
 public class GenreDto {
-    private String id;
+
+    private Long id;
     private String name;
 
     public Long getId() {
-        Long id = Long.parseLong(this.id);
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
