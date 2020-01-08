@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function getUserData() {
         $.ajax({
-            url: '/api/user/edit/get_user',
+            url: '/api/user/get_user',
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
             $.ajax({
                 contentType: "application/json;",
-                url: "/api/user/edit/edit_data",
+                url: "/api/user/edit_data",
                 type: "PUT",
                 data: JSON.stringify(newUser),
                 dataType: 'json',
@@ -74,7 +74,7 @@ $(document).ready(function () {
 
         $.ajax({
             contentType: "application/json;",
-            url: "/api/user/edit/edit_pass",
+            url: "/api/user/edit_pass",
             type: "PUT",
             data: JSON.stringify(pass2),
             headers: {
