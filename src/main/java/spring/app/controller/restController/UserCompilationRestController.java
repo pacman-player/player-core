@@ -23,12 +23,6 @@ public class UserCompilationRestController {
         this.songCompilationService = songCompilationService;
     }
 
-//    @GetMapping(value = "/all_genre")
-//    public @ResponseBody
-//    List<Genre> getAllGenre() {
-//        return genreService.getAllGenre();
-//    }
-
     @PostMapping(value = "/all-song-compilation")
     public @ResponseBody
     List<SongCompilation> getSongCompilation(@RequestBody String genre) {

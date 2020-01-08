@@ -1,35 +1,30 @@
 package spring.app.dto;
 
-import spring.app.model.Genre;
-import spring.app.model.PlayList;
-import spring.app.model.Song;
-import spring.app.model.SongCompilation;
-
 import java.util.List;
 import java.util.Set;
 
 public class SongCompilationDto {
     private Long id;
     private String name;
-    private Genre genre;
-    private Set<Song> setSong;
-    private List<PlayList> listPlayList;
+    private String genre;
+    private Set<SongDto> setSongDto;
+    private List<PlayListDto> listPlayListDto;
 
     public SongCompilationDto() {
     }
 
-    public SongCompilationDto(Long id, String name, Genre genre, Set<Song> setSong, List<PlayList> listPlayList) {
+    public SongCompilationDto(Long id, String name, String genre, Set<SongDto> setSongDto, List<PlayListDto> listPlayListDto) {
         this.id = id;
         this.name = name;
         this.genre = genre;
-        this.setSong = setSong;
-        this.listPlayList = listPlayList;
+        this.setSongDto = setSongDto;
+        this.listPlayListDto = listPlayListDto;
     }
 
-    public SongCompilationDto(String name, Genre genre, Set<Song> setSong, List<PlayList> listPlayList) {
+    public SongCompilationDto(String name, String genre, Set<SongDto> setSongDto, List<PlayListDto> listPlayListDto) {
         this.name = name;
         this.genre = genre;
-        this.setSong = setSong;
-        this.listPlayList = listPlayList;
+        this.setSongDto = setSongDto;
+        this.listPlayListDto = listPlayListDto;
     }
 }
