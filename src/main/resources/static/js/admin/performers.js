@@ -16,7 +16,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listAuthors) {
                 var htmlTable = "";
-
+                $("#AuthorTable tbody").empty();
                 for (var i = 0; i < listAuthors.length; i++){
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="authorId">' + listAuthors[i].id + '</td>');
@@ -25,8 +25,7 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="deleteAuthor" class="btn btn-sm btn-info" type="button">Удалить</button> </td>');
                     htmlTable += ('</tr>');
                 }
-                $("#AuthorTable #list").remove();
-                $("#getAuthorTable").after(htmlTable);
+                $("#AuthorTable tbody").append(htmlTable);
             }
         });
     }
@@ -39,7 +38,6 @@ $(document).ready(function () {
 
     function addAuthor(){
         var name = $("#addAuthor").val();
-
         $.ajax({
             type: 'post',
             url: "/api/admin/author/add_author",
@@ -51,9 +49,22 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON'
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-author-panel").tab('show');
+                },
+            success:
+                function () {
+                    notification("add-author" + name.replace(/[^\w]|_/g,''),
+                        " Исполнитель " + name + " добавлен",
+                        'authors-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     }
 
     //delete form
@@ -74,9 +85,21 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON'
+            complete:
+                function () {
+                    getTable();
+                },
+            success:
+                function () {
+                    notification("delete-author" + id,
+                        "  Исполнитель c id " + id + " удален",
+                        'authors-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     }
 
     //update form
@@ -86,12 +109,10 @@ $(document).ready(function () {
     });
 
     function updateAuthor() {
-
         var author = {
             "id":$("#editAuthorId").val(),
             "name":$("#editAuthorName").val()
         };
-
         $.ajax({
             type: 'put',
             url: "/api/admin/author/update_author",
@@ -103,18 +124,26 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON'
+            complete:
+                function () {
+                    getTable();
+                },
+            success:
+                function () {
+                    notification("edit-author" + author.id,
+                        "  Изменения исполнителя с id  " + author.id + " сохранены",
+                        'authors-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
     }
 
     //modal form заполнение
     $(document).on('click', '#editAuthorBtn', function () {
-
         $("#editAuthorId").val($(this).closest("tr").find("#authorId").text());
         $("#editAuthorName").val($(this).closest("tr").find("#authorName").text());
-
-
     });
-
 });

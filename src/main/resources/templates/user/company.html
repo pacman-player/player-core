@@ -8,11 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" href="/сcs/style.css"/>
-
+    <link type="text/css" href="/css/style.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/user/user.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -25,24 +22,23 @@
     </div>
 
     <div class="row">
-
         <!--меню слева-->
         <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
-                    <a href="/user/statistics" >Статистика</a>
+                    <a href="/user/statistics">Статистика</a>
                 </li>
                 <li>
-                    <a href="/user/compilation" >Моя подборка</a>
+                    <a href="/user/compilation">Моя подборка</a>
                 </li>
                 <li>
-                    <a href="/user/filter" >Фильтр музыки</a>
+                    <a href="/user/filter">Фильтр музыки</a>
                 </li>
                 <li>
-                    <a href="/user/top" >Топ популярных</a>
+                    <a href="/user/top">Топ популярных</a>
                 </li>
                 <li>
-                    <a href="/user/establishment" >Моё заведение</a>
+                    <a href="/user/company">Моё заведение</a>
                 </li>
                 <li>
                     <a href="/user/promo">Промо - материалы</a>
@@ -61,27 +57,32 @@
 
             <!--<div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">
                 <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>-->
+
+            <div class="col-lg-6 col-md-10 col-xs-10 " id="my-company">
                 <H3> Моё заведение</H3>
-                <div class="col-fhd-4 col-xl-5 col-lg-6">
+                <form class="form-group">
+                    <label for="est-name">Наименование организации</label>
+                    <input id="est-name" required="required" type="text"/><br/>
 
-                    <form class="form-group">
-                        <label for="est-name">Наименование организации&nbsp;<input id="est-name" required="required"
-                                                                                   type="text"/></label><br/>
-                        <label for="est-start-time">Время открытия&nbsp;</label><input id="est-start-time"
-                                                                                       required="required" type="time"/><br/>
-                        <label for="est-close-time">Время закрытия&nbsp;</label><input id="est-close-time"
-                                                                                       required="required" type="time"/><br/>
-                        <button class="btn btn-primary" id="est-save-data" type="submit">Сохранить</button>
-                    </form>
+                    <label for="est-start-time">Время открытия&nbsp;</label>
+                    <input id="est-start-time" required="required" type="time"/><br/>
 
-                </div>
-           <!-- </div>-->
+                    <label for="est-close-time">Время закрытия&nbsp;</label>
+                    <input id="est-close-time" required="required" type="time"/><br/>
 
+                    <button class="btn btn-primary" style="margin-left:0" id="est-save-data" type="button">
+                        Сохранить
+                    </button>
+                    <div id="notify"></div>
+                </form>
+            </div>
         </div>
 
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/user/company.js" rel="stylesheet"></script>
 
 </body>
