@@ -8,7 +8,7 @@ $(document).ready(function () {
         var genre = $(this).text();
         $.ajax({
             type: 'post',
-            url: '/api/user/song_compilation',
+            url: '/api/user/song-compilation/all-song-compilation',
             contentType: 'application/json;',
             data: JSON.stringify(genre),
             headers: {
@@ -63,7 +63,7 @@ $(document).ready(function () {
     function getAllGenre() {
         $.ajax({
             type: 'get',
-            url: '/api/user/compilation/all_genre',
+            url: '/api/user/genre/get/all-genre',
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -126,7 +126,7 @@ $(document).ready(function () {
 function addMorningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/add_song_compilation_to_morning_playlist/' + idCompilation,
+        url: '/api/user/morning-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить утренний плейлист
             getAllCompilationsInMorningPlaylist();
@@ -141,7 +141,7 @@ function addMorningPlaylist(idCompilation) {
 function addMiddayPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/add_song_compilation_to_midday_playlist/' + idCompilation,
+        url: '/api/user/midday-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить дневной плейлист
             getAllCompilationsInMiddayPlaylist();
@@ -155,7 +155,7 @@ function addMiddayPlaylist(idCompilation) {
 function addEveningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/add_song_compilation_to_evening_playlist/' + idCompilation,
+        url: '/api/user/evening-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить вечерний плейлист
             getAllCompilationsInEveningPlaylist();
@@ -170,7 +170,7 @@ function addEveningPlaylist(idCompilation) {
 function getAllCompilationsInMorningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/get_all_compilations_in_morning_playlist',
+        url: '/api/user/morning-playlist/get/all-song-compilation',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -211,7 +211,7 @@ function getAllCompilationsInMorningPlaylist() {
 function getAllCompilationsInMiddayPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/get_all_compilations_in_midday_playlist',
+        url: '/api/user/midday-playlist/get/all-song-compilation',
         success: function (middayPlayList) {
             var htmlMiddayCompilation = '';
             //bootstrap card
@@ -252,7 +252,7 @@ function getAllCompilationsInMiddayPlaylist() {
 function getAllCompilationsInEveningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/get_all_compilations_in_evening_playlist',
+        url: '/api/user/evening-playlist/get/all-song-compilation',
         success: function (eveningPlayList) {
             var htmlEveningCompilation = '';
             //bootstrap card
@@ -291,8 +291,8 @@ function getAllCompilationsInEveningPlaylist() {
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
 function showAllSongInSongCompilation(id) {
-    //достаю название подборки для модалки
-    $.getJSON('http://localhost:8080/api/user/song_compilation/' + id, function (songCompilation) {
+    //достаю инфу о подборке (название, картинку,  пр.) для модалки
+    $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
             htmlAboutSongCompilationForModal += ('<div class="card-deck" id="aboutCompilations">');
@@ -324,7 +324,7 @@ function showAllSongInSongCompilation(id) {
     //достаю все песни из подборки
     $.ajax({
         method: 'GET',
-        url: '/api/user/all_song_in_song_compilation/' + id,
+        url: '/api/user/song/get/all-song/song-compilation/' + id,
         success: function (dataSong) {
             var htmlSongRow = '';
             for (var i = 0; i < dataSong.length; i++) {
