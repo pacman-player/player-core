@@ -1,5 +1,9 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,10 +20,12 @@ public class SongCompilation {
 
     private String name;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @JsonIgnore
     @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_compilation_id")},

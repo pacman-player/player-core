@@ -1,6 +1,8 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -12,6 +14,7 @@ public class SongQueue {
     private Long position;
 
     @JsonIgnore
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;

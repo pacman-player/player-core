@@ -1,6 +1,8 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,6 +19,7 @@ public class Author {
 
     private String name;
 
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},

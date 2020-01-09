@@ -2,6 +2,8 @@ package spring.app.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,18 +19,31 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Author.class)
+//    @BatchSize(size = 25)
 //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
+
+//    @BatchSize(size = 25)
 //    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+
     @OneToMany(mappedBy = "song")
     private Set<SongQueue> songQueues;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = SongCompilation.class)
+    @JoinTable(name = "song_compilation_on_song",
+            joinColumns = {@JoinColumn(name = "song_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
+    private Set<SongCompilation> songCompilations;
 
     public Song() {
     }
@@ -59,6 +74,14 @@ public class Song {
         this.name = name;
         this.author = author;
         this.genre = genre;
+    }
+
+    public Set<SongCompilation> getSongCompilations() {
+        return songCompilations;
+    }
+
+    public void setSongCompilations(Set<SongCompilation> songCompilations) {
+        this.songCompilations = songCompilations;
     }
 
     public void setId(Long id) {
