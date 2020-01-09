@@ -36,6 +36,11 @@ public class AdminController {
     public String getSongs() {
         return "admin/songs";
     }
+
+    @GetMapping("/compilations")
+    public String getCompilations() {
+        return "admin/compilations";
+    }
 }
 
 
