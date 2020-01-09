@@ -97,6 +97,8 @@ $(document).ready(function () {
         map.controls.add(mySearchControl);
         map.controls.add(myZoomControl);
 
+        let alertContent;
+
 
         // Слушаем клик на карте.
         map.events.add('click', function (e) {
@@ -134,18 +136,33 @@ $(document).ready(function () {
             ymaps.geocode(coords).then(function (res) {
                 var firstGeoObject = res.geoObjects.get(0);
 
-                placemark.properties
-                    .set({
-                        // Формируем строку с данными об объекте.
-                        iconCaption: [
-                            // Название населенного пункта или вышестоящее административно-территориальное образование.
-                            firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
-                            // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
-                            firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
-                        ].filter(Boolean).join(', '),
-                        // В качестве контента балуна задаем строку с адресом объекта.
-                        balloonContent: firstGeoObject.getAddressLine()
-                    });
+                placemark.properties.set({
+                    // Формируем строку с данными об объекте.
+                    iconCaption: [
+                        // Название населенного пункта или вышестоящее административно-территориальное образование.
+                        firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                        // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+                        firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                    ].filter(Boolean).join(', '),
+                    // В качестве контента балуна задаем строку с адресом объекта.
+                    balloonContent: firstGeoObject.getAddressLine()
+                });
+
+                alertContent = firstGeoObject.getAddressLine();
+                confirm("You pushed on map : " + alertContent);
+
+
+                $.ajax({
+                    type: "post",
+                    url: "/user/company",
+                    data: alertContent,
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    async: true
+                });
+
+                console.log(alertContent);
+
             });
         }
     }
