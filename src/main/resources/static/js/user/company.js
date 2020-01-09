@@ -81,7 +81,7 @@ $(document).ready(function () {
 
         var map = new ymaps.Map('map', {
             center: [55.753902, 37.620074],
-            zoom: 19,
+            zoom: 12,
             controls: []
         });
 
