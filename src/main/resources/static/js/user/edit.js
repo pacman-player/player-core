@@ -38,7 +38,6 @@ $(document).ready(function () {
                 url: "/api/user/edit_data",
                 type: "PUT",
                 data: JSON.stringify(newUser),
-                dataType: 'json',
                 async: true,
                 cache: false,
                 success: function () {
@@ -110,19 +109,40 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'PUT',
-            url: "/api/admin/code_check",
+            url: "/api/user/code_check",
             contentType: 'application/json;',
             data: JSON.stringify(code),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            success: function () {
+                alert("Код верен");
+                $("#editUserPass").modal('show');
+            },
+            error: function () {
+                alert("Проверочный код не верен");
+            }
         });
 
     }
+
+        function sendMail() {
+            var mess = "start";
+            $.ajax({
+                type: 'PUT',
+                url: "/api/user/send_mail",
+                contentType: 'application/json;',
+                data: JSON.stringify(mess),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                async: true,
+                cache: false,
+                dataType: 'JSON'
+
+            });
+        }
+
 
     $('#updateUserDataBtn').click(function (event) {
         event.preventDefault();
@@ -135,6 +155,11 @@ $(document).ready(function () {
     });
 
     $("#checkUserPasswordBtn").click(function (event) {
+        event.preventDefault();
+        sendMail();
+    });
+
+    $("#checkUserCodeBtn").click(function (event) {
         event.preventDefault();
         checkForm();
     });
