@@ -14,13 +14,16 @@
         body {
             background: #eeeeee;
         }
+
         .login-form {
             /*margin-top: 100px;*/
             margin-top: 12px;
         }
+
         .login-group :last-child {
             margin-top: 5px;
         }
+
         .empty-block {
             height: 88px;
         }
@@ -56,10 +59,10 @@
                 <h2>Please sign in</h2>
                 <form action="/processing-url" method="POST">
                     <div class="form-group login-group">
-                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email adress"
-                               required="" th:value="admin"/>
+                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
+                               required="" th:value="user"/>
                         <input type="password" class="form-control" id="uPass" name="password"
-                               required="" th:value="admin" placeholder="Password" />
+                               required="" th:value="user" placeholder="Password"/>
                     </div>
                     <input type="submit" class="btn btn-primary btn-block" value="Sign in"/>
                     <!--<a href="/google/login">Click here to Google Login</a>-->
