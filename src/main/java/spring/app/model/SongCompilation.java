@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "song_compilation")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SongCompilation {
 
     @Id

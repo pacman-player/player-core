@@ -19,23 +19,18 @@ public class Song {
 
     private String name;
 
-//    @BatchSize(size = 25)
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
-
-//    @BatchSize(size = 25)
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
 
-    @OneToMany(mappedBy = "song")
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     private Set<SongQueue> songQueues;
 
     @Fetch(FetchMode.SUBSELECT)

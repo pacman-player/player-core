@@ -1,5 +1,7 @@
 package spring.app.dao.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
@@ -28,4 +30,25 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         }
         return song;
     }
+
+//    @Override
+//    public void deleteById(Long id) {
+//        TypedQuery<Song> query = entityManager.createQuery(select )
+
+    //    @Override
+//    @Fetch(FetchMode.JOIN)
+//    public List<Song> getAll() {
+//        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s " +
+//                "JOIN FETCH s.author " +
+//                "JOIN FETCH s.genre " +
+//                "JOIN FETCH s.songCompilations " +
+//                "JOIN FETCH s.songQueues" , Song.class);
+//        List<Song> allSong;
+//        try {
+//            allSong = query.getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//        return allSong;
+//    }
 }

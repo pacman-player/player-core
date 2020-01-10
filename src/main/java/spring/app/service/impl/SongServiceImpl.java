@@ -1,5 +1,7 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.SongDao;
@@ -19,6 +21,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Fetch(FetchMode.JOIN)
     public List<Song> getAllSong() {
         return songDao.getAll();
     }
@@ -44,6 +47,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Fetch(FetchMode.JOIN)
     public void updateSong(Song song) {
         songDao.update(song);
     }
