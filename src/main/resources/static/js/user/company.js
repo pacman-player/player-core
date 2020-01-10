@@ -148,20 +148,25 @@ $(document).ready(function () {
                     balloonContent: firstGeoObject.getAddressLine()
                 });
 
+
+
+
                 alertContent = firstGeoObject.getAddressLine();
-                confirm("You pushed on map : " + alertContent);
+
+                function putAddressInField () {
+                    $('#est-address').val(alertContent);
+                }
+
+                if (confirm("You pushed on map : " + alertContent)) {
+                    putAddressInField();
+
+                    console.log(alertContent);
+                } else {
+                    console.log("failed");
+                }
 
 
-                $.ajax({
-                    type: "post",
-                    url: "/user/company",
-                    data: alertContent,
-                    contentType: "application/json; charset=utf-8",
-                    cache: false,
-                    async: true
-                });
 
-                console.log(alertContent);
 
             });
         }
