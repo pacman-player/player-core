@@ -19,12 +19,10 @@ public class Song {
 
     private String name;
 
-    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
