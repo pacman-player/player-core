@@ -19,11 +19,11 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
@@ -32,7 +32,7 @@ public class Song {
     private Set<SongQueue> songQueues;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = SongCompilation.class)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
@@ -146,7 +146,7 @@ public class Song {
                 ", name='" + name + '\'' +
                 ", author=" + author +
                 ", genre=" + genre +
-                ", song=" + songQueues +
+                ", songQueue=" + songQueues +
                 '}';
     }
 }

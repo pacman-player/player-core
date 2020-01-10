@@ -2,8 +2,6 @@ package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,8 +20,7 @@ public class SongCompilation {
 
     private String name;
 
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 

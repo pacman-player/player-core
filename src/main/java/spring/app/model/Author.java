@@ -58,14 +58,6 @@ public class Author {
         this.authorGenres = authorGenres;
     }
 
-//    public Song getSong() {
-//        return song;
-//    }
-//
-//    public void setSong(Song song) {
-//        this.song = song;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
