@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import spring.app.service.abstraction.UserService;
 @RestController
 @RequestMapping("/api/registration")
 public class RegistrationRestController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger("RegistrationRestController");
     private UserService userService;
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
@@ -36,6 +38,7 @@ public class RegistrationRestController {
             return "exist";
         }
         userService.save(userDto);
+        LOGGER.info("Post request 'first', result is {} (DTO)", userDto);
         return "success";
     }
 
@@ -54,6 +57,7 @@ public class RegistrationRestController {
         company = companyService.getByCompanyName(company.getName());
         userByLogin.setCompany(company);
         userService.addUser(userByLogin);
+        LOGGER.info("Post request 'second', company is = {} (DTO)", company);
         return "success";
     }
 
