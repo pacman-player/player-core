@@ -14,6 +14,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
+import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,13 +163,16 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             List<UserXtrCounters> list = vk.users().get(actor).execute();
+            String email = authResponse.getEmail();
             user = new User(list.get(0).getId(),
                     new String(list.get(0).getFirstName().getBytes(StandardCharsets.UTF_8)),
                     new String(list.get(0).getLastName().getBytes(StandardCharsets.UTF_8)),
-                    authResponse.getEmail(),
+                    email,
                     roleSet,
                     companyService.getById(1L),
                     true);
+            user.setPassword(generateRandomPassword(12));
+            user.setLogin(email.substring(0, email.indexOf("@")));
             userService.addUser(user);
             LOGGER.info("New user registered by VK - {}", user);
             user = userService.getUserByVkId(actor.getId());
@@ -178,5 +182,9 @@ public class MainController {
         return "redirect:/user";
     }
 
-
+    private String generateRandomPassword(int length) {
+        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(97, 122)
+                .build();
+        return pwdGenerator.generate(length);
+    }
 }
