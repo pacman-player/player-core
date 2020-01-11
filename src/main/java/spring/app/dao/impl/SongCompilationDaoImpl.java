@@ -27,6 +27,13 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
     }
 
     @Override
+    public void deleteValByGenreId(Long id) {
+        TypedQuery<SongCompilation> query = (TypedQuery<SongCompilation>) entityManager.createQuery("UPDATE SongCompilation SET genre_id = null WHERE genre_id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Override
     public SongCompilation getSongCompilationByCompilationName(String compilationName) {
         List<SongCompilation> songCompilationList = entityManager.createQuery("FROM SongCompilation WHERE name = :compilationName", SongCompilation.class)
                 .setParameter("compilationName", compilationName)

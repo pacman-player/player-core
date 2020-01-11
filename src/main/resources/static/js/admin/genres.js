@@ -2,7 +2,6 @@ $(document).ready(function () {
 
     getTable();
 
-
     function getTable() {
 
         $.ajax({
@@ -15,10 +14,10 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
             success: function (listGenres) {
-
                 var htmlTable = "";
+                //  $("#GenresTable #list").remove();
+                $("#genresTable tbody").empty();
 
                 for (var i = 0; i < listGenres.length; i++) {
                     htmlTable += ('<tr id="list">');
@@ -29,9 +28,8 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="deleteGenres" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
                 }
-
-                $("#GenresTable #list").remove();
-                $("#getGenresTable").after(htmlTable);
+                // $("#getGenresTable").after(htmlTable);
+                $("#genresTable tbody").append(htmlTable);
             }
 
         });
@@ -41,7 +39,7 @@ $(document).ready(function () {
     $("#addGenreBtn").click(function (event) {
         event.preventDefault();
         addGenre();
-
+        $(':input', '#addForm').val('');
     });
 
     function addGenre() {
@@ -60,15 +58,33 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("add-user" + name,
+                        " Жанр " + name+ " добавлен ",
+                        'genres-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
+
+        //  $("#tab-genres-panel").tab('show');
+        // location.reload();
     }
 
     //deleteForm
     $(document).on('click', '#deleteGenres', function () {
         var id = $(this).closest("tr").find("#genresId").text();
         deleteUser(id);
+       // getTable();
     });
 
     function deleteUser(id) {
@@ -83,50 +99,77 @@ $(document).ready(function () {
             },
             async: false,
             cache: false,
-            dataType: 'JSON',
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("delete-user" + id,
+                        "  Жанр c id " + id + " удален",
+                        'genres-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
         });
-        location.reload();
+        // location.reload();
     };
 
+    //updateForm
+    $("#editGenresBtn").click(function (event) {
+        event.preventDefault();
+        updateForm();
+        $(this).parent().find("#closeEditGenres").click();
+    });
 
-       //updateForm
-      $("#editGenresBtn").click(function (event) {
-          event.preventDefault();
-          updateForm();
-      });
+    function updateForm() {
+        var genre = {
+            "id": $("#updateGenresId").val(),
+            "name": $("#updateGenresName").val()
+        };
 
-      function updateForm() {
-          var genre = {
-              "id":$("#updateGenresId").val(),
-              "name":$("#updateGenresName").val()
-          };
+        $.ajax({
+            type: 'put',
+            url: "/api/admin/genre/update_genre",
 
-          $.ajax({
-              type: 'put',
-              url: "/api/admin/genre/update_genre",
+            contentType: 'application/json;',
+            data: JSON.stringify(genre),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            complete:
+                function () {
+                    getTable();
+                   // $("#tab-genres-panel").tab('show');
+                },
+            success:
+                function () {
+                 sendNotification();
+                    notification("add-user" + name,
+                        " Жанр " + name+ " обнавлен ",
+                        'genres-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+        });
 
-              contentType: 'application/json;',
-              data: JSON.stringify(genre),
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-              },
-              async: true,
-              cache: false,
-              dataType: 'JSON',
-          });
-          location.reload();
-      };
+      //  location.reload();
+    };
 
-
-      //modal form заполнение
-      $(document).on('click', '#editGenresBtn', function () {
-
-          $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
-          $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
-
-
-      });
+    //modal form заполнение
+    $(document).on('click', '#editGenresBtn', function () {
+        $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
+        $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
+    });
 
 
 });

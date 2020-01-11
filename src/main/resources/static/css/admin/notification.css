@@ -1,0 +1,103 @@
+#notification {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 15px;
+    background: -moz-linear-gradient(center top, #efefef 0%, #e0e0e0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #efefef), color-stop(1, #e0e0e0));
+    border: 0px solid #d1d1d1;
+    color: black;
+    font-size: 13px;
+    font-weight: normal;
+    text-shadow: 1px 1px 0px #fff;
+    margin: 0;
+}
+
+#notification:hover {
+    text-shadow: 0px 0px 3px #a1eeff;
+}
+
+#listNotification {
+    position: absolute;
+    top: 100%;
+    left: 78%;
+    text-align: center;
+    width: auto;
+    padding: 5px;
+    background-color: floralwhite;
+    overflow: hidden;
+    margin: 0;
+    display: none;
+    transition: all ease 0.8s;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#listNotification div {
+    padding: 10px;
+    font-size: 13px;
+    list-style-type: square;
+    list-style-position: inside;
+    color: black;
+}
+
+.elemNotification:hover{
+    background-color: wheat;
+    color: white;
+}
+
+.elemNotification{
+    text-align: left;
+}
+
+.btnNotificationNotActive{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 30px;
+    line-height: 50px;
+    font-size: 20px;
+    border-radius: 10px;
+    background: white;
+    outline: none;
+    border: none;
+    border-radius: 100px;
+    background: rgb(251, 249, 255) radial-gradient(150% 100% at 50% 5px, rgba(255,255,255,.2), rgba(0,0,0,0));
+    box-shadow: inset rgba(0,0,0,.6) 0 -2px 5px, inset rgba(252,255,255,.7) 0 2px 5px, rgba(0,0,0,.8) 0 2px 5px -1px;
+    color: rgb(227, 233, 230);
+    user-select: none;
+
+}
+
+.btnNotificationActive {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 30px;
+    line-height: 50px;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px rgba(255,255,255,.2), 0 -1px rgba(0,0,0,.8);
+    outline: none;
+    border: none;
+    border-radius: 100px;
+    background: rgb(255, 14, 43) radial-gradient(150% 100% at 50% 5px, rgba(255,255,255,.2), rgba(0,0,0,0));
+    box-shadow: inset rgba(0,0,0,.6) 0 -2px 5px, inset rgba(252,255,255,.7) 0 2px 5px, rgba(0,0,0,.8) 0 2px 5px -1px;
+    color: rgb(255, 14, 43);
+    user-select: none;
+}
+
+.btnNotificationActive:hover {
+    color: rgb(255, 14, 43);
+    cursor: pointer;
+}
+
+.btnNotificationActive:active {
+    padding-bottom: 1px;
+    box-shadow:
+            inset rgba(0,0,0,1) 0 1px 3px,
+            inset rgba(0,0,0,.6) 0 -2px 5px,
+            inset rgba(252,255,255,.7) 0 2px 5px,
+            0 1px rgba(255,255,255,.08);
+    color: rgb(128,207,214);
+}
