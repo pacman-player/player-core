@@ -1,8 +1,6 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,7 +17,7 @@ public class Author {
 
     private String name;
 
-    @Fetch(FetchMode.SUBSELECT)
+//    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
     @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
@@ -27,8 +25,6 @@ public class Author {
     private Set<Genre> authorGenres = new HashSet<>();
 
     public Author(){}
-
-
 
     public Author(String name) {
         this.name = name;

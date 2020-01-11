@@ -2,8 +2,6 @@ package spring.app.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -27,12 +25,11 @@ public class Song {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-
-    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL) //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
+    @ManyToMany(fetch = FetchType.LAZY) //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
