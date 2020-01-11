@@ -10,6 +10,7 @@ import java.util.Set;
 @Table(name = "genre")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Genre {
+
     @Id
     @GeneratedValue
     private Long id;
