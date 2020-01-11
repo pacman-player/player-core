@@ -1,10 +1,7 @@
 package spring.app.service.impl;
 
-import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.PlayListDao;
@@ -16,9 +13,9 @@ import spring.app.model.SongCompilation;
 import spring.app.model.User;
 import spring.app.service.abstraction.SongCompilationService;
 
-import java.util.*;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -79,6 +76,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         authUser.setCompany(oldCompany);
         //обновляем юзера
         userDao.update(authUser);
+
     }
 
     @Override

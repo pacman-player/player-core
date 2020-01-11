@@ -29,7 +29,7 @@ $(document).ready(function () {
                         htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
                             ' data-target="#modalShowAllSong"class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                        htmlCompilation += ('<img src="/img/' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
+                        htmlCompilation += ('<img src="/img/compilation/compilation' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>Песни подборки</p></a>');
                         htmlCompilation += ('<div class="card-body">');
@@ -179,7 +179,7 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('<div class="card pt-10">');
                 htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" data-toggle="modal"' +
                     ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
+                htmlMorningCompilation += ('<img src="/img/compilation/compilation' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>Песни подборки</p></a>');
                 htmlMorningCompilation += ('<div class="card-body">');
@@ -220,7 +220,7 @@ function getAllCompilationsInMiddayPlaylist() {
                 htmlMiddayCompilation += ('<div class="card pt-10">');
                 htmlMiddayCompilation += ('<a href="#" id="' + middayPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + middayPlayList[i].id + ')" data-toggle="modal"' +
                     ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMiddayCompilation += ('<img src="/img/' + middayPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
+                htmlMiddayCompilation += ('<img src="/img/compilation/compilation' + middayPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     middayPlayList[i].name + '">');
                 htmlMiddayCompilation += ('</img><p>Песни подборки</p></a>');
                 htmlMiddayCompilation += ('<div class="card-body">');
@@ -261,7 +261,7 @@ function getAllCompilationsInEveningPlaylist() {
                 htmlEveningCompilation += ('<div class="card pt-10">');
                 htmlEveningCompilation += ('<a href="#" id="' + eveningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + eveningPlayList[i].id + ')" data-toggle="modal"' +
                     ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlEveningCompilation += ('<img src="/img/' + eveningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
+                htmlEveningCompilation += ('<img src="/img/compilation/compilation' + eveningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     eveningPlayList[i].name + '">');
                 htmlEveningCompilation += ('</img><p>Песни подборки</p></a>');
                 htmlEveningCompilation += ('<div class="card-body">');

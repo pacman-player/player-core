@@ -5,9 +5,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TestDataInit {
@@ -170,9 +168,9 @@ public class TestDataInit {
         songCompilationService.addSongСompilation(songCompilation4);
 
 
-        PlayList playList1 = new PlayList();
-        playList1.setName("All day playlist");
-        playListService.addPlayList(playList1);
+        PlayList playList = new PlayList();
+        playList.setName("All day playlist");
+        playListService.addPlayList(playList);
 
         PlayList playList2 = new PlayList();
         playList2.setName("Morning playlist");
@@ -189,16 +187,16 @@ public class TestDataInit {
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
 
         Set<PlayList> allDayPlayLists = new HashSet<>();
-        allDayPlayLists.add(playList1);
+        allDayPlayLists.add(playList);
 
         Set<PlayList> morningPlayLists = new HashSet<>();
-        morningPlayLists.add(playList2);
+        morningPlayLists.add(playList);
 
         Set<PlayList> middayPlayLists = new HashSet<>();
-        middayPlayLists.add(playList3);
+        middayPlayLists.add(playList);
 
         Set<PlayList> eveningPlayLists = new HashSet<>();
-        eveningPlayLists.add(playList4);
+        eveningPlayLists.add(playList);
 
         company.setMorningPlayList(morningPlayLists);
         company.setMiddayPlayList(middayPlayLists);
