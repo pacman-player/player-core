@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "song_compilation")
 public class SongCompilation {
