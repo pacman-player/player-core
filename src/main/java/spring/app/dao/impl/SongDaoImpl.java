@@ -32,14 +32,15 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     }
 
     //закоментровал вариант с JOIN FETCH, который не получился
-    //    @Override
+//    @Override
 //    @Fetch(FetchMode.JOIN)
 //    public List<Song> getAll() {
 //        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s " +
 //                "JOIN FETCH s.author " +
 //                "JOIN FETCH s.genre " +
 //                "JOIN FETCH s.songCompilations " +
-//                "JOIN FETCH s.songQueues" , Song.class);
+//                "JOIN FETCH s.songQueues"
+//                , Song.class);
 //        List<Song> allSong;
 //        try {
 //            allSong = query.getResultList();
