@@ -21,7 +21,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
     public List<Song> getAllSong() {
         return songDao.getAll();
     }
@@ -47,7 +47,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
     public void updateSong(Song song) {
         songDao.update(song);
     }

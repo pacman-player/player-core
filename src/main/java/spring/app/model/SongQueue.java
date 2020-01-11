@@ -14,7 +14,6 @@ public class SongQueue {
     private Long position;
 
     @JsonIgnore
-//    @Fetch(FetchMode.JOIN)
     @ManyToOne(targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;

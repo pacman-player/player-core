@@ -31,10 +31,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         return song;
     }
 
-//    @Override
-//    public void deleteById(Long id) {
-//        TypedQuery<Song> query = entityManager.createQuery(select )
-
+    //закоментровал вариант с JOIN FETCH, который не получился
     //    @Override
 //    @Fetch(FetchMode.JOIN)
 //    public List<Song> getAll() {
