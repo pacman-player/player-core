@@ -62,6 +62,13 @@ public class TestDataInit {
         admin.setRoles(adminRoles);
         userService.addUser(admin);
 
+        User admin1 = new User();
+        admin1.setLogin("admin1");
+        admin1.setPassword("admin");
+        admin1.setEmail("admin1@gmail.com");
+        admin1.setRoles(adminRoles);
+        userService.addUser(admin1);
+
         User user = new User();
         user.setLogin("user");
         user.setPassword("user");

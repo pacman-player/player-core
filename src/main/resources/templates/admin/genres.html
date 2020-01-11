@@ -9,6 +9,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
 
@@ -17,10 +18,13 @@
 
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
 
@@ -60,6 +64,136 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
+                <div role="tabpanel" class="tab-pane active" id="list-genres">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="genres-table-nav" class="active">
+                            <a id="tab-genres-panel" href="#genres-panel" aria-controls="genres-panel" role="tab"
+                               data-toggle="tab">Все жанры</a>
+                        </li>
+                        <li id="add-genres-nav">
+                            <a href="#add-genres-panel" aria-controls="add-genres-panel" role="tab" data-toggle="tab">
+                                Новый жанр</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--таблица юзеров-->
+                        <div role="tabpanel" class="tab-pane active" id="genres-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="genresTable" class="table">
+                                            <thead id="getGenresTable">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Жанр</th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+
+
+                                            <!--модалка - обновление юзеров-->
+                                            <div id="editGenres" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
+                                                            <h4 class="modal-title">Изменить жанр</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <div id="success-edit-message"
+                                                                             class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
+                                                                        </div>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="updateGenresId">ID</label>
+                                                                                <input id="updateGenresId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden"
+                                                                                       name="id"/>
+
+                                                                                <label for="updateGenresName">Жанр</label>
+                                                                                <input id="updateGenresName"
+                                                                                       class="form-control" type="email"
+                                                                                       name="genre"
+                                                                                       required=""/>
+
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                                                    <button id="editGenresBtn" class="btn btn-primary" type="submit">Изменить</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button id="closeEditGenres" type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button id="editGenresBtn" class="btn btn-primary">Изменить
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--добавление юзеров-->
+                        <div role="tabpanel" class="tab-pane" id="add-genres-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
+
+                                                            <label for="addGenre">Жанр</label>
+                                                            <input id="addGenre" class="form-control" type="text"
+                                                                   placeholder="Enter genre" name="genre"/>
+
+                                                            <button type="submit" id="addGenreBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить жанр
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -67,6 +201,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/genres.js" rel="script"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 

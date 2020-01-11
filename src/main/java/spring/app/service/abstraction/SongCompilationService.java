@@ -8,6 +8,7 @@ public interface SongCompilationService {
     void addSongСompilation(SongCompilation songCompilation);
     List<SongCompilation> getAllSongCompilations();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
+    void deleteValByGenreId(Long id);
 
     void addSongCompilationToMorningPlaylist(Long id);
     void addSongCompilationToMiddayPlaylist(Long id);

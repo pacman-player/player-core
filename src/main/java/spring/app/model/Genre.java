@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "genre")
 public class Genre {
+
     @Id
     @GeneratedValue
     private Long id;

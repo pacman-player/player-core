@@ -12,8 +12,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-//@JsonIgnoreProperties(ignoreUnknown = true)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
 
     @Id

@@ -51,6 +51,11 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
+    public void deleteValByGenreId(Long id) {
+        songCompilationDao.deleteValByGenreId(id);
+    }
+
+    @Override
     public void addSongCompilationToMorningPlaylist(Long id) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера
