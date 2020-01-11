@@ -39,7 +39,7 @@ import java.util.Set;
 
 @Controller("/test")
 public class MainController {
-    private final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger("MainController");
 
     private final RoleService roleService;
     private final UserService userService;
@@ -95,16 +95,15 @@ public class MainController {
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
 
-        StringBuilder url = new StringBuilder();
-        url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
-                .append(googleRedirectUri)
-                .append("&response_type=")
-                .append(googleResponseType)
-                .append("&client_id=")
-                .append(googleClientId)
-                .append("&scope=")
-                .append(googleScope);
-        return "redirect:" + url.toString();
+        String url = "https://accounts.google.com/o/oauth2/auth?redirect_uri=" +
+                googleRedirectUri +
+                "&response_type=" +
+                googleResponseType +
+                "&client_id=" +
+                googleClientId +
+                "&scope=" +
+                googleScope;
+        return "redirect:" + url;
     }
 
     @RequestMapping(value = "/google")
@@ -149,12 +148,14 @@ public class MainController {
 
     @GetMapping(value = "/vkontakte")
     public String vkAuthorization(@RequestParam("code") String code) throws ClientException, ApiException {
+        LOGGER.info("VK auth code is {}", code);
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
         UserAuthResponse authResponse = vk.oauth()
                 .userAuthorizationCodeFlow(Integer.parseInt(appId), clientSecret, redirectUri, code)
                 .execute();
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+        LOGGER.info("VK auth UserActor is {}", actor);
         User user = userService.getUserByVkId(actor.getId());
         if (user == null) {
             Role role = roleService.getRoleById((long) 2);
@@ -169,6 +170,7 @@ public class MainController {
                     companyService.getById(1L),
                     true);
             userService.addUser(user);
+            LOGGER.info("New user registered by VK - {}", user);
             user = userService.getUserByVkId(actor.getId());
             Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);

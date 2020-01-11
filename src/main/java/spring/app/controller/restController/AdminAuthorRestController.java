@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
@@ -9,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/author/")
 public class AdminAuthorRestController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger("AdminAuthorRestController");
     private final AuthorService authorService;
 
     public AdminAuthorRestController(AuthorService authorService) {
@@ -19,6 +21,7 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/all_authors")
     public List<Author> getAllAuthor(){
         List<Author> list = authorService.getAllAuthor();
+        LOGGER.info("Get request 'all_authors', result {} lines", list.size());
         return list;
     }
 
@@ -29,6 +32,7 @@ public class AdminAuthorRestController {
             Author author = new Author();
             author.setName(name);
             authorService.addAuthor(author);
+            LOGGER.info("Post request 'add_author', author is = {}", author);
         }
     }
 
@@ -37,11 +41,12 @@ public class AdminAuthorRestController {
         Author author = authorService.getById(newAuthor.getId());
         author.setName(newAuthor.getName());
         authorService.updateAuthor(author);
+        LOGGER.info("Put request 'update_author', author is = {}", author);
     }
 
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id){
         authorService.deleteAuthorById(id);
+        LOGGER.info("Delete request 'delete_author' by id = {}", id);
     }
-
 }

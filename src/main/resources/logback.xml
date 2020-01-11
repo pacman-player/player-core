@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration version="1.0" name="LoggingConf">
+
+    <appender name="Console-Appender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <pattern>%d{HH:mm:ss} %highlight(%-5level) %magenta([%logger{30}.%M]) - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="AdminAuthorRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminAuthorRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminAuthorRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminAuthorRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="AdminRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>/home/vitandr/Logs/AdminRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+
+    <root level="info">
+        <appender-ref ref="Console-Appender"/>
+    </root>
+
+</configuration>
