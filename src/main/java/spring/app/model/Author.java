@@ -17,6 +17,7 @@ public class Author {
 
     private String name;
 
+    //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
     @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},

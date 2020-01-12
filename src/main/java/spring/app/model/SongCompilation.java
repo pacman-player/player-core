@@ -1,13 +1,17 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "song_compilation")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class SongCompilation {
 
     @Id
@@ -16,22 +20,16 @@ public class SongCompilation {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
+    @JsonIgnore
+    @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> song = new HashSet<>();
-
-    //add Igor Khilkevich
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
-//    @JoinTable(name = "song_compilation_on_play_list",
-//            joinColumns = {@JoinColumn(name = "song_compilation_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
-    private List<PlayList> playLists;
 
     public SongCompilation() {
     }
@@ -66,14 +64,6 @@ public class SongCompilation {
 
     public void setSong(Set<Song> song) {
         this.song = song;
-    }
-
-    public List<PlayList> getPlayLists() {
-        return playLists;
-    }
-
-    public void setPlayLists(List<PlayList> playLists) {
-        this.playLists = playLists;
     }
 
     @Override
