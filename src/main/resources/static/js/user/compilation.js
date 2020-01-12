@@ -120,6 +120,29 @@ $(document).ready(function () {
         getAllCompilationsInEveningPlaylist();
     });
 
+    // $(document).on('click', '#songCompilation', function () {
+    //     let compilationName = $(this).text();
+    //     $("#compilationModalCompilationName").text(compilationName);
+    //     $("#openCompilationModal").trigger("click");
+    //     $.get("/api/user/song-compilation/songsBySongCompilation?compilationName=" + compilationName, function (songList) {
+    //             $("#compilationModalTableBody").empty();
+    //             console.log(songList);
+    //             for (let i = 0; i < songList.length; i++) {
+    //                 let newTr = $(`<tr></tr>`);
+    //                 let td = ``;
+    //                 td += `<td>${songList[i].name}</td>`
+    //                     + `<td>${songList[i].author}</td>`
+    //                     + `<td>${songList[i].genre}</td>`
+    //                     + `<td><div class="btn-group"><button id="playMusic${songList[i].id}" onclick="playOrPauseMusic(${songList[i].id})"><img height="20" width="20" alt="Play/Pause" src="/img/play.svg"/></button>`
+    //                     + `<button id="downloadMusic${songList[i].id}" onclick="downloadMusic(${songList[i].id})"><img height="20" width="20"  alt="Download" src="/img/download.svg"/></button></div></td>`;
+    //                 newTr.html(td);
+    //                 $("#compilationModalTableBody").append(newTr);
+    //             }
+    //         }
+    //     )
+    //     ;
+    // });
+
 });
 
 //добавляем подборку в утренний плейлист

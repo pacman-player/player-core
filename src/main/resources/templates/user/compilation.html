@@ -118,35 +118,64 @@
             </div>
         </div>
     </div>
-    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open
-        button
-    </button>
-    <div class="modal" id="compilationModal">
-        <div class="modal-dialog">
+
+    <!--модалка показа всех песен подборки-->
+    <div class="modal fade" id="openCompilationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <b id="compilationModalCompilationName" class="text-uppercase"></b>
-                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Все песни подборки</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Author</th>
-                            <th>Genre</th>
-                            <th rowspan="2">Options</th>
-                        </tr>
-                        </thead>
-                        <tbody id="compilationModalTableBody"></tbody>
-                    </table>
+                    <div id="aboutSongCompilation">
+
+                    </div>
+
+                    <h4 id="titleSongCompilation">Название подборки из js</h4>
+
+                    <div id="musicList">
+                        <!--ajax-->
+                    </div>
+
                 </div>
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal">Close</button>
-                </div>
+<!--                здесь были кнопки из футера модалки, удалил-->
             </div>
         </div>
     </div>
+
+<!--    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open-->
+<!--        button-->
+<!--    </button>-->
+<!--    <div class="modal" id="compilationModal">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <b id="compilationModalCompilationName" class="text-uppercase"></b>-->
+<!--                    <button class="close" data-dismiss="modal">&times;</button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <table class="table table-hover">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>Name</th>-->
+<!--                            <th>Author</th>-->
+<!--                            <th>Genre</th>-->
+<!--                            <th rowspan="2">Options</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="compilationModalTableBody"></tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button class="btn" data-dismiss="modal">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
 </div>
 <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
