@@ -3,7 +3,6 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
-import spring.app.dao.abstraction.CustomizedAuthorCrudRepository;
 import spring.app.model.Author;
 
 import javax.persistence.NoResultException;
@@ -30,4 +29,14 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
         }
         return author;
     }
+
+//    @Override
+//    public List<Author> findAuthorsByNameContaining(String param) {
+//        TypedQuery<Author> query = entityManager.createQuery("FROM Author a WHERE a.name LIKE = :param", Author.class);
+//
+//        // знак % обозначает, что перед передаваемым значение может быть, или колько угодно символов, или ноль.
+//        query.setParameter("param", "%" + param + "%");
+//
+//        return query.getResultList();
+//    }
 }

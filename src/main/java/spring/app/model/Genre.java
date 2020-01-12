@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "genre")
-public class Genre implements Bannable{
+public class Genre extends Bannable{
 
     @Id
     @GeneratedValue

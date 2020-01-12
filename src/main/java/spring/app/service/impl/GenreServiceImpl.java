@@ -28,10 +28,10 @@ public class GenreServiceImpl implements GenreService {
         return genreDao.getByName(name);
     }
 
-    @Override
-    public Genre getById(long genreId) {
-        return genreDao.getById(genreId);
-    }
+//    @Override
+//    public Genre getById(long genreId) {
+//        return genreDao.getById(genreId);
+//    }
 
     @Override
     public List<Genre> getAllGenre() {

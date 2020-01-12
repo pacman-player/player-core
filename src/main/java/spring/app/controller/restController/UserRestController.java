@@ -11,6 +11,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -44,19 +45,6 @@ public class UserRestController {
         this.songCompilation = songCompilation;
     }
 
-    @GetMapping(value = "/all_genre")
-    public @ResponseBody
-    List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-
-        List<Genre> allGenre = genreService.getAllGenre();
-
-        companyService.checkAndMarkAllBlockedByTheCompany(
-                user.getCompany(),
-                allGenre);
-
-        return allGenre;
-    }
-
     @PostMapping(value = "/song_compilation")
     public @ResponseBody
     List<SongCompilation> getSongCompilation(@RequestBody String genre) {
@@ -69,22 +57,6 @@ public class UserRestController {
             List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
             return songCompilation.getListSongCompilationsByGenreId(genres.getId());
         }
-    }
-
-    @GetMapping("allAuthors")
-    public List<Author> getAllAuthor() {
-        return authorService.getAllAuthor();
-    }
-
-    @GetMapping("allAuthorsByName/{name}")
-    public List<Author> searchByNameInAuthors(@PathVariable String name,
-                                              @AuthenticationPrincipal User user) {
-        List<Author> authors = authorService.findAuthorsByNameContaining(name);
-
-        companyService.checkAndMarkAllBlockedByTheCompany(
-                user.getCompany(),
-                        authors);
-        return authors;
     }
 
     @GetMapping("allSongsByName/{name}")

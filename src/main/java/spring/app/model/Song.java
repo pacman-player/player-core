@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "song")
-public class Song implements Bannable{
+public class Song extends Bannable{
 
     @Id
     @GeneratedValue

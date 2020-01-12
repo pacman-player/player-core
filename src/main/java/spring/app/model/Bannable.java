@@ -2,9 +2,9 @@ package spring.app.model;
 
 import java.util.Set;
 
-public interface Bannable {
+public abstract class Bannable {
 
-    void setBanned(boolean banned);
+    public abstract void setBanned(boolean banned);
 
-    boolean isBannedBy(Company company);
+    public abstract boolean isBannedBy(Company company);
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "author")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Author implements Bannable{
+public class Author extends Bannable{
 
     @Id
     @GeneratedValue
@@ -74,7 +74,6 @@ public class Author implements Bannable{
     public Boolean getBanned() {
         return banned;
     }
-
 
     @Override
     public int hashCode() {

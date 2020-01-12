@@ -1,7 +1,7 @@
 // получение всех жанров и заполнение таблицы в пункте "По жанрам"
 $.ajax({
     type: 'get',
-    url: '/api/user/all_genre',
+    url: '/api/admin/genre/all_genre',
     contentType: 'application/json;',
     headers: {
         'Accept': 'application/json',

@@ -3,7 +3,6 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.AuthorDao;
-import spring.app.dao.abstraction.CustomizedAuthorCrudRepository;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
 
@@ -13,13 +12,10 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
-    private final CustomizedAuthorCrudRepository authorRepository;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao,
-                             CustomizedAuthorCrudRepository authorRepository) {
+    public AuthorServiceImpl(AuthorDao authorDao) {
         this.authorDao = authorDao;
-        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -39,12 +35,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> findAuthorsByNameContaining(String name) {
-        return authorRepository.findAuthorsByNameContaining(name);
+        return authorDao.findByNameContaining(name);
     }
 
     @Override
     public Author getById(long authorsId) {
-        return authorRepository.findOne(authorsId);
+        return authorDao.getById(authorsId);
     }
 
     @Override
