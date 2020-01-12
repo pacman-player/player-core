@@ -1,11 +1,8 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
@@ -111,10 +108,8 @@ public class UserRestController {
     public ResponseEntity<String> codeCheck(@RequestBody String code){
         code = code.substring(1, code.length()-1);
         if(code.equals(PASSWORD)){
-//            return new ResponseEntity<>("Пароль совпадает", HttpStatus.OK);
             return ResponseEntity.ok("Пароль совпадает");
         }
-//        return new ResponseEntity<>("Пароль не совпадает", HttpStatus.BAD_REQUEST);
         return ResponseEntity.badRequest().body("Пароль не совпадает");
     }
 
@@ -150,8 +145,6 @@ public class UserRestController {
         );
         if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);
-        } else {
-            emailSender.send("evgenykalashnikov26@gmail.com", "Смена пароля", message);
         }
 
     }

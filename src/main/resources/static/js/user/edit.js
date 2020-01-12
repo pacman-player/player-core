@@ -80,12 +80,18 @@ $(document).ready(function () {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            dataType: 'json',
             async: true,
-            cache: false
+            cache: false,
+            success: function () {
+                alert("Пароль изменен");
+                $("#editUserPass").modal('hide');
+                $("#checkUserCode").modal('hide');
+                // location.reload();
+            },
+            error: function () {
+                alert("Не удалось изменить пароль");
+            }
         });
-        alert("Пароль изменен");
-        location.reload();
     }
 
     function showLinkAdmin() {
@@ -138,8 +144,6 @@ $(document).ready(function () {
                 },
                 async: true,
                 cache: false,
-                dataType: 'JSON'
-
             });
         }
 
