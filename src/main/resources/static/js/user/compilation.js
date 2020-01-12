@@ -28,7 +28,7 @@ $(document).ready(function () {
                         htmlCompilation += ('<div id="songCompilation" class="card-deck">');
                         htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
-                            ' data-target="#modalShowAllSong"class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                            ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlCompilation += ('<img src="/img/compilation/compilation' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>Песни подборки</p></a>');
@@ -341,7 +341,6 @@ function showAllSongInSongCompilation(id) {
         }
     })
 }
-
 
 function playOrPauseMusic(musicId) {
     let currentImage = $("#playMusic" + musicId + " img");
