@@ -1,30 +1,22 @@
-$(document).ready(function () {
+$(function () {
 
     getAllGenre();
     showLinkAdmin();
 
     //получение и вывод подборок
     $(document).on('click', '#genres', function () {
-        var genre = $(this).text();
+        let genre = $(this).text();
         $.ajax({
-            type: 'post',
-            url: '/api/user/song-compilation/all-song-compilation',
-            contentType: 'application/json;',
-            data: JSON.stringify(genre),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            dataType: 'JSON',
+            type: 'GET',
+            url: '/api/user/compilation/song_compilation',
+            data: {genre: genre},
             success: function (listSongCompilation) {
-                var htmlCompilation = "Need to add Compilation";
+                let htmlCompilation = "Need to add Compilation";
                 if (0 < listSongCompilation.length) {
                     htmlCompilation = ('<div id="songCompilation"><a href="#" style="margin-right: 10px" id="linkBack">' +
                         '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
                         '<h3 style="display:inline">Подборки песен</h3></div>');
-                    for (var i = 0; i < listSongCompilation.length; i++) {
+                    for (let i = 0; i < listSongCompilation.length; i++) {
                         htmlCompilation += ('<div id="songCompilation" class="card-deck">');
                         htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
@@ -56,8 +48,31 @@ $(document).ready(function () {
 
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
-        $("#getGenres #songCompilation").remove();
+        $("#getGenres").empty();
         getAllGenre();
+    });
+
+    $(document).on('click', '#songCompilation', function () {
+        let compilationName = $(this).text();
+        $("#compilationModalCompilationName").text(compilationName);
+        $("#openCompilationModal").trigger("click");
+        $.get("/api/user/compilation/songsBySongCompilation?compilationName=" + compilationName, function (songList) {
+                $("#compilationModalTableBody").empty();
+                console.log(songList);
+                for (let i = 0; i < songList.length; i++) {
+                    let newTr = $(`<tr></tr>`);
+                    let td = ``;
+                    td += `<td>${songList[i].name}</td>`
+                        + `<td>${songList[i].author}</td>`
+                        + `<td>${songList[i].genre}</td>`
+                        + `<td><div class="btn-group"><button id="playMusic${songList[i].id}" onclick="playOrPauseMusic(${songList[i].id})"><img height="20" width="20" alt="Play/Pause" src="/img/play.svg"/></button>`
+                        + `<button id="downloadMusic${songList[i].id}" onclick="downloadMusic(${songList[i].id})"><img height="20" width="20"  alt="Download" src="/img/download.svg"/></button></div></td>`;
+                    newTr.html(td);
+                    $("#compilationModalTableBody").append(newTr);
+                }
+            }
+        )
+        ;
     });
 
     function getAllGenre() {
@@ -73,14 +88,14 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listGenre) {
-                var htmlGenres = "Need to add genres";
+                let htmlGenres = "Need to add genres";
                 if (0 < listGenre.length) {
                     htmlGenres = ('<h3 id="genres">Жанры</h3>');
                     htmlGenres += ('<div id="genres" class="col-3 pt-3">');
                     htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                     htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
                     htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
-                    for (var i = 0; i < listGenre.length; i++) {
+                    for (let i = 0; i < listGenre.length; i++) {
                         htmlGenres += ('<div id="genres" class="col-3 pt-3">');
                         htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
@@ -103,6 +118,7 @@ $(document).ready(function () {
                 }
             }
         });
+
     }
 
     //получаем подборки из утреннего плейлиста
@@ -126,7 +142,7 @@ $(document).ready(function () {
 function addMorningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/morning-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/compilation/morning-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить утренний плейлист
             getAllCompilationsInMorningPlaylist();
@@ -141,7 +157,7 @@ function addMorningPlaylist(idCompilation) {
 function addMiddayPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/midday-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/compilation/midday-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить дневной плейлист
             getAllCompilationsInMiddayPlaylist();
@@ -155,7 +171,7 @@ function addMiddayPlaylist(idCompilation) {
 function addEveningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/evening-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/compilation/evening-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить вечерний плейлист
             getAllCompilationsInEveningPlaylist();
@@ -170,7 +186,7 @@ function addEveningPlaylist(idCompilation) {
 function getAllCompilationsInMorningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/morning-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/morning-playlist/get/all-song-compilation',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -179,7 +195,7 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('<div class="card pt-10">');
                 htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" data-toggle="modal"' +
                     ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMorningCompilation += ('<img src="/img/compilation/compilation' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
+                htmlMorningCompilation += ('<img src="/img/' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>Песни подборки</p></a>');
                 htmlMorningCompilation += ('<div class="card-body">');
@@ -211,7 +227,7 @@ function getAllCompilationsInMorningPlaylist() {
 function getAllCompilationsInMiddayPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/midday-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
         success: function (middayPlayList) {
             var htmlMiddayCompilation = '';
             //bootstrap card
@@ -252,7 +268,7 @@ function getAllCompilationsInMiddayPlaylist() {
 function getAllCompilationsInEveningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/evening-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/evening-playlist/get/all-song-compilation',
         success: function (eveningPlayList) {
             var htmlEveningCompilation = '';
             //bootstrap card
@@ -291,8 +307,8 @@ function getAllCompilationsInEveningPlaylist() {
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
 function showAllSongInSongCompilation(id) {
-    //достаю инфу о подборке (название, картинку,  пр.) для модалки
-    $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
+    //достаю название подборки для модалки
+    $.getJSON('/api/user/compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
             htmlAboutSongCompilationForModal += ('<div class="card-deck" id="aboutCompilations">');
@@ -319,7 +335,7 @@ function showAllSongInSongCompilation(id) {
         }
         $('#titleSongCompilation').text("Подборка: " + songCompilation.name);
         $("#aboutCompilations").remove();
-        $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалку почему-то выводится только текст...
+        $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалке картинки не отображаются...
     });
     //достаю все песни из подборки
     $.ajax({
@@ -341,6 +357,7 @@ function showAllSongInSongCompilation(id) {
         }
     })
 }
+
 
 function playOrPauseMusic(musicId) {
     let currentImage = $("#playMusic" + musicId + " img");
