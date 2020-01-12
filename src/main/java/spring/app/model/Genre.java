@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "genre")
 public class Genre implements Bannable{
+
     @Id
     @GeneratedValue
     private Long id;

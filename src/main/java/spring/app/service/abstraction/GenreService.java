@@ -12,9 +12,9 @@ public interface GenreService {
 
     Genre getByName(String name);
 
-    /**
-     * Возвращает жанр по id
-     * @return Genre
-     */
-    Genre getById(long genreId);
+    Genre getById(Long id);
+
+    void updateGenre(Genre genre);
+
+    void deleteGenreById(Long id);
 }

@@ -2,7 +2,7 @@
 <html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Промо материалы</title>
+    <title>Редактирование профиля</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -12,7 +12,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="сcs/style.css"/>
-    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
 
@@ -20,10 +19,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+            <a class="navbar-brand" href="#">Project name</a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
-            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
-            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
 
@@ -61,20 +58,58 @@
 
         <!--центральный блок-->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
-
-                <H3> Промо материалы</H3>
+            <div id="my-selection" role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 ">
+                <H3> Редактирование профиля </H3>
             </div>
+<!--                <div class="col-fhd-4 col-x1-5 col-lg-6">-->
+                <div class="col-sm-4">
+
+                <form id="edit-data-form">
+                        <div class="form-group text-center edit-form">
+
+                            <h4>Персональные данные</h4>
+
+                            <label for="login">Логин</label>
+                            <input id="login" class="form-control" type="text" name="login" required="" />
+
+                            <label for="email">Почта</label>
+                            <input id="email" class="form-control" type="email" name="email" required="1"/>
+
+                            <button id="updateUserDataBtn" class="btn btn-primary" type="submit">Сохранить</button>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-4">
+                    <form id="edit-password-form">
+                        <div class="form-group text-center edit-form">
+
+                            <h4>Сменить пароль</h4>
+
+                            <label for="oldUserPass">Текущий пароль</label>
+                            <input id="oldUserPass" class="form-control" type="password" name="password"
+                                   required=""/>
+
+                            <label for="newUserPass">Новый пароль</label>
+                            <input id="newUserPass" class="form-control" type="password" name="password"
+                                   required=""/>
+
+                            <label for="updateUserPass">Подтвердите пароль</label>
+                            <input id="updateUserPass" class="form-control" type="password" name="password"
+                                   required=""/>
+
+                            <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
+
+                        </div>
+                    </form>
+                </div>
 
         </div>
 
     </div>
 </div>
 
-<script type="text/javascript" src="/js/user/promo.js" rel="stylesheet"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script type="text/javascript" src="/js/notification.js" rel="script"></script>
-<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/user/edit.js" rel="stylesheet"></script>
 
 </body>
 </html>

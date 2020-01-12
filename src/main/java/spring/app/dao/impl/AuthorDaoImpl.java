@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
 
-    AuthorDaoImpl() {
+   public AuthorDaoImpl() {
         super(Author.class);
     }
 
