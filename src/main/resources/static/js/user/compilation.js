@@ -28,7 +28,7 @@ $(document).ready(function () {
                         htmlCompilation += ('<div id="songCompilation" class="card-deck">');
                         htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
-                            ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                            ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlCompilation += ('<img src="/img/compilation/compilation' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >');
                         htmlCompilation += ('</img><p>Песни подборки</p></a>');
@@ -178,7 +178,7 @@ function getAllCompilationsInMorningPlaylist() {
             for (var i = 0; i < morningPlayList.length; i++) {
                 htmlMorningCompilation += ('<div class="card pt-10">');
                 htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlMorningCompilation += ('<img src="/img/compilation/compilation' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     morningPlayList[i].name + '">');
                 htmlMorningCompilation += ('</img><p>Песни подборки</p></a>');
@@ -219,7 +219,7 @@ function getAllCompilationsInMiddayPlaylist() {
             for (var i = 0; i < middayPlayList.length; i++) {
                 htmlMiddayCompilation += ('<div class="card pt-10">');
                 htmlMiddayCompilation += ('<a href="#" id="' + middayPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + middayPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlMiddayCompilation += ('<img src="/img/compilation/compilation' + middayPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     middayPlayList[i].name + '">');
                 htmlMiddayCompilation += ('</img><p>Песни подборки</p></a>');
@@ -260,7 +260,7 @@ function getAllCompilationsInEveningPlaylist() {
             for (var i = 0; i < eveningPlayList.length; i++) {
                 htmlEveningCompilation += ('<div class="card pt-10">');
                 htmlEveningCompilation += ('<a href="#" id="' + eveningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + eveningPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                 htmlEveningCompilation += ('<img src="/img/compilation/compilation' + eveningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                     eveningPlayList[i].name + '">');
                 htmlEveningCompilation += ('</img><p>Песни подборки</p></a>');
@@ -298,7 +298,7 @@ function showAllSongInSongCompilation(id) {
             htmlAboutSongCompilationForModal += ('<div class="card-deck" id="aboutCompilations">');
             htmlAboutSongCompilationForModal += ('<div class="card pt-10">');
             htmlAboutSongCompilationForModal += ('<a href="#" id="' + songCompilation[i].id + '" onclick="showAllSongInSongCompilation(' + eveningPlayList[i].id + ')" data-toggle="modal"' +
-                ' data-target="#modalShowAllSong" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
             htmlAboutSongCompilationForModal += ('<img src="/img/' + songCompilation[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
                 songCompilation[i].name + '">');
             htmlAboutSongCompilationForModal += ('</img><p>Песни подборки</p></a>');
