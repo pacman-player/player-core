@@ -17,8 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
@@ -130,6 +128,4 @@ public class AdminRestController {
         }
         return roles;
     }
-
-
 }
