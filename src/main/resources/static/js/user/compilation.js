@@ -120,6 +120,7 @@ $(document).ready(function () {
         getAllCompilationsInEveningPlaylist();
     });
 
+    //код с дева
     // $(document).on('click', '#songCompilation', function () {
     //     let compilationName = $(this).text();
     //     $("#compilationModalCompilationName").text(compilationName);

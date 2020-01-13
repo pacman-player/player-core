@@ -24,8 +24,7 @@ public class UserCompilationRestController {
     }
 
     @PostMapping(value = "/get/all-song-compilation")
-    public @ResponseBody
-    List<SongCompilation> getSongCompilation(@RequestBody String genre) {
+    public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genre.equals("Все подборки")) {
