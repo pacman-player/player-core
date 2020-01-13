@@ -126,7 +126,7 @@ public class TestDataInit {
         songCompilation.setName("compilation0");
         songCompilation.setGenre(genre);
         songCompilation.setSong(songs);
-        songCompilationService.addSongСompilation(songCompilation);
+        songCompilationService.addSongCompilation(songCompilation);
 
         SongCompilation songCompilation1 = new SongCompilation();
         Set<Song> songs1 = new HashSet<>();
@@ -134,7 +134,7 @@ public class TestDataInit {
         songCompilation1.setName("compilation1");
         songCompilation1.setGenre(genre1);
         songCompilation1.setSong(songs1);
-        songCompilationService.addSongСompilation(songCompilation1);
+        songCompilationService.addSongCompilation(songCompilation1);
 
         SongCompilation songCompilation2 = new SongCompilation();
         Set<Song> songs2 = new HashSet<>();
@@ -142,7 +142,7 @@ public class TestDataInit {
         songCompilation2.setName("compilation2");
         songCompilation2.setGenre(genre2);
         songCompilation2.setSong(songs2);
-        songCompilationService.addSongСompilation(songCompilation2);
+        songCompilationService.addSongCompilation(songCompilation2);
 
         SongCompilation songCompilation3 = new SongCompilation();
         Set<Song> songs3 = new HashSet<>();
@@ -150,7 +150,7 @@ public class TestDataInit {
         songCompilation3.setName("compilation3");
         songCompilation3.setGenre(genre3);
         songCompilation3.setSong(songs3);
-        songCompilationService.addSongСompilation(songCompilation3);
+        songCompilationService.addSongCompilation(songCompilation3);
 
         SongCompilation songCompilation4 = new SongCompilation();
         Set<Song> songs4 = new HashSet<>();
@@ -158,7 +158,7 @@ public class TestDataInit {
         songCompilation4.setName("compilation4");
         songCompilation4.setGenre(genre4);
         songCompilation4.setSong(songs4);
-        songCompilationService.addSongСompilation(songCompilation4);
+        songCompilationService.addSongCompilation(songCompilation4);
 
 
         PlayList playList = new PlayList();

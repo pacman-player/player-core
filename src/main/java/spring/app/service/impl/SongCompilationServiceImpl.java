@@ -21,7 +21,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
-    public void addSongСompilation(SongCompilation songCompilation) {
+    public void addSongCompilation(SongCompilation songCompilation) {
         songCompilationDao.save(songCompilation);
     }
 
@@ -38,5 +38,15 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public SongCompilation getSongCompilationByCompilationName(String compilationName) {
         return songCompilationDao.getSongCompilationByCompilationName(compilationName);
+    }
+
+    @Override
+    public void updateSongCompilation(SongCompilation songCompilation) {
+        songCompilationDao.update(songCompilation);
+    }
+
+    @Override
+    public SongCompilation getSongCompilationById(Long id) {
+        return songCompilationDao.getById(id);
     }
 }

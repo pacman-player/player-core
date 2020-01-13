@@ -33,4 +33,9 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
                 .getResultList();
         return songCompilationList.isEmpty() ? null : songCompilationList.get(0);
     }
+
+    public void updateSongCompilationImage() {
+        //TODO
+
+    }
 }

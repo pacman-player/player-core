@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -28,15 +31,17 @@ public class AdminRestController {
     private final CompanyService companyService;
     private final GenreService genreService;
     private final OrgTypeService orgTypeService;
+    private final SongCompilationService songCompilationService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               GenreService genreService, OrgTypeService orgTypeService) {
+                               GenreService genreService, OrgTypeService orgTypeService, SongCompilationService songCompilationService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.genreService = genreService;
         this.orgTypeService = orgTypeService;
+        this.songCompilationService = songCompilationService;
     }
 
     @GetMapping(value = "/all_users")
@@ -58,6 +63,13 @@ public class AdminRestController {
     List<OrgType> getAllEstablishments() {
         List<OrgType> list = orgTypeService.getAllOrgType();
         return list;
+    }
+
+    @GetMapping(value = "/all_compilations")
+    public @ResponseBody
+    List<SongCompilation> getAllCompilations() {
+        List<SongCompilation> compilations = songCompilationService.getAllSongCompilations();
+        return compilations;
     }
 
     @PostMapping(value = "/add_user")
@@ -107,6 +119,20 @@ public class AdminRestController {
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         orgTypeService.deleteOrgTypeById(id);
+    }
+
+    @PutMapping(value = "/update_compilation_pic")
+    public void updateCompilationPic(@RequestBody MultipartFile file) {
+        //TODO
+        SongCompilation songCompilation = songCompilationService.getSongCompilationById(1L);
+        try {
+            Blob blob = new SerialBlob(file.getBytes());
+            songCompilation.setCompilationPic(blob);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

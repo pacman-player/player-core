@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,6 +20,10 @@ public class SongCompilation {
     @ManyToOne(targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
+
+    @Lob
+    @Column(name = "compilation_pic")
+    private Blob compilationPic;
 
     @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_compilation_on_song",
@@ -59,6 +64,14 @@ public class SongCompilation {
 
     public void setSong(Set<Song> song) {
         this.song = song;
+    }
+
+    public Blob getCompilationPic() {
+        return compilationPic;
+    }
+
+    public void setCompilationPic(Blob compilationPic) {
+        this.compilationPic = compilationPic;
     }
 
     @Override

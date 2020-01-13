@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#">Панель администратора</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content">
+                <li>
+                    <a href="/admin/users">Пользователи</a>
+                </li>
+
+                <li>
+                    <a href="/admin/companies">Компании</a>
+                </li>
+
+                <li>
+                    <a href="/admin/establishments">Типы заведений</a>
+                </li>
+
+                <li>
+                    <a href="/admin/genres">Жанры</a>
+                </li>
+
+                <li>
+                    <a href="/admin/performers">Исполнители</a>
+                </li>
+
+                <li>
+                    <a href="/admin/songs">Песни</a>
+                </li>
+
+                <li class="active">
+                    <a href="/admin/compilations">Подборки</a>
+                </li>
+
+                <li>
+                    <a href="/user">Меню пользователя</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--центральный блок-->
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="list-users">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="user-table-nav" class="active">
+                            <a id="tab-compilation-panel" href="#compilation-panel" aria-controls="compilation-panel" role="tab" data-toggle="tab">Все подборки</a>
+                        </li>
+<!--                        <li id="add-compilation-nav">-->
+<!--                            <a href="#add-compilation-panel" aria-controls="add-compilation-panel" role="tab" data-toggle="tab">Добавить подборку</a>-->
+<!--                        </li>-->
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--таблица подборок-->
+                        <div role="tabpanel" class="tab-pane active" id="compilation-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="CompilationTable" class="table">
+                                            <thead id="getCompilationTable">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>ID жанра</th>
+                                                <th>Обложка</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <!--модалка - обновление подборки-->
+                                            <div id="editCompilation" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">Изменить подборку</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
+                                                                        </div>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="updateCompilationId">ID</label>
+                                                                                <input id="updateCompilationId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
+                                                                                <input type="hidden" id="id-input-edit-hidden" name="id"/>
+
+                                                                                <label for="updateCompilationName">Название</label>
+                                                                                <input id="updateCompilationName" class="form-control" type="text" name="name" required=""/>
+
+                                                                                <label for="updateGenreName">Жанр</label>
+                                                                                <input id="updateGenreName" class="form-control" type="text" name="genre" required=""/>
+
+                                                                                <label for="compilationPic">Обложка</label>
+                                                                                <input id="compilationPic" class="custom-file-input" type="file" name="compilationPic" required=""/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                            <button id="editCompilationBtn" class="btn btn-primary">Изменить</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--добавление подборки-->
+<!--                        <div role="tabpanel" class="tab-pane" id="add-compilation-panel">-->
+<!--                            <div class="panel panel-default table-panel">-->
+<!--                                <div class="tab-content">-->
+<!--                                    <div class="panel-body">-->
+<!--                                        <div class="container-fluid">-->
+<!--                                            <div class="row">-->
+<!--                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">-->
+
+<!--                                                    <form id="addForm">-->
+<!--                                                        <div class="form-group text-center edit-form">-->
+
+<!--                                                            <label for="addEmail">Почта</label>-->
+<!--                                                            <input id="addEmail" class="form-control" type="text"-->
+<!--                                                                   placeholder="Enter email" name="email" />-->
+
+<!--                                                            <label for="addLogin">Логин</label>-->
+<!--                                                            <input id="addLogin" class="form-control" type="text"-->
+<!--                                                                   placeholder="Login" name="login"/>-->
+
+<!--                                                            <label for="addPassword">Пароль</label>-->
+<!--                                                            <input id="addPassword" class="form-control"-->
+<!--                                                                   type="password" placeholder="Password"-->
+<!--                                                                   name="password" />-->
+
+<!--                                                            <label for="addRole">Роль</label>-->
+<!--                                                            <select class="form-control" id="addRole"-->
+<!--                                                                    name="role">-->
+<!--                                                                <option value="user">User</option>-->
+<!--                                                                <option value="admin">Admin</option>-->
+<!--                                                                <option value="admin, user">Admin, User</option>-->
+<!--                                                            </select>-->
+
+<!--                                                            <button type="submit" id="addUserBtn"-->
+<!--                                                                    class="btn btn-success btn-lg">-->
+<!--                                                                Добавить-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
+<!--                                                    </form>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+
+                <!--модалка - компания-->
+                <div id="editCompany" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Информация о компании</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="company-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="updateCompanyId">ID компании</label>
+                                                    <input id="updateCompanyId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
+
+                                                    <label for="updateIdUser">ID пользователя</label>
+                                                    <input id="updateIdUser" class="form-control" disabled="disabled" type="text" name="id-user" required=""/>
+
+                                                    <label for="updateNameCompany">Компания</label>
+                                                    <input id="updateNameCompany" class="form-control" type="text" name="company" required=""/>
+
+                                                    <label for="updateStartTime">Время открытия</label>
+                                                    <input id="updateStartTime" class="form-control" type="time" name="start-time"
+                                                           required=""/>
+
+                                                    <label for="updateCloseTime">Время закрытия</label>
+                                                    <input id="updateCloseTime" class="form-control" type="time" name="close-time"
+                                                           required=""/>
+
+                                                    <label for="updateOrgType">Тип компании</label>
+                                                    <select id="updateOrgType" class="form-control" name="role">
+                                                        <option value="1">Ресторан</option>
+                                                    </select>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button id="editCompanyBtn" class="btn btn-primary">Edit company</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/admin/compilations.js" rel="script"></script>
+</body>
+</html>
