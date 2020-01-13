@@ -56,17 +56,19 @@
                     <div id="success-message">You have been logged out successfully.</div>
                 </div>
 
+
                 <h2>Please sign in</h2>
-                <form action="/processing-url" method="POST">
+                <form action="/login" method="POST" >
                     <div class="form-group login-group">
                         <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
                                required="" th:value="user"/>
                         <input type="password" class="form-control" id="uPass" name="password"
                                required="" th:value="user" placeholder="Password"/>
                     </div>
-                    <input type="submit" class="btn btn-primary btn-block" value="Sign in"/>
-                    <!--<a href="/google/login">Click here to Google Login</a>-->
+
+                    <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Sign in"/>
                 </form>
+
                 <div class="form-group">
                     <span>New user? <a href="/registration/first">Register here</a></span>
                 </div>
@@ -87,6 +89,6 @@
         Авторизация Вконтакте
     </button>
 </form>
+
 </body>
 </html>
-

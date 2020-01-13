@@ -11,15 +11,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="сcs/style.css"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
+
 <body>
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
             <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
 
@@ -66,12 +70,12 @@
                             <a href="#morning" aria-controls="morning-music-nav" role="tab" data-toggle="tab">
                                 <h5>Утро</h5>8:00 - 12:00</a>
                         </li>
-                        <li id="day-music-nav">
-                            <a href="#day" aria-controls="day-music" role="tab" data-toggle="tab">
+                        <li id="midday-music-nav">
+                            <a href="#midday" aria-controls="midday-music-nav" role="tab" data-toggle="tab">
                                 <h5>День</h5>12:00 - 18:00</a>
                         </li>
                         <li id="evening-music-nav">
-                            <a href="#evening" aria-controls="evening-music" role="tab" data-toggle="tab">
+                            <a href="#evening" aria-controls="evening-music-nav" role="tab" data-toggle="tab">
                                 <h5>Вечер</h5>18:00 - 8:00</a>
                         </li>
                     </ul>
@@ -86,11 +90,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane active" id="day">
+                        <div role="tabpanel" class="tab-pane active" id="midday">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <h3>Day music</h3>
+                                        <h3>Midday music</h3>
                                     </div>
                                 </div>
                             </div>
@@ -106,42 +110,78 @@
                         </div>
                     </div>
                 </div>
+
                 <!--подборка по жанрам-->
                 <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
+
                 </div>
             </div>
         </div>
     </div>
-    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open
-        button
-    </button>
-    <div class="modal" id="compilationModal">
-        <div class="modal-dialog">
+
+    <!--модалка показа всех песен подборки-->
+    <div class="modal fade" id="openCompilationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <b id="compilationModalCompilationName" class="text-uppercase"></b>
-                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Все песни подборки</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Author</th>
-                            <th>Genre</th>
-                            <th rowspan="2">Options</th>
-                        </tr>
-                        </thead>
-                        <tbody id="compilationModalTableBody"></tbody>
-                    </table>
+                    <div id="aboutSongCompilation">
+
+                    </div>
+
+                    <h4 id="titleSongCompilation">Название подборки из js</h4>
+
+                    <div id="musicList">
+                        <!--ajax-->
+                    </div>
+
                 </div>
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal">Close</button>
-                </div>
+<!--                здесь были кнопки из футера модалки, удалил-->
             </div>
         </div>
     </div>
+
+<!--    код с дева-->
+<!--    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open-->
+<!--        button-->
+<!--    </button>-->
+<!--    <div class="modal" id="compilationModal">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <b id="compilationModalCompilationName" class="text-uppercase"></b>-->
+<!--                    <button class="close" data-dismiss="modal">&times;</button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <table class="table table-hover">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>Name</th>-->
+<!--                            <th>Author</th>-->
+<!--                            <th>Genre</th>-->
+<!--                            <th rowspan="2">Options</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="compilationModalTableBody"></tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button class="btn" data-dismiss="modal">Close</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
 </div>
 <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+
 </body>
 </html>

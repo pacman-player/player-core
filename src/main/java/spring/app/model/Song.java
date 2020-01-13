@@ -1,10 +1,14 @@
 package spring.app.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "song")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Song {
 
     @Id
@@ -13,26 +17,69 @@ public class Song {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "song")
-    private Set<SongQueue> song;
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL) //здесь убрал orphanRemoval = true тк не удалялась последняя песня
+    private Set<SongQueue> songQueues;
+
+    //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
+    @ManyToMany(fetch = FetchType.LAZY) //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
+    @JoinTable(name = "song_compilation_on_song",
+            joinColumns = {@JoinColumn(name = "song_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
+    private Set<SongCompilation> songCompilations;
 
     public Song() {
     }
 
-    public Song(String name) {
+    public Song(Long id, String name, Author author, Genre genre) {
+    }
+
+    public Song(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueues) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.songQueues = songQueues;
+    }
+
+    public Song(Long id, String name, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.genre = genre;
+    }
+
+    public Song(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
+    public Song(String name, Author author, Genre genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public Set<SongCompilation> getSongCompilations() {
+        return songCompilations;
+    }
+
+    public void setSongCompilations(Set<SongCompilation> songCompilations) {
+        this.songCompilations = songCompilations;
+    }
+
     public void setId(Long id) {
-        id = id;
+        this.id = id;
+    }
+
+    public Song(String name) {
+        this.name = name;
     }
 
     public void setName(String name) {
@@ -63,12 +110,12 @@ public class Song {
         this.genre = genre;
     }
 
-    public Set<SongQueue> getSong() {
-        return song;
+    public Set<SongQueue> getSongQueues() {
+        return songQueues;
     }
 
-    public void setSong(Set<SongQueue> song) {
-        this.song = song;
+    public void setSongQueues(Set<SongQueue> songQueues) {
+        this.songQueues = songQueues;
     }
 
     @Override
@@ -96,7 +143,7 @@ public class Song {
                 ", name='" + name + '\'' +
                 ", author=" + author +
                 ", genre=" + genre +
-                ", song=" + song +
+                ", songQueue=" + songQueues +
                 '}';
     }
 }

@@ -18,15 +18,15 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 @PropertySource("classpath:application.properties")
 public class ApplicationContextConfig {
 
-	@Bean
-	public TemplateResolver springThymeleafTemplateResolver() {
-		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-		resolver.setPrefix("classpath:/templates/");
-		resolver.setSuffix(".html");
-		resolver.setOrder(1);
-		resolver.setCacheable(false);
-		return resolver;
-	}
+    @Bean
+    public TemplateResolver springThymeleafTemplateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setPrefix("classpath:/templates/");
+        resolver.setSuffix(".html");
+        resolver.setOrder(1);
+        resolver.setCacheable(false);
+        return resolver;
+    }
 
     @Bean
     public ObjectMapper jsonObjectMapper() {
@@ -35,10 +35,8 @@ public class ApplicationContextConfig {
                 .build();
     }
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
-
-
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 }

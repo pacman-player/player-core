@@ -6,7 +6,18 @@ import java.util.List;
 
 public interface SongCompilationService {
     void addSongСompilation(SongCompilation songCompilation);
-    List<SongCompilation> getAllSongCompilations ();
+    List<SongCompilation> getAllSongCompilations();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
+    void deleteValByGenreId(Long id);
+
+    void addSongCompilationToMorningPlaylist(Long id);
+    void addSongCompilationToMiddayPlaylist(Long id);
+    void addSongCompilationToEveningPlaylist(Long id);
+
+    List<SongCompilation> getAllCompilationsInMorningPlaylist();
+    List<SongCompilation> getAllCompilationsInMiddayPlaylist();
+    List<SongCompilation> getAllCompilationsInEveningPlaylist();
+
+    SongCompilation getSongCompilationById(Long id);
     SongCompilation getSongCompilationByCompilationName(String compilationName);
 }
