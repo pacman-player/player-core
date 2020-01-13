@@ -2,7 +2,7 @@ $(document).ready(function () {
     ymaps.ready(init);
     function init() {
         // Подключаем поисковые подсказки к полю ввода.
-        var suggestView = new ymaps.SuggestView('suggest');
+        var suggestView = new ymaps.SuggestView('est-address');
 
         var placemark;
 
@@ -80,7 +80,7 @@ $(document).ready(function () {
                 let alertContent = firstGeoObject.getAddressLine();
 
                 function putAddressInField () {
-                    $('#suggest').val(alertContent);
+                    $('#est-address').val(alertContent);
                 }
 
                 if (confirm("You pushed on map : " + alertContent)) {
@@ -99,7 +99,7 @@ $(document).ready(function () {
             event.preventDefault();
 
             // Забираем запрос из поля ввода.
-            var request = $('#suggest').val();
+            var request = $('#est-address').val();
 
             // Поиск координат центра Нижнего Новгорода.
             ymaps.geocode(request, {
