@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
+import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
@@ -113,36 +114,19 @@ public class UserRestController {
         return ResponseEntity.badRequest().body("Пароль не совпадает");
     }
 
-    private static int randomNum(int min, int max){
-        Random r = new Random();
-        return r.nextInt(max) + min;
-    }
-
     @PutMapping(value = "/send_mail")
     public void sendMail(){
         User user = ((User) getContext().getAuthentication().getPrincipal());
-        String[] data = {
-                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-                "1", "2", "3", "4", "5", "6", "7", "8", "9"
-        };
-        int length = randomNum(4, 10);
-        String[] p = new String[length];
-
-        for (int i = 0; i < length; i++) {
-            p[i] = data[randomNum(0, data.length)];
-        }
-        for (String s : p) {
-            PASSWORD += s;
-        }
+        EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
+        PASSWORD = emailPasswordGeneration.generate();
         System.out.println(PASSWORD);
-
         String message = String.format(
                 "Здравствуйте, %s! \n" +
                         "Для смены пароля введите код подтверждения: " + PASSWORD + "\n " +
                         "Если вы не запрашивали смену пароля, свяжитесь со службой технической поддержки.",
                 user.getLogin()
         );
+
         if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);
         }
