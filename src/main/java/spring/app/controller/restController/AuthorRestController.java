@@ -1,11 +1,9 @@
 package spring.app.controller.restController;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.app.model.Author;
+import spring.app.model.Company;
 import spring.app.model.User;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.CompanyService;
@@ -40,4 +38,26 @@ public class AuthorRestController {
                 authors);
         return authors;
     }
+
+    @PostMapping("authorsBan")
+    public void addAuthorInBan(@AuthenticationPrincipal User user,
+                               @RequestBody long authorsId) {
+
+        Company company = companyService.getById(user.getCompany().getId());
+        company.addBannedAuthor(authorService.getById(authorsId));
+
+        companyService.updateCompany(company);
+        user.setCompany(company);
+    }
+
+    @PostMapping("authorsUnBan")
+    public void authorUnBan(@AuthenticationPrincipal User user,
+                            @RequestBody long authorsId) {
+        Company company = user.getCompany();
+        company.getBannedAuthor().removeIf(author -> author.getId().equals(authorsId));
+        companyService.updateCompany(company);
+
+        user.setCompany(company);
+    }
+
 }

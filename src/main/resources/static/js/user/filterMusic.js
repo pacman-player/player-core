@@ -1,7 +1,7 @@
 // получение всех жанров и заполнение таблицы в пункте "По жанрам"
 $.ajax({
     type: 'get',
-    url: '/api/admin/genre/all_genre',
+    url: '/api/genre/all_genres',
     contentType: 'application/json;',
     headers: {
         'Accept': 'application/json',
@@ -56,7 +56,7 @@ $(document).on('click', '.addGenreToFilter', function addGenreToFilter() {
 
     $.ajax({
         method: 'post',
-        url: banned ? '/api/user/genreUnBan' : '/api/user/genreBan',
+        url: banned ? '/api/genre/genreUnBan' : '/api/genre/genreBan',
         contentType: "application/json",
         data: JSON.stringify(genreId),
         success: function () {
@@ -95,7 +95,7 @@ $authorForms.on("submit", function (searchAuthor) {
 
     $.ajax({
         type: 'get',
-        url: '/api/user/allAuthorsByName/' + authorName,
+        url: '/api/author/allAuthorsByName/' + authorName,
         contentType: 'application/json;',
 
         success: function (allAuthors) {
@@ -140,7 +140,7 @@ $(document).on('click', '.addAuthorToFilter', function addAuthorToFilter() {
 
     $.ajax({
         method: 'post',
-        url: banned ? '/api/user/authorsUnBan' : '/api/user/authorsBan',
+        url: banned ? '/api/author/authorsUnBan' : '/api/author/authorsBan',
         contentType: "application/json",
         data: JSON.stringify(authorId),
 
@@ -176,7 +176,7 @@ $musicForm.on("submit", function (searchMusics) {
 
     $.ajax({
         type: 'get',
-        url: '/api/user/allSongsByName/' + musicName,
+        url: '/api/music/allSongsByName/' + musicName,
         contentType: 'application/json;',
 
         success: function (allMusics) {
@@ -219,7 +219,7 @@ $(document).on('click', '.addMusicToFilter', function addMusicToFilter() {
 
     $.ajax({
         method: 'post',
-        url: banned ? "/api/user/songsUnBan" : '/api/user/songsBan',
+        url: banned ? "/api/music/songsUnBan" : '/api/music/songsBan',
         contentType: "application/json",
         data: JSON.stringify(musicId),
         success: function () {

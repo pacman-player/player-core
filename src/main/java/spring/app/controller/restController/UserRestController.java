@@ -20,11 +20,8 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
-    private final RoleService roleService;
     private final UserService userService;
-    private final AuthorService authorService;
     private final GenreService genreService;
-    private final SongService songService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
 
@@ -36,11 +33,8 @@ public class UserRestController {
                               AuthorService authorService,
                               SongService songService,
                               SongCompilationService songCompilation) {
-        this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
-        this.authorService = authorService;
-        this.songService = songService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
     }
@@ -57,78 +51,6 @@ public class UserRestController {
             List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
             return songCompilation.getListSongCompilationsByGenreId(genres.getId());
         }
-    }
-
-    @GetMapping("allSongsByName/{name}")
-    public List<Song> searchByNameInSongs(@PathVariable String name,
-                                          @AuthenticationPrincipal User user) {
-        List<Song> songs = songService.findSongsByNameContaining(name);
-
-        companyService.checkAndMarkAllBlockedByTheCompany(user.getCompany(), songs);
-        return songs;
-    }
-
-    @PostMapping("authorsBan")
-    public void addAuthorInBan(@AuthenticationPrincipal User user,
-                               @RequestBody long authorsId) {
-
-        Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedAuthor(authorService.getById(authorsId));
-
-        companyService.updateCompany(company);
-        user.setCompany(company);
-    }
-
-    @PostMapping("authorsUnBan")
-    public void authorUnBan(@AuthenticationPrincipal User user,
-                            @RequestBody long authorsId) {
-        Company company = user.getCompany();
-        company.getBannedAuthor().removeIf(author -> author.getId().equals(authorsId));
-        companyService.updateCompany(company);
-
-        user.setCompany(company);
-    }
-
-    @PostMapping("songsBan")
-    public void addSongInBan(@AuthenticationPrincipal User user,
-                             @RequestBody long songId) {
-
-        Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedSong(songService.getById(songId));
-
-        companyService.updateCompany(company);
-        user.setCompany(company);
-    }
-
-    @PostMapping("songsUnBan")
-    public void songUnBan(@AuthenticationPrincipal User user,
-                          @RequestBody long songId) {
-        Company company = user.getCompany();
-        company.getBannedSong().removeIf(song -> song.getId().equals(songId));
-        companyService.updateCompany(company);
-
-        user.setCompany(company);
-    }
-
-    @PostMapping("genreBan")
-    public void addGenreInBan(@AuthenticationPrincipal User user,
-                              @RequestBody long genreId) {
-
-        Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedGenre(genreService.getById(genreId));
-
-        companyService.updateCompany(company);
-        user.setCompany(company);
-    }
-
-    @PostMapping("genreUnBan")
-    public void genreUnBan(@AuthenticationPrincipal User user,
-                           @RequestBody long genreId) {
-        Company company = user.getCompany();
-        company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
-        companyService.updateCompany(company);
-
-        user.setCompany(company);
     }
 
     @GetMapping(value = "/get_user")

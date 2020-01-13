@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
 
     @Id
@@ -47,7 +49,8 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @JsonBackReference
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Company company;
 
     //@Column(name = "enabled", nullable = false)

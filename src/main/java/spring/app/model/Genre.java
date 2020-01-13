@@ -1,12 +1,14 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "genre")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Genre extends Bannable{
 
     @Id
@@ -20,8 +22,7 @@ public class Genre extends Bannable{
     private Set<SongCompilation> songCompilation;
 
     /**
-     * Поле, которое заполняеться вручную при получении списка всех жанров.
-     * Нужно для определение находится ли жанр в "бане" у компании.
+     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
     @Transient
     private Boolean banned;

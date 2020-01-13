@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "company")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company {
     @Id
     @GeneratedValue
@@ -51,19 +52,19 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Set<PlayList> eveningPlayList;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinTable(name = "company_on_banned_song",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> bannedSong;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinTable(name = "company_on_banned_author",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "author_id")})

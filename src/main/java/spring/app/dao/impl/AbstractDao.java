@@ -39,13 +39,13 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 
 	/**
 	 * возвращает List объектов, в имени которых содержиться передаваемый парраметр
-	 * Если у обекта нет поля 'name', выбрасывает исключение
+	 * Если у обекта нет поля 'name', возвращает null
 	 * @return List
 	 * @throws NoSuchFieldException
 	 */
-	public List<T> findByNameContaining(String param) throws NoSuchFieldException {
+	public List<T> findByNameContaining(String param){
 		try {
-			String hql = "FROM " + persistentClass.getName() + " o where o.name LIKE :param";
+			String hql = "FROM " + persistentClass.getName() + " o WHERE o.name LIKE :param";
 
 			TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
 			query.setParameter("param", param);
@@ -54,7 +54,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 
 		} catch (Exception e) {
 			System.out.println("сообщение об ощибке: " + e.getMessage());
-			throw new NoSuchFieldException("поле name не найдено");
+			return null;
 		}
 	}
 

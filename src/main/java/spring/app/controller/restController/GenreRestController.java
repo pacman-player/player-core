@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
+import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
@@ -16,7 +17,7 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping("/api/admin/genre")
+@RequestMapping("/api/genre")
 public class GenreRestController {
 
     private GenreService genreService;
@@ -80,5 +81,24 @@ public class GenreRestController {
         notificationService.addNotification(message, user.getId());
     }
 
+    @PostMapping("genreBan")
+    public void addGenreInBan(@AuthenticationPrincipal User user,
+                              @RequestBody long genreId) {
 
+        Company company = companyService.getById(user.getCompany().getId());
+        company.addBannedGenre(genreService.getById(genreId));
+
+        companyService.updateCompany(company);
+        user.setCompany(company);
+    }
+
+    @PostMapping("genreUnBan")
+    public void genreUnBan(@AuthenticationPrincipal User user,
+                           @RequestBody long genreId) {
+        Company company = user.getCompany();
+        company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
+        companyService.updateCompany(company);
+
+        user.setCompany(company);
+    }
 }

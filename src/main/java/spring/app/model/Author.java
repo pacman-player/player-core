@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "author")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Author extends Bannable{
 
     @Id
@@ -25,8 +24,7 @@ public class Author extends Bannable{
     private Set<Genre> authorGenres = new HashSet<>();
 
     /**
-     * Поле, которое заполняеться вручную.
-     * Нужно для определение находится ли автор в "бане" у компании.
+     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
     @Transient
     private Boolean banned;
