@@ -8,7 +8,7 @@ $(document).ready(function () {
         var genre = $(this).text();
         $.ajax({
             type: 'post',
-            url: '/api/user/song-compilation/all-song-compilation',
+            url: '/api/user/song-compilation/get/all-song-compilation',
             contentType: 'application/json;',
             data: JSON.stringify(genre),
             headers: {
@@ -149,7 +149,7 @@ $(document).ready(function () {
 function addMorningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/morning-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить утренний плейлист
             getAllCompilationsInMorningPlaylist();
@@ -164,7 +164,7 @@ function addMorningPlaylist(idCompilation) {
 function addMiddayPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/midday-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить дневной плейлист
             getAllCompilationsInMiddayPlaylist();
@@ -178,7 +178,7 @@ function addMiddayPlaylist(idCompilation) {
 function addEveningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
-        url: '/api/user/evening-playlist/add/song-compilation/' + idCompilation,
+        url: '/api/user/play-list/evening-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить вечерний плейлист
             getAllCompilationsInEveningPlaylist();
@@ -193,7 +193,7 @@ function addEveningPlaylist(idCompilation) {
 function getAllCompilationsInMorningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/morning-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/morning-playlist/get/all-song-compilation',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -234,7 +234,7 @@ function getAllCompilationsInMorningPlaylist() {
 function getAllCompilationsInMiddayPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/midday-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
         success: function (middayPlayList) {
             var htmlMiddayCompilation = '';
             //bootstrap card
@@ -275,7 +275,7 @@ function getAllCompilationsInMiddayPlaylist() {
 function getAllCompilationsInEveningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/evening-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/evening-playlist/get/all-song-compilation',
         success: function (eveningPlayList) {
             var htmlEveningCompilation = '';
             //bootstrap card
