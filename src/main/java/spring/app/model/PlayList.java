@@ -1,5 +1,6 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="play_list")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PlayList {
     @Id
     @GeneratedValue
@@ -14,7 +16,7 @@ public class PlayList {
 
     private String name;
 
-    @ManyToMany(targetEntity = SongCompilation.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = SongCompilation.class)
     @JoinTable(name = "song_compilation_on_play_list",
             joinColumns = {@JoinColumn(name = "play_list_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})

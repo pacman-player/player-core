@@ -14,4 +14,13 @@ public interface SongService {
 //    void updateSongNonLazy(Song song);
     void deleteSongById(Long id);
     boolean isExist(String name);
+    List<Song> getAllSongInSongCompilation(Long id);
+
+//    List<Song> getAllSong();
+//
+//    void deleteSongById(Long id);
+//
+//    Song getSongById(long id);
+//
+//    void updateSong(Song song);
 }
