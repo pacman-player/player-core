@@ -20,7 +20,6 @@ public class UserPlayListController {
         this.songCompilationService = songCompilationService;
     }
 
-//    @GetMapping(value = "/add_song_compilation_to_morning_playlist/{id}")
     @GetMapping(value = "/morning-playlist/add/song-compilation/{id}")
     public void addSongCompilationToMorningPlaylist(@PathVariable("id") Long id) {
         songCompilationService.addSongCompilationToMorningPlaylist(id);
@@ -36,7 +35,6 @@ public class UserPlayListController {
         songCompilationService.addSongCompilationToEveningPlaylist(id);
     }
 
-//    @GetMapping(value = "/get_all_compilations_in_morning_playlist")
     @GetMapping(value = "/morning-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
         return songCompilationService.getAllCompilationsInMorningPlaylist();

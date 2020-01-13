@@ -20,7 +20,6 @@ public class UserSongRestController {
         this.songService = songService;
     }
 
-    //    @GetMapping(value = "/all_song_in_song_compilation/{id}")
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
     public List<Song> getAllSongInSongCompilation(@PathVariable("id") Long id) {
         return songService.getAllSongInSongCompilation(id);
