@@ -33,9 +33,8 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-
                     notification("",
-                        "Отчетотправлен в беседу " + $("#idConversation").val(),
+                        "Отчет отправлен в беседу " + $("#idConversation").val(),
                         'conversation');
                 },
             error:
@@ -44,6 +43,5 @@ $(document).ready(function () {
                 }
         });
     };
-
 
 });

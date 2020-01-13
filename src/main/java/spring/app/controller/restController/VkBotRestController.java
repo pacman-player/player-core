@@ -3,7 +3,6 @@ package spring.app.controller.restController;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +23,7 @@ public class VkBotRestController {
     }
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody ConversationDto conversationDto) throws JSONException, ClientException, ApiException {
+    public void sendMessage(@RequestBody ConversationDto conversationDto) throws ClientException, ApiException {
         vkBotService.sendMessage(conversationDto.getId(), conversationDto.getMessage());
     }
 
