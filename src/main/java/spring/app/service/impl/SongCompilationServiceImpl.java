@@ -1,35 +1,29 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.PlayListDao;
 import spring.app.dao.abstraction.SongCompilationDao;
-import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Company;
 import spring.app.model.PlayList;
 import spring.app.model.SongCompilation;
 import spring.app.model.User;
 import spring.app.service.abstraction.SongCompilationService;
+import spring.app.service.abstraction.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Transactional
 @Service
 public class SongCompilationServiceImpl implements SongCompilationService {
 
     private SongCompilationDao songCompilationDao;
-    private PlayListDao playListDao;
-    private UserDao userDao;
+    private UserService userService;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, PlayListDao playListDao, UserDao userDao) {
+    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService) {
         this.songCompilationDao = songCompilationDao;
-        this.playListDao = playListDao;
-        this.userDao = userDao;
+        this.userService = userService;
     }
 
     @Override
@@ -56,7 +50,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     public void addSongCompilationToMorningPlaylist(Long id) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userDao.getById(getAuthUserId());
+        User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
@@ -75,7 +69,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userDao.update(authUser);
+        userService.updateUser(authUser);
 
     }
 
@@ -83,7 +77,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     public void addSongCompilationToMiddayPlaylist(Long id) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userDao.getById(getAuthUserId());
+        User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество дневных плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
@@ -102,14 +96,14 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userDao.update(authUser);
+        userService.updateUser(authUser);
     }
 
     @Override
     public void addSongCompilationToEveningPlaylist(Long id) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userDao.getById(getAuthUserId());
+        User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество вечерних плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
@@ -128,13 +122,13 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userDao.update(authUser);
+        userService.updateUser(authUser);
     }
 
     @Override
     public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
         //достаем юзера по id авторизованного юзера
-        User authUser = userDao.getById(getAuthUserId());
+        User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
@@ -149,7 +143,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getAllCompilationsInMiddayPlaylist() {
         //достаем юзера
-        User authUser = userDao.getById(getAuthUserId());
+        User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество дневных плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
@@ -164,8 +158,8 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getAllCompilationsInEveningPlaylist() {
         //достаем юзера
-        User authUser = userDao.getById(getAuthUserId());
-        //достаем множество вечерних плейлистов
+        User authUser = userService.getUserById(userService.getIdAuthUser());
+        //достаем множество вечерних плейлистов юзера
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
         //достаем пока один единственный плейлист и его множество подборок
@@ -179,13 +173,6 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public SongCompilation getSongCompilationById(Long id) {
         return songCompilationDao.getById(id);
-    }
-
-    //Достаем id авторизованного юзера
-    public Long getAuthUserId() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User authUser = (User) principal;
-        return authUser.getId();
     }
 
     @Override
