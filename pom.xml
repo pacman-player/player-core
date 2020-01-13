@@ -48,6 +48,13 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity4</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+<!--            <version>2.2.2.RELEASE</version>-->
+        </dependency>
+
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
@@ -70,6 +77,7 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-rest-hal-browser</artifactId>
         </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
 <!--            <artifactId>jackson-annotations</artifactId>-->
@@ -171,6 +179,14 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>2.1.5.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+<!--            <version>1.6.2</version>-->
+            <version>1.4.5</version>
         </dependency>
 
         <dependency>
