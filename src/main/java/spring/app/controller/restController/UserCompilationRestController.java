@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
 import spring.app.model.Genre;
 import spring.app.model.SongCompilation;
-import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
 
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/user/compilation")
+@RequestMapping("/api/user/song-compilation")
 public class UserCompilationRestController {
     private GenreService genreService;
     private SongCompilationService songCompilationService;
@@ -24,22 +23,22 @@ public class UserCompilationRestController {
         this.songCompilationService = songCompilationService;
     }
 
-    @GetMapping(value = "/all_genre")
-    public @ResponseBody
-    List<Genre> getAllGenre() {
-        return genreService.getAllGenre();
-    }
-
-    @GetMapping("/song_compilation")
-    public List<SongCompilation> getSongCompilation(String genre) {
+    @PostMapping(value = "/get/all-song-compilation")
+    public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genre.equals("Все подборки")) {
             return songCompilationService.getAllSongCompilations();
         } else {
-            Genre genreFromDb = genreService.getByName(genre);
-            return songCompilationService.getListSongCompilationsByGenreId(genreFromDb.getId());
+            Genre genres = genreService.getByName(genre);
+            List<SongCompilation> list = songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            return songCompilationService.getListSongCompilationsByGenreId(genres.getId());
         }
+    }
+
+    @GetMapping(value = "/get/song-compilation/{id}")
+    public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
+        return songCompilationService.getSongCompilationById(id);
     }
 
     @GetMapping("/songsBySongCompilation")
@@ -51,4 +50,6 @@ public class UserCompilationRestController {
         }
         return songDtoList;
     }
+
+
 }

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Редактирование профиля</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="сcs/style.css"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!--меню слева-->
+        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+            <ul class="nav nav-pills nav-stacked nav-content bg-dark">
+                <li>
+                    <a href="/user/statistics">Статистика</a>
+                </li>
+                <li>
+                    <a href="/user/compilation">Моя подборка</a>
+                </li>
+                <li>
+                    <a href="/user/filter">Фильтр музыки</a>
+                </li>
+                <li>
+                    <a href="/user/top">Топ популярных</a>
+                </li>
+                <li>
+                    <a href="/user/company">Моё заведение</a>
+                </li>
+                <li>
+                    <a href="/user/promo">Промо - материалы</a>
+                </li>
+                <li>
+                    <a href="/user/edit">Редактирование профиля</a>
+                </li>
+                <li id="adminLink">
+                    <a href="/admin/users">Администратор</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--центральный блок-->
+        <div class="tab-content">
+            <div id="my-selection" role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 ">
+                <H3> Редактирование профиля </H3>
+            </div>
+<!--                <div class="col-fhd-4 col-x1-5 col-lg-6">-->
+                <div class="col-sm-4">
+
+                <form id="edit-data-form">
+                        <div class="form-group text-center edit-form">
+
+                            <h4>Персональные данные</h4>
+
+                            <label for="login">Логин</label>
+                            <input id="login" class="form-control" type="text" name="login" required="" />
+
+                            <label for="email">Почта</label>
+                            <input id="email" class="form-control" type="email" name="email" required="1"/>
+
+                            <button id="updateUserDataBtn" class="btn btn-primary" type="submit">Сохранить</button>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-4">
+                    <form id="edit-password-form">
+                        <div class="form-group text-center edit-form">
+
+                            <h4>Сменить пароль</h4>
+
+                            <h5>Для смены пароля нажмите на кнопку ниже
+                                и в открывшемся окне введите код подтверждения,
+                                который мы отправили на вашу электронную почту</h5>
+
+                            <button id="checkUserPasswordBtn" data-toggle="modal" data-target="#checkUserCode" class="btn btn-primary" type="button">Отправить код</button>
+
+                        </div>
+                    </form>
+                </div>
+                <!--модалка - проверка кода-->
+                <div id="checkUserCode" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Проверка кода</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="code-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="checkUserCodeId">Введите проверочный код</label>
+                                                    <input id="checkUserCodeId" class="form-control" type="text"
+                                                           name="code" required=""/>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                        <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--модалка - редактирование кода-->
+                <div id="editUserPass" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Проверка кода</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="update-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="oldUserPass">Текущий пароль</label>
+                                                    <input id="oldUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <label for="newUserPass">Новый пароль</label>
+                                                    <input id="newUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <label for="updateUserPass">Подтвердите пароль</label>
+                                                    <input id="updateUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/user/edit.js" rel="stylesheet"></script>
+
+</body>
+</html>

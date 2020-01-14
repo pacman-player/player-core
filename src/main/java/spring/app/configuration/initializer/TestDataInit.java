@@ -172,12 +172,35 @@ public class TestDataInit {
         playList.setName("All day playlist");
         playListService.addPlayList(playList);
 
+        PlayList playList1 = new PlayList();
+        playList1.setName("Morning playlist");
+        playListService.addPlayList(playList1);
+
+        PlayList playList2 = new PlayList();
+        playList2.setName("Midday playlist");
+        playListService.addPlayList(playList2);
+
+        PlayList playList3 = new PlayList();
+        playList3.setName("Evening playlist");
+        playListService.addPlayList(playList3);
+
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
-        Set<PlayList> playLists = new HashSet<>();
-        playLists.add(playList);
-        company.setMorningPlayList(playLists);
-        company.setMiddayPlayList(playLists);
-        company.setEveningPlayList(playLists);
+
+        Set<PlayList> allDayPlayLists = new HashSet<>();
+        allDayPlayLists.add(playList);
+
+        Set<PlayList> morningPlayLists = new HashSet<>();
+        morningPlayLists.add(playList1);
+
+        Set<PlayList> middayPlayLists = new HashSet<>();
+        middayPlayLists.add(playList2);
+
+        Set<PlayList> eveningPlayLists = new HashSet<>();
+        eveningPlayLists.add(playList3);
+
+        company.setMorningPlayList(morningPlayLists);
+        company.setMiddayPlayList(middayPlayLists);
+        company.setEveningPlayList(eveningPlayLists);
         Set<Genre> bannedGenres = new HashSet<>();
         bannedGenres.add(genre1);
         company.setBannedGenres(bannedGenres);
