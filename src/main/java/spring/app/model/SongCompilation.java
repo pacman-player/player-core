@@ -1,13 +1,16 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "song_compilation")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class SongCompilation {
 
     @Id
@@ -16,10 +19,11 @@ public class SongCompilation {
 
     private String name;
 
-    @ManyToOne(targetEntity = Genre.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @JsonIgnore
     @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_compilation_id")},

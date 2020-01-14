@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "genre")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class Genre extends Bannable{
 
     @Id
