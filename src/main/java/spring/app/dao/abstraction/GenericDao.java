@@ -15,6 +15,10 @@ public interface GenericDao<PK extends Serializable, T> {
 
 	void deleteById(PK id);
 
+	/**
+	 * Возвращает список сущностей, в имени которых содержиться переданный параметр
+	 * @return List<Song>
+	 */
 	List<T> findByNameContaining(String param);
 
 }

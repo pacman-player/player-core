@@ -26,4 +26,9 @@ public interface CompanyService {
      * поле banned на true.
      */
     void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannable);
+
+    /**
+     * заполняет поля с заблокированными сущностями песен/жанров/авторов у компании
+     */
+    //void SetBannedEntity(Company company);
 }

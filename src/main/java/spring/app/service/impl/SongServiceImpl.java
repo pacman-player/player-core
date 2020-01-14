@@ -35,7 +35,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> findSongsByNameContaining(String name) {
-        return songDao.findSongsByNameContaining(name);
+        return songDao.findByNameContaining(name);
     }
 
     @Override

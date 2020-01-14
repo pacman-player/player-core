@@ -16,6 +16,11 @@ public class SongDto {
     public SongDto() {
     }
 
+    public SongDto(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }

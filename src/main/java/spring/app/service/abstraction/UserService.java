@@ -17,7 +17,6 @@ public interface UserService {
 
 	void addUser(User user);
 
-
     User getUserByEmail(String email);
 
     void save(UserRegistrationDto registration);

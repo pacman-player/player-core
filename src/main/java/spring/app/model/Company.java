@@ -3,6 +3,9 @@ package spring.app.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -12,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "company")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company {
     @Id
     @GeneratedValue
@@ -52,18 +55,21 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "company_id")})
     private Set<PlayList> eveningPlayList;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinTable(name = "company_on_banned_song",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> bannedSong;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Author.class)
     @JoinTable(name = "company_on_banned_author",
             joinColumns = {@JoinColumn(name = "company_id")},

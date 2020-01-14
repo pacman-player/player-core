@@ -1,5 +1,7 @@
 package spring.app.dao.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
@@ -33,4 +35,27 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         }
         return company;
     }
+
+    /**
+     * Вылает ошибка на получении bannedSong и bannedAuthor, потому у компании нет заблокированных сущностей
+     */
+//    @Override
+//    public Company getCompanyWithEntityBanned(Long id) {
+//        try {
+//            Company company = entityManager.
+//                    createQuery("SELECT c FROM Company c " +
+//                            "JOIN FETCH c.bannedGenre " +
+//                            "JOIN FETCH c.bannedSong " +
+//                            "JOIN FETCH c.bannedAuthor " +
+//                            "WHERE c.id = :id", Company.class).
+//                    setParameter("id", id).
+//                    getSingleResult();
+//
+//            return company;
+//
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return null;
+//        }
+//    }
 }

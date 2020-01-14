@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
 
-   public AuthorDaoImpl() {
+    public AuthorDaoImpl() {
         super(Author.class);
     }
 
@@ -29,14 +29,4 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
         }
         return author;
     }
-
-//    @Override
-//    public List<Author> findAuthorsByNameContaining(String param) {
-//        TypedQuery<Author> query = entityManager.createQuery("FROM Author a WHERE a.name LIKE = :param", Author.class);
-//
-//        // знак % обозначает, что перед передаваемым значение может быть, или колько угодно символов, или ноль.
-//        query.setParameter("param", "%" + param + "%");
-//
-//        return query.getResultList();
-//    }
 }

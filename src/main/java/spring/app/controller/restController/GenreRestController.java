@@ -17,12 +17,11 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping("/api/genre")
+@RequestMapping("/api/admin/genre")
 public class GenreRestController {
 
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
-    private CompanyService companyService;
 
     @Autowired
     public GenreRestController(GenreService genreService,
@@ -30,18 +29,12 @@ public class GenreRestController {
                                CompanyService companyService) {
         this.genreService = genreService;
         this.notificationService = notificationService;
-        this.companyService = companyService;
     }
 
     @GetMapping(value = "/all_genres")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-        List<Genre> allGenre = genreService.getAllGenre();
 
-        companyService.checkAndMarkAllBlockedByTheCompany(
-                user.getCompany(),
-                allGenre);
-
-        return allGenre;
+        return genreService.getAllGenre();
     }
 
     @PostMapping(value = "/add_genre")
@@ -79,26 +72,5 @@ public class GenreRestController {
         String message = "Was delete genre " + genre.getName();
         User user = (User) getContext().getAuthentication().getPrincipal();
         notificationService.addNotification(message, user.getId());
-    }
-
-    @PostMapping("genreBan")
-    public void addGenreInBan(@AuthenticationPrincipal User user,
-                              @RequestBody long genreId) {
-
-        Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedGenre(genreService.getById(genreId));
-
-        companyService.updateCompany(company);
-        user.setCompany(company);
-    }
-
-    @PostMapping("genreUnBan")
-    public void genreUnBan(@AuthenticationPrincipal User user,
-                           @RequestBody long genreId) {
-        Company company = user.getCompany();
-        company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
-        companyService.updateCompany(company);
-
-        user.setCompany(company);
     }
 }
