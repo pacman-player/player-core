@@ -68,14 +68,25 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="companies" >
+                <div role="tabpanel" class="tab-pane active" id="list-companies">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="company-table-nav" class="active">
+                            <a id="tab-company-panel" href="#company-panel" aria-controls="company-panel" role="tab"
+                               data-toggle="tab">Все компании</a>
+                        </li>
+                        <li id="add-company-nav">
+                            <a href="#add-company-panel" aria-controls="add-company-panel" role="tab" data-toggle="tab">
+                                Новая компания</a>
+                        </li>
+                    </ul>
+
                     <div class="tab-content">
                         <!--таблица компаний-->
-                        <div role="tabpanel" class="tab-pane active" id="companies-panel">
+                        <div role="tabpanel" class="tab-pane active" id="company-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <h4>Все компании</h4>
+                                        <!--<h4>Все компании</h4>-->
                                         <table id="companiesTable" class="table">
                                             <thead id="getCompaniesTable">
                                             <tr>
@@ -86,15 +97,62 @@
                                                 <th>Тип организации</th>
                                                 <th>ID пользователя</th>
                                                 <th>Изменить</th>
-<!--                                                <th>Удалить</th>-->
+                                                <!--                                                <th>Удалить</th>-->
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
+                        <!--добавление компаний-->
+                        <div role="tabpanel" class="tab-pane" id="add-company-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="addCompanyForm">
+                                                        <div class="form-group text-center edit-form">
+
+                                                            <label for="addCompanyName">Название</label>
+                                                            <input id="addCompanyName" class="form-control" type="text"
+                                                                   placeholder="Enter company name" name="compName"/>
+
+                                                            <label for="addStart">Начало работы</label>
+                                                            <input id="addStart" class="form-control" type="time"
+                                                                   placeholder="Opening at" name="begin-time"/>
+
+                                                            <label for="addClose">Конец работы</label>
+                                                            <input id="addClose" class="form-control"
+                                                                   type="time" placeholder="Closing at"
+                                                                   name="end-time"/>
+
+                                                            <label for="addCompType">Тип компании</label>
+                                                            <select class="form-control" id="addCompType"
+                                                                    name="compType">
+                                                                <option value="test">Test company TO CHANGE</option>
+                                                                <option value="test2">Test company TO CHANGE 2</option>
+                                                            </select>
+
+                                                            <button type="submit" id="addCompanyBtn"
+                                                                    class="btn btn-success btn-lg">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -117,7 +175,8 @@
                                                 <div class="form-group text-center edit-form">
 
                                                     <label for="updateCompanyId">ID компании</label>
-                                                    <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
+                                                    <input id="updateCompanyId" class="form-control" disabled="disabled"
+                                                           type="text"
                                                            name="id" required=""/>
 
                                                     <label for="updateIdUser">ID пользователя</label>
@@ -125,24 +184,31 @@
                                                            type="text" name="id-user" required=""/>
 
                                                     <label for="updateNameCompany">Компания</label>
-                                                    <input id="updateNameCompany" class="form-control" type="text" name="company"
+                                                    <input id="updateNameCompany" class="form-control" type="text"
+                                                           name="company"
                                                            required=""/>
 
                                                     <label for="updateStartTime">Время открытия</label>
-                                                    <input id="updateStartTime" class="form-control" type="time" name="start-time"
+                                                    <input id="updateStartTime" class="form-control" type="time"
+                                                           name="start-time"
                                                            required=""/>
 
                                                     <label for="updateCloseTime">Время закрытия</label>
-                                                    <input id="updateCloseTime" class="form-control" type="time" name="close-time"
+                                                    <input id="updateCloseTime" class="form-control" type="time"
+                                                           name="close-time"
                                                            required=""/>
 
                                                     <label for="updateOrgType">Тип компании</label>
                                                     <select id="updateOrgType" class="form-control" name="role">
-<!--                                                        onchange="getAllEstablishments()"-->
+                                                        <!--                                                        onchange="getAllEstablishments()"-->
                                                     </select>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary" type="submit">Изменить</button>
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Закрыть
+                                                        </button>
+                                                        <button id="editCompanyBtn" class="btn btn-primary"
+                                                                type="submit">Изменить
+                                                        </button>
                                                     </div>
 
                                                 </div>

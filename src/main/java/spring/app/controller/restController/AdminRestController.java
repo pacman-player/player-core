@@ -128,4 +128,12 @@ public class AdminRestController {
         }
         return roles;
     }
+
+    @PostMapping(value = "/add_company")
+    public void addCompany(@RequestBody CompanyDto companyDto) {
+        OrgType orgType = new OrgType(companyDto.getOrgType());
+        Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                LocalTime.parse(companyDto.getCloseTime()), null, orgType);
+        companyService.addCompany(company);
+    }
 }

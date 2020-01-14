@@ -43,7 +43,7 @@ $(document).ready(function () {
                 $("#UserTable tbody").append(htmlTable);
             }
         });
-    }
+    };
 
     function getCompaniesTable() {
         $.ajax({
@@ -79,7 +79,7 @@ $(document).ready(function () {
                 $("#getCompaniesTable").after(htmlTable);
             }
         });
-    }
+    };
 
     //addUser
     $("#addUserBtn").click(function (event) {
@@ -207,7 +207,7 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-    }
+    };
 
     //deleteForm
     $(document).on('click', '#deleteUser', function () {
@@ -348,7 +348,7 @@ $(document).ready(function () {
 
             },
             error: function () {
-                $('#company-modal-body').empty().append("No company assigned yet");
+                $('#company-modal-body').empty().append("Пользователю не присвоена ни одна компания");
                 var buttons = '<button type="button" class="btn btn-default" data-dismiss="modal" id = "modal-footer-clsbtn">Close</button>';
                 $('#modal-footer').empty().append(buttons);
             }
