@@ -1,4 +1,7 @@
 package spring.app.dao.abstraction;
 
-public interface Address {
+import spring.app.model.Address;
+
+public interface AddressDao extends GenericDao<Long, Address> {
+    Long getIdByLatitudeAndLongitude(String latitude, String longitude);
 }
