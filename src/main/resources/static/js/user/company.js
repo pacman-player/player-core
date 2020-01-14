@@ -192,9 +192,6 @@ $(document).ready(function () {
                     $('#est-address').val(alertContent);
                     $('#latitude').val(coords[0]);
                     $('#longitude').val(coords[1]);
-
-                    console.log("Lat is : " + coords[0]);
-                    console.log("Long is : " + coords[1]);
                 }
 
                 // Сетим в поля после конфирма
