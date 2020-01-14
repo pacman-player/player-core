@@ -30,5 +30,5 @@ public interface CompanyService {
     /**
      * заполняет поля с заблокированными сущностями песен/жанров/авторов у компании
      */
-    //void SetBannedEntity(Company company);
+    Company setBannedEntity(Company company);
 }

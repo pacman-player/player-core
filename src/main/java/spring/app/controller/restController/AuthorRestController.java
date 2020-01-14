@@ -33,8 +33,11 @@ public class AuthorRestController {
                                               @AuthenticationPrincipal User user) {
         List<Author> authors = authorService.findAuthorsByNameContaining(name);
 
+        Company usersCompany = user.getCompany();
+        usersCompany = companyService.setBannedEntity(usersCompany);
+
         companyService.checkAndMarkAllBlockedByTheCompany(
-                user.getCompany(),
+                usersCompany,
                 authors);
         return authors;
     }

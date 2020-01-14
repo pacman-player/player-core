@@ -10,6 +10,8 @@ import spring.app.model.Company;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -36,26 +38,19 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         return company;
     }
 
-    /**
-     * Вылает ошибка на получении bannedSong и bannedAuthor, потому у компании нет заблокированных сущностей
-     */
-//    @Override
-//    public Company getCompanyWithEntityBanned(Long id) {
-//        try {
-//            Company company = entityManager.
-//                    createQuery("SELECT c FROM Company c " +
-//                            "JOIN FETCH c.bannedGenre " +
-//                            "JOIN FETCH c.bannedSong " +
-//                            "JOIN FETCH c.bannedAuthor " +
-//                            "WHERE c.id = :id", Company.class).
-//                    setParameter("id", id).
-//                    getSingleResult();
-//
-//            return company;
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            return null;
-//        }
-//    }
+    @Override
+    @Fetch(FetchMode.JOIN)
+    public Company getCompanyWithEntityBanned(long id) {
+        try {
+            return entityManager.
+                    createQuery("FROM Company c WHERE id = :id",
+                            Company.class).
+                    setParameter("id", id).
+                    getSingleResult();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

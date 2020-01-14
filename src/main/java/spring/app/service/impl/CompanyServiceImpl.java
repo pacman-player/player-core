@@ -59,21 +59,8 @@ public class CompanyServiceImpl implements CompanyService {
         );
     }
 
-    /**
-     * метод, который должен был проставлять компании заблокированные сущности: Author/Genre/Song
-     * Но он не работает, так как в companyDao вылетает ошибка, когда в запросе с помощью JOIN FETCH
-     * пытаешься получить поля заблокированных сущностей, в которых нет заблокированных сущностей.
-     */
-//    @Override
-//    public void SetBannedEntity(Company company) {
-//        Company supportComp = new Company();
-//        supportComp.setBannedSong(Collections.emptySet());
-//        supportComp.setBannedAuthor(Collections.emptySet());
-//
-//        supportComp = companyDao.getCompanyWithEntityBanned(company.getId());
-//
-//        company.setBannedAuthor(supportComp.getBannedAuthor());
-//        company.setBannedSong(supportComp.getBannedSong());
-//        company.setBannedGenres(supportComp.getBannedGenres());
-//    }
+    @Override
+    public Company setBannedEntity(Company company) {
+        return companyDao.getCompanyWithEntityBanned(company.getId());
+    }
 }

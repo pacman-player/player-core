@@ -48,8 +48,10 @@ public class SongRestController {
     public List<Song> searchByNameInSongs(@PathVariable String name,
                                           @AuthenticationPrincipal User user) {
         List<Song> songs = songService.findSongsByNameContaining(name);
+        Company usersCompany = user.getCompany();
+        usersCompany = companyService.setBannedEntity(usersCompany);
 
-        companyService.checkAndMarkAllBlockedByTheCompany(user.getCompany(), songs);
+        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
         return songs;
     }
 

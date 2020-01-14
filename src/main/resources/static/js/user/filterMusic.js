@@ -1,7 +1,7 @@
 // получение всех жанров и заполнение таблицы в пункте "По жанрам"
 $.ajax({
     type: 'get',
-    url: '/api/genre/all_genres',
+    url: '/api/user/genre/get/all-genre',
     contentType: 'application/json;',
     headers: {
         'Accept': 'application/json',
@@ -56,7 +56,7 @@ $(document).on('click', '.addGenreToFilter', function addGenreToFilter() {
 
     $.ajax({
         method: 'post',
-        url: banned ? '/api/genre/genreUnBan' : '/api/genre/genreBan',
+        url: banned ? '/api/user/genre/genreUnBan' : '/api/user/genre/genreBan',
         contentType: "application/json",
         data: JSON.stringify(genreId),
         success: function () {
