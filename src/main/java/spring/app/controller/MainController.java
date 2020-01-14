@@ -83,8 +83,12 @@ public class MainController {
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView showLoginPage() {
-
         return new ModelAndView("login");
+    }
+
+    @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
+    public ModelAndView showLoginPageCaptcha() {
+        return new ModelAndView("login-captcha");
     }
 
     @RequestMapping(value = {"/translation"}, method = RequestMethod.GET)
