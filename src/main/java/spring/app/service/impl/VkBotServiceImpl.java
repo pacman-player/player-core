@@ -34,6 +34,7 @@ public class VkBotServiceImpl implements VkBotService {
      * id для каждой беседы вводит адсинистратор группы
      * vk.com/gim190607919?sel=c15 - здесь id = 15
      */
+
     @Override
     public void sendMessage(Integer id, String message) throws ClientException, ApiException {
         vkApiClient.messages().send(actor).chatId(id).message(message).execute();
