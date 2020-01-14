@@ -22,14 +22,17 @@ public class UserRestController {
     private final UserService userService;
 
     private final CompanyService companyService;
+    private final AddressService addressService;
 
     @Autowired
     public UserRestController(RoleService roleService,
                               UserService userService,
-                              CompanyService companyService) {
+                              CompanyService companyService,
+                              AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
+        this.addressService = addressService;
     }
 
     @GetMapping(value = "/get_user")
@@ -88,6 +91,12 @@ public class UserRestController {
         return ResponseEntity.ok(companyService.getById(id));
     }
 
+    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Address> getUserCompanyAddress() {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        return ResponseEntity.ok(addressService.getById(id));
+    }
+
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
@@ -98,16 +107,31 @@ public class UserRestController {
         companyService.updateCompany(companyForUpdate);
     }
 
-    @PutMapping(value = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        Company companyForUpdate = companyService.getById(id);
+        Address addressForUpdate = addressService.getById(id);
 
-        System.out.println(addressDto.getCountry());
-        System.out.println(addressDto.getCity());
-        System.out.println(addressDto.getStreet());
-        System.out.println(addressDto.getHouse());
+        if (addressForUpdate == null) {
+            addressService.updateAddress(new Address(
+                    addressDto.getCountry(),
+                    addressDto.getCity(),
+                    addressDto.getStreet(),
+                    addressDto.getHouse(),
+                    addressDto.getLatitude(),
+                    addressDto.getLongitude()
+            ));
+        } else {
+            addressForUpdate.setCountry(addressDto.getCountry());
+            addressForUpdate.setCity(addressDto.getCity());
+            addressForUpdate.setStreet(addressDto.getStreet());
+            addressForUpdate.setHouse(addressDto.getHouse());
+            addressForUpdate.setLatitude(addressDto.getLatitude());
+            addressForUpdate.setLongitude(addressDto.getLongitude());
+        }
 
-        System.out.println(addressDto.getLatitude());
-        System.out.println(addressDto.getLongitude());
-
+        companyForUpdate.setAddress(addressService.getById(id));
+        companyService.updateCompany(companyForUpdate);
     }
 }
