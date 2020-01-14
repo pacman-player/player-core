@@ -201,6 +201,7 @@ $(document).ready(function () {
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании сохранены",
                         'user-panel');
+                    $('#editCompany').modal('toggle');
                 },
             error:
                 function (xhr, status, error) {
