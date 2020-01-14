@@ -81,14 +81,19 @@ $(document).ready(function () {
 
                 function putAddressInField () {
                     $('#est-address').val(alertContent);
+                    $('#latitude').val(coords[0]);
+                    $('#longitude').val(coords[1]);
                 }
 
                 if (confirm("You pushed on map : " + alertContent)) {
                     putAddressInField();
 
                     console.log(alertContent);
+                    console.log("latitude is : " + coords[0]);
+                    console.log("longitude is : " + coords[1]);
+
                 } else {
-                    console.log("failed");
+                    console.log("cancelled");
                 }
             });
         }
