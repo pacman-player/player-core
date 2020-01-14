@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
@@ -94,7 +95,38 @@ public class UserRestController {
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
+
+
+        String address = company.getAddress();
+        String latitude = company.getLatitude();
+        String longitude = company.getLongitude();
+
+
+        System.out.println('\n' + "Address is: " + address);
+        System.out.println("Latitude is: " + latitude);
+        System.out.println("Longitude is: " + longitude + '\n');
+
+        String[] split = address.split("[^(А-я0-9)]{2}");
+
+        System.out.println('\n');
+        Arrays.asList(split).forEach(System.out::println);
+        System.out.println('\n');
+
+
+
         companyService.updateCompany(companyForUpdate);
     }
 
+    @PutMapping(value = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void updateAddress(@RequestBody AddressDto addressDto) {
+
+        System.out.println(addressDto.getCountry());
+        System.out.println(addressDto.getCity());
+        System.out.println(addressDto.getStreet());
+        System.out.println(addressDto.getHouse());
+
+        System.out.println(addressDto.getLatitude());
+        System.out.println(addressDto.getLongitude());
+
+    }
 }
