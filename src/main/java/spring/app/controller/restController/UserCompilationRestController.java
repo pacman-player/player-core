@@ -2,6 +2,7 @@ package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import spring.app.configuration.DatasourceProxyBeanPostProcessor;
 import spring.app.dto.SongDto;
 import spring.app.model.Genre;
 import spring.app.model.SongCompilation;
