@@ -1,4 +1,4 @@
-package spring.app.configuration;
+package spring.app.util;
 
 import net.ttddyy.dsproxy.support.ProxyDataSource;
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
@@ -12,10 +12,14 @@ import org.springframework.util.ReflectionUtils;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 
-//DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.resetQueryCounter();
-//make your database operations
-//int executedQueries = DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.queryCounter;
-//DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.assertQueryCount(expectedQueryQuantity);
+/**
+ * This util class is sql query counter
+ * How to use:
+ * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.resetQueryCounter(); //reset current counter
+ * //make your database operations
+ * int executedQueries = DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.queryCounter; //get count of queries
+ * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.assertQueryCount(expectedQueryQuantity); //or you can check that it was made expected quantity of queries
+ */
 @Component
 public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
 

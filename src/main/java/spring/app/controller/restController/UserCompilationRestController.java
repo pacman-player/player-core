@@ -1,13 +1,14 @@
 package spring.app.controller.restController;
 
+import net.ttddyy.dsproxy.QueryCountHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import spring.app.configuration.DatasourceProxyBeanPostProcessor;
 import spring.app.dto.SongDto;
 import spring.app.model.Genre;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
+import spring.app.util.QueryCounter;
 
 import java.util.List;
 import java.util.stream.Collectors;
