@@ -50,10 +50,10 @@ public class SongServiceImpl implements SongService {
         return songDao.getByName(name);
     }
 
-    @Override
-    public Song getSongById(long id) {
-        return songDao.getById(id);
-    }
+//    @Override
+//    public Song getSongById(long id) {
+//        return songDao.getById(id);
+//    }
 
     @Override
     public boolean isExist(String name) {
