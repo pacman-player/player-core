@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
+import spring.app.service.EmailPasswordGeneration;
+import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.Random;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -23,6 +26,11 @@ public class UserRestController {
 
     private final CompanyService companyService;
     private final AddressService addressService;
+
+    private String PASSWORD = "";
+
+    @Autowired
+    public EmailSender emailSender;
 
     @Autowired
     public UserRestController(RoleService roleService,
@@ -133,5 +141,33 @@ public class UserRestController {
 
         companyForUpdate.setAddress(addressService.getById(id));
         companyService.updateCompany(companyForUpdate);
+    }
+
+    @PutMapping(value = "/code_check")
+    public ResponseEntity<String> codeCheck(@RequestBody String code){
+        code = code.substring(1, code.length()-1);
+        if(code.equals(PASSWORD)){
+            return ResponseEntity.ok("Пароль совпадает");
+        }
+        return ResponseEntity.badRequest().body("Пароль не совпадает");
+    }
+
+    @PutMapping(value = "/send_mail")
+    public void sendMail(){
+        User user = ((User) getContext().getAuthentication().getPrincipal());
+        EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
+        PASSWORD = emailPasswordGeneration.generate();
+        System.out.println(PASSWORD);
+        String message = String.format(
+                "Здравствуйте, %s! \n" +
+                        "Для смены пароля введите код подтверждения: " + PASSWORD + "\n " +
+                        "Если вы не запрашивали смену пароля, свяжитесь со службой технической поддержки.",
+                user.getLogin()
+        );
+
+        if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
+            emailSender.send(user.getEmail(), "Смена пароля", message);
+        }
+
     }
 }

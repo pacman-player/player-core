@@ -20,4 +20,9 @@ public class PlayListServiceImpl implements PlayListService {
     public void addPlayList(PlayList playList) {
         playListDao.save(playList);
     }
+
+    @Override
+    public PlayList getPlayList(Long id) {
+        return playListDao.getById(id);
+    }
 }
