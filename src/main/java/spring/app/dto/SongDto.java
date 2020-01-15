@@ -71,8 +71,8 @@ public class SongDto {
         return "SongDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", genre='" + genre + '\'' +
+                ", author name='" + authorName + '\'' +
+                ", genre name='" + genreName + '\'' +
                 '}';
     }
 }
