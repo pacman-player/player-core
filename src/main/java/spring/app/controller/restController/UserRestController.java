@@ -1,24 +1,29 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
-import spring.app.model.*;
+import spring.app.model.Company;
+import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
-import spring.app.service.abstraction.*;
+import spring.app.service.abstraction.CompanyService;
+import spring.app.service.abstraction.RoleService;
+import spring.app.service.abstraction.UserService;
 
 import java.time.LocalTime;
-import java.util.Random;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping(value = "/api/user")
 public class UserRestController {
-
+    private final Logger LOGGER = LoggerFactory.getLogger("UserRestController");
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
     private final UserService userService;
@@ -62,6 +67,7 @@ public class UserRestController {
             }
         }
         userService.updateUser(user);
+        LOGGER.info("Update user data = {}", user);
         return ResponseEntity.ok(user);
     }
 
@@ -74,6 +80,7 @@ public class UserRestController {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
         userService.updateUser(user);
+        LOGGER.info("Update user data = {}", user);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
@@ -103,6 +110,7 @@ public class UserRestController {
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyService.updateCompany(companyForUpdate);
+        LOGGER.info("Update company data = {}", companyForUpdate);
     }
 
     @PutMapping(value = "/code_check")

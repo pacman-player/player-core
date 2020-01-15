@@ -115,7 +115,7 @@ public class MainController {
     public String GoogleAuthorization(@RequestParam("code") String code) throws IOException {
         final HttpTransport transport = new NetHttpTransport();
         final JacksonFactory jsonFactory = new JacksonFactory();
-
+        LOGGER.info("Google code auth is {}", code);
         GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(transport, jsonFactory,
                 googleClientId, googleClientSecret, code, googleRedirectUri).execute();
 
@@ -132,6 +132,7 @@ public class MainController {
             user.setCompany(companyService.getById(1L));
             userService.addUser(user);
             user = userService.getUserByGoogleId(googleId);
+            LOGGER.info("New user registered by google {}", user);
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -160,7 +161,6 @@ public class MainController {
                 .userAuthorizationCodeFlow(Integer.parseInt(appId), clientSecret, redirectUri, code)
                 .execute();
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-        LOGGER.info("VK auth UserActor is {}", actor);
         User user = userService.getUserByVkId(actor.getId());
         if (user == null) {
             Role role = roleService.getRoleById((long) 2);

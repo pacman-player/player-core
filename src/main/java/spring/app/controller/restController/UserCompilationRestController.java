@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/song-compilation")
 public class UserCompilationRestController {
-    //TODO Добавить логгер в этот класс и следующие
+    private final Logger LOGGER = LoggerFactory.getLogger("UserCompilationRestController");
     private GenreService genreService;
     private SongCompilationService songCompilationService;
 
