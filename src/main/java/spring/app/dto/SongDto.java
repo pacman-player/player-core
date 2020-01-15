@@ -1,26 +1,44 @@
 package spring.app.dto;
 
 public class SongDto {
-    private long id;
-    private String name;
-    private String author;
-    private String genre;
 
-    public SongDto(long id, String name, String author, String genre) {
+    private Long id;
+    private String name;
+    private String authorName;
+    private String genreName;
+
+    public SongDto(Long id, String name, String authorName, String genreName) {
         this.id = id;
         this.name = name;
-        this.author = author;
-        this.genre = genre;
+        this.authorName = authorName;
+        this.genreName = genreName;
+    }
+
+    public SongDto(String name, String authorName, String genreName) {
+        this.name = name;
+        this.authorName = authorName;
+        this.genreName = genreName;
+    }
+
+    public SongDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public SongDto(Long id, String name, String genreName) {
+        this.id = id;
+        this.name = name;
+        this.genreName = genreName;
     }
 
     public SongDto() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -32,29 +50,19 @@ public class SongDto {
         this.name = name;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getGenreName() {
+        return genreName;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public String toString() {
-        return "SongDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", genre='" + genre + '\'' +
-                '}';
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 }
