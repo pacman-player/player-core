@@ -126,7 +126,7 @@ $(document).ready(function () {
     }
 
     //updateForm
-    $("#editUserBtnm").click(function (event) {
+    $("#editUserBtnModal").click(function (event) {
         event.preventDefault();
         updateForm();
     });
