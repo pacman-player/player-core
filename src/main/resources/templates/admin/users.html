@@ -55,6 +55,10 @@
                 </li>
 
                 <li>
+                    <a href="/admin/vk_bot">Послать отчет</a>
+                </li>
+
+                <li>
                     <a href="/user">Меню пользователя</a>
                 </li>
             </ul>
@@ -67,11 +71,12 @@
                 <div role="tabpanel" class="tab-pane active" id="list-users">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Все пользователи</a>
+                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab"
+                               data-toggle="tab">Все пользователи</a>
                         </li>
                         <li id="add-user-nav">
                             <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">
-                            Новый пользователь</a>
+                                Новый пользователь</a>
                         </li>
                     </ul>
 
@@ -146,10 +151,6 @@
                                                                                     <option value="admin">ADMIN</option>
                                                                                     <option value="admin, user">ADMIN, USER</option>
                                                                                 </select>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                                                    <button id="editUserBtn" class="btn btn-primary" type="submit">Изменить</button>
-                                                                                </div>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -157,10 +158,10 @@
                                                             </div>
                                                         </div>
 
-<!--                                                        <div class="modal-footer">-->
-<!--                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>-->
-<!--                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>-->
-<!--                                                        </div>-->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                            <button type="button" id="editUserBtnm" class="btn btn-primary" data-dismiss="modal">Изменить</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -276,15 +277,17 @@
                                                     <select id="updateOrgType" class="form-control" name="role">
 
                                                     </select>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary" type="submit">Edit company</button>
-                                                    </div>
+
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button id="editCompanyBtn" class="btn btn-primary" data-dismiss="modal">Edit company</button>
                             </div>
                         </div>
                     </div>

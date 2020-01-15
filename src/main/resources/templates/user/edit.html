@@ -86,23 +86,94 @@
 
                             <h4>Сменить пароль</h4>
 
-                            <label for="oldUserPass">Текущий пароль</label>
-                            <input id="oldUserPass" class="form-control" type="password" name="password"
-                                   required=""/>
+                            <h5>Для смены пароля нажмите на кнопку ниже
+                                и в открывшемся окне введите код подтверждения,
+                                который мы отправили на вашу электронную почту</h5>
 
-                            <label for="newUserPass">Новый пароль</label>
-                            <input id="newUserPass" class="form-control" type="password" name="password"
-                                   required=""/>
-
-                            <label for="updateUserPass">Подтвердите пароль</label>
-                            <input id="updateUserPass" class="form-control" type="password" name="password"
-                                   required=""/>
-
-                            <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
+                            <button id="checkUserPasswordBtn" data-toggle="modal" data-target="#checkUserCode" class="btn btn-primary" type="button">Отправить код</button>
 
                         </div>
                     </form>
                 </div>
+                <!--модалка - проверка кода-->
+                <div id="checkUserCode" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Проверка кода</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="code-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="checkUserCodeId">Введите проверочный код</label>
+                                                    <input id="checkUserCodeId" class="form-control" type="text"
+                                                           name="code" required=""/>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                        <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--модалка - редактирование кода-->
+                <div id="editUserPass" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Проверка кода</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                            <form id="update-form">
+                                                <div class="form-group text-center edit-form">
+
+                                                    <label for="oldUserPass">Текущий пароль</label>
+                                                    <input id="oldUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <label for="newUserPass">Новый пароль</label>
+                                                    <input id="newUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <label for="updateUserPass">Подтвердите пароль</label>
+                                                    <input id="updateUserPass" class="form-control" type="text" name="password"
+                                                           required=""/>
+
+                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
         </div>
 
