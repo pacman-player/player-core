@@ -83,6 +83,12 @@ public class AdminRestController {
         return ResponseEntity.ok(user.getCompany());
     }
 
+    @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
+        Company company = companyService.getById(companyId);
+        return ResponseEntity.ok(company);
+    }
+
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
         User userId = new User(companyDto.getUserId());

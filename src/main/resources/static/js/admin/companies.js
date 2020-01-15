@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
     function updateCompanyForm() {
-        var companyDto = {
+        let companyDto = {
             id: $("#updateCompanyId").val(),
             name: $("#updateNameCompany").val(),
             startTime: $("#updateStartTime").val(),
@@ -94,10 +94,14 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-company" + companyDto.id,
+                    notification("editCompany" + companyDto.id,
                         "  Изменения компании c id " + companyDto.id + " сохранены",
-                        'companies-panel');
+                        'list-companies');
+
+                    $('#editCompany').modal('toggle');
                 },
+
+
             error:
                 function (xhr, status, error) {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -108,6 +112,7 @@ $(document).ready(function () {
     //modal company form заполнение
     $(document).on('click', '#showEditModalCompaniesBtn', function () {
         // $(this).trigger('form').reset();
+
         $('#updateCompanyId').val('');
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
@@ -126,8 +131,9 @@ $(document).ready(function () {
             },
         });
 
+
         $.ajax({
-            url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
+            url: '/api/admin/companyById/' + $(this).closest("tr").find("#tableCompaniesId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -135,8 +141,13 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
-                $('#updateIdUser').val(data.user.id);
+
+                if (data.user != null) {
+                    $('#updateIdUser').val(data.user.id);
+                }
+
                 $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
+
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);

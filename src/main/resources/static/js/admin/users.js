@@ -278,7 +278,7 @@ $(document).ready(function () {
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
 
-        var companyList;
+        let companyList;
         $.ajax({
             url: "/api/admin/all_establishments",
             method: "GET",
@@ -344,7 +344,6 @@ $(document).ready(function () {
                     '<button id="editCompanyBtn" class="btn btn-primary" type="submit">Edit company</button>';
 
                 $('#modal-footer').append(buttons);
-
 
             },
             error: function () {
