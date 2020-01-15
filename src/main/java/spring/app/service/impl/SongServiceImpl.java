@@ -25,6 +25,22 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> getAllSong() {
+        return songDao.getAll();
+    }
+
+//    @Override
+//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
+//    public List<Song> getAllSongNonLazy() {
+//        return songDao.getAll();
+//    }
+
+    @Override
+    public void deleteSongById(Long id) {
+        songDao.deleteById(id);
+    }
+
+    @Override
     public void addSong(Song song) {
         songDao.save(song);
     }
@@ -33,6 +49,11 @@ public class SongServiceImpl implements SongService {
     public Song getByName(String name) {
         return songDao.getByName(name);
     }
+
+//    @Override
+//    public Song getSongById(long id) {
+//        return songDao.getById(id);
+//    }
 
     @Override
     public boolean isExist(String name) {
@@ -55,5 +76,21 @@ public class SongServiceImpl implements SongService {
         Set<Song> allSongSet = songCompilation.getSong();
         List<Song> allSongList = new ArrayList<>(allSongSet);
         return allSongList;
+    }
+
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
+
+//    @Override
+//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
+//    public void updateSongNonLazy(Song song) {
+//        songDao.update(song);
+//    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
     }
 }

@@ -8,11 +8,21 @@ import java.util.HashSet;
 
 public interface SongService {
 
+    List<Song> getAllSong();
+
     Song getByName(String name);
+
+    Song getSongById(Long id);
 
     void addSong(Song song);
 
+    void updateSong(Song song);
+
+    void deleteSongById(Long id);
+
     boolean isExist(String name);
+
+    List<Song> getAllSongInSongCompilation(Long id);
 
     /**
      * возвращает все песни, в которых содержиться передаваемое значение
@@ -25,14 +35,4 @@ public interface SongService {
      * @return Song
      */
     Song getById(long songId);
-
-    List<Song> getAllSongInSongCompilation(Long id);
-
-//    List<Song> getAllSong();
-//
-//    void deleteSongById(Long id);
-//
-//    Song getSongById(long id);
-//
-//    void updateSong(Song song);
 }
