@@ -13,12 +13,12 @@ import javax.sql.DataSource;
 import java.lang.reflect.Method;
 
 /**
- * This util class is sql query counter
- * How to use:
- * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.resetQueryCounter(); //reset current counter
- * //make your database operations
- * int executedQueries = DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.queryCounter; //get count of queries
- * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.assertQueryCount(expectedQueryQuantity); //or you can check that it was made expected quantity of queries
+ * Класс для подсчёта выполненных запросов в БД с использованием прокси
+ * Как использовать:
+ * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.resetQueryCounter(); // обнулить счётчик
+ * // операции с БД
+ * int executedQueries = DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.queryCounter; // получить текущее количество выполненных запросов
+ * DatasourceProxyBeanPostProcessor.ProxyDataSourceInterceptor.assertQueryCount(expectedQueryQuantity); // проверить на количество выполненных запросов
  */
 @Component
 public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
@@ -41,7 +41,17 @@ public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
 
     public static class ProxyDataSourceInterceptor implements MethodInterceptor {
         private final DataSource dataSource;
+        private static boolean count = false;
         public static int queryCounter = 0;
+
+        public static void startCounting() {
+            resetQueryCounter();
+            count = true;
+        }
+
+        public static void stopCounting() {
+            count = false;
+        }
 
         public static void resetQueryCounter() {
             queryCounter = 0;
@@ -50,7 +60,9 @@ public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
         public ProxyDataSourceInterceptor(final DataSource dataSource) {
             this.dataSource = ProxyDataSourceBuilder.create(dataSource)
                     .afterQuery((execInfo, queryInfoList) -> {
-                        queryCounter++;
+                        if (count) {
+                            queryCounter++;
+                        }
                     })
                     .build();
         }

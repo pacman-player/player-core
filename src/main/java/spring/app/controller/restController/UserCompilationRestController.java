@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-import net.ttddyy.dsproxy.QueryCountHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
@@ -18,6 +17,10 @@ import java.util.stream.Collectors;
 public class UserCompilationRestController {
     private GenreService genreService;
     private SongCompilationService songCompilationService;
+
+
+    @Autowired
+    private QueryCounter queryCounter;
 
     @Autowired
     public UserCompilationRestController(GenreService genreService, SongCompilationService songCompilationService) {

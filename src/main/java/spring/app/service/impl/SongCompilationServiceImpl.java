@@ -9,6 +9,8 @@ import spring.app.model.SongCompilation;
 import spring.app.model.User;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.UserService;
+import spring.app.util.DatasourceProxyBeanPostProcessor;
+import spring.app.util.QueryCounter;
 
 import java.util.ArrayList;
 import java.util.List;
