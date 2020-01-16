@@ -28,4 +28,8 @@ public interface UserService {
 	void updateUser(User user);
 
 	Long getIdAuthUser();
+
+	boolean isExistUserByEmail(String email);
+
+	boolean isExistUserByLogin(String login);
 }

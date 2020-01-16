@@ -46,4 +46,9 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> getAllCompanies() {
         return companyDao.getAll();
     }
+
+    @Override
+    public boolean isExistCompanyByName(String name){
+       return companyDao.isExistCompanyByName(name);
+    }
 }

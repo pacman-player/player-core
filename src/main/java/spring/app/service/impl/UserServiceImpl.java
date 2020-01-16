@@ -86,4 +86,10 @@ public class UserServiceImpl implements UserService {
         User authUser = (User) principal;
         return authUser.getId();
     }
+    public boolean isExistUserByEmail(String email){
+        return userDao.isExistUserByEmail(email);
+    }
+    public boolean isExistUserByLogin(String login){
+        return userDao.isExistUserByLogin(login);
+    }
 }

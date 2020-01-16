@@ -4,4 +4,5 @@ import spring.app.model.Company;
 
 public interface CompanyDao extends GenericDao<Long, Company> {
     Company getCompanyByCompanyName(String companyName);
+    boolean isExistCompanyByName(String name);
 }

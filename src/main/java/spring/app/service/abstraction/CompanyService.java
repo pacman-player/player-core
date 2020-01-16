@@ -16,4 +16,6 @@ public interface CompanyService {
     void removeById(Long id);
 
     List<Company> getAllCompanies();
+
+    boolean isExistCompanyByName(String name);
 }

@@ -33,4 +33,12 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         }
         return company;
     }
+
+    public boolean isExistCompanyByName(String name) {
+        long count = (long)entityManager.createQuery(
+                "select count(c) from Company c WHERE c.name=:name")
+                .setParameter("name", name)
+                .getSingleResult();
+        return count > 0;
+    }
 }

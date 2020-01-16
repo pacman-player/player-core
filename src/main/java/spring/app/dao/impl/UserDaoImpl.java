@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
-	private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl() {
         super(User.class);
@@ -66,4 +66,21 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         }
         return userList.get(0);
     }
+
+    public boolean isExistUserByEmail(String email) {
+        long count = (long)entityManager.createQuery(
+                "select count(u) from User u WHERE u.email=:email")
+                .setParameter("email", email)
+                .getSingleResult();
+        return count > 0;
+    }
+
+    public boolean isExistUserByLogin(String login) {
+        long count = (long)entityManager.createQuery(
+                "select count(u) from User u WHERE u.login=:login")
+                .setParameter("login", login)
+                .getSingleResult();
+        return count > 0;
+    }
+
 }

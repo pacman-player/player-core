@@ -1,10 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Company;
 import spring.app.model.OrgType;
@@ -29,22 +26,40 @@ public class RegistrationRestController {
     }
 
     @PostMapping("/first")
-    public String saveUser(UserRegistrationDto userDto) {
-        User userByEmail = userService.getUserByEmail(userDto.getEmail());
-        User userByLogin = userService.getUserByLogin(userDto.getLogin());
-        if (userByEmail != null || userByLogin != null) {
-            return "exist";
-        }
+    public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
-        return "success";
+    }
+
+    @GetMapping("/check/email")
+    public String checkEmail(@RequestParam String email) {
+        if (userService.isExistUserByEmail(email)) {
+            return "false";
+        }
+        return "true";
+    }
+
+    @GetMapping("/check/login")
+    public String checkLogin(@RequestParam String login) {
+        if (userService.isExistUserByLogin(login)) {
+            return "false";
+        }
+        return "true";
+    }
+    @GetMapping("/check/company")
+    public String checkCompany(@RequestParam String name) {
+        if (companyService.isExistCompanyByName(name)) {
+            return "false";
+        }
+        return "true";
     }
 
     @PostMapping("/second")
     public String saveCompany(Company company, @RequestParam String login) {
-        Company byCompanyName = companyService.getByCompanyName(company.getName());
-        if (byCompanyName != null) {
-            return "exist";
-        }
+//        Company byCompanyName = companyService.getByCompanyName(company.getName());
+//        System.out.println(byCompanyName);
+//        if (byCompanyName != null) {
+//            return "exist";
+//        }
         long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User userByLogin = userService.getUserByLogin(login);
