@@ -1,70 +1,38 @@
 package spring.app.service;
 
 
-
-
-import java.io.File;
+import javazoom.jl.decoder.*;
+import java.io.*;
 
 public class CutSongService {
-    static javazoom.jl.player.advanced.PlaybackListener pl;
-    static javazoom.jl.player.advanced.AdvancedPlayer AP;
 
-    public void play() {
-        pl = new javazoom.jl.player.advanced.PlaybackListener() {
-        };
+    public static void main(String[] args) {
         try {
-//            AP = javazoom.jl.player.advanced.jlap.playMp3(new File("C:\\\\Users\\\\Shell26\\\\Desktop\\\\techno epic.mp3"), pl);
-            AP = javazoom.jl.player.advanced.jlap.playMp3(new File("C:\\\\Users\\\\Shell26\\\\Desktop\\\\techno epic.mp3"), 100,200, pl);
-            System.out.println("Sound. start of play: AP = " + AP);
-        } catch (Exception e) {
-            System.out.println("Sound. SOME EXCEPTION");
+            сutSongMy("Bake.mp3", -1, 10);
+        } catch (DecoderException | IOException | BitstreamException e) {
+            e.printStackTrace();
         }
     }
 
-    public void stop() {
-        System.out.println("Sound. stop() AP = " + AP);
-        try {
-            AP.stop();
-            AP.close();
-            System.out.println("Sound. stop");
-        } catch (Exception e) {
-            System.out.println("Sound. stop() SOME EXCEPTION");
-        }
+    private static void сutSongMy(String song, int start, int len) throws IOException, BitstreamException, DecoderException {
+        FileInputStream in = new FileInputStream(song);
+        Decoder decode = new Decoder();
+        Bitstream bStream = new Bitstream(in);
+        Header head = bStream.readFrame();
+        decode.decodeFrame(head, bStream);
+
+        int timeMS = len * 1000;
+        int numberOfFrames = timeMS / (int)head.ms_per_frame();
+        int numberOfBytesToCut = numberOfFrames  * head.framesize;
+        int numberBytesToSkip = ((start + 1) * 1000) / (int)head.ms_per_frame() * head.framesize;
+        byte[] arr = new byte[in.available()];
+
+        in.skip(numberBytesToSkip);
+        in.read(arr);
+        in.close();
+
+        FileOutputStream output = new FileOutputStream(song);
+        output.write(arr, 0, numberOfBytesToCut);
+        output.close();
     }
 }
-
-//    public static void main(String[] args) {
-//        cutSong("C:/Users/aaq-9/Downloads/heroW.wav", "C:/Users/aaq-9/Downloads/hero-copy.wav", 0, 30);
-////        cutSong("C:/Users/aaq-9/Downloads/hero.mp3", "C:/Users/aaq-9/Downloads/hero-copy-m.mp3", 2, 10);
-//    }
-//​
-//    public static void cutSong(String sourceFileName, String destinationFileName, int startSecond, int endSecond) {
-//        AudioInputStream inputStream = null;
-//        AudioInputStream shortenedStream = null;
-//        try {
-//            File file = new File(sourceFileName);
-//            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-//            AudioFormat format = fileFormat.getFormat();
-//            inputStream = AudioSystem.getAudioInputStream(file);
-//            int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();//получаем байты в секунду
-//            inputStream.skip(startSecond * bytesPerSecond); //указываем с какой секунды начать
-//            long end = (endSecond - startSecond) * (int) format.getFrameRate(); // указываем конечную секунду песни
-//            shortenedStream = new AudioInputStream(inputStream, format, end);
-//            File destinationFile = new File(destinationFileName);
-//            AudioSystem.write(shortenedStream, fileFormat.getType(), destinationFile);
-//        } catch (Exception e) {
-//            println(e);
-//        } finally {
-//            if (inputStream != null) try {
-//                inputStream.close();
-//            } catch (Exception e) {
-//                println(e);
-//            }
-//            if (shortenedStream != null) try {
-//                shortenedStream.close();
-//            } catch (Exception e) {
-//                println(e);
-//            }
-//        }
-//    }
-//}

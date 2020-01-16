@@ -23,8 +23,6 @@ public class UserRestController {
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
     private final UserService userService;
-    CutSongService cutSongService = new CutSongService();
-
 
     private final CompanyService companyService;
 
@@ -44,7 +42,6 @@ public class UserRestController {
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
-        cutSongService.play();
         return ((User) getContext().getAuthentication().getPrincipal());
     }
 
@@ -120,7 +117,6 @@ public class UserRestController {
 
     @PutMapping(value = "/send_mail")
     public void sendMail(){
-        cutSongService.stop();
         User user = ((User) getContext().getAuthentication().getPrincipal());
         EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
         PASSWORD = emailPasswordGeneration.generate();
