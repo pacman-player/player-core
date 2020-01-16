@@ -2,20 +2,21 @@ package spring.app.service;
 
 
 import javazoom.jl.decoder.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 
+@Service
 public class CutSongService {
 
-    public static void main(String[] args) {
-        try {
-            сutSongMy("Bake.mp3", -1, 10);
-        } catch (DecoderException | IOException | BitstreamException e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    public CutSongService() {
     }
 
-    private static void сutSongMy(String song, int start, int len) throws IOException, BitstreamException, DecoderException {
-        FileInputStream in = new FileInputStream(song);
+    public byte[] сutSongMy(byte[] song, int start, int len) throws IOException, BitstreamException, DecoderException {
+        ByteArrayInputStream in = new ByteArrayInputStream(song);
+
         Decoder decode = new Decoder();
         Bitstream bStream = new Bitstream(in);
         Header head = bStream.readFrame();
@@ -29,10 +30,10 @@ public class CutSongService {
 
         in.skip(numberBytesToSkip);
         in.read(arr);
-        in.close();
-
-        FileOutputStream output = new FileOutputStream(song);
-        output.write(arr, 0, numberOfBytesToCut);
-        output.close();
+//        in.close();
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream(song.length);
+        byteOutputStream.write(arr, 0, numberOfBytesToCut);
+//        byteOutputStream.close();
+        return byteOutputStream.toByteArray();
     }
 }

@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import javazoom.jl.decoder.BitstreamException;
+import javazoom.jl.decoder.DecoderException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +28,7 @@ public class TelegramController {
     }
 
     @PostMapping(value = "/approve")
-    public void approve (@RequestBody SongRequest songRequest) {
-
+    public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
+        return telegramService.approveSong(songRequest);
     }
 }
