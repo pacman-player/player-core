@@ -1,6 +1,7 @@
 package spring.app.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.service.abstraction.TelegramService;
@@ -9,6 +10,7 @@ import spring.app.service.abstraction.ZaycevSaitServise;
 import java.io.IOException;
 
 @Service
+@Transactional
 public class TelegramServiceImpl implements TelegramService {
 
     private final ZaycevSaitServise zaycevSaitServise;

@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     SongDaoImpl() {
         super(Song.class);
