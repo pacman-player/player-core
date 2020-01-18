@@ -86,10 +86,23 @@ public class UserServiceImpl implements UserService {
         User authUser = (User) principal;
         return authUser.getId();
     }
+    @Override
     public boolean isExistUserByEmail(String email){
         return userDao.isExistUserByEmail(email);
     }
+
+    @Override
+    public boolean isExistUserByEmail(String email, long userId) {
+        return userDao.isExistUserByEmail(email, userId);
+    }
+
+    @Override
     public boolean isExistUserByLogin(String login){
         return userDao.isExistUserByLogin(login);
+    }
+
+    @Override
+    public boolean isExistUserByLogin(String login, long userId) {
+        return userDao.isExistUserByLogin(login, userId);
     }
 }

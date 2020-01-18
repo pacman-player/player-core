@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     getTable();
     getCompaniesTable();
 
@@ -81,11 +80,12 @@ $(document).ready(function () {
         });
     };
 
-    //addUser
-    $("#addUserBtn").click(function (event) {
+    $('#addForm').submit(function (event) {
         event.preventDefault();
-        addUser();
-        $(':input', '#addForm').val('');
+        if ($('#addForm').valid()) {
+            addUser();
+            $(':input', '#addForm').val('');
+        }
     });
 
     function addUser() {
@@ -111,6 +111,7 @@ $(document).ready(function () {
                 function () {
                     getTable();
                     $("#tab-user-panel").tab('show');
+                    $("#add-user-nav")
                 },
             success:
                 function () {
@@ -125,13 +126,16 @@ $(document).ready(function () {
         });
     }
 
-    //updateForm
-    $("#editUserBtnm").click(function (event) {
-        event.preventDefault();
-        updateForm();
+    //отправка формы редактирования пользователя
+    $('#editForm').on('submit', function (e) {
+        e.preventDefault();
+        if ($('.error').length === 0) {
+            updateUser();
+            $('#editUser').modal('hide')
+        }
     });
 
-    function updateForm() {
+    function updateUser() {
         var user = {
             'id': $("#updateUserId").val(),
             'email': $("#updateUserEmail").val(),
@@ -269,7 +273,6 @@ $(document).ready(function () {
 
     //modal company form заполнение
     $(document).on('click', '#showEditModalCompanyBtn', function () {
-
         // $(this).trigger('form').reset();
 
         $('#updateCompanyId').val('');
@@ -284,14 +287,18 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 var selectBody = $('#updateOrgType');
+                selectBody.empty();
                 $(data).each(function (i, org) {
                     selectBody.append(`
             <option value="${org.id}" >${org.name}</option>
             `);
                 })
             },
-        })
-
+        });
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
         $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
@@ -306,8 +313,4 @@ $(document).ready(function () {
             }
         })
     });
-    // function clicKTable() {//для обновления таблицы юзеров
-    //     getTable();
-    //     $("#tab-user-panel").click();
-    // }
 });

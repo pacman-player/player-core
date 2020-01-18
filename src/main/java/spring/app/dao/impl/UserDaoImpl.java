@@ -67,20 +67,42 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         return userList.get(0);
     }
 
+    @Override
     public boolean isExistUserByEmail(String email) {
-        long count = (long)entityManager.createQuery(
+        long count = (long) entityManager.createQuery(
                 "select count(u) from User u WHERE u.email=:email")
                 .setParameter("email", email)
                 .getSingleResult();
         return count > 0;
     }
 
+    @Override
+    public boolean isExistUserByEmail(String email, long userId) {
+        long count = (long) entityManager.createQuery(
+                "select count(u) from User u WHERE u.email=:email AND u.id<>:id")
+                .setParameter("email", email)
+                .setParameter("id", userId)
+                .getSingleResult();
+        System.out.println(count);
+        return count > 0;
+    }
+
+    @Override
     public boolean isExistUserByLogin(String login) {
-        long count = (long)entityManager.createQuery(
+        long count = (long) entityManager.createQuery(
                 "select count(u) from User u WHERE u.login=:login")
                 .setParameter("login", login)
                 .getSingleResult();
         return count > 0;
     }
 
+    @Override
+    public boolean isExistUserByLogin(String login, long userId) {
+        long count = (long) entityManager.createQuery(
+                "select count(u) from User u WHERE u.login=:login AND u.id<>:id")
+                .setParameter("login", login)
+                .setParameter("id", userId)
+                .getSingleResult();
+        return count > 0;
+    }
 }

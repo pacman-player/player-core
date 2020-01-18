@@ -32,34 +32,20 @@ public class RegistrationRestController {
 
     @GetMapping("/check/email")
     public String checkEmail(@RequestParam String email) {
-        if (userService.isExistUserByEmail(email)) {
-            return "false";
-        }
-        return "true";
+        return Boolean.toString(!userService.isExistUserByEmail(email));
     }
 
     @GetMapping("/check/login")
     public String checkLogin(@RequestParam String login) {
-        if (userService.isExistUserByLogin(login)) {
-            return "false";
-        }
-        return "true";
+        return Boolean.toString(!userService.isExistUserByLogin(login));
     }
     @GetMapping("/check/company")
     public String checkCompany(@RequestParam String name) {
-        if (companyService.isExistCompanyByName(name)) {
-            return "false";
-        }
-        return "true";
+        return Boolean.toString(!companyService.isExistCompanyByName(name));
     }
 
     @PostMapping("/second")
-    public String saveCompany(Company company, @RequestParam String login) {
-//        Company byCompanyName = companyService.getByCompanyName(company.getName());
-//        System.out.println(byCompanyName);
-//        if (byCompanyName != null) {
-//            return "exist";
-//        }
+    public void saveCompany(Company company, @RequestParam String login) {
         long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User userByLogin = userService.getUserByLogin(login);
@@ -69,7 +55,10 @@ public class RegistrationRestController {
         company = companyService.getByCompanyName(company.getName());
         userByLogin.setCompany(company);
         userService.addUser(userByLogin);
-        return "success";
+//        Company byCompanyName = companyService.getByCompanyName(company.getName());
+//        System.out.println(byCompanyName);
+//        if (byCompanyName != null) {
+//            return "exist";
+//        //return "success";
     }
-
 }

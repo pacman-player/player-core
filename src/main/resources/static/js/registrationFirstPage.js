@@ -15,6 +15,7 @@ $('#registrationFirstForm').validate({
     rules: {
         email: {
             email: true,
+            required: true,
             remote: {
                 url: "/api/registration/check/email",
                 type: "GET",
@@ -29,7 +30,7 @@ $('#registrationFirstForm').validate({
         },
         login: {
             required: true,
-            pattern: /^[a-zA-Z][a-zA-Z0-9-_\.]{2,20}$/,
+            pattern: /^[a-zA-Z][a-zA-Z0-9-_\\.]{2,20}$/,
             remote: {
                 url: "/api/registration/check/login",
                 type: "GET",
@@ -43,10 +44,12 @@ $('#registrationFirstForm').validate({
             }
         },
         password: {
+            required: true,
             minlength: 6,
             pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/
         },
         confirmPassword: {
+            required: true,
             equalTo: "#password"
         },
         terms: {
@@ -56,23 +59,23 @@ $('#registrationFirstForm').validate({
     messages: {
         email: {
             email: "Введите корректный адресс электронной почты",
-            required: "Это после не может быть пустым",
+            required: "Введите email",
             remote: "Пользователь с таким email уже зарегистрирван"
 
         },
         login: {
             pattern: "Логин должен начинаться с буквы и содержать не менее 3 символов",
-            required: "Это после не может быть пустым",
+            required: "Введите логин",
             remote: "Пользователь с таким логином уже зарегистрирован"
         },
         password: {
             minlength: "Пароль должен содержать минимум 6 символа и включать цифры и прописные и строчные буквы",
             pattern: "Пароль должен содержать минимум 6 символа и включать цифры и прописные и строчные буквы",
-            required: "Это после не может быть пустым"
+            required: "Введите пароль"
         },
         confirmPassword: {
             equalTo: "Пароли должны совпадать",
-            required: "Это после не может быть пустым"
+            required: "Подтвердите пароль"
         },
         terms: {
             required: "Вы должны принять условия пользования"

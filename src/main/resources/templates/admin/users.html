@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="shortcut icon" href="#"/>
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
@@ -67,11 +68,12 @@
                 <div role="tabpanel" class="tab-pane active" id="list-users">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab" data-toggle="tab">Все пользователи</a>
+                            <a id="tab-user-panel" href="#user-panel" aria-controls="user-panel" role="tab"
+                               data-toggle="tab">Все пользователи</a>
                         </li>
                         <li id="add-user-nav">
                             <a href="#add-user-panel" aria-controls="add-user-panel" role="tab" data-toggle="tab">
-                            Новый пользователь</a>
+                                Новый пользователь</a>
                         </li>
                     </ul>
 
@@ -96,12 +98,14 @@
                                             </thead>
 
                                             <!--модалка - обновление юзеров-->
-                                            <div id="editUser" class="modal fade">
+                                            <div id="editUser" class="modal fade"
+                                                 tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
-
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
                                                             <h4 class="modal-title">Изменить пользователя</h4>
                                                         </div>
 
@@ -118,56 +122,80 @@
                                                                             </div>
                                                                         </div>-->
 
-                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
-                                                                            <div id="message"></div>
-                                                                        </div>
-                                                                        <form id="edit-form">
-                                                                            <div class="form-group text-center edit-form">
+                                                                        <!--                                                                        <div id="success-edit-message"-->
+                                                                        <!--                                                                             class="alert alert-danger hidden">-->
+                                                                        <!--                                                                            <div id="message"></div>-->
+                                                                        <!--                                                                        </div>-->
+                                                                        <div class="form-group text-center edit-form">
+                                                                            <form class="form" id="editForm"
+                                                                                  role="form">
                                                                                 <label for="updateUserId">ID</label>
-                                                                                <input id="updateUserId" class="form-control" disabled="disabled" type="text"
+                                                                                <input id="updateUserId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
                                                                                        name="id" required=""/>
-                                                                                <input type="hidden" id="id-input-edit-hidden" name="id"/>
-
-                                                                                <label for="updateUserEmail">Почта</label>
-                                                                                <input id="updateUserEmail" class="form-control" type="email" name="email"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserName">Логин</label>
-                                                                                <input id="updateUserName" class="form-control" type="text" name="login"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserPass">Пароль</label>
-                                                                                <input id="updateUserPass" class="form-control" type="text" name="password"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserRole">Роль</label>
-                                                                                <select class="form-control" id="updateUserRole" name="role">
-                                                                                    <option value="user">USER</option>
-                                                                                    <option value="admin">ADMIN</option>
-                                                                                    <option value="admin, user">ADMIN, USER</option>
-                                                                                </select>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                                                    <button id="editUserBtn" class="btn btn-primary" type="submit">Изменить</button>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden"
+                                                                                       name="id"/>
+                                                                                <div id="email">
+                                                                                    <label for="updateUserEmail">Почта</label>
+                                                                                    <input id="updateUserEmail"
+                                                                                           class="form-control"
+                                                                                           type="email"
+                                                                                           name="email"
+                                                                                           required="required"/>
+                                                                                    <div id="email-error"></div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </form>
+                                                                                <div id="login">
+                                                                                    <label for="updateUserName">Логин</label>
+                                                                                    <input id="updateUserName"
+                                                                                           class="form-control" type="text"
+                                                                                           name="login"
+                                                                                           required="required"/>
+                                                                                    <div id="login-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserPass">Пароль</label>
+                                                                                    <input id="updateUserPass"
+                                                                                           class="form-control" type="text"
+                                                                                           name="password"
+                                                                                           required="required"/>
+                                                                                    <div id="password-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserRole">Роль</label>
+                                                                                    <select class="form-control"
+                                                                                            id="updateUserRole" name="role">
+                                                                                        <option value="user">USER</option>
+                                                                                        <option value="admin">ADMIN</option>
+                                                                                        <option value="admin, user">ADMIN,
+                                                                                            USER
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                            class="btn btn-default"
+                                                                                            data-dismiss="modal">Закрыть
+                                                                                    </button>
+                                                                                    <button id="editUserBtnModal"
+                                                                                            class="btn btn-primary"
+
+                                                                                            type="submit">Изменить
+                                                                                    </button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-<!--                                                        <div class="modal-footer">-->
-<!--                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>-->
-<!--                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>-->
-<!--                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
                                             <tbody></tbody>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -180,44 +208,36 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <!--Если ненужно удалить-->
-<!--                                                    <div id="error-add-message" class="alert alert-danger hidden">-->
-<!--                                                        <h3>Error!</h3>-->
-<!--                                                        <div id="error-message">Введёные данные не валидны или-->
-<!--                                                            пользователь-->
-<!--                                                            с таким email уже существует-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-                                                    <!--Если ненужно удалить-->
-<!--                                                    <div id="success-add-message" class="alert alert-success hidden">-->
-<!--                                                        <h3>Success!</h3>-->
-<!--                                                        <div id="success-message">Пользователь успешно добавлен!</div>-->
-<!--                                                    </div>-->
-
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
-
-                                                            <label for="addEmail">Почта</label>
-                                                            <input id="addEmail" class="form-control" type="text"
-                                                                   placeholder="Enter email" name="email" />
-
-                                                            <label for="addLogin">Логин</label>
-                                                            <input id="addLogin" class="form-control" type="text"
-                                                                   placeholder="Login" name="login"/>
-
-                                                            <label for="addPassword">Пароль</label>
-                                                            <input id="addPassword" class="form-control"
-                                                                   type="password" placeholder="Password"
-                                                                   name="password" />
-
-                                                            <label for="addRole">Роль</label>
-                                                            <select class="form-control" id="addRole"
-                                                                    name="role">
-                                                                <option value="user">User</option>
-                                                                <option value="admin">Admin</option>
-                                                                <option value="admin, user">Admin, User</option>
-                                                            </select>
-
+                                                            <div>
+                                                                <label for="addEmail">Почта</label>
+                                                                <input id="addEmail" class="form-control" type="text"
+                                                                       required="required" placeholder="Enter email"
+                                                                       name="email"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addLogin">Логин</label>
+                                                                <input id="addLogin" class="form-control" type="text"
+                                                                       required="required" placeholder="Login"
+                                                                       name="login"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addPassword">Пароль</label>
+                                                                <input id="addPassword" class="form-control"
+                                                                       type="password" placeholder="Password"
+                                                                       required="required" name="password"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addRole">Роль</label>
+                                                                <select class="form-control" id="addRole"
+                                                                        name="role" required="required">
+                                                                    <option value="user" selected="selected">User
+                                                                    </option>
+                                                                    <option value="admin">Admin</option>
+                                                                    <option value="admin, user">Admin, User</option>
+                                                                </select>
+                                                            </div>
                                                             <button type="submit" id="addUserBtn"
                                                                     class="btn btn-success btn-lg">
                                                                 Добавить
@@ -253,7 +273,8 @@
                                                 <div class="form-group text-center edit-form">
 
                                                     <label for="updateCompanyId">ID компании</label>
-                                                    <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
+                                                    <input id="updateCompanyId" class="form-control" disabled="disabled"
+                                                           type="text"
                                                            name="id" required=""/>
 
                                                     <label for="updateIdUser">ID пользователя</label>
@@ -261,15 +282,18 @@
                                                            type="text" name="id-user" required=""/>
 
                                                     <label for="updateNameCompany">Компания</label>
-                                                    <input id="updateNameCompany" class="form-control" type="text" name="company"
+                                                    <input id="updateNameCompany" class="form-control" type="text"
+                                                           name="company"
                                                            required=""/>
 
                                                     <label for="updateStartTime">Время открытия</label>
-                                                    <input id="updateStartTime" class="form-control" type="time" name="start-time"
+                                                    <input id="updateStartTime" class="form-control" type="time"
+                                                           name="start-time"
                                                            required=""/>
 
                                                     <label for="updateCloseTime">Время закрытия</label>
-                                                    <input id="updateCloseTime" class="form-control" type="time" name="close-time"
+                                                    <input id="updateCloseTime" class="form-control" type="time"
+                                                           name="close-time"
                                                            required=""/>
 
                                                     <label for="updateOrgType">Тип компании</label>
@@ -277,8 +301,12 @@
 
                                                     </select>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary" type="submit">Edit company</button>
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button id="editCompanyBtn" class="btn btn-primary"
+                                                                type="submit">Edit company
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -294,13 +322,22 @@
     </div>
 </div>
 
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/formValidation.js" rel="script"></script>
 
 </body>
 </html>

@@ -128,4 +128,14 @@ public class AdminRestController {
         }
         return roles;
     }
+
+    @GetMapping(value = "/check/email")
+    public String checkEmail(@RequestParam String email, @RequestParam long id){
+        return Boolean.toString(userService.isExistUserByEmail(email, id));
+    }
+
+    @GetMapping(value = "/check/login")
+    public String checkLogin(@RequestParam String login, @RequestParam long id){
+       return Boolean.toString(userService.isExistUserByLogin(login, id));
+    }
 }
