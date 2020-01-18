@@ -56,6 +56,10 @@
                 </li>
 
                 <li>
+                    <a href="/admin/vk_bot">Послать отчет</a>
+                </li>
+
+                <li>
                     <a href="/user">Меню пользователя</a>
                 </li>
             </ul>
@@ -98,14 +102,11 @@
                                             </thead>
 
                                             <!--модалка - обновление юзеров-->
-                                            <div id="editUser" class="modal fade"
-                                                 tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div id="editUser" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-hidden="true">×
-                                                            </button>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                             <h4 class="modal-title">Изменить пользователя</h4>
                                                         </div>
 
@@ -130,9 +131,7 @@
                                                                             <form class="form" id="editForm"
                                                                                   role="form">
                                                                                 <label for="updateUserId">ID</label>
-                                                                                <input id="updateUserId"
-                                                                                       class="form-control"
-                                                                                       disabled="disabled" type="text"
+                                                                                <input id="updateUserId" class="form-control" disabled="disabled" type="text"
                                                                                        name="id" required=""/>
                                                                                 <input type="hidden"
                                                                                        id="id-input-edit-hidden"
@@ -273,8 +272,7 @@
                                                 <div class="form-group text-center edit-form">
 
                                                     <label for="updateCompanyId">ID компании</label>
-                                                    <input id="updateCompanyId" class="form-control" disabled="disabled"
-                                                           type="text"
+                                                    <input id="updateCompanyId" class="form-control" disabled="disabled" type="text"
                                                            name="id" required=""/>
 
                                                     <label for="updateIdUser">ID пользователя</label>
@@ -282,18 +280,15 @@
                                                            type="text" name="id-user" required=""/>
 
                                                     <label for="updateNameCompany">Компания</label>
-                                                    <input id="updateNameCompany" class="form-control" type="text"
-                                                           name="company"
+                                                    <input id="updateNameCompany" class="form-control" type="text" name="company"
                                                            required=""/>
 
                                                     <label for="updateStartTime">Время открытия</label>
-                                                    <input id="updateStartTime" class="form-control" type="time"
-                                                           name="start-time"
+                                                    <input id="updateStartTime" class="form-control" type="time" name="start-time"
                                                            required=""/>
 
                                                     <label for="updateCloseTime">Время закрытия</label>
-                                                    <input id="updateCloseTime" class="form-control" type="time"
-                                                           name="close-time"
+                                                    <input id="updateCloseTime" class="form-control" type="time" name="close-time"
                                                            required=""/>
 
                                                     <label for="updateOrgType">Тип компании</label>

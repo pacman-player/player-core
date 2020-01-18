@@ -12,10 +12,19 @@ public interface AuthorService {
 
     void addAuthor(Author author);
 
-    Author getById(Long id);
+    /**
+     * Возвращает всех авторов, у которых совпадает передаваемое значение
+     * @return list<Author>
+     */
+    List<Author> findAuthorsByNameContaining(String name);
+
+    /**
+     * Возвращает автора по id
+     * @return Author
+     */
+    Author getById(long authorsId);
 
     void updateAuthor(Author author);
 
     void deleteAuthorById(Long id);
-
 }

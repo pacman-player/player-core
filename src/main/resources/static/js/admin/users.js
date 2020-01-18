@@ -256,7 +256,7 @@ $(document).ready(function () {
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
 
-        switch ($(this).closest("tr").find("#tableRole").text()) {
+        switch ($(this).closest("tr").find("#tableUserRole").text()) {
             case 'USER':
                 $("#updateUserRole").val("user");
                 break;
