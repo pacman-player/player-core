@@ -34,8 +34,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(Long id) {
-        return authorDao.getById(id);
+    public List<Author> findAuthorsByNameContaining(String name) {
+        return authorDao.findByNameContaining(name);
+    }
+
+    @Override
+    public Author getById(long authorsId) {
+        return authorDao.getById(authorsId);
     }
 
     @Override
