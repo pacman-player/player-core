@@ -37,6 +37,11 @@ public class Company {
     @JoinColumn(name = "org_type_id")
     private OrgType orgType;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Address.class)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "morning_company_on_play_list",
             joinColumns = {@JoinColumn(name = "play_list_id")},
@@ -211,6 +216,14 @@ public class Company {
 
     public void addBannedGenre(Genre genre) {
         this.bannedGenres.add(genre);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
