@@ -32,4 +32,16 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
 
         return id;
     }
+
+    @Override
+    public boolean checkAddressInDB(Address address) {
+        try {
+            entityManager
+                    .createQuery("SELECT * FROM Address A WHERE A.");
+            return false;
+
+        }catch (NoResultException e){
+            return false;
+        }
+    }return true;
 }

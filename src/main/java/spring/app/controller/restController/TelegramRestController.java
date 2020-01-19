@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
+import spring.app.model.Address;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
@@ -49,6 +50,11 @@ public class TelegramRestController {
     public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         return telegramService.approveSong(songRequest);
     }
+
+//    @PostMapping(value = "/address")
+//    public boolean compareAddress(@RequestBody Address geoAddress){
+//        return
+//    }
 
     @PostMapping("/addSongToQueue")
     public void addSongToQueue(HttpEntity httpEntity) {

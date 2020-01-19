@@ -46,4 +46,9 @@ public class AddressServiceImpl implements AddressService {
     public Long getId(String latitude, String longitude) {
         return addressDao.getIdByLatitudeAndLongitude(latitude, longitude);
     }
+
+    @Override
+    public boolean checkAddress(Address address) {
+        return addressDao
+    }
 }
