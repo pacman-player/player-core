@@ -49,6 +49,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public boolean checkAddress(Address address) {
-        return addressDao
+        return addressDao.checkAddressInDB(address);
     }
 }

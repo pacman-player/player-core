@@ -40,6 +40,9 @@ public class TestDataInit {
     @Autowired
     private SongCompilationService songCompilationService;
 
+    @Autowired
+    private AddressService addressService;
+
     private void init() {
 
         Role roleAdmin = new Role();
@@ -211,5 +214,15 @@ public class TestDataInit {
         songQueue.setSong(song);
         songQueue.setCompany(company);
         songQueueService.addSongQueue(songQueue);
+
+        Address address = new Address();
+        address.setLatitude("55.754638");
+        address.setLongitude("37.621633");
+
+        address.setCountry("Russia");
+        address.setCity("Moscow");
+        address.setStreet("Red Square");
+        address.setHouse("3");
+        addressService.addAddress(address);
     }
 }

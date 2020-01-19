@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.AddressDao;
 import spring.app.model.Address;
 
 import javax.persistence.NoResultException;
+import java.sql.ResultSet;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -35,13 +37,17 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
 
     @Override
     public boolean checkAddressInDB(Address address) {
-        try {
-            entityManager
-                    .createQuery("SELECT * FROM Address A WHERE A.");
-            return false;
-
-        }catch (NoResultException e){
+        List list = entityManager
+                .createQuery("SELECT * FROM Address A WHERE A.latitude = :latitude AND A.longitude = :longitude AND A.country = :country AND A.city = :city AND A.street = :street", Address.class)
+                .setParameter("latitude", address.getLatitude())
+                .setParameter("longitude", address.getLongitude())
+                .setParameter("country", address.getCountry())
+                .setParameter("city", address.getCity())
+                .setParameter("street", address.getStreet())
+                .getResultList();
+        if (list.isEmpty()) {
             return false;
         }
-    }return true;
+        return true;
+    }
 }

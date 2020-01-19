@@ -37,19 +37,17 @@ public class UserRestController {
     public EmailSender emailSender;
 
     @Autowired
-    public UserRestController(RoleService roleService,
+    public UserRestController(
                               UserService userService,
                               CompanyService companyService,
                               GenreService genreService,
-                              AuthorService authorService,
-                              SongService songService,
-                              SongCompilationService songCompilation) {
+                              SongCompilationService songCompilation,
                               AddressService addressService) {
-        this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
+        this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -64,7 +62,6 @@ public class UserRestController {
             List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
             return songCompilation.getListSongCompilationsByGenreId(genres.getId());
         }
-        this.addressService = addressService;
     }
 
     @GetMapping(value = "/get_user")
