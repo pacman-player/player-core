@@ -1,5 +1,6 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -8,8 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "author")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Author {
+public class Author extends Bannable{
 
     @Id
     @GeneratedValue
@@ -23,6 +23,12 @@ public class Author {
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> authorGenres = new HashSet<>();
+
+    /**
+     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
+     */
+    @Transient
+    private Boolean banned;
 
     public Author(){}
 
@@ -55,14 +61,17 @@ public class Author {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
 
-        Author author = (Author) o;
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedAuthor().contains(this);
+    }
 
-        if (id != null ? !id.equals(author.id) : author.id != null) return false;
-        return name != null ? !name.equals(author.name) : author.name != null;
+    public Boolean getBanned() {
+        return banned;
     }
 
     @Override
@@ -70,5 +79,14 @@ public class Author {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id.equals(author.id) &&
+                name.equals(author.name);
     }
 }
