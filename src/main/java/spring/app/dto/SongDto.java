@@ -65,4 +65,14 @@ public class SongDto {
     public void setGenreName(String genreName) {
         this.genreName = genreName;
     }
+
+    @Override
+    public String toString() {
+        return "SongDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author name='" + authorName + '\'' +
+                ", genre name='" + genreName + '\'' +
+                '}';
+    }
 }

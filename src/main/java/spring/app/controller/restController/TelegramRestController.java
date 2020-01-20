@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import javazoom.jl.decoder.BitstreamException;
+import javazoom.jl.decoder.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -39,13 +41,13 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/song")
-    public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException {
+    public SongResponse searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
         return telegramService.getSong(songRequest);
     }
 
     @PostMapping(value = "/approve")
-    public void approve(@RequestBody SongRequest songRequest) {
-
+    public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
+        return telegramService.approveSong(songRequest);
     }
 
     @PostMapping("/addSongToQueue")

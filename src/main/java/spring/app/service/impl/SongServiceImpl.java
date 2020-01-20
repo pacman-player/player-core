@@ -61,6 +61,16 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> findSongsByNameContaining(String name) {
+        return songDao.findByNameContaining(name);
+    }
+
+    @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
+
+    @Override
     public List<Song> getAllSongInSongCompilation(Long id) {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();
