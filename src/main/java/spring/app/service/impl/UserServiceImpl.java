@@ -1,6 +1,7 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
@@ -79,4 +80,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserByVkId(vkId);
 	}
 
+    @Override
+    public Long getIdAuthUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User authUser = (User) principal;
+        return authUser.getId();
+    }
 }

@@ -38,7 +38,6 @@ $(document).ready(function () {
                 url: "/api/user/edit_data",
                 type: "PUT",
                 data: JSON.stringify(newUser),
-                dataType: 'json',
                 async: true,
                 cache: false,
                 success: function () {
@@ -81,12 +80,18 @@ $(document).ready(function () {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            dataType: 'json',
             async: true,
-            cache: false
+            cache: false,
+            success: function () {
+                alert("Пароль изменен");
+                $("#editUserPass").modal('hide');
+                $("#checkUserCode").modal('hide');
+                // location.reload();
+            },
+            error: function () {
+                alert("Не удалось изменить пароль");
+            }
         });
-        alert("Пароль изменен");
-        location.reload();
     }
 
     function showLinkAdmin() {
@@ -104,6 +109,45 @@ $(document).ready(function () {
 
     }
 
+    function checkForm() {
+
+        var code = $("#checkUserCodeId").val();
+
+        $.ajax({
+            type: 'PUT',
+            url: "/api/user/code_check",
+            contentType: 'application/json;',
+            data: JSON.stringify(code),
+            async: true,
+            cache: false,
+            success: function () {
+                alert("Код верен");
+                $("#editUserPass").modal('show');
+            },
+            error: function () {
+                alert("Проверочный код не верен");
+            }
+        });
+
+    }
+
+        function sendMail() {
+            var mess = "start";
+            $.ajax({
+                type: 'PUT',
+                url: "/api/user/send_mail",
+                contentType: 'application/json;',
+                data: JSON.stringify(mess),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                async: true,
+                cache: false,
+            });
+        }
+
+
     $('#updateUserDataBtn').click(function (event) {
         event.preventDefault();
         updateUserData();
@@ -112,6 +156,16 @@ $(document).ready(function () {
     $('#updateUserPasswordBtn').click(function (event) {
         event.preventDefault();
         updateUserPassword();
-    })
+    });
+
+    $("#checkUserPasswordBtn").click(function (event) {
+        event.preventDefault();
+        sendMail();
+    });
+
+    $("#checkUserCodeBtn").click(function (event) {
+        event.preventDefault();
+        checkForm();
+    });
 
 });

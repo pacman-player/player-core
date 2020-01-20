@@ -1,15 +1,22 @@
 package spring.app.controller.restController;
 
+import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
+import spring.app.service.CutSongService;
+import spring.app.service.EmailPasswordGeneration;
+import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.Random;
+import java.util.List;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -19,20 +26,47 @@ public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
-    private final UserService userService;
+	private final UserService userService;
 
+    private final GenreService genreService;
     private final CompanyService companyService;
-    private final AddressService addressService;
+    private final SongCompilationService songCompilation;
+	private final AddressService addressService;
+
+    private String PASSWORD = "";
+
+    @Autowired
+    public EmailSender emailSender;
 
     @Autowired
     public UserRestController(RoleService roleService,
                               UserService userService,
                               CompanyService companyService,
+                              GenreService genreService,
+                              AuthorService authorService,
+                              SongService songService,
+                              SongCompilationService songCompilation,
                               AddressService addressService) {
-        this.roleService = roleService;
+		this.roleService = roleService;
         this.userService = userService;
+        this.genreService = genreService;
         this.companyService = companyService;
-        this.addressService = addressService;
+        this.songCompilation = songCompilation;
+		this.addressService = addressService;
+    }
+
+    @PostMapping(value = "/song_compilation")
+    public @ResponseBody
+    List<SongCompilation> getSongCompilation(@RequestBody String genre) {
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+
+        if (genre.equals("Все подборки")) {
+            return songCompilation.getAllSongCompilations();
+        } else {
+            Genre genres = genreService.getByName(genre);
+            List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            return songCompilation.getListSongCompilationsByGenreId(genres.getId());
+        }
     }
 
     @GetMapping(value = "/get_user")
@@ -107,7 +141,7 @@ public class UserRestController {
         companyService.updateCompany(companyForUpdate);
     }
 
-    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
@@ -133,5 +167,33 @@ public class UserRestController {
 
         companyForUpdate.setAddress(addressService.getById(id));
         companyService.updateCompany(companyForUpdate);
+    }
+
+    @PutMapping(value = "/code_check")
+    public ResponseEntity<String> codeCheck(@RequestBody String code){
+        code = code.substring(1, code.length()-1);
+        if(code.equals(PASSWORD)){
+            return ResponseEntity.ok("Пароль совпадает");
+        }
+        return ResponseEntity.badRequest().body("Пароль не совпадает");
+    }
+
+    @PutMapping(value = "/send_mail")
+    public void sendMail(){
+        User user = ((User) getContext().getAuthentication().getPrincipal());
+        EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
+        PASSWORD = emailPasswordGeneration.generate();
+        System.out.println(PASSWORD);
+        String message = String.format(
+                "Здравствуйте, %s! \n" +
+                        "Для смены пароля введите код подтверждения: " + PASSWORD + "\n " +
+                        "Если вы не запрашивали смену пароля, свяжитесь со службой технической поддержки.",
+                user.getLogin()
+        );
+
+        if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
+            emailSender.send(user.getEmail(), "Смена пароля", message);
+        }
+
     }
 }

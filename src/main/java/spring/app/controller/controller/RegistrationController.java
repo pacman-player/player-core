@@ -12,9 +12,6 @@ import spring.app.service.abstraction.OrgTypeService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequestMapping("/registration")
@@ -30,9 +27,11 @@ public class RegistrationController {
     @GetMapping("/first")
     public String getFirstRegistrationPage(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("firstRegistrationStepDone")) {
-                return "redirect:/registration/second?login=" + cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("firstRegistrationStepDone")) {
+                    return "redirect:/registration/second?login=" + cookie.getValue();
+                }
             }
         }
         return "registration/registration-first";
