@@ -3,6 +3,7 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.dto.UserRegistrationDto;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;

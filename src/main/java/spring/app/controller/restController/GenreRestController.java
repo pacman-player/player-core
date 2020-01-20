@@ -2,10 +2,13 @@ package spring.app.controller.restController;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
+import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.User;
+import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.impl.NotificationServiceImpl;
 
@@ -21,13 +24,16 @@ public class GenreRestController {
     private NotificationServiceImpl notificationService;
 
     @Autowired
-    public GenreRestController(GenreService genreService, NotificationServiceImpl notificationService) {
+    public GenreRestController(GenreService genreService,
+                               NotificationServiceImpl notificationService,
+                               CompanyService companyService) {
         this.genreService = genreService;
         this.notificationService = notificationService;
     }
 
     @GetMapping(value = "/all_genres")
-    public List<Genre> getAllGenre() {
+    public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
+
         return genreService.getAllGenre();
     }
 
@@ -67,6 +73,4 @@ public class GenreRestController {
         User user = (User) getContext().getAuthentication().getPrincipal();
         notificationService.addNotification(message, user.getId());
     }
-
-
 }
