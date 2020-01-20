@@ -46,7 +46,7 @@
                     <a href="/admin/genres">Жанры</a>
                 </li>
 
-                <li class="active">
+                <li>
                     <a href="/admin/performers">Исполнители</a>
                 </li>
 
@@ -58,7 +58,7 @@
                     <a href="/admin/vk_bot">Послать отчет</a>
                 </li>
 
-                <li>
+                <li class="active">
                     <a href="/admin/message">Сообщения</a>
                 </li>
 
@@ -72,41 +72,44 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-              <!--общий список и добавление нового автора-->
-                <div id="list-authors" class="tab-pane active" role="tabpanel">
+                <div role="tabpanel" class="tab-pane active" id="list-messages">
                     <ul class="nav nav-tabs nav-content" role="tablist">
-                        <li id="authors-table-nav" class="active">
-                            <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Все исполнители</a>
+                        <li id="messages-table-nav" class="active">
+                            <a id="tab-messages-panel" href="#messages-panel" aria-controls="messages-panel" role="tab"
+                               data-toggle="tab">Все сообщения</a>
                         </li>
-                        <li id="add-authors-nav">
-                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Новый исполнитель</a>
+                        <li id="add-messages-nav">
+                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab" data-toggle="tab">
+                                Новые сообщения</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!--общий список авторов-->
-                        <div id="authors-panel" class="tab-pane active" role="tabpanel">
+                        <!--таблица юзеров-->
+                        <div role="tabpanel" class="tab-pane active" id="messages-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <table id="AuthorTable" class="table">
-                                            <thead id="getAuthorTable">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Имя</th>
-                                                    <th>Изменить</th>
-                                                    <th>Удалить</th>
-                                                </tr>
+                                        <table id="messagesTable" class="table">
+                                            <thead id="getMessagesTable">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Имя</th>
+                                                <th>Шаблон</th>
+                                            </tr>
                                             </thead>
+                                            <tbody></tbody>
 
-                                            <!--модальное окно обновления автора-->
-                                            <div id="editAuthor" class="modal fade">
+                                            <!--модалка - обновление юзеров-->
+                                            <div id="editMessages" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
 
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                            <h4 class="modal-title">Изменить исполнителя</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
+                                                            <h4 class="modal-title">Изменить сообщение</h4>
                                                         </div>
 
                                                         <div class="modal-body">
@@ -114,42 +117,58 @@
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                        <div id="success-edit-message"
+                                                                             class="alert alert-danger hidden">
                                                                             <div id="message"></div>
                                                                         </div>
                                                                         <form id="edit-form">
                                                                             <div class="form-group text-center edit-form">
-                                                                                <label for="editAuthorId">ID</label>
-                                                                                <input id="editAuthorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
-                                                                                <input id="id-input-edit-hidden" name="id" type="hidden"/>
+                                                                                <label for="updateMessagesId">ID</label>
+                                                                                <input id="updateMessagesId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden"
+                                                                                       name="id"/>
 
-                                                                                <label for="editAuthorName">Имя</label>
-                                                                                <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+                                                                                <label for="updateMessagesName">Имя</label>
+                                                                                <input id="updateMessagesName"
+                                                                                       class="form-control" type="text"
+                                                                                       name="name"
+                                                                                       required=""/>
 
-                                                                                <div class="modal-footer">
-                                                                                    <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
-                                                                                    <button id="editAuthorBtn" class="btn btn-primary" type="submit">Изменить</button>
-                                                                                </div>
-
+                                                                                <label for="updateMessagesTemplate">Шаблон</label>
+                                                                                <input id="updateMessagesTemplate"
+                                                                                       class="form-control" type="text"
+                                                                                       name="template"
+                                                                                       required=""/>
                                                                             </div>
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        <div class="modal-footer">
+                                                            <button id="closeEditMessages" type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button id="editMessagesBtn" class="btn btn-primary">Изменить
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <tbody></tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
-
-                        <!--добавление автора-->
-                        <div id="add-author-panel" class="tab-pane" role="tabpanel">
+                        <!--добавление юзеров-->
+                        <div role="tabpanel" class="tab-pane" id="add-messages-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -159,12 +178,22 @@
 
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
-                                                            <label for="addAuthor">Исполнитель</label>
-                                                            <input id="addAuthor" class="form-control" type="text" placeholder="Enter performer" name="author"/>
-                                                            <button id="addAuthorBtn" class="btn btn-success btn-lg" type="submit" style="margin-top: 20px;">Добавить исполнителя</button>
+
+                                                            <label for="addName">Имя</label>
+                                                            <input id="addName" class="form-control" type="text"
+                                                                   placeholder="Ввидите имя сообщения" name="message"/>
+
+                                                            <label for="addTemplate">Шаблон</label>
+                                                            <input id="addTemplate" class="form-control" type="text"
+                                                                   placeholder="Ввидите шаблон" name="template"/>
+
+                                                            <button type="submit" id="addMessageBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить сообщение
+                                                            </button>
                                                         </div>
                                                     </form>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -178,13 +207,15 @@
         </div>
     </div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/performers.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/messages.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 
 </body>
 </html>
