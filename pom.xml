@@ -205,11 +205,11 @@
             <version>2.9.7</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.vladmihalcea</groupId>-->
-<!--            <artifactId>db-util</artifactId>-->
-<!--            <version>1.0.4</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>db-util</artifactId>
+            <version>${db-util.version}</version>
+        </dependency>
 
     </dependencies>
 
