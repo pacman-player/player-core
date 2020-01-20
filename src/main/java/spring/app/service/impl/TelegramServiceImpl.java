@@ -35,7 +35,7 @@ public class TelegramServiceImpl implements TelegramService {
     @Override
     public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());
-        byte[] cutSong = cutSongService.сutSongMy(bytes, -1, 30);
+        byte[] cutSong = cutSongService.сutSongMy(bytes, -1, 31);
         SongResponse songResponse = new SongResponse(songRequest.getChatId(), 242345367l, cutSong,
                 songRequest.getAuthorName()+ " - " + songRequest.getSongName());
         return songResponse;

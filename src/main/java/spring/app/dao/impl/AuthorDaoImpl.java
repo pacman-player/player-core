@@ -7,10 +7,12 @@ import spring.app.model.Author;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 @Transactional
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
+
     public AuthorDaoImpl() {
         super(Author.class);
     }
