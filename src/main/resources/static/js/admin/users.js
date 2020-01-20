@@ -127,7 +127,7 @@ $(document).ready(function () {
     }
 
     //отправка формы редактирования пользователя
-    $('#editForm').on('submit', function (e) {
+    $('#edit-form').on('submit', function (e) {
         e.preventDefault();
         if ($('.error').length === 0) {
             updateUser();
