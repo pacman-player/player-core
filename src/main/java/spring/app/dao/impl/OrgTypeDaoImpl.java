@@ -6,7 +6,7 @@ import spring.app.dao.abstraction.OrgTypeDao;
 import spring.app.model.OrgType;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class OrgTypeDaoImpl extends AbstractDao<Long, OrgType> implements OrgTypeDao {
     OrgTypeDaoImpl() {
         super(OrgType.class);

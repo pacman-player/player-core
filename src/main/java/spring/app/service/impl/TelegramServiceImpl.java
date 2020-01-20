@@ -3,7 +3,6 @@ package spring.app.service.impl;
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.service.CutSongService;
@@ -14,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Service
-@Transactional
 public class TelegramServiceImpl implements TelegramService {
 
     private final ZaycevSaitServise zaycevSaitServise;

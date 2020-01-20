@@ -2,7 +2,6 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongQueueDao;
 import spring.app.model.Company;
 import spring.app.model.Song;
@@ -10,7 +9,6 @@ import spring.app.model.SongQueue;
 import spring.app.service.abstraction.SongQueueService;
 
 @Service
-@Transactional
 public class SongQueueServiceImpl implements SongQueueService {
 
     private final SongQueueDao songQueueDao;

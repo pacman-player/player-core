@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
 
 	@PersistenceContext

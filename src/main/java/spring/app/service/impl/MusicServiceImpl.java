@@ -3,7 +3,6 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.service.abstraction.MusicService;
 
 import javax.servlet.ServletException;
@@ -15,7 +14,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
-@Transactional
 public class MusicServiceImpl implements MusicService {
 
     @Value("${uploaded_files_path}")

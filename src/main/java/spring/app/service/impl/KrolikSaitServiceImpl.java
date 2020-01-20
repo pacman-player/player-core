@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.KrolikSaitService;
 import spring.app.util.PlayerPaths;
@@ -17,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-@Transactional
 public class KrolikSaitServiceImpl implements KrolikSaitService {
 
     private RestTemplate restTemplate = new RestTemplate();

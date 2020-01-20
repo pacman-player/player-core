@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.ZaycevSaitServise;
 import spring.app.util.PlayerPaths;
@@ -15,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
-@Transactional
 public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
 
     private RestTemplate restTemplate = new RestTemplate();

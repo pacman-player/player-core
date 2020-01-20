@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
 
     public AuthorDaoImpl() {

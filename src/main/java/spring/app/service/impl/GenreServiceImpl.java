@@ -2,7 +2,6 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.GenreService;
@@ -10,7 +9,6 @@ import spring.app.service.abstraction.GenreService;
 import java.util.List;
 
 @Service
-@Transactional
 public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;

@@ -2,7 +2,6 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
@@ -12,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Transactional
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyDao companyDao;

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     SongDaoImpl() {
