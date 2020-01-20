@@ -5,12 +5,11 @@ import javazoom.jl.decoder.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.LocationDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.Company;
@@ -43,6 +42,14 @@ public class TelegramRestController {
     @PostMapping(value = "/song")
     public SongResponse searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
         return telegramService.getSong(songRequest);
+    }
+
+    @PostMapping(value = "/location")
+    public LocationDto searchLocation (@RequestBody LocationDto locationDto) {
+        System.out.println("lat - " + locationDto.getLatitude());
+        System.out.println("long - " + locationDto.getLongitude());
+
+        return locationDto;
     }
 
     @PostMapping(value = "/approve")
