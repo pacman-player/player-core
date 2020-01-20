@@ -2,6 +2,7 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.model.Role;
 import spring.app.service.abstraction.RoleService;
@@ -9,6 +10,7 @@ import spring.app.service.abstraction.RoleService;
 import java.util.List;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
 	private final RoleDao roleDao;
