@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.SongDownloadRequestInfo;
 import spring.app.service.abstraction.DownloadMusicVkRuService;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicVkRuService {
 
     @Override

@@ -1,5 +1,7 @@
 package spring.app.dao.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
@@ -8,9 +10,11 @@ import spring.app.model.Company;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class CompanyDaoImpl extends AbstractDao<Long, Company> implements CompanyDao {
 
     @PersistenceContext
@@ -32,5 +36,21 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             return null;
         }
         return company;
+    }
+
+    @Override
+    @Fetch(FetchMode.JOIN)
+    public Company getCompanyWithEntityBanned(long id) {
+        try {
+            return entityManager.
+                    createQuery("FROM Company c WHERE id = :id",
+                            Company.class).
+                    setParameter("id", id).
+                    getSingleResult();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

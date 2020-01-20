@@ -5,15 +5,21 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
+import spring.app.dto.SongDto;
+import spring.app.dto.SongResponse;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
+
     SongDaoImpl() {
         super(Song.class);
     }
@@ -31,22 +37,18 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         return song;
     }
 
-    //закоментровал вариант с JOIN FETCH, который не получился
-//    @Override
-//    @Fetch(FetchMode.JOIN)
-//    public List<Song> getAll() {
-//        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s " +
-//                "JOIN FETCH s.author " +
-//                "JOIN FETCH s.genre " +
-//                "JOIN FETCH s.songCompilations " +
-//                "JOIN FETCH s.songQueues"
-//                , Song.class);
-//        List<Song> allSong;
-//        try {
-//            allSong = query.getResultList();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-//        return allSong;
-//    }
+    @Override
+    public List<Song> findByNameContaining(String param) {
+
+        @SuppressWarnings("unchecked")
+        List<SongDto> songDtoList = entityManager.createNativeQuery("SELECT s.id, s.name from song s",
+                "SongDtoMapping")
+                .getResultList();
+
+        List<Song> songs = new ArrayList<>(songDtoList.size());
+
+        songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
+
+        return songs;
+    }
 }
