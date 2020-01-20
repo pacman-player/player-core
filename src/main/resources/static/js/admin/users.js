@@ -274,6 +274,7 @@ $(document).ready(function () {
 
     //modal company form заполнение
     $(document).on('click', '#showEditModalCompanyBtn', function () {
+
         // $(this).trigger('form').reset();
 
         $('#updateCompanyId').val('');
