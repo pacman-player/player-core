@@ -140,7 +140,7 @@ public class MainController {
 
     @GetMapping("/player")
     public String player() {
-        return "player";
+        return "player/player";
     }
 
     @GetMapping(value = "/vkAuth")

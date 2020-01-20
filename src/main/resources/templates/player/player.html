@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="user-scalable=no"/>
@@ -45,6 +45,10 @@
 </div>
 
 <!-- Scripts -->
+<script th:inline="javascript">
+    var musicList = [[${playList}]];
+    console.log(musicList);
+</script>
 <script src="/js/player/howler.core.js"></script>
 <script src="/js/player/siriwave.js"></script>
 <script src="/js/player/player.js"></script>

@@ -12,6 +12,7 @@ import spring.app.configuration.initializer.TestDataInit;
 import spring.app.service.EmailSender;
 import spring.app.service.impl.KrolikSaitServiceImpl;
 import spring.app.service.impl.ZaycevSaitServiceImpl;
+import spring.app.testPlayer.config.TestMusicDataInit;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -43,6 +44,12 @@ public class Main extends WebMvcConfigurerAdapter {
     @PostConstruct
     public TestDataInit initTestData() {
         return new TestDataInit();
+    }
+
+    @Bean(initMethod = "init")
+    @PostConstruct
+    public TestMusicDataInit testMusicDataInit() {
+        return new TestMusicDataInit();
     }
 
     @Bean

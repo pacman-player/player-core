@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Player</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="container">
+    <div>
+        <form id="saveMusicsForm" action="/api/music/save" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" class="form-control" id="musics" accept="audio/mpeg" name="musics" multiple="multiple" required="required"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success form-control" value="Save"/>
+            </div>
+        </form>
+    </div>
+    <div>
+        <table class="table table-hover table-striped text-center">
+            <h3>Music list</h3>
+            <thead>
+            <tr class="text-center">
+                <th>Music</th>
+                <th>Options</th>
+            </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+    <div id="playerContainer">
+        <audio controls="controls" id="player">
+            <source id="musicSource" src="/none" type="audio/mpeg"/>
+            Your browser doesnt support the audio element/ Please, update your browser or download Chrome-browser
+        </audio>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/js/player/musicList.js"></script>
+</body>
+</html>
