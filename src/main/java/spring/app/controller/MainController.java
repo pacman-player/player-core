@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +46,7 @@ public class MainController {
     private final GenreService genreService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final PlayListService playListService;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -66,14 +67,14 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.playListService = playListService;
     }
-
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String redirectToLoginPage() {
@@ -129,8 +130,13 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             user = new User(googleId, email, roleSet, true);
-            user.setCompany(companyService.getById(1L));
             userService.addUser(user);
+
+            //здесь сетим дефолтную компанию
+            Company defaultCompany = createDefaultCompany(googleId, "google");
+            companyService.addCompany(defaultCompany);
+            user.setCompany(companyService.getByCompanyName("Default"));
+
             user = userService.getUserByGoogleId(googleId);
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -173,11 +179,56 @@ public class MainController {
                     companyService.getById(1L),
                     true);
             userService.addUser(user);
+
+            //здесь сетим дефолтную компанию
+            Company defaultCompany = createDefaultCompany(String.valueOf(actor.getId()), "vk");
+            companyService.addCompany(defaultCompany);
+            user.setCompany(companyService.getByCompanyName("Default"));
+
             user = userService.getUserByVkId(actor.getId());
             Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         return "redirect:/user";
+    }
+
+    public Company createDefaultCompany (String id, String typeOfAuth) {
+        Integer userId = null;
+
+        Company company = new Company();
+        company.setName("Default");
+        company.setStartTime(LocalTime.of(11, 0));
+        company.setCloseTime(LocalTime.of(23, 0));
+        company.setOrgType(orgTypeService.getOrgTypeById(1L));
+        if (typeOfAuth.equals("google")) {
+            company.setUser(userService.getUserByGoogleId(id));
+        }
+        if (typeOfAuth.equals("vk")) {
+            userId = Integer.parseInt(id);
+            company.setUser(userService.getUserByVkId(userId));
+        }
+        //сетим утренний плейлист
+        Set<PlayList> morningPlaylistSet = new HashSet<>();
+        PlayList morningPlayList = new PlayList();
+        playListService.addPlayList(morningPlayList);
+        morningPlaylistSet.add(playListService.getPlayList(1L));
+        company.setMorningPlayList(morningPlaylistSet);
+
+        //сетим дневной плейлист
+        Set<PlayList> middayPlaylistSet = new HashSet<>();
+        PlayList middayPlayList = new PlayList();
+        playListService.addPlayList(middayPlayList);
+        middayPlaylistSet.add(playListService.getPlayList(2L));
+        company.setMiddayPlayList(middayPlaylistSet);
+
+        //сетим вечерний плейлист
+        Set<PlayList> eveningPlaylistSet = new HashSet<>();
+        PlayList eveningPlayList = new PlayList();
+        playListService.addPlayList(eveningPlayList);
+        eveningPlaylistSet.add(playListService.getPlayList(3L));
+        company.setEveningPlayList(eveningPlaylistSet);
+
+        return company;
     }
 
 
