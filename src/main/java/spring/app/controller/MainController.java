@@ -217,11 +217,11 @@ public class MainController {
             company.setUser(userService.getUserByVkId(userId));
         }
         //сетим утренний плейлист
-//        Set<PlayList> morningPlaylistSet = new HashSet<>();
-//        PlayList morningPlayList = new PlayList();
-//        playListService.addPlayList(morningPlayList);
-//        morningPlaylistSet.add(playListService.getPlayList(1L));
-//        company.setMorningPlayList(morningPlaylistSet);
+        Set<PlayList> morningPlaylistSet = new HashSet<>();
+        PlayList morningPlayList = new PlayList();
+        playListService.addPlayList(morningPlayList);
+        morningPlaylistSet.add(playListService.getPlayList(1L));
+        company.setMorningPlayList(morningPlaylistSet);
 
 //        company.setMorningPlayList(new HashSet<>());
 //        Set<PlayList> morningPlayListSet = company.getMorningPlayList();
@@ -251,6 +251,4 @@ public class MainController {
 
         return company;
     }
-
-
 }
