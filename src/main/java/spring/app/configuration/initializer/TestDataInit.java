@@ -216,13 +216,38 @@ public class TestDataInit {
         songQueueService.addSongQueue(songQueue);
 
         Address address = new Address();
-        address.setLatitude("55.754638");
-        address.setLongitude("37.621633");
+        address.setLatitude(55.754638);
+        address.setLongitude(37.621633);
 
         address.setCountry("Russia");
         address.setCity("Moscow");
         address.setStreet("Red Square");
         address.setHouse("3");
         addressService.addAddress(address);
+
+        Address address2 = new Address();
+        address2.setLatitude(52.373057);
+        address2.setLongitude(4.892557);
+        addressService.addAddress(address2);
+
+        Address address3 = new Address();
+        address3.setLatitude(55.755241);
+        address3.setLongitude(37.617779);
+        addressService.addAddress(address3);
+
+        Address address4 = new Address();
+        address4.setLatitude(51.697242);
+        address4.setLongitude(39.144475);
+        addressService.addAddress(address4);
+
+        Address address5 = new Address();
+        address5.setLatitude(55.02119);
+        address5.setLongitude(47.810112);
+
+        address5.setCountry("Russia");
+        address5.setCity("Balakovo");
+        address5.setStreet("Lenina");
+        address5.setHouse("4");
+        addressService.addAddress(address5);
     }
 }

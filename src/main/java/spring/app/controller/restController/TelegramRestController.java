@@ -20,6 +20,7 @@ import spring.app.model.SongQueue;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
@@ -32,11 +33,12 @@ public class TelegramRestController {
     private AddressService addressService;
 
     @Autowired
-    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService) {
+    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService, AddressService addressService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
         this.songQueueService = songQueueService;
+        this.addressService = addressService;
     }
 
     @PostMapping(value = "/song")
@@ -49,9 +51,14 @@ public class TelegramRestController {
         return telegramService.approveSong(songRequest);
     }
 
-    @PostMapping(value = "/address")
-    public boolean compareAddress(@RequestBody Address geoAddress){
-        return addressService.checkAddress(geoAddress);
+    @PostMapping(value = "/location")
+    public Address compareAddress(@RequestBody Address geoAddress){
+        List list = addressService.checkAddress(geoAddress);
+        if(!list.isEmpty()){
+            Address address = (Address) list.get(0);
+            return addressService.getById(address.getId());
+        }
+        return null;
     }
 
     @PostMapping("/addSongToQueue")

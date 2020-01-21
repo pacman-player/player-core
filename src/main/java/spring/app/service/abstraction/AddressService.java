@@ -17,5 +17,5 @@ public interface AddressService {
 
     Long getId(String latitude, String longitude);
 
-    boolean checkAddress(Address address);
+    List checkAddress(Address address);
 }

@@ -6,7 +6,7 @@ import spring.app.dao.abstraction.AddressDao;
 import spring.app.model.Address;
 
 import javax.persistence.NoResultException;
-import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Repository
@@ -36,18 +36,17 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
     }
 
     @Override
-    public boolean checkAddressInDB(Address address) {
+    public List checkAddressInDB(Address address) {
+        String strLong = String.format("%.3f", address.getLongitude()).replace(',', '.');
+        String strLati = String.format("%.3f", address.getLatitude()).replace(',', '.');
+        double longitude = new Double(strLong);
+        double latitude = new Double(strLati);
         List list = entityManager
-                .createQuery("SELECT * FROM Address A WHERE A.latitude = :latitude AND A.longitude = :longitude AND A.country = :country AND A.city = :city AND A.street = :street", Address.class)
-                .setParameter("latitude", address.getLatitude())
-                .setParameter("longitude", address.getLongitude())
-                .setParameter("country", address.getCountry())
-                .setParameter("city", address.getCity())
-                .setParameter("street", address.getStreet())
+                .createQuery("FROM Address WHERE latitude > :latitude AND longitude > :longitude", Address.class)
+                .setParameter("latitude", latitude)
+                .setParameter("longitude", longitude)
                 .getResultList();
-        if (list.isEmpty()) {
-            return false;
-        }
-        return true;
+
+        return list;
     }
 }
