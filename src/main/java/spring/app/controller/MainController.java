@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.*;
+import spring.app.model.Company;
+import spring.app.model.PlayList;
+import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
@@ -36,6 +39,7 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
@@ -133,10 +137,12 @@ public class MainController {
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
-            Company defaultCompany = createDefaultCompany(googleId, "google");
+            String companyName = "Default" + UUID.randomUUID().toString();
+            Company defaultCompany = createDefaultCompany(googleId, "google", companyName);
             companyService.addCompany(defaultCompany);
-            user.setCompany(companyService.getByCompanyName("Default"));
+            user.setCompany(companyService.getByCompanyName(companyName));
 
+//            user.setCompany(companyService.getById(1L));
             user = userService.getUserByGoogleId(googleId);
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -181,10 +187,12 @@ public class MainController {
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
-            Company defaultCompany = createDefaultCompany(String.valueOf(actor.getId()), "vk");
+            String companyName = "Default" + UUID.randomUUID().toString();
+            Company defaultCompany = createDefaultCompany(String.valueOf(actor.getId()), "vk", companyName);
             companyService.addCompany(defaultCompany);
-            user.setCompany(companyService.getByCompanyName("Default"));
+            user.setCompany(companyService.getByCompanyName(companyName));
 
+//            user.setCompany(companyService.getById(1L));
             user = userService.getUserByVkId(actor.getId());
             Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -192,11 +200,12 @@ public class MainController {
         return "redirect:/user";
     }
 
-    public Company createDefaultCompany (String id, String typeOfAuth) {
+    //метод добавляющий дефолтную компанию с плейлистами утро/день/вечер для вошедших через google и vk
+    public Company createDefaultCompany (String id, String typeOfAuth, String companyName) {
         Integer userId = null;
 
         Company company = new Company();
-        company.setName("Default");
+        company.setName(companyName);
         company.setStartTime(LocalTime.of(11, 0));
         company.setCloseTime(LocalTime.of(23, 0));
         company.setOrgType(orgTypeService.getOrgTypeById(1L));
@@ -208,11 +217,15 @@ public class MainController {
             company.setUser(userService.getUserByVkId(userId));
         }
         //сетим утренний плейлист
-        Set<PlayList> morningPlaylistSet = new HashSet<>();
-        PlayList morningPlayList = new PlayList();
-        playListService.addPlayList(morningPlayList);
-        morningPlaylistSet.add(playListService.getPlayList(1L));
-        company.setMorningPlayList(morningPlaylistSet);
+//        Set<PlayList> morningPlaylistSet = new HashSet<>();
+//        PlayList morningPlayList = new PlayList();
+//        playListService.addPlayList(morningPlayList);
+//        morningPlaylistSet.add(playListService.getPlayList(1L));
+//        company.setMorningPlayList(morningPlaylistSet);
+
+//        company.setMorningPlayList(new HashSet<>());
+//        Set<PlayList> morningPlayListSet = company.getMorningPlayList();
+//        morningPlayListSet.add(new PlayList("morning"));
 
         //сетим дневной плейлист
         Set<PlayList> middayPlaylistSet = new HashSet<>();
@@ -221,12 +234,20 @@ public class MainController {
         middayPlaylistSet.add(playListService.getPlayList(2L));
         company.setMiddayPlayList(middayPlaylistSet);
 
+//        company.setMiddayPlayList(new HashSet<>());
+//        Set<PlayList> middayPlayListSet = company.getMiddayPlayList();
+//        middayPlayListSet.add(new PlayList("midday"));
+
         //сетим вечерний плейлист
         Set<PlayList> eveningPlaylistSet = new HashSet<>();
         PlayList eveningPlayList = new PlayList();
         playListService.addPlayList(eveningPlayList);
         eveningPlaylistSet.add(playListService.getPlayList(3L));
         company.setEveningPlayList(eveningPlaylistSet);
+
+//        company.setEveningPlayList(new HashSet<>());
+//        Set<PlayList> eveningPlayListSet = company.getEveningPlayList();
+//        eveningPlayListSet.add(new PlayList("evening"));
 
         return company;
     }
