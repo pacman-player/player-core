@@ -1,5 +1,9 @@
 package spring.app.dto;
 
+import spring.app.model.OrgType;
+
+import java.time.LocalTime;
+
 public class CompanyDto {
 
     private Long id;
@@ -9,6 +13,12 @@ public class CompanyDto {
     private Long orgType;
     private Long userId;
 
+    public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime) {
+        this.id = id;
+        this.name = name;
+        this.startTime = String.valueOf(startTime);
+        this.closeTime = String.valueOf(closeTime);
+    }
 
     public Long getId() {
         return id;
@@ -58,5 +68,14 @@ public class CompanyDto {
         this.userId = userId;
     }
 
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startTime=" + startTime +
+                ", closeTime=" + closeTime +
+                ", orgType=" + orgType +
+                '}';
+    }
 }
 

@@ -97,6 +97,15 @@ public class Company {
         this.user = user;
         this.orgType = orgType;
     }
+    public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType, Address address) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.orgType = orgType;
+        this.address = address;
+    }
 
     public Company() {
     }

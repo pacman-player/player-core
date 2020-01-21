@@ -226,22 +226,22 @@ public class TestDataInit {
         addressService.addAddress(address);
 
         Address address2 = new Address();
-        address2.setLatitude(52.373057);
-        address2.setLongitude(4.892557);
+        address2.setLatitude(52.022176);
+        address2.setLongitude(47.809058);
         addressService.addAddress(address2);
 
         Address address3 = new Address();
-        address3.setLatitude(55.755241);
-        address3.setLongitude(37.617779);
+        address3.setLatitude(52.021544);
+        address3.setLongitude(47.807657);
         addressService.addAddress(address3);
 
         Address address4 = new Address();
-        address4.setLatitude(51.697242);
-        address4.setLongitude(39.144475);
+        address4.setLatitude(52.021855);
+        address4.setLongitude(47.810864);
         addressService.addAddress(address4);
 
         Address address5 = new Address();
-        address5.setLatitude(55.02119);
+        address5.setLatitude(52.02119);
         address5.setLongitude(47.810112);
 
         address5.setCountry("Russia");
@@ -249,5 +249,18 @@ public class TestDataInit {
         address5.setStreet("Lenina");
         address5.setHouse("4");
         addressService.addAddress(address5);
+
+        Address address6 = new Address();
+        address6.setLatitude(52.021140);
+        address6.setLongitude(47.808798);
+        addressService.addAddress(address6);
+
+        Address address7 = new Address();
+        address7.setLatitude(52.020369);
+        address7.setLongitude(47.810774);
+        addressService.addAddress(address7);
+
+        company.setAddress(address5);
+        companyService.updateCompany(company);
     }
 }

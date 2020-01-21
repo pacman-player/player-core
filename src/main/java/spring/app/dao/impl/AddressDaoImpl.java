@@ -16,6 +16,8 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
         super(Address.class);
     }
 
+    private final double INACCURACY = 00.0005;
+
     @Override
     public Long getIdByLatitudeAndLongitude(String latitude, String longitude) {
         Long id;
@@ -37,14 +39,18 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
 
     @Override
     public List checkAddressInDB(Address address) {
-        String strLong = String.format("%.3f", address.getLongitude()).replace(',', '.');
-        String strLati = String.format("%.3f", address.getLatitude()).replace(',', '.');
-        double longitude = new Double(strLong);
-        double latitude = new Double(strLati);
+
+        double maxLongitude = address.getLongitude() + INACCURACY;
+        double minLongitude = address.getLongitude() - INACCURACY;
+        double maxLatitude = address.getLatitude() + INACCURACY;
+        double minLatitude = address.getLatitude() - INACCURACY;
+
         List list = entityManager
-                .createQuery("FROM Address WHERE latitude > :latitude AND longitude > :longitude", Address.class)
-                .setParameter("latitude", latitude)
-                .setParameter("longitude", longitude)
+                .createQuery("FROM Address WHERE latitude <= :maxLati AND latitude >= :minLati AND longitude <= :maxLong AND longitude >= :minLong", Address.class)
+                .setParameter("maxLong", maxLongitude)
+                .setParameter("minLong", minLongitude)
+                .setParameter("maxLati", maxLatitude)
+                .setParameter("minLati", minLatitude)
                 .getResultList();
 
         return list;

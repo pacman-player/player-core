@@ -53,4 +53,18 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             return null;
         }
     }
+
+    @Override
+    public Company getCompanyByAddressId(long id) {
+        try {
+            return entityManager.
+                    createQuery("FROM Company c WHERE address.id = :id",
+                            Company.class).
+                    setParameter("id", id).
+                    getSingleResult();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }

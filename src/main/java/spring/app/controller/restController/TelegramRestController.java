@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.Address;
@@ -20,6 +21,9 @@ import spring.app.model.SongQueue;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -52,14 +56,29 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/location")
-    public Address compareAddress(@RequestBody Address geoAddress){
+    public List compareAddress(@RequestBody Address geoAddress){
         List list = addressService.checkAddress(geoAddress);
-        if(!list.isEmpty()){
-            Address address = (Address) list.get(0);
-            return addressService.getById(address.getId());
+        if(list.isEmpty()){
+            return null;
         }
-        return null;
+        List listCompanyId = new LinkedList<>();
+        while (!list.isEmpty()){
+            int i = 0;
+            Address address = (Address) list.get(i);
+            Company company = companyService.getCompanyByAddressId(address.getId());
+//            CompanyDto companyDto = new CompanyDto(company.getId(), company.getName(), company.getStartTime(), company.getCloseTime());
+            listCompanyId.add(company.getId());
+            list.remove(0);
+            i++;
+        }
+        return listCompanyId;
     }
+
+    @PostMapping(value = "/all_company")
+    public List approve () {
+        return companyService.getAllCompanies();
+    }
+
 
     @PostMapping("/addSongToQueue")
     public void addSongToQueue(HttpEntity httpEntity) {

@@ -63,4 +63,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Company setBannedEntity(Company company) {
         return companyDao.getCompanyWithEntityBanned(company.getId());
     }
+
+    @Override
+    public Company getCompanyByAddressId(long id) {
+        return companyDao.getCompanyByAddressId(id);
+    }
 }
