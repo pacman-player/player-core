@@ -50,6 +50,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public boolean isExistCompanyByName(String name){
+       return companyDao.isExistCompanyByName(name);
+    }
+
+    @Override
     public void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannables) {
 
         bannables.forEach(

@@ -81,11 +81,12 @@ $(document).ready(function () {
         });
     };
 
-    //addUser
-    $("#addUserBtn").click(function (event) {
+    $('#addForm').submit(function (event) {
         event.preventDefault();
-        addUser();
-        $(':input', '#addForm').val('');
+        if ($('#addForm').valid()) {
+            addUser();
+            $(':input', '#addForm').val('');
+        }
     });
 
     function addUser() {
@@ -125,13 +126,16 @@ $(document).ready(function () {
         });
     }
 
-    //updateForm
-    $("#editUserBtnm").click(function (event) {
-        event.preventDefault();
-        updateForm();
+    //отправка формы редактирования пользователя
+    $('#edit-form').on('submit', function (e) {
+        e.preventDefault();
+        if ($('.error').length === 0) {
+            updateUser();
+            $('#editUser').modal('hide')
+        }
     });
 
-    function updateForm() {
+    function updateUser() {
         var user = {
             'id': $("#updateUserId").val(),
             'email': $("#updateUserEmail").val(),
