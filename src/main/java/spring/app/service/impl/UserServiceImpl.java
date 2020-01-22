@@ -2,6 +2,7 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
@@ -18,6 +19,8 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    private PasswordEncoder passwordEncoder;
+
     private UserDao userDao;
     private RoleDao roleDao;
     private Role userRole;
@@ -27,7 +30,10 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
         this.roleDao = roleDao;
     }
-
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User getUserByLogin(String login) {
@@ -59,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
