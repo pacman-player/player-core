@@ -2,6 +2,7 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.controller.controller.NotificationController;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
@@ -12,6 +13,7 @@ import spring.app.service.abstraction.NotificationService;
 import java.util.List;
 
 @Service
+@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
