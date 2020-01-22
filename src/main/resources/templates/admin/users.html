@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="shortcut icon" href="#"/>
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
@@ -53,7 +54,9 @@
                 <li>
                     <a href="/admin/songs">Песни</a>
                 </li>
-
+                <li>
+                    <a href="/admin/vk_bot">Послать отчет</a>
+                </li>
                 <li>
                     <a href="/user">Меню пользователя</a>
                 </li>
@@ -100,7 +103,6 @@
                                             <div id="editUser" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
-
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-hidden="true">×
@@ -135,40 +137,54 @@
                                                                                 <input type="hidden"
                                                                                        id="id-input-edit-hidden"
                                                                                        name="id"/>
-
-                                                                                <label for="updateUserEmail">Почта</label>
-                                                                                <input id="updateUserEmail"
-                                                                                       class="form-control" type="email"
-                                                                                       name="email"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserName">Логин</label>
-                                                                                <input id="updateUserName"
-                                                                                       class="form-control" type="text"
-                                                                                       name="login"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserPass">Пароль</label>
-                                                                                <input id="updateUserPass"
-                                                                                       class="form-control" type="text"
-                                                                                       name="password"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserRole">Роль</label>
-                                                                                <select class="form-control"
-                                                                                        id="updateUserRole" name="role">
-                                                                                    <option value="user">USER</option>
-                                                                                    <option value="admin">ADMIN</option>
-                                                                                    <option value="admin, user">ADMIN,
-                                                                                        USER
-                                                                                    </option>
-                                                                                </select>
+                                                                                <div id="email">
+                                                                                    <label for="updateUserEmail">Почта</label>
+                                                                                    <input id="updateUserEmail"
+                                                                                           class="form-control"
+                                                                                           type="email"
+                                                                                           name="email"
+                                                                                           required="required"/>
+                                                                                    <div id="email-error"></div>
+                                                                                </div>
+                                                                                <div id="login">
+                                                                                    <label for="updateUserName">Логин</label>
+                                                                                    <input id="updateUserName"
+                                                                                           class="form-control"
+                                                                                           type="text"
+                                                                                           name="login"
+                                                                                           required="required"/>
+                                                                                    <div id="login-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserPass">Пароль</label>
+                                                                                    <input id="updateUserPass"
+                                                                                           class="form-control"
+                                                                                           type="text"
+                                                                                           name="password"
+                                                                                           required="required"/>
+                                                                                    <div id="password-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserRole">Роль</label>
+                                                                                    <select class="form-control"
+                                                                                            id="updateUserRole"
+                                                                                            name="role">
+                                                                                        <option value="user">USER
+                                                                                        </option>
+                                                                                        <option value="admin">ADMIN
+                                                                                        </option>
+                                                                                        <option value="admin, user">
+                                                                                            ADMIN,
+                                                                                            USER
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
                                                                                 <div class="modal-footer">
                                                                                     <button type="button"
                                                                                             class="btn btn-default"
                                                                                             data-dismiss="modal">Закрыть
                                                                                     </button>
-                                                                                    <button id="editUserBtn"
+                                                                                    <button id="editUserBtnModal"
                                                                                             class="btn btn-primary"
                                                                                             type="submit">Изменить
                                                                                     </button>
@@ -179,107 +195,91 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <!--                                                        <div class="modal-footer">-->
-                                                        <!--                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>-->
-                                                        <!--                                                            <button id="editUserBtn" class="btn btn-primary">Изменить</button>-->
-                                                        <!--                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-
+                                    <tbody></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!--добавление юзеров-->
-                        <div role="tabpanel" class="tab-pane" id="add-user-panel">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <!--Если ненужно удалить-->
-                                                    <!--                                                    <div id="error-add-message" class="alert alert-danger hidden">-->
-                                                    <!--                                                        <h3>Error!</h3>-->
-                                                    <!--                                                        <div id="error-message">Введёные данные не валидны или-->
-                                                    <!--                                                            пользователь-->
-                                                    <!--                                                            с таким email уже существует-->
-                                                    <!--                                                        </div>-->
-                                                    <!--                                                    </div>-->
-                                                    <!--Если ненужно удалить-->
-                                                    <!--                                                    <div id="success-add-message" class="alert alert-success hidden">-->
-                                                    <!--                                                        <h3>Success!</h3>-->
-                                                    <!--                                                        <div id="success-message">Пользователь успешно добавлен!</div>-->
-                                                    <!--                                                    </div>-->
-
-                                                    <form id="addForm">
-                                                        <div class="form-group text-center edit-form">
-
-                                                            <label for="addEmail">Почта</label>
-                                                            <input id="addEmail" class="form-control" type="text"
-                                                                   placeholder="Enter email" name="email"/>
-
-                                                            <label for="addLogin">Логин</label>
-                                                            <input id="addLogin" class="form-control" type="text"
-                                                                   placeholder="Login" name="login"/>
-
-                                                            <label for="addPassword">Пароль</label>
-                                                            <input id="addPassword" class="form-control"
-                                                                   type="password" placeholder="Password"
-                                                                   name="password"/>
-
-                                                            <label for="addRole">Роль</label>
-                                                            <select class="form-control" id="addRole"
-                                                                    name="role">
-                                                                <option value="user">User</option>
-                                                                <option value="admin">Admin</option>
-                                                                <option value="admin, user">Admin, User</option>
-                                                            </select>
-
-                                                            <button type="submit" id="addUserBtn"
-                                                                    class="btn btn-success btn-lg">
-                                                                Добавить
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                    <!--добавление юзеров-->
+                    <div role="tabpanel" class="tab-pane" id="add-user-panel">
+                        <div class="panel panel-default table-panel">
+                            <div class="tab-content">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                <form id="addForm">
+                                                    <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addEmail">Почта</label>
+                                                                <input id="addEmail" class="form-control" type="text"
+                                                                       required="required" placeholder="Enter email"
+                                                                       name="email"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addLogin">Логин</label>
+                                                                <input id="addLogin" class="form-control" type="text"
+                                                                       required="required" placeholder="Login"
+                                                                       name="login"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addPassword">Пароль</label>
+                                                                <input id="addPassword" class="form-control"
+                                                                       type="password" placeholder="Password"
+                                                                       required="required" name="password"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addRole">Роль</label>
+                                                                <select class="form-control" id="addRole"
+                                                                        name="role" required="required">
+                                                                    <option value="user" selected="selected">User
+                                                                    </option>
+                                                                    <option value="admin">Admin</option>
+                                                                    <option value="admin, user">Admin, User</option>
+                                                                </select>
+                                                            </div>
+                                                        <button type="submit" id="addUserBtn"
+                                                                class="btn btn-success btn-lg">
+                                                            Добавить
+                                                        </button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
+            </div>
 
-                <!--модалка - компания-->
-                <div id="editCompany" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+            <!--модалка - компания-->
+            <div id="editCompany" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Информация о компании</h4>
-                            </div>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Информация о компании</h4>
+                        </div>
 
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                            <form id="company-form">
-                                                <div class="form-group text-center edit-form">
+                                        <form id="company-form">
+                                            <div class="form-group text-center edit-form">
                                                     <div class="modal-body" id="company-modal-body"></div>
                                                     <div class="modal-footer" id="modal-footer"></div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -290,14 +290,24 @@
         </div>
     </div>
 </div>
+</div>
 
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/formValidation.js" rel="script"></script>
 
 </body>
 </html>
