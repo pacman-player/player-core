@@ -24,14 +24,14 @@ public class Address {
     private String house;
 
     @Column(name = "latitude")
-    private String latitude;
+    private double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     public Address() {}
 
-    public Address(String country, String city, String street, String house, String latitude, String longitude) {
+    public Address(String country, String city, String street, String house, double latitude, double longitude) {
         this.country = country;
         this.city = city;
         this.street = street;
@@ -40,7 +40,7 @@ public class Address {
         this.longitude = longitude;
     }
 
-    public Address(Long id, String country, String city, String street, String house, String latitude, String longitude) {
+    public Address(Long id, String country, String city, String street, String house, double latitude, double longitude) {
         this.country = country;
         this.city = city;
         this.street = street;
@@ -89,19 +89,19 @@ public class Address {
         this.house = house;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

@@ -13,4 +13,6 @@ public interface CompanyDao extends GenericDao<Long, Company> {
      * @return Company
      */
     Company getCompanyWithEntityBanned(long id);
+
+    Company getCompanyByAddressId(long id);
 }

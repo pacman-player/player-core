@@ -6,6 +6,8 @@ import spring.app.dao.abstraction.AddressDao;
 import spring.app.model.Address;
 
 import javax.persistence.NoResultException;
+import java.text.DecimalFormat;
+import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -13,6 +15,8 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
     public AddressDaoImpl() {
         super(Address.class);
     }
+
+    private final double INACCURACY = 00.0005;
 
     @Override
     public Long getIdByLatitudeAndLongitude(String latitude, String longitude) {
@@ -31,5 +35,24 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
         }
 
         return id;
+    }
+
+    @Override
+    public List checkAddressInDB(Address address) {
+
+        double maxLongitude = address.getLongitude() + INACCURACY;
+        double minLongitude = address.getLongitude() - INACCURACY;
+        double maxLatitude = address.getLatitude() + INACCURACY;
+        double minLatitude = address.getLatitude() - INACCURACY;
+
+        List list = entityManager
+                .createQuery("FROM Address WHERE latitude <= :maxLati AND latitude >= :minLati AND longitude <= :maxLong AND longitude >= :minLong", Address.class)
+                .setParameter("maxLong", maxLongitude)
+                .setParameter("minLong", minLongitude)
+                .setParameter("maxLati", maxLatitude)
+                .setParameter("minLati", minLatitude)
+                .getResultList();
+
+        return list;
     }
 }

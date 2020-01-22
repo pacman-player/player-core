@@ -97,6 +97,15 @@ public class Company {
         this.user = user;
         this.orgType = orgType;
     }
+    public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType, Address address) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.orgType = orgType;
+        this.address = address;
+    }
 
     public Company() {
     }
@@ -206,14 +215,6 @@ public class Company {
         this.songQueues = songQueues;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public void addBannedAuthor(Author author) {
         this.bannedAuthor.add(author);
     }
@@ -224,6 +225,14 @@ public class Company {
 
     public void addBannedGenre(Genre genre) {
         this.bannedGenres.add(genre);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

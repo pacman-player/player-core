@@ -16,4 +16,6 @@ public interface AddressService {
     List<Address> getAllAddresses();
 
     Long getId(String latitude, String longitude);
+
+    List checkAddress(Address address);
 }
