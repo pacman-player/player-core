@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class CompanyDaoImpl extends AbstractDao<Long, Company> implements CompanyDao {
 
     @PersistenceContext

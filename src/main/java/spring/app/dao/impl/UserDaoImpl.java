@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 

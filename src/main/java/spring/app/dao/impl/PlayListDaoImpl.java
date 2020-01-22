@@ -7,6 +7,7 @@ import spring.app.model.PlayList;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements PlayListDao {
 
     PlayListDaoImpl() {

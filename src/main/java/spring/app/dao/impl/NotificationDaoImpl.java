@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class NotificationDaoImpl extends AbstractDao<Long, Notification> implements NotificationDao {
     public NotificationDaoImpl() {
         super(Notification.class);
