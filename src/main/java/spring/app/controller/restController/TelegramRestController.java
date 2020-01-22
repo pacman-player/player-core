@@ -23,6 +23,7 @@ import spring.app.service.abstraction.*;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,18 +57,17 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/location")
-    public List compareAddress(@RequestBody Address geoAddress){
+    public HashMap compareAddress(@RequestBody Address geoAddress){
         List list = addressService.checkAddress(geoAddress);
-        if(list.isEmpty()){
-            return null;
-        }
-        List listCompanyId = new LinkedList<>();
+        HashMap listCompanyId = new HashMap();
         while (!list.isEmpty()){
             int i = 0;
+            Long ii = 1L;
             Address address = (Address) list.get(i);
             Company company = companyService.getCompanyByAddressId(address.getId());
-//            CompanyDto companyDto = new CompanyDto(company.getId(), company.getName(), company.getStartTime(), company.getCloseTime());
-            listCompanyId.add(company.getId());
+            CompanyDto companyDto = new CompanyDto(ii, company.getId(), company.getName());
+            listCompanyId.put(ii, companyDto.getCompanyId());
+            listCompanyId.put(ii+1, companyDto.getName());
             list.remove(0);
             i++;
         }
