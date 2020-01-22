@@ -33,4 +33,6 @@ public interface CompanyService {
      * заполняет поля с заблокированными сущностями песен/жанров/авторов у компании
      */
     Company setBannedEntity(Company company);
+
+    Company getCompanyByAddressId(long id);
 }
