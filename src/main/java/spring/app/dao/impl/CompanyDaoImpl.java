@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class CompanyDaoImpl extends AbstractDao<Long, Company> implements CompanyDao {
 
     @PersistenceContext
@@ -36,6 +36,14 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             return null;
         }
         return company;
+    }
+    @Override
+    public boolean isExistCompanyByName(String name) {
+        long count = (long)entityManager.createQuery(
+                "select count(c) from Company c WHERE c.name=:name")
+                .setParameter("name", name)
+                .getSingleResult();
+        return count > 0;
     }
 
     @Override

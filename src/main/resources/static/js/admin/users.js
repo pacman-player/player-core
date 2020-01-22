@@ -81,11 +81,12 @@ $(document).ready(function () {
         });
     };
 
-    //addUser
-    $("#addUserBtn").click(function (event) {
+    $('#addForm').submit(function (event) {
         event.preventDefault();
-        addUser();
-        $(':input', '#addForm').val('');
+        if ($('#addForm').valid()) {
+            addUser();
+            $(':input', '#addForm').val('');
+        }
     });
 
     function addUser() {
@@ -125,13 +126,16 @@ $(document).ready(function () {
         });
     }
 
-    //updateForm
-    $("#editUserBtnm").click(function (event) {
-        event.preventDefault();
-        updateForm();
+    //отправка формы редактирования пользователя
+    $('#edit-form').on('submit', function (e) {
+        e.preventDefault();
+        if ($('.error').length === 0) {
+            updateUser();
+            $('#editUser').modal('hide')
+        }
     });
 
-    function updateForm() {
+    function updateUser() {
         var user = {
             'id': $("#updateUserId").val(),
             'email': $("#updateUserEmail").val(),
@@ -167,8 +171,8 @@ $(document).ready(function () {
         });
     }
 
-    $("#editCompanyBtn").click(function (event) {
-        event.preventDefault();
+    $(document).on('click', '#editCompanyBtn', function (e) {
+        e.preventDefault();
         updateCompanyForm();
     });
 
@@ -201,6 +205,7 @@ $(document).ready(function () {
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании сохранены",
                         'user-panel');
+                    $('#editCompany').modal('toggle');
                 },
             error:
                 function (xhr, status, error) {
@@ -278,31 +283,78 @@ $(document).ready(function () {
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
 
+        let companyList;
         $.ajax({
             url: "/api/admin/all_establishments",
             method: "GET",
             dataType: "json",
             success: function (data) {
-                var selectBody = $('#updateOrgType');
+                /*var selectBody = $('#updateOrgType');*/
                 $(data).each(function (i, org) {
-                    selectBody.append(`
-            <option value="${org.id}" >${org.name}</option>
-            `);
+                    companyList = companyList + `<option value="${org.id}" >${org.name}</option>`;
                 })
             },
-        })
+
+        });
 
         $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {
+                $('#company-modal-body').empty();
+                var modalInnerText = '';
+                modalInnerText = modalInnerText + '<label for="updateCompanyId">ID компании</label>\n' +
+                    '<input id="updateCompanyId" class="form-control"\n' +
+                    'disabled="disabled" type="text"\n' +
+                    'name="id" required=""/>\n' +
+                    '\n' +
+                    '<label for="updateIdUser">ID пользователя</label>\n' +
+                    '<input id="updateIdUser" class="form-control"\n' +
+                    'disabled="disabled"\n' +
+                    'type="text" name="id-user" required=""/>\n' +
+                    '\n' +
+                    '<label for="updateNameCompany">Компания</label>\n' +
+                    '<input id="updateNameCompany" class="form-control" type="text"\n' +
+                    'name="company"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateStartTime">Время открытия</label>\n' +
+                    '<input id="updateStartTime" class="form-control" type="time"\n' +
+                    'name="start-time"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateCloseTime">Время закрытия</label>\n' +
+                    '<input id="updateCloseTime" class="form-control" type="time"\n' +
+                    'name="close-time"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateOrgType">Тип компании</label>\n' +
+                    '<select id="updateOrgType" class="form-control" name="role">\n' +
+                    '</select>\n';
+
+                $('#company-modal-body').append(modalInnerText);
+
                 $('#updateCompanyId').val(data.id);
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
                 $('#updateIdUser').val(data.user.id);
+                $('#updateOrgType').append(companyList);
+
                 $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
+
+                $('#modal-footer').empty();
+                var buttons = '<button type="button" class="btn btn-default" data-dismiss="modal" id = "modal-footer-clsbtn">Close</button>\n' +
+                    '<button id="editCompanyBtn" class="btn btn-primary" type="submit">Edit company</button>';
+
+                $('#modal-footer').append(buttons);
+
+            },
+            error: function () {
+                $('#company-modal-body').empty().append("Пользователю не присвоена ни одна компания");
+                var buttons = '<button type="button" class="btn btn-default" data-dismiss="modal" id = "modal-footer-clsbtn">Close</button>';
+                $('#modal-footer').empty().append(buttons);
             }
         })
     });

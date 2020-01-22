@@ -3,6 +3,7 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.dto.UserRegistrationDto;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
@@ -85,5 +87,24 @@ public class UserServiceImpl implements UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User authUser = (User) principal;
         return authUser.getId();
+    }
+    @Override
+    public boolean isExistUserByEmail(String email){
+        return userDao.isExistUserByEmail(email);
+    }
+
+    @Override
+    public boolean isExistUserByEmail(String email, long userId) {
+        return userDao.isExistUserByEmail(email, userId);
+    }
+
+    @Override
+    public boolean isExistUserByLogin(String login){
+        return userDao.isExistUserByLogin(login);
+    }
+
+    @Override
+    public boolean isExistUserByLogin(String login, long userId) {
+        return userDao.isExistUserByLogin(login, userId);
     }
 }

@@ -12,7 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements SongQueueDao {
     @PersistenceContext
     EntityManager entityManager;
