@@ -13,7 +13,6 @@ import spring.app.service.abstraction.NotificationService;
 import java.util.List;
 
 @Service
-@Transactional
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Service
-@Transactional
 public class VkBotServiceImpl implements VkBotService {
 
     private VkApiClient vkApiClient;
