@@ -17,6 +17,7 @@ import spring.app.service.abstraction.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -59,24 +60,30 @@ public class RegistrationRestController {
         company.setUser(userByLogin);
 
         //сетим утренний плейлист
-        Set<PlayList> morningPlaylistSet = new HashSet<>();
         PlayList morningPlayList = new PlayList();
+        String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
+        morningPlayList.setName(morningPlaylistName);
         playListService.addPlayList(morningPlayList);
-        morningPlaylistSet.add(playListService.getPlayList(1L));
+        Set<PlayList> morningPlaylistSet = new HashSet<>();
+        morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
         company.setMorningPlayList(morningPlaylistSet);
 
         //сетим дневной плейлист
-        Set<PlayList> middayPlaylistSet = new HashSet<>();
         PlayList middayPlayList = new PlayList();
+        String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
+        middayPlayList.setName(middayPlaylistName);
         playListService.addPlayList(middayPlayList);
-        middayPlaylistSet.add(playListService.getPlayList(2L));
+        Set<PlayList> middayPlaylistSet = new HashSet<>();
+        middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
         company.setMiddayPlayList(middayPlaylistSet);
 
         //сетим вечерний плейлист
-        Set<PlayList> eveningPlaylistSet = new HashSet<>();
         PlayList eveningPlayList = new PlayList();
+        String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
+        eveningPlayList.setName(eveningPlaylistName);
         playListService.addPlayList(eveningPlayList);
-        eveningPlaylistSet.add(playListService.getPlayList(3L));
+        Set<PlayList> eveningPlaylistSet = new HashSet<>();
+        eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
         company.setEveningPlayList(eveningPlaylistSet);
 
         companyService.addCompany(company);

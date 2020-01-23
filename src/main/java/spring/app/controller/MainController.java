@@ -268,58 +268,43 @@ public class MainController {
     }
 
     //метод добавляющий дефолтную компанию с плейлистами утро/день/вечер для вошедших через google и vk
-    public Company createDefaultCompany (String id, String typeOfAuth, String companyName) {
-        Integer userId = null;
-
-        Company company = new Company();
-        company.setName(companyName);
-        company.setStartTime(LocalTime.of(11, 0));
-        company.setCloseTime(LocalTime.of(23, 0));
-        company.setOrgType(orgTypeService.getOrgTypeById(1L));
-        if (typeOfAuth.equals("google")) {
-            company.setUser(userService.getUserByGoogleId(id));
-        }
-        if (typeOfAuth.equals("vk")) {
-            userId = Integer.parseInt(id);
-            company.setUser(userService.getUserByVkId(userId));
-        }
-        //сетим утренний плейлист
-
-        PlayList morningPlayList = new PlayList();
-        morningPlayList.setName("morning");
-        playListService.addPlayList(morningPlayList);
-
-        Set<PlayList> morningPlaylistSet = new HashSet<>();
-        morningPlaylistSet.add(morningPlayList);
-
-        company.setMorningPlayList(morningPlaylistSet);
-
-//        company.setMorningPlayList(new HashSet<>());
-//        Set<PlayList> morningPlayListSet = company.getMorningPlayList();
-//        morningPlayListSet.add(new PlayList("morning"));
-
-        //сетим дневной плейлист
-        Set<PlayList> middayPlaylistSet = new HashSet<>();
-        PlayList middayPlayList = new PlayList();
-        playListService.addPlayList(middayPlayList);
-        middayPlaylistSet.add(playListService.getPlayList(2L));
-        company.setMiddayPlayList(middayPlaylistSet);
-
-//        company.setMiddayPlayList(new HashSet<>());
-//        Set<PlayList> middayPlayListSet = company.getMiddayPlayList();
-//        middayPlayListSet.add(new PlayList("midday"));
-
-        //сетим вечерний плейлист
-        Set<PlayList> eveningPlaylistSet = new HashSet<>();
-        PlayList eveningPlayList = new PlayList();
-        playListService.addPlayList(eveningPlayList);
-        eveningPlaylistSet.add(playListService.getPlayList(3L));
-        company.setEveningPlayList(eveningPlaylistSet);
-
-//        company.setEveningPlayList(new HashSet<>());
-//        Set<PlayList> eveningPlayListSet = company.getEveningPlayList();
-//        eveningPlayListSet.add(new PlayList("evening"));
-
-        return company;
-    }
+//    public Company createDefaultCompany (String id, String typeOfAuth, String companyName) {
+//        Integer userId = null;
+//
+//        Company company = new Company();
+//        company.setName(companyName);
+//        company.setStartTime(LocalTime.of(11, 0));
+//        company.setCloseTime(LocalTime.of(23, 0));
+//        company.setOrgType(orgTypeService.getOrgTypeById(1L));
+//        if (typeOfAuth.equals("google")) {
+//            company.setUser(userService.getUserByGoogleId(id));
+//        }
+//        if (typeOfAuth.equals("vk")) {
+//            userId = Integer.parseInt(id);
+//            company.setUser(userService.getUserByVkId(userId));
+//        }
+//        //сетим утренний плейлист
+//        PlayList morningPlayList = new PlayList();
+//        morningPlayList.setName("morning");
+//        playListService.addPlayList(morningPlayList);
+//        Set<PlayList> morningPlaylistSet = new HashSet<>();
+//        morningPlaylistSet.add(morningPlayList);
+//        company.setMorningPlayList(morningPlaylistSet);
+//
+//        //сетим дневной плейлист
+//        Set<PlayList> middayPlaylistSet = new HashSet<>();
+//        PlayList middayPlayList = new PlayList();
+//        playListService.addPlayList(middayPlayList);
+//        middayPlaylistSet.add(playListService.getPlayList(2L));
+//        company.setMiddayPlayList(middayPlaylistSet);
+//
+//        //сетим вечерний плейлист
+//        Set<PlayList> eveningPlaylistSet = new HashSet<>();
+//        PlayList eveningPlayList = new PlayList();
+//        playListService.addPlayList(eveningPlayList);
+//        eveningPlaylistSet.add(playListService.getPlayList(3L));
+//        company.setEveningPlayList(eveningPlaylistSet);
+//
+//        return company;
+//    }
 }
