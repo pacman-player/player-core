@@ -36,10 +36,7 @@ import spring.app.service.abstraction.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Controller("/test")
 public class MainController {
@@ -137,12 +134,47 @@ public class MainController {
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
-            String companyName = "Default" + UUID.randomUUID().toString();
-            Company defaultCompany = createDefaultCompany(googleId, "google", companyName);
-            companyService.addCompany(defaultCompany);
+            Company company = new Company();
+            String companyName = "Default(" + UUID.randomUUID().toString() + ")";
+            company.setName(companyName);
+            company.setStartTime(LocalTime.of(11, 0));
+            company.setCloseTime(LocalTime.of(23, 0));
+            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setUser(userService.getUserByGoogleId(googleId));
+
+            //сетим утренний плейлист
+            PlayList morningPlayList = new PlayList();
+//            morningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
+            morningPlayList.setName(morningPlaylistName);
+            playListService.addPlayList(morningPlayList);
+            Set<PlayList> morningPlaylistSet = new HashSet<>();
+            morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
+            company.setMorningPlayList(morningPlaylistSet);
+
+            //сетим дневной плейлист
+            PlayList middayPlayList = new PlayList();
+//            middayPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
+            middayPlayList.setName(middayPlaylistName);
+            playListService.addPlayList(middayPlayList);
+            Set<PlayList> middayPlaylistSet = new HashSet<>();
+            middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
+            company.setMiddayPlayList(middayPlaylistSet);
+
+            //сетим вечерний плейлист
+            PlayList eveningPlayList = new PlayList();
+//            eveningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
+            eveningPlayList.setName(eveningPlaylistName);
+            playListService.addPlayList(eveningPlayList);
+            Set<PlayList> eveningPlaylistSet = new HashSet<>();
+            eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
+            company.setEveningPlayList(eveningPlaylistSet);
+
+            companyService.addCompany(company);
             user.setCompany(companyService.getByCompanyName(companyName));
 
-//            user.setCompany(companyService.getById(1L));
             user = userService.getUserByGoogleId(googleId);
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -187,16 +219,51 @@ public class MainController {
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
-            String companyName = "Default" + UUID.randomUUID().toString();
-            Company defaultCompany = createDefaultCompany(String.valueOf(actor.getId()), "vk", companyName);
-            companyService.addCompany(defaultCompany);
+            Company company = new Company();
+            String companyName = "Default(" + UUID.randomUUID().toString() + ")";
+            company.setName(companyName);
+            company.setStartTime(LocalTime.of(11, 0));
+            company.setCloseTime(LocalTime.of(23, 0));
+            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setUser(userService.getUserByVkId(actor.getId()));
+
+            //сетим утренний плейлист
+            PlayList morningPlayList = new PlayList();
+//            morningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
+            morningPlayList.setName(morningPlaylistName);
+            playListService.addPlayList(morningPlayList);
+            Set<PlayList> morningPlaylistSet = new HashSet<>();
+            morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
+            company.setMorningPlayList(morningPlaylistSet);
+
+            //сетим дневной плейлист
+            PlayList middayPlayList = new PlayList();
+//            middayPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
+            middayPlayList.setName(middayPlaylistName);
+            playListService.addPlayList(middayPlayList);
+            Set<PlayList> middayPlaylistSet = new HashSet<>();
+            middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
+            company.setMiddayPlayList(middayPlaylistSet);
+
+            //сетим вечерний плейлист
+            PlayList eveningPlayList = new PlayList();
+//            eveningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
+            String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
+            eveningPlayList.setName(eveningPlaylistName);
+            playListService.addPlayList(eveningPlayList);
+            Set<PlayList> eveningPlaylistSet = new HashSet<>();
+            eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
+            company.setEveningPlayList(eveningPlaylistSet);
+
+            companyService.addCompany(company);
             user.setCompany(companyService.getByCompanyName(companyName));
 
-//            user.setCompany(companyService.getById(1L));
             user = userService.getUserByVkId(actor.getId());
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
         }
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
 
@@ -217,10 +284,14 @@ public class MainController {
             company.setUser(userService.getUserByVkId(userId));
         }
         //сетим утренний плейлист
-        Set<PlayList> morningPlaylistSet = new HashSet<>();
+
         PlayList morningPlayList = new PlayList();
+        morningPlayList.setName("morning");
         playListService.addPlayList(morningPlayList);
-        morningPlaylistSet.add(playListService.getPlayList(1L));
+
+        Set<PlayList> morningPlaylistSet = new HashSet<>();
+        morningPlaylistSet.add(morningPlayList);
+
         company.setMorningPlayList(morningPlaylistSet);
 
 //        company.setMorningPlayList(new HashSet<>());

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,31 +49,31 @@ public class TestDataInit {
         roleUser.setName("USER");
         roleService.addRole(roleUser);
 
-        User admin = new User();
-        admin.setLogin("admin");
-        admin.setPassword("admin");
-        admin.setEmail("admin@gmail.com");
-        Set<Role> adminRoles = new HashSet<>();
-        adminRoles.add(roleAdmin);
-        adminRoles.add(roleUser);
-        admin.setRoles(adminRoles);
-        userService.addUser(admin);
+//        User admin = new User();
+//        admin.setLogin("admin");
+//        admin.setPassword("admin");
+//        admin.setEmail("admin@gmail.com");
+//        Set<Role> adminRoles = new HashSet<>();
+//        adminRoles.add(roleAdmin);
+//        adminRoles.add(roleUser);
+//        admin.setRoles(adminRoles);
+//        userService.addUser(admin);
+//
+//        User admin1 = new User();
+//        admin1.setLogin("admin1");
+//        admin1.setPassword("admin");
+//        admin1.setEmail("admin1@gmail.com");
+//        admin1.setRoles(adminRoles);
+//        userService.addUser(admin1);
 
-        User admin1 = new User();
-        admin1.setLogin("admin1");
-        admin1.setPassword("admin");
-        admin1.setEmail("admin1@gmail.com");
-        admin1.setRoles(adminRoles);
-        userService.addUser(admin1);
-
-        User user = new User();
-        user.setLogin("user");
-        user.setPassword("user");
-        user.setEmail("user@gmail.com");
-        Set<Role> userRoles = new HashSet<>();
-        userRoles.add(roleUser);
-        user.setRoles(userRoles);
-        userService.addUser(user);
+//        User user = new User();
+//        user.setLogin("user");
+//        user.setPassword("user");
+//        user.setEmail("user@gmail.com");
+//        Set<Role> userRoles = new HashSet<>();
+//        userRoles.add(roleUser);
+//        user.setRoles(userRoles);
+//        userService.addUser(user);
 
         Genre genre = new Genre("world");
         genreService.addGenre(genre);
@@ -168,48 +167,48 @@ public class TestDataInit {
         songCompilationService.addSongСompilation(songCompilation4);
 
 
-        PlayList playList = new PlayList();
-        playList.setName("All day playlist");
-        playListService.addPlayList(playList);
+//        PlayList playList = new PlayList();
+//        playList.setName("All day playlist");
+//        playListService.addPlayList(playList);
+//
+//        PlayList playList1 = new PlayList();
+//        playList1.setName("Morning playlist");
+//        playListService.addPlayList(playList1);
+//
+//        PlayList playList2 = new PlayList();
+//        playList2.setName("Midday playlist");
+//        playListService.addPlayList(playList2);
+//
+//        PlayList playList3 = new PlayList();
+//        playList3.setName("Evening playlist");
+//        playListService.addPlayList(playList3);
 
-        PlayList playList1 = new PlayList();
-        playList1.setName("Morning playlist");
-        playListService.addPlayList(playList1);
+//        Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
 
-        PlayList playList2 = new PlayList();
-        playList2.setName("Midday playlist");
-        playListService.addPlayList(playList2);
+//        Set<PlayList> allDayPlayLists = new HashSet<>();
+//        allDayPlayLists.add(playList);
+//
+//        Set<PlayList> morningPlayLists = new HashSet<>();
+//        morningPlayLists.add(playList1);
+//
+//        Set<PlayList> middayPlayLists = new HashSet<>();
+//        middayPlayLists.add(playList2);
+//
+//        Set<PlayList> eveningPlayLists = new HashSet<>();
+//        eveningPlayLists.add(playList3);
 
-        PlayList playList3 = new PlayList();
-        playList3.setName("Evening playlist");
-        playListService.addPlayList(playList3);
+//        company.setMorningPlayList(morningPlayLists);
+//        company.setMiddayPlayList(middayPlayLists);
+//        company.setEveningPlayList(eveningPlayLists);
+//        Set<Genre> bannedGenres = new HashSet<>();
+//        bannedGenres.add(genre1);
+//        company.setBannedGenres(bannedGenres);
+//        companyService.addCompany(company);
 
-        Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
-
-        Set<PlayList> allDayPlayLists = new HashSet<>();
-        allDayPlayLists.add(playList);
-
-        Set<PlayList> morningPlayLists = new HashSet<>();
-        morningPlayLists.add(playList1);
-
-        Set<PlayList> middayPlayLists = new HashSet<>();
-        middayPlayLists.add(playList2);
-
-        Set<PlayList> eveningPlayLists = new HashSet<>();
-        eveningPlayLists.add(playList3);
-
-        company.setMorningPlayList(morningPlayLists);
-        company.setMiddayPlayList(middayPlayLists);
-        company.setEveningPlayList(eveningPlayLists);
-        Set<Genre> bannedGenres = new HashSet<>();
-        bannedGenres.add(genre1);
-        company.setBannedGenres(bannedGenres);
-        companyService.addCompany(company);
-
-        SongQueue songQueue = new SongQueue();
-        songQueue.setPosition(1L);
-        songQueue.setSong(song);
-        songQueue.setCompany(company);
-        songQueueService.addSongQueue(songQueue);
+//        SongQueue songQueue = new SongQueue();
+//        songQueue.setPosition(1L);
+//        songQueue.setSong(song);
+//        songQueue.setCompany(company);
+//        songQueueService.addSongQueue(songQueue);
     }
 }
