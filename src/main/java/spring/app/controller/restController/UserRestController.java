@@ -25,11 +25,13 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
-    private final UserService userService;
+    private final RoleService roleService;
+	private final UserService userService;
+
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
-    private final AddressService addressService;
+	private final AddressService addressService;
 
     private String PASSWORD = "";
 
@@ -37,17 +39,20 @@ public class UserRestController {
     public EmailSender emailSender;
 
     @Autowired
-    public UserRestController(
+    public UserRestController(RoleService roleService,
                               UserService userService,
                               CompanyService companyService,
                               GenreService genreService,
+                              AuthorService authorService,
+                              SongService songService,
                               SongCompilationService songCompilation,
                               AddressService addressService) {
+		this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
-        this.addressService = addressService;
+		this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -136,7 +141,7 @@ public class UserRestController {
         companyService.updateCompany(companyForUpdate);
     }
 
-    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);

@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class AddressDaoImpl extends AbstractDao<Long, Address> implements AddressDao {
     public AddressDaoImpl() {
         super(Address.class);
