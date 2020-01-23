@@ -16,7 +16,7 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
         super(Address.class);
     }
 
-    private final double INACCURACY = 00.0005;
+    private final double INACCURACY = 00.005;
 
     @Override
     public Long getIdByLatitudeAndLongitude(String latitude, String longitude) {
