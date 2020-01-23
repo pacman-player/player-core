@@ -14,7 +14,6 @@ import spring.app.service.abstraction.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -62,29 +61,26 @@ public class RegistrationRestController {
 
         //сетим утренний плейлист
         PlayList morningPlayList = new PlayList();
-        String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
-        morningPlayList.setName(morningPlaylistName);
+        morningPlayList.setName("Morning playlist");
         playListService.addPlayList(morningPlayList);
         Set<PlayList> morningPlaylistSet = new HashSet<>();
-        morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
+        morningPlaylistSet.add(morningPlayList);
         company.setMorningPlayList(morningPlaylistSet);
 
         //сетим дневной плейлист
         PlayList middayPlayList = new PlayList();
-        String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
-        middayPlayList.setName(middayPlaylistName);
+        middayPlayList.setName("Midday playlist");
         playListService.addPlayList(middayPlayList);
         Set<PlayList> middayPlaylistSet = new HashSet<>();
-        middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
+        middayPlaylistSet.add(middayPlayList);
         company.setMiddayPlayList(middayPlaylistSet);
 
         //сетим вечерний плейлист
         PlayList eveningPlayList = new PlayList();
-        String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
-        eveningPlayList.setName(eveningPlaylistName);
+        eveningPlayList.setName("Evening playlist");
         playListService.addPlayList(eveningPlayList);
         Set<PlayList> eveningPlaylistSet = new HashSet<>();
-        eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
+        eveningPlaylistSet.add(eveningPlayList);
         company.setEveningPlayList(eveningPlaylistSet);
 
         companyService.addCompany(company);

@@ -27,10 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.Company;
-import spring.app.model.PlayList;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
@@ -48,6 +45,7 @@ public class MainController {
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
+    private final AddressService addressService;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -68,13 +66,14 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
+        this.addressService = addressService;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -144,32 +143,26 @@ public class MainController {
 
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
-//            morningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
-            String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
-            morningPlayList.setName(morningPlaylistName);
+            morningPlayList.setName("Morning playlist");
             playListService.addPlayList(morningPlayList);
             Set<PlayList> morningPlaylistSet = new HashSet<>();
-            morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
+            morningPlaylistSet.add(morningPlayList);
             company.setMorningPlayList(morningPlaylistSet);
 
             //сетим дневной плейлист
             PlayList middayPlayList = new PlayList();
-//            middayPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
-            String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
-            middayPlayList.setName(middayPlaylistName);
+            middayPlayList.setName("Midday playlist");
             playListService.addPlayList(middayPlayList);
             Set<PlayList> middayPlaylistSet = new HashSet<>();
-            middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
+            middayPlaylistSet.add(middayPlayList);
             company.setMiddayPlayList(middayPlaylistSet);
 
             //сетим вечерний плейлист
             PlayList eveningPlayList = new PlayList();
-//            eveningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
-            String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
-            eveningPlayList.setName(eveningPlaylistName);
+            eveningPlayList.setName("Evening playlist");
             playListService.addPlayList(eveningPlayList);
             Set<PlayList> eveningPlaylistSet = new HashSet<>();
-            eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
+            eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);
 
             companyService.addCompany(company);
@@ -229,29 +222,26 @@ public class MainController {
 
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
-            String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
-            morningPlayList.setName(morningPlaylistName);
+            morningPlayList.setName("Morning playlist");
             playListService.addPlayList(morningPlayList);
             Set<PlayList> morningPlaylistSet = new HashSet<>();
-            morningPlaylistSet.add(playListService.getPlayListByName(morningPlaylistName));
+            morningPlaylistSet.add(morningPlayList);
             company.setMorningPlayList(morningPlaylistSet);
 
             //сетим дневной плейлист
             PlayList middayPlayList = new PlayList();
-            String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
-            middayPlayList.setName(middayPlaylistName);
+            middayPlayList.setName("Midday playlist");
             playListService.addPlayList(middayPlayList);
             Set<PlayList> middayPlaylistSet = new HashSet<>();
-            middayPlaylistSet.add(playListService.getPlayListByName(middayPlaylistName));
+            middayPlaylistSet.add(middayPlayList);
             company.setMiddayPlayList(middayPlaylistSet);
 
             //сетим вечерний плейлист
             PlayList eveningPlayList = new PlayList();
-            String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
-            eveningPlayList.setName(eveningPlaylistName);
+            eveningPlayList.setName("Evening playlist");
             playListService.addPlayList(eveningPlayList);
             Set<PlayList> eveningPlaylistSet = new HashSet<>();
-            eveningPlaylistSet.add(playListService.getPlayListByName(eveningPlaylistName));
+            eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);
 
             companyService.addCompany(company);
