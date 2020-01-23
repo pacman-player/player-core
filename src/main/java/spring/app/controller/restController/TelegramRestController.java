@@ -58,40 +58,13 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/location")
-    public HashMap allCompaniesByAddress(@RequestBody Address geoAddress){
-        List list = addressService.checkAddress(geoAddress);
-        HashMap listCompanyId = new HashMap();
-        int i = 0;
-        Long ii = 1L;
-        while (!list.isEmpty()){
-            Address address = (Address) list.get(i);
-            Company company = companyService.getCompanyByAddressId(address.getId());
-            CompanyDto companyDto = new CompanyDto(company.getId(), company.getName());
-            listCompanyId.put(ii, companyDto.getId());
-            listCompanyId.put(ii+1, companyDto.getName());
-            list.remove(i);
-            i++;
-            ii++;
-        }
-        return listCompanyId;
+    public List allCompaniesByAddress(@RequestBody Address geoAddress){
+        return addressService.checkAddress(geoAddress);
     }
 
     @PostMapping(value = "/all_company")
-    public HashMap allCompanies () {
-        List list = companyService.getAllCompanies();
-        HashMap listCompanyName = new HashMap();
-        int i = 0;
-        Long ii = 1L;
-        while (!list.isEmpty()){
-            Company company = (Company) list.get(i);
-            CompanyDto companyDto = new CompanyDto(company.getId(), company.getName());
-            listCompanyName.put(ii, companyDto.getId());
-            listCompanyName.put(ii+1, companyDto.getName());
-            list.remove(i);
-            i++;
-            ii++;
-        }
-        return listCompanyName;
+    public List allCompanies () {
+        return companyService.getAllCompanies();
     }
 
 
