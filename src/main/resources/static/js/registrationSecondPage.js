@@ -4,15 +4,54 @@ $(function () {
     registrationSecondForm.submit(function (event) {
         event.preventDefault();
         console.log("saving");
-        $.post("/api/registration/second", registrationSecondForm.serialize(), function (answer) {
-            console.log("in success");
-            if (answer === "exist") {
-                alert("Company with this name exist! Please choose something another.")
-            } else if (answer === "success") {
-                alert("You registered successfully, now you can sign in.");
-                let login = $("#login").val();
-                location.assign(location.origin + "/registration/end?login=" + login);
-            }
-        });
+        if ($('#registrationSecondForm').valid()) {
+            $.post("/api/registration/second", registrationSecondForm.serialize(), function () {
+                location.assign(location.origin + "/registration/end?login=" + $("#login").val());
+            });
+        }
     })
+});
+$('#registrationSecondForm').validate({
+    rules: {
+        name: {
+            required: true,
+            minlength: 3,
+            remote: {
+                url: "/api/registration/check/company",
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                parameterData: {
+                    name: function () {
+                        return $("#name").val();
+                    }
+                },
+            }
+        },
+        startTime: {
+            required: true
+        },
+        closeTime: {
+            required: true
+        },
+        orgType: {
+            required: true
+        }
+    },
+    messages: {
+        name: {
+            required: "Введите название компании",
+            minlength: "Название должно содержать минимум 3 символа",
+            remote: "Компания с таким именем уже зарегистрирована"
+        },
+        startTime: {
+            required: "Укажите время открытия"
+        },
+        closeTime: {
+            required: "Укажите время закрытия"
+        },
+        orgType: {
+            required: "Выберите тип заведения"
+        }
+    }
 });
