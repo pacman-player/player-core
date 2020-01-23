@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
 import spring.app.service.CutSongService;
@@ -24,10 +25,13 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
-    private final UserService userService;
+    private final RoleService roleService;
+	private final UserService userService;
+
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
+	private final AddressService addressService;
 
     private String PASSWORD = "";
 
@@ -41,11 +45,14 @@ public class UserRestController {
                               GenreService genreService,
                               AuthorService authorService,
                               SongService songService,
-                              SongCompilationService songCompilation) {
+                              SongCompilationService songCompilation,
+                              AddressService addressService) {
+		this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
+		this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -118,6 +125,12 @@ public class UserRestController {
         return ResponseEntity.ok(companyService.getById(id));
     }
 
+    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Address> getUserCompanyAddress() {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        return ResponseEntity.ok(addressService.getById(id));
+    }
+
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
@@ -125,6 +138,34 @@ public class UserRestController {
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
+        companyService.updateCompany(companyForUpdate);
+    }
+
+	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void updateAddress(@RequestBody AddressDto addressDto) {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        Company companyForUpdate = companyService.getById(id);
+        Address addressForUpdate = addressService.getById(id);
+
+        if (addressForUpdate == null) {
+            addressService.updateAddress(new Address(
+                    addressDto.getCountry(),
+                    addressDto.getCity(),
+                    addressDto.getStreet(),
+                    addressDto.getHouse(),
+                    addressDto.getLatitude(),
+                    addressDto.getLongitude()
+            ));
+        } else {
+            addressForUpdate.setCountry(addressDto.getCountry());
+            addressForUpdate.setCity(addressDto.getCity());
+            addressForUpdate.setStreet(addressDto.getStreet());
+            addressForUpdate.setHouse(addressDto.getHouse());
+            addressForUpdate.setLatitude(addressDto.getLatitude());
+            addressForUpdate.setLongitude(addressDto.getLongitude());
+        }
+
+        companyForUpdate.setAddress(addressService.getById(id));
         companyService.updateCompany(companyForUpdate);
     }
 
@@ -155,5 +196,4 @@ public class UserRestController {
         }
 
     }
-
 }

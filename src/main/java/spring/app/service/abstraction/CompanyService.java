@@ -19,6 +19,8 @@ public interface CompanyService {
 
     List<Company> getAllCompanies();
 
+    boolean isExistCompanyByName(String name);
+
     /**
      * Проверяет какие обьекты у компании добавлены в бан
      * (Author или Music или Song)
@@ -31,4 +33,6 @@ public interface CompanyService {
      * заполняет поля с заблокированными сущностями песен/жанров/авторов у компании
      */
     Company setBannedEntity(Company company);
+
+    Company getCompanyByAddressId(long id);
 }
