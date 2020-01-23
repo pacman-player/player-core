@@ -229,7 +229,6 @@ public class MainController {
 
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
-//            morningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
             String morningPlaylistName = "morning(" + UUID.randomUUID().toString() + ")";
             morningPlayList.setName(morningPlaylistName);
             playListService.addPlayList(morningPlayList);
@@ -239,7 +238,6 @@ public class MainController {
 
             //сетим дневной плейлист
             PlayList middayPlayList = new PlayList();
-//            middayPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
             String middayPlaylistName = "midday(" + UUID.randomUUID().toString() + ")";
             middayPlayList.setName(middayPlaylistName);
             playListService.addPlayList(middayPlayList);
@@ -249,7 +247,6 @@ public class MainController {
 
             //сетим вечерний плейлист
             PlayList eveningPlayList = new PlayList();
-//            eveningPlayList.setCompanyId(userService.getUserByGoogleId(googleId).getCompany().getId());
             String eveningPlaylistName = "evening(" + UUID.randomUUID().toString() + ")";
             eveningPlayList.setName(eveningPlaylistName);
             playListService.addPlayList(eveningPlayList);
@@ -266,45 +263,4 @@ public class MainController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         return "redirect:/user";
     }
-
-    //метод добавляющий дефолтную компанию с плейлистами утро/день/вечер для вошедших через google и vk
-//    public Company createDefaultCompany (String id, String typeOfAuth, String companyName) {
-//        Integer userId = null;
-//
-//        Company company = new Company();
-//        company.setName(companyName);
-//        company.setStartTime(LocalTime.of(11, 0));
-//        company.setCloseTime(LocalTime.of(23, 0));
-//        company.setOrgType(orgTypeService.getOrgTypeById(1L));
-//        if (typeOfAuth.equals("google")) {
-//            company.setUser(userService.getUserByGoogleId(id));
-//        }
-//        if (typeOfAuth.equals("vk")) {
-//            userId = Integer.parseInt(id);
-//            company.setUser(userService.getUserByVkId(userId));
-//        }
-//        //сетим утренний плейлист
-//        PlayList morningPlayList = new PlayList();
-//        morningPlayList.setName("morning");
-//        playListService.addPlayList(morningPlayList);
-//        Set<PlayList> morningPlaylistSet = new HashSet<>();
-//        morningPlaylistSet.add(morningPlayList);
-//        company.setMorningPlayList(morningPlaylistSet);
-//
-//        //сетим дневной плейлист
-//        Set<PlayList> middayPlaylistSet = new HashSet<>();
-//        PlayList middayPlayList = new PlayList();
-//        playListService.addPlayList(middayPlayList);
-//        middayPlaylistSet.add(playListService.getPlayList(2L));
-//        company.setMiddayPlayList(middayPlaylistSet);
-//
-//        //сетим вечерний плейлист
-//        Set<PlayList> eveningPlaylistSet = new HashSet<>();
-//        PlayList eveningPlayList = new PlayList();
-//        playListService.addPlayList(eveningPlayList);
-//        eveningPlaylistSet.add(playListService.getPlayList(3L));
-//        company.setEveningPlayList(eveningPlaylistSet);
-//
-//        return company;
-//    }
 }
