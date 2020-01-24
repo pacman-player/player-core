@@ -35,18 +35,22 @@ public class UserPlayListController {
         songCompilationService.addSongCompilationToEveningPlaylist(id);
     }
 
-    @GetMapping(value = "/morning-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
-        return songCompilationService.getAllCompilationsInMorningPlaylist();
+//    @GetMapping(value = "/morning-playlist/get/all-song-compilation")
+//    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
+//        return songCompilationService.getAllCompilationsInMorningPlaylist();
+//    }
+    @GetMapping(value = "/morning-playlist/get/all-song-compilation/company/{id}")
+    public List<SongCompilation> getAllCompilationsInMorningPlaylist(@PathVariable("id") Long id) {
+        return songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(id);
     }
 
-    @GetMapping(value = "/midday-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInMiddayPlaylist() {
-        return songCompilationService.getAllCompilationsInMiddayPlaylist();
+    @GetMapping(value = "/midday-playlist/get/all-song-compilation/company/{id}")
+    public List<SongCompilation> getAllCompilationsInMiddayPlaylist(@PathVariable("id") Long id) {
+        return songCompilationService.getAllCompilationsInMiddayPlaylistByCompanyId(id);
     }
 
-    @GetMapping(value = "/evening-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInEveningPlaylist() {
-        return songCompilationService.getAllCompilationsInEveningPlaylist();
+    @GetMapping(value = "/evening-playlist/get/all-song-compilation/company/{id}")
+    public List<SongCompilation> getAllCompilationsInEveningPlaylist(@PathVariable("id") Long id) {
+        return songCompilationService.getAllCompilationsInEveningPlaylistByCompanyId(id);
     }
 }
