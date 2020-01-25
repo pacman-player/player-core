@@ -175,7 +175,7 @@ function addMorningPlaylist(idCompilation) {
             getAllCompilationsInMorningPlaylist();
         },
         error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     })
 }
