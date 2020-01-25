@@ -2,22 +2,22 @@ $(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
-    getCompanyId(); //достаем id компании чтобы получать подборки песен в плейлистах утро/день/вечер
-
-    var companyId = '';
-    //получаем id компании чтобы доставать подборки песен в плейлистах
-    function getCompanyId() {
-        $.ajax({
-            method: 'GET',
-            url: '/api/user/company',
-            success: function (dataCompany) {
-                companyId = dataCompany.id;
-            },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText, status, error)
-            }
-        })
-    }
+    // getCompanyId(); //достаем id компании чтобы получать подборки песен в плейлистах утро/день/вечер
+    //
+    // var companyId = '';
+    // //получаем id компании чтобы доставать подборки песен в плейлистах
+    // function getCompanyId() {
+    //     $.ajax({
+    //         method: 'GET',
+    //         url: '/api/user/company',
+    //         success: function (dataCompany) {
+    //             companyId = dataCompany.id;
+    //         },
+    //         error: function (xhr, status, error) {
+    //             alert(xhr.responseText, status, error)
+    //         }
+    //     })
+    // }
 
     //получение и вывод подборок
     $(document).on('click', '#genres', function () {
@@ -123,17 +123,17 @@ $(document).ready(function () {
 
     //получаем подборки из утреннего плейлиста
     $(document).on('click', '#morning-music-nav', function () {
-        getAllCompilationsInMorningPlaylist(companyId);
+        getAllCompilationsInMorningPlaylist();
     });
 
     //получаем подборки из дневного плейлиста
     $(document).on('click', '#midday-music-nav', function () {
-        getAllCompilationsInMiddayPlaylist(companyId);
+        getAllCompilationsInMiddayPlaylist();
     });
 
     //получаем подборки из вечернего плейлиста
     $(document).on('click', '#evening-music-nav', function () {
-        getAllCompilationsInEveningPlaylist(companyId);
+        getAllCompilationsInEveningPlaylist();
     });
 
 
@@ -167,8 +167,9 @@ $(document).ready(function () {
 //добавляем подборку в утренний плейлист
 function addMorningPlaylist(idCompilation) {
     $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
+        method: 'POST',
+        url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+        contentType: "application/json",
         data: JSON.stringify(idCompilation),
         success: function () {
             //+обновить утренний плейлист
@@ -183,16 +184,10 @@ function addMorningPlaylist(idCompilation) {
 //добавляем подборку в дневной плейлист
 function addMiddayPlaylist(idCompilation) {
     $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
-        contentType: 'application/json;',
+        method: 'POST',
+        url: '/api/user/play-list/midday-playlist/add/song-compilation/',
+        contentType: "application/json",
         data: JSON.stringify(idCompilation),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        async: false,
-        cache: false,
         success: function () {
             //+обновить дневной плейлист
             getAllCompilationsInMiddayPlaylist();
@@ -205,8 +200,10 @@ function addMiddayPlaylist(idCompilation) {
 
 function addEveningPlaylist(idCompilation) {
     $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/evening-playlist/add/song-compilation/' + idCompilation,
+        method: 'POST',
+        url: '/api/user/play-list/evening-playlist/add/song-compilation/',
+        contentType: "application/json",
+        data: JSON.stringify(idCompilation),
         success: function () {
             //+обновить вечерний плейлист
             getAllCompilationsInEveningPlaylist();
@@ -218,10 +215,10 @@ function addEveningPlaylist(idCompilation) {
 }
 
 //получаем все подборки в утреннем плейлисте
-function getAllCompilationsInMorningPlaylist(id) {
+function getAllCompilationsInMorningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/morning-playlist/get/all-song-compilation/company/' + id,
+        url: '/api/user/play-list/morning-playlist/get/all-song-compilation/',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -259,10 +256,10 @@ function getAllCompilationsInMorningPlaylist(id) {
 }
 
 //получаем все подборки в дневном плейлисте
-function getAllCompilationsInMiddayPlaylist(id) {
+function getAllCompilationsInMiddayPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/midday-playlist/get/all-song-compilation/company/' + id,
+        url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
         success: function (middayPlayList) {
             var htmlMiddayCompilation = '';
             //bootstrap card
@@ -300,10 +297,10 @@ function getAllCompilationsInMiddayPlaylist(id) {
 }
 
 //получаем все подборки в вечернем плейлисте
-function getAllCompilationsInEveningPlaylist(id) {
+function getAllCompilationsInEveningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/evening-playlist/get/all-song-compilation/company/' + id,
+        url: '/api/user/play-list/evening-playlist/get/all-song-compilation',
         success: function (eveningPlayList) {
             var htmlEveningCompilation = '';
             //bootstrap card
