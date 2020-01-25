@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
-    getCompanyId(); //достаем один раз id компании чтобы получать подборки песен в плейлистах утро/день/вечер
+    getCompanyId(); //достаем id компании чтобы получать подборки песен в плейлистах утро/день/вечер
 
     var companyId = '';
     //получаем id компании чтобы доставать подборки песен в плейлистах
@@ -12,7 +12,6 @@ $(document).ready(function () {
             url: '/api/user/company',
             success: function (dataCompany) {
                 companyId = dataCompany.id;
-                alert(companyId);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText, status, error)
@@ -170,6 +169,7 @@ function addMorningPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
         url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
+        data: JSON.stringify(idCompilation),
         success: function () {
             //+обновить утренний плейлист
             getAllCompilationsInMorningPlaylist();
@@ -185,12 +185,20 @@ function addMiddayPlaylist(idCompilation) {
     $.ajax({
         method: 'GET',
         url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
+        contentType: 'application/json;',
+        data: JSON.stringify(idCompilation),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        async: false,
+        cache: false,
         success: function () {
             //+обновить дневной плейлист
             getAllCompilationsInMiddayPlaylist();
         },
         error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     })
 }
@@ -204,7 +212,7 @@ function addEveningPlaylist(idCompilation) {
             getAllCompilationsInEveningPlaylist();
         },
         error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
         }
     })
 }

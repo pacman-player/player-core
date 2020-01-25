@@ -18,12 +18,12 @@ public class UserPlayListController {
     }
 
     @GetMapping(value = "/morning-playlist/add/song-compilation/{id}")
-    public void addSongCompilationToMorningPlaylist(@PathVariable("id") Long id) {
+    public void addSongCompilationToMorningPlaylist(@PathVariable Long id) {
         songCompilationService.addSongCompilationToMorningPlaylist(id);
     }
 
     @GetMapping(value = "/midday-playlist/add/song-compilation/{id}")
-    public void addSongCompilationToMiddayPlaylist(@PathVariable("id") Long id) {
+    public void addSongCompilationToMiddayPlaylist(@PathVariable Long id) {
         songCompilationService.addSongCompilationToMiddayPlaylist(id);
     }
 
@@ -32,10 +32,6 @@ public class UserPlayListController {
         songCompilationService.addSongCompilationToEveningPlaylist(id);
     }
 
-//    @GetMapping(value = "/morning-playlist/get/all-song-compilation")
-//    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
-//        return songCompilationService.getAllCompilationsInMorningPlaylist();
-//    }
     @GetMapping(value = "/morning-playlist/get/all-song-compilation/company/{id}")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist(@PathVariable("id") Long id) {
         return songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(id);
