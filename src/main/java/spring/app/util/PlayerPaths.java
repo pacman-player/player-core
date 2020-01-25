@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PlayerPaths {
+
     public static Path getSongsDir(String filename) {
         final Logger LOGGER = LoggerFactory.getLogger(PlayerPaths.class);
         final String separator = File.separator;

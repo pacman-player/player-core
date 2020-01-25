@@ -29,8 +29,8 @@ public class TelegramServiceImpl implements TelegramService {
     public SongResponse getSong(SongRequest songRequest) throws IOException {
 
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());
-        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 242345367l, bytes,
-                songRequest.getAuthorName()+ " - " + songRequest.getSongName());
+        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 242345367L, bytes,
+                zaycevSaitServise.getTrackName());
         return songResponse;
     }
 
@@ -38,8 +38,8 @@ public class TelegramServiceImpl implements TelegramService {
     public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());
         byte[] cutSong = cutSongService.сutSongMy(bytes, -1, 31);
-        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 242345367l, cutSong,
-                songRequest.getAuthorName()+ " - " + songRequest.getSongName());
+        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 242345367L, cutSong,
+                zaycevSaitServise.getTrackName());
         return songResponse;
     }
 }

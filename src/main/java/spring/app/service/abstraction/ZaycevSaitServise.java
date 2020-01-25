@@ -10,4 +10,6 @@ public interface ZaycevSaitServise {
 
     byte[] getSong(String avtor, String song);
 
+    String getTrackName();
+
 }
