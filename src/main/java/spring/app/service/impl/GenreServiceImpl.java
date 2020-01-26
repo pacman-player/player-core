@@ -1,5 +1,7 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.GenreDao;
@@ -30,6 +32,12 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> getAllGenre() {
+        return genreDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.JOIN)
+    public List<Genre> getAllGenreFetchModeJoin() {
         return genreDao.getAll();
     }
 

@@ -1,6 +1,7 @@
 package spring.app.service.impl;
 
-import com.vladmihalcea.sql.SQLStatementCountValidator;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.SongDao;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -28,16 +28,15 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-//    @Fetch(FetchMode.JOIN)
     public List<Song> getAllSong() {
         return songDao.getAll();
     }
 
-//    @Override
-//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
-//    public List<Song> getAllSongNonLazy() {
-//        return songDao.getAll();
-//    }
+    @Override
+    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
+    public List<Song> getAllSongFetchModeJoin() {
+        return songDao.getAll();
+    }
 
     @Override
     public void deleteSongById(Long id) {
@@ -66,16 +65,16 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> getAllSongInSongCompilation(Long id) {
-        System.out.println("+++ start +++");
-        System.out.println("+++ before reset +++");
-        SQLStatementCountValidator.reset();
-        System.out.println("+++ after reset +++");
-        System.out.println("+++ before query +++");
+//        System.out.println("+++ start +++");
+//        System.out.println("+++ before reset +++");
+//        SQLStatementCountValidator.reset();
+//        System.out.println("+++ after reset +++");
+//        System.out.println("+++ before query +++");
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
-        System.out.println("+++ after query +++");
-        System.out.println("+++ before assert +++");
-        assertSelectCount(1);
-        System.out.println("+++ after assert +++");
+//        System.out.println("+++ after query +++");
+//        System.out.println("+++ before assert +++");
+//        assertSelectCount(1);
+//        System.out.println("+++ after assert +++");
         Set<Song> allSongSet = songCompilation.getSong();
         List<Song> allSongList = new ArrayList<>(allSongSet);
         return allSongList;

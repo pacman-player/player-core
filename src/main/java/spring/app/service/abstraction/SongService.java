@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SongService {
     List<Song> getAllSong();
-//    List<Song> getAllSongNonLazy();
+    List<Song> getAllSongFetchModeJoin();
     Song getByName(String name);
     Song getSongById(Long id);
     void addSong(Song song);
