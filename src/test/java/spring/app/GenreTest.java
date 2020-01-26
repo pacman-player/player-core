@@ -11,6 +11,7 @@ import spring.app.controller.restController.GenreRestController;
 import spring.app.service.abstraction.GenreService;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
+import static junit.framework.TestCase.assertEquals;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -28,18 +29,25 @@ public class GenreTest {
     }
 
     @Test
-    public void nPlusOneTest() throws Exception {
+    public void nPlusOneWithoutFetchModeJoinTest() {
         try {
             SQLStatementCountValidator.reset();
             genreService.getAllGenre();
             assertSelectCount(1);
         } catch (SQLSelectCountMismatchException e) {
-//            assertEquals(3, e.getRecorded());
-            System.out.println("N+1: " + e.getMessage());
+            assertEquals(3, e.getRecorded());
         }
-        SQLStatementCountValidator.reset();
-        genreService.getAllGenreFetchModeJoin();
-        assertSelectCount(1);
-        System.out.println("GOOD!");
+    }
+
+    @Test
+    public void nPlusOneWithFetchModeJoinTest () {
+        try {
+            SQLStatementCountValidator.reset();
+            genreService.getAllGenreFetchModeJoin();
+            assertSelectCount(1);
+        } catch (SQLSelectCountMismatchException e) {
+            assertEquals(3, e.getRecorded());
+        }
+
     }
 }
