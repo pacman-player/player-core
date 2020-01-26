@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import spring.app.controller.restController.GenreRestController;
 import spring.app.service.abstraction.GenreService;
+import spring.app.util.HibernateInterceptor;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static junit.framework.TestCase.assertEquals;
@@ -32,7 +33,10 @@ public class GenreTest {
     public void nPlusOneWithoutFetchModeJoinTest() {
         try {
             SQLStatementCountValidator.reset();
+            HibernateInterceptor.startCounting();
             genreService.getAllGenre();
+            HibernateInterceptor.stopCounting();
+            HibernateInterceptor.getQueryCounter();
             assertSelectCount(1);
         } catch (SQLSelectCountMismatchException e) {
             assertEquals(3, e.getRecorded());
