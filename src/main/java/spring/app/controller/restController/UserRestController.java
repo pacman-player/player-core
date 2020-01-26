@@ -71,7 +71,8 @@ public class UserRestController {
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
-        return ((User) getContext().getAuthentication().getPrincipal());
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        return (userService.getUserById(user.getId()));
     }
 
     @PutMapping(value = "/edit_data")
