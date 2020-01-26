@@ -19,12 +19,11 @@ $(document).ready(function () {
                 var htmlTable = "";
                 $("#UserTable tbody").empty();
                 for (var i = 0; i < listUsers.length; i++) {
-
-                    if (listUsers[i].roles.length > 1) {
-                        var htmlRole = listUsers[i].roles[0].name + ', ' + listUsers[i].roles[1].name;
-                    } else {
-                        var htmlRole = listUsers[i].roles[0].name;
+                    var htmlRole ="";
+                    for (var j = 0; j < listUsers[i].roles.length; j++) {
+                        htmlRole += listUsers[i].roles[j].name + ", ";
                     }
+                    htmlRole = htmlRole.substr(0, htmlRole.length - 2);
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="tableId">' + listUsers[i].id + '</td>');
                     htmlTable += ('<td id="tableRole">' + htmlRole + '</td>');
@@ -41,6 +40,21 @@ $(document).ready(function () {
                     htmlTable += ('</tr>');
                 }
                 $("#UserTable tbody").append(htmlTable);
+                $("#rlist").empty();
+                $("#rlistA").empty();
+                $.get({
+                    url: "/api/admin/get_all_roles",
+                    contentType: "application/json",
+                    success: function (roleList) {
+                    var rolesHtml = "";
+                    for (var r = 0; r < roleList.length; r++) {
+                        rolesHtml += "<input class = \"role\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
+                            "</input>"
+                    }
+                    $("#rlist").append(rolesHtml);
+                        $("#rlistA").append(rolesHtml);
+                    }
+                })
             }
         });
     };
@@ -90,11 +104,18 @@ $(document).ready(function () {
     });
 
     function addUser() {
+        var roleListArr=[];
+        var rls = document.getElementsByClassName("role");
+        for (var t = 0; t < rls.length; t++) {
+            if (rls[t].checked) {
+                roleListArr.push(rls[t].getAttribute("value"));
+            }
+        }
         var user = {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
-            'roles': $("#addRole").val()
+            'roles': roleListArr
         };
         $.ajax({
             type: 'POST',
@@ -136,12 +157,20 @@ $(document).ready(function () {
     });
 
     function updateUser() {
+
+        var roleListArr=[];
+        var rls = document.getElementsByClassName("role");
+        for (var t = 0; t < rls.length; t++) {
+            if (rls[t].checked) {
+                roleListArr.push(rls[t].getAttribute("value"));
+            }
+        }
         var user = {
             'id': $("#updateUserId").val(),
             'email': $("#updateUserEmail").val(),
             'login': $("#updateUserName").val(),
             'password': $("#updateUserPass").val(),
-            'roles': $("#updateUserRole").val()
+            'roles': roleListArr
         };
         $.ajax({
             type: 'PUT',
@@ -256,19 +285,19 @@ $(document).ready(function () {
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
 
-        switch ($(this).closest("tr").find("#tableUserRole").text()) {
-            case 'USER':
-                $("#updateUserRole").val("user");
-                break;
-            case 'ADMIN':
-                // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
-                $("#updateUserRole").val("admin");
-                break;
-            default:
-                // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
-                $("#updateUserRole").val("admin, user");
-                break;
-        }
+        // switch ($(this).closest("tr").find("#tableUserRole").text()) {
+        //     case 'USER':
+        //         $("#updateUserRole").val("user");
+        //         break;
+        //     case 'ADMIN':
+        //         // $('#updateUserRole option:contains("ADMIN")').prop("selected", true);
+        //         $("#updateUserRole").val("admin");
+        //         break;
+        //     default:
+        //         // $('#updateUserRole option:contains("ADMIN, USER")').prop("selected", true);
+        //         $("#updateUserRole").val("admin, user");
+        //         break;
+        // }
     });
 
     //modal company form заполнение
