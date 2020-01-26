@@ -2,6 +2,11 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.service.abstraction.MusicService;
@@ -9,17 +14,14 @@ import spring.app.service.abstraction.MusicService;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 @Service
 @Transactional
 public class MusicServiceImpl implements MusicService {
 
-    @Value("${uploaded_files_path}")
-    private String filePath;
+    @Value("${music.path}")
+    private String musicPath;
 
     @Override
     public ServletOutputStream fileToStream(String musicName, HttpServletResponse response) throws ServletException, IOException {
@@ -29,7 +31,7 @@ public class MusicServiceImpl implements MusicService {
         BufferedInputStream buf = null;
         try {
 
-            File mp3 = new File(filePath + file);
+            File mp3 = new File(musicPath + file);
 
             //set response headers
             stream = response.getOutputStream();
@@ -57,4 +59,19 @@ public class MusicServiceImpl implements MusicService {
     }
 
 
+    @Override
+    public ResponseEntity playMusic(String musicTitle) {
+        File file = new File(musicPath + musicTitle + ".mp3");
+        long length = file.length();
+        InputStreamResource inputStreamResource = null;
+        try {
+            inputStreamResource = new InputStreamResource(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentLength(length);
+        httpHeaders.setCacheControl(CacheControl.noCache().getHeaderValue());
+        return new ResponseEntity(inputStreamResource, httpHeaders, HttpStatus.OK);
+    }
 }

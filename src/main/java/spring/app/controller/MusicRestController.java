@@ -1,5 +1,6 @@
 package spring.app.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.service.abstraction.MusicService;
 
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/music")
 public class MusicRestController {
     private final MusicService musicService;
 
@@ -17,8 +18,8 @@ public class MusicRestController {
         this.musicService = musicService;
     }
 
-    @RequestMapping(value = "/download/{name}", method = RequestMethod.GET)
-    public void download(@PathVariable("name") String musicName,HttpServletResponse response) throws IOException, ServletException {
-            musicService.fileToStream(musicName, response);
+    @GetMapping("/play/{musicTitle}")
+    public ResponseEntity playMusic(@PathVariable String musicTitle) {
+        return musicService.playMusic(musicTitle);
     }
 }

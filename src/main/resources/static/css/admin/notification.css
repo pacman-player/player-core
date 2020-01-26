@@ -40,16 +40,16 @@
     color: black;
 }
 
-.elemNotification:hover{
+.elemNotification:hover {
     background-color: wheat;
     color: white;
 }
 
-.elemNotification{
+.elemNotification {
     text-align: left;
 }
 
-.btnNotificationNotActive{
+.btnNotificationNotActive {
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -61,8 +61,8 @@
     outline: none;
     border: none;
     border-radius: 100px;
-    background: rgb(251, 249, 255) radial-gradient(150% 100% at 50% 5px, rgba(255,255,255,.2), rgba(0,0,0,0));
-    box-shadow: inset rgba(0,0,0,.6) 0 -2px 5px, inset rgba(252,255,255,.7) 0 2px 5px, rgba(0,0,0,.8) 0 2px 5px -1px;
+    background: rgb(251, 249, 255) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
     color: rgb(227, 233, 230);
     user-select: none;
 
@@ -77,12 +77,12 @@
     font-size: 20px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 1px rgba(255,255,255,.2), 0 -1px rgba(0,0,0,.8);
+    text-shadow: 0 1px rgba(255, 255, 255, .2), 0 -1px rgba(0, 0, 0, .8);
     outline: none;
     border: none;
     border-radius: 100px;
-    background: rgb(255, 14, 43) radial-gradient(150% 100% at 50% 5px, rgba(255,255,255,.2), rgba(0,0,0,0));
-    box-shadow: inset rgba(0,0,0,.6) 0 -2px 5px, inset rgba(252,255,255,.7) 0 2px 5px, rgba(0,0,0,.8) 0 2px 5px -1px;
+    background: rgb(255, 14, 43) radial-gradient(150% 100% at 50% 5px, rgba(255, 255, 255, .2), rgba(0, 0, 0, 0));
+    box-shadow: inset rgba(0, 0, 0, .6) 0 -2px 5px, inset rgba(252, 255, 255, .7) 0 2px 5px, rgba(0, 0, 0, .8) 0 2px 5px -1px;
     color: rgb(255, 14, 43);
     user-select: none;
 }
@@ -94,10 +94,35 @@
 
 .btnNotificationActive:active {
     padding-bottom: 1px;
-    box-shadow:
-            inset rgba(0,0,0,1) 0 1px 3px,
-            inset rgba(0,0,0,.6) 0 -2px 5px,
-            inset rgba(252,255,255,.7) 0 2px 5px,
-            0 1px rgba(255,255,255,.08);
-    color: rgb(128,207,214);
+    box-shadow: inset rgba(0, 0, 0, 1) 0 1px 3px,
+    inset rgba(0, 0, 0, .6) 0 -2px 5px,
+    inset rgba(252, 255, 255, .7) 0 2px 5px,
+    0 1px rgba(255, 255, 255, .08);
+    color: rgb(128, 207, 214);
+}
+
+.media-button {
+    background: transparent;
+    border: none !important;
+}
+
+.media-img {
+    height: 40px;
+}
+
+.table-media-part {
+    width: 5%;
+}
+
+button:hover {
+    border-radius: 10px;
+    background-color: darkslategray;
+}
+
+button:focus {
+    outline: 0 !important;
+}
+
+.player {
+    outline: 0 !important;
 }
