@@ -6,15 +6,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import spring.app.controller.restController.GenreRestController;
+import spring.app.model.Genre;
 import spring.app.service.abstraction.GenreService;
 
 import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static junit.framework.TestCase.assertEquals;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class GenreServiceImplTest {
 
@@ -31,9 +32,12 @@ public class GenreServiceImplTest {
 
     @Test
     public void getAllGenreSqlCountTest() {
+        Genre genre = new Genre("a1");
+        genreService.addGenre(genre);
         try {
             SQLStatementCountValidator.reset();
-            genreService.getAllGenre();
+            genreRestController.getAllGenre();
+//            genreService.getAllGenre();
             assertSelectCount(1);
         } catch (SQLSelectCountMismatchException e) {
             assertEquals(3, e.getRecorded());
@@ -53,6 +57,8 @@ public class GenreServiceImplTest {
 
     @Test
     public void deleteGenreSqlCountTest() {
+        Genre genre = new Genre("a2");
+        genreService.addGenre(genre);
         SQLStatementCountValidator.reset();
         genreService.deleteGenreById(1L);
         SQLStatementCountValidator.assertDeleteCount(1);
