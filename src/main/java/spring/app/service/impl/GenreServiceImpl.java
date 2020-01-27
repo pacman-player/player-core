@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.GenreService;
+import spring.app.util.CrudInterceptor;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;
+    CrudInterceptor crudInterceptor = new CrudInterceptor();
 
     @Autowired
     public GenreServiceImpl(GenreDao genreDao) {
