@@ -59,7 +59,12 @@ public class TelegramRestController {
 
     @PostMapping(value = "/location")
     public List allCompaniesByAddress(@RequestBody Address geoAddress){
-        return addressService.checkAddress(geoAddress);
+        List<Address> addresses = addressService.checkAddress(geoAddress);
+        List<Company> companies = new ArrayList();
+
+        addresses.forEach(address -> companies.add(companyService.getById(address.getId())));
+
+        return companies;
     }
 
     @PostMapping(value = "/all_company")

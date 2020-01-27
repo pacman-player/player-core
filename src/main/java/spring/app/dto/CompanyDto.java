@@ -13,12 +13,6 @@ public class CompanyDto {
     private Long orgType;
     private Long userId;
 
-
-    public CompanyDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
