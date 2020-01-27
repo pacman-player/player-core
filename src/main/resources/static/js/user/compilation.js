@@ -19,7 +19,7 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listSongCompilation) {
-                allSongCompilationsInNewGenre = listSongCompilation;
+                allSongCompilationsInNewCompilationList = listSongCompilation;
                 var htmlCompilation = "Need to add Compilation";
                 if (0 < listSongCompilation.length) {
                     htmlCompilation = ('<div id="songCompilation"><a href="#" style="margin-right: 10px" id="linkBack">' +
@@ -28,7 +28,7 @@ $(document).ready(function () {
                     for (var i = 0; i < listSongCompilation.length; i++) {
                         htmlCompilation += '<div id="songCompilation" class="card-deck">'
                             + '<div class="card pt-10">'
-                            + '<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
+                            + '<a href="#" onclick="showAllSongInSongCompilation(\'getGenres\', ' + listSongCompilation[i].id + ')" data-toggle="modal"' +
                             ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
                             + '<img src="/img/compilation/compilation' + listSongCompilation[i].id + '.svg" width="50" height="50" alt="' +
                             listSongCompilation[i].name + '" >'
@@ -39,11 +39,11 @@ $(document).ready(function () {
                             + '</div>'
                             + '<div class="card-footer">'
                             + '<p class="card-text"><small class="text-muted">Footer: Some text</small></p>';
-                        let musicButton = `<button class="media-button" data-playlist_id="${listSongCompilation[i].id}" onclick="playOrPausePlaylist(${listSongCompilation[i].id})"><img class="media-img" alt="Play" src="/img/play.png"></button>`;
-                        if (lastPlayedPlaylistId === listSongCompilation[i].id && !playerElement.paused) {
-                            musicButton = `<td><button class="media-button" data-playing_state="on_play" data-playlist_id="${listSongCompilation[i].id}" onclick="playOrPausePlaylist(${listSongCompilation[i].id})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
-                        } else if (lastPlayedPlaylistId === listSongCompilation[i].id && playerElement.paused && playerElement.currentTime > 0) {
-                            musicButton = `<td><button class="media-button" data-playing_state="on_pause" data-playlist_id="${listSongCompilation[i].id}" onclick="playOrPausePlaylist(${listSongCompilation[i].id})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
+                        let musicButton = `<button class="media-button" data-playlist_id="getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Play" src="/img/play.png"></button>`;
+                        if (lastPlayedPlaylistIndex === listSongCompilation[i].id && !playerElement.paused) {
+                            musicButton = `<td><button class="media-button" data-playlist_id="'getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
+                        } else if (lastPlayedPlaylistIndex === listSongCompilation[i].id && playerElement.paused && playerElement.currentTime > 0) {
+                            musicButton = `<td><button class="media-button" data-playlist_id="getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
                         }
                         htmlCompilation += musicButton;
                         htmlCompilation += '&nbsp;' + '&nbsp;'
@@ -128,31 +128,6 @@ $(document).ready(function () {
     $(document).on('click', '#evening-music-nav', function () {
         getAllCompilationsInEveningPlaylist();
     });
-
-    //код с дева
-    // $(document).on('click', '#songCompilation', function () {
-    //     let compilationName = $(this).text();
-    //     $("#compilationModalCompilationName").text(compilationName);
-    //     $("#modalPlaylist").trigger("click");
-    //     $.get("/api/user/song-compilation/songsBySongCompilation?compilationName=" + compilationName, function (songList) {
-    //             $("#compilationModalTableBody").empty();
-    //             console.log(songList);
-    //             for (let i = 0; i < songList.length; i++) {
-    //                 let newTr = $(`<tr></tr>`);
-    //                 let td = ``;
-    //                 td += `<td>${songList[i].name}</td>`
-    //                     + `<td>${songList[i].author}</td>`
-    //                     + `<td>${songList[i].genre}</td>`
-    //                     + `<td><div class="btn-group"><button id="playMusic${songList[i].id}" onclick="playOrPauseMusic(${songList[i].id})"><img height="20" width="20" alt="Play/Pause" src="/img/play.svg"/></button>`
-    //                     + `<button id="downloadMusic${songList[i].id}" onclick="downloadMusic(${songList[i].id})"><img height="20" width="20"  alt="Download" src="/img/download.svg"/></button></div></td>`;
-    //                 newTr.html(td);
-    //                 $("#compilationModalTableBody").append(newTr);
-    //             }
-    //         }
-    //     )
-    //     ;
-    // });
-
 });
 
 //добавляем подборку в утренний плейлист
@@ -221,14 +196,14 @@ function getAllCompilationsInEveningPlaylist() {
 }
 
 function fillPlaylistsTab(firstId, secondId, playlist) {
-    allSongCompilationsInNewGenre = playlist;
+    allSongCompilationsInNewCompilationList = playlist;
     $(`#${firstId}`).empty();
     var htmlCompilation = '';
     //bootstrap card
     htmlCompilation += ('<div class="card-deck" id="eveningCompilations">');
     for (var i = 0; i < playlist.length; i++) {
         htmlCompilation += '<div class="card pt-10">'
-            + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(' + playlist[i].id + ')" data-toggle="modal"'
+            + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + firstId + '\', ' + playlist[i].id + ')" data-toggle="modal"'
             + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
             + '<img src="/img/compilation/compilation' + playlist[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' + playlist[i].name + '">'
             + '<p>Песни подборки</p></a>'
@@ -238,11 +213,11 @@ function fillPlaylistsTab(firstId, secondId, playlist) {
             + '</div>'
             + '<div class="card-footer">'
             + '<p class="card-text"><small class="text-muted">Footer: Some text</small></p>';
-        let musicButton = `<button class="media-button" data-playlist_id="${playlist[i].id}" onclick="isNewCompilationsList=true;playOrPausePlaylist(${playlist[i].id})"><img class="media-img" alt="Play" src="/img/play.png"></button>`;
-        if (lastPlayedPlaylistId === playlist[i].id && !playerElement.paused) {
-            musicButton = `<td><button class="media-button" data-playing_state="on_play" data-playlist_id="${playlist[i].id}" onclick="playOrPausePlaylist(${playlist[i].id})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
-        } else if (lastPlayedPlaylistId === playlist[i].id && playerElement.paused && playerElement.currentTime > 0) {
-            musicButton = `<td><button class="media-button" data-playing_state="on_pause" data-playlist_id="${playlist[i].id}" onclick="playOrPausePlaylist(${playlist[i].id})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
+        let musicButton = `<button class="media-button" data-playlist_id="${firstId}_${i}" onclick="playOrPausePlaylist(\'${firstId}\', ${playlist[i].id}, ${i})"><img class="media-img" alt="Play" src="/img/play.png"></button>`;
+        if (firstId === lastPlayedCompilationListName && lastPlayedPlaylistIndex === playlist[i].id && !playerElement.paused) {
+            musicButton = `<button class="media-button" data-playlist_id="${firstId}_${i}" onclick="playOrPausePlaylist(\'${firstId}\', ${playlist[i].id}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button>`;
+        } else if (firstId === lastPlayedCompilationListName && lastPlayedPlaylistIndex === playlist[i].id && playerElement.paused && playerElement.currentTime > 0) {
+            musicButton = `<button class="media-button" data-playlist_id="${firstId}_${i}" onclick="playOrPausePlaylist(\'${firstId}\', ${playlist[i].id}, ${i})"><img class="media-img" alt="Resume" src="/img/resume.png"></button>`;
         }
         htmlCompilation += musicButton;
         htmlCompilation += '&nbsp;'
@@ -264,14 +239,14 @@ function fillPlaylistsTab(firstId, secondId, playlist) {
 // #eveningCompilations
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
-function showAllSongInSongCompilation(id) {
+function showAllSongInSongCompilation(compilationListName, id) {
     //достаю инфу о подборке (название, картинку,  пр.) для модалки
     $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
             htmlAboutSongCompilationForModal = '<div class="card-deck" id="aboutCompilations">'
                 + '<div class="card pt-10">'
-                + '<a href="#" id="' + songCompilation[i].id + '" onclick="showAllSongInSongCompilation(' + eveningPlayList[i].id + ')" data-toggle="modal"'
+                + '<a href="#" id="' + songCompilation[i].id + '" onclick="showAllSongInSongCompilation(\'' + compilationListName + '\' ,' + songCompilation[i].id + ')" data-toggle="modal"'
                 + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
                 + '<img src="/img/' + songCompilation[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' + songCompilation[i].name + '"><p>Песни подборки</p></a>'
                 + '<div class="card-body">'
@@ -294,27 +269,35 @@ function showAllSongInSongCompilation(id) {
         $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалку почему-то выводится только текст...
         //достаю все песни из подборки
         $.get('/api/user/song/get/all-song/song-compilation/' + id, function (compilationSongs) {
-            fillModalTableWithPlaylist('modalPlaylistTableBody', songCompilation, compilationSongs);
+            fillModalTableWithPlaylist('modalPlaylistTableBody', compilationListName, songCompilation, compilationSongs);
             $('#modalPlaylistName').text(songCompilation.name);
         });
     });
 }
 
 //fill modal table with playlist
-function fillModalTableWithPlaylist(modalId, songCompilation, songCompilationSongs) {
+function fillModalTableWithPlaylist(modalId, compilationListName, songCompilation, songCompilationSongs) {
     $(`#${modalId}`).empty();
+    let compilationIndex = 0;
+    for (let i = 0; i < allSongCompilationsInNewCompilationList.length; i++) {
+        if (songCompilation.id === allSongCompilationsInNewCompilationList[i].id) {
+            compilationIndex = i;
+            console.log(compilationIndex);
+            i = allSongCompilationsInNewCompilationList.length;
+        }
+    }
     newPlaylist = songCompilation;
     newSongList = songCompilationSongs;
     for (let i = 0; i < songCompilationSongs.length; i++) {
         let song = songCompilationSongs[i];
         let musicTr = $(`<tr></tr>`);
         let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
-        let musicTdButton = `<td><button class="media-button" data-playing_state="on_stop" data-music_id="${songCompilation.id}_${i}" onclick="playOrPause(${songCompilation.id}, ${i})"><img class="media-img" alt="Play" src="/img/play.png"></button></td>`;
-        let lastPlayedMusicId = lastPlayedPlaylistId + '_' + lastPlayedMusicIndex;
-        if (lastPlayedMusicId === songCompilation.id + '_' + i && !playerElement.paused) {
-            musicTdButton = `<td><button class="media-button" data-playing_state="on_play" data-music_id="${songCompilation.id}_${i}" onclick="playOrPause(${songCompilation.id}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
-        } else if (lastPlayedMusicId === songCompilation.id + '_' + i && playerElement.paused && playerElement.currentTime > 0) {
-            musicTdButton = `<td><button class="media-button" data-playing_state="on_pause" data-music_id="${songCompilation.id}_${i}" onclick="playOrPause(${songCompilation.id}, ${i})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
+        let musicTdButton = `<td><button class="media-button" data-playing_state="on_stop" data-music_id="${compilationListName}_${compilationIndex}_${i}" onclick="playOrPause(\'${compilationListName}\', ${compilationIndex}, ${i})"><img class="media-img" alt="Play" src="/img/play.png"></button></td>`;
+        let lastPlayedMusicId = lastPlayedCompilationListName + '_' + lastPlayedPlaylistIndex + '_' + lastPlayedMusicIndex;
+        if (lastPlayedMusicId === compilationListName + '_' + compilationIndex + '_' + i && !playerElement.paused) {
+            musicTdButton = `<td><button class="media-button" data-playing_state="on_play" data-music_id="${compilationListName}_${compilationIndex}_${i}" onclick="playOrPause(\'${compilationListName}\', ${compilationIndex}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
+        } else if (lastPlayedMusicId === compilationListName + '_' + compilationIndex + '_' + i && playerElement.paused && playerElement.currentTime > 0) {
+            musicTdButton = `<td><button class="media-button" data-playing_state="on_pause" data-music_id="${compilationListName}_${compilationIndex}_${i}" onclick="playOrPause(\'${compilationListName}\', ${compilationIndex}, ${i})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
         }
         musicTd += musicTdButton;
         musicTr.html(musicTd);
@@ -324,7 +307,7 @@ function fillModalTableWithPlaylist(modalId, songCompilation, songCompilationSon
 
 //load all music from current playlist to modal-table
 function fillModalCurrentPlaylistTable(songCompilation, songCompilationSongs) {
-    fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', songCompilation, songCompilationSongs);
+    fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedCompilationListName, songCompilation, songCompilationSongs);
 }
 
 // #####################################################################################################
@@ -338,15 +321,15 @@ let playerElement = document.getElementById("player");
 let musicUrl = "/api/music/play/";
 let shuffle = false;
 let lastPlayedMusicIndex = -1;
-let lastPlayedPlaylistId = -1;
+let lastPlayedPlaylistIndex = -1;
+let lastPlayedPlaylistId = 'none';
 let lastPlayedPlaylist;
 let lastPlayedSongList;
 let newPlaylist;
 let newSongList;
-let allSongCompilationsInNewGenre;
-let allSongCompilationsInCurrentGenre;
-
-let isNewCompilationsList = false;
+let allSongCompilationsInNewCompilationList;
+let allSongCompilationsInCurrentCompilationList;
+let lastPlayedCompilationListName = 'none';
 
 $(function () {
     player = $('#player');
@@ -357,7 +340,7 @@ $(function () {
     });
     //play or pause current music
     $("#playOrPauseAudioButton").on("click", function () {
-        playOrPause(lastPlayedPlaylistId, lastPlayedMusicIndex);
+        playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex);
     });
     //play next music in current playlist
     $("#nextAudioButton").on("click", function () {
@@ -369,9 +352,13 @@ $(function () {
     });
     //stop music
     $("#stopAudioButton").on("click", function () {
-        let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedPlaylistId}_${lastPlayedMusicIndex}']`);
+        let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
             setButtonOnStop(lastPlayedMusicsButtons[i]);
+        }
+        let lastPlayedPlaylistsPlayButtons = $(`button[data-playlist_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}']`);
+        for (let i = 0; i < lastPlayedPlaylistsPlayButtons.length; i++) {
+            setButtonOnStop(lastPlayedPlaylistsPlayButtons[i]);
         }
         lastPlayedMusicIndex = 0;
         let music = lastPlayedSongList[0];
@@ -390,11 +377,12 @@ $(function () {
     });
     //on playing
     playerElement.addEventListener("play", function () {
-        let currentPlayingButtons = $(`button[data-music_id='${lastPlayedPlaylistId}_${lastPlayedMusicIndex}']`);
+        let currentPlayingButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < currentPlayingButtons.length; i++) {
             setButtonOnPlay(currentPlayingButtons[i]);
         }
-        let lastPlayedPlaylistsPlayButtons = $(`button[data-playlist_id='${lastPlayedPlaylistId}']`);
+        lastPlayedPlaylistId = lastPlayedCompilationListName + '_' + lastPlayedPlaylistIndex;
+        let lastPlayedPlaylistsPlayButtons = $(`button[data-playlist_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}']`);
         for (let i = 0; i < lastPlayedPlaylistsPlayButtons.length; i++) {
             setButtonOnPlay(lastPlayedPlaylistsPlayButtons[i]);
         }
@@ -402,11 +390,11 @@ $(function () {
     });
     //on pause
     playerElement.addEventListener("pause", function () {
-        let currentPlayingButtons = $(`button[data-music_id='${lastPlayedPlaylistId}_${lastPlayedMusicIndex}']`);
+        let currentPlayingButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < currentPlayingButtons.length; i++) {
             setButtonOnPause(currentPlayingButtons[i]);
         }
-        let lastPlayedPlaylistsPlayButtons = $(`button[data-playlist_id='${lastPlayedPlaylistId}']`);
+        let lastPlayedPlaylistsPlayButtons = $(`button[data-playlist_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}']`);
         for (let i = 0; i < lastPlayedPlaylistsPlayButtons.length; i++) {
             setButtonOnPause(lastPlayedPlaylistsPlayButtons[i]);
         }
@@ -455,20 +443,17 @@ function setButtonOnStop(button) {
     button.childNodes[0].setAttribute('src', '/img/play.png');
 }
 
-function playOrPause(playlistId, musicIndex) {
-    let clickedButtons = $(`button[data-music_id='${playlistId}_${musicIndex}']`);
+function playOrPause(compilationListName, playlistIndex, musicIndex) {
+    let clickedButtons = $(`button[data-music_id='${compilationListName}_${playlistIndex}_${musicIndex}']`);
     let clickedButton = clickedButtons[0];
+    console.log(compilationListName, playlistIndex, musicIndex);
     let playingState = clickedButton.dataset.playing_state;
     if (playingState === 'on_stop') {
-        let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedPlaylistId}_${lastPlayedMusicIndex}']`);
+        let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
             setButtonOnStop(lastPlayedMusicsButtons[i]);
         }
-        if (playlistId !== lastPlayedPlaylistId) {
-            if (isNewCompilationsList) {
-                allSongCompilationsInCurrentGenre = allSongCompilationsInNewGenre;
-                isNewCompilationsList = false;
-            }
+        if (playlistIndex !== lastPlayedPlaylistIndex) {
             lastPlayedPlaylist = newPlaylist;
             lastPlayedSongList = newSongList;
             let lastPlayedPlaylistsButtons = $(`button[data-playlist_id='${lastPlayedPlaylistId}']`);
@@ -478,7 +463,17 @@ function playOrPause(playlistId, musicIndex) {
                 }
             }
         }
-        lastPlayedPlaylistId = newPlaylist.id;
+        if (compilationListName !== lastPlayedCompilationListName) {
+            lastPlayedCompilationListName = compilationListName;
+            // if (allSongCompilationsInCurrentCompilationList !== undefined) {
+            //     let compilationListForChange = allSongCompilationsInCurrentCompilationList;
+            //     allSongCompilationsInCurrentCompilationList = allSongCompilationsInNewCompilationList;
+            //     allSongCompilationsInNewCompilationList = compilationListForChange;
+            // } else {
+            allSongCompilationsInCurrentCompilationList = allSongCompilationsInNewCompilationList;
+
+        }
+        lastPlayedPlaylistIndex = playlistIndex;
         lastPlayedMusicIndex = musicIndex;
         let music = lastPlayedSongList[musicIndex];
         player.attr('src', musicUrl + music.name);
@@ -490,15 +485,16 @@ function playOrPause(playlistId, musicIndex) {
     }
 }
 
-function playOrPausePlaylist(playlistId) {
-    if (lastPlayedPlaylistId === playlistId) {
-        playOrPause(playlistId, lastPlayedMusicIndex);
+function playOrPausePlaylist(compilationListName, playlistId, playlistIndex) {
+    if (lastPlayedPlaylistIndex === playlistIndex && lastPlayedCompilationListName === compilationListName) {
+        console.log(compilationListName, playlistIndex, lastPlayedMusicIndex);
+        playOrPause(compilationListName, playlistIndex, lastPlayedMusicIndex);
     } else {
         $.get('/api/user/song-compilation/get/song-compilation/' + playlistId, function (songCompilation) {
             $.get('/api/user/song/get/all-song/song-compilation/' + playlistId, function (compilationSongs) {
-                fillModalTableWithPlaylist('modalPlaylistTableBody', songCompilation, compilationSongs);
+                fillModalTableWithPlaylist('modalPlaylistTableBody', compilationListName, songCompilation, compilationSongs);
                 $('#modalPlaylistName').text(songCompilation.name);
-                playOrPause(playlistId, 0);
+                playOrPause(compilationListName, playlistIndex, 0);
             });
         });
     }
@@ -518,7 +514,7 @@ function playNext() {
                 lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
             }
             fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
-            playOrPause(lastPlayedPlaylist, lastPlayedMusicIndex + 1);
+            playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex + 1);
         } else {
             if (shuffle) {
                 let playlistsLength = lastPlayedSongList.length;
@@ -526,29 +522,19 @@ function playNext() {
                 do {
                     nextMusicIndex = Math.floor(Math.random() * playlistsLength);
                 } while (nextMusicIndex === lastPlayedMusicIndex);
-                playOrPause(lastPlayedPlaylistId, nextMusicIndex);
+                playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, nextMusicIndex);
                 return;
             }
             if (lastPlayedMusicIndex < lastPlayedSongList.length - 1) {
-                playOrPause(lastPlayedPlaylistId, lastPlayedMusicIndex + 1);
+                playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex + 1);
             } else {
-                let countCounter = false;
-                let countOfPlaylistsAfter = 0;
-                let currentPlaylistsIndex = 0;
-                for (let i = 0; i < allSongCompilationsInCurrentGenre.length; i++) {
-                    if (countCounter) {
-                        countOfPlaylistsAfter++;
-                    }
-                    if (lastPlayedPlaylistId === allSongCompilationsInCurrentGenre[i].id) {
-                        currentPlaylistsIndex = i;
-                        countCounter = true;
-                    }
-                }
-                if (countOfPlaylistsAfter > 0) {
-                    let index = allSongCompilationsInCurrentGenre.length - countOfPlaylistsAfter;
-                    playOrPausePlaylist(allSongCompilationsInCurrentGenre[index]);
+                let nextPlaylistId;
+                if (lastPlayedPlaylistIndex < allSongCompilationsInCurrentCompilationList.length-1) {
+                    nextPlaylistId = allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex + 1].id;
+                    playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, lastPlayedPlaylistIndex + 1);
                 } else {
-                    playOrPausePlaylist(allSongCompilationsInCurrentGenre[0].id);
+                    nextPlaylistId = allSongCompilationsInCurrentCompilationList[0].id;
+                    playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, 0);
                 }
             }
         }
@@ -562,8 +548,12 @@ function playPrevious() {
         return;
     }
     if (lastPlayedMusicIndex > 0) {
-        playOrPause(lastPlayedPlaylistId, lastPlayedMusicIndex - 1);
+        playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex - 1);
     } else {
-        playOrPause(lastPlayedPlaylistId, lastPlayedSongList.length - 1);
+        if (lastPlayedPlaylistIndex > 0) {
+            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex-1].id, lastPlayedPlaylistIndex - 1);
+        } else {
+            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[allSongCompilationsInCurrentCompilationList.length - 1].id,allSongCompilationsInCurrentCompilationList.length - 1);
+        }
     }
 }

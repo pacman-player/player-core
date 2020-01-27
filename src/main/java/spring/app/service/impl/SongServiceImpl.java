@@ -76,8 +76,7 @@ public class SongServiceImpl implements SongService {
     public List<Song> getAllSongInSongCompilation(Long id) {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();
-        List<Song> allSongList = new ArrayList<>(allSongSet);
-        return allSongList;
+        return new ArrayList<>(allSongSet);
     }
 
     @Override
