@@ -53,4 +53,9 @@ public class AddressServiceImpl implements AddressService {
     public List checkAddress(Address address) {
         return addressDao.checkAddressInDB(address);
     }
+
+    @Override
+    public Long getLastId() {
+        return addressDao.getLastInsertId();
+    }
 }

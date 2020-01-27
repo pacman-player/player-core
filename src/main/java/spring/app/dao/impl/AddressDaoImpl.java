@@ -55,4 +55,17 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
 
         return list;
     }
+
+    @Override
+    public Long getLastInsertId() {
+        Long id;
+
+        try {
+            id = ((Number) entityManager.createNativeQuery("select max(id) from address;").getSingleResult()).longValue();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+        return id;
+    }
 }

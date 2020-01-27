@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
@@ -127,7 +128,14 @@ public class UserRestController {
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        Address address = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getAddress();
+        Company company = ((User) getContext().getAuthentication().getPrincipal()).getCompany();
+
+        SecurityContext context = getContext();
+
+        User principal = (User) getContext().getAuthentication().getPrincipal();
+
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getAddress().getId();
         return ResponseEntity.ok(addressService.getById(id));
     }
 
@@ -145,7 +153,7 @@ public class UserRestController {
     public void updateAddress(@RequestBody AddressDto addressDto) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
-        Address addressForUpdate = addressService.getById(id);
+        Address addressForUpdate = companyForUpdate.getAddress();
 
         if (addressForUpdate == null) {
             addressService.updateAddress(new Address(
@@ -165,7 +173,7 @@ public class UserRestController {
             addressForUpdate.setLongitude(addressDto.getLongitude());
         }
 
-        companyForUpdate.setAddress(addressService.getById(id));
+        companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
         companyService.updateCompany(companyForUpdate);
     }
 
