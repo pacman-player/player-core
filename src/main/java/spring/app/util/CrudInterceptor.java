@@ -8,6 +8,18 @@ import java.io.Serializable;
 public class CrudInterceptor extends EmptyInterceptor {
     private static int count;
 
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        CrudInterceptor.count = count;
+    }
+
+    public static void reset() {
+        count = 0;
+    }
+
     @Override
     public boolean onLoad(
             Object entity,
