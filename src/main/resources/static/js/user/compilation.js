@@ -275,7 +275,7 @@ function showAllSongInSongCompilation(compilationListName, id) {
     });
 }
 
-//fill modal table with playlist
+// функия для заполнения модалки песнями, id которого передается первым параметром
 function fillModalTableWithPlaylist(modalId, compilationListName, songCompilation, songCompilationSongs) {
     $(`#${modalId}`).empty();
     let compilationIndex = 0;
@@ -305,52 +305,79 @@ function fillModalTableWithPlaylist(modalId, compilationListName, songCompilatio
     }
 }
 
-//load all music from current playlist to modal-table
+// функия для заполнения модалки текущего списка песен
 function fillModalCurrentPlaylistTable(songCompilation, songCompilationSongs) {
     fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedCompilationListName, songCompilation, songCompilationSongs);
 }
 
-// #####################################################################################################
-// #####################################################################################################
-// #####################################################################################################
+/**
+ * ##########################
+ *          PLAYER
+ * ##########################
+ */
 
-// PLAYER
-
+// объект плеер, который при загрузке страницы сразу находится с jquery
 let player;
+
+// объект плеер, который находится javascript-ом
 let playerElement = document.getElementById("player");
+
+// адрес, по которому клиент образается для проигрывания музыки
 let musicUrl = "/api/music/play/";
+
+// переменная, которая говорит, нужно ли играть по порядку или случайным порядком
 let shuffle = false;
+
+// индекс последне-проигранной песни в своем массиве
 let lastPlayedMusicIndex = -1;
+
+// индекс последне-проигранного массива песен в своем списке
 let lastPlayedPlaylistIndex = -1;
+
+// переменная, которая хранит id кнопки последне-проигранного списка
 let lastPlayedPlaylistId = 'none';
+
+// последне-проигранный объект compilation
 let lastPlayedPlaylist;
+
+// последне-проигранный массив песен, который достаётся с помощью lastPlayedPlaylist.id
 let lastPlayedSongList;
+
+// новый объект compilation, песни которого открываются в модалке
 let newPlaylist;
+
+// новый массив песен, который достаётся с помощью newPlaylist.id
 let newSongList;
+
+// массив всех compilation в новом разделе (а их сейчас всего 4: getGenres, morning, midday, evening)
 let allSongCompilationsInNewCompilationList;
+
+// массив всех compilation в текущем разделе (а их сейчас всего 4: getGenres, morning, midday, evening)
 let allSongCompilationsInCurrentCompilationList;
+
+// имя текущего раздела
 let lastPlayedCompilationListName = 'none';
 
 $(function () {
     player = $('#player');
 
-    //play previous music in current playlist
+    // при нажатии на кнопку "предыдущий"
     $("#previousAudioButton").on("click", function () {
         playPrevious();
     });
-    //play or pause current music
+    // при нажатии на кнопку "играть \ пауза"
     $("#playOrPauseAudioButton").on("click", function () {
         playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex);
     });
-    //play next music in current playlist
+    // при нажатии на кнопку "следующий"
     $("#nextAudioButton").on("click", function () {
         playNext();
     });
-    //get list of music from current playlist
+    // при нажатии на кнопку "список". выводит список песен, который играют на данный момент
     $("#currentPlaylistButton").on("click", function () {
         fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
     });
-    //stop music
+    // при нажатии на кнопку "остановить". останавливает воспроизведение и музыой для воспроизведения ставит первую песню в текущем массиве песен
     $("#stopAudioButton").on("click", function () {
         let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
@@ -365,7 +392,7 @@ $(function () {
         player.prop('src', musicUrl + music.name);
         $('#globalPlayButton').prop('src', '/img/play.png');
     });
-    //shuffle music
+    // при нажатии на кнопку "случайный порядок / обычный порядок"
     $("#shuffleAudioButton").on("click", function () {
         if (shuffle) {
             $("#shuffleImg").prop('src', '/img/shuffleOff.png');
@@ -375,7 +402,7 @@ $(function () {
             shuffle = true;
         }
     });
-    //on playing
+    // при проигрывании плеера. ищутся кнопки песен, который играли до этого и которые должны играть сейчас, и меняется изображение в соответствии с их положением
     playerElement.addEventListener("play", function () {
         let currentPlayingButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < currentPlayingButtons.length; i++) {
@@ -388,7 +415,7 @@ $(function () {
         }
         $('#globalPlayButton').prop('src', '/img/pause.png');
     });
-    //on pause
+    // при паузе плеера. ищутся кнопки песен, который играли и меняется изображение на "продолжить"
     playerElement.addEventListener("pause", function () {
         let currentPlayingButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
         for (let i = 0; i < currentPlayingButtons.length; i++) {
@@ -400,11 +427,11 @@ $(function () {
         }
         $('#globalPlayButton').prop('src', '/img/resume.png');
     });
-    //on end
+    // при окончании проигрывания текущей песни
     playerElement.addEventListener("ended", function () {
         playNext();
     });
-    //on changing volume
+    // при изменении громкости плеера
     playerElement.addEventListener("volumechange", function () {
         if (playerElement.volume === 0 || playerElement.muted) {
             $('#soundImg').prop('src', '/img/soundOff.png');
@@ -412,7 +439,7 @@ $(function () {
             $('#soundImg').prop('src', '/img/soundOn.png');
         }
     });
-    //mute/unmute
+    // при нажатии на кнопку "громкость вкл / выкл"
     $("#soundButton").on("click", function () {
         let soundState = $("#soundButton").data("sound_state");
         if (soundState === "on") {
@@ -427,26 +454,37 @@ $(function () {
     });
 });
 
-
+// функция для изменения изображения и data-playing_state на кнопке при проигрывании музыки
 function setButtonOnPlay(button) {
     button.dataset.playing_state = 'on_play';
     button.childNodes[0].setAttribute('src', '/img/pause.png');
 }
 
+// функция для изменения изображения и data-playing_state на кнопке при паузе музыки
 function setButtonOnPause(button) {
     button.dataset.playing_state = 'on_pause';
     button.childNodes[0].setAttribute('src', '/img/resume.png');
 }
 
+// функция для изменения изображения и data-playing_state на кнопке при остановке музыки
 function setButtonOnStop(button) {
     button.dataset.playing_state = 'on_stop';
     button.childNodes[0].setAttribute('src', '/img/play.png');
 }
 
+// функция для проигрывания / паузы
+// сперва находится кнопка нажатия и определяется его состояние
+// если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
+// потом смотрим, это текущий плейлист, или нет
+//      если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
+// смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
+// потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
+//
+// а если песня играется - то ставится на паузу
+// а если песня на паузе - то продолжается воспроизведение
 function playOrPause(compilationListName, playlistIndex, musicIndex) {
     let clickedButtons = $(`button[data-music_id='${compilationListName}_${playlistIndex}_${musicIndex}']`);
     let clickedButton = clickedButtons[0];
-    console.log(compilationListName, playlistIndex, musicIndex);
     let playingState = clickedButton.dataset.playing_state;
     if (playingState === 'on_stop') {
         let lastPlayedMusicsButtons = $(`button[data-music_id='${lastPlayedCompilationListName}_${lastPlayedPlaylistIndex}_${lastPlayedMusicIndex}']`);
@@ -465,11 +503,6 @@ function playOrPause(compilationListName, playlistIndex, musicIndex) {
         }
         if (compilationListName !== lastPlayedCompilationListName) {
             lastPlayedCompilationListName = compilationListName;
-            // if (allSongCompilationsInCurrentCompilationList !== undefined) {
-            //     let compilationListForChange = allSongCompilationsInCurrentCompilationList;
-            //     allSongCompilationsInCurrentCompilationList = allSongCompilationsInNewCompilationList;
-            //     allSongCompilationsInNewCompilationList = compilationListForChange;
-            // } else {
             allSongCompilationsInCurrentCompilationList = allSongCompilationsInNewCompilationList;
 
         }
@@ -485,9 +518,14 @@ function playOrPause(compilationListName, playlistIndex, musicIndex) {
     }
 }
 
+// функция для поигрывания плейлистов
+// обычно вызывается прямо из интерфейса
+// но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
+// сначала смотрится, является желаемый плейлист для проигрывания предыдущим
+//      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
+//      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
 function playOrPausePlaylist(compilationListName, playlistId, playlistIndex) {
     if (lastPlayedPlaylistIndex === playlistIndex && lastPlayedCompilationListName === compilationListName) {
-        console.log(compilationListName, playlistIndex, lastPlayedMusicIndex);
         playOrPause(compilationListName, playlistIndex, lastPlayedMusicIndex);
     } else {
         $.get('/api/user/song-compilation/get/song-compilation/' + playlistId, function (songCompilation) {
@@ -500,6 +538,16 @@ function playOrPausePlaylist(compilationListName, playlistId, playlistIndex) {
     }
 }
 
+// функция для проигрывания следующей песни
+// сперва смотрится на сервере, есть ли на очереди заказанных песен что-то
+//      если есть - то эти песни втискиваются в массив текущих песен сразу после последне-проигранной песни
+//      если нет - то смотрится, нужно ли гирать по-порядку или нет
+//          если не по-порядку, то находится рандомное число в пределах размера текущего списка песен, который не равен индексу последе-проигранной песни и играется
+//          если по-порядку, то выясняется, последняя ли эта песня
+//               если нет, то играется следующая песня
+//               если да, то смотрится, а последний ли это compilation в текущем списке
+//                  если нет, то играется следующий по очереди compilation
+//                  если да, то играется первый по очереди compilation
 function playNext() {
     $.get('/api/user/song/songsInQueue', function (songList) {
         if (songList.length > 0) {
@@ -529,7 +577,7 @@ function playNext() {
                 playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex + 1);
             } else {
                 let nextPlaylistId;
-                if (lastPlayedPlaylistIndex < allSongCompilationsInCurrentCompilationList.length-1) {
+                if (lastPlayedPlaylistIndex < allSongCompilationsInCurrentCompilationList.length - 1) {
                     nextPlaylistId = allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex + 1].id;
                     playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, lastPlayedPlaylistIndex + 1);
                 } else {
@@ -541,7 +589,13 @@ function playNext() {
     });
 }
 
-//play previous music in list. if this is the last music in current playlist, than play next playlist
+// функция для проигрывания предыдущей песни
+// если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
+// если нет, то смотрится, не первая ли эта песня
+//      если нет то играется предыдущая по индексу песня
+//      если да, то смотрится, не последний ли это compilation в списке
+//          если нет, то играется первая первая песня предыдущего compilation в списке
+//          если да, то играется первая первая песня первого compilation в списке
 function playPrevious() {
     if (playerElement.currentTime > 5) {
         playerElement.currentTime = 0;
@@ -551,9 +605,9 @@ function playPrevious() {
         playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex - 1);
     } else {
         if (lastPlayedPlaylistIndex > 0) {
-            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex-1].id, lastPlayedPlaylistIndex - 1);
+            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex - 1].id, lastPlayedPlaylistIndex - 1);
         } else {
-            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[allSongCompilationsInCurrentCompilationList.length - 1].id,allSongCompilationsInCurrentCompilationList.length - 1);
+            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[allSongCompilationsInCurrentCompilationList.length - 1].id, allSongCompilationsInCurrentCompilationList.length - 1);
         }
     }
 }
