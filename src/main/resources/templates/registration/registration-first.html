@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link href="/css/style.css" type="text/css" rel="stylesheet"/>
-    <title>Registration: 1/2</title>
+    <title>Регистрация: 1/2</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -24,47 +24,47 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Registration and Login Module</a>
+            <a class="navbar-brand" href="#" th:href="@{/}">Вернуться к окну Входа</a>
         </div>
     </div>
 </nav>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Registration: 1/2</h1>
+            <h1>Регистрация: 1/2</h1>
             <form class="text-center" id="registrationFirstForm">
                 <div class="form-group">
-                    <label for="login" class="control-label">Login</label>
-                    <input type="text" id="login" class="form-control" placeholder="Enter login" name="login" required="required"/>
+                    <label for="login" class="control-label">Логин</label>
+                    <input type="text" id="login" class="form-control" placeholder="Введите логин" name="login" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="control-label">Email</label>
-                    <input type="text" id="email" class="form-control" placeholder="Enter email" name="email" required="required"/>
+                    <label for="email" class="control-label">Почта</label>
+                    <input type="text" id="email" class="form-control" placeholder="Введите почту" name="email" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="password" class="control-label">Password</label>
-                    <input name="password" id="password" class="form-control" placeholder="Enter password" type="password" required="required"/>
+                    <label for="password" class="control-label">Пароль</label>
+                    <input name="password" id="password" class="form-control" placeholder="Введите пароль" type="password" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="confirmPassword" class="control-label">Confirm password</label>
-                    <input name="confirmPassword" id="confirmPassword" placeholder="Confirm password" class="form-control" type="password"
+                    <label for="confirmPassword" class="control-label">Подтвердите пароль</label>
+                    <input name="confirmPassword" id="confirmPassword" placeholder="Подтвердите пароль" class="form-control" type="password"
                            required="required"/>
                 </div>
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" id="terms" type="checkbox" name="terms" required="required"/>  
                         <label class="custom-control-label" for="terms">
-                            I agree with the <a href="#">terms and conditions</a> for Registration.
+                            Я согласен с <a href="#">условиями пользования</a>.
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Next step</button>
+                    <button type="submit" class="btn btn-success">Далее</button>
                 </div>
             </form>
             <div class="form-group text-center">
-                <span>Already registered? <a href="/login">Login here</a></span>
+                <span>Уже зарегестрированы? <a href="/login">Войдите здесь</a></span>
             </div>
         </div>
     </div>
