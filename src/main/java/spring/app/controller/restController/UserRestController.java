@@ -128,15 +128,20 @@ public class UserRestController {
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
-        Address address = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getAddress();
-        Company company = ((User) getContext().getAuthentication().getPrincipal()).getCompany();
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
 
-        SecurityContext context = getContext();
+        Address lazyAddressByID = addressService.getById(companyService.getById(id).getAddress().getId());
+        Address realAddress = new Address(
+                lazyAddressByID.getId(),
+                lazyAddressByID.getCountry(),
+                lazyAddressByID.getCity(),
+                lazyAddressByID.getStreet(),
+                lazyAddressByID.getHouse(),
+                lazyAddressByID.getLatitude(),
+                lazyAddressByID.getLongitude()
+                );
 
-        User principal = (User) getContext().getAuthentication().getPrincipal();
-
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getAddress().getId();
-        return ResponseEntity.ok(addressService.getById(id));
+        return ResponseEntity.ok(realAddress);
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -171,6 +176,11 @@ public class UserRestController {
             addressForUpdate.setHouse(addressDto.getHouse());
             addressForUpdate.setLatitude(addressDto.getLatitude());
             addressForUpdate.setLongitude(addressDto.getLongitude());
+
+            companyForUpdate.setAddress(addressForUpdate);
+            companyService.updateCompany(companyForUpdate);
+
+            return;
         }
 
         companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
