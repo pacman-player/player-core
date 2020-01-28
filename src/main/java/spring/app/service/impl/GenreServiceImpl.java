@@ -38,6 +38,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public List<Genre> getAllGenreFetchModeJoin() {
+        return null;
+    }
+
+    @Override
     public void updateGenre(Genre genre) {
         genreDao.update(genre);
     }

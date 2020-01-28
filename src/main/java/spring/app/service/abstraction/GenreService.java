@@ -10,7 +10,7 @@ public interface GenreService {
 
     List<Genre> getAllGenre();
 
-
+    List<Genre> getAllGenreFetchModeJoin();
 
     Genre getByName(String name);
 
