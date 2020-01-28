@@ -23,7 +23,9 @@ public interface UserService {
 
 	List<User> getAllUsers();
 
+	List<User> getAllUsersFetchModeSubselect();
 	List<User> getAllUsersFetchModeJoin();
+	List<User> getAllUsersFetchModeSubselectBatch();
 
 	void deleteUserById(Long id);
 

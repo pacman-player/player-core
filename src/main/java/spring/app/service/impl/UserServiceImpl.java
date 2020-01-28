@@ -79,8 +79,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Fetch(FetchMode.SUBSELECT)
-    @BatchSize(size = 3)
+    public List<User> getAllUsersFetchModeSubselect() {
+        return userDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.JOIN)
     public List<User> getAllUsersFetchModeJoin() {
+        return userDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 3)
+    public List<User> getAllUsersFetchModeSubselectBatch() {
         return userDao.getAll();
     }
 

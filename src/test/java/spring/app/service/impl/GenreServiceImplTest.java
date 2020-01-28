@@ -1,14 +1,18 @@
 package spring.app.service.impl;
 
+import com.vladmihalcea.sql.SQLStatementCountValidator;
+import com.vladmihalcea.sql.exception.SQLSelectCountMismatchException;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.UserService;
 import spring.app.util.CrudInterceptor;
 
+import static com.vladmihalcea.sql.SQLStatementCountValidator.assertSelectCount;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -19,61 +23,48 @@ public class GenreServiceImplTest {
     @Autowired
     private GenreService genreService;
 
-    @Autowired
-    private UserService userService;
-
     @Test
     public void contexLoads() throws Exception {
         assertThat(genreService).isNotNull();
     }
 
-//    @Test
-//    public void vladMixalchTest() {
-//        SQLStatementCountValidator.reset();
-//    }
-
     @Test
-    public void getAllUsersFetchModeJoinTest() throws Exception {
+    public void getAllGenreJoinTest() throws Exception {
         CrudInterceptor.reset();
-        System.out.println("Сбросил счётчик, счётчик = " + CrudInterceptor.getCount());
-        userService.getAllUsersFetchModeJoin();
-        System.out.println("Счётчик = " + CrudInterceptor.getCount());
-        assertEquals(CrudInterceptor.getCount(),3);
-    }
-
-    @Test
-    public void getAllGenreFetchModeJoinTest() throws Exception {
-        CrudInterceptor.reset();
-        System.out.println("Сбросил счётчик, счётчик = " + CrudInterceptor.getCount());
         genreService.getAllGenreFetchModeJoin();
-        System.out.println("Счётчик = " + CrudInterceptor.getCount());
-        assertEquals(CrudInterceptor.getCount(),5);
+        assertEquals(1,CrudInterceptor.getCount());
     }
 
     @Test
-    public void getAllGenreTest() throws Exception {
+    @Fetch(FetchMode.SUBSELECT)
+    public void getAllGenreSubselectTest() throws Exception {
         CrudInterceptor.reset();
-        System.out.println("Сбросил счётчик, счётчик = " + CrudInterceptor.getCount());
         genreService.getAllGenre();
-        System.out.println("Счётчик = " + CrudInterceptor.getCount());
-        assertEquals(CrudInterceptor.getCount(),5);
+        assertEquals(1, CrudInterceptor.getCount());
     }
 
     @Test
-    public void getGenreByIdFetchModeJoinTest() throws Exception {
+    public void getAllGenreVladTest() throws Exception {
+        try {
+            SQLStatementCountValidator.reset();
+            genreService.getAllGenre();
+            assertSelectCount(1);
+        } catch (SQLSelectCountMismatchException e) {
+            assertEquals(1, e.getRecorded());
+        }
+    }
+
+    @Test
+    public void getGenreByIdJoinTest() throws Exception {
         CrudInterceptor.reset();
-        System.out.println("Сбросил счётчик, счётчик = " + CrudInterceptor.getCount());
         genreService.getByIdFetchModeJoin(1L);
-        System.out.println("Счётчик = " + CrudInterceptor.getCount());
-        assertEquals(CrudInterceptor.getCount(),1);
+        assertEquals(1,CrudInterceptor.getCount());
     }
 
     @Test
     public void getGenreByIdTest() throws Exception {
         CrudInterceptor.reset();
-        System.out.println("Сбросил счётчик, счётчик = " + CrudInterceptor.getCount());
         genreService.getById(1L);
-        System.out.println("Счётчик = " + CrudInterceptor.getCount());
-        assertEquals(CrudInterceptor.getCount(),1);
+        assertEquals(1, CrudInterceptor.getCount());
     }
 }
