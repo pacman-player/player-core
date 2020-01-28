@@ -27,6 +27,11 @@ public class GenreServiceImplTest {
         assertThat(genreService).isNotNull();
     }
 
+//    @Test
+//    public void vladMixalchTest() {
+//        SQLStatementCountValidator.reset();
+//    }
+
     @Test
     public void getAllUsersFetchModeJoinTest() throws Exception {
         CrudInterceptor.reset();

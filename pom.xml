@@ -227,6 +227,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>db-util</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 3)
     public List<User> getAllUsersFetchModeJoin() {
         return userDao.getAll();
     }
