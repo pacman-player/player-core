@@ -62,7 +62,7 @@ public class TelegramRestController {
         List<Address> addresses = addressService.checkAddress(geoAddress);
         List<Company> companies = new ArrayList();
 
-        addresses.forEach(address -> companies.add(companyService.getById(address.getId())));
+        addresses.forEach(address -> companies.add(companyService.getCompanyByAddressId(address.getId())));
 
         return companies;
     }
