@@ -144,40 +144,54 @@
                                                                                 <input type="hidden"
                                                                                        id="id-input-edit-hidden"
                                                                                        name="id"/>
-
-                                                                                <label for="updateUserEmail">Почта</label>
-                                                                                <input id="updateUserEmail"
-                                                                                       class="form-control" type="email"
-                                                                                       name="email"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserName">Логин</label>
-                                                                                <input id="updateUserName"
-                                                                                       class="form-control" type="text"
-                                                                                       name="login"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserPass">Пароль</label>
-                                                                                <input id="updateUserPass"
-                                                                                       class="form-control" type="text"
-                                                                                       name="password"
-                                                                                       required=""/>
-
-                                                                                <label for="updateUserRole">Роль</label>
-                                                                                <select class="form-control"
-                                                                                        id="updateUserRole" name="role">
-                                                                                    <option value="user">USER</option>
-                                                                                    <option value="admin">ADMIN</option>
-                                                                                    <option value="admin, user">ADMIN,
-                                                                                        USER
-                                                                                    </option>
-                                                                                </select>
+                                                                                <div id="email">
+                                                                                    <label for="updateUserEmail">Почта</label>
+                                                                                    <input id="updateUserEmail"
+                                                                                           class="form-control"
+                                                                                           type="email"
+                                                                                           name="email"
+                                                                                           required="required"/>
+                                                                                    <div id="email-error"></div>
+                                                                                </div>
+                                                                                <div id="login">
+                                                                                    <label for="updateUserName">Логин</label>
+                                                                                    <input id="updateUserName"
+                                                                                           class="form-control"
+                                                                                           type="text"
+                                                                                           name="login"
+                                                                                           required="required"/>
+                                                                                    <div id="login-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserPass">Пароль</label>
+                                                                                    <input id="updateUserPass"
+                                                                                           class="form-control"
+                                                                                           type="password"
+                                                                                           name="password"
+                                                                                           required="required"/>
+                                                                                    <div id="password-error"></div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="updateUserRole">Роль</label>
+                                                                                    <select class="form-control"
+                                                                                            id="updateUserRole"
+                                                                                            name="role">
+                                                                                        <option value="user">USER
+                                                                                        </option>
+                                                                                        <option value="admin">ADMIN
+                                                                                        </option>
+                                                                                        <option value="admin, user">
+                                                                                            ADMIN,
+                                                                                            USER
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
                                                                                 <div class="modal-footer">
                                                                                     <button type="button"
                                                                                             class="btn btn-default"
                                                                                             data-dismiss="modal">Закрыть
                                                                                     </button>
-                                                                                    <button id="editUserBtn"
+                                                                                    <button id="editUserBtnModal"
                                                                                             class="btn btn-primary"
                                                                                             type="submit">Изменить
                                                                                     </button>

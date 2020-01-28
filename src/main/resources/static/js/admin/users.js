@@ -29,7 +29,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableId">' + listUsers[i].id + '</td>');
                     htmlTable += ('<td id="tableRole">' + htmlRole + '</td>');
                     htmlTable += ('<td id="tableName">' + listUsers[i].login + '</td>');
-                    htmlTable += ('<td id="tablePass">' + listUsers[i].password + '</td>');
+                    // htmlTable += ('<td id="tablePass">' + listUsers[i].password + '</td>');
                     htmlTable += ('<td id="tableEmail">' + listUsers[i].email + '</td>');
                     // htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                     //     ' data-target="#editCompany" onclick = "fillUpdateModalForm(${listUsers[i].id})">company</button></td>');
