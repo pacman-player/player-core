@@ -67,7 +67,7 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
