@@ -23,6 +23,8 @@ public interface UserService {
 
 	List<User> getAllUsers();
 
+	List<User> getAllUsersFetchModeJoin();
+
 	void deleteUserById(Long id);
 
 	void updateUser(User user);

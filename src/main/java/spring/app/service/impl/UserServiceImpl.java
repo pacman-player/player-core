@@ -1,5 +1,7 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,6 +73,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
+        return userDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.JOIN)
+    public List<User> getAllUsersFetchModeJoin() {
         return userDao.getAll();
     }
 

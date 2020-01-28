@@ -16,6 +16,8 @@ public interface GenreService {
 
     Genre getById(Long id);
 
+    Genre getByIdFetchModeJoin(Long id);
+
     void updateGenre(Genre genre);
 
     void deleteGenreById(Long id);

@@ -1,5 +1,7 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +40,9 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Fetch(FetchMode.JOIN)
     public List<Genre> getAllGenreFetchModeJoin() {
-        return null;
+        return genreDao.getAll();
     }
 
     @Override
@@ -54,6 +57,11 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre getById(Long id) {
+        return genreDao.getById(id);
+    }
+
+    @Override
+    public Genre getByIdFetchModeJoin(Long id) {
         return genreDao.getById(id);
     }
 }
