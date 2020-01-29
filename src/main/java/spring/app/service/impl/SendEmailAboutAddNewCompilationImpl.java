@@ -32,7 +32,7 @@ public class SendEmailAboutAddNewCompilationImpl implements SendEmailAboutAddNew
                 String message = String.format(
                         "Привет, %s! \n" +
                                 "У нас появилась новая подборка %s",
-                        user.getFirstName(),
+                        user.getLogin(),
                         nameCompilation
                 );
                 mailMessage.setFrom(user.getLogin());
