@@ -10,7 +10,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
-@Transactional
 public class MessageDaoImpl extends AbstractDao<Long, Message> implements MessageDao {
     MessageDaoImpl() {
         super(Message.class);
