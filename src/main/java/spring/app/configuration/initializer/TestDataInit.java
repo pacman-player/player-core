@@ -43,6 +43,9 @@ public class TestDataInit {
     @Autowired
     private SongCompilationService songCompilationService;
 
+    @Autowired
+    private AddressService addressService;
+
     @Value("${music.path}")
     private String musicPath;
 
@@ -84,6 +87,46 @@ public class TestDataInit {
         userRoles.add(roleUser);
         user.setRoles(userRoles);
         userService.addUser(user);
+
+        User user2 = new User();
+        user2.setLogin("user2");
+        user2.setPassword("user2");
+        user2.setEmail("user2@gmail.com");
+        userRoles.add(roleUser);
+        user2.setRoles(userRoles);
+        userService.addUser(user2);
+
+        User user3 = new User();
+        user3.setLogin("user3");
+        user3.setPassword("user3");
+        user3.setEmail("user3@gmail.com");
+        userRoles.add(roleUser);
+        user3.setRoles(userRoles);
+        userService.addUser(user3);
+
+        User user4 = new User();
+        user4.setLogin("user4");
+        user4.setPassword("user4");
+        user4.setEmail("user4@gmail.com");
+        userRoles.add(roleUser);
+        user4.setRoles(userRoles);
+        userService.addUser(user4);
+
+        User user5 = new User();
+        user5.setLogin("user5");
+        user5.setPassword("user5");
+        user5.setEmail("user5@gmail.com");
+        userRoles.add(roleUser);
+        user5.setRoles(userRoles);
+        userService.addUser(user5);
+
+        User user6 = new User();
+        user6.setLogin("user6");
+        user6.setPassword("user6");
+        user6.setEmail("user6@gmail.com");
+        userRoles.add(roleUser);
+        user6.setRoles(userRoles);
+        userService.addUser(user6);
 
         Genre genre = new Genre("world");
         genreService.addGenre(genre);
@@ -239,6 +282,11 @@ public class TestDataInit {
         playListService.addPlayList(playList3);
 
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
+        Company company2 = new Company("Mr.Bo2", LocalTime.of(11, 0), LocalTime.of(23, 0), user2, orgType);
+        Company company3 = new Company("Mr.Bo3", LocalTime.of(11, 0), LocalTime.of(23, 0), user3, orgType);
+        Company company4 = new Company("Mr.Bo4", LocalTime.of(11, 0), LocalTime.of(23, 0), user4, orgType);
+        Company company5 = new Company("Mr.Bo5", LocalTime.of(11, 0), LocalTime.of(23, 0), user5, orgType);
+        Company company6 = new Company("Mr.Bo6", LocalTime.of(11, 0), LocalTime.of(23, 0), user6, orgType);
 
         Set<PlayList> allDayPlayLists = new HashSet<>();
         allDayPlayLists.add(playList);
@@ -259,6 +307,36 @@ public class TestDataInit {
         bannedGenres.add(genre1);
         company.setBannedGenres(bannedGenres);
         companyService.addCompany(company);
+
+        company2.setMorningPlayList(morningPlayLists);
+        company2.setMiddayPlayList(middayPlayLists);
+        company2.setEveningPlayList(eveningPlayLists);
+        company2.setBannedGenres(bannedGenres);
+        companyService.addCompany(company2);
+
+        company3.setMorningPlayList(morningPlayLists);
+        company3.setMiddayPlayList(middayPlayLists);
+        company3.setEveningPlayList(eveningPlayLists);
+        company3.setBannedGenres(bannedGenres);
+        companyService.addCompany(company3);
+
+        company4.setMorningPlayList(morningPlayLists);
+        company4.setMiddayPlayList(middayPlayLists);
+        company4.setEveningPlayList(eveningPlayLists);
+        company4.setBannedGenres(bannedGenres);
+        companyService.addCompany(company4);
+
+        company5.setMorningPlayList(morningPlayLists);
+        company5.setMiddayPlayList(middayPlayLists);
+        company5.setEveningPlayList(eveningPlayLists);
+        company5.setBannedGenres(bannedGenres);
+        companyService.addCompany(company5);
+
+        company6.setMorningPlayList(morningPlayLists);
+        company6.setMiddayPlayList(middayPlayLists);
+        company6.setEveningPlayList(eveningPlayLists);
+        company6.setBannedGenres(bannedGenres);
+        companyService.addCompany(company6);
 
         SongQueue songQueue = new SongQueue();
         songQueue.setPosition(1L);
