@@ -2,11 +2,11 @@ package spring.app.service.impl;
 
 import com.vladmihalcea.sql.SQLStatementCountValidator;
 import com.vladmihalcea.sql.exception.SQLSelectCountMismatchException;
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import spring.app.service.abstraction.GenreService;
 import spring.app.util.CrudInterceptor;
@@ -17,15 +17,16 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-@ActiveProfiles(value = "application-test.yml")
-//@TestPropertySource(locations="classpath:application-test.yml")
-//@AutoConfigureMockMvc(addFilters = false)
 public class GenreServiceImplTest {
 
     @Autowired
     private GenreService genreService;
 
+    private SessionFactory sessionFactory;
+
+    /*
+    Этот тест всегда успешен
+     */
     @Test
     public void contexLoads() throws Exception {
         assertThat(genreService).isNotNull();
@@ -73,6 +74,9 @@ public class GenreServiceImplTest {
         assertEquals(3, CrudInterceptor.getCount());
     }
 
+    /*
+    Этот тест всегда провален т.к. количество запросов всегда = 0
+     */
     @Test
     public void getAllGenreVladTest() throws Exception {
         try {
@@ -84,6 +88,10 @@ public class GenreServiceImplTest {
         }
     }
 
+    /*
+    Этот тест провален (2 запроса) когда аннотация FetchMode.JOIN стоит еще и в model у поля SongCompilation
+    помимо сервисного слоя
+     */
     @Test
     public void getGenreByIdJoinTest() throws Exception {
         CrudInterceptor.reset();
@@ -91,6 +99,10 @@ public class GenreServiceImplTest {
         assertEquals(1,CrudInterceptor.getCount());
     }
 
+    /*
+    Этот тест провален (2 запроса) когда аннотация FetchMode.JOIN стоит еще и в model у поля SongCompilation
+    помимо сервисного слоя
+     */
     @Test
     public void getGenreByIdTest() throws Exception {
         CrudInterceptor.reset();

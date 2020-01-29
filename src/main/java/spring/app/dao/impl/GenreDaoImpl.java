@@ -55,8 +55,7 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     }
 
     public List<Genre> getAllDaoJoin() {
-        TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g " +
-                "join fetch g.songCompilation", Genre.class);
+        TypedQuery<Genre> query = entityManager.createQuery("FROM Genre g JOIN FETCH g.songCompilation", Genre.class);
         List<Genre> genreList;
         try {
             genreList = query.getResultList();
@@ -65,4 +64,5 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         }
         return genreList;
     }
+
 }

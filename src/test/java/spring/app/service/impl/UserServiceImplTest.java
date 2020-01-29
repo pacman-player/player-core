@@ -58,6 +58,10 @@ public class UserServiceImplTest {
         assertEquals(3, CrudInterceptor.getCount());
     }
 
+    /*
+    Этот тест пройден, хотя в консоле 2 запроса Hibernate при 1 от CrudInterceptor
+    В model заменил EAGER на LAZY у поля Roles
+     */
     @Test
     public void getUserByIdTest() throws Exception {
         CrudInterceptor.reset();

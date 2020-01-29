@@ -18,7 +18,8 @@ public class Genre extends Bannable{
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "genre")
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
+//    @Fetch(FetchMode.SUBSELECT)
     private Set<SongCompilation> songCompilation;
 
     /**

@@ -20,6 +20,7 @@ public class SongCompilation {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(targetEntity = Genre.class)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 

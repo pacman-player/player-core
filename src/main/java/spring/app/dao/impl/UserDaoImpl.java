@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.model.Song;
 import spring.app.model.User;
 
 import javax.persistence.NoResultException;
@@ -107,33 +108,15 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     }
 
     public List<User> getAllDaoJoin() {
-        List<User> userList = entityManager.createQuery("select u from User u " +
-                "join fetch u.company " +
-                "join fetch u.roles", User.class)
-                .getResultList();
-        if (userList.isEmpty()) {
+        TypedQuery<User> query = entityManager.createQuery("FROM User u " +
+                "JOIN FETCH u.company " +
+                "JOIN FETCH u.roles", User.class);
+        List<User> allUser;
+        try {
+            allUser = query.getResultList();
+        } catch (NoResultException e) {
             return null;
         }
-        return userList;
+        return allUser;
     }
-
-    //закоментровал вариант с JOIN FETCH, который не получился
-//    @Override
-////    @Fetch(FetchMode.JOIN)
-//    public List<Song> getAll() {
-//        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s " +
-//                "JOIN FETCH s.author " +
-//                "JOIN FETCH s.genre " +
-//                "JOIN FETCH s.songCompilations " +
-//                "JOIN FETCH s.songQueues"
-//                , Song.class);
-//        List<Song> allSong;
-//        try {
-//            allSong = query.getResultList();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-//        return allSong;
-//    }
-
 }
