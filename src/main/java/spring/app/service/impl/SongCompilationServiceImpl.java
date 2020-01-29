@@ -8,6 +8,7 @@ import spring.app.model.Company;
 import spring.app.model.PlayList;
 import spring.app.model.SongCompilation;
 import spring.app.model.User;
+import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.UserService;
 
@@ -21,11 +22,13 @@ public class SongCompilationServiceImpl implements SongCompilationService {
 
     private SongCompilationDao songCompilationDao;
     private UserService userService;
+    private CompanyService companyService;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService) {
+    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService, CompanyService companyService) {
         this.songCompilationDao = songCompilationDao;
         this.userService = userService;
+        this.companyService = companyService;
     }
 
     @Override
@@ -128,11 +131,13 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
-    public List<SongCompilation> getAllCompilationsInMorningPlaylist() {
-        //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
-        //достаем множество утренних плейлистов
-        Company oldCompany = authUser.getCompany();
+    public List<SongCompilation> getAllCompilationsInMorningPlaylistByCompanyId(Long id) {
+//        //достаем юзера по id авторизованного юзера
+//        User authUser = userService.getUserById(userService.getIdAuthUser());
+//        //достаем множество утренних плейлистов
+//        Company oldCompany = authUser.getCompany();
+
+        Company oldCompany = companyService.getById(id);
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldMorningPlayList);
@@ -143,11 +148,8 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
-    public List<SongCompilation> getAllCompilationsInMiddayPlaylist() {
-        //достаем юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
-        //достаем множество дневных плейлистов
-        Company oldCompany = authUser.getCompany();
+    public List<SongCompilation> getAllCompilationsInMiddayPlaylistByCompanyId(Long id) {
+        Company oldCompany = companyService.getById(id);
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldMiddayPlayList);
@@ -158,11 +160,8 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
-    public List<SongCompilation> getAllCompilationsInEveningPlaylist() {
-        //достаем юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
-        //достаем множество вечерних плейлистов юзера
-        Company oldCompany = authUser.getCompany();
+    public List<SongCompilation> getAllCompilationsInEveningPlaylistByCompanyId(Long id) {
+        Company oldCompany = companyService.getById(id);
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
         //достаем пока один единственный плейлист и его множество подборок
         List<PlayList> oldListPlayLists = new ArrayList<>(setOldEveningPlayList);
