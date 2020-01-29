@@ -2,7 +2,9 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.dto.UserRegistrationDto;
@@ -14,7 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
+
+    private PasswordEncoder passwordEncoder;
 
     private UserDao userDao;
     private RoleDao roleDao;
@@ -25,7 +30,10 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
         this.roleDao = roleDao;
     }
-
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User getUserByLogin(String login) {
@@ -57,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -72,6 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.update(user);
     }
 
@@ -85,5 +95,24 @@ public class UserServiceImpl implements UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User authUser = (User) principal;
         return authUser.getId();
+    }
+    @Override
+    public boolean isExistUserByEmail(String email){
+        return userDao.isExistUserByEmail(email);
+    }
+
+    @Override
+    public boolean isExistUserByEmail(String email, long userId) {
+        return userDao.isExistUserByEmail(email, userId);
+    }
+
+    @Override
+    public boolean isExistUserByLogin(String login){
+        return userDao.isExistUserByLogin(login);
+    }
+
+    @Override
+    public boolean isExistUserByLogin(String login, long userId) {
+        return userDao.isExistUserByLogin(login, userId);
     }
 }

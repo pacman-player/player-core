@@ -67,7 +67,7 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
@@ -81,6 +81,12 @@ public class AdminRestController {
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
         User user = userService.getUserById(userId);
         return ResponseEntity.ok(user.getCompany());
+    }
+
+    @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
+        Company company = companyService.getById(companyId);
+        return ResponseEntity.ok(company);
     }
 
     @PostMapping(value = "/company")
@@ -127,5 +133,23 @@ public class AdminRestController {
                 break;
         }
         return roles;
+    }
+
+    @PostMapping(value = "/add_company")
+    public void addCompany(@RequestBody CompanyDto companyDto) {
+        OrgType orgType = new OrgType(companyDto.getOrgType());
+        Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                LocalTime.parse(companyDto.getCloseTime()), null, orgType);
+        companyService.addCompany(company);
+    }
+
+    @GetMapping(value = "/check/email")
+    public String checkEmail(@RequestParam String email, @RequestParam long id){
+        return Boolean.toString(userService.isExistUserByEmail(email, id));
+    }
+
+    @GetMapping(value = "/check/login")
+    public String checkLogin(@RequestParam String login, @RequestParam long id){
+       return Boolean.toString(userService.isExistUserByLogin(login, id));
     }
 }

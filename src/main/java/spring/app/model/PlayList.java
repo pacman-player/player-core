@@ -16,6 +16,8 @@ public class PlayList {
 
     private String name;
 
+//    private Long companyId;
+
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = SongCompilation.class)
     @JoinTable(name = "song_compilation_on_play_list",
             joinColumns = {@JoinColumn(name = "play_list_id")},
@@ -28,6 +30,19 @@ public class PlayList {
         this.name = name;
         this.songCompilation = songCompilation;
     }
+
+//    public PlayList(Long id, Long companyId) {
+//        this.id = id;
+//        this.companyId = companyId;
+//    }
+//
+//    public Long getCompanyId() {
+//        return companyId;
+//    }
+//
+//    public void setCompanyId(Long companyId) {
+//        this.companyId = companyId;
+//    }
 
     public Long getId() {
         return id;

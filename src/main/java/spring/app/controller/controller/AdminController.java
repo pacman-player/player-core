@@ -36,6 +36,11 @@ public class AdminController {
     public String getSongs() {
         return "admin/songs";
     }
+
+    @GetMapping("/vk_bot")
+    public String getVkBot() {
+        return "admin/vk_bot";
+    }
 }
 
 

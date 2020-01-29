@@ -29,7 +29,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableId">' + listUsers[i].id + '</td>');
                     htmlTable += ('<td id="tableRole">' + htmlRole + '</td>');
                     htmlTable += ('<td id="tableName">' + listUsers[i].login + '</td>');
-                    htmlTable += ('<td id="tablePass">' + listUsers[i].password + '</td>');
+                    // htmlTable += ('<td id="tablePass">' + listUsers[i].password + '</td>');
                     htmlTable += ('<td id="tableEmail">' + listUsers[i].email + '</td>');
                     // htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                     //     ' data-target="#editCompany" onclick = "fillUpdateModalForm(${listUsers[i].id})">company</button></td>');
@@ -81,11 +81,12 @@ $(document).ready(function () {
         });
     };
 
-    //addUser
-    $("#addUserBtn").click(function (event) {
+    $('#addForm').submit(function (event) {
         event.preventDefault();
-        addUser();
-        $(':input', '#addForm').val('');
+        if ($('#addForm').valid()) {
+            addUser();
+            $(':input', '#addForm').val('');
+        }
     });
 
     function addUser() {
@@ -125,13 +126,16 @@ $(document).ready(function () {
         });
     }
 
-    //updateForm
-    $("#editUserBtnm").click(function (event) {
-        event.preventDefault();
-        updateForm();
+    //отправка формы редактирования пользователя
+    $('#edit-form').on('submit', function (e) {
+        e.preventDefault();
+        if ($('.error').length === 0) {
+            updateUser();
+            $('#editUser').modal('hide')
+        }
     });
 
-    function updateForm() {
+    function updateUser() {
         var user = {
             'id': $("#updateUserId").val(),
             'email': $("#updateUserEmail").val(),
@@ -252,7 +256,7 @@ $(document).ready(function () {
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
 
-        switch ($(this).closest("tr").find("#tableRole").text()) {
+        switch ($(this).closest("tr").find("#tableUserRole").text()) {
             case 'USER':
                 $("#updateUserRole").val("user");
                 break;

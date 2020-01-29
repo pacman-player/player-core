@@ -9,8 +9,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
-
-    <title>Registration: 2/2</title>
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
+    <title>Регистрация: 2/2</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -24,30 +24,30 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Registration and Login Module</a>
+            <a class="navbar-brand" href="#" th:href="@{/}">Вернуться к окну Входа</a>
         </div>
     </div>
 </nav>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Registration: 2/2</h1>
+            <h1>Регистрация: 2/2</h1>
             <form class="text-center" id="registrationSecondForm">
                 <input type="hidden" id="login" name="login" th:value="${login}"/>
                 <div class="form-group">
-                    <label for="name" class="control-label">Company name</label>
-                    <input type="text" id="name" class="form-control" placeholder="Enter company name" name="name" required="required"/>
+                    <label for="name" class="control-label">Имя компании</label>
+                    <input type="text" id="name" class="form-control" placeholder="Введите имя компании" name="name" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="startTime" class="control-label">Start time</label>
+                    <label for="startTime" class="control-label">Время открытия</label>
                     <input type="time" id="startTime" class="form-control" name="startTime" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="closeTime" class="control-label">Close time</label>
+                    <label for="closeTime" class="control-label">Время закрытия</label>
                     <input type="time" id="closeTime" class="form-control" name="closeTime" required="required"/>
                 </div>
                 <div class="form-group">
-                    <label for="orgType" class="control-label">OrgType</label>
+                    <label for="orgType" class="control-label">Тип организации</label>
                     <select class="form-control" name="orgType" id="orgType">
                         <th:block th:each="orgType : ${orgTypes}">
                             <option th:value="${orgType.id}" th:text="${orgType.name}"></option>
@@ -55,7 +55,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-success" value="Register"/>
+                    <input type="submit" class="btn btn-success" value="Зарегестрироваться"/>
                 </div>
             </form>
         </div>
@@ -65,6 +65,10 @@
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
 <!-- Popper JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->

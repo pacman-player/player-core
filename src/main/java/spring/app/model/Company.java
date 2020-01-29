@@ -1,7 +1,6 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -11,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "company")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company {
     @Id
     @GeneratedValue
@@ -32,29 +32,46 @@ public class Company {
     @JoinColumn(name = "org_type_id")
     private OrgType orgType;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Address.class)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "morning_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> morningPlayList;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "midday_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> middayPlayList;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "evening_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> eveningPlayList;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Genre.class)
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
+    @JoinTable(name = "company_on_banned_song",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+    private Set<Song> bannedSong;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @JoinTable(name = "company_on_banned_author",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "author_id")})
+    private Set<Author> bannedAuthor;
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
@@ -74,6 +91,15 @@ public class Company {
         this.closeTime = closeTime;
         this.user = user;
         this.orgType = orgType;
+    }
+    public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType, Address address) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.orgType = orgType;
+        this.address = address;
     }
 
     public Company() {
@@ -102,6 +128,14 @@ public class Company {
 
     public OrgType getOrgType() {
         return orgType;
+    }
+
+    public Set<Author> getBannedAuthor() {
+        return bannedAuthor;
+    }
+
+    public Set<Song> getBannedSong() {
+        return bannedSong;
     }
 
     public void setId(Long id) {
@@ -144,6 +178,14 @@ public class Company {
         this.bannedGenres = bannedGenres;
     }
 
+    public void setBannedSong(Set<Song> bannedSong) {
+        this.bannedSong = bannedSong;
+    }
+
+    public void setBannedAuthor(Set<Author> bannedAuthor) {
+        this.bannedAuthor = bannedAuthor;
+    }
+
     public Set<PlayList> getMorningPlayList() {
         return morningPlayList;
     }
@@ -166,6 +208,26 @@ public class Company {
 
     public void setSongQueues(Set<SongQueue> songQueues) {
         this.songQueues = songQueues;
+    }
+
+    public void addBannedAuthor(Author author) {
+        this.bannedAuthor.add(author);
+    }
+
+    public void addBannedSong(Song song) {
+        this.bannedSong.add(song);
+    }
+
+    public void addBannedGenre(Genre genre) {
+        this.bannedGenres.add(genre);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

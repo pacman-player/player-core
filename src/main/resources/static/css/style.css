@@ -31,6 +31,10 @@ button {
     background-color: #006182;
     z-index: 1;
 }
+.error{
+    color: red;
+    font-size: 12px;
+}
 
 
 
