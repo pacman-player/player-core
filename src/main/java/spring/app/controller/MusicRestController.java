@@ -1,5 +1,6 @@
 package spring.app.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.service.abstraction.MusicService;
@@ -18,8 +19,8 @@ public class MusicRestController {
         this.musicService = musicService;
     }
 
-    @GetMapping("/play/{musicTitle}")
-    public ResponseEntity playMusic(@PathVariable String musicTitle) {
-        return musicService.playMusic(musicTitle);
+    @GetMapping("/play/{musicAuthor}/{musicTitle}")
+    public ResponseEntity playMusic(@PathVariable String musicAuthor, @PathVariable String musicTitle) {
+        return musicService.playMusic(musicAuthor, musicTitle);
     }
 }

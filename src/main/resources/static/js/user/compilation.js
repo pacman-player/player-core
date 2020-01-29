@@ -41,7 +41,7 @@ $(document).ready(function () {
                             + '<p class="card-text"><small class="text-muted">Footer: Some text</small></p>';
                         let musicButton = `<button class="media-button" data-playlist_id="getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Play" src="/img/play.png"></button>`;
                         if (lastPlayedPlaylistIndex === listSongCompilation[i].id && !playerElement.paused) {
-                            musicButton = `<td><button class="media-button" data-playlist_id="'getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
+                            musicButton = `<td><button class="media-button" data-playlist_id="getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Pause" src="/img/pause.png"></button></td>`;
                         } else if (lastPlayedPlaylistIndex === listSongCompilation[i].id && playerElement.paused && playerElement.currentTime > 0) {
                             musicButton = `<td><button class="media-button" data-playlist_id="getGenres_${i}" onclick="playOrPausePlaylist('getGenres', ${listSongCompilation[i].id}, ${i})"><img class="media-img" alt="Resume" src="/img/resume.png"></button></td>`;
                         }
@@ -282,7 +282,6 @@ function fillModalTableWithPlaylist(modalId, compilationListName, songCompilatio
     for (let i = 0; i < allSongCompilationsInNewCompilationList.length; i++) {
         if (songCompilation.id === allSongCompilationsInNewCompilationList[i].id) {
             compilationIndex = i;
-            console.log(compilationIndex);
             i = allSongCompilationsInNewCompilationList.length;
         }
     }
@@ -322,7 +321,7 @@ let player;
 // объект плеер, который находится javascript-ом
 let playerElement = document.getElementById("player");
 
-// адрес, по которому клиент образается для проигрывания музыки
+// адрес, по которому клиент обращается для проигрывания музыки
 let musicUrl = "/api/music/play/";
 
 // переменная, которая говорит, нужно ли играть по порядку или случайным порядком
@@ -439,6 +438,21 @@ $(function () {
             $('#soundImg').prop('src', '/img/soundOn.png');
         }
     });
+
+    //при изменении currentTime
+    playerElement.addEventListener('timeupdate', function() {
+        $('#seekbar').attr("value", playerElement.currentTime / playerElement.duration);
+    });
+    var progressBar = document.getElementsByTagName('progress')[0];
+    if(playerElement && progressBar){
+        progressBar.addEventListener('click', function(event){
+            var x = event.pageX - this.offsetLeft;
+            var y = event.pageY - this.offsetTop;
+            var clickedValue = x * this.max / this.offsetWidth;
+            progressBar.value = clickedValue;
+            playerElement.currentTime = playerElement.duration*clickedValue;
+        });
+    }
     // при нажатии на кнопку "громкость вкл / выкл"
     $("#soundButton").on("click", function () {
         let soundState = $("#soundButton").data("sound_state");
@@ -484,6 +498,7 @@ function setButtonOnStop(button) {
 // а если песня на паузе - то продолжается воспроизведение
 function playOrPause(compilationListName, playlistIndex, musicIndex) {
     let clickedButtons = $(`button[data-music_id='${compilationListName}_${playlistIndex}_${musicIndex}']`);
+    console.log(clickedButtons.length);
     let clickedButton = clickedButtons[0];
     let playingState = clickedButton.dataset.playing_state;
     if (playingState === 'on_stop') {
@@ -509,7 +524,8 @@ function playOrPause(compilationListName, playlistIndex, musicIndex) {
         lastPlayedPlaylistIndex = playlistIndex;
         lastPlayedMusicIndex = musicIndex;
         let music = lastPlayedSongList[musicIndex];
-        player.attr('src', musicUrl + music.name);
+        player.attr('src', musicUrl + music.author.name+ "/" + music.name);
+        $('#albums-cover').attr('src', "/img/albumsCovers/cover-" + music.id + ".JPEG");
         playerElement.play();
     } else if (playingState === 'on_play') {
         playerElement.pause();
@@ -526,7 +542,7 @@ function playOrPause(compilationListName, playlistIndex, musicIndex) {
 //      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
 function playOrPausePlaylist(compilationListName, playlistId, playlistIndex) {
     if (lastPlayedPlaylistIndex === playlistIndex && lastPlayedCompilationListName === compilationListName) {
-        playOrPause(compilationListName, playlistIndex, lastPlayedMusicIndex);
+        playOrPause(compilationListName, playlistIndex, 0);
     } else {
         $.get('/api/user/song-compilation/get/song-compilation/' + playlistId, function (songCompilation) {
             $.get('/api/user/song/get/all-song/song-compilation/' + playlistId, function (compilationSongs) {
@@ -593,9 +609,7 @@ function playNext() {
 // если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
 // если нет, то смотрится, не первая ли эта песня
 //      если нет то играется предыдущая по индексу песня
-//      если да, то смотрится, не последний ли это compilation в списке
-//          если нет, то играется первая первая песня предыдущего compilation в списке
-//          если да, то играется первая первая песня первого compilation в списке
+//      если да, то играется последняя песня текущего плейлиста
 function playPrevious() {
     if (playerElement.currentTime > 5) {
         playerElement.currentTime = 0;
@@ -604,10 +618,6 @@ function playPrevious() {
     if (lastPlayedMusicIndex > 0) {
         playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex - 1);
     } else {
-        if (lastPlayedPlaylistIndex > 0) {
-            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex - 1].id, lastPlayedPlaylistIndex - 1);
-        } else {
-            playOrPausePlaylist(lastPlayedCompilationListName, allSongCompilationsInCurrentCompilationList[allSongCompilationsInCurrentCompilationList.length - 1].id, allSongCompilationsInCurrentCompilationList.length - 1);
-        }
+       playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedSongList.length-1);
     }
 }

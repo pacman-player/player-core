@@ -50,7 +50,7 @@
                 </li>
             </ul>
         </div>
-        <div id="playerContainer" class="container navbar-fixed-bottom player" style="background: black;border-radius: 10px">
+        <div id="playerContainer" class="container navbar-fixed-bottom player" style="background: #d1d1d1;border-radius: 10px; left:0 ;">
             <button class="media-button" id="soundButton" data-sound_state="on">
                 <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
             </button>
@@ -72,9 +72,12 @@
             <button class="media-button" id="shuffleAudioButton">
                 <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
             </button>
-            <audio controls="controls" id="player" src="" class="col-sm-7">
+            <img id="albums-cover" src="/img/albumsCovers/default.png"/>
+<!--            <progress id="seekbar" value="0" max="1" style="width:400px;cursor:pointer"></progress>-->
+            <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src="" class="col-sm-7">
                 Your browser doesnt support the audio element/ Please, update your browser or download Chrome-browser
             </audio>
+
         </div>
         <!--центральный блок-->
         <div class="tab-content">

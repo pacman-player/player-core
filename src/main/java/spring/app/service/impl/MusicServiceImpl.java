@@ -3,10 +3,7 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.service.abstraction.MusicService;
@@ -60,8 +57,8 @@ public class MusicServiceImpl implements MusicService {
 
 
     @Override
-    public ResponseEntity playMusic(String musicTitle) {
-        File file = new File(musicPath + musicTitle + ".mp3");
+    public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
+        File file = new File(musicPath + musicAuthor + "-" + musicTitle + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;
         try {
@@ -71,6 +68,7 @@ public class MusicServiceImpl implements MusicService {
         }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentLength(length);
+        httpHeaders.set("accept-ranges", "bytes");
         httpHeaders.setCacheControl(CacheControl.noCache().getHeaderValue());
         return new ResponseEntity(inputStreamResource, httpHeaders, HttpStatus.OK);
     }

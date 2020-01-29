@@ -9,5 +9,5 @@ import java.io.IOException;
 
 public interface MusicService {
      ServletOutputStream fileToStream(String soundName, HttpServletResponse response) throws ServletException, IOException;
-     ResponseEntity playMusic(String musicTitle);
+     ResponseEntity playMusic(String musicAuthor, String musicTitle);
 }
