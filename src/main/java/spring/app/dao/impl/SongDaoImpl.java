@@ -25,7 +25,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         Song song;
         try {
-            song = query.getSingleResult();
+            song = query.getResultList().get(0);
         } catch (NoResultException e) {
             return null;
         }

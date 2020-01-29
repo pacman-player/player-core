@@ -548,17 +548,19 @@ function playOrPausePlaylist(compilationListName, playlistId, playlistIndex) {
 //               если да, то смотрится, а последний ли это compilation в текущем списке
 //                  если нет, то играется следующий по очереди compilation
 //                  если да, то играется первый по очереди compilation
+
 function playNext() {
     $.get('/api/user/song/songsInQueue', function (songList) {
         if (songList.length > 0) {
+            console.log(lastPlayedSongList.length);
             let songArrayAfterLastPlayedMusic = [];
             for (let i = lastPlayedMusicIndex + 1, j = 0; i < lastPlayedSongList.length; i++, j++) {
                 songArrayAfterLastPlayedMusic[j] = lastPlayedSongList[i];
             }
-            for (let i = lastPlayedMusicIndex + 1, j = 0; i < songList.length; i++, j++) {
+            for (let i = lastPlayedMusicIndex + 1, j = 0; j < songList.length; i++, j++) {
                 lastPlayedSongList[i] = songList[j];
             }
-            for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; i < songArrayAfterLastPlayedMusic.length; i++, j++) {
+            for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
                 lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
             }
             fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
@@ -581,13 +583,65 @@ function playNext() {
                     nextPlaylistId = allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex + 1].id;
                     playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, lastPlayedPlaylistIndex + 1);
                 } else {
-                    nextPlaylistId = allSongCompilationsInCurrentCompilationList[0].id;
-                    playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, 0);
+                    let nextPlayedCompilationListName;
+                    if (lastPlayedCompilationListName === "morning") {
+                        console.log(lastPlayedCompilationListName);
+                        nextPlayedCompilationListName = "midday"
+                    } else if (lastPlayedCompilationListName === "midday") {
+                        nextPlayedCompilationListName = "evening"
+                    } else {
+                        nextPlayedCompilationListName = "morning"
+                    }
+                    nextPlaylistId = lastPlayedPlaylistId;
+                    lastPlayedSongList.id
+                    console.log(nextPlaylistId);
+                    playOrPausePlaylist(nextPlayedCompilationListName, allSongCompilationsInNewCompilationList[0].id, 0);
                 }
             }
         }
     });
 }
+
+// function playNext() {
+//     $.get('/api/user/song/songsInQueue', function (songList) {
+//         if (songList.length > 0) {
+//             let songArrayAfterLastPlayedMusic = [];
+//             for (let i = lastPlayedMusicIndex + 1, j = 0; i < lastPlayedSongList.length; i++, j++) {
+//                 songArrayAfterLastPlayedMusic[j] = lastPlayedSongList[i];
+//             }
+//             for (let i = lastPlayedMusicIndex + 1, j = 0; i < songList.length; i++, j++) {
+//                 lastPlayedSongList[i] = songList[j];
+//             }
+//             for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; i < songArrayAfterLastPlayedMusic.length; i++, j++) {
+//                 lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
+//             }
+//             fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
+//             playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex + 1);
+//         } else {
+//             if (shuffle) {
+//                 let playlistsLength = lastPlayedSongList.length;
+//                 let nextMusicIndex;
+//                 do {
+//                     nextMusicIndex = Math.floor(Math.random() * playlistsLength);
+//                 } while (nextMusicIndex === lastPlayedMusicIndex);
+//                 playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, nextMusicIndex);
+//                 return;
+//             }
+//             if (lastPlayedMusicIndex < lastPlayedSongList.length - 1) {
+//                 playOrPause(lastPlayedCompilationListName, lastPlayedPlaylistIndex, lastPlayedMusicIndex + 1);
+//             } else {
+//                 let nextPlaylistId;
+//                 if (lastPlayedPlaylistIndex < allSongCompilationsInCurrentCompilationList.length - 1) {
+//                     nextPlaylistId = allSongCompilationsInCurrentCompilationList[lastPlayedPlaylistIndex + 1].id;
+//                     playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, lastPlayedPlaylistIndex + 1);
+//                 } else {
+//                     nextPlaylistId = allSongCompilationsInCurrentCompilationList[0].id;
+//                     playOrPausePlaylist(lastPlayedCompilationListName, nextPlaylistId, 0);
+//                 }
+//             }
+//         }
+//     });
+// }
 
 // функция для проигрывания предыдущей песни
 // если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
