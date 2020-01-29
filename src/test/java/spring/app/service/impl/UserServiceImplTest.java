@@ -15,11 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class UserServiceImplTest {
 
+    @Autowired
     private UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    @Test
+    public void contexLoads() throws Exception {
+        assertThat(userService).isNotNull();
     }
 
     @Test
@@ -30,8 +31,10 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void contexLoads() throws Exception {
-        assertThat(userService).isNotNull();
+    public void getAllUserDaoJoinTest() throws Exception {
+        CrudInterceptor.reset();
+        userService.getAllUsersDaoJoin();
+        assertEquals(1, CrudInterceptor.getCount());
     }
 
     @Test

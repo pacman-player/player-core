@@ -25,6 +25,7 @@ public interface UserService {
 
 	List<User> getAllUsersFetchModeSubselect();
 	List<User> getAllUsersFetchModeJoin();
+	List<User> getAllUsersDaoJoin();
 	List<User> getAllUsersFetchModeSubselectBatch();
 
 	void deleteUserById(Long id);

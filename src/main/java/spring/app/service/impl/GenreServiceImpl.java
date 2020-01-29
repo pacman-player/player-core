@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,32 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public List<Genre> getAllGenreDaoJoin() {
+        return genreDao.getAllDaoJoin();
+    }
+
+    @Override
     @Fetch(FetchMode.JOIN)
     public List<Genre> getAllGenreFetchModeJoin() {
+        return genreDao.getAll();
+    }
+
+    @Override
+    @BatchSize(size = 3)
+    public List<Genre> getAllGenreBatch() {
+        return genreDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.SUBSELECT)
+    public List<Genre> getAllGenreFetchModeSubselect() {
+        return genreDao.getAll();
+    }
+
+    @Override
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 3)
+    public List<Genre> getAllGenreFetchModeSubselectBatch() {
         return genreDao.getAll();
     }
 
@@ -61,6 +86,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Fetch(FetchMode.JOIN)
     public Genre getByIdFetchModeJoin(Long id) {
         return genreDao.getById(id);
     }

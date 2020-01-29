@@ -90,6 +90,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllUsersDaoJoin() {
+        return userDao.getAllDaoJoin();
+    }
+
+    @Override
     @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 3)
     public List<User> getAllUsersFetchModeSubselectBatch() {

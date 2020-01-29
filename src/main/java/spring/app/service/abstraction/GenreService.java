@@ -9,8 +9,12 @@ public interface GenreService {
     void addGenre(Genre genre);
 
     List<Genre> getAllGenre();
+    List<Genre> getAllGenreDaoJoin();
 
     List<Genre> getAllGenreFetchModeJoin();
+    List<Genre> getAllGenreBatch();
+    List<Genre> getAllGenreFetchModeSubselect();
+    List<Genre> getAllGenreFetchModeSubselectBatch();
 
     Genre getByName(String name);
 

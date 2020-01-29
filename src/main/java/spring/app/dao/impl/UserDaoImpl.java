@@ -106,15 +106,34 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         return count > 0;
     }
 
-    @Override
-    public List<User> getAll() {
+    public List<User> getAllDaoJoin() {
         List<User> userList = entityManager.createQuery("select u from User u " +
-                "join fetch WHERE login = :login", User.class)
-                .setParameter("login", login)
+                "join fetch u.company " +
+                "join fetch u.roles", User.class)
                 .getResultList();
         if (userList.isEmpty()) {
             return null;
         }
         return userList;
     }
+
+    //закоментровал вариант с JOIN FETCH, который не получился
+//    @Override
+////    @Fetch(FetchMode.JOIN)
+//    public List<Song> getAll() {
+//        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s " +
+//                "JOIN FETCH s.author " +
+//                "JOIN FETCH s.genre " +
+//                "JOIN FETCH s.songCompilations " +
+//                "JOIN FETCH s.songQueues"
+//                , Song.class);
+//        List<Song> allSong;
+//        try {
+//            allSong = query.getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//        return allSong;
+//    }
+
 }

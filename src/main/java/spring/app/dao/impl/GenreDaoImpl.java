@@ -7,6 +7,7 @@ import spring.app.model.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -51,5 +52,17 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         querySong.executeUpdate();
 
         super.deleteById(id);
+    }
+
+    public List<Genre> getAllDaoJoin() {
+        TypedQuery<Genre> query = entityManager.createQuery("select g from Genre g " +
+                "join fetch g.songCompilation", Genre.class);
+        List<Genre> genreList;
+        try {
+            genreList = query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return genreList;
     }
 }
