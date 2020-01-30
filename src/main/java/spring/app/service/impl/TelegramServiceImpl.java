@@ -51,7 +51,9 @@ public class TelegramServiceImpl implements TelegramService {
         Song songToAdd = new Song(songRequest.getAuthorName() + " " + songRequest.getSongName(), author, genre);
         authorService.addAuthor(author);
         genreService.addGenre(genre);
-        songService.addSong(songToAdd);
+        if (!songService.isExist(songToAdd.getName())){
+            songService.addSong(songToAdd);
+        }
         Song song = songService.getByName(songToAdd.getName());
 
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());

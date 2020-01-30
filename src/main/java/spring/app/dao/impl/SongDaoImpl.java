@@ -46,4 +46,14 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
         return songs;
     }
+
+    public boolean isExist(String name) {
+        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE name = :name", Song.class);
+        query.setParameter("name", name);
+        List list = query.getResultList();
+        if(list.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }
