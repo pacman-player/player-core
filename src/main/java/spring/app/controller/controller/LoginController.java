@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.app.dto.CaptchaResponseDto;
 import spring.app.model.User;
 import spring.app.util.UserValidator;
@@ -28,24 +32,31 @@ public class LoginController {
     @Autowired
     private UserValidator userValidator;
 
-//    @GetMapping("/login")
-//    public String getLogin(Model model, String error) {
-//        if (error != null) {
+//    @RequestMapping(value = {"/login"}, method = RequestMethod.GET, path = {"/get"})
+//    public String login(Model model, String error, String logout) {
+//        if (error != null)
 //            model.addAttribute("error", "Your username and password is invalid.");
-//        }
+//
+//        if (logout != null)
+//            model.addAttribute("message", "You have been logged out successfully.");
+//
 //        return "login";
 //    }
 
     @PostMapping("/login")
-    public void login(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("userForm") User userForm, BindingResult bindingResult) throws IOException, ServletException {
+//    @RequestMapping(value = {"/login"}, method = RequestMethod.POST, path = {"/post"})
+    public void login(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("userForm") User userForm, final RedirectAttributes redirectAttributes, BindingResult bindingResult) throws IOException, ServletException {
         userValidator.validate(userForm, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            response.sendRedirect("/login");
-        }
 
         int loginAttempt = 1;
         HttpSession session = request.getSession();
+
+        if (bindingResult.hasErrors()) {
+//            model.addAttribute("error");
+//            redirectAttributes.addFlashAttribute("error", "Your username and password is invalid.");
+            session.setAttribute("error", "Your username and password is invalid.");
+        }
+
 
         if (session.getAttribute("loginCount") == null) {
             session.setAttribute("loginCount", 1);

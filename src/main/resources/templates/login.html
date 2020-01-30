@@ -59,14 +59,22 @@
 
                 <h2>Пожалуйста войдите в систему</h2>
                 <form action="/login" method="POST" >
-                    <div class="form-group login-group">
-                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
-                               required="" th:value="admin"/>
-                        <input type="password" class="form-control" id="uPass" name="password"
-                               required="" th:value="admin" placeholder="Password"/>
+
+                    <div class="form-group ${error != null ? 'has-error' : ''}">
+                        <span>${message}</span>
+
+                        <div class="form-group login-group">
+                            <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
+                                   required="" th:value="admin"/>
+                            <input type="password" class="form-control" id="uPass" name="password"
+                                   required="" th:value="admin" placeholder="Password"/>
+                            <span>${error}</span>
+                        </div>
+
+                        <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
+
                     </div>
 
-                    <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
                 </form>
 
                 <div class="form-group">

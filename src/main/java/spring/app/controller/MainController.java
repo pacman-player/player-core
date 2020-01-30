@@ -22,18 +22,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.*;
+import spring.app.model.Company;
+import spring.app.model.PlayList;
+import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.abstraction.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
@@ -82,8 +86,20 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage() {
-        return new ModelAndView("login");
+    public ModelAndView showLoginPage(HttpSession httpSession) {
+        String error = (String) httpSession.getAttribute("error");
+        ModelAndView modelAndView = new ModelAndView("login");
+            if (error != null) {
+                System.out.println(error);
+                modelAndView.addObject("error", error);
+            }
+
+
+
+//            if (logout != null)
+//                model.addAttribute("message", "You have been logged out successfully.");
+
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
