@@ -1,6 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,11 @@ public class AdminRestController {
     List<User> getAllUsers() {
         List<User> list = userService.getAllUsers();
         return list;
+    }
+
+    @GetMapping("/get_user_by_id/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
+       return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")

@@ -46,13 +46,16 @@ $(document).ready(function () {
                     url: "/api/admin/get_all_roles",
                     contentType: "application/json",
                     success: function (roleList) {
-                    var rolesHtml = "";
+                    var rolesHtmlA = "";
+                    let rolesHtmlB ="";
                     for (var r = 0; r < roleList.length; r++) {
-                        rolesHtml += "<input class = \"role\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
+                        rolesHtmlA += "<input class = \"roleA\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
+                            "</input>"
+                        rolesHtmlB += "<input class = \"roleB\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
                             "</input>"
                     }
-                    $("#rlist").append(rolesHtml);
-                        $("#rlistA").append(rolesHtml);
+                    $("#rlist").append(rolesHtmlB);
+                        $("#rlistA").append(rolesHtmlA);
                     }
                 })
             }
@@ -105,7 +108,7 @@ $(document).ready(function () {
 
     function addUser() {
         var roleListArr=[];
-        var rls = document.getElementsByClassName("role");
+        var rls = document.getElementsByClassName("roleA");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
                 roleListArr.push(rls[t].getAttribute("value"));
@@ -159,7 +162,7 @@ $(document).ready(function () {
     function updateUser() {
 
         var roleListArr=[];
-        var rls = document.getElementsByClassName("role");
+        var rls = document.getElementsByClassName("roleB");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
                 roleListArr.push(rls[t].getAttribute("value"));
@@ -284,6 +287,17 @@ $(document).ready(function () {
         $("#updateUserName").val($(this).closest("tr").find("#tableName").text());
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
+
+        var curCells = document.getElementsByClassName("roleB");
+
+        var curRolesLIst = $(this).closest("tr").find("#tableRole").text().split(", ");
+
+        for (var e = 0; e < curCells.length; e++) {
+            curCells[e].checked = false;
+            if (curRolesLIst.includes(curCells[e].getAttribute("value"))) {
+                curCells[e].checked = true;
+            }
+        }
 
         // switch ($(this).closest("tr").find("#tableUserRole").text()) {
         //     case 'USER':
