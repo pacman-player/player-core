@@ -33,7 +33,7 @@ public class Song extends Bannable {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade={CascadeType.MERGE})
     @JoinColumn(name = "author_id")
     private Author author;
 
