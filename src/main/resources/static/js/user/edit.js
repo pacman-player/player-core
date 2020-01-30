@@ -56,7 +56,17 @@ $(document).ready(function () {
         getUserData();
 
         var oldPass = $("#oldUserPass").val();
-        if(password !== oldPass){
+        $.ajax({
+            url: "/api/user/get_encrypted_pass",
+            type: "POST",
+            contentType: "application/json",
+            data: {"oldPass": oldPass, "newPass": password},
+            success: function (isSame) {
+                alert(isSame);
+            oldPass = isSame;
+            }
+        });
+        if(oldPass === false){
             alert("Неверно введен текущий пароль");
             return;
         }

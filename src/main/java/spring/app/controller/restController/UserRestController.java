@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
@@ -15,6 +16,7 @@ import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Random;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class UserRestController {
 
     @Autowired
     public EmailSender emailSender;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRestController(RoleService roleService,
@@ -71,7 +76,12 @@ public class UserRestController {
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
-        return ((User) getContext().getAuthentication().getPrincipal());
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        return (userService.getUserById(user.getId()));
+    }
+    @PostMapping(value = "/get_encrypted_pass")
+    public ResponseEntity<Boolean> getEncPass(@RequestBody Map<String, String> json) {
+        return ResponseEntity.ok(passwordEncoder.matches(json.get("oldPass"), json.get("newPass")));
     }
 
     @PutMapping(value = "/edit_data")
