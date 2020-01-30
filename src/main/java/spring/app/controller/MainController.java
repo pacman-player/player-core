@@ -87,18 +87,13 @@ public class MainController {
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView showLoginPage(HttpSession httpSession) {
+        //получаем error из LoginController
         String error = (String) httpSession.getAttribute("error");
         ModelAndView modelAndView = new ModelAndView("login");
             if (error != null) {
-                System.out.println(error);
+                //добавляем сообщение во вьюху
                 modelAndView.addObject("error", error);
             }
-
-
-
-//            if (logout != null)
-//                model.addAttribute("message", "You have been logged out successfully.");
-
         return modelAndView;
     }
 
