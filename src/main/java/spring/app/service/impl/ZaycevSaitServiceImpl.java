@@ -62,7 +62,7 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
         String link = searchSongByAuthorOrSongs(author, song);
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
-        Path path = PlayerPaths.getSongsDir(author + " " + song + ".mp3");
+        Path path = PlayerPaths.getSongsDir(author + " - " + song + ".mp3");
         if (path != null) {
             try {
                 Files.write(path, bytes);

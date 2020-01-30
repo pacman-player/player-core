@@ -48,7 +48,7 @@ public class TelegramServiceImpl implements TelegramService {
         //Так же рассмотреть возможность взять жанр из метадаты mp3 файла
         Author author = new Author(songRequest.getAuthorName());
         Genre genre = genreService.getByName("world");
-        Song songToAdd = new Song(songRequest.getAuthorName() + " " + songRequest.getSongName(), author, genre);
+        Song songToAdd = new Song(songRequest.getAuthorName() + " - " + songRequest.getSongName(), author, genre);
 
         if (!authorService.isExist(author.getName())) {
             authorService.addAuthor(author);
