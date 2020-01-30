@@ -49,11 +49,17 @@ public class TelegramServiceImpl implements TelegramService {
         Author author = new Author(songRequest.getAuthorName());
         Genre genre = genreService.getByName("world");
         Song songToAdd = new Song(songRequest.getAuthorName() + " " + songRequest.getSongName(), author, genre);
-        authorService.addAuthor(author);
+
+        if (!authorService.isExist(author.getName())) {
+            authorService.addAuthor(author);
+        }
+
         genreService.addGenre(genre);
+
         if (!songService.isExist(songToAdd.getName())){
             songService.addSong(songToAdd);
         }
+
         Song song = songService.getByName(songToAdd.getName());
 
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());
