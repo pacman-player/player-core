@@ -53,10 +53,11 @@ $(document).ready(function () {
                             contentType: "application/json",
                             async: false,
                             success: function (morningCompilation) {
-
-                            for (let k = 0; k < morningCompilation.length; k++) {
-                                morningIds.push(morningCompilation[k].id)
-                            }
+                                if (morningCompilation != null) {
+                                    for (let k = 0; k < morningCompilation.length; k++) {
+                                        morningIds.push(morningCompilation[k].id)
+                                    }
+                                }
                             }
                         });
                         mon = morningIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
@@ -68,8 +69,10 @@ $(document).ready(function () {
                             contentType: "application/json",
                             async: false,
                             success: function (middayCompilation) {
-                                for (let k = 0; k < middayCompilation.length; k++) {
-                                    middayIds.push(middayCompilation[k].id);
+                                if (middayCompilation != null) {
+                                    for (let k = 0; k < middayCompilation.length; k++) {
+                                        middayIds.push(middayCompilation[k].id);
+                                    }
                                 }
                             }
                         });
@@ -83,8 +86,10 @@ $(document).ready(function () {
                             contentType: "application/json",
                             async: false,
                             success: function (eveningCompilation) {
-                                for (let k = 0; k < eveningCompilation.length; k++) {
-                                    eveningIds.push(eveningCompilation[k].id);
+                                if (eveningCompilation != null) {
+                                    for (let k = 0; k < eveningCompilation.length; k++) {
+                                        eveningIds.push(eveningCompilation[k].id);
+                                    }
                                 }
                             }
                         });

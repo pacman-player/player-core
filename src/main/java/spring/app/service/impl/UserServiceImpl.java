@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        if (user.getPassword() != null) {
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userDao.save(user);
