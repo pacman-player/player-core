@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
             userRole = roleDao.getRoleByName("USER");
         }
         user.setRoles(Collections.singleton(userRole));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -65,7 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDao.save(user);
     }
 
@@ -81,7 +84,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDao.update(user);
     }
 
@@ -93,6 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getIdAuthUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(principal.toString());
         User authUser = (User) principal;
         return authUser.getId();
     }

@@ -25,6 +25,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
 										HttpServletResponse httpServletResponse,
 										Authentication authentication) throws IOException {
+		System.out.println("success");
 		HttpSession session = httpServletRequest.getSession();
 
 		session.setAttribute("loginCount", 1);
