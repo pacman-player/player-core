@@ -22,13 +22,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.app.model.Company;
 import spring.app.model.PlayList;
 import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.*;
+import spring.app.util.UserValidator;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -50,6 +54,7 @@ public class MainController {
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
     private final AddressService addressService;
+    private final UserValidator userValidator;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -70,7 +75,7 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
@@ -78,6 +83,7 @@ public class MainController {
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.addressService = addressService;
+        this.userValidator = userValidator;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -89,11 +95,20 @@ public class MainController {
     public ModelAndView showLoginPage(HttpSession httpSession) {
         //получаем error из LoginController
         String error = (String) httpSession.getAttribute("error");
+//        User userForm = (User) httpSession.getAttribute("userForm");
+//        userValidator.validate(userForm, bindingResult);
         ModelAndView modelAndView = new ModelAndView("login");
             if (error != null) {
-                //добавляем сообщение во вьюху
+                //добавляем сообщение об ошибке во вьюху
                 modelAndView.addObject("error", error);
             }
+//        ModelAndView modelAndView = new ModelAndView("login");
+//        if (userForm != null) {
+////            modelAndView.addObject(userForm);
+//            return modelAndView;
+//        } else {
+//            return "redirect: login";
+//        }
         return modelAndView;
     }
 

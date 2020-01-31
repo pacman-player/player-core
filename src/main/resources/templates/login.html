@@ -39,6 +39,9 @@
 
                 <div class="empty-block" th:if="${isNotValid == null and logout == null}"></div>
 
+<!--                <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
+<!--                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
+<!--                </div>-->
 
                 <div class="alert alert-danger" th:if="${isNotValid}">
                     <h3>Неверная пара логин/пароль!</h3>
@@ -58,17 +61,25 @@
 
 
                 <h2>Пожалуйста войдите в систему</h2>
-                <form action="/login" method="POST" >
+                <form action="/login" method="POST">
+
+
 
                     <div class="form-group ${error != null ? 'has-error' : ''}">
-                        <span>${message}</span>
+<!--                        <span>${message}</span>-->
 
-                        <div class="form-group login-group">
+                        <div class="form-group login-group" >
                             <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
                                    required="" th:value="admin"/>
                             <input type="password" class="form-control" id="uPass" name="password"
                                    required="" th:value="admin" placeholder="Password"/>
-                            <span>${error}</span>
+<!--                            <span>${error}</span>-->
+
+<!--                            <div class="alert alert-danger" th:if="${#fields.hasErrors('global')}">-->
+<!--                                <p th:each="err : ${#fields.errors('global')}" th:text="${err}"></p>-->
+<!--                            </div>-->
+                            <h2><p th:text="${error}"></p></h2>
+
                         </div>
 
                         <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>

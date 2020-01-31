@@ -41,6 +41,7 @@ public class LoginController {
         //передаем в сессии error для ГЕТ /login в MainController
         if (bindingResult.hasErrors()) {
             session.setAttribute("error", "Your username and password is invalid.");
+//            session.setAttribute("userForm", userForm);
         }
 
         if (session.getAttribute("loginCount") == null) {
