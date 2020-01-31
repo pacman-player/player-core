@@ -94,21 +94,12 @@ public class MainController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView showLoginPage(HttpSession httpSession) {
         //получаем error из LoginController
-        String error = (String) httpSession.getAttribute("error");
-//        User userForm = (User) httpSession.getAttribute("userForm");
-//        userValidator.validate(userForm, bindingResult);
+        String errorFromBindingResult = (String) httpSession.getAttribute("error");
         ModelAndView modelAndView = new ModelAndView("login");
-            if (error != null) {
+            if (errorFromBindingResult != null) {
                 //добавляем сообщение об ошибке во вьюху
-                modelAndView.addObject("error", error);
+                modelAndView.addObject("error", errorFromBindingResult);
             }
-//        ModelAndView modelAndView = new ModelAndView("login");
-//        if (userForm != null) {
-////            modelAndView.addObject(userForm);
-//            return modelAndView;
-//        } else {
-//            return "redirect: login";
-//        }
         return modelAndView;
     }
 

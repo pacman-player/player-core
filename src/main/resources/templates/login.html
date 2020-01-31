@@ -27,6 +27,10 @@
         .empty-block {
             height: 88px;
         }
+
+        #validate-form {
+            color: red;
+        }
     </style>
 
 </head>
@@ -63,8 +67,6 @@
                 <h2>Пожалуйста войдите в систему</h2>
                 <form action="/login" method="POST">
 
-
-
                     <div class="form-group ${error != null ? 'has-error' : ''}">
 <!--                        <span>${message}</span>-->
 
@@ -75,10 +77,10 @@
                                    required="" th:value="admin" placeholder="Password"/>
 <!--                            <span>${error}</span>-->
 
-<!--                            <div class="alert alert-danger" th:if="${#fields.hasErrors('global')}">-->
-<!--                                <p th:each="err : ${#fields.errors('global')}" th:text="${err}"></p>-->
-<!--                            </div>-->
-                            <h2><p th:text="${error}"></p></h2>
+                            <!--выводим сообщение о неверном логине и пароле-->
+                            <div id="validate-form">
+                                <p th:text="${error}"></p>
+                            </div>
 
                         </div>
 
