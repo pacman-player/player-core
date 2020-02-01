@@ -1,6 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,20 @@ public class AdminRestController {
         List<User> list = userService.getAllUsers();
         return list;
     }
+    @PutMapping(value = "/ban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void bunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setAccountNonLocked(false);
+        userService.updateUser(user);
+    }
+    @PutMapping(value = "/unban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unbunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setAccountNonLocked(true);
+        userService.updateUser(user);
+    }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
@@ -60,14 +75,14 @@ public class AdminRestController {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true, true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.addUser(user);
     }
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true, true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }

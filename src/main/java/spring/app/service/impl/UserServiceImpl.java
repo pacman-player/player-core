@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(UserRegistrationDto registration) {
-        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true);
+        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true, true);
         if (userRole == null) {
             userRole = roleDao.getRoleByName("USER");
         }
@@ -65,7 +65,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDao.save(user);
     }
 
@@ -81,7 +83,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDao.update(user);
     }
 

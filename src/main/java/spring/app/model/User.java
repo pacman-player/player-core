@@ -56,8 +56,10 @@ public class User implements UserDetails {
     @JsonBackReference
     private Company company;
 
-    //@Column(name = "enabled", nullable = false)
+//    @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
+
+    private Boolean accountNonLocked = true;
 
     public User() {
     }
@@ -66,27 +68,29 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(String email, String login, String password, boolean enabled) {
+    public User(String email, String login, String password, boolean enabled, boolean accountNonLocked) {
         this.email = email;
         this.login = login;
         this.password = password;
         this.enabled = enabled;
+        this.accountNonLocked = accountNonLocked;
     }
 
-    public User(Long id, String email, String login, String password, boolean enabled) {
-        this(email, login, password, enabled);
+    public User(Long id, String email, String login, String password, boolean enabled, boolean accountNonLocked) {
+        this(email, login, password, enabled, accountNonLocked);
         this.id = id;
     }
 
-    public User(String googleId, String email, Set<Role> roleSet, boolean enabled) {
+    public User(String googleId, String email, Set<Role> roleSet, boolean enabled, boolean accountNonLocked) {
         this.email = email;
         this.googleId = googleId;
         this.login = email;
         this.roles = roleSet;
         this.enabled = enabled;
+        this.accountNonLocked = accountNonLocked;
     }
 
-    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled) {
+    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled, boolean accountNonLocked) {
         this.vkId = vkId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,6 +98,7 @@ public class User implements UserDetails {
         this.roles = roles;
         this.company = company;
         this.enabled = enabled;
+        this.accountNonLocked = accountNonLocked;
     }
 
     public Blob getProfilePic() {
@@ -119,7 +124,6 @@ public class User implements UserDetails {
     public void setLogin(String login) {
         this.login = login;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -149,7 +153,11 @@ public class User implements UserDetails {
     }
 
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     public boolean isCredentialsNonExpired() {

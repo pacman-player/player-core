@@ -129,7 +129,7 @@ public class MainController {
             Role role = roleService.getRoleById((long) 2);
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
-            user = new User(googleId, email, roleSet, true);
+            user = new User(googleId, email, roleSet, true, true);
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
@@ -208,7 +208,7 @@ public class MainController {
                     authResponse.getEmail(),
                     roleSet,
                     companyService.getById(1L),
-                    true);
+                    true, true);
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
