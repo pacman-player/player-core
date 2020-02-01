@@ -56,6 +56,7 @@ public class RegistrationRestController {
         long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User userByLogin = userService.getUserByLogin(login);
+        userByLogin.setEnabled(true);
         company.setOrgType(orgType);
         company.setUser(userByLogin);
 
