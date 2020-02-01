@@ -18,7 +18,7 @@ public class PlayerPaths {
 
         try {
             Path pathProject = (Paths.get(Main.class.getResource(".").toURI())).getParent().getParent();
-            Path pathDownload = Paths.get(pathProject.getParent().getParent().toString() + separator + "resources" + separator + "songs");
+            Path pathDownload = Paths.get(pathProject.getParent().getParent().toString() + separator + "music");
             if (!Files.exists(pathDownload)) {
                 Files.createDirectories(pathDownload);
             }

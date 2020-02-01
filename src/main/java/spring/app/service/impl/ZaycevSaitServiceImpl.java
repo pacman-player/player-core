@@ -28,7 +28,7 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
         String link = "";
 
         try {
-            document = Jsoup.connect(url + author + " " + song).get();
+            document = Jsoup.connect(url + author + " " + song.split(" ")[0]).get();
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on zaycev.net");
@@ -44,7 +44,7 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
                 String delStr = title.replace("Скачать трек ", "").toLowerCase();
                 String[] authorAndSong = delStr.split(" – ");
 
-                if (author.toLowerCase().equals(authorAndSong[0]) && song.toLowerCase().equals(authorAndSong[1])) {
+                if (authorAndSong[0].toLowerCase().contains(author.toLowerCase()) && authorAndSong[1].toLowerCase().contains(song.toLowerCase())) {
                     link = "https://zaycev.net" + divId.attr("href") + "?spa=false";
                     if (link.isEmpty()){
                         System.err.println("Ссылка пустая!!!");
@@ -62,7 +62,7 @@ public class ZaycevSaitServiceImpl implements ZaycevSaitServise {
         String link = searchSongByAuthorOrSongs(author, song);
         byte[] bytes = restTemplate.getForObject(link, byte[].class);
 
-        Path path = PlayerPaths.getSongsDir(author + " " + song + ".mp3");
+        Path path = PlayerPaths.getSongsDir(author + " - " + song + ".mp3");
         if (path != null) {
             try {
                 Files.write(path, bytes);

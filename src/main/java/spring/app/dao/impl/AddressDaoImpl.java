@@ -1,22 +1,23 @@
 package spring.app.dao.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AddressDao;
 import spring.app.model.Address;
 
 import javax.persistence.NoResultException;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
 public class AddressDaoImpl extends AbstractDao<Long, Address> implements AddressDao {
+    @Value("${accuracy}")
+    private String accuracy;
+
     public AddressDaoImpl() {
         super(Address.class);
     }
-
-    private final double INACCURACY = 00.005;
 
     @Override
     public Long getIdByLatitudeAndLongitude(String latitude, String longitude) {
@@ -39,6 +40,7 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
 
     @Override
     public List checkAddressInDB(Address address) {
+        double INACCURACY = Double.valueOf(accuracy);
 
         double maxLongitude = address.getLongitude() + INACCURACY;
         double minLongitude = address.getLongitude() - INACCURACY;

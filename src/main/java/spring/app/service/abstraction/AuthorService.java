@@ -27,4 +27,6 @@ public interface AuthorService {
     void updateAuthor(Author author);
 
     void deleteAuthorById(Long id);
+
+    boolean isExist(String name);
 }

@@ -25,7 +25,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         Song song;
         try {
-            song = query.getSingleResult();
+            song = query.getResultList().get(0);
         } catch (NoResultException e) {
             return null;
         }
@@ -45,5 +45,15 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
 
         return songs;
+    }
+
+    public boolean isExist(String name) {
+        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE name = :name", Song.class);
+        query.setParameter("name", name);
+        List list = query.getResultList();
+        if(list.isEmpty()){
+            return false;
+        }
+        return true;
     }
 }

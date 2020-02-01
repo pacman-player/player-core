@@ -12,7 +12,6 @@ import spring.app.model.Song;
 import spring.app.service.CutSongService;
 import spring.app.service.abstraction.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Service
@@ -48,12 +47,21 @@ public class TelegramServiceImpl implements TelegramService {
         //Они поидее должны добавляться автоматически при добавлении песни
         //Так же рассмотреть возможность взять жанр из метадаты mp3 файла
         Author author = new Author(songRequest.getAuthorName());
-        Genre genre = new Genre("userSong");
-        Song songToAdd = new Song(songRequest.getSongName(), author, genre);
-        authorService.addAuthor(author);
+        Genre genre = genreService.getByName("world");
+        Song songToAdd = new Song(songRequest.getAuthorName() + " - " + songRequest.getSongName(), author, genre);
+
+        if (!authorService.isExist(author.getName())) {
+            authorService.addAuthor(author);
+        }
+
         genreService.addGenre(genre);
-        songService.addSong(songToAdd);
+
+        if (!songService.isExist(songToAdd.getName())){
+            songService.addSong(songToAdd);
+        }
+
         Song song = songService.getByName(songToAdd.getName());
+
         byte[] bytes = zaycevSaitServise.getSong(songRequest.getAuthorName(),songRequest.getSongName());
         byte[] cutSong = cutSongService.сutSongMy(bytes, -1, 31);
         SongResponse songResponse = new SongResponse(songRequest.getChatId(), song.getId(), cutSong,

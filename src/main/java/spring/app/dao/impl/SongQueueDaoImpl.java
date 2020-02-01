@@ -10,6 +10,7 @@ import spring.app.model.SongQueue;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.Set;
 
 @Repository
 @Transactional(readOnly = true)
@@ -50,4 +51,11 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
         }
         return 0L;
     }
+
+    @Override
+    public void deleteAllSongQueues(Set<SongQueue> songQueues) {
+        songQueues.forEach(entityManager::remove);
+    }
+
+
 }

@@ -1,10 +1,13 @@
 package spring.app.configuration.initializer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
+import java.io.File;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,8 +46,14 @@ public class TestDataInit {
     @Autowired
     private AddressService addressService;
 
-    private void init() {
+    @Value("${music.path}")
+    private String musicPath;
 
+    private void init() {
+        File musicDirectory = new File(musicPath);
+        if (!musicDirectory.exists()) {
+            musicDirectory.mkdir();
+        }
         Role roleAdmin = new Role();
         roleAdmin.setName("ADMIN");
         roleService.addRole(roleAdmin);
@@ -145,66 +154,111 @@ public class TestDataInit {
         orgType.setGenres(genres);
         orgTypeService.addOrgType(orgType);
 
-        Song song = new Song("Attack on titan - Silence");
-        song.setAuthor(author);
-        song.setGenre(genre);
-        songService.addSong(song);
+        Song song0 = new Song("Attack on Titan - DOA");
+        song0.setAuthor(author);
+        song0.setGenre(genre);
+        songService.addSong(song0);
 
-        Song song1 = new Song("Naruto OST - Hero");
+        Song song1 = new Song("Attack on TItan - YouSeeBIGGIRL");
         song1.setAuthor(author);
         song1.setGenre(genre1);
         songService.addSong(song1);
 
-        Song song2 = new Song("Hunter X Hunter - Jokers theme");
+        Song song2 = new Song("Hiiragi Nao - Requiem");
         song2.setAuthor(author);
         song2.setGenre(genre2);
         songService.addSong(song2);
 
-        Song song3 = new Song("Death Note - Laits theme");
+        Song song3 = new Song("Jessie_J_BoB_-_Price_Tag");
         song3.setAuthor(author);
         song3.setGenre(genre3);
         songService.addSong(song3);
 
-        Song song4 = new Song("One punch man - Hero");
+        Song song4 = new Song("Kuroko no basuke - Koushu");
         song4.setAuthor(author);
         song4.setGenre(genre4);
         songService.addSong(song4);
 
+        Song song10 = new Song("Lyubje - Davajj za");
+        song10.setAuthor(author);
+        song10.setGenre(genre);
+        songService.addSong(song10);
+
+        Song song11 = new Song("LYUBJE - Pozovi menya tikho po imeni");
+        song11.setAuthor(author);
+        song11.setGenre(genre1);
+        songService.addSong(song11);
+
+        Song song12 = new Song("Lyubovnye istorii - SHkola");
+        song12.setAuthor(author);
+        song12.setGenre(genre2);
+        songService.addSong(song12);
+
+        Song song13 = new Song("Namika - Lieblingsmensch");
+        song13.setAuthor(author);
+        song13.setGenre(genre3);
+        songService.addSong(song13);
+
+        Song song14 = new Song("non-stop - kirgizstanim");
+        song14.setAuthor(author);
+        song14.setGenre(genre4);
+        songService.addSong(song14);
+
+        Song song20 = new Song("Polina Gagarina - Kukushka");
+        song20.setAuthor(author);
+        song20.setGenre(genre4);
+        songService.addSong(song20);
+
+        Song song21 = new Song("Parazit - I AM");
+        song21.setAuthor(author);
+        song21.setGenre(genre1);
+        songService.addSong(song21);
+
+        Song song22 = new Song("Seven Deadly Sins - Perfect Time - Guitar");
+        song22.setAuthor(author);
+        song22.setGenre(genre2);
+        songService.addSong(song22);
+
+        Song song23 = new Song("Your lie in April - Hikaru Nara");
+        song23.setAuthor(author);
+        song23.setGenre(genre3);
+        songService.addSong(song23);
+
+        Song song24 = new Song("YUrijj SHatunov - Belye rozy");
+        song24.setAuthor(author);
+        song24.setGenre(genre4);
+        songService.addSong(song24);
+
         SongCompilation songCompilation = new SongCompilation();
-        Set<Song> songs = new HashSet<>();
-        songs.add(song);
+        Set<Song> songs = new HashSet<>(Arrays.asList(song0, song10, song20));
         songCompilation.setName("compilation0");
         songCompilation.setGenre(genre);
         songCompilation.setSong(songs);
         songCompilationService.addSongСompilation(songCompilation);
 
         SongCompilation songCompilation1 = new SongCompilation();
-        Set<Song> songs1 = new HashSet<>();
-        songs1.add(song1);
+        Set<Song> songs1 = new HashSet<>(Arrays.asList(song1, song11, song21));
         songCompilation1.setName("compilation1");
         songCompilation1.setGenre(genre1);
         songCompilation1.setSong(songs1);
         songCompilationService.addSongСompilation(songCompilation1);
 
         SongCompilation songCompilation2 = new SongCompilation();
-        Set<Song> songs2 = new HashSet<>();
-        songs2.add(song2);
+        Set<Song> songs2 = new HashSet<>(Arrays.asList(song2, song12, song22));
         songCompilation2.setName("compilation2");
         songCompilation2.setGenre(genre2);
         songCompilation2.setSong(songs2);
         songCompilationService.addSongСompilation(songCompilation2);
 
         SongCompilation songCompilation3 = new SongCompilation();
-        Set<Song> songs3 = new HashSet<>();
-        songs3.add(song3);
+        Set<Song> songs3 = new HashSet<>(Arrays.asList(song3, song13, song23));
         songCompilation3.setName("compilation3");
         songCompilation3.setGenre(genre3);
         songCompilation3.setSong(songs3);
         songCompilationService.addSongСompilation(songCompilation3);
 
         SongCompilation songCompilation4 = new SongCompilation();
-        Set<Song> songs4 = new HashSet<>();
-        songs4.add(song4);
+        Set<Song> songs4 = new HashSet<>(Arrays.asList(song4, song14, song24));
         songCompilation4.setName("compilation4");
         songCompilation4.setGenre(genre4);
         songCompilation4.setSong(songs4);
@@ -286,7 +340,7 @@ public class TestDataInit {
 
         SongQueue songQueue = new SongQueue();
         songQueue.setPosition(1L);
-        songQueue.setSong(song);
+        songQueue.setSong(song0);
         songQueue.setCompany(company);
         songQueueService.addSongQueue(songQueue);
     }

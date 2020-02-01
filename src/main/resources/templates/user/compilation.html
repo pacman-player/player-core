@@ -7,15 +7,9 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="сcs/style.css"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
 </head>
-
 <body>
 <div class="container-fluid">
     <div class="row">
@@ -26,9 +20,7 @@
             <div id="listNotification" class="pull-right"></div>
         </div>
     </div>
-
     <div class="row">
-
         <!--меню слева-->
         <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
@@ -58,7 +50,32 @@
                 </li>
             </ul>
         </div>
-
+        <div id="playerContainer" class="container navbar-fixed-bottom player" style="background: black;border-radius: 10px">
+            <button class="media-button" id="soundButton" data-sound_state="on">
+                <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
+            </button>
+            <button class="media-button" id="previousAudioButton">
+                <img alt="Previous" class="media-img" src="/img/previous.png"/>
+            </button>
+            <button class="media-button" id="playOrPauseAudioButton">
+                <img alt="Play/Pause" id="globalPlayButton" style="height: 50px" src="/img/play.png"/>
+            </button>
+            <button class="media-button" id="nextAudioButton">
+                <img alt="Next" class="media-img" src="/img/next.png"/>
+            </button>
+            <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
+                <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
+            </button>
+            <button class="media-button" id="stopAudioButton">
+                <img alt="Stop" class="media-img" src="/img/stop.png"/>
+            </button>
+            <button class="media-button" id="shuffleAudioButton">
+                <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
+            </button>
+            <audio controls="controls" id="player" src="" class="col-sm-7">
+                Your browser doesnt support the audio element/ Please, update your browser or download Chrome-browser
+            </audio>
+        </div>
         <!--центральный блок-->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
@@ -112,72 +129,65 @@
                 </div>
 
                 <!--подборка по жанрам-->
-                <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
-
-                </div>
+                <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row"></div>
             </div>
         </div>
     </div>
-
-    <!--модалка показа всех песен подборки-->
-    <div class="modal fade" id="openCompilationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="currentPlaylist">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Все песни подборки</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="modal-header text-center">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4>Current playlist</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="aboutSongCompilation">
-
-                    </div>
-
-                    <h4 id="titleSongCompilation">Название подборки из js</h4>
-
-                    <div id="musicList">
-                        <!--ajax-->
-                    </div>
-
+                    <table class="table table-condensed table-hover table-striped table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Musics title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th style="width: 20%">Options</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modalCurrentPlaylistTableBody"></tbody>
+                    </table>
                 </div>
-<!--                здесь были кнопки из футера модалки, удалил-->
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-
-<!--    код с дева-->
-<!--    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open-->
-<!--        button-->
-<!--    </button>-->
-<!--    <div class="modal" id="compilationModal">-->
-<!--        <div class="modal-dialog">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <b id="compilationModalCompilationName" class="text-uppercase"></b>-->
-<!--                    <button class="close" data-dismiss="modal">&times;</button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <table class="table table-hover">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>Name</th>-->
-<!--                            <th>Author</th>-->
-<!--                            <th>Genre</th>-->
-<!--                            <th rowspan="2">Options</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody id="compilationModalTableBody"></tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button class="btn" data-dismiss="modal">Close</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
+    <div class="modal fade" id="modalPlaylist">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modalPlaylistName"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed table-hover table-striped table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Musics title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th style="width: 20%">Options</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modalPlaylistTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>

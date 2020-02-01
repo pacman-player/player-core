@@ -4,7 +4,7 @@
 *.DS_Store
 
 
-
+music/
 logs/
 **/*.log
 **/*.log.gz

@@ -55,4 +55,9 @@ public class AuthorServiceImpl implements AuthorService {
         authorDao.deleteById(id);
     }
 
+    @Override
+    public boolean isExist(String name) {
+        return authorDao.isExist(name);
+    }
+
 }
