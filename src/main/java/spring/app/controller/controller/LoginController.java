@@ -40,7 +40,7 @@ public class LoginController {
         userValidator.validate(userForm, bindingResult);
         //передаем в сессию error для ГЕТ /login в MainController
         if (bindingResult.hasErrors()) {
-            session.setAttribute("error", "Your username and password is invalid.");
+            session.setAttribute("error", "Вы ввели неверные логин и пароль");
         }
 
         if (session.getAttribute("loginCount") == null) {
