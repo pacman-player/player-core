@@ -51,10 +51,8 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/get_all_roles")
-    public @ResponseBody
-    List<Role> getAllRoles() {
-        List<Role> list = roleService.getAllRoles();
-        return list;
+    public List<Role> getAllRoles() {
+        return roleService.getAllRoles();
     }
 
     @GetMapping(value = "/all_companies")
