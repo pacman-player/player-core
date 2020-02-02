@@ -26,10 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 			throw new UsernameNotFoundException("Username " + login + " not found");
 		}
 
-		if (user.getEnabled().equals(false)) {
-
-		}
-
 		return user;
 	}
 

@@ -53,6 +53,10 @@ public class TestDataInit {
         roleUser.setName("USER");
         roleService.addRole(roleUser);
 
+        Role roleAnonymous = new Role();
+        roleAnonymous.setName("ANONYMOUS");
+        roleService.addRole(roleAnonymous);
+
         User admin = new User();
         admin.setLogin("admin");
         admin.setPassword("admin");
