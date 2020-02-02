@@ -29,7 +29,7 @@ public class AdminSongRestController {
     }
 
     @GetMapping(value = "/all_songs")
-    @ResponseBody
+//    @ResponseBody
     public List<Song> getAllSongs() {
         List<Song> list = songService.getAllSong();
         return list;

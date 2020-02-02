@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>Панель админа</title>
+    <title>Admin page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -60,6 +60,10 @@
                 </li>
 
                 <li>
+                    <a href="/admin/message">Сообщения</a>
+                </li>
+
+                <li>
                     <a href="/user">Меню пользователя</a>
                 </li>
             </ul>
@@ -93,7 +97,7 @@
                                                 <th>ID</th>
                                                 <th>Роль</th>
                                                 <th>Логин</th>
-<!--                                                <th>Пароль</th>-->
+                                                <th>Пароль</th>
                                                 <th>Почта</th>
                                                 <th>Компания</th>
                                                 <th>Изменить</th>
