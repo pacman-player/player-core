@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public void save(UserRegistrationDto registration) {
         User user = new User(registration.getEmail(), registration.getLogin(), passwordEncoder.encode(registration.getPassword()), true);
         if (userRole == null) {
-            userRole = roleDao.getRoleByName("A");
+            userRole = roleDao.getRoleByName("PREUSER");
         }
         user.setRoles(Collections.singleton(userRole));
         userDao.save(user);
