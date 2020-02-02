@@ -13,6 +13,7 @@ import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.UserService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -182,81 +183,28 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     }
 
     @Override
-    public void deleteSongCompilationToMorningPlaylist(Long id) {
+    public void deleteSongCompilationFromPlayList(Long id, String dayTime) {
         SongCompilation newSongCompilation = songCompilationDao.getById(id);
         //достаем юзера по id авторизованного юзера
         User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
-        Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
-        //достаем пока один единственный плейлист и его множество подборок
-        List<PlayList> oldListPlayLists = new ArrayList<>(setOldMorningPlayList);
-        PlayList oldPlayList = oldListPlayLists.get(0);
-        Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
-        //удаляем подборку из старого множества подборок
-        oldSetSongCompilation.remove(newSongCompilation);
-        //добавляем в старый плейлист обновленное старое множество подборок
-        oldPlayList.setSongCompilation(oldSetSongCompilation);
-        //добавляем в старое множество плейлистов обновленное множество плейлистов
-        setOldMorningPlayList.add(oldPlayList);
-        //добавляем компании обновленные утренние плейлисты
-        oldCompany.setMorningPlayList(setOldMorningPlayList);
-        //добавляем юзеру обновленную компанию
-        authUser.setCompany(oldCompany);
-        //обновляем юзера
+        switch(dayTime) {
+            case "morning" :
+                changeCompanyPlaylist(oldCompany.getMorningPlayList(), newSongCompilation);
+                break;
+            case "midday" :
+                changeCompanyPlaylist(oldCompany.getMiddayPlayList(), newSongCompilation);
+                break;
+            case "evening" :
+                changeCompanyPlaylist(oldCompany.getEveningPlayList(), newSongCompilation);
+                break;
+        }
         userService.updateUser(authUser);
     }
 
-    @Override
-    public void deleteSongCompilationToEveningPlaylist(Long id) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
-        //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
-        //достаем множество утренних плейлистов
-        Company oldCompany = authUser.getCompany();
-        Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
-        //достаем пока один единственный плейлист и его множество подборок
-        List<PlayList> oldListPlayLists = new ArrayList<>(setOldEveningPlayList);
-        PlayList oldPlayList = oldListPlayLists.get(0);
-        Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
-        //удаляем подборку из старого множества подборок
-        oldSetSongCompilation.remove(newSongCompilation);
-        //добавляем в старый плейлист обновленное старое множество подборок
-        oldPlayList.setSongCompilation(oldSetSongCompilation);
-        //добавляем в старое множество плейлистов обновленное множество плейлистов
-        setOldEveningPlayList.add(oldPlayList);
-        //добавляем компании обновленные утренние плейлисты
-        oldCompany.setEveningPlayList(setOldEveningPlayList);
-        //добавляем юзеру обновленную компанию
-        authUser.setCompany(oldCompany);
-        //обновляем юзера
-        userService.updateUser(authUser);
-    }
-
-    @Override
-    public void deleteSongCompilationToMiddayPlaylist(Long id) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
-        //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
-        //достаем множество утренних плейлистов
-        Company oldCompany = authUser.getCompany();
-        Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
-        //достаем пока один единственный плейлист и его множество подборок
-        List<PlayList> oldListPlayLists = new ArrayList<>(setOldMiddayPlayList);
-        System.out.println(oldListPlayLists.size());
-        PlayList oldPlayList = oldListPlayLists.get(0);
-        Set<SongCompilation> oldSetSongCompilation = oldPlayList.getSongCompilation();
-        //удаляем подборку из старого множества подборок
-        oldSetSongCompilation.remove(newSongCompilation);
-        //добавляем в старый плейлист обновленное старое множество подборок
-        oldPlayList.setSongCompilation(oldSetSongCompilation);
-        //добавляем в старое множество плейлистов обновленное множество плейлистов
-        setOldMiddayPlayList.add(oldPlayList);
-        //добавляем компании обновленные утренние плейлисты
-        oldCompany.setMiddayPlayList(setOldMiddayPlayList);
-        //добавляем юзеру обновленную компанию
-        authUser.setCompany(oldCompany);
-        //обновляем юзера
-        userService.updateUser(authUser);
+    private void changeCompanyPlaylist(Set<PlayList> playList, SongCompilation newSongCompilation) {
+        PlayList pl = new ArrayList<>(playList).get(0);
+        pl.getSongCompilation().remove(newSongCompilation);
     }
 }

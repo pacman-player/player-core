@@ -221,7 +221,7 @@ $(document).ready(function () {
 
 });
 
-//добавляем подборку в утренний плейлист
+//добавляем/удаляем подборку в/из утреннего плейлиста
 function addMorningPlaylist(idCompilation) {
     let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
     let middayButtonStateElement = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");

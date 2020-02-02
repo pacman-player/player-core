@@ -28,19 +28,10 @@ public class UserPlayListRestController {
         songCompilationService.addSongCompilationToMorningPlaylist(id);
     }
 
-    @DeleteMapping(value = "/morning-playlist/delete/song-compilation/{playlistId}")
-    public void deleteSongCompilationToMorningPlaylist(@PathVariable("playlistId") Long id) {
-        songCompilationService.deleteSongCompilationToMorningPlaylist(id);
+    @DeleteMapping(value = "/{dayTime}-playlist/delete/song-compilation/{playlistId}")
+    public void deleteSongCompilationFromPlaylist(@PathVariable("playlistId") Long id, @PathVariable("dayTime") String dayTime) {
+        songCompilationService.deleteSongCompilationFromPlayList(id, dayTime);
     }
-    @DeleteMapping(value = "/midday-playlist/delete/song-compilation/{playlistId}")
-    public void deleteSongCompilationToMiddayPlaylist(@PathVariable("playlistId") Long id) {
-        songCompilationService.deleteSongCompilationToMiddayPlaylist(id);
-    }
-    @DeleteMapping(value = "/evening-playlist/delete/song-compilation/{playlistId}")
-    public void deleteSongCompilationToEveningPlaylist(@PathVariable("playlistId") Long id) {
-        songCompilationService.deleteSongCompilationToEveningPlaylist(id);
-    }
-
     @PostMapping(value = "/midday-playlist/add/song-compilation")
     public void addSongCompilationToMiddayPlaylist(@RequestBody Long id) {
         songCompilationService.addSongCompilationToMiddayPlaylist(id);
