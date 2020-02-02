@@ -86,7 +86,7 @@ public class RegistrationRestController {
         company = companyService.getByCompanyName(company.getName());
 
         userByLogin.setCompany(company);
-        userService.addUser(userByLogin);
+        userService.updateUser(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());
 //        System.out.println(byCompanyName);
 //        if (byCompanyName != null) {
