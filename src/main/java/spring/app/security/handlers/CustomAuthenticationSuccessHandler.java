@@ -26,7 +26,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 										HttpServletResponse httpServletResponse,
 										Authentication authentication) throws IOException {
 		HttpSession session = httpServletRequest.getSession();
-
 		session.setAttribute("loginCount", 1);
 		int loginAttempt = (Integer) session.getAttribute("loginCount");
 		int i = loginAttempt;
@@ -43,7 +42,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 	private String determineTargetUrl(Authentication authentication) {
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
 		if (authorities.contains(new Role("ADMIN"))){
 			return "/admin/users";
 		} else if (authorities.contains(new Role("USER"))) {

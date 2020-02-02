@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(UserRegistrationDto registration) {
-        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true, true);
+        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true);
         if (userRole == null) {
             userRole = roleDao.getRoleByName("USER");
         }

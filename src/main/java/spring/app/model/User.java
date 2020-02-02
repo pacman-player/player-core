@@ -59,8 +59,6 @@ public class User implements UserDetails {
 //    @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
 
-    private Boolean accountNonLocked = true;
-
     public User() {
     }
 
@@ -68,29 +66,27 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(String email, String login, String password, boolean enabled, boolean accountNonLocked) {
+    public User(String email, String login, String password, boolean enabled) {
         this.email = email;
         this.login = login;
         this.password = password;
         this.enabled = enabled;
-        this.accountNonLocked = accountNonLocked;
     }
 
-    public User(Long id, String email, String login, String password, boolean enabled, boolean accountNonLocked) {
-        this(email, login, password, enabled, accountNonLocked);
+    public User(Long id, String email, String login, String password, boolean enabled) {
+        this(email, login, password, enabled);
         this.id = id;
     }
 
-    public User(String googleId, String email, Set<Role> roleSet, boolean enabled, boolean accountNonLocked) {
+    public User(String googleId, String email, Set<Role> roleSet, boolean enabled) {
         this.email = email;
         this.googleId = googleId;
         this.login = email;
         this.roles = roleSet;
         this.enabled = enabled;
-        this.accountNonLocked = accountNonLocked;
     }
 
-    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled, boolean accountNonLocked) {
+    public User(int vkId, String firstName, String lastName, String email, Set<Role> roles, Company company, Boolean enabled) {
         this.vkId = vkId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -98,7 +94,6 @@ public class User implements UserDetails {
         this.roles = roles;
         this.company = company;
         this.enabled = enabled;
-        this.accountNonLocked = accountNonLocked;
     }
 
     public Blob getProfilePic() {
@@ -152,12 +147,9 @@ public class User implements UserDetails {
         return true;
     }
 
+    @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
+        return true;
     }
 
     public boolean isCredentialsNonExpired() {
@@ -246,7 +238,7 @@ public class User implements UserDetails {
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(googleId, user.googleId) &&
                 Objects.equals(company, user.company) &&
-                enabled.equals(user.enabled);
+                Objects.equals(enabled, user.enabled);
     }
 
     @Override

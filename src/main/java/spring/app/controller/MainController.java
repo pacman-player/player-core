@@ -129,7 +129,7 @@ public class MainController {
             Role role = roleService.getRoleById((long) 2);
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
-            user = new User(googleId, email, roleSet, true, true);
+            user = new User(googleId, email, roleSet, true);
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
@@ -172,7 +172,7 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        return userService.getUserByGoogleId(googleId).isEnabled() ? "redirect:/user" : "/public/ban";
     }
 
     @GetMapping("/player")
@@ -208,7 +208,7 @@ public class MainController {
                     authResponse.getEmail(),
                     roleSet,
                     companyService.getById(1L),
-                    true, true);
+                    true);
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
@@ -251,6 +251,6 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        return userService.getUserByVkId(actor.getId()).isEnabled() ? "redirect:/user" : "/public/ban";
     }
 }

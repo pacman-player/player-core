@@ -62,7 +62,7 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editUser">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
-                    htmlTable += listUsers[i].accountNonLocked === true ?
+                    htmlTable += listUsers[i].enabled === true ?
                         '<td id="banButton' + listUsers[i].id +'"><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick= "banUser(' + listUsers[i].id + ')">забанить</button></td>'
                         : ('<td id="banButton'+ listUsers[i].id +'"><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + listUsers[i].id + ')">разбанить</button></td>');
                     htmlTable += ('</tr>');

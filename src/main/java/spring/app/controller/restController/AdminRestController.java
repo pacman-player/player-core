@@ -48,14 +48,14 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
         User user = userService.getUserById(id);
-        user.setAccountNonLocked(false);
+        user.setEnabled(false);
         userService.updateUser(user);
     }
     @PutMapping(value = "/unban_user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbunUser(@PathVariable("id") Long id) {
         User user = userService.getUserById(id);
-        user.setAccountNonLocked(true);
+        user.setEnabled(true);
         userService.updateUser(user);
     }
 
@@ -75,14 +75,14 @@ public class AdminRestController {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true, true);
+        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.addUser(user);
     }
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true, true);
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
