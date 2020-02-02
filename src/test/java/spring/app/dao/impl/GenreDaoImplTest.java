@@ -32,7 +32,10 @@ public class GenreDaoImplTest {
         genreDao.getAllDaoJoin();
         assertEquals(1, CrudInterceptor.getCount());
     }
-
+/*
+    Тест с использованием библиотеки Влад Михалыча. Не считает запросы!!!
+    оставил для примера.
+ */
     @Test
     public void getAllGenreVladTest() throws Exception {
         try {

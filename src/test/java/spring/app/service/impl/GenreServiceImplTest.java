@@ -75,20 +75,6 @@ public class GenreServiceImplTest {
     }
 
     /*
-    Этот тест всегда провален т.к. количество запросов всегда = 0
-     */
-    @Test
-    public void getAllGenreVladTest() throws Exception {
-        try {
-            SQLStatementCountValidator.reset();
-            genreService.getAllGenre();
-            assertSelectCount(1);
-        } catch (SQLSelectCountMismatchException e) {
-            assertEquals(1, e.getRecorded());
-        }
-    }
-
-    /*
     Этот тест провален (2 запроса) когда аннотация FetchMode.JOIN стоит еще и в model у поля SongCompilation
     помимо сервисного слоя
      */
