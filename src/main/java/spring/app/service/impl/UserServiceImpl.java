@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
             userRole = roleDao.getRoleByName("USER");
         }
         user.setRoles(Collections.singleton(userRole));
-//        user.setEnabled(false);
         userDao.save(user);
     }
 

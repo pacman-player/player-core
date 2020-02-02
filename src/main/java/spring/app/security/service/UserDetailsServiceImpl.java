@@ -25,6 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 		if (user == null || !user.getEnabled().equals(true)) {
 			throw new UsernameNotFoundException("Username " + login + " not found");
 		}
+
+		if (user.getEnabled().equals(false)) {
+
+		}
+
 		return user;
 	}
 
