@@ -31,17 +31,17 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
 
         try {
             document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
+
+            Element first = document.getElementsByClass("item").first();
+
+            link = first.getElementsByClass("play").attr("data-url");
+            authorName = first.getElementsByClass("artist").text();
+            songName = first.getElementsByClass("track").text();
+            trackName = author + " – " + song;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
         }
-        Element first = document.getElementsByClass("item").first();
-
-        link = first.getElementsByClass("play").attr("data-url");
-        authorName = first.getElementsByClass("artist").text();
-        songName = first.getElementsByClass("track").text();
-        trackName = author + " – " + song;
-
         return link;
     }
 

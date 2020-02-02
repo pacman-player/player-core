@@ -34,31 +34,33 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
 
         try {
             document = Jsoup.connect(searchUrl + author + " " + song).get();
-        } catch (IOException e) {
+
+            Element div = document.getElementsByClass("btn btn-primary btn-xs download").get(0);
+            String songUrl = div.attr("href");   // url  в котором хранится ссылка для скачивания
+
+            String[] fragments = songUrl.substring(19).split("&");
+
+            for (String path : fragments) {
+                if (path.contains("artist")) {
+                    authorName = URLDecoder.decode(path.split("=")[1], "UTF-8");
+                    authorName = URLDecoder.decode(author, "UTF-8");
+                }
+                if (path.contains("title")) {
+                    songName = URLDecoder.decode(path.split("=")[1], "UTF-8");
+                    songName = URLDecoder.decode(song, "UTF-8");
+                }
+            }
+            trackName = author + " – " + song;
+
+             link = "https://downloadmusicvk.ru/audio/download?" +
+                    fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
+        } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error search on downloadmusicvk.ru");
         }
-
-        Element div = document.getElementsByClass("btn btn-primary btn-xs download").get(0);
-        String songUrl = div.attr("href");   // url  в котором хранится ссылка для скачивания
-
-        String[] fragments = songUrl.substring(19).split("&");
-
-        for (String path : fragments) {
-            if (path.contains("artist")) {
-                authorName = URLDecoder.decode(path.split("=")[1], "UTF-8");
-                authorName = URLDecoder.decode(author, "UTF-8");
-            }
-            if (path.contains("title")) {
-                songName = URLDecoder.decode(path.split("=")[1], "UTF-8");
-                songName = URLDecoder.decode(song, "UTF-8");
-            }
-        }
-        trackName = author + " – " + song;
-
-        return link = "https://downloadmusicvk.ru/audio/download?" +
-                fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
+        return link;
     }
+
 
     @Override
     public Track getSong(String author, String song) throws IOException {

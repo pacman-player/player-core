@@ -32,18 +32,18 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
 
         try {
             document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
+
+            Element first = document.getElementsByAttributeValue("class", "mp3").first();
+
+            link = first.getElementsByClass("btn play").attr("data-url");
+            author = first.getElementsByClass("artist_name").text();
+            song = first.getElementsByClass("song_name").text();
+
+            trackName = author + " – " + song;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
         }
-        Element first = document.getElementsByAttributeValue("class", "mp3").first();
-
-        link = first.getElementsByClass("btn play").attr("data-url");
-        author = first.getElementsByClass("artist_name").text();
-        song = first.getElementsByClass("song_name").text();
-
-        trackName = author + " – " + song;
-
         return link;
     }
 

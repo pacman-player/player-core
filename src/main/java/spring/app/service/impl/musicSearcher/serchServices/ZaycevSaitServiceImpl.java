@@ -36,25 +36,22 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
 
         try {
             document = Jsoup.connect(searchUrl + author + " " + song).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error search on zaycev.net");
-        }
 
-        Element div = document.getElementsByClass("musicset-track clearfix ").get(0);
-        String jsonUrl = div.attr("data-url");   // url на json в котором хранится ссылка для скачивания
-        Element div2 = div.getElementsByClass("musicset-track__fullname").get(0);
-        trackName = div2.attr("title");  // вытаскиваем исполнителя и название песни
-        if(trackName.contains(" – ")) {
-            String[] perfomerAndSong = trackName.split(" – ");
-            authorName = perfomerAndSong[0];
-            songName = perfomerAndSong[1];
-        }
-        try {
+            Element div = document.getElementsByClass("musicset-track clearfix ").get(0);
+            String jsonUrl = div.attr("data-url");   // url на json в котором хранится ссылка для скачивания
+            Element div2 = div.getElementsByClass("musicset-track__fullname").get(0);
+
+            trackName = div2.attr("title");  // вытаскиваем исполнителя и название песни
+            if (trackName.contains(" – ")) {
+                String[] perfomerAndSong = trackName.split(" – ");
+                authorName = perfomerAndSong[0];
+                songName = perfomerAndSong[1];
+            }
+
             String json = Jsoup.connect(baseUrl + jsonUrl).ignoreContentType(true).execute().body();
             JSONObject jsonObj = new JSONObject(json);
             link = jsonObj.getString("url");
-        } catch (JSONException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return link;  // ссылка на скачивание
@@ -85,11 +82,9 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 } else return null;  //если песня меньше 2мб возвращаем 0
                 return new Track(authorName, songName, trackName, track);
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Ошибка скачивания с zaycev.net");
         }
         return null;
     }
-
-
 }
