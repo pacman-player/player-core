@@ -17,6 +17,7 @@ import java.io.IOException;
 @Transactional
 public class TelegramServiceImpl implements TelegramService {
     private Track track = null;
+    private Long songId;
 
     private final MusicSearchService musicSearchService;
     private final CutSongService cutSongService;
@@ -30,10 +31,12 @@ public class TelegramServiceImpl implements TelegramService {
     public SongResponse getSong(SongRequest songRequest) throws IOException {
         if(track == null) {
             track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName());
+            songId = musicSearchService.updateData(track);
         }
         String trackName = track.getFullTrackName();
         byte[] trackBytes = track.getTrack();
-        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 2344534L, trackBytes, trackName);
+
+        SongResponse songResponse = new SongResponse(songRequest.getChatId(), songId, trackBytes, trackName);
         return songResponse;
     }
 
@@ -43,7 +46,8 @@ public class TelegramServiceImpl implements TelegramService {
         String trackName = track.getFullTrackName();
         byte[] trackBytes = track.getTrack();
         byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
-        SongResponse songResponse = new SongResponse(songRequest.getChatId(), 2344534L, cutSong, trackName);
+        songId = musicSearchService.updateData(track);
+        SongResponse songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName);
         return songResponse;
     }
 }

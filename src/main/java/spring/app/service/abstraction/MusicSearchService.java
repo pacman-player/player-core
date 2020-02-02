@@ -8,4 +8,5 @@ public interface MusicSearchService {
 
     Track getSong(String author, String song) throws IOException;
 
+    Long updateData(Track track) throws IOException;
 }
