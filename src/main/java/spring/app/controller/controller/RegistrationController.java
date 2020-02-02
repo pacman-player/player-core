@@ -39,9 +39,6 @@ public class RegistrationController {
 
     @GetMapping("/second")
     public String getSecondRegistrationPage(@RequestParam String login, Model model, HttpServletResponse response) {
-        if (login == null) {
-
-        }
         response.addCookie(new Cookie("firstRegistrationStepDone", login));
         model.addAttribute("login", login);
         model.addAttribute("orgTypes", orgTypeService.getAllOrgTypes());

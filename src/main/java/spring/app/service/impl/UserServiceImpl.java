@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(UserRegistrationDto registration) {
-        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true);
+        User user = new User(registration.getEmail(), registration.getLogin(), passwordEncoder.encode(registration.getPassword()), true);
         if (userRole == null) {
-            userRole = roleDao.getRoleByName("ANONYMOUS");
+            userRole = roleDao.getRoleByName("A");
         }
         user.setRoles(Collections.singleton(userRole));
         userDao.save(user);
