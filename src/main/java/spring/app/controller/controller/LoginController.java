@@ -1,6 +1,7 @@
 package spring.app.controller.controller;
 
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import java.util.Collections;
 
 @RestController
 public class LoginController {
+
     private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     @Value("${recaptcha.secret}")
     private String secret;
@@ -41,6 +43,10 @@ public class LoginController {
         //передаем в сессию error для ГЕТ /login в MainController
         if (bindingResult.hasErrors()) {
             session.setAttribute("error", "Вы ввели неверные логин и пароль");
+        }
+        System.out.println(session.getAttribute("condition"));
+        if (!userValidator.validateByBan(userForm.getLogin())) {
+            session.setAttribute("error", "Ваш аккаунт забанен");
         }
 
         if (session.getAttribute("loginCount") == null) {
