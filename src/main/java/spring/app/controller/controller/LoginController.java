@@ -1,13 +1,18 @@
 package spring.app.controller.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import spring.app.dto.CaptchaResponseDto;
+import spring.app.model.User;
+import spring.app.util.UserValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,16 +28,22 @@ public class LoginController {
     private String secret;
     private RestTemplate restTemplate = new RestTemplate();
 
+    @Autowired
+    private UserValidator userValidator;
+
     @PostMapping("/login")
-    public void login(
-            HttpServletResponse response,
-            HttpServletRequest request
-    ) throws IOException, ServletException {
+    public void login(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("userForm") User userForm, BindingResult bindingResult) throws IOException, ServletException {
         int loginAttempt = 1;
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("loginCount") == null)
-        {
+        //проверяем данные с формы
+        userValidator.validate(userForm, bindingResult);
+        //передаем в сессию error для ГЕТ /login в MainController
+        if (bindingResult.hasErrors()) {
+            session.setAttribute("error", "Вы ввели неверные логин и пароль");
+        }
+
+        if (session.getAttribute("loginCount") == null) {
             session.setAttribute("loginCount", 1);
         }
 

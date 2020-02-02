@@ -27,6 +27,10 @@
         .empty-block {
             height: 88px;
         }
+
+        #validate-form {
+            color: red;
+        }
     </style>
 
 </head>
@@ -39,6 +43,9 @@
 
                 <div class="empty-block" th:if="${isNotValid == null and logout == null}"></div>
 
+<!--                <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">-->
+<!--                    <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
+<!--                </div>-->
 
                 <div class="alert alert-danger" th:if="${isNotValid}">
                     <h3>Неверная пара логин/пароль!</h3>
@@ -58,15 +65,29 @@
 
 
                 <h2>Пожалуйста войдите в систему</h2>
-                <form action="/login" method="POST" >
-                    <div class="form-group login-group">
-                        <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
-                               required="" th:value="admin"/>
-                        <input type="password" class="form-control" id="uPass" name="password"
-                               required="" th:value="admin" placeholder="Password"/>
+                <form action="/login" method="POST">
+
+                    <div class="form-group ${error != null ? 'has-error' : ''}">
+<!--                        <span>${message}</span>-->
+
+                        <div class="form-group login-group" >
+                            <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
+                                   required="" th:value="admin"/>
+                            <input type="password" class="form-control" id="uPass" name="password"
+                                   required="" th:value="admin" placeholder="Password"/>
+<!--                            <span>${error}</span>-->
+
+                            <!--выводим сообщение о неверном логине и пароле-->
+                            <div id="validate-form">
+                                <p th:text="${error}"></p>
+                            </div>
+
+                        </div>
+
+                        <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
+
                     </div>
 
-                    <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
                 </form>
 
                 <div class="form-group">
