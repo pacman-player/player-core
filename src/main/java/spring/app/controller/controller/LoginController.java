@@ -31,6 +31,8 @@ public class LoginController {
         int loginAttempt = 1;
         HttpSession session = request.getSession();
 
+        session.setAttribute();
+
         if (session.getAttribute("loginCount") == null)
         {
             session.setAttribute("loginCount", 1);

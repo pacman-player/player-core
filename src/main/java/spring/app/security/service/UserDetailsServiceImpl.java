@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		User user = userService.getUserByLogin(login);
 
-		if (user == null || !user.getEnabled().equals(true)) {
+		if (user == null) {
 			throw new UsernameNotFoundException("Username " + login + " not found");
 		}
 

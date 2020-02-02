@@ -47,7 +47,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			return "/admin/users";
 		} else if (authorities.contains(new Role("USER"))) {
 			return "user/statistics";
-		} else if (authorities.contains(new Role("ANONIMOUS"))) {
+		} else if (authorities.contains(new Role("ANONYMOUS"))) {
 			return "registration/registration-second";
 		} else {
 			return "/public/error";
