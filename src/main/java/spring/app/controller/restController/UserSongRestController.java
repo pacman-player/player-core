@@ -41,7 +41,7 @@ public class UserSongRestController {
         User authUser = userService.getUserById(userService.getIdAuthUser());
         Company company = authUser.getCompany();
         Set<SongQueue> songQueues = company.getSongQueues();
-        songQueueService.deleteAllSongQueues(songQueues);
+        songQueueService.deletePlayedSong(songQueues);
         return songQueues.stream().map(SongQueue::getSong).collect(Collectors.toList());
     }
 }

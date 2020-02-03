@@ -10,6 +10,7 @@ import spring.app.model.SongQueue;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.Comparator;
 import java.util.Set;
 
 @Repository
@@ -57,5 +58,8 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
         songQueues.forEach(entityManager::remove);
     }
 
-
+    @Override
+    public void deletePlayedSong(Set<SongQueue> songQueues) {
+        entityManager.remove(songQueues.stream().min(Comparator.comparing(SongQueue::getId)).get());
+    }
 }

@@ -45,4 +45,9 @@ public class SongQueueServiceImpl implements SongQueueService {
     public void deleteAllSongQueues(Set<SongQueue> songQueues) {
         songQueueDao.deleteAllSongQueues(songQueues);
     }
+
+    @Override
+    public void deletePlayedSong(Set<SongQueue> songQueues) {
+        songQueueDao.deletePlayedSong(songQueues);
+    }
 }
