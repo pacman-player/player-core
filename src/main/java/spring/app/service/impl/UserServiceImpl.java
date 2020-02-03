@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
             userRole = roleDao.getRoleByName("PREUSER");
         }
         user.setRoles(Collections.singleton(userRole));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
