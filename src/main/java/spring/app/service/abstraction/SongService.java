@@ -1,10 +1,8 @@
 package spring.app.service.abstraction;
 
-import spring.app.model.Author;
 import spring.app.model.Song;
 
 import java.util.List;
-import java.util.HashSet;
 
 public interface SongService {
 

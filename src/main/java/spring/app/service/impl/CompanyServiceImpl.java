@@ -8,7 +8,6 @@ import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.service.abstraction.CompanyService;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

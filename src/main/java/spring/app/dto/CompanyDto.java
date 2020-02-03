@@ -1,9 +1,5 @@
 package spring.app.dto;
 
-import spring.app.model.OrgType;
-
-import java.time.LocalTime;
-
 public class CompanyDto {
 
     private Long id;

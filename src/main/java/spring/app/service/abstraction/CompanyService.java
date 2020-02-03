@@ -2,7 +2,6 @@ package spring.app.service.abstraction;
 
 import spring.app.model.Bannable;
 import spring.app.model.Company;
-import spring.app.model.Genre;
 
 import java.util.List;
 

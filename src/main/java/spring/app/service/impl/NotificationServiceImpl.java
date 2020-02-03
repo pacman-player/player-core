@@ -5,7 +5,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.controller.controller.NotificationController;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Notification;
