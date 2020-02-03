@@ -185,7 +185,8 @@ public class MainController {
             company.setEveningPlayList(eveningPlaylistSet);
 
             companyService.addCompany(company);
-            user.setCompany(companyService.getByCompanyName(companyName));
+//            user.setCompany(companyService.getByCompanyName(companyName));
+            user.setCompany(company);
 
             user = userService.getUserByGoogleId(googleId);
         }

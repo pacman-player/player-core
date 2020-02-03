@@ -50,11 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(UserRegistrationDto registration) {
-        User user = new User(registration.getEmail(), registration.getLogin(), registration.getPassword(), true);
+        User user = new User(registration.getEmail(), registration.getLogin(), passwordEncoder.encode(registration.getPassword()), true);
         if (userRole == null) {
-            userRole = roleDao.getRoleByName("USER");
+            //после 1шага регистрации пользователь еще не USER
+            userRole = roleDao.getRoleByName("PREUSER");
         }
         user.setRoles(Collections.singleton(userRole));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -89,7 +91,18 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
     }
 
-	@Override
+    @Override
+    public void updateUserWithEncodePassword(User user) {
+        userDao.update(user);
+    }
+
+    //метод для обновления недорегенного юзера с зашифрованным паролем
+    @Override
+    public void addUserWithEncodePassword(User user) {
+        userDao.save(user);
+    }
+
+    @Override
 	public User getUserByVkId(int vkId) {
 		return userDao.getUserByVkId(vkId);
 	}
@@ -97,6 +110,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getIdAuthUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(principal.toString());
         User authUser = (User) principal;
         return authUser.getId();
     }

@@ -3,15 +3,10 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.UserRegistrationDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.PlayList;
-import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.OrgTypeService;
-import spring.app.service.abstraction.PlayListService;
-import spring.app.service.abstraction.UserService;
+import spring.app.model.*;
+import spring.app.service.abstraction.*;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,13 +18,15 @@ public class RegistrationRestController {
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
+    private RoleService roleService;
 
     @Autowired
-    public RegistrationRestController(UserService userService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService) {
+    public RegistrationRestController(UserService userService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, RoleService roleService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
+        this.roleService = roleService;
     }
 
     @PostMapping("/first")
@@ -56,6 +53,8 @@ public class RegistrationRestController {
         long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User userByLogin = userService.getUserByLogin(login);
+        Role roleUser = roleService.getRoleByName("USER");
+        userByLogin.setRoles(Collections.singleton(roleUser));
         company.setOrgType(orgType);
         company.setUser(userByLogin);
 
@@ -84,10 +83,12 @@ public class RegistrationRestController {
         company.setEveningPlayList(eveningPlaylistSet);
 
         companyService.addCompany(company);
-        company = companyService.getByCompanyName(company.getName());
+//        company = companyService.getByCompanyName(company.getName());
 
         userByLogin.setCompany(company);
-        userService.addUser(userByLogin);
+        //здесь обновляю недорегенного юзера с уже зашифрованным паролем
+        userService.addUserWithEncodePassword(userByLogin);
+//        userService.updateUserWithEncodePassword(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());
 //        System.out.println(byCompanyName);
 //        if (byCompanyName != null) {
