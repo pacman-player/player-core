@@ -9,7 +9,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Service;
 import spring.app.model.Role;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -48,6 +47,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			return "/admin/users";
 		} else if (authorities.contains(new Role("USER"))) {
 			return "user/statistics";
+			//если пользователь недорегился перенаправляем на 2шаг регистрации
+		} else if (authorities.contains(new Role("PREUSER"))) {
+			return "registration/preuser";
 		} else {
 			return "/public/error";
 		}
