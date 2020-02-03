@@ -83,10 +83,11 @@ public class RegistrationRestController {
         company.setEveningPlayList(eveningPlaylistSet);
 
         companyService.addCompany(company);
-        company = companyService.getByCompanyName(company.getName());
+//        company = companyService.getByCompanyName(company.getName());
 
         userByLogin.setCompany(company);
-        userService.updateUser(userByLogin);
+        userService.addUserWithEncodePassword(userByLogin);
+//        userService.updateUserWithEncodePassword(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());
 //        System.out.println(byCompanyName);
 //        if (byCompanyName != null) {

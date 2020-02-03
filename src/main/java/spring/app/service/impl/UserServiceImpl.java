@@ -86,7 +86,17 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
     }
 
-	@Override
+    @Override
+    public void updateUserWithEncodePassword(User user) {
+        userDao.update(user);
+    }
+
+    @Override
+    public void addUserWithEncodePassword(User user) {
+        userDao.save(user);
+    }
+
+    @Override
 	public User getUserByVkId(int vkId) {
 		return userDao.getUserByVkId(vkId);
 	}
