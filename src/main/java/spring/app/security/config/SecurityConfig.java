@@ -88,8 +88,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-
-
 	/*@Bean
 	public FilterRegistrationBean myFilter() {
 		CharacterEncodingFilter filter = new CharacterEncodingFilter();
