@@ -12,6 +12,7 @@ import spring.app.service.abstraction.OrgTypeService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/registration")
@@ -32,6 +33,9 @@ public class RegistrationController {
                 if (cookie.getName().equals("firstRegistrationStepDone")) {
                     return "redirect:/registration/second?login=" + cookie.getValue();
                 }
+//                if (cookie.getName().equals("secondRegistrationStepDone")) {
+//                    return "redirect:/login";
+//                }
             }
         }
         return "registration/registration-first";
@@ -41,6 +45,16 @@ public class RegistrationController {
     public String getSecondRegistrationPage(@RequestParam String login, Model model, HttpServletResponse response) {
         response.addCookie(new Cookie("firstRegistrationStepDone", login));
         model.addAttribute("login", login);
+        model.addAttribute("orgTypes", orgTypeService.getAllOrgTypes());
+        return "registration/registration-second";
+    }
+
+    //для недорегенных пользователей - логин получаем с формы логина в сессии
+    @GetMapping("/preuser")
+    public String getSecondRegistrationPagePreuser(Model model, HttpServletResponse response, HttpSession httpSession) {
+        String loginFromLoginController = (String) httpSession.getAttribute("login");
+        response.addCookie(new Cookie("firstRegistrationStepDone", loginFromLoginController));
+        model.addAttribute("login", loginFromLoginController);
         model.addAttribute("orgTypes", orgTypeService.getAllOrgTypes());
         return "registration/registration-second";
     }

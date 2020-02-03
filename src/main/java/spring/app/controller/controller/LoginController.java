@@ -4,6 +4,7 @@ package spring.app.controller.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import spring.app.dto.CaptchaResponseDto;
+import spring.app.model.User;
 import spring.app.model.User;
 import spring.app.util.UserValidator;
 
@@ -43,7 +45,11 @@ public class LoginController {
             session.setAttribute("error", "Вы ввели неверные логин и пароль");
         }
 
-        if (session.getAttribute("loginCount") == null) {
+        //передаем логин с формы логин для недорегенных пользователей без куки
+        session.setAttribute("login", userForm.getLogin());
+
+        if (session.getAttribute("loginCount") == null)
+        {
             session.setAttribute("loginCount", 1);
         }
 

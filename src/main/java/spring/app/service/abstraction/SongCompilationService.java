@@ -20,4 +20,6 @@ public interface SongCompilationService {
 
     SongCompilation getSongCompilationById(Long id);
     SongCompilation getSongCompilationByCompilationName(String compilationName);
+
+    void deleteSongCompilationFromPlayList(Long id, String dayTime);
 }

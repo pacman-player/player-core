@@ -17,6 +17,8 @@ public interface UserService {
 
 	void addUser(User user);
 
+	void addUserWithEncodePassword(User user);
+
     User getUserByEmail(String email);
 
     void save(UserRegistrationDto registration);
@@ -26,6 +28,8 @@ public interface UserService {
 	void deleteUserById(Long id);
 
 	void updateUser(User user);
+
+	void updateUserWithEncodePassword(User user);
 
 	Long getIdAuthUser();
 
