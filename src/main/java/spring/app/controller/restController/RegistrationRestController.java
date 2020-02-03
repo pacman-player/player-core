@@ -86,6 +86,7 @@ public class RegistrationRestController {
 //        company = companyService.getByCompanyName(company.getName());
 
         userByLogin.setCompany(company);
+        //здесь обновляю недорегенного юзера с уже зашифрованным паролем
         userService.addUserWithEncodePassword(userByLogin);
 //        userService.updateUserWithEncodePassword(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());

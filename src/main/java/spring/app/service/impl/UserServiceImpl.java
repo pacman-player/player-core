@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
         userDao.update(user);
     }
 
+    //метод для обновления недорегенного юзера с зашифрованным паролем
     @Override
     public void addUserWithEncodePassword(User user) {
         userDao.save(user);
