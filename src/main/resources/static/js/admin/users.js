@@ -49,10 +49,12 @@ $(document).ready(function () {
                     var rolesHtmlA = "";
                     let rolesHtmlB ="";
                     for (var r = 0; r < roleList.length; r++) {
-                        rolesHtmlA += "<input class = \"roleA\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
-                            "</input>"
-                        rolesHtmlB += "<input class = \"roleB\" type=\"checkbox\" value=\"" + roleList[r].name +"\">" + roleList[r].name +
-                            "</input>"
+                        if (roleList[r].name !== "ANONYMOUS" && roleList[r].name !== "PREUSER") {
+                            rolesHtmlA += "<input class = \"roleA\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
+                                "</input>"
+                            rolesHtmlB += "<input class = \"roleB\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
+                                "</input>"
+                        }
                     }
                     $("#rlist").append(rolesHtmlB);
                         $("#rlistA").append(rolesHtmlA);

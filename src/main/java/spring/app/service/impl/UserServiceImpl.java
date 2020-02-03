@@ -67,17 +67,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-<<<<<<< HEAD
-        if (user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-            userDao.save(user);
-=======
+
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userDao.save(user);
->>>>>>> dev
     }
 
     @Override
@@ -92,11 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-<<<<<<< HEAD
-        if (user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-=======
+
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -105,7 +95,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserWithEncodePassword(User user) {
->>>>>>> dev
         userDao.update(user);
     }
 
