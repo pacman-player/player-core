@@ -1,25 +1,17 @@
 package spring.app.actuator.endpoints;
 
 import org.hibernate.Session;
-import org.hibernate.stat.Statistics;
-import org.hibernate.stat.spi.StatisticsImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
-import spring.app.dao.impl.UserDaoImpl;
 import spring.app.model.User;
-
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 @Transactional
 public class HibHealthEndPointUserDao extends AbstractEndpoint<List<String>> {
