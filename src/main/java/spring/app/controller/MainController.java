@@ -227,6 +227,7 @@ public class MainController {
                     roleSet,
                     companyService.getById(1L),
                     true);
+            user.setLogin(user.getEmail());
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию

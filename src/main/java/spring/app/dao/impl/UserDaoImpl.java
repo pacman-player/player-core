@@ -2,6 +2,7 @@ package spring.app.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
@@ -22,7 +23,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        List<User> userList = entityManager.createQuery("FROM User WHERE login = :login", User.class)
+        List<User> userList = entityManager.createQuery("SELECT a FROM User a LEFT JOIN FETCH a.company WHERE a.login = :login", User.class)
                 .setParameter("login", login)
                 .getResultList();
         if (userList.isEmpty()) {
@@ -35,7 +36,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     public User getUserByGoogleId(String googleId) {
         User user;
         try {
-            TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.googleId = :googleId", User.class);
+            TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.company WHERE u.googleId = :googleId", User.class);
             query.setParameter("googleId", googleId);
             user = query.getSingleResult();
         } catch (NoResultException e) {

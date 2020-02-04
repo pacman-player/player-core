@@ -20,7 +20,7 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
@@ -33,7 +33,7 @@ public class User implements UserDetails {
     //@Column(name = "password", length = 30, nullable = false)
     private String password;
 
-    private int vkId;
+    private Integer vkId;
 
     private String firstName;
 
@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @Column(name = "profile_pic")
     private Blob profilePic;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
@@ -200,7 +200,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public int getVkId() {
+    public Integer getVkId() {
         return vkId;
     }
 

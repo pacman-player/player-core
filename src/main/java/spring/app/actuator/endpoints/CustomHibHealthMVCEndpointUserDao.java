@@ -4,8 +4,8 @@ import org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomHibHealthMVCEndpoint extends EndpointMvcAdapter {
-    public CustomHibHealthMVCEndpoint(HibHealthEndPoint hibHealthEndPoint) {
+public class CustomHibHealthMVCEndpointUserDao extends EndpointMvcAdapter {
+    public CustomHibHealthMVCEndpointUserDao(HibHealthEndPointUserDao hibHealthEndPoint) {
         super(hibHealthEndPoint);
     }
 }

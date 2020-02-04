@@ -29,7 +29,7 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         Company company;
         try {
             company = entityManager
-                    .createQuery("FROM Company WHERE name = :name", Company.class)
+                    .createQuery("SELECT c FROM Company c LEFT JOIN FETCH c.orgType WHERE c.name = :name", Company.class)
                     .setParameter("name", companyName)
                     .getSingleResult();
         } catch (NoResultException e) {
