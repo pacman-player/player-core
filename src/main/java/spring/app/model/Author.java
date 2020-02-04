@@ -22,7 +22,7 @@ public class Author extends Bannable{
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> authorGenres = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
 
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
@@ -33,6 +33,11 @@ public class Author extends Bannable{
     public Author(){}
 
     public Author(String name) {
+        this.name = name;
+    }
+
+    public Author(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -53,11 +58,11 @@ public class Author extends Bannable{
     }
 
     public Set<Genre> getAuthorGenres() {
-        return authorGenres;
+        return genres;
     }
 
-    public void setAuthorGenres(Set<Genre> authorGenres) {
-        this.authorGenres = authorGenres;
+    public void setAuthorGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
     @Override

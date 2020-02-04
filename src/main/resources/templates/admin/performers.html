@@ -94,6 +94,7 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Имя</th>
+                                                    <th>Жанр</th>
                                                     <th>Изменить</th>
                                                     <th>Удалить</th>
                                                 </tr>
@@ -125,6 +126,11 @@
 
                                                                                 <label for="editAuthorName">Имя</label>
                                                                                 <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+
+                                                                                <label for="editAuthorGenre">Жанр</label>
+                                                                                <select class="form-control" id="editAuthorGenre" name="updateGenre">
+                                                                                    <!--заполняем через js-->
+                                                                                </select>
 
                                                                                 <div class="modal-footer">
                                                                                     <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
