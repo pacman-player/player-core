@@ -57,8 +57,7 @@ public class AdminAuthorRestController {
 
             String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
                     + " <a href=\"performers\">ссылке</a>" ;
-            User user = (User) getContext().getAuthentication().getPrincipal();
-            notificationService.addNotification(message, user.getId());
+            notificationService.addNotification(message);
         }
     }
 
