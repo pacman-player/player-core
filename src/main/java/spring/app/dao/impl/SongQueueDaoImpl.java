@@ -60,6 +60,6 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
 
     @Override
     public void deletePlayedSong(Set<SongQueue> songQueues) {
-        entityManager.remove(songQueues.stream().min(Comparator.comparing(SongQueue::getId)).get());
+        entityManager.remove(songQueues.stream().min(Comparator.comparing(SongQueue::getPosition)).get());
     }
 }
