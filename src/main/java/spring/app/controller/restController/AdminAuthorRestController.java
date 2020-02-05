@@ -8,6 +8,7 @@ import spring.app.model.Song;
 import spring.app.model.User;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.NotificationService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,16 +16,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+
 @RestController
 @RequestMapping("/api/admin/author/")
 public class AdminAuthorRestController {
 
     private final AuthorService authorService;
-    private GenreService genreService;
+    private final GenreService genreService;
+    private NotificationService notificationService;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService,
+                                     NotificationService notificationService) {
         this.authorService = authorService;
-        this.genreService =genreService;
+        this.genreService = genreService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping(value = "/all_authors")
@@ -40,12 +46,19 @@ public class AdminAuthorRestController {
 
 
     @PostMapping(value = "/add_author")
-    public void addAuthor(@RequestBody String name){
-        name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
-        if (authorService.getByName(name) == null) {
+    public void addAuthor(@RequestBody AuthorDto newAuthor) throws InterruptedException {
+        String name = newAuthor.getName();
+        String editName = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        if (authorService.getByName(editName) == null) {
             Author author = new Author();
-            author.setName(name);
+            author.setName(editName);
+            author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             authorService.addAuthor(author);
+
+            String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
+                    + " <a href=\"performers\">ссылке</a>" ;
+            User user = (User) getContext().getAuthentication().getPrincipal();
+            notificationService.addNotification(message, user.getId());
         }
     }
 
@@ -59,6 +72,13 @@ public class AdminAuthorRestController {
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id){
         authorService.deleteAuthorById(id);
+    }
+
+    @GetMapping(value = "/all_genre")
+    @ResponseBody
+    public List<Genre> getAllGenre() {
+        List<Genre> list = genreService.getAllGenre();
+        return list;
     }
 
     private Set<Genre> getGenres (String nameGenres) {

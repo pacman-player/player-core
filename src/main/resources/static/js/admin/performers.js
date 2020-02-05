@@ -40,42 +40,84 @@ $(document).ready(function () {
         });
     }
 
-    //add form
+//добавляем новую песню POST author
     $('#addAuthorBtn').click(function (event) {
         event.preventDefault();
         addAuthor();
     });
 
-    function addAuthor(){
-        var name = $("#addAuthor").val();
+
+    function addAuthor() {
+        var addAuthor = {};
+        addAuthor.name = $('#addAuthorName').val();
+        addAuthor.genres = $('#addAuthorGenre').val();
         $.ajax({
-            type: 'post',
-            url: "/api/admin/author/add_author",
-            contentType: 'application/json',
-            data: JSON.stringify(name),
-            headers: {
-                'Accept':'application/json',
-                'Content-Type': 'application/json'
+            method: 'POST',
+            url: '/api/admin/author/add_author',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(addAuthor),
+            success: function () {
+                $('#addAuthorName').val('');
+                $('#addAuthorGenre').val('');
+                $('#tab-author-panel').tab('show');
+                getTable();
             },
-            async: false,
-            cache: false,
-            complete:
-                function () {
-                    getTable();
-                    $("#tab-author-panel").tab('show');
-                },
-            success:
-                function () {
-                    notification("add-author" + name.replace(/[^\w]|_/g,''),
-                        " Исполнитель " + name + " добавлен",
-                        'authors-panel');
-                },
-            error:
-                function (xhr, status, error) {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
         });
     }
+
+    //получаем все жанры песни из БД на выбор
+    $('#add-authors-nav').click(function () {
+        getAllGenreForAdd();
+    });
+
+    function getAllGenreForAdd() {
+        //очищаю жанры option
+        $('#addAuthorGenre').empty();
+        var genreForAdd = '';
+        $.getJSON("/api/admin/author/all_genre", function (data) {
+            $.each(data, function (key, value) {
+                genreForAdd += '<option ';
+                genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
+            });
+            $('#addAuthorGenre').append(genreForAdd);
+        });
+    }
+    //add form
+
+
+//    function addAuthor(){
+//        var name = $("#addAuthor").val();
+//        $.ajax({
+//            type: 'post',
+//            url: "/api/admin/author/add_author",
+//            contentType: 'application/json',
+//            data: JSON.stringify(name),
+//            headers: {
+//                'Accept':'application/json',
+//                'Content-Type': 'application/json'
+//            },
+//            async: false,
+//            cache: false,
+//            complete:
+//                function () {
+//                    getTable();
+//                    $("#tab-author-panel").tab('show');
+//                },
+//            success:
+//                function () {
+//                    notification("add-author" + name.replace(/[^\w]|_/g,''),
+//                        " Исполнитель " + name + " добавлен",
+//                        'authors-panel');
+//                },
+//            error:
+//                function (xhr, status, error) {
+//                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+//                }
+//        });
+//    }
 
     //delete form
     $(document).on('click', '#deleteAuthor', function () {
@@ -155,7 +197,7 @@ $(document).ready(function () {
         });
     }
 
-//получаем жанр песни и список жанров из БД для edit song
+//получаем жанр песни и список жанров из БД для edit author
 function getAllGenreForEdit(genreName) {
     //очищаем option в модалке
     $('#editAuthorGenre').empty();
