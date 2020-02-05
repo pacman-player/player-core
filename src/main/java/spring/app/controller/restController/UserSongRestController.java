@@ -13,6 +13,8 @@ import spring.app.service.abstraction.SongQueueService;
 import spring.app.service.abstraction.SongService;
 import spring.app.service.abstraction.UserService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +44,9 @@ public class UserSongRestController {
         Company company = authUser.getCompany();
         Set<SongQueue> songQueues = company.getSongQueues();
         songQueueService.deleteAllSongQueues(songQueues);
-        return songQueues.stream().map(SongQueue::getSong).collect(Collectors.toList());
+        return songQueues
+                .stream()
+                .sorted(Comparator.comparingLong(SongQueue::getPosition))
+                .map(SongQueue::getSong).collect(Collectors.toList());
     }
 }
