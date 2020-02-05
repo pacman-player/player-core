@@ -1,20 +1,12 @@
 package spring.app.dao.impl;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
-import spring.app.dto.SongDto;
-import spring.app.dto.SongResponse;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -26,29 +18,24 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     @Override
     public Song getByName(String name) {
-        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE name = :name", Song.class);
-        query.setParameter("name", name);
-        Song song;
         try {
-            song = query.getSingleResult();
+            return entityManager.createQuery("SELECT u FROM Song u WHERE u.name = :name", Song.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
-        return song;
     }
 
     @Override
     public List<Song> findByNameContaining(String param) {
-
-        @SuppressWarnings("unchecked")
-        List<SongDto> songDtoList = entityManager.createNativeQuery("SELECT s.id, s.name from song s",
-                "SongDtoMapping")
-                .getResultList();
-
-        List<Song> songs = new ArrayList<>(songDtoList.size());
-
-        songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
-
-        return songs;
+        try {
+            return entityManager.createQuery("SELECT s from Song s WHERE s.name LIKE :part",
+                    Song.class)
+                    .setParameter("part", "%" + param + "%")
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

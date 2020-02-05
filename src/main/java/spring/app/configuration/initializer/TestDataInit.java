@@ -143,6 +143,11 @@ public class TestDataInit {
         song4.setGenre(genre4);
         songService.addSong(song4);
 
+        Song song5 = new Song("Guru - Spring");
+        song5.setAuthor(author);
+        song5.setGenre(genre4);
+        songService.addSong(song5);
+
         SongCompilation songCompilation = new SongCompilation();
         Set<Song> songs = new HashSet<>();
         songs.add(song);
@@ -178,6 +183,7 @@ public class TestDataInit {
         SongCompilation songCompilation4 = new SongCompilation();
         Set<Song> songs4 = new HashSet<>();
         songs4.add(song4);
+        songs4.add(song5);
         songCompilation4.setName("compilation4");
         songCompilation4.setGenre(genre4);
         songCompilation4.setSong(songs4);
