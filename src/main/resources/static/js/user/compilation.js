@@ -618,7 +618,8 @@ function setButtonOnStop(button) {
 //
 // а если песня играется - то ставится на паузу
 // а если песня на паузе - то продолжается воспроизведение
-function playOrPause(playlistName, compilationIndex, musicIndex) {
+function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
+
     let clickedButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
     let clickedButton;
     for (var i = 0; i < clickedButtons.length; i++) {
@@ -661,6 +662,11 @@ function playOrPause(playlistName, compilationIndex, musicIndex) {
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
         songAuthor.innerHTML = music.author.name;
+        if (isFromSongQueue) {
+            $('#playerContainer').css('background-color', '#ff78a5')
+        } else {
+            $('#playerContainer').css('background-color', '#D1D1D1')
+        }
         fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
         playerElement.play();
     }
@@ -694,7 +700,7 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     if (playingState === 'on_pause' || playingState === 'on_play') {
         musicIndex = lastPlayedMusicIndex;
     }
-    playOrPause(playlistName, compilationIndex, musicIndex);
+    playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
 }
 
 
@@ -712,17 +718,27 @@ function playNext() {
     $.get('/api/user/song/songsInQueue', function (songList) {
         if (songList.length > 0) {
             let songArrayAfterLastPlayedMusic = [];
-            for (let i = lastPlayedMusicIndex + 1, j = 0; j < lastPlayedSongList.length; i++, j++) {
-                songArrayAfterLastPlayedMusic[j] = lastPlayedSongList[i];
+            for (let i = lastPlayedMusicIndex + 1, j = 0; i < allSongsInCurrentPlaylist.length; i++, j++) {
+                songArrayAfterLastPlayedMusic[j] = allSongsInCurrentPlaylist[i];
             }
-            for (let i = lastPlayedMusicIndex + 1, j = 0; j < songList.length; i++, j++) {
-                lastPlayedSongList[i] = songList[j];
+            var ind = lastPlayedMusicIndex + 1;
+            while (allSongsInCurrentPlaylist[ind].isFromSongQueue) {
+                ind++;
             }
-            for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
-                lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
+            for (let i = ind, j = 0; j < songList.length; i++, j++) {
+                allSongsInCurrentPlaylist[i] = songList[j];
+                allSongsInCurrentPlaylist[i].isFromSongQueue = true;
+                allSongsInCurrentPlaylist[i].musicIndex = i;
+                allSongsInCurrentPlaylist[i].compilationIndex = lastPlayedCompilationIndex;
             }
-            fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
-            playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex + 1);
+            for (let i = ind + songList.length, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
+                allSongsInCurrentPlaylist[i] = songArrayAfterLastPlayedMusic[j];
+                allSongsInCurrentPlaylist[i].musicIndex = i;
+            }
+            console.log(allSongsInCurrentPlaylist);
+            fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
+            playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex,
+                lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
         } else {
             if (shuffle) {
                 let playlistsLength = lastPlayedSongList.length;
@@ -735,7 +751,8 @@ function playNext() {
             }
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
                 var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
-                playOrPause(lastPlayedPlaylistName, compilationIndex, lastPlayedMusicIndex + 1);
+                playOrPause(lastPlayedPlaylistName, compilationIndex,
+                    lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
             } else {
                 if (lastPlayedPlaylistName === 'morning') {
                     lastPlayedPlaylistName = 'midday';
@@ -787,10 +804,13 @@ function playPrevious() {
     var compilationIndex;
     if (lastPlayedMusicIndex > 0) {
         compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex - 1].compilationIndex;
-        playOrPause(lastPlayedPlaylistName, compilationIndex, lastPlayedMusicIndex - 1);
+        playOrPause(lastPlayedPlaylistName, compilationIndex,
+            lastPlayedMusicIndex - 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex - 1].isFromSongQueue);
     } else {
         compilationIndex = allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].compilationIndex;
-        playOrPause(lastPlayedPlaylistName, compilationIndex, allSongsInCurrentPlaylist.length - 1);
+        playOrPause(lastPlayedPlaylistName, compilationIndex,
+            allSongsInCurrentPlaylist.length - 1,
+            allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
     }
 }
 

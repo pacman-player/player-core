@@ -146,13 +146,13 @@ public class TestDataInit {
 
         Genre genre4 = new Genre("punk");
         genreService.addGenre(genre4);
-
-        Author author = new Author();
-        author.setName("author-1");
+//
+//        Author author = new Author();
+//        author.setName("author-1");
         Set<Genre> genres = new HashSet<>();
         genres.add(genre);
-        author.setAuthorGenres(genres);
-        authorService.addAuthor(author);
+//        author.setAuthorGenres(genres);
+//        authorService.addAuthor(author);
 
         OrgType orgType = new OrgType("Restaurant");
         orgType.setGenres(genres);

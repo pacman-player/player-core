@@ -9,6 +9,7 @@
     /*background-image: url("/img/play.png");*/
     display: inline-block;
     /*position: absolute;*/
+    /*border-color: white;*/
     width: 40px;
     height: 40px;
 }
@@ -18,7 +19,7 @@
     /*background-image: url("/img/pause.png");*/
     width: 40px;
     height: 40px;
-    border: white;
+    /*border-color: white;*/
     display: none;
 }
 
