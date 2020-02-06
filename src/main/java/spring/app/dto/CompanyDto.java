@@ -9,7 +9,6 @@ public class CompanyDto {
     private Long orgType;
     private Long userId;
 
-
     public Long getId() {
         return id;
     }
@@ -58,5 +57,14 @@ public class CompanyDto {
         this.userId = userId;
     }
 
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startTime=" + startTime +
+                ", closeTime=" + closeTime +
+                ", orgType=" + orgType +
+                '}';
+    }
 }
 

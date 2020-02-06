@@ -1,7 +1,6 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Value("${music.path}")
     private String musicPath;
+
 
     @Override
     public ServletOutputStream fileToStream(String musicName, HttpServletResponse response) throws ServletException, IOException {

@@ -59,7 +59,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public boolean isExist(String name) {
-        return getByName(name) != null;
+        return songDao.isExist(name);
     }
 
     @Override

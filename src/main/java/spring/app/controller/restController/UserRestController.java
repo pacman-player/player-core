@@ -1,21 +1,20 @@
 package spring.app.controller.restController;
 
-import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
-import spring.app.service.CutSongService;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
-import java.util.Random;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -24,15 +23,21 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
-    private final UserService userService;
+    private final RoleService roleService;
+	private final UserService userService;
+
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
+	private final AddressService addressService;
 
     private String PASSWORD = "";
 
     @Autowired
     public EmailSender emailSender;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserRestController(RoleService roleService,
@@ -41,11 +46,14 @@ public class UserRestController {
                               GenreService genreService,
                               AuthorService authorService,
                               SongService songService,
-                              SongCompilationService songCompilation) {
+                              SongCompilationService songCompilation,
+                              AddressService addressService) {
+		this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
+		this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -64,7 +72,12 @@ public class UserRestController {
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
-        return ((User) getContext().getAuthentication().getPrincipal());
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        return (userService.getUserById(user.getId()));
+    }
+    @PostMapping(value = "/get_encrypted_pass")
+    public ResponseEntity<Boolean> getEncPass(@RequestBody Map<String, String> json) {
+        return ResponseEntity.ok(passwordEncoder.matches(json.get("oldPass"), json.get("newPass")));
     }
 
     @PutMapping(value = "/edit_data")
@@ -118,6 +131,24 @@ public class UserRestController {
         return ResponseEntity.ok(companyService.getById(id));
     }
 
+    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Address> getUserCompanyAddress() {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+
+        Address lazyAddressByID = addressService.getById(companyService.getById(id).getAddress().getId());
+        Address realAddress = new Address(
+                lazyAddressByID.getId(),
+                lazyAddressByID.getCountry(),
+                lazyAddressByID.getCity(),
+                lazyAddressByID.getStreet(),
+                lazyAddressByID.getHouse(),
+                lazyAddressByID.getLatitude(),
+                lazyAddressByID.getLongitude()
+                );
+
+        return ResponseEntity.ok(realAddress);
+    }
+
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
@@ -125,6 +156,39 @@ public class UserRestController {
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
+        companyService.updateCompany(companyForUpdate);
+    }
+
+	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void updateAddress(@RequestBody AddressDto addressDto) {
+        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        Company companyForUpdate = companyService.getById(id);
+        Address addressForUpdate = companyForUpdate.getAddress();
+
+        if (addressForUpdate == null) {
+            addressService.updateAddress(new Address(
+                    addressDto.getCountry(),
+                    addressDto.getCity(),
+                    addressDto.getStreet(),
+                    addressDto.getHouse(),
+                    addressDto.getLatitude(),
+                    addressDto.getLongitude()
+            ));
+        } else {
+            addressForUpdate.setCountry(addressDto.getCountry());
+            addressForUpdate.setCity(addressDto.getCity());
+            addressForUpdate.setStreet(addressDto.getStreet());
+            addressForUpdate.setHouse(addressDto.getHouse());
+            addressForUpdate.setLatitude(addressDto.getLatitude());
+            addressForUpdate.setLongitude(addressDto.getLongitude());
+
+            companyForUpdate.setAddress(addressForUpdate);
+            companyService.updateCompany(companyForUpdate);
+
+            return;
+        }
+
+        companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
         companyService.updateCompany(companyForUpdate);
     }
 
@@ -155,5 +219,4 @@ public class UserRestController {
         }
 
     }
-
 }

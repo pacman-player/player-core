@@ -1,6 +1,6 @@
 package spring.app.model;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable

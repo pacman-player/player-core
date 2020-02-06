@@ -8,7 +8,6 @@ import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.service.abstraction.CompanyService;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -52,6 +51,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public boolean isExistCompanyByName(String name){
+       return companyDao.isExistCompanyByName(name);
+    }
+
+    @Override
     public void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannables) {
 
         bannables.forEach(
@@ -64,5 +68,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company setBannedEntity(Company company) {
         return companyDao.getCompanyWithEntityBanned(company.getId());
+    }
+
+    @Override
+    public Company getCompanyByAddressId(long id) {
+        return companyDao.getCompanyByAddressId(id);
     }
 }

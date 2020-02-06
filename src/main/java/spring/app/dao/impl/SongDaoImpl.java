@@ -1,20 +1,15 @@
 package spring.app.dao.impl;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dto.SongDto;
-import spring.app.dto.SongResponse;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -30,7 +25,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         Song song;
         try {
-            song = query.getSingleResult();
+            song = query.getResultList().get(0);
         } catch (NoResultException e) {
             return null;
         }
@@ -50,5 +45,15 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
 
         return songs;
+    }
+
+    public boolean isExist(String name) {
+        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE name = :name", Song.class);
+        query.setParameter("name", name);
+        List list = query.getResultList();
+        if(list.isEmpty()){
+            return false;
+        }
+        return true;
     }
 }

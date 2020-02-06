@@ -66,7 +66,7 @@ $(document).ready(function () {
             success:
                 function () {
                     sendNotification();
-                    notification("add-user" + name,
+                    notification("add-genre" + name.replace(/[^\w]|_/g, ''),
                         " Жанр " + name+ " добавлен ",
                         'genres-panel');
                 },
@@ -75,16 +75,12 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-
-        //  $("#tab-genres-panel").tab('show');
-        // location.reload();
     }
 
     //deleteForm
     $(document).on('click', '#deleteGenres', function () {
         var id = $(this).closest("tr").find("#genresId").text();
         deleteUser(id);
-       // getTable();
     });
 
     function deleteUser(id) {
@@ -116,7 +112,6 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-        // location.reload();
     };
 
     //updateForm
@@ -147,13 +142,12 @@ $(document).ready(function () {
             complete:
                 function () {
                     getTable();
-                   // $("#tab-genres-panel").tab('show');
                 },
             success:
                 function () {
                  sendNotification();
-                    notification("add-user" + name,
-                        " Жанр " + name+ " обнавлен ",
+                    notification("edit-genre" + genre.id,
+                        " Жанр изменен ",
                         'genres-panel');
                 },
             error:
@@ -161,8 +155,6 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-
-      //  location.reload();
     };
 
     //modal form заполнение
@@ -170,6 +162,4 @@ $(document).ready(function () {
         $("#updateGenresId").val($(this).closest("tr").find("#genresId").text());
         $("#updateGenresName").val($(this).closest("tr").find("#genresName").text());
     });
-
-
 });

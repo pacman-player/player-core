@@ -12,4 +12,5 @@ public interface SongQueueService  {
     SongQueue getSongQueueBySongAndCompany(Song song, Company company);
     long getLastSongQueuesNumberFromCompany(Company company);
     void deleteAllSongQueues(Set<SongQueue> songQueues);
+    void deletePlayedSong(Set<SongQueue> songQueues);
 }

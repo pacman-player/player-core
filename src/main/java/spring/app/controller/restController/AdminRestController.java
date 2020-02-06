@@ -67,7 +67,7 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
@@ -141,5 +141,15 @@ public class AdminRestController {
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
         companyService.addCompany(company);
+    }
+
+    @GetMapping(value = "/check/email")
+    public String checkEmail(@RequestParam String email, @RequestParam long id){
+        return Boolean.toString(userService.isExistUserByEmail(email, id));
+    }
+
+    @GetMapping(value = "/check/login")
+    public String checkLogin(@RequestParam String login, @RequestParam long id){
+       return Boolean.toString(userService.isExistUserByLogin(login, id));
     }
 }
