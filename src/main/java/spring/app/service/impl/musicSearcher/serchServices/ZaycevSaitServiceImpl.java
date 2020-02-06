@@ -69,7 +69,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 byte[] track = restTemplate.getForObject(link, byte[].class);
 
-                if (track.length > 1024 * 20) {    //проверка что песня полноценная
+                if (track.length > 1024 * 10) {    //проверка что песня полноценная
 
                     Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
                     if (path != null) {
@@ -82,7 +82,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 } else return null;  //если песня меньше 2мб возвращаем 0
                 return new Track(authorName, songName, trackName, track);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Ошибка скачивания с zaycev.net");
         }
         return null;
