@@ -53,6 +53,11 @@ public class TestDataInit {
         roleUser.setName("USER");
         roleService.addRole(roleUser);
 
+
+        Role roleManager = new Role();
+        roleManager.setName("ACTUATOR");
+        roleService.addRole(roleManager);
+
         Role roleAnonymous = new Role();
         roleAnonymous.setName("ANONYMOUS");
         roleService.addRole(roleAnonymous);
@@ -68,6 +73,7 @@ public class TestDataInit {
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
+        adminRoles.add(roleManager);
         admin.setRoles(adminRoles);
         userService.addUser(admin);
 

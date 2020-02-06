@@ -1,6 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,16 @@ public class AdminRestController {
         return list;
     }
 
+    @GetMapping("/get_user_by_id/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
+       return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get_all_roles")
+    public List<Role> getAllRoles() {
+        return roleService.getAllRoles();
+    }
+
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
@@ -67,7 +78,8 @@ public class AdminRestController {
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(),  userDto.getPassword(), true);
+        System.out.println(userDto.getRoles());
+        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
@@ -114,23 +126,12 @@ public class AdminRestController {
     }
 
 
-    private Set<Role> getRoles(String role) {
+    private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
 
-        switch (role.toLowerCase()) {
-            case "admin":
-                roles.add(roleService.getRoleById(1L));
-                break;
-            case "user":
-                roles.add(roleService.getRoleById(2L));
-                break;
-            case "admin, user":
-                roles.add(roleService.getRoleById(1L));
-                roles.add(roleService.getRoleById(2L));
-                break;
-            default:
-                roles.add(roleService.getRoleById(2L));
-                break;
+        for (String rl : role) {
+            System.out.println(rl);
+            roles.add(roleService.getRoleByName(rl));
         }
         return roles;
     }
