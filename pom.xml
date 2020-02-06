@@ -216,7 +216,12 @@
             <artifactId>jave-all-deps</artifactId>
             <version>2.7.1</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.mpatric/mp3agic -->
+        <dependency>
+            <groupId>com.mpatric</groupId>
+            <artifactId>mp3agic</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>

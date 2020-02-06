@@ -122,19 +122,22 @@ $(document).ready(function () {
     }
 
     //получаем подборки из утреннего плейлиста
-    // $(document).on('click', '#morning-music-nav', function () {
-    //     //getAllCompilationsInMorningPlaylist();
-    // });
-    //
-    // //получаем подборки из дневного плейлиста
-    // $(document).on('click', '#midday-music-nav', function () {
-    //     //getAllCompilationsInMiddayPlaylist();
-    // });
-    //
-    // //получаем подборки из вечернего плейлиста
-    // $(document).on('click', '#evening-music-nav', function () {
-    //     //getAllCompilationsInEveningPlaylist();
-    // });
+    $(document).on('click', '#morning-music-nav', function () {
+        //getAllCompilationsInMorningPlaylist();
+        morningPlaylist();
+    });
+
+    //получаем подборки из дневного плейлиста
+    $(document).on('click', '#midday-music-nav', function () {
+        //getAllCompilationsInMiddayPlaylist();
+        middayPlaylist();
+    });
+
+    //получаем подборки из вечернего плейлиста
+    $(document).on('click', '#evening-music-nav', function () {
+        //getAllCompilationsInEveningPlaylist();
+        eveningPlaylist();
+    });
 });
 
 //добавляем подборку в утренний плейлист
@@ -144,7 +147,8 @@ function addMorningPlaylist(idCompilation) {
         url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить утренний плейлист
-            getAllCompilationsInMorningPlaylist();
+            //getAllCompilationsInMorningPlaylist();
+            morningPlaylist();
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
@@ -159,7 +163,8 @@ function addMiddayPlaylist(idCompilation) {
         url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить дневной плейлист
-            getAllCompilationsInMiddayPlaylist();
+            // getAllCompilationsInMiddayPlaylist();
+            middayPlaylist();
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
@@ -173,7 +178,8 @@ function addEveningPlaylist(idCompilation) {
         url: '/api/user/play-list/evening-playlist/add/song-compilation/' + idCompilation,
         success: function () {
             //+обновить вечерний плейлист
-            getAllCompilationsInEveningPlaylist();
+            //getAllCompilationsInEveningPlaylist();
+            eveningPlaylist();
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText, status, error);
@@ -181,7 +187,7 @@ function addEveningPlaylist(idCompilation) {
     })
 }
 
-//получаем все подборки в утреннем плейлисте
+//получаем все подборки в утреннем плейлисте из утреннего плейлиста плеера
 function getAllCompilationsInMorningPlaylist() {
     //$.get('/api/user/play-list/morning-playlist/get/all-song-compilation', function (morningPlaylist) {
     fillPlaylistsTab('morning', 'morningCompilations', getCurrentPlaylist('morning').currentCumpilationsList);
@@ -199,11 +205,10 @@ function getAllCompilationsInEveningPlaylist() {
 }
 
 function fillPlaylistsTab(playListName, secondId, playlist) {
-    //allSongCompilationsInNewCompilationList = playlist;
     $(`#${playListName}`).empty();
     var htmlCompilation = '';
     //bootstrap card
-    htmlCompilation += ('<div class="card-deck" id="eveningCompilations">');
+    htmlCompilation += (`<div class="card-deck" id="${secondId}">`);
     for (var i = 0; i < playlist.length; i++) {
         htmlCompilation += '<div class="card pt-10">'
             + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
@@ -251,6 +256,7 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
 //достаю все песни подборки любого плейлиста и отображаю в модалке
 function showAllSongInSongCompilation(compilationListName, id) {
     //достаю инфу о подборке (название, картинку,  пр.) для модалки
+
     $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
@@ -431,25 +437,36 @@ function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
     }
 }
 
-$(function () {
-    player = $('#player');
-
+//получения утреннего плейлиста, заполнение плелиста плеера
+function morningPlaylist() {
     $.get('/api/user/play-list/morning-playlist/get/all-song-compilation', function (playList) {
         allCompilationsInMorningPlaylist = playList;
         fillAllSongsPlaylist(allCompilationsInMorningPlaylist, allSongsInMorningPlaylist)
         getAllCompilationsInMorningPlaylist();
     });
+}
+
+function middayPlaylist() {
     $.get('/api/user/play-list/midday-playlist/get/all-song-compilation', function (playList) {
         allCompilationsInMiddayPlaylist = playList;
         fillAllSongsPlaylist(allCompilationsInMiddayPlaylist, allSongsInMiddayPlaylist)
         getAllCompilationsInMiddayPlaylist();
     });
+}
+
+function eveningPlaylist() {
     $.get('/api/user/play-list/evening-playlist/get/all-song-compilation', function (playList) {
         allCompilationsInEveningPlaylist = playList;
         fillAllSongsPlaylist(allCompilationsInEveningPlaylist, allSongsInEveningPlaylist)
         getAllCompilationsInEveningPlaylist();
     });
+}
 
+$(function () {
+    player = $('#player');
+    morningPlaylist();
+    middayPlaylist();
+    eveningPlaylist();
     // при нажатии на кнопку "предыдущий"
     $("#previousAudioButton").on("click", function () {
         playPrevious();
@@ -477,7 +494,7 @@ $(function () {
             setButtonOnStop(lastPlayedPlaylistsPlayButtons[i]);
         }
         lastPlayedMusicIndex = 0;
-        let music = lastPlayedSongList[0];
+        let music = allSongsInCurrentPlaylist[0];
         player.prop('src', musicUrl + music.name);
         $('#globalPlayButton').prop('src', '/img/play.png');
     });
@@ -710,50 +727,51 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
 //                  если да, то играется первый compilation в следующем плейлисте
 function playNext() {
     $.get('/api/user/song/songsInQueue', function (songList) {
-         if (songList.length > 0) {
-             let songArrayAfterLastPlayedMusic = [];
-             for (let i = lastPlayedMusicIndex + 1, j = 0; j < lastPlayedSongList.length; i++, j++) {
-                 songArrayAfterLastPlayedMusic[j] = lastPlayedSongList[i];
-             }
-             for (let i = lastPlayedMusicIndex + 1, j = 0; j < songList.length; i++, j++) {
-                 lastPlayedSongList[i] = songList[j];
-             }
-             for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
-                 lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
-             }
-             fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
-             playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex + 1);
-         } else {
-    if (shuffle) {
-        let playlistsLength = lastPlayedSongList.length;
-        let nextMusicIndex;
-        do {
-            nextMusicIndex = Math.floor(Math.random() * playlistsLength);
-        } while (nextMusicIndex === lastPlayedMusicIndex);
-        playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, nextMusicIndex);
-        return;
-    }
-    if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
-        var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
-        console.log(lastPlayedPlaylistName)
-        console.log(lastPlayedCompilationIndex)
-        console.log(lastPlayedMusicIndex + 1)
-        playOrPause(lastPlayedPlaylistName, compilationIndex, lastPlayedMusicIndex + 1);
-    } else {
-        if (lastPlayedPlaylistName === 'morning') {
-            lastPlayedPlaylistName = 'midday';
-        } else if (lastPlayedPlaylistName === "midday") {
-            lastPlayedPlaylistName = 'evening';
+        if (songList.length > 0) {
+            let songArrayAfterLastPlayedMusic = [];
+            for (let i = lastPlayedMusicIndex + 1, j = 0; j < lastPlayedSongList.length; i++, j++) {
+                songArrayAfterLastPlayedMusic[j] = lastPlayedSongList[i];
+            }
+            for (let i = lastPlayedMusicIndex + 1, j = 0; j < songList.length; i++, j++) {
+                lastPlayedSongList[i] = songList[j];
+            }
+            for (let i = lastPlayedMusicIndex + songList.length + 1, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
+                lastPlayedSongList[i] = songArrayAfterLastPlayedMusic[j];
+            }
+            fillModalCurrentPlaylistTable(lastPlayedPlaylist, lastPlayedSongList);
+            playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex + 1);
         } else {
-            lastPlayedPlaylistName = 'morning';
+            if (shuffle) {
+                let playlistsLength = lastPlayedSongList.length;
+                let nextMusicIndex;
+                do {
+                    nextMusicIndex = Math.floor(Math.random() * playlistsLength);
+                } while (nextMusicIndex === lastPlayedMusicIndex);
+                playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, nextMusicIndex);
+                return;
+            }
+            if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
+                var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
+                console.log(lastPlayedPlaylistName)
+                console.log(lastPlayedCompilationIndex)
+                console.log(lastPlayedMusicIndex + 1)
+                playOrPause(lastPlayedPlaylistName, compilationIndex, lastPlayedMusicIndex + 1);
+            } else {
+                if (lastPlayedPlaylistName === 'morning') {
+                    lastPlayedPlaylistName = 'midday';
+                } else if (lastPlayedPlaylistName === "midday") {
+                    lastPlayedPlaylistName = 'evening';
+                } else {
+                    lastPlayedPlaylistName = 'morning';
+                }
+                playOrPausePlaylist(lastPlayedPlaylistName, 0);
+            }
         }
-        playOrPausePlaylist(lastPlayedPlaylistName, 0);
-    }
-         }
     });
 }
 
 function getCurrentPlaylist(playlistName) {
+
     var result = {};
     switch (playlistName) {
         case 'morning':

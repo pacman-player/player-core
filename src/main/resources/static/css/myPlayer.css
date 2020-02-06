@@ -6,14 +6,16 @@
 
 .playBtn {
     background-image: url("https://img.icons8.com/officexs/40/000000/circled-play.png");
+    /*background-image: url("/img/play.png");*/
     display: inline-block;
+    /*position: absolute;*/
     width: 40px;
     height: 40px;
-    border: white;
 }
 
 .pauseBtn {
     background-image: url("https://img.icons8.com/office/40/000000/circled-pause.png");
+    /*background-image: url("/img/pause.png");*/
     width: 40px;
     height: 40px;
     border: white;
@@ -54,4 +56,8 @@
 #song-author{
     font-size: 14px;
     color: #3c3b3d;
+}
+.container{
+    position:relative;
+    display:inline-block;
 }
