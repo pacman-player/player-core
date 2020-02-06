@@ -97,7 +97,7 @@
                                                 <th>ID</th>
                                                 <th>Роль</th>
                                                 <th>Логин</th>
-                                                <th>Пароль</th>
+<!--                                                <th>Пароль</th>-->
                                                 <th>Почта</th>
                                                 <th>Компания</th>
                                                 <th>Изменить</th>
@@ -173,18 +173,19 @@
                                                                                 </div>
                                                                                 <div>
                                                                                     <label for="updateUserRole">Роль</label>
-                                                                                    <select class="form-control"
+                                                                                    <div class="form-control"
                                                                                             id="updateUserRole"
                                                                                             name="role">
-                                                                                        <option value="user">USER
-                                                                                        </option>
-                                                                                        <option value="admin">ADMIN
-                                                                                        </option>
-                                                                                        <option value="admin, user">
-                                                                                            ADMIN,
-                                                                                            USER
-                                                                                        </option>
-                                                                                    </select>
+                                                                                        <div id="rlist">
+                                                                                        <input type="checkbox" value="user">USER
+                                                                                        </input>
+                                                                                        <input type="checkbox" value="admin">ADMIN
+                                                                                        </input>
+                                                                                        <input type="checkbox" value="manager">
+                                                                                            MANAGER
+                                                                                        </input>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
                                                                                     <button type="button"
@@ -240,16 +241,22 @@
                                                                        type="password" placeholder="Password"
                                                                        required="required" name="password"/>
                                                             </div>
-                                                            <div>
-                                                                <label for="addRole">Роль</label>
-                                                                <select class="form-control" id="addRole"
-                                                                        name="role" required="required">
-                                                                    <option value="user" selected="selected">User
-                                                                    </option>
-                                                                    <option value="admin">Admin</option>
-                                                                    <option value="admin, user">Admin, User</option>
-                                                                </select>
+                                                        <div>
+                                                            <label for="updateUserRoleA">Роли</label>
+                                                            <div class="form-control"
+                                                                 id="updateUserRoleA"
+                                                                 name="role">
+                                                                <div id="rlistA">
+                                                                    <input type="checkbox" value="user">USER
+                                                                    </input>
+                                                                    <input type="checkbox" value="admin">ADMIN
+                                                                    </input>
+                                                                    <input type="checkbox" value="manager">
+                                                                    MANAGER
+                                                                    </input>
+                                                                </div>
                                                             </div>
+                                                        </div>
                                                         <button type="submit" id="addUserBtn"
                                                                 class="btn btn-success btn-lg">
                                                             Добавить
