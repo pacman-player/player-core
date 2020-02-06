@@ -123,19 +123,16 @@ $(document).ready(function () {
 
     //получаем подборки из утреннего плейлиста
     $(document).on('click', '#morning-music-nav', function () {
-        //getAllCompilationsInMorningPlaylist();
         morningPlaylist();
     });
 
     //получаем подборки из дневного плейлиста
     $(document).on('click', '#midday-music-nav', function () {
-        //getAllCompilationsInMiddayPlaylist();
         middayPlaylist();
     });
 
     //получаем подборки из вечернего плейлиста
     $(document).on('click', '#evening-music-nav', function () {
-        //getAllCompilationsInEveningPlaylist();
         eveningPlaylist();
     });
 });
@@ -146,8 +143,7 @@ function addMorningPlaylist(idCompilation) {
         method: 'GET',
         url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
         success: function () {
-            //+обновить утренний плейлист
-            //getAllCompilationsInMorningPlaylist();
+            //обновить утренний плейлист
             morningPlaylist();
         },
         error: function (xhr, status, error) {
@@ -162,8 +158,7 @@ function addMiddayPlaylist(idCompilation) {
         method: 'GET',
         url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
         success: function () {
-            //+обновить дневной плейлист
-            // getAllCompilationsInMiddayPlaylist();
+            //обновить дневной плейлист
             middayPlaylist();
         },
         error: function (xhr, status, error) {
@@ -177,8 +172,7 @@ function addEveningPlaylist(idCompilation) {
         method: 'GET',
         url: '/api/user/play-list/evening-playlist/add/song-compilation/' + idCompilation,
         success: function () {
-            //+обновить вечерний плейлист
-            //getAllCompilationsInEveningPlaylist();
+            //обновить вечерний плейлист
             eveningPlaylist();
         },
         error: function (xhr, status, error) {
@@ -187,23 +181,22 @@ function addEveningPlaylist(idCompilation) {
     })
 }
 
-//получаем все подборки в утреннем плейлисте из утреннего плейлиста плеера
+//получаем все подборки в утреннем плейлисте, проиндексированные порядковым номером в утреннем плейлисте плеера
 function getAllCompilationsInMorningPlaylist() {
-    //$.get('/api/user/play-list/morning-playlist/get/all-song-compilation', function (morningPlaylist) {
     fillPlaylistsTab('morning', 'morningCompilations', getCurrentPlaylist('morning').currentCumpilationsList);
-    //  });
 }
 
-//получаем все подборки в дневном плейлисте
+//получаем все подборки в дневном плейлисте, проиндексированные порядковым номером в дневном плейлисте плеера
 function getAllCompilationsInMiddayPlaylist() {
     fillPlaylistsTab('midday', 'middayCompilations', getCurrentPlaylist('midday').currentCumpilationsList);
 }
 
-//получаем все подборки в вечернем плейлисте
+//получаем все подборки в вечернем плейлисте, проиндексированные порядковым номером в вечернем плейлисте плеера
 function getAllCompilationsInEveningPlaylist() {
     fillPlaylistsTab('evening', 'eveningCompilations', getCurrentPlaylist('evening').currentCumpilationsList);
 }
 
+//отрисовка всех подборок в плейлисте
 function fillPlaylistsTab(playListName, secondId, playlist) {
     $(`#${playListName}`).empty();
     var htmlCompilation = '';
@@ -283,20 +276,14 @@ function showAllSongInSongCompilation(compilationListName, id) {
         $('#titleSongCompilation').text("Подборка: " + songCompilation.name);
         $("#aboutCompilations").remove();
         $("#aboutSongCompilation").append(htmlAboutSongCompilationForModal); //в модалку почему-то выводится только текст...
-        //достаю все песни из подборки
-        // if (compilationListName === "getGenres") {
-        //     $.get('/api/user/song/get/all-song/song-compilation/' + id, function (compilationSongs) {
-        //         fillModalTableWithPlaylist('modalPlaylistTableBody', compilationListName, compilationSongs);
-        //     });
-        // } else {
         fillModalTableWithPlaylist('modalPlaylistTableBody', compilationListName, getCompilationOfPlaylist(compilationListName, id));
-        // }
         $('#modalPlaylistName').text(songCompilation.name);
     });
 }
 
 
-//функция для получения из всего плейлиста список песен подборки по id
+//функция для получения из плейлиста плеера список песен определенной подборки,
+// проиндексированных порядковым номером в плейлисте
 function getCompilationOfPlaylist(playlistName, compilationId) {
     var songs = [];
     var playlist = getCurrentPlaylist(playlistName).currentSongsList;
@@ -647,12 +634,7 @@ function playOrPause(playlistName, compilationIndex, musicIndex) {
             }
         }
     }
-    console.log("ClickedButton : ");
-    console.log(clickedButton);
-    console.log(playlistName);
-    console.log(compilationIndex);
     let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
-    console.log('state : ' + playingState);
     if (playingState === 'on_play') {
         playerElement.pause();
     } else if (playingState === 'on_pause') {
@@ -679,6 +661,7 @@ function playOrPause(playlistName, compilationIndex, musicIndex) {
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
         songAuthor.innerHTML = music.author.name;
+        fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
         playerElement.play();
     }
 }
@@ -752,9 +735,6 @@ function playNext() {
             }
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
                 var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
-                console.log(lastPlayedPlaylistName)
-                console.log(lastPlayedCompilationIndex)
-                console.log(lastPlayedMusicIndex + 1)
                 playOrPause(lastPlayedPlaylistName, compilationIndex, lastPlayedMusicIndex + 1);
             } else {
                 if (lastPlayedPlaylistName === 'morning') {
