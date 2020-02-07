@@ -27,13 +27,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.*;
+import spring.app.model.Company;
+import spring.app.model.PlayList;
+import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.abstraction.*;
+import spring.app.util.UserValidator;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
@@ -46,6 +54,7 @@ public class MainController {
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
     private final AddressService addressService;
+    private final UserValidator userValidator;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -66,7 +75,7 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
@@ -74,6 +83,7 @@ public class MainController {
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.addressService = addressService;
+        this.userValidator = userValidator;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -82,8 +92,15 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage() {
-        return new ModelAndView("login");
+    public ModelAndView showLoginPage(HttpSession httpSession) {
+        //получаем error из LoginController
+        String errorFromBindingResult = (String) httpSession.getAttribute("error");
+        ModelAndView modelAndView = new ModelAndView("login");
+            if (errorFromBindingResult != null) {
+                //добавляем сообщение об ошибке во вьюху
+                modelAndView.addObject("error", errorFromBindingResult);
+            }
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
@@ -166,7 +183,8 @@ public class MainController {
             company.setEveningPlayList(eveningPlaylistSet);
 
             companyService.addCompany(company);
-            user.setCompany(companyService.getByCompanyName(companyName));
+//            user.setCompany(companyService.getByCompanyName(companyName));
+            user.setCompany(company);
 
             user = userService.getUserByGoogleId(googleId);
         }

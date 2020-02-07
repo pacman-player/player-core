@@ -13,6 +13,7 @@ import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.UserService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -183,5 +184,31 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public SongCompilation getSongCompilationByCompilationName(String compilationName) {
         return songCompilationDao.getSongCompilationByCompilationName(compilationName);
+    }
+
+    @Override
+    public void deleteSongCompilationFromPlayList(Long id, String dayTime) {
+        SongCompilation newSongCompilation = songCompilationDao.getById(id);
+        //достаем юзера по id авторизованного юзера
+        User authUser = userService.getUserById(userService.getIdAuthUser());
+        //достаем множество утренних плейлистов
+        Company oldCompany = authUser.getCompany();
+        switch(dayTime) {
+            case "morning" :
+                changeCompanyPlaylist(oldCompany.getMorningPlayList(), newSongCompilation);
+                break;
+            case "midday" :
+                changeCompanyPlaylist(oldCompany.getMiddayPlayList(), newSongCompilation);
+                break;
+            case "evening" :
+                changeCompanyPlaylist(oldCompany.getEveningPlayList(), newSongCompilation);
+                break;
+        }
+        userService.updateUser(authUser);
+    }
+
+    private void changeCompanyPlaylist(Set<PlayList> playList, SongCompilation newSongCompilation) {
+        PlayList pl = new ArrayList<>(playList).get(0);
+        pl.getSongCompilation().remove(newSongCompilation);
     }
 }

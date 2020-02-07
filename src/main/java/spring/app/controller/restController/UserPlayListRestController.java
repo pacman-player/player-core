@@ -28,6 +28,10 @@ public class UserPlayListRestController {
         songCompilationService.addSongCompilationToMorningPlaylist(id);
     }
 
+    @DeleteMapping(value = "/{dayTime}-playlist/delete/song-compilation/{playlistId}")
+    public void deleteSongCompilationFromPlaylist(@PathVariable("playlistId") Long id, @PathVariable("dayTime") String dayTime) {
+        songCompilationService.deleteSongCompilationFromPlayList(id, dayTime);
+    }
     @PostMapping(value = "/midday-playlist/add/song-compilation")
     public void addSongCompilationToMiddayPlaylist(@RequestBody Long id) {
         songCompilationService.addSongCompilationToMiddayPlaylist(id);
@@ -41,18 +45,18 @@ public class UserPlayListRestController {
     @GetMapping(value = "/morning-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist(@AuthenticationPrincipal User user) {
         Company company = userService.getUserById(user.getId()).getCompany();
-        return songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(company.getId());
+        return company == null ? null : songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(company.getId());
     }
 
     @GetMapping(value = "/midday-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInMiddayPlaylist(@AuthenticationPrincipal User user) {
         Company company = userService.getUserById(user.getId()).getCompany();
-        return songCompilationService.getAllCompilationsInMiddayPlaylistByCompanyId(company.getId());
+        return company == null ? null : songCompilationService.getAllCompilationsInMiddayPlaylistByCompanyId(company.getId());
     }
 
     @GetMapping(value = "/evening-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInEveningPlaylist(@AuthenticationPrincipal User user) {
         Company company = userService.getUserById(user.getId()).getCompany();
-        return songCompilationService.getAllCompilationsInEveningPlaylistByCompanyId(company.getId());
+        return company == null ? null : songCompilationService.getAllCompilationsInEveningPlaylistByCompanyId(company.getId());
     }
 }
