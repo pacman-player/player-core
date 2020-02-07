@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "author")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //объекты загружаются лениво, и сериализация происходит до того как они будут загружены полность. Без этой аннотаци не отображаются песни на странице в админке
 public class Author extends Bannable{
 
     @Id

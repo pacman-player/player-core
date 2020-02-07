@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>Панель админа</title>
+    <title>Admin page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -57,6 +57,10 @@
 
                 <li>
                     <a href="/admin/vk_bot">Послать отчет</a>
+                </li>
+
+                <li>
+                    <a href="/admin/message">Сообщения</a>
                 </li>
 
                 <li>
@@ -169,18 +173,19 @@
                                                                                 </div>
                                                                                 <div>
                                                                                     <label for="updateUserRole">Роль</label>
-                                                                                    <select class="form-control"
+                                                                                    <div class="form-control"
                                                                                             id="updateUserRole"
                                                                                             name="role">
-                                                                                        <option value="user">USER
-                                                                                        </option>
-                                                                                        <option value="admin">ADMIN
-                                                                                        </option>
-                                                                                        <option value="admin, user">
-                                                                                            ADMIN,
-                                                                                            USER
-                                                                                        </option>
-                                                                                    </select>
+                                                                                        <div id="rlist">
+                                                                                        <input type="checkbox" value="user">USER
+                                                                                        </input>
+                                                                                        <input type="checkbox" value="admin">ADMIN
+                                                                                        </input>
+                                                                                        <input type="checkbox" value="manager">
+                                                                                            MANAGER
+                                                                                        </input>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
                                                                                     <button type="button"
@@ -236,16 +241,22 @@
                                                                        type="password" placeholder="Password"
                                                                        required="required" name="password"/>
                                                             </div>
-                                                            <div>
-                                                                <label for="addRole">Роль</label>
-                                                                <select class="form-control" id="addRole"
-                                                                        name="role" required="required">
-                                                                    <option value="user" selected="selected">User
-                                                                    </option>
-                                                                    <option value="admin">Admin</option>
-                                                                    <option value="admin, user">Admin, User</option>
-                                                                </select>
+                                                        <div>
+                                                            <label for="updateUserRoleA">Роли</label>
+                                                            <div class="form-control"
+                                                                 id="updateUserRoleA"
+                                                                 name="role">
+                                                                <div id="rlistA">
+                                                                    <input type="checkbox" value="user">USER
+                                                                    </input>
+                                                                    <input type="checkbox" value="admin">ADMIN
+                                                                    </input>
+                                                                    <input type="checkbox" value="manager">
+                                                                    MANAGER
+                                                                    </input>
+                                                                </div>
                                                             </div>
+                                                        </div>
                                                         <button type="submit" id="addUserBtn"
                                                                 class="btn btn-success btn-lg">
                                                             Добавить

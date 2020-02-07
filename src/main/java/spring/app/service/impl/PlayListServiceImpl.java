@@ -27,4 +27,9 @@ public class PlayListServiceImpl implements PlayListService {
     public PlayList getPlayList(Long id) {
         return playListDao.getById(id);
     }
+
+    @Override
+    public PlayList getPlayListByName(String name) {
+        return playListDao.getByName(name);
+    }
 }

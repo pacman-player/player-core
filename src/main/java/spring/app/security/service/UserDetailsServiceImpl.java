@@ -27,9 +27,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {	//серви
 		}
 		return user;
 	}
-
-
-
-
-
 }

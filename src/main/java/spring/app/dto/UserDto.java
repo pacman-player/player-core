@@ -1,5 +1,7 @@
 package spring.app.dto;
 
+import java.util.Set;
+
 /**
  * Created by User on 13.03.2018.
  */
@@ -8,9 +10,9 @@ public class UserDto {
 	private String login;
 	private String email;
 	private String password;
-	private String roles;
+	private Set<String> roles;
 
-	public UserDto(Long id, String login, String email, String password, String roles) {
+	public UserDto(Long id, String login, String email, String password, Set<String> roles) {
 		this.id = id;
 		this.login = login;
 		this.email = email;
@@ -18,7 +20,7 @@ public class UserDto {
 		this.roles = roles;
 	}
 
-	public UserDto(String login, String email, String password, String roles) {
+	public UserDto(String login, String email, String password, Set<String> roles) {
 		this.id = id;
 		this.login = login;
 		this.email = email;
@@ -62,11 +64,11 @@ public class UserDto {
 		this.password = password;
 	}
 
-	public String getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(String roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 

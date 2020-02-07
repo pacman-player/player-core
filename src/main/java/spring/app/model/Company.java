@@ -39,20 +39,20 @@ public class Company {
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "morning_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> morningPlayList;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "midday_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> middayPlayList;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
     @JoinTable(name = "evening_company_on_play_list",
-            joinColumns = {@JoinColumn(name = "play_list_id")},
-            inverseJoinColumns = {@JoinColumn(name = "company_id")})
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> eveningPlayList;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Genre.class)
