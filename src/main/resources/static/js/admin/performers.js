@@ -85,39 +85,6 @@ $(document).ready(function () {
             $('#addAuthorGenre').append(genreForAdd);
         });
     }
-    //add form
-
-
-//    function addAuthor(){
-//        var name = $("#addAuthor").val();
-//        $.ajax({
-//            type: 'post',
-//            url: "/api/admin/author/add_author",
-//            contentType: 'application/json',
-//            data: JSON.stringify(name),
-//            headers: {
-//                'Accept':'application/json',
-//                'Content-Type': 'application/json'
-//            },
-//            async: false,
-//            cache: false,
-//            complete:
-//                function () {
-//                    getTable();
-//                    $("#tab-author-panel").tab('show');
-//                },
-//            success:
-//                function () {
-//                    notification("add-author" + name.replace(/[^\w]|_/g,''),
-//                        " Исполнитель " + name + " добавлен",
-//                        'authors-panel');
-//                },
-//            error:
-//                function (xhr, status, error) {
-//                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-//                }
-//        });
-//    }
 
     //delete form
     $(document).on('click', '#deleteAuthor', function () {
@@ -214,13 +181,7 @@ function getAllGenreForEdit(genreName) {
         $('#editAuthorGenre').append(genreForEdit);
     });
 }
-    //modal form заполнение
-//    $(document).on('click', '#editAuthorBtn', function () {
-//        $("#editAuthorId").val($(this).closest("tr").find("#authorId").text());
-//        $("#editAuthorName").val($(this).closest("tr").find("#authorName").text());
-//        $("#editAuthorGenre").val($(this).closest("tr").find("#authorGenre").text());
-//        getAllGenreForEdit($(this).closest("tr").find("#authorGenre").text());
-//    });
+
     $(document).on('click', '#editAuthorBtn', function () {
         $.ajax({
             url: '/api/admin/author/' + $(this).closest("tr").find("#authorId").text(),
