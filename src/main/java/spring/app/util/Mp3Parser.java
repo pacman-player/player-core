@@ -116,12 +116,6 @@ public class Mp3Parser {
         song.setAuthor(auth);
         song.setGenre(gen);
         songService.addSong(song);
-        song.setAlbumsCover("cover-" + song.getId());
-        if (image != null) {
-            BufferedImage albumsCover = ImageIO.read(new ByteArrayInputStream(image));
-            ImageIO.write(albumsCover, "jpg",
-                    new File("src/main/resources/static/img/albumsCovers/cover-" + song.getId()+".jpg"));
-        }
         return song;
     }
 }

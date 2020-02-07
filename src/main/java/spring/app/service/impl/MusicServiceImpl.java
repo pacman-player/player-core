@@ -1,11 +1,13 @@
 package spring.app.service.impl;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.service.abstraction.MusicService;
+import spring.app.util.MP3TagReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -71,5 +73,19 @@ public class MusicServiceImpl implements MusicService {
         httpHeaders.set("accept-ranges", "bytes");
         httpHeaders.setCacheControl(CacheControl.noCache().getHeaderValue());
         return new ResponseEntity(inputStreamResource, httpHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> albumsCover(String musicAuthor, String musicTitle) {
+        File file = new File(musicPath + musicAuthor + "-" + musicTitle + ".mp3");
+        try {
+            byte[] media = IOUtils.toByteArray(MP3TagReader.readAlbumsCover(file));
+            HttpHeaders headers = new HttpHeaders();
+            headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+            return new ResponseEntity<>(media, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

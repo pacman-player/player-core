@@ -107,22 +107,23 @@
 }
 
 .media-img {
-    height: 40px;
+    height: 25px;
 }
 
 .table-media-part {
     width: 5%;
 }
 
-button:hover {
-    border-radius: 10px;
-    background-color: darkslategray;
-}
+/*button:hover {*/
+/*    border-radius: 10px;*/
+/*    background-color: darkslategray;*/
+/*}*/
 
 button:focus {
     outline: 0 !important;
 }
 
-.player {
-    outline: 0 !important;
-}
+
+/*.player {*/
+/*    outline: 0 !important;*/
+/*}*/

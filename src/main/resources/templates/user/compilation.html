@@ -161,46 +161,56 @@
             </div>
         </div>
     </div>
-    <div id="playerContainer" >
-        <button class="media-button" id="soundButton" data-sound_state="on">
-            <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
-        </button>
-        <button class="media-button" id="previousAudioButton">
-            <img alt="Previous" class="media-img" src="/img/previous.png"/>
-        </button>
-        <button class="media-button" id="playOrPauseAudioButton">
-            <img alt="Play/Pause" id="globalPlayButton" style="height: 50px" src="/img/play.png"/>
-        </button>
-        <button class="media-button" id="nextAudioButton">
-            <img alt="Next" class="media-img" src="/img/next.png"/>
-        </button>
-        <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
-            <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
-        </button>
-        <button class="media-button" id="stopAudioButton">
-            <img alt="Stop" class="media-img" src="/img/stop.png"/>
-        </button>
-        <button class="media-button" id="shuffleAudioButton">
-            <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
-        </button>
-        <div class="card mb-7" style="bottom:auto; right: 3%; display: inline-block">
-            <div class="row no-gutters">
-                <div class="col-md-3">
-                    <img id="albums-cover" style="width: 100px; height: 100px" src="/img/albumsCovers/default.png"/>
-                </div>
-                <div class="col-md-9">
-                    <div class="card-body">
-                        <h5 id="song-name" class="card-title"></h5>
-                        <p id="song-author" class="card-text"></p>
-                        <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src="" style="min-width: 500px">
-                            Your browser doesnt support the audio element/ Please, update your browser or download Chrome-browser
-                        </audio>
+    <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
+           style="min-width: 500px" hidden="hidden">
+        Your browser doesnt support the audio element/ Please, update your browser or download
+        Chrome-browser
+    </audio>
+    <div class="row" id="playerContainer">
+        <div class="col-md-3" style="padding: 37px;">
+            <button class="media-button" id="previousAudioButton">
+                <img alt="Previous" class="media-img" src="/img/previous.png"/>
+            </button>
+            <button class="media-button" id="playOrPauseAudioButton">
+                <img alt="Play/Pause" id="globalPlayButton" src="/img/play.png"/>
+            </button>
+            <button class="media-button" id="nextAudioButton">
+                <img alt="Next" class="media-img" src="/img/next.png"/>
+            </button>
+            <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
+                <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
+            </button>
+        </div>
+        <div class="col-md-6" style="padding: 5px">
+            <div class="card mb-7"
+                 style="bottom:auto; right: 3%; display: inline-block; min-width: 300px; height: 110px">
+                <div class="row no-gutters">
+                    <div class="col-md-4" style="width: 100px">
+                        <img id="albums-cover" style=" height: 100px;width: 100px;"
+                             src="/img/defaultAlbumsCover.jpg"/>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body" style="height: 110px">
+                            <h5 id="song-name" class="card-title" style="margin-left: 10px"></h5>
+                            <p id="song-author" class="card-text" style="margin-left: 10px"></p>
+                            <progress id="seekbar" value="0" max="1"></progress>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <h5 class="card-title" id="duration" style="margin-left: -5px"></h5>
                     </div>
                 </div>
             </div>
         </div>
-        <!--            <progress id="seekbar" value="0" max="1" style="width:400px;cursor:pointer"></progress>-->
-
+        <div class="col-md-3" style="padding: 37px;">
+            <progress id="volumebar" value="0" max="1"></progress>
+            <button class="media-button" id="soundButton" data-sound_state="on">
+                <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
+            </button>
+            <button class="media-button" id="shuffleAudioButton">
+                <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
+            </button>
+        </div>
     </div>
 </div>
 

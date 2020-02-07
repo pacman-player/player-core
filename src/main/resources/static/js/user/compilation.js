@@ -355,9 +355,14 @@ let player;
 
 // объект плеер, который находится javascript-ом
 let playerElement = document.getElementById("player");
+playerElement.volume = 0.3;
+$('#volumebar').attr('value', playerElement.volume);
 
 // адрес, по которому клиент обращается для проигрывания музыки
 let musicUrl = "/api/music/play/";
+
+// адрес, по которому клиент обращается для получения обложки песни
+let albumsCoverUrl = "/api/music/albums-cover/";
 
 // переменная, которая говорит, нужно ли играть по порядку или случайным порядком
 let shuffle = false;
@@ -388,12 +393,6 @@ let lastPlayedCompilationIndex = -1;
 
 // переменная, которая хранит id кнопки последне-проигранного списка
 let lastPlayedPlaylistId = 'none';
-
-// последне-проигранный объект compilation
-let lastPlayedPlaylist;
-
-// последне-проигранный массив песен, который достаётся с помощью lastPlayedPlaylist.id
-let lastPlayedSongList;
 
 // имя текущего раздела
 let lastPlayedPlaylistName = 'none';
@@ -554,6 +553,7 @@ $(function () {
     });
     // при изменении громкости плеера
     playerElement.addEventListener("volumechange", function () {
+        $('#volumebar').attr('value', playerElement.volume);
         if (playerElement.volume === 0 || playerElement.muted) {
             $('#soundImg').prop('src', '/img/soundOff.png');
         } else {
@@ -563,20 +563,70 @@ $(function () {
 
     //при изменении currentTime
     playerElement.addEventListener('timeupdate', function () {
-        $('#seekbar').attr("value", playerElement.currentTime / playerElement.duration);
+        $('#seekbar').attr('value', playerElement.currentTime / playerElement.duration);
+        var min = Math.floor(playerElement.currentTime / 60);
+        var sec = Math.floor(playerElement.currentTime % 60);
+        var s = sec < 10 ? `0${sec}` : sec;
+        document.getElementById('duration').innerHTML = min + ':' + s;
     });
-    var progressBar = document.getElementsByTagName('progress')[0];
-    if (playerElement && progressBar) {
-        progressBar.addEventListener('click', function (event) {
-            var x = event.pageX - this.offsetLeft;
-            var y = event.pageY - this.offsetTop;
-            var clickedValue = x * this.max / this.offsetWidth;
-            progressBar.value = clickedValue;
-            playerElement.currentTime = playerElement.duration * clickedValue;
+    var seekBar = document.getElementById('seekbar');
+    if (playerElement && seekBar) {
+        seekBar.addEventListener('mousedown', function () {
+            isDown = true;
+        }, true);
+        seekBar.addEventListener('mouseup', function () {
+            isDown = false;
+            playerElement.play();
+        }, true);
+
+        seekBar.addEventListener('mousemove', function (event) {
+            event.preventDefault();
+            if (isDown) {
+                playerElement.pause()
+                let widthLeft = $('#seekbar').offset().left;
+                let x = event.pageX - widthLeft;
+                let xPersent = x / this.offsetWidth;
+                playerElement.currentTime = playerElement.duration * xPersent;
+            }
+        }, true);
+
+        seekBar.addEventListener('click', function (event) {
+            let widthLeft = $('#seekbar').offset().left;
+            let x = event.pageX - widthLeft;
+            let xPersent = x / this.offsetWidth;
+            playerElement.currentTime = playerElement.duration * xPersent;
+        });
+    }
+
+    var volumeBar = document.getElementById('volumebar');
+    var isDown = false;
+    if (playerElement && volumeBar) {
+        volumeBar.addEventListener('mousedown', function () {
+            isDown = true;
+        }, true);
+        volumeBar.addEventListener('mouseup', function () {
+            isDown = false;
+        }, true);
+        volumeBar.addEventListener('mousemove', function (event) {
+            event.preventDefault();
+            if (isDown) {
+                let widthLeft = $('#volumebar').offset().left;
+                let x = event.pageX - widthLeft;
+                let xPersent = x / this.offsetWidth;
+                playerElement.volume = xPersent;
+            }
+        }, true);
+        volumeBar.addEventListener('click', function (event) {
+            let widthLeft = $('#volumebar').offset().left;
+            let x = event.pageX - widthLeft;
+            let xPersent = x / this.offsetWidth;
+            playerElement.volume = xPersent;
         });
     }
     // при нажатии на кнопку "громкость вкл / выкл"
-    $("#soundButton").on("click", function () {
+    var soundButton = document.getElementById('soundButton');
+    // $("#soundButton").on("click", function () {
+    soundButton.addEventListener('click', function (event) {
         let soundState = $("#soundButton").data("sound_state");
         if (soundState === "on") {
             $("#soundImg").prop("src", "/img/soundOff.png");
@@ -588,6 +638,13 @@ $(function () {
             playerElement.muted = false;
         }
     });
+    //var volumeUse = false;
+    // soundButton.addEventListener('mouseover', function (event) {
+    //     $('#volumebar').css('display','inline-block' )
+    // }, true);
+    // volumeBar.addEventListener('mouseout', function (event) {
+    //     $('#volumebar').css('display','none')
+    // }, true);
 });
 
 // функция для изменения изображения и data-playing_state на кнопке при проигрывании музыки
@@ -619,6 +676,9 @@ function setButtonOnStop(button) {
 // а если песня играется - то ставится на паузу
 // а если песня на паузе - то продолжается воспроизведение
 function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
+    if($('#playerContainer').css('display') === 'none'){
+        $('#playerContainer').css('display', 'block')
+    }
 
     let clickedButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
     let clickedButton;
@@ -657,15 +717,15 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
         lastPlayedMusicIndex = musicIndex;
         let music = allSongsInCurrentPlaylist[musicIndex];
         player.attr('src', musicUrl + music.author.name + "/" + music.name);
-        $('#albums-cover').attr('src', "/img/albumsCovers/cover-" + music.id + ".jpg");
+        $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
         let songName = document.getElementById('song-name');
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
         songAuthor.innerHTML = music.author.name;
         if (isFromSongQueue) {
-            $('#playerContainer').css('background-color', '#ff78a5')
+            $('#playerContainer').css('background-color', 'rgb(232, 195, 195)')
         } else {
-            $('#playerContainer').css('background-color', '#D1D1D1')
+            $('#playerContainer').css('background-color', '#ececec')
         }
         fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
         playerElement.play();
@@ -741,12 +801,14 @@ function playNext() {
                 lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
         } else {
             if (shuffle) {
-                let playlistsLength = lastPlayedSongList.length;
+                let playlistsLength = allSongsInCurrentPlaylist.length;
                 let nextMusicIndex;
                 do {
                     nextMusicIndex = Math.floor(Math.random() * playlistsLength);
+                    console.log(nextMusicIndex)
                 } while (nextMusicIndex === lastPlayedMusicIndex);
-                playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, nextMusicIndex);
+                playOrPause(lastPlayedPlaylistName, allSongsInCurrentPlaylist[nextMusicIndex].compilationIndex,
+                    nextMusicIndex);
                 return;
             }
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
@@ -754,14 +816,45 @@ function playNext() {
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
             } else {
+                let nextPlaylistName = lastPlayedPlaylistName;
                 if (lastPlayedPlaylistName === 'morning') {
-                    lastPlayedPlaylistName = 'midday';
+                    middayPlaylist();
+                    if (allSongsInMiddayPlaylist.length !== 0) {
+                        nextPlaylistName = 'midday';
+                    } else {
+                        eveningPlaylist();
+                        if (allSongsInEveningPlaylist.length !== 0) {
+                            nextPlaylistName = 'evening';
+                        }
+                    }
                 } else if (lastPlayedPlaylistName === "midday") {
-                    lastPlayedPlaylistName = 'evening';
+                    eveningPlaylist();
+                    if (allSongsInEveningPlaylist.length !== 0) {
+                        nextPlaylistName = 'evening';
+                    } else {
+                        morningPlaylist();
+                        if (allSongsInMorningPlaylist.length !== 0) {
+                            nextPlaylistName = 'morning';
+                        }
+                    }
                 } else {
-                    lastPlayedPlaylistName = 'morning';
+                    morningPlaylist();
+                    if (allSongsInEveningPlaylist.length !== 0) {
+                        nextPlaylistName = 'morning';
+                    } else {
+                        middayPlaylist();
+                        if (allSongsInMiddayPlaylist.length !== 0) {
+                            nextPlaylistName = 'midday';
+                        }
+                    }
                 }
-                playOrPausePlaylist(lastPlayedPlaylistName, 0);
+                if (nextPlaylistName === lastPlayedPlaylistName) {
+                    playOrPause(lastPlayedPlaylistName, 0, 0, allSongsInCurrentPlaylist[0].isFromSongQueue)
+                } else {
+                    lastPlayedPlaylistName = nextPlaylistName;
+                    playOrPausePlaylist(lastPlayedPlaylistName, 0);
+                }
+
             }
         }
     });
@@ -787,7 +880,6 @@ function getCurrentPlaylist(playlistName) {
             result.currentCumpilationsList = allCompilationInGenre;
             result.currentSongsList = allSongInGenre;
             return result;
-
     }
 }
 
