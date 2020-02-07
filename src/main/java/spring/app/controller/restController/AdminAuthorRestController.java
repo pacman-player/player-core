@@ -24,13 +24,10 @@ public class AdminAuthorRestController {
 
     private final AuthorService authorService;
     private final GenreService genreService;
-    private NotificationService notificationService;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService,
-                                     NotificationService notificationService) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
         this.authorService = authorService;
         this.genreService = genreService;
-        this.notificationService = notificationService;
     }
 
     @GetMapping(value = "/all_authors")
@@ -46,7 +43,7 @@ public class AdminAuthorRestController {
 
 
     @PostMapping(value = "/add_author")
-    public void addAuthor(@RequestBody AuthorDto newAuthor) throws InterruptedException {
+    public void addAuthor(@RequestBody AuthorDto newAuthor) {
         String name = newAuthor.getName();
         String editName = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         if (authorService.getByName(editName) == null) {
@@ -54,10 +51,6 @@ public class AdminAuthorRestController {
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             authorService.addAuthor(author);
-
-            String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
-                    + " <a href=\"performers\">ссылке</a>" ;
-            notificationService.addNotification(message);
         }
     }
 
