@@ -53,7 +53,7 @@ $(document).ready(function () {
         addAuthor.genres = $('#addAuthorGenre').val();
         $.ajax({
             method: 'POST',
-            url: '/api/admin/author/add_author',
+            url: '/api/v1/admin/author/add_author',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(addAuthor),
             success: function () {
@@ -77,7 +77,7 @@ $(document).ready(function () {
         //очищаю жанры option
         $('#addAuthorGenre').empty();
         var genreForAdd = '';
-        $.getJSON("/api/admin/author/all_genre", function (data) {
+        $.getJSON("/api/v1/admin/author/all_genre", function (data) {
             $.each(data, function (key, value) {
                 genreForAdd += '<option ';
                 genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
@@ -95,7 +95,7 @@ $(document).ready(function () {
     function deleteAuthor(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/author/delete_author",
+            url: "/api/v1/admin/author/delete_author",
             contentType: 'application/json',
             data: JSON.stringify(id),
             headers: {
@@ -138,7 +138,7 @@ $(document).ready(function () {
             };
         $.ajax({
             type: 'put',
-            url: "/api/admin/author/update_author",
+            url: "/api/v1/admin/author/update_author",
             contentType: 'application/json',
             data: JSON.stringify(editAuthor),
             headers:{
@@ -169,7 +169,7 @@ function getAllGenreForEdit(genreName) {
     //очищаем option в модалке
     $('#editAuthorGenre').empty();
     var genreForEdit = '';
-    $.getJSON("/api/admin/song/all_genre", function (data) {
+    $.getJSON("/api/v1/admin/song/all_genre", function (data) {
         $.each(data, function (key, value) {
             genreForEdit += '<option id="' + value.id + '" ';
             //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
@@ -184,7 +184,7 @@ function getAllGenreForEdit(genreName) {
 
     $(document).on('click', '#editAuthorBtn', function () {
         $.ajax({
-            url: '/api/admin/author/' + $(this).closest("tr").find("#authorId").text(),
+            url: '/api/v1/admin/author/' + $(this).closest("tr").find("#authorId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {
