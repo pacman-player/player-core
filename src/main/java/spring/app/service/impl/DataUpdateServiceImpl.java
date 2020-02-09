@@ -21,8 +21,8 @@ import java.util.Set;
 @Transactional
 public class DataUpdateServiceImpl implements DataUpdateService {
 
-    private AuthorService authorService;
-    private SongService songService;
+    private final AuthorService authorService;
+    private final SongService songService;
     private GenreService genreService;
 
     public DataUpdateServiceImpl(AuthorService authorService, SongService songService, GenreService genreService) {

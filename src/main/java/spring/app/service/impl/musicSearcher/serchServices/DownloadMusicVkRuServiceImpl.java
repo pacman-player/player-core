@@ -24,13 +24,14 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
 
     private String authorName;
     private String songName;
-    private String trackName;
+    private String trackName = "";
+    private String link = "";
+    private String[] songInfo = {trackName, link};
 
-    public String searchSong(String author, String song) throws IOException {
+    public String[] searchSong(String author, String song) throws IOException {
 
         String searchUrl = "https://downloadmusicvk.ru/audio/search?q=";
         Document document = null;
-        String link = "";
 
         try {
             document = Jsoup.connect(searchUrl + author + " " + song).get();
@@ -54,18 +55,21 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
 
              link = "https://downloadmusicvk.ru/audio/download?" +
                     fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error search on downloadmusicvk.ru");
         }
-        return link;
+        songInfo[0] = trackName;
+        songInfo[1] = link;
+        return songInfo;
     }
 
 
     @Override
     public Track getSong(String author, String song) throws IOException {
         try {
-            String link = searchSong(author, song);
+            String link = searchSong(author, song)[1];
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");

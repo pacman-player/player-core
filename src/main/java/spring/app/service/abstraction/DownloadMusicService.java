@@ -8,4 +8,6 @@ public interface DownloadMusicService {
 
     Track getSong(String author, String song) throws IOException;
 
+    String[] searchSong(String author, String song) throws IOException;
+
 }

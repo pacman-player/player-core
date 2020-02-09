@@ -19,16 +19,18 @@ import java.nio.file.Path;
 public class KrolikSaitServiceImpl implements DownloadMusicService {
 
     private RestTemplate restTemplate = new RestTemplate();
+
     private String authorName;
     private String songName;
-    private String trackName;
+    private String trackName = "";
+    private String link = "";
+    private String[] songInfo = {trackName, link};
 
-
-    public String searchSong(String author, String song) throws IOException {
+    @Override
+    public String[] searchSong(String author, String song) throws IOException {
 
         final String url = "https://krolik.biz/search/?q=";
         Document document = null;
-        String link = "";
 
         try {
             document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
@@ -36,22 +38,23 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             Element first = document.getElementsByAttributeValue("class", "mp3").first();
 
             link = first.getElementsByClass("btn play").attr("data-url");
-            author = first.getElementsByClass("artist_name").text();
-            song = first.getElementsByClass("song_name").text();
+            authorName = first.getElementsByClass("artist_name").text();
+            songName = first.getElementsByClass("song_name").text();
 
-            trackName = author + " – " + song;
+            trackName = authorName + " – " + songName;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
         }
-        return link;
+        songInfo[0] = trackName;
+        songInfo[1] = link;
+        return songInfo;
     }
-
 
     @Override
     public Track getSong(String author, String song) throws IOException {
         try {
-            String link = searchSong(author, song);
+            String link = searchSong(author, song)[1];
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
 

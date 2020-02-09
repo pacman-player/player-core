@@ -1,6 +1,5 @@
 package spring.app.service.impl.musicSearcher.serchServices;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,16 +22,19 @@ import java.nio.file.Path;
 public class ZaycevSaitServiceImpl implements DownloadMusicService {
 
     private RestTemplate restTemplate = new RestTemplate();
+
     private String authorName;
     private String songName;
-    private String trackName;
+    private String trackName = "";
+    private String link = "";
+    private String[] songInfo = new String[2];
 
-    public String searchSong(String author, String song) {
+    @Override
+    public String[] searchSong(String author, String song) {
 
         String baseUrl = "https://zaycev.net";
         String searchUrl = "https://zaycev.net/search.html?query_search=";
         Document document = null;
-        String link = "";
 
         try {
             document = Jsoup.connect(searchUrl + author + " " + song).get();
@@ -51,17 +53,20 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             String json = Jsoup.connect(baseUrl + jsonUrl).ignoreContentType(true).execute().body();
             JSONObject jsonObj = new JSONObject(json);
             link = jsonObj.getString("url");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return link;  // ссылка на скачивание
+        songInfo[0] = trackName;
+        songInfo[1] = link;
+        return songInfo;
     }
 
 
     @Override
     public Track getSong(String author, String song) throws IOException {
         try {
-            String link = searchSong(author, song);
+            String link = searchSong(author, song)[1];
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");

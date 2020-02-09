@@ -18,16 +18,18 @@ import java.nio.file.Path;
 @Transactional
 public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
     private RestTemplate restTemplate = new RestTemplate();
+
     private String authorName;
     private String songName;
-    private String trackName;
+    private String trackName = "";
+    private String link = "";
+    private String[] songInfo = {trackName, link};
 
-
-    public String searchSong(String author, String song) {
+    @Override
+    public String[] searchSong(String author, String song) {
 
         final String url = "https://muzofond.fm/search/";
         Document document = null;
-        String link = "";
 
         try {
             document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
@@ -42,13 +44,15 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
         }
-        return link;
+        songInfo[0] = trackName;
+        songInfo[1] = link;
+        return songInfo;
     }
 
     @Override
     public Track getSong(String author, String song) throws IOException {
         try {
-            String link = searchSong(author, song);
+            String link = searchSong(author, song)[1];
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
 
