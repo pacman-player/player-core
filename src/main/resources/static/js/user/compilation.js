@@ -25,7 +25,7 @@ $(document).ready(function () {
         var genre = $(this).text();
         $.ajax({
             type: 'post',
-            url: '/api/user/song-compilation/get/all-song-compilation',
+            url: '/api/v1/user/song-compilation/get/all-song-compilation',
             contentType: 'application/json;',
             data: JSON.stringify(genre),
             headers: {
@@ -49,7 +49,7 @@ $(document).ready(function () {
                         let mon = $("#btnAddMorningPlaylist1-" + listSongCompilation[i].id).attr("class");
                         $.ajax({
                             method: "GET",
-                            url: "/api/user/play-list/morning-playlist/get/all-song-compilation",
+                            url: "/api/v1/user/play-list/morning-playlist/get/all-song-compilation",
                             contentType: "application/json",
                             async: false,
                             success: function (morningCompilation) {
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
                         $.ajax({
                             method: "GET",
-                            url: "/api/user/play-list/midday-playlist/get/all-song-compilation",
+                            url: "/api/v1/user/play-list/midday-playlist/get/all-song-compilation",
                             contentType: "application/json",
                             async: false,
                             success: function (middayCompilation) {
@@ -82,7 +82,7 @@ $(document).ready(function () {
 
                         $.ajax({
                             method: "GET",
-                            url: "/api/user/play-list/evening-playlist/get/all-song-compilation",
+                            url: "/api/v1/user/play-list/evening-playlist/get/all-song-compilation",
                             contentType: "application/json",
                             async: false,
                             success: function (eveningCompilation) {
@@ -136,7 +136,7 @@ $(document).ready(function () {
     function getAllGenre() {
         $.ajax({
             type: 'get',
-            url: '/api/user/genre/get/all-genre',
+            url: '/api/v1/user/genre/get/all-genre',
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -169,7 +169,7 @@ $(document).ready(function () {
     function showLinkAdmin() {
         $.ajax({
             type: "post",
-            url: "/api/user/show_admin",
+            url: "/api/v1/user/show_admin",
             success: function (role) {
                 if (role !== "admin") {
                     $("#adminLink").hide();
@@ -232,7 +232,7 @@ function addMorningPlaylist(idCompilation) {
 
         $.ajax({
             method: 'POST',
-            url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+            url: '/api/v1/user/play-list/morning-playlist/add/song-compilation/',
             contentType: "application/json",
             data: JSON.stringify(idCompilation),
             success: function () {
@@ -248,7 +248,7 @@ function addMorningPlaylist(idCompilation) {
         buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
             $.ajax({
                 method: 'DELETE',
-                url: '/api/user/play-list/morning-playlist/delete/song-compilation/'+idCompilation,
+                url: '/api/v1/user/play-list/morning-playlist/delete/song-compilation/'+idCompilation,
                 contentType: "application/json",
                 success: function () {
                     //+обновить утренний плейлист
@@ -273,7 +273,7 @@ function addMiddayPlaylist(idCompilation) {
 
         $.ajax({
             method: 'POST',
-            url: '/api/user/play-list/midday-playlist/add/song-compilation/',
+            url: '/api/v1/user/play-list/midday-playlist/add/song-compilation/',
             contentType: "application/json",
             data: JSON.stringify(idCompilation),
             success: function () {
@@ -289,7 +289,7 @@ function addMiddayPlaylist(idCompilation) {
         middayButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
         $.ajax({
             method: 'DELETE',
-            url: '/api/user/play-list/midday-playlist/delete/song-compilation/'+idCompilation,
+            url: '/api/v1/user/play-list/midday-playlist/delete/song-compilation/'+idCompilation,
             contentType: "application/json",
             success: function () {
                 //+обновить утренний плейлист
@@ -313,7 +313,7 @@ function addEveningPlaylist(idCompilation) {
 
         $.ajax({
             method: 'POST',
-            url: '/api/user/play-list/evening-playlist/add/song-compilation/',
+            url: '/api/v1/user/play-list/evening-playlist/add/song-compilation/',
             contentType: "application/json",
             data: JSON.stringify(idCompilation),
             success: function () {
@@ -329,7 +329,7 @@ function addEveningPlaylist(idCompilation) {
         eveningButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
         $.ajax({
             method: 'DELETE',
-            url: '/api/user/play-list/evening-playlist/delete/song-compilation/'+idCompilation,
+            url: '/api/v1/user/play-list/evening-playlist/delete/song-compilation/'+idCompilation,
             contentType: "application/json",
             success: function () {
                 //+обновить утренний плейлист
@@ -357,7 +357,7 @@ function getAllCompilationsInMorningPlaylist(morn, midd, even) {
 
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/morning-playlist/get/all-song-compilation/',
+        url: '/api/v1/user/play-list/morning-playlist/get/all-song-compilation/',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -409,7 +409,7 @@ function getAllCompilationsInMiddayPlaylist(morn, midd, even) {
 
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
+        url: '/api/v1/user/play-list/midday-playlist/get/all-song-compilation',
         success: function (middayPlayList) {
             var htmlMiddayCompilation = '';
             //bootstrap card
@@ -450,7 +450,7 @@ function getAllCompilationsInMiddayPlaylist(morn, midd, even) {
 function getAllCompilationsInEveningPlaylist() {
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/evening-playlist/get/all-song-compilation',
+        url: '/api/v1/user/play-list/evening-playlist/get/all-song-compilation',
         success: function (eveningPlayList) {
             var htmlEveningCompilation = '';
             //bootstrap card
@@ -490,7 +490,7 @@ function getAllCompilationsInEveningPlaylist() {
 //достаю все песни подборки любого плейлиста и отображаю в модалке
 function showAllSongInSongCompilation(id) {
     //достаю инфу о подборке (название, картинку,  пр.) для модалки
-    $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
+    $.getJSON('/api/v1/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
             htmlAboutSongCompilationForModal += ('<div class="card-deck" id="aboutCompilations">');
@@ -522,7 +522,7 @@ function showAllSongInSongCompilation(id) {
     //достаю все песни из подборки
     $.ajax({
         method: 'GET',
-        url: '/api/user/song/get/all-song/song-compilation/' + id,
+        url: '/api/v1/user/song/get/all-song/song-compilation/' + id,
         success: function (dataSong) {
             var htmlSongRow = '';
             for (var i = 0; i < dataSong.length; i++) {

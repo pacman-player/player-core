@@ -6,7 +6,7 @@ $(document).ready(function () {
     function showLinkAdmin() {
         $.ajax({
             type: "post",
-            url: "/api/user/show_admin",
+            url: "/api/v1/user/show_admin",
 
             success: function (role) {
                 if (role !== "admin") {

@@ -17,7 +17,7 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping("/api/admin/genre")
+@RequestMapping("/api/v1/admin/genre")
 public class GenreRestController {
 
     private GenreService genreService;

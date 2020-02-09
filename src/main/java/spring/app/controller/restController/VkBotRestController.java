@@ -12,7 +12,7 @@ import spring.app.dto.ConversationDto;
 import spring.app.service.impl.VkBotServiceImpl;
 
 @RestController
-@RequestMapping(value = "/api/admin/vk_bot")
+@RequestMapping(value = "/api/v1/admin/vk_bot")
 public class VkBotRestController {
 
     private VkBotServiceImpl vkBotService;

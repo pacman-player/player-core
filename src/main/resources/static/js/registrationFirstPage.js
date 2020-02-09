@@ -4,7 +4,7 @@ $(function () {
     registrationFirstForm.submit(function (event) {
         event.preventDefault();
         if ($('#registrationFirstForm').valid()) {
-            $.post("/api/registration/first", registrationFirstForm.serialize(), function() {
+            $.post("/api/v1/registration/first", registrationFirstForm.serialize(), function() {
                 location.assign(location.origin + "/registration/second?login=" + $("#login").val());
             });
         }
@@ -17,7 +17,7 @@ $('#registrationFirstForm').validate({
             email: true,
             required: true,
             remote: {
-                url: "/api/registration/check/email",
+                url: "/api/v1/registration/check/email",
                 type: "GET",
                 cache: false,
                 dataType: "json",
@@ -32,7 +32,7 @@ $('#registrationFirstForm').validate({
             required: true,
             pattern: /^[a-zA-Z][a-zA-Z0-9-_\\.]{2,20}$/,
             remote: {
-                url: "/api/registration/check/login",
+                url: "/api/v1/registration/check/login",
                 type: "GET",
                 cache: false,
                 dataType: "json",

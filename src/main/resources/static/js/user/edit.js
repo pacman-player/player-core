@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function getUserData() {
         $.ajax({
-            url: '/api/user/get_user',
+            url: '/api/v1/user/get_user',
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
             $.ajax({
                 contentType: "application/json;",
-                url: "/api/user/edit_data",
+                url: "/api/v1/user/edit_data",
                 type: "PUT",
                 data: JSON.stringify(newUser),
                 async: true,
@@ -57,7 +57,7 @@ $(document).ready(function () {
 
         var oldPass = $("#oldUserPass").val();
         $.ajax({
-            url: "/api/user/get_encrypted_pass",
+            url: "/api/v1/user/get_encrypted_pass",
             type: "POST",
             contentType: "application/json",
             data: {"oldPass": oldPass, "newPass": password},
@@ -83,7 +83,7 @@ $(document).ready(function () {
 
         $.ajax({
             contentType: "application/json;",
-            url: "/api/user/edit_pass",
+            url: "/api/v1/user/edit_pass",
             type: "PUT",
             data: JSON.stringify(pass2),
             headers: {
@@ -107,7 +107,7 @@ $(document).ready(function () {
     function showLinkAdmin() {
         $.ajax({
             type: "post",
-            url: "/api/user/show_admin",
+            url: "/api/v1/user/show_admin",
 
             success: function (role) {
                 if (role !== "admin") {
@@ -125,7 +125,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'PUT',
-            url: "/api/user/code_check",
+            url: "/api/v1/user/code_check",
             contentType: 'application/json;',
             data: JSON.stringify(code),
             async: true,
@@ -145,7 +145,7 @@ $(document).ready(function () {
             var mess = "start";
             $.ajax({
                 type: 'PUT',
-                url: "/api/user/send_mail",
+                url: "/api/v1/user/send_mail",
                 contentType: 'application/json;',
                 data: JSON.stringify(mess),
                 headers: {

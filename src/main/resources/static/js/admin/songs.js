@@ -4,7 +4,7 @@ getSongsTable();
 function getSongsTable() {
     $.ajax({
         method: 'GET',
-        url: "/api/admin/song/all_songs",
+        url: "/api/v1/admin/song/all_songs",
         success: function (listSong) {
             $('#all-songs').empty();
             var songTable = "";
@@ -31,7 +31,7 @@ function getSongsTable() {
 //заполняем модалку edit song
 function editSong(id) {
     $.ajax({
-        url: '/api/admin/song/' + id,
+        url: '/api/v1/admin/song/' + id,
         method: 'GET',
         success: function (editData) {
             //заполняю модалку
@@ -53,7 +53,7 @@ function getAllGenreForEdit(genreName) {
     //очищаем option в модалке
     $('#updateSongGenre').empty();
     var genreForEdit = '';
-    $.getJSON("/api/admin/song/all_genre", function (data) {
+    $.getJSON("/api/v1/admin/song/all_genre", function (data) {
         $.each(data, function (key, value) {
             genreForEdit += '<option id="' + value.id + '" ';
             //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
@@ -80,7 +80,7 @@ function updateSongForm() {
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
-        url: '/api/admin/song/update_song',
+        url: '/api/v1/admin/song/update_song',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(editSong),
         success: function () {
@@ -103,7 +103,7 @@ $(document).on('click', '#deleteSongBtn', function () {
 function deleteSong(id) {
     $.ajax({
         method: 'DELETE',
-        url: '/api/admin/song/delete_song/' + id,
+        url: '/api/v1/admin/song/delete_song/' + id,
         success: function() {
             getSongsTable();
         },
@@ -150,7 +150,7 @@ function getAllGenreForAdd() {
     //очищаю жанры option
     $('#addSongGenre').empty();
     var genreForAdd = '';
-    $.getJSON("/api/admin/song/all_genre", function (data) {
+    $.getJSON("/api/v1/admin/song/all_genre", function (data) {
         $.each(data, function (key, value) {
             genreForAdd += '<option ';
             genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';

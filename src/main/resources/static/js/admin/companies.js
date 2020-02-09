@@ -5,7 +5,7 @@ $(document).ready(function () {
     function getCompaniesTable() {
         $.ajax({
             type: 'GET',
-            url: "/api/admin/all_companies",
+            url: "/api/v1/admin/all_companies",
 
             contentType: 'application/json;',
             headers: {
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/api/admin/company",
+            url: "/api/v1/admin/company",
             contentType: 'application/json;',
             data: JSON.stringify(companyDto),
             headers: {
@@ -89,7 +89,7 @@ $(document).ready(function () {
         $('#updateCloseTime').val('');
 
         $.ajax({
-            url: "/api/admin/all_establishments",
+            url: "/api/v1/admin/all_establishments",
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -104,7 +104,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
+            url: '/api/v1/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {

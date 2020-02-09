@@ -9,7 +9,7 @@ import spring.app.service.abstraction.*;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-@RequestMapping("/api/user/somePage")
+@RequestMapping("/api/v1/user/somePage")
 public class UserSomePageRestController {
     private final FileUploadService fileUploadService;
 

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/registration")
+@RequestMapping("/api/v1/registration")
 public class RegistrationRestController {
 
     private UserService userService;

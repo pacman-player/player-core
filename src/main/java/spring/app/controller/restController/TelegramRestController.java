@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/tlg")
+@RequestMapping(value = "/api/v1/tlg")
 public class TelegramRestController {
 
     private final TelegramService telegramService;

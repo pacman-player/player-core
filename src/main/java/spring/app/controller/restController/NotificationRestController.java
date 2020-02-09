@@ -11,7 +11,7 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping("/api/admin/notification")
+@RequestMapping("/api/v1/admin/notification")
 public class NotificationRestController {
 
     private NotificationService notificationService;

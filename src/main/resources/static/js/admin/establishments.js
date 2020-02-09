@@ -5,7 +5,7 @@ $(document).ready(function () {
     function getEstablishmentsTable() {
         $.ajax({
             type: 'GET',
-            url: "/api/admin/all_establishments",
+            url: "/api/v1/admin/all_establishments",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -44,7 +44,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'POST',
-            url: "/api/admin/add_establishment",
+            url: "/api/v1/admin/add_establishment",
             contentType: 'application/json;',
             data: JSON.stringify(establishment),
             headers: {
@@ -84,7 +84,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'PUT',
-            url: "/api/admin/update_establishment",
+            url: "/api/v1/admin/update_establishment",
             contentType: 'application/json;',
             data: JSON.stringify(establishment),
             headers: {
@@ -119,7 +119,7 @@ $(document).ready(function () {
     function deleteEstablishment(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/delete_establishment",
+            url: "/api/v1/admin/delete_establishment",
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {

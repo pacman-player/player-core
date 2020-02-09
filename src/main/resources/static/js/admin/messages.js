@@ -6,7 +6,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: "/api/admin/message/all_messages",
+            url: "/api/v1/admin/message/all_messages",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -52,7 +52,7 @@ $(document).ready(function () {
 
          $.ajax({
              type: 'POST',
-                url: "/api/admin/message/add_message",
+                url: "/api/v1/admin/message/add_message",
 
                      contentType: 'application/json;',
                      data: JSON.stringify(message),
@@ -94,7 +94,7 @@ $(document).ready(function () {
     function deleteUser(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/message/delete_message",
+            url: "/api/v1/admin/message/delete_message",
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'put',
-            url: "/api/admin/message/update_message",
+            url: "/api/v1/admin/message/update_message",
 
             contentType: 'application/json;',
             data: JSON.stringify(message),

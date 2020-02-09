@@ -12,7 +12,7 @@ import spring.app.service.abstraction.GenreService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/user/genre")
+@RequestMapping("api/v1/user/genre")
 public class UserGenreRestController {
 
     private GenreService genreService;

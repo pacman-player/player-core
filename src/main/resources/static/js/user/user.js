@@ -16,7 +16,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'post',
-            url: '/api/user/song_compilation',
+            url: '/api/v1/user/song_compilation',
             contentType: 'application/json;',
             data: JSON.stringify(genre),
             headers: {
@@ -67,7 +67,7 @@ $(document).ready(function () {
         };
         $.ajax({
             contentType: "application/json;",
-            url: "/api/user/company",
+            url: "/api/v1/user/company",
             type: "PUT",
             data: JSON.stringify(formData),
             dataType: 'json',
@@ -79,7 +79,7 @@ $(document).ready(function () {
 
     function getCompanyData() {
         $.ajax({
-            url: '/api/user/company/',
+            url: '/api/v1/user/company/',
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -93,7 +93,7 @@ $(document).ready(function () {
     function getAllGenre() {
         $.ajax({
             type: 'get',
-            url: '/api/user/all_genre',
+            url: '/api/v1/user/all_genre',
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -133,7 +133,7 @@ $(document).ready(function () {
     function showLinkAdmin() {
         $.ajax({
             type: "post",
-            url: "/api/user/show_admin",
+            url: "/api/v1/user/show_admin",
 
             success: function (role) {
                 if (role !== "admin") {

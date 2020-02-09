@@ -5,7 +5,7 @@ $(function () {
         event.preventDefault();
         console.log("saving");
         if ($('#registrationSecondForm').valid()) {
-            $.post("/api/registration/second", registrationSecondForm.serialize(), function () {
+            $.post("/api/v1/registration/second", registrationSecondForm.serialize(), function () {
                 location.assign(location.origin + "/registration/end?login=" + $("#login").val());
             });
         }
@@ -17,7 +17,7 @@ $('#registrationSecondForm').validate({
             required: true,
             minlength: 3,
             remote: {
-                url: "/api/registration/check/company",
+                url: "/api/v1/registration/check/company",
                 type: "GET",
                 cache: false,
                 dataType: "json",

@@ -6,7 +6,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: "/api/admin/genre/all_genres",
+            url: "/api/v1/admin/genre/all_genres",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/api/admin/genre/add_genre",
+            url: "/api/v1/admin/genre/add_genre",
 
             contentType: 'application/json;',
             data: JSON.stringify(name),
@@ -86,7 +86,7 @@ $(document).ready(function () {
     function deleteUser(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/genre/delete_genre",
+            url: "/api/v1/admin/genre/delete_genre",
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {
@@ -129,7 +129,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'put',
-            url: "/api/admin/genre/update_genre",
+            url: "/api/v1/admin/genre/update_genre",
 
             contentType: 'application/json;',
             data: JSON.stringify(genre),

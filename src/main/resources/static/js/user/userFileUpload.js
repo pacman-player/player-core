@@ -4,7 +4,7 @@ $("#userFileUploadForm").submit(function (e) {
 
     $.ajax({
         type: 'post',
-        url: '/api/user/somePage/fileUpload',
+        url: '/api/v1/user/somePage/fileUpload',
         enctype: 'multipart/form-data',
         data: form_data,
         cache: false,

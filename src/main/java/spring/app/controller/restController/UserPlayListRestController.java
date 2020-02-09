@@ -12,7 +12,7 @@ import spring.app.service.abstraction.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/play-list")
+@RequestMapping("/api/v1/user/play-list")
 public class UserPlayListRestController {
     private SongCompilationService songCompilationService;
     private UserService userService;

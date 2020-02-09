@@ -15,7 +15,7 @@ import spring.app.service.abstraction.SongService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/song/")
+@RequestMapping("/api/v1/admin/song/")
 public class AdminSongRestController {
     private final SongService songService;
     private final AuthorService authorService;

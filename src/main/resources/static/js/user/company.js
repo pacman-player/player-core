@@ -13,7 +13,7 @@ $(document).ready(function () {
         };
         $.ajax({
             contentType: "application/json;",
-            url: "/api/user/company",
+            url: "/api/v1/user/company",
             type: "PUT",
             data: JSON.stringify(formData),
             complete:
@@ -46,7 +46,7 @@ $(document).ready(function () {
         };
         $.ajax({
             contentType: "application/json;",
-            url: "/api/user/company/address",
+            url: "/api/v1/user/company/address",
             type: "PUT",
             data: JSON.stringify(address)
         });
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
     function getCompanyData() {
         $.ajax({
-            url: '/api/user/company/',
+            url: '/api/v1/user/company/',
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
     function getCompanyAddress() {
         $.ajax({
-            url: '/api/user/company/address',
+            url: '/api/v1/user/company/address',
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -84,7 +84,7 @@ $(document).ready(function () {
     function showLinkAdmin() {
         $.ajax({
             type: "post",
-            url: "/api/user/show_admin",
+            url: "/api/v1/user/show_admin",
             success: function (role) {
                 if (role !== "admin") {
                     $("#adminLink").hide();

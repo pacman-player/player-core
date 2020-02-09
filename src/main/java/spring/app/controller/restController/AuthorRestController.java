@@ -11,7 +11,7 @@ import spring.app.service.abstraction.CompanyService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/author")
+@RequestMapping(value = "/api/v1/author")
 public class AuthorRestController {
 
     private AuthorService authorService;

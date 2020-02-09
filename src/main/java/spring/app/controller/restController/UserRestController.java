@@ -23,7 +23,7 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping(value = "/api/user")
+@RequestMapping(value = "/api/v1/user")
 public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/user/song-compilation")
+@RequestMapping("/api/v1/user/song-compilation")
 public class UserCompilationRestController {
     private GenreService genreService;
     private SongCompilationService songCompilationService;

@@ -21,7 +21,7 @@ $(() => {
     };
 
     var sound = new Howl({
-        src: ['http://localhost:8080/api/download/' + $('.soundBtn').click().parent().attr("id")],
+        src: ['http://localhost:8080/api/v1/download/' + $('.soundBtn').click().parent().attr("id")],
         format: ['mp3', 'aac'],
         onplay: function () {
             audioPlayed = true;

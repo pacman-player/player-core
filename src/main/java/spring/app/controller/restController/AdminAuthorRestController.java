@@ -7,7 +7,7 @@ import spring.app.service.abstraction.AuthorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/author/")
+@RequestMapping("/api/v1/admin/author/")
 public class AdminAuthorRestController {
 
     private final AuthorService authorService;

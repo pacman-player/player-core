@@ -6,7 +6,7 @@ $(document).ready(function () {
     function getTable() {
         $.ajax({
             type: 'GET',
-            url: "/api/admin/all_users",
+            url: "/api/v1/admin/all_users",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -67,7 +67,7 @@ $(document).ready(function () {
     function getCompaniesTable() {
         $.ajax({
             type: 'GET',
-            url: "/api/admin/all_companies",
+            url: "/api/v1/admin/all_companies",
 
             contentType: 'application/json;',
             headers: {
@@ -124,7 +124,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'POST',
-            url: "/api/admin/add_user",
+            url: "/api/v1/admin/add_user",
 
             contentType: 'application/json;',
             data: JSON.stringify(user),
@@ -179,7 +179,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'PUT',
-            url: "/api/admin/update_user",
+            url: "/api/v1/admin/update_user",
             contentType: 'application/json;',
             data: JSON.stringify(user),
             headers: {
@@ -221,7 +221,7 @@ $(document).ready(function () {
         };
         $.ajax({
             type: 'POST',
-            url: "/api/admin/company",
+            url: "/api/v1/admin/company",
             contentType: 'application/json;',
             data: JSON.stringify(companyDto),
             headers: {
@@ -256,7 +256,7 @@ $(document).ready(function () {
     function deleteUser(id) {
         $.ajax({
             type: 'delete',
-            url: "/api/admin/delete_user",
+            url: "/api/v1/admin/delete_user",
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {
@@ -328,7 +328,7 @@ $(document).ready(function () {
         $('#updateCloseTime').val('');
 
         $.ajax({
-            url: "/api/admin/all_establishments",
+            url: "/api/v1/admin/all_establishments",
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -342,7 +342,7 @@ $(document).ready(function () {
         })
 
         $.ajax({
-            url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
+            url: '/api/v1/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {

@@ -17,7 +17,7 @@ function clientSub() {
 }
 
 function sendNotification() {
-    stompClient.send("/app/notification", {}, "Send message ");
+    stompClient.send("/app/v1/notification", {}, "Send message ");
 }
 
 function disconnect() {
@@ -31,7 +31,7 @@ function disconnect() {
 function getNotificationNumber() {
     $.ajax({
         type: 'GET',
-        url: "/api/admin/notification",
+        url: "/api/v1/admin/notification",
         contentType: 'application/json;',
         headers: {
             'Accept': 'application/json',
@@ -78,7 +78,7 @@ $(document).ready(function () {
     function getNotification() {
         $.ajax({
             type: 'GET',
-            url: "/api/admin/notification",
+            url: "/api/v1/admin/notification",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -133,7 +133,7 @@ $(document).ready(function () {
     function readNotification(id) {
         $.ajax({
             type: 'post',
-            url: "/api/admin/notification/read",
+            url: "/api/v1/admin/notification/read",
             contentType: 'application/json;',
             data: JSON.stringify(id),
             headers: {

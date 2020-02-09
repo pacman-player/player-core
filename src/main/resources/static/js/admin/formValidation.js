@@ -13,7 +13,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: 'GET',
-            url: "/api/admin/check/email",
+            url: "/api/v1/admin/check/email",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -60,7 +60,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: 'GET',
-            url: "/api/admin/check/login",
+            url: "/api/v1/admin/check/login",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -118,7 +118,7 @@ $('#addForm').validate({
             required: true,
             email: true,
             remote: {
-                url: "/api/registration/check/email",
+                url: "/api/v1/registration/check/email",
                 type: "GET",
                 cache: false,
                 dataType: "json",
@@ -134,7 +134,7 @@ $('#addForm').validate({
             required: true,
             pattern: /^[a-zA-Z][a-zA-Z0-9-_\.]{2,20}$/,
             remote: {
-                url: "/api/registration/check/login",
+                url: "/api/v1/registration/check/login",
                 type: "GET",
                 cache: false,
                 dataType: "json",

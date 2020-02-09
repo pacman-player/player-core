@@ -18,7 +18,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/api/admin/vk_bot/send",
+            url: "/api/v1/admin/vk_bot/send",
             contentType: 'application/json;',
             data: JSON.stringify(conversation),
             headers: {

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
-@RequestMapping("/api/admin/message")
+@RequestMapping("/api/v1/admin/message")
 public class MessageRestController {
 
     private final MessageService messageService;

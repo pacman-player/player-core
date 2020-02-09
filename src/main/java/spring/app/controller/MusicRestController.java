@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class MusicRestController {
     private final MusicService musicService;
 
