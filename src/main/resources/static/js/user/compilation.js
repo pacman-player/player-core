@@ -2,24 +2,6 @@ $(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
-    //getAllCompilationsInMorningPlaylist();
-    // getCompanyId(); //достаем id компании чтобы получать подборки песен в плейлистах утро/день/вечер
-    //
-    // var companyId = '';
-    // //получаем id компании чтобы доставать подборки песен в плейлистах
-    // function getCompanyId() {
-    //     $.ajax({
-    //         method: 'GET',
-    //         url: '/api/user/company',
-    //         success: function (dataCompany) {
-    //             companyId = dataCompany.id;
-    //         },
-    //         error: function (xhr, status, error) {
-    //             alert(xhr.responseText, status, error)
-    //         }
-    //     })
-    // }
-
     //получение и вывод подборок
     $(document).on('click', '#genres', function () {
         var genre = $(this).text();
@@ -49,7 +31,7 @@ $(document).ready(function () {
                         let middayIds = [];
                         let eveningIds = [];
 
-                        let mon = $("#btnAddMorningPlaylist1-" + listSongCompilation[i].id).attr("class");
+                        let mon = $("#btnAddMorningPlaylist1-" + listCompilation[i].id).attr("class");
                         $.ajax({
                             method: "GET",
                             url: "/api/user/play-list/morning-playlist/get/all-song-compilation",
@@ -64,8 +46,6 @@ $(document).ready(function () {
                             }
                         });
                         mon = morningIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
-
-
                         $.ajax({
                             method: "GET",
                             url: "/api/user/play-list/midday-playlist/get/all-song-compilation",
@@ -80,8 +60,8 @@ $(document).ready(function () {
                             }
                         });
 
-                        let mid = $("#btnMiddayPlaylist1-" + listSongCompilation[i].id).attr("class");
-                        mid = middayIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
+                        let mid = $("#btnMiddayPlaylist1-" + listCompilation[i].id).attr("class");
+                        mid = middayIds.includes(listCompilation[i].id) ? "btn btn-success" : "btn btn-info";
 
                         $.ajax({
                             method: "GET",
@@ -97,8 +77,8 @@ $(document).ready(function () {
                             }
                         });
 
-                        let eve = $("#btnEveningPlaylist1-" + listSongCompilation[i].id).attr("class");
-                        eve = eveningIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
+                        let eve = $("#btnEveningPlaylist1-" + listCompilation[i].id).attr("class");
+                        eve = eveningIds.includes(listCompilation[i].id) ? "btn btn-success" : "btn btn-info";
 
 
                         htmlCompilation += '<div id="songCompilation" class="card-deck">'
@@ -127,11 +107,11 @@ $(document).ready(function () {
                         htmlCompilation += playButton;
                         htmlCompilation += pauseButton;
                         htmlCompilation += '&nbsp;' + '&nbsp;'
-                            + '<button class="'+ mon +'" id="btnAddMorningPlaylist1-' + listCompilation[i].id + '" onclick="addMorningPlaylist(' + listCompilation[i].id + ')">Утро</button>'
+                            + '<button class="' + mon + '" id="btnAddMorningPlaylist1-' + listCompilation[i].id + '" onclick="addMorningPlaylist(' + listCompilation[i].id + ')">Утро</button>'
                             + '&nbsp;'
-                            + '<button class="'+ mid +'" id="btnMiddayPlaylist1-' + listCompilation[i].id + '" onclick="addMiddayPlaylist(' + listCompilation[i].id + ')">День</button>'
+                            + '<button class="' + mid + '" id="btnMiddayPlaylist1-' + listCompilation[i].id + '" onclick="addMiddayPlaylist(' + listCompilation[i].id + ')">День</button>'
                             + '&nbsp;'
-                            + '<button class="'+ eve +'" id="btnEveningPlaylist1-' + listCompilation[i].id + '" onclick="addEveningPlaylist(' + listCompilation[i].id + ')">Вечер</button>'
+                            + '<button class="' + eve + '" id="btnEveningPlaylist1-' + listCompilation[i].id + '" onclick="addEveningPlaylist(' + listCompilation[i].id + ')">Вечер</button>'
                             + '</div>'
                             + '</div>'
                             + '</div>';
@@ -213,8 +193,6 @@ $(document).ready(function () {
 //добавляем/удаляем подборку в/из утреннего плейлиста
 function addMorningPlaylist(idCompilation) {
     let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
-    let middayButtonStateElement = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
-    let eveningButtonStateElement = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
 
     if (buttonStateElement.hasClass("btn-info")) {
         buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
@@ -227,7 +205,7 @@ function addMorningPlaylist(idCompilation) {
             success: function () {
                 //+обновить утренний плейлист
                 morningPlaylist();
-                getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
+                //getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -236,19 +214,20 @@ function addMorningPlaylist(idCompilation) {
     } else if (buttonStateElement.hasClass("btn-success")) {
 
         buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
-            $.ajax({
-                method: 'DELETE',
-                url: '/api/user/play-list/morning-playlist/delete/song-compilation/'+idCompilation,
-                contentType: "application/json",
-                success: function () {
-                    //+обновить утренний плейлист
-                    getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
-                },
-                error: function (xhr, status, error) {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
-            });
-        }
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/user/play-list/morning-playlist/delete/song-compilation/' + idCompilation,
+            contentType: "application/json",
+            success: function () {
+                //+обновить утренний плейлист
+                morningPlaylist();
+                //getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        });
+    }
 }
 
 //добавляем подборку в дневной плейлист
@@ -269,7 +248,7 @@ function addMiddayPlaylist(idCompilation) {
             success: function () {
                 //+обновить дневной плейлист
                 middayPlaylist();
-                getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-success", eveningButtonStateElement);
+                //getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-success", eveningButtonStateElement);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -280,11 +259,12 @@ function addMiddayPlaylist(idCompilation) {
         middayButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
         $.ajax({
             method: 'DELETE',
-            url: '/api/user/play-list/midday-playlist/delete/song-compilation/'+idCompilation,
+            url: '/api/user/play-list/midday-playlist/delete/song-compilation/' + idCompilation,
             contentType: "application/json",
             success: function () {
                 //+обновить утренний плейлист
-                getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-info", eveningButtonStateElement);
+                middayPlaylist();
+                // getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-info", eveningButtonStateElement);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -310,7 +290,7 @@ function addEveningPlaylist(idCompilation) {
             success: function () {
                 //+обновить дневной плейлист
                 eveningPlaylist();
-                getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-success");
+                //getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-success");
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -321,11 +301,12 @@ function addEveningPlaylist(idCompilation) {
         eveningButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
         $.ajax({
             method: 'DELETE',
-            url: '/api/user/play-list/evening-playlist/delete/song-compilation/'+idCompilation,
+            url: '/api/user/play-list/evening-playlist/delete/song-compilation/' + idCompilation,
             contentType: "application/json",
             success: function () {
                 //+обновить утренний плейлист
-                getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-info");
+                eveningPlaylist();
+                // getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-info");
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -335,150 +316,18 @@ function addEveningPlaylist(idCompilation) {
 }
 
 //получаем все подборки в утреннем плейлисте
-function getAllCompilationsInMorningPlaylist(morn, midd, even) {
-
-    // if (morn === undefined) {
-    //     morn = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
-    // }
-    // if (midd === undefined) {
-    //     midd = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
-    // }
-    // if (even === undefined) {
-    //     even = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
-    // }
+function getAllCompilationsInMorningPlaylist() {
     fillPlaylistsTab('morning', 'morningCompilations', getCurrentPlaylist('morning').currentCumpilationsList);
-    $.ajax({
-        method: "GET",
-        url: '/api/user/play-list/morning-playlist/get/all-song-compilation/',
-        success: function (morningPlayList) {
-            var htmlMorningCompilation = '';
-            //bootstrap card
-            htmlMorningCompilation += ('<div class="card-deck" id="morningCompilations">');
-            for (var i = 0; i < morningPlayList.length; i++) {
-                htmlMorningCompilation += ('<div class="card pt-10">');
-                htmlMorningCompilation += ('<a href="#" id="' + morningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + morningPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMorningCompilation += ('<img src="/img/compilation/compilation' + morningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
-                    morningPlayList[i].name + '">');
-                htmlMorningCompilation += ('</img><p>Песни подборки</p></a>');
-                htmlMorningCompilation += ('<div class="card-body">');
-                htmlMorningCompilation += ('<h4 class="card-title">Title: ' + morningPlayList[i].name + '</h4>');
-                htmlMorningCompilation += ('<p class="card-text">Discription: Some text</p>');
-                htmlMorningCompilation += ('</div>');
-                htmlMorningCompilation += ('<div class="card-footer">');
-                htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                // htmlMorningCompilation += ('<button class="' + morn + '" id="btnAddMorningPlaylist-' + morningPlayList[i].id + '" onclick="addMorningPlaylist(' + morningPlayList[i].id + ')">Утро</button>');
-                // htmlMorningCompilation += ('&nbsp;');
-                // htmlMorningCompilation += ('<button class="' + midd + '" id="btnMiddayPlaylist-' + morningPlayList[i].id + '" onclick="addMiddayPlaylist(' + morningPlayList[i].id + ')">День</button>');
-                // htmlMorningCompilation += ('&nbsp;');
-                // htmlMorningCompilation += ('<button class="' + even + '" id="btnEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">Вечер</button>');
-                htmlMorningCompilation += ('</div>');
-                htmlMorningCompilation += ('</div>');
-            }
-            //закрываю bootstrap card
-            htmlMorningCompilation += ('</div>');
-            $("#morning #morningCompilations").remove();
-            $("#morning").append(htmlMorningCompilation);
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
-        }
-    })
 }
 
 //получаем все подборки в дневном плейлисте
-function getAllCompilationsInMiddayPlaylist(morn, midd, even) {
-
-    // if (morn === undefined) {
-    //     morn = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
-    // }
-    // if (midd === undefined) {
-    //     midd = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
-    // }
-    // if (even === undefined) {
-    //     even = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
-    // }
+function getAllCompilationsInMiddayPlaylist() {
     fillPlaylistsTab('midday', 'middayCompilations', getCurrentPlaylist('midday').currentCumpilationsList);
-
-    $.ajax({
-        method: "GET",
-        url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
-        success: function (middayPlayList) {
-            var htmlMiddayCompilation = '';
-            //bootstrap card
-            htmlMiddayCompilation += ('<div class="card-deck" id="middayCompilations">');
-            for (var i = 0; i < middayPlayList.length; i++) {
-                htmlMiddayCompilation += ('<div class="card pt-10">');
-                htmlMiddayCompilation += ('<a href="#" id="' + middayPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + middayPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlMiddayCompilation += ('<img src="/img/compilation/compilation' + middayPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
-                    middayPlayList[i].name + '">');
-                htmlMiddayCompilation += ('</img><p>Песни подборки</p></a>');
-                htmlMiddayCompilation += ('<div class="card-body">');
-                htmlMiddayCompilation += ('<h4 class="card-title">Title: ' + middayPlayList[i].name + '</h4>');
-                htmlMiddayCompilation += ('<p class="card-text">Discription: Some text</p>');
-                htmlMiddayCompilation += ('</div>');
-                htmlMiddayCompilation += ('<div class="card-footer">');
-                htmlMiddayCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                // htmlMiddayCompilation += ('<button class="' + morn + '" id="btnAddMorningPlaylist-' + middayPlayList[i].id + '" onclick="addMorningPlaylist(' + middayPlayList[i].id + ')">Утро</button>');
-                // htmlMiddayCompilation += ('&nbsp;');
-                // htmlMiddayCompilation += ('<button class="' + midd + '" id="btnMiddayPlaylist-' + middayPlayList[i].id + '" onclick="addMiddayPlaylist(' + middayPlayList[i].id + ')">День</button>');
-                // htmlMiddayCompilation += ('&nbsp;');
-                // htmlMiddayCompilation += ('<button class="' + even + '" id="btnEveningPlaylist-' + middayPlayList[i].id + '" onclick="addEveningPlaylist(' + middayPlayList[i].id + ')">Вечер</button>');
-                htmlMiddayCompilation += ('</div>');
-                htmlMiddayCompilation += ('</div>');
-            }
-            //закрываю bootstrap card
-            htmlMiddayCompilation += ('</div>');
-            $("#midday #middayCompilations").remove();
-            $("#midday").append(htmlMiddayCompilation);
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
-        }
-    })
 }
 
 //получаем все подборки в вечернем плейлисте, проиндексированные порядковым номером в вечернем плейлисте плеера
 function getAllCompilationsInEveningPlaylist() {
     fillPlaylistsTab('evening', 'eveningCompilations', getCurrentPlaylist('evening').currentCumpilationsList);
-    $.ajax({
-        method: "GET",
-        url: '/api/user/play-list/evening-playlist/get/all-song-compilation',
-        success: function (eveningPlayList) {
-            var htmlEveningCompilation = '';
-            //bootstrap card
-            htmlEveningCompilation += ('<div class="card-deck" id="eveningCompilations">');
-            for (var i = 0; i < eveningPlayList.length; i++) {
-                htmlEveningCompilation += ('<div class="card pt-10">');
-                htmlEveningCompilation += ('<a href="#" id="' + eveningPlayList[i].id + '" onclick="showAllSongInSongCompilation(' + eveningPlayList[i].id + ')" data-toggle="modal"' +
-                    ' data-target="#openCompilationModal" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                htmlEveningCompilation += ('<img src="/img/compilation/compilation' + eveningPlayList[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' +
-                    eveningPlayList[i].name + '">');
-                htmlEveningCompilation += ('</img><p>Песни подборки</p></a>');
-                htmlEveningCompilation += ('<div class="card-body">');
-                htmlEveningCompilation += ('<h4 class="card-title">Title: ' + eveningPlayList[i].name + '</h4>');
-                htmlEveningCompilation += ('<p class="card-text">Discription: Some text</p>');
-                htmlEveningCompilation += ('</div>');
-                htmlEveningCompilation += ('<div class="card-footer">');
-                htmlEveningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + eveningPlayList[i].id + '" onclick="addMorningPlaylist(' + eveningPlayList[i].id + ')">Утро</button>');
-                // htmlEveningCompilation += ('&nbsp;');
-                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + eveningPlayList[i].id + '" onclick="addMiddayPlaylist(' + eveningPlayList[i].id + ')">День</button>');
-                // htmlEveningCompilation += ('&nbsp;');
-                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + eveningPlayList[i].id + '" onclick="addEveningPlaylist(' + eveningPlayList[i].id + ')">Вечер</button>');
-                htmlEveningCompilation += ('</div>');
-                htmlEveningCompilation += ('</div>');
-            }
-            //закрываю bootstrap card
-            htmlEveningCompilation += ('</div>');
-            $("#evening #eveningCompilations").remove();
-            $("#evening").append(htmlEveningCompilation);
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
-        }
-    })
 }
 
 //отрисовка всех подборок в плейлисте
@@ -513,13 +362,7 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
         htmlCompilation += playButton;
         htmlCompilation += pauseButton;
         htmlCompilation += trackBubble;
-        htmlCompilation += '&nbsp;'
-            + '<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + playlist[i].id + '" onclick="addMorningPlaylist(' + playlist[i].id + ')">Утро</button>'
-            + '&nbsp;'
-            + '<button class="btn btn-secondary" id="btnMiddayPlaylist-' + playlist[i].id + '" onclick="addMiddayPlaylist(' + playlist[i].id + ')">День</button>'
-            + '&nbsp;'
-            + '<button class="btn btn-secondary" id="btnEveningPlaylist-' + playlist[i].id + '" onclick="addEveningPlaylist(' + playlist[i].id + ')">Вечер</button>'
-            + '</div>'
+        htmlCompilation += '</div>'
             + '</div>';
     }
     //закрываю bootstrap card
@@ -531,7 +374,6 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
 //достаю все песни подборки любого плейлиста и отображаю в модалке
 function showAllSongInSongCompilation(compilationListName, id) {
     //достаю инфу о подборке (название, картинку,  пр.) для модалки
-
     $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
         var htmlAboutSongCompilationForModal = '';
         for (var i = 0; i < songCompilation.length; i++) {
@@ -583,7 +425,8 @@ function fillModalTableWithPlaylist(modalId, playlistName, songs) {
     $(`#${modalId}`).empty();
     for (let i = 0; i < songs.length; i++) {
         let song = songs[i];
-        let musicTr = $(`<tr></tr>`);
+        let backgroundColor = song.isFromSongQueue ? 'rgb(232, 195, 195)' : '#ececec';
+        let musicTr = $(`<tr style="background-color:${backgroundColor}"></tr>`);
         let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
         let playing_state_play = 'on_stop';
         let playing_state_pause = 'on_play';
@@ -612,10 +455,8 @@ function fillModalTableWithPlaylist(modalId, playlistName, songs) {
         }
         let playButton = `<td><button class="playBtn" style="display: ${display_play}"  data-playing_state="${playing_state_play}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button>`;
         let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state_pause}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button></td>`;
-        let trackBubble = '<div class="d-track__bubble" id="bubble"></div>';
         musicTd += playButton;
         musicTd += pauseButton;
-        musicTd += trackBubble;
         musicTr.html(musicTd);
         $(`#${modalId}`).append(musicTr);
 
@@ -865,20 +706,21 @@ $(function () {
         seekBar.addEventListener('mousemove', function (event) {
             event.preventDefault();
             if (isDown) {
-                playerElement.pause()
+                playerElement.pause();
                 let widthLeft = $('#seekbar').offset().left;
                 let x = event.pageX - widthLeft;
                 let xPersent = x / this.offsetWidth;
                 playerElement.currentTime = playerElement.duration * xPersent;
+            }
         }, true);
-
-        seekBar.addEventListener('click', function (event) {
-            let widthLeft = $('#seekbar').offset().left;
-            let x = event.pageX - widthLeft;
-            let xPersent = x / this.offsetWidth;
-            playerElement.currentTime = playerElement.duration * xPersent;
-        });
     }
+
+    seekBar.addEventListener('click', function (event) {
+        let widthLeft = $('#seekbar').offset().left;
+        let x = event.pageX - widthLeft;
+        let xPersent = x / this.offsetWidth;
+        playerElement.currentTime = playerElement.duration * xPersent;
+    });
 
     var volumeBar = document.getElementById('volumebar');
     var isDown = false;
@@ -905,46 +747,35 @@ $(function () {
             playerElement.volume = xPersent;
         });
     }
-    // при нажатии на кнопку "громкость вкл / выкл"
-    var soundButton = document.getElementById('soundButton');
-    // $("#soundButton").on("click", function () {
-    soundButton.addEventListener('click', function (event) {
-        let soundState = $("#soundButton").data("sound_state");
-        if (soundState === "on") {
-            $("#soundImg").prop("src", "/img/soundOff.png");
-            $("#soundButton").data("sound_state", "off");
-            playerElement.muted = true;
-        } else {
-            $("#soundImg").prop("src", "/img/soundOn.png");
-            $("#soundButton").data("sound_state", "on");
-            playerElement.muted = false;
-        }
-    });
-    //var volumeUse = false;
-    // soundButton.addEventListener('mouseover', function (event) {
-    //     $('#volumebar').css('display','inline-block' )
-    // }, true);
-    // volumeBar.addEventListener('mouseout', function (event) {
-    //     $('#volumebar').css('display','none')
-    // }, true);
+});
+// при нажатии на кнопку "громкость вкл / выкл"
+var soundButton = document.getElementById('soundButton');
+soundButton.addEventListener('click', function (event) {
+    let soundState = $("#soundButton").data("sound_state");
+    if (soundState === "on") {
+        $("#soundImg").prop("src", "/img/soundOff.png");
+        $("#soundButton").data("sound_state", "off");
+        playerElement.muted = true;
+    } else {
+        $("#soundImg").prop("src", "/img/soundOn.png");
+        $("#soundButton").data("sound_state", "on");
+        playerElement.muted = false;
+    }
 });
 
 // функция для изменения изображения и data-playing_state на кнопке при проигрывании музыки
 function setButtonOnPlay(button) {
     button.dataset.playing_state = 'on_play';
-    //button.childNodes[0].setAttribute('src', '/img/pause.png');
 }
 
 // функция для изменения изображения и data-playing_state на кнопке при паузе музыки
 function setButtonOnPause(button) {
     button.dataset.playing_state = 'on_pause';
-    //button.childNodes[0].setAttribute('src', '/img/resume.png');
 }
 
 // функция для изменения изображения и data-playing_state на кнопке при остановке музыки
 function setButtonOnStop(button) {
     button.dataset.playing_state = 'on_stop';
-    //button.childNodes[0].setAttribute('src', '/img/play.png');
 }
 
 // функция для проигрывания / паузы
@@ -958,7 +789,7 @@ function setButtonOnStop(button) {
 // а если песня играется - то ставится на паузу
 // а если песня на паузе - то продолжается воспроизведение
 function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
-    if($('#playerContainer').css('display') === 'none'){
+    if ($('#playerContainer').css('display') === 'none') {
         $('#playerContainer').css('display', 'block')
     }
 
@@ -1042,6 +873,12 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     if (playingState === 'on_pause' || playingState === 'on_play') {
         musicIndex = lastPlayedMusicIndex;
     }
+    console.log("playlistName")
+    console.log(playlistName)
+    console.log("compilation index")
+    console.log(compilationIndex)
+    console.log("music index")
+    console.log(musicIndex)
     playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
 }
 
@@ -1121,7 +958,7 @@ function playNext() {
                     }
                 } else {
                     morningPlaylist();
-                    if (allSongsInEveningPlaylist.length !== 0) {
+                    if (allSongsInMorningPlaylist.length !== 0) {
                         nextPlaylistName = 'morning';
                     } else {
                         middayPlaylist();
@@ -1141,8 +978,9 @@ function playNext() {
         }
     });
 }
-function getCurrentPlaylist(playlistName) {
 
+
+function getCurrentPlaylist(playlistName) {
     var result = {};
     switch (playlistName) {
         case 'morning':
@@ -1162,6 +1000,8 @@ function getCurrentPlaylist(playlistName) {
             result.currentSongsList = allSongInGenre;
             return result;
     }
+}
+
 // функция для проигрывания предыдущей песни
 // если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
 // если нет, то смотрится, не первая ли эта песня
@@ -1183,7 +1023,5 @@ function playPrevious() {
             allSongsInCurrentPlaylist.length - 1,
             allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
     }
-
-
-
+}
 
