@@ -82,7 +82,7 @@ public class AdminAuthorRestController {
 
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/is_free")
-    public boolean isLoginFree(@RequestParam("author") String name) {
+    public boolean isLoginFree(@RequestParam String name) {
         return authorService.getByName(name) == null;
     }
 }
