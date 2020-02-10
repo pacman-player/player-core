@@ -120,6 +120,29 @@ function editButton(id, name) {
     alert("EDIT")
 }
 
+
 function deleteButton(id) {
-    alert("DELETE")
+    $.ajax({
+        method: "DELETE",
+        url: "/api/admin/delete_establishment",
+        contentType: 'application/json',
+        data: JSON.stringify(id),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        cache: false,
+        complete: () => {
+            getTable();
+        },
+        success: () => {
+            notification(
+                "delete-establishment" + id,
+                ` Заведение c id ${id} удалено`,
+                "establishments-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+        }
+    })
 }
