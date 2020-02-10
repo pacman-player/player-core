@@ -18,9 +18,19 @@ $(document).ready(function () {
                 var htmlTable = "";
                 $("#AuthorTable tbody").empty();
                 for (var i = 0; i < listAuthors.length; i++){
+                    if (listAuthors[i].authorGenres.length > 1) {
+                        var htmlRole = "";
+                        for (var j = 0; j < listAuthors[i].authorGenres.length - 1; j++) {
+                            htmlRole = htmlRole + listAuthors[i].authorGenres[j].name + ', '
+                        }
+                            htmlRole = htmlRole + listAuthors[i].authorGenres[j].name;
+                    } else {
+                        var htmlRole = listAuthors[i].authorGenres[0].name;
+                    }
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="authorId">' + listAuthors[i].id + '</td>');
                     htmlTable += ('<td id="authorName">' + listAuthors[i].name + '</td>');
+                    htmlTable += ('<td id="authorGenre">' + htmlRole + '</td>');
                     htmlTable += ('<td><button id="editAuthorBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#editAuthor">Изменить</button></td>');
                     htmlTable += ('<td><button id="deleteAuthor" class="btn btn-sm btn-info" type="button">Удалить</button> </td>');
                     htmlTable += ('</tr>');
@@ -30,40 +40,49 @@ $(document).ready(function () {
         });
     }
 
-    //add form
+//добавляем новую песню POST author
     $('#addAuthorBtn').click(function (event) {
         event.preventDefault();
         addAuthor();
     });
 
-    function addAuthor(){
-        var name = $("#addAuthor").val();
+
+    function addAuthor() {
+        var addAuthor = {};
+        addAuthor.name = $('#addAuthorName').val();
+        addAuthor.genres = $('#addAuthorGenre').val();
         $.ajax({
-            type: 'post',
-            url: "/api/admin/author/add_author",
-            contentType: 'application/json',
-            data: JSON.stringify(name),
-            headers: {
-                'Accept':'application/json',
-                'Content-Type': 'application/json'
+            method: 'POST',
+            url: '/api/admin/author/add_author',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(addAuthor),
+            success: function () {
+                $('#addAuthorName').val('');
+                $('#addAuthorGenre').val('');
+                $('#tab-author-panel').tab('show');
+                getTable();
             },
-            async: false,
-            cache: false,
-            complete:
-                function () {
-                    getTable();
-                    $("#tab-author-panel").tab('show');
-                },
-            success:
-                function () {
-                    notification("add-author" + name.replace(/[^\w]|_/g,''),
-                        " Исполнитель " + name + " добавлен",
-                        'authors-panel');
-                },
-            error:
-                function (xhr, status, error) {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        });
+    }
+
+    //получаем все жанры песни из БД на выбор
+    $('#add-authors-nav').click(function () {
+        getAllGenreForAdd();
+    });
+
+    function getAllGenreForAdd() {
+        //очищаю жанры option
+        $('#addAuthorGenre').empty();
+        var genreForAdd = '';
+        $.getJSON("/api/admin/author/all_genre", function (data) {
+            $.each(data, function (key, value) {
+                genreForAdd += '<option ';
+                genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
+            });
+            $('#addAuthorGenre').append(genreForAdd);
         });
     }
 
@@ -109,15 +128,19 @@ $(document).ready(function () {
     });
 
     function updateAuthor() {
-        var author = {
-            "id":$("#editAuthorId").val(),
-            "name":$("#editAuthorName").val()
-        };
+        var id = $("#editAuthorId").val();
+        var name = $("#editAuthorName").val();
+        var genres = $("#editAuthorGenre option:selected").val();
+        var editAuthor = {
+            'id':id,
+            'name':name,
+            'genres':genres
+            };
         $.ajax({
             type: 'put',
             url: "/api/admin/author/update_author",
             contentType: 'application/json',
-            data: JSON.stringify(author),
+            data: JSON.stringify(editAuthor),
             headers:{
                 'Accept':'application/json',
                 'Content-Type': 'application/json'
@@ -130,8 +153,8 @@ $(document).ready(function () {
                 },
             success:
                 function () {
-                    notification("edit-author" + author.id,
-                        "  Изменения исполнителя с id  " + author.id + " сохранены",
+                    notification("edit-author" + id,
+                        "  Изменения исполнителя с id  " + id + " сохранены",
                         'authors-panel');
                 },
             error:
@@ -141,9 +164,35 @@ $(document).ready(function () {
         });
     }
 
-    //modal form заполнение
+//получаем жанр песни и список жанров из БД для edit author
+function getAllGenreForEdit(genreName) {
+    //очищаем option в модалке
+    $('#editAuthorGenre').empty();
+    var genreForEdit = '';
+    $.getJSON("/api/admin/song/all_genre", function (data) {
+        $.each(data, function (key, value) {
+            genreForEdit += '<option id="' + value.id + '" ';
+            //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
+            if (genreName == value.name) {
+                genreForEdit += 'selected';
+            }
+            genreForEdit += ' value="' + value.name + '">' + value.name + '</option>';
+        });
+        $('#editAuthorGenre').append(genreForEdit);
+    });
+}
+
     $(document).on('click', '#editAuthorBtn', function () {
-        $("#editAuthorId").val($(this).closest("tr").find("#authorId").text());
-        $("#editAuthorName").val($(this).closest("tr").find("#authorName").text());
+        $.ajax({
+            url: '/api/admin/author/' + $(this).closest("tr").find("#authorId").text(),
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $("#editAuthorId").val(data.id);
+             $("#editAuthorName").val(data.name);
+                $("#editAuthorGenre").val(data.genres);
+                getAllGenreForEdit($(this).closest("tr").find("#authorGenre").text());
+            }
+        })
     });
 });
