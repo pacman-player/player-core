@@ -1,3 +1,28 @@
+function banUser(id) {
+    $.ajax({
+        method: 'PUT',
+        contentType: 'application/json',
+        url: '/api/admin/ban_user/' + id,
+        success: function () {
+            $("#banButton".concat(id)).empty();
+            $("#banButton".concat(id)).append('<td id="banButton"' + id +'><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + id + ')">разбанить</button></td>');
+        }
+    })
+}
+
+function unbanUser(id) {
+    $.ajax({
+        method: 'PUT',
+        contentType: 'application/json',
+        url: '/api/admin/unban_user/' + id,
+        success: function () {
+            $("#banButton".concat(id)).empty();
+            $("#banButton".concat(id)).append('<td id="banButton"' + id +'><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick="banUser(' + id + ')">забанить</button></td>');
+        }
+    })
+}
+
+
 $(document).ready(function () {
 
     getTable();
@@ -37,6 +62,9 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editUser">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
+                        htmlTable += listUsers[i].enabled === true ?
+                            '<td id="banButton' + listUsers[i].id +'"><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick= "banUser(' + listUsers[i].id + ')">забанить</button></td>'
+                            : ('<td id="banButton'+ listUsers[i].id +'"><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + listUsers[i].id + ')">разбанить</button></td>');
                     htmlTable += ('</tr>');
                 }
                 $("#UserTable tbody").append(htmlTable);

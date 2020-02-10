@@ -37,6 +37,21 @@ public class AdminRestController {
         this.genreService = genreService;
         this.orgTypeService = orgTypeService;
     }
+    @PutMapping(value = "/ban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void bunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setEnabled(false);
+        userService.updateUser(user);
+    }
+
+    @PutMapping(value = "/unban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unbunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setEnabled(true);
+        userService.updateUser(user);
+    }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
