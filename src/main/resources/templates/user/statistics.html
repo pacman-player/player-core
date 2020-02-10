@@ -19,6 +19,11 @@
             min-height: 45px;
             height: 45px;
         }
+        #scrollable-part {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 0px 0px;
+        }
     </style>
 </head>
 
@@ -113,27 +118,27 @@
                     </tr>
                     </tbody>
                 </table>
+            <div class="text-center"><h6>Очередь заказов</h6></div>
+            <div id="scrollable-part">
                 <table class="table bg-white song-queue-block">
                     <thead>
                     <tr>
                     <th class="song-queue-block-header">
-                        <span class="font-outline">Очередь заказов</span>
+                        <span></span>
                     </th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr id="song-queue-list">
+                    <tbody id="song-queue-list">
+                    <tr>
                     <td class="text-center">
                             Нет песен в очереди
                     </td>
                     </tr>
                     </tbody>
                 </table>
-
             </div>
-
+            </div>
         </div>
-
     </div>
 
 <script type="text/javascript" src="/js/user/statistics.js" rel="stylesheet"></script>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
@@ -56,5 +57,21 @@ public class SongQueue {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SongQueue songQueue = (SongQueue) o;
+        return Objects.equals(id, songQueue.id) &&
+                Objects.equals(position, songQueue.position) &&
+                Objects.equals(song, songQueue.song) &&
+                Objects.equals(company, songQueue.company);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, position, song, company);
     }
 }
