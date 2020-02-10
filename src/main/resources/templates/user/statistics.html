@@ -11,12 +11,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="сcs/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
+    <style>
+        tr {
+            line-height: 45px;
+            min-height: 45px;
+            height: 45px;
+        }
+        #scrollable-part {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 0px 0px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
-
-<body>
+<body  class="bg-dark">
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
@@ -60,14 +71,74 @@
         </div>
 
         <!--центральный блок-->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
+        <!--        <div class="tab-content">-->
+        <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">
 
-                <H3> Статистика</H3>
+            <H3> Статистика</H3>
+            <div class="common-info" style="height: 200px; width: 100%;"></div>
+            <canvas id="myChart" style="height: 300px; width: 100%;"></canvas>
 
+        </div>
+        <!--        </div>-->
+
+        <!-- right side stats bar-->
+        <div class="container col-lg-4 col-md-4 col-xs-4 col-xl-4" id="right-side-bar">
+            <table class="table bg-white stats-table">
+                <thead>
+                <tr>
+                    <th class="orders-title">Заказы</th>
+                    <th class="orders-type-free text-right small text-secondary">Бесплатных</th>
+                    <th class="orders-type-total text-right">Всего</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="orders-today-label">За сегодня</td>
+                    <td class="orders-today-free text-right text-secondary"><span>0</span></td>
+                    <td class="orders-today-total text-right"><span>0</span></td>
+                </tr>
+                <tr>
+                    <td class="orders-yesterday-label">За вчера</td>
+                    <td class="orders-yesterday-free text-right text-secondary"><span>0</span></td>
+                    <td class="orders-yesterday-total text-right"><span>0</span></td>
+                </tr>
+                <tr>
+                    <td class="orders-week-label">За неделю</td>
+                    <td class="orders-week-free text-right text-secondary"><span>0</span></td>
+                    <td class="orders-week-total text-right"><span>0</span></td>
+                </tr>
+                <tr>
+                    <td class="orders-month-label">За месяц</td>
+                    <td class="orders-month-free text-right text-secondary"><span>0</span></td>
+                    <td class="orders-month-total text-right"><span>0</span></td>
+                </tr>
+                <tr>
+                    <td class="orders-total-label">За все время</td>
+                    <td class="orders-total-free text-right text-secondary"><span>0</span></td>
+                    <td class="orders-total-total text-right"><span>0</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-center"><h6>Очередь заказов</h6></div>
+            <div id="scrollable-part">
+                <table class="table bg-white song-queue-block">
+                    <thead>
+                    <tr>
+                        <th class="song-queue-block-header">
+                            <span></span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="song-queue-list">
+                    <tr>
+                        <td class="text-center">
+                            Нет песен в очереди
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
 </div>
 
