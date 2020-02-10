@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
-import spring.app.util.Mp3Parser;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -355,8 +353,6 @@ public class TestDataInit {
         company6.setEveningPlayList(eveningPlayLists);
         company6.setBannedGenres(bannedGenres);
         companyService.addCompany(company6);
-
-        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music/");
 
     }
 }
