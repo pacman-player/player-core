@@ -14,7 +14,6 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
-import org.apache.commons.text.RandomStringGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import spring.app.model.Company;
+import spring.app.model.PlayList;
 import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.*;
+import spring.app.util.UserValidator;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
@@ -47,6 +52,9 @@ public class MainController {
     private final GenreService genreService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final PlayListService playListService;
+    private final AddressService addressService;
+    private final UserValidator userValidator;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -67,12 +75,15 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.playListService = playListService;
+        this.addressService = addressService;
+        this.userValidator = userValidator;
     }
 
 
@@ -82,8 +93,15 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage() {
-        return new ModelAndView("login");
+    public ModelAndView showLoginPage(HttpSession httpSession) {
+        //получаем error из LoginController
+        String errorFromBindingResult = (String) httpSession.getAttribute("error");
+        ModelAndView modelAndView = new ModelAndView("login");
+            if (errorFromBindingResult != null) {
+                //добавляем сообщение об ошибке во вьюху
+                modelAndView.addObject("error", errorFromBindingResult);
+            }
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
@@ -100,15 +118,16 @@ public class MainController {
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
 
-        String url = "https://accounts.google.com/o/oauth2/auth?redirect_uri=" +
-                googleRedirectUri +
-                "&response_type=" +
-                googleResponseType +
-                "&client_id=" +
-                googleClientId +
-                "&scope=" +
-                googleScope;
-        return "redirect:" + url;
+        StringBuilder url = new StringBuilder();
+        url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
+                .append(googleRedirectUri)
+                .append("&response_type=")
+                .append(googleResponseType)
+                .append("&client_id=")
+                .append(googleClientId)
+                .append("&scope=")
+                .append(googleScope);
+        return "redirect:" + url.toString();
     }
 
     @RequestMapping(value = "/google")
@@ -129,8 +148,45 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             user = new User(googleId, email, roleSet, true);
-            user.setCompany(companyService.getById(1L));
             userService.addUser(user);
+
+            //здесь сетим дефолтную компанию
+            Company company = new Company();
+            String companyName = "Default(" + UUID.randomUUID().toString() + ")";
+            company.setName(companyName);
+            company.setStartTime(LocalTime.of(11, 0));
+            company.setCloseTime(LocalTime.of(23, 0));
+            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setUser(userService.getUserByGoogleId(googleId));
+
+            //сетим утренний плейлист
+            PlayList morningPlayList = new PlayList();
+            morningPlayList.setName("Morning playlist");
+            playListService.addPlayList(morningPlayList);
+            Set<PlayList> morningPlaylistSet = new HashSet<>();
+            morningPlaylistSet.add(morningPlayList);
+            company.setMorningPlayList(morningPlaylistSet);
+
+            //сетим дневной плейлист
+            PlayList middayPlayList = new PlayList();
+            middayPlayList.setName("Midday playlist");
+            playListService.addPlayList(middayPlayList);
+            Set<PlayList> middayPlaylistSet = new HashSet<>();
+            middayPlaylistSet.add(middayPlayList);
+            company.setMiddayPlayList(middayPlaylistSet);
+
+            //сетим вечерний плейлист
+            PlayList eveningPlayList = new PlayList();
+            eveningPlayList.setName("Evening playlist");
+            playListService.addPlayList(eveningPlayList);
+            Set<PlayList> eveningPlaylistSet = new HashSet<>();
+            eveningPlaylistSet.add(eveningPlayList);
+            company.setEveningPlayList(eveningPlaylistSet);
+
+            companyService.addCompany(company);
+//            user.setCompany(companyService.getByCompanyName(companyName));
+            user.setCompany(company);
+
             user = userService.getUserByGoogleId(googleId);
             LOGGER.info("New user registered by google {}", user);
         }
@@ -167,28 +223,56 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             List<UserXtrCounters> list = vk.users().get(actor).execute();
-            String email = authResponse.getEmail();
             user = new User(list.get(0).getId(),
                     new String(list.get(0).getFirstName().getBytes(StandardCharsets.UTF_8)),
                     new String(list.get(0).getLastName().getBytes(StandardCharsets.UTF_8)),
-                    email,
+                    authResponse.getEmail(),
                     roleSet,
                     companyService.getById(1L),
                     true);
-            user.setPassword(generateRandomPassword(12));
-            user.setLogin(email.substring(0, email.indexOf("@")));
             userService.addUser(user);
-            LOGGER.info("New user registered by VK - {}", user);
-            user = userService.getUserByVkId(actor.getId());
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        return "redirect:/user";
-    }
 
-    private String generateRandomPassword(int length) {
-        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(97, 122)
-                .build();
-        return pwdGenerator.generate(length);
+            //здесь сетим дефолтную компанию
+            Company company = new Company();
+            String companyName = "Default(" + UUID.randomUUID().toString() + ")";
+            company.setName(companyName);
+            company.setStartTime(LocalTime.of(11, 0));
+            company.setCloseTime(LocalTime.of(23, 0));
+            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setUser(userService.getUserByVkId(actor.getId()));
+
+            //сетим утренний плейлист
+            PlayList morningPlayList = new PlayList();
+            morningPlayList.setName("Morning playlist");
+            playListService.addPlayList(morningPlayList);
+            Set<PlayList> morningPlaylistSet = new HashSet<>();
+            morningPlaylistSet.add(morningPlayList);
+            company.setMorningPlayList(morningPlaylistSet);
+
+            //сетим дневной плейлист
+            PlayList middayPlayList = new PlayList();
+            middayPlayList.setName("Midday playlist");
+            playListService.addPlayList(middayPlayList);
+            Set<PlayList> middayPlaylistSet = new HashSet<>();
+            middayPlaylistSet.add(middayPlayList);
+            company.setMiddayPlayList(middayPlaylistSet);
+
+            //сетим вечерний плейлист
+            PlayList eveningPlayList = new PlayList();
+            eveningPlayList.setName("Evening playlist");
+            playListService.addPlayList(eveningPlayList);
+            Set<PlayList> eveningPlaylistSet = new HashSet<>();
+            eveningPlaylistSet.add(eveningPlayList);
+            company.setEveningPlayList(eveningPlaylistSet);
+
+            companyService.addCompany(company);
+            user.setCompany(companyService.getByCompanyName(companyName));
+
+            user = userService.getUserByVkId(actor.getId());
+            LOGGER.info("New user registered by VK - {}", user);
+        }
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return "redirect:/user";
     }
 }

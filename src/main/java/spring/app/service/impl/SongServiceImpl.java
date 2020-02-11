@@ -2,6 +2,7 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class SongServiceImpl implements SongService {
 
     private final SongDao songDao;
@@ -25,6 +27,22 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> getAllSong() {
+        return songDao.getAll();
+    }
+
+//    @Override
+//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
+//    public List<Song> getAllSongNonLazy() {
+//        return songDao.getAll();
+//    }
+
+    @Override
+    public void deleteSongById(Long id) {
+        songDao.deleteById(id);
+    }
+
+    @Override
     public void addSong(Song song) {
         songDao.save(song);
     }
@@ -34,14 +52,24 @@ public class SongServiceImpl implements SongService {
         return songDao.getByName(name);
     }
 
-    @Override
-    public Song getSongById(long id) {
-        return songDao.getById(id);
-    }
+//    @Override
+//    public Song getSongById(long id) {
+//        return songDao.getById(id);
+//    }
 
     @Override
     public boolean isExist(String name) {
         return getByName(name) != null;
+    }
+
+    @Override
+    public List<Song> findSongsByNameContaining(String name) {
+        return songDao.findByNameContaining(name);
+    }
+
+    @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
     }
 
     @Override
@@ -50,5 +78,21 @@ public class SongServiceImpl implements SongService {
         Set<Song> allSongSet = songCompilation.getSong();
         List<Song> allSongList = new ArrayList<>(allSongSet);
         return allSongList;
+    }
+
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
+
+//    @Override
+//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
+//    public void updateSongNonLazy(Song song) {
+//        songDao.update(song);
+//    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
     }
 }

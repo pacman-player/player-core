@@ -2,20 +2,25 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
+import spring.app.service.abstraction.NotificationService;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
+    private NotificationService notificationService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao) {
+    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService) {
         this.authorDao = authorDao;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -26,6 +31,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
+        String name = author.getName();
+
+        String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
+                + " <a href=\"performers\">ссылке</a>" ;
+        try {
+            notificationService.addNotification(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -34,8 +48,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(Long id) {
-        return authorDao.getById(id);
+    public List<Author> findAuthorsByNameContaining(String name) {
+        return authorDao.findByNameContaining(name);
+    }
+
+    @Override
+    public Author getById(long authorsId) {
+        return authorDao.getById(authorsId);
     }
 
     @Override

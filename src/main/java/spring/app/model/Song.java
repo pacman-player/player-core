@@ -1,15 +1,27 @@
 package spring.app.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import spring.app.dto.SongDto;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "song")
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "SongDtoMapping",
+                classes = @ConstructorResult(
+                        targetClass = SongDto.class,
+                        columns = {
+                                @ColumnResult(name = "id", type = Long.class),
+                                @ColumnResult(name = "name")
+                        }
+                )
+        )
+})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Song {
+public class Song extends Bannable {
 
     @Id
     @GeneratedValue
@@ -35,7 +47,18 @@ public class Song {
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
     private Set<SongCompilation> songCompilations;
 
+    /**
+     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
+     */
+    @Transient
+    private Boolean banned;
+
     public Song() {
+    }
+
+    public Song(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Song(Long id, String name, Author author, Genre genre) {
@@ -53,11 +76,6 @@ public class Song {
         this.id = id;
         this.name = name;
         this.genre = genre;
-    }
-
-    public Song(Long id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Song(String name, Author author, Genre genre) {
@@ -119,14 +137,17 @@ public class Song {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
 
-        Song song = (Song) o;
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedSong().contains(this);
+    }
 
-        if (id != null ? !id.equals(song.id) : song.id != null) return false;
-        return name != null ? !name.equals(song.name) : song.name != null;
+    public Boolean getBanned() {
+        return banned;
     }
 
     @Override
@@ -134,6 +155,15 @@ public class Song {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Song song1 = (Song) o;
+        return id.equals(song1.id) &&
+                name.equals(song1.name);
     }
 
     @Override

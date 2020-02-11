@@ -1,7 +1,10 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.controller.controller.NotificationController;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
@@ -12,6 +15,9 @@ import spring.app.service.abstraction.NotificationService;
 import java.util.List;
 
 @Service
+@Transactional
+@EnableAsync(proxyTargetClass = true)
+@EnableCaching(proxyTargetClass = true)
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
@@ -48,6 +54,15 @@ public class NotificationServiceImpl implements NotificationService {
                 Notification notification = new Notification(message, true, user);
                 notificationDao.save(notification);
             }
+        }
+    }
+
+    @Override
+    public void addNotification(String message) throws InterruptedException {
+        List<User> users = userDao.getAll();
+        for (User user : users) {
+            Notification notification = new Notification(message, true, user);
+            notificationDao.save(notification);
         }
     }
 

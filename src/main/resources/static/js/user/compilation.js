@@ -2,6 +2,23 @@ $(document).ready(function () {
 
     getAllGenre();
     showLinkAdmin();
+    getAllCompilationsInMorningPlaylist();
+    // getCompanyId(); //достаем id компании чтобы получать подборки песен в плейлистах утро/день/вечер
+    //
+    // var companyId = '';
+    // //получаем id компании чтобы доставать подборки песен в плейлистах
+    // function getCompanyId() {
+    //     $.ajax({
+    //         method: 'GET',
+    //         url: '/api/user/company',
+    //         success: function (dataCompany) {
+    //             companyId = dataCompany.id;
+    //         },
+    //         error: function (xhr, status, error) {
+    //             alert(xhr.responseText, status, error)
+    //         }
+    //     })
+    // }
 
     //получение и вывод подборок
     $(document).on('click', '#genres', function () {
@@ -24,7 +41,63 @@ $(document).ready(function () {
                     htmlCompilation = ('<div id="songCompilation"><a href="#" style="margin-right: 10px" id="linkBack">' +
                         '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
                         '<h3 style="display:inline">Подборки песен</h3></div>');
-                    for (var i = 0; i < listSongCompilation.length; i++) {
+                    for (let i = 0; i < listSongCompilation.length; i++) {
+                        let morningIds = [];
+                        let middayIds = [];
+                        let eveningIds = [];
+
+                        let mon = $("#btnAddMorningPlaylist1-" + listSongCompilation[i].id).attr("class");
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/user/play-list/morning-playlist/get/all-song-compilation",
+                            contentType: "application/json",
+                            async: false,
+                            success: function (morningCompilation) {
+                                if (morningCompilation != null) {
+                                    for (let k = 0; k < morningCompilation.length; k++) {
+                                        morningIds.push(morningCompilation[k].id)
+                                    }
+                                }
+                            }
+                        });
+                        mon = morningIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
+
+
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/user/play-list/midday-playlist/get/all-song-compilation",
+                            contentType: "application/json",
+                            async: false,
+                            success: function (middayCompilation) {
+                                if (middayCompilation != null) {
+                                    for (let k = 0; k < middayCompilation.length; k++) {
+                                        middayIds.push(middayCompilation[k].id);
+                                    }
+                                }
+                            }
+                        });
+
+                        let mid = $("#btnMiddayPlaylist1-" + listSongCompilation[i].id).attr("class");
+                        mid = middayIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
+
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/user/play-list/evening-playlist/get/all-song-compilation",
+                            contentType: "application/json",
+                            async: false,
+                            success: function (eveningCompilation) {
+                                if (eveningCompilation != null) {
+                                    for (let k = 0; k < eveningCompilation.length; k++) {
+                                        eveningIds.push(eveningCompilation[k].id);
+                                    }
+                                }
+                            }
+                        });
+
+                        let eve = $("#btnEveningPlaylist1-" + listSongCompilation[i].id).attr("class");
+                        eve = eveningIds.includes(listSongCompilation[i].id) ? "btn btn-success" : "btn btn-info";
+
+
                         htmlCompilation += ('<div id="songCompilation" class="card-deck">');
                         htmlCompilation += ('<div class="card pt-10">');
                         htmlCompilation += ('<a href="#" onclick="showAllSongInSongCompilation(' + listSongCompilation[i].id + ')" data-toggle="modal"' +
@@ -38,11 +111,11 @@ $(document).ready(function () {
                         htmlCompilation += ('</div>');
                         htmlCompilation += ('<div class="card-footer">');
                         htmlCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + listSongCompilation[i].id + '" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">Утро</button>');
+                        htmlCompilation += ('<button class="'+ mon +'" id="btnAddMorningPlaylist1-' + listSongCompilation[i].id + '" onclick="addMorningPlaylist(' + listSongCompilation[i].id + ')">Утро</button>');
                         htmlCompilation += ('&nbsp;');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + listSongCompilation[i].id + '" onclick="addMiddayPlaylist(' + listSongCompilation[i].id + ')">День</button>');
+                        htmlCompilation += ('<button class="'+ mid +'" id="btnMiddayPlaylist1-' + listSongCompilation[i].id + '" onclick="addMiddayPlaylist(' + listSongCompilation[i].id + ')">День</button>');
                         htmlCompilation += ('&nbsp;');
-                        htmlCompilation += ('<button class="btn btn-secondary" id="btndEveningPlaylist-' + listSongCompilation[i].id + '" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">Вечер</button>');
+                        htmlCompilation += ('<button class="'+ eve +'" id="btnEveningPlaylist1-' + listSongCompilation[i].id + '" onclick="addEveningPlaylist(' + listSongCompilation[i].id + ')">Вечер</button>');
                         htmlCompilation += ('</div>');
                         htmlCompilation += ('</div>');
                         htmlCompilation += ('</div>');
@@ -120,6 +193,8 @@ $(document).ready(function () {
         getAllCompilationsInEveningPlaylist();
     });
 
+
+
     //код с дева
     // $(document).on('click', '#songCompilation', function () {
     //     let compilationName = $(this).text();
@@ -146,55 +221,143 @@ $(document).ready(function () {
 
 });
 
-//добавляем подборку в утренний плейлист
+//добавляем/удаляем подборку в/из утреннего плейлиста
 function addMorningPlaylist(idCompilation) {
-    $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/morning-playlist/add/song-compilation/' + idCompilation,
-        success: function () {
-            //+обновить утренний плейлист
-            getAllCompilationsInMorningPlaylist();
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
+    let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
+    let middayButtonStateElement = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
+    let eveningButtonStateElement = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
+
+    if (buttonStateElement.hasClass("btn-info")) {
+        buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+
+        $.ajax({
+            method: 'POST',
+            url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+            contentType: "application/json",
+            data: JSON.stringify(idCompilation),
+            success: function () {
+                //+обновить утренний плейлист
+                getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        })
+    } else if (buttonStateElement.hasClass("btn-success")) {
+
+        buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+            $.ajax({
+                method: 'DELETE',
+                url: '/api/user/play-list/morning-playlist/delete/song-compilation/'+idCompilation,
+                contentType: "application/json",
+                success: function () {
+                    //+обновить утренний плейлист
+                    getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+            });
         }
-    })
 }
 
 //добавляем подборку в дневной плейлист
 function addMiddayPlaylist(idCompilation) {
-    $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/midday-playlist/add/song-compilation/' + idCompilation,
-        success: function () {
-            //+обновить дневной плейлист
-            getAllCompilationsInMiddayPlaylist();
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
-        }
-    })
+
+    let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
+    let middayButtonStateElement = $("#btnMiddayPlaylist1-" + idCompilation);
+    let eveningButtonStateElement = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
+
+    if (middayButtonStateElement.hasClass("btn-info")) {
+        middayButtonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+
+        $.ajax({
+            method: 'POST',
+            url: '/api/user/play-list/midday-playlist/add/song-compilation/',
+            contentType: "application/json",
+            data: JSON.stringify(idCompilation),
+            success: function () {
+                //+обновить дневной плейлист
+                getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-success", eveningButtonStateElement);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        })
+    } else if (middayButtonStateElement.hasClass("btn-success")) {
+
+        middayButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/user/play-list/midday-playlist/delete/song-compilation/'+idCompilation,
+            contentType: "application/json",
+            success: function () {
+                //+обновить утренний плейлист
+                getAllCompilationsInMiddayPlaylist(buttonStateElement, "btn btn-info", eveningButtonStateElement);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        });
+    }
 }
 
 function addEveningPlaylist(idCompilation) {
-    $.ajax({
-        method: 'GET',
-        url: '/api/user/play-list/evening-playlist/add/song-compilation/' + idCompilation,
-        success: function () {
-            //+обновить вечерний плейлист
-            getAllCompilationsInEveningPlaylist();
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText, status, error);
-        }
-    })
+
+    let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
+    let middayButtonStateElement = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
+    let eveningButtonStateElement = $("#btnEveningPlaylist1-" + idCompilation);
+
+    if (eveningButtonStateElement.hasClass("btn-info")) {
+        eveningButtonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+
+        $.ajax({
+            method: 'POST',
+            url: '/api/user/play-list/evening-playlist/add/song-compilation/',
+            contentType: "application/json",
+            data: JSON.stringify(idCompilation),
+            success: function () {
+                //+обновить дневной плейлист
+                getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-success");
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        })
+    } else if (eveningButtonStateElement.hasClass("btn-success")) {
+
+        eveningButtonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/user/play-list/evening-playlist/delete/song-compilation/'+idCompilation,
+            contentType: "application/json",
+            success: function () {
+                //+обновить утренний плейлист
+                getAllCompilationsInEveningPlaylist(buttonStateElement, middayButtonStateElement, "btn btn-info");
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        });
+    }
 }
 
 //получаем все подборки в утреннем плейлисте
-function getAllCompilationsInMorningPlaylist() {
+function getAllCompilationsInMorningPlaylist(morn, midd, even) {
+
+    // if (morn === undefined) {
+    //     morn = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
+    // }
+    // if (midd === undefined) {
+    //     midd = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
+    // }
+    // if (even === undefined) {
+    //     even = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
+    // }
+
     $.ajax({
         method: "GET",
-        url: '/api/user/play-list/morning-playlist/get/all-song-compilation',
+        url: '/api/user/play-list/morning-playlist/get/all-song-compilation/',
         success: function (morningPlayList) {
             var htmlMorningCompilation = '';
             //bootstrap card
@@ -212,11 +375,11 @@ function getAllCompilationsInMorningPlaylist() {
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('<div class="card-footer">');
                 htmlMorningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + morningPlayList[i].id + '" onclick="addMorningPlaylist(' + morningPlayList[i].id + ')">Утро</button>');
-                htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + morningPlayList[i].id + '" onclick="addMiddayPlaylist(' + morningPlayList[i].id + ')">День</button>');
-                htmlMorningCompilation += ('&nbsp;');
-                htmlMorningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">Вечер</button>');
+                // htmlMorningCompilation += ('<button class="' + morn + '" id="btnAddMorningPlaylist-' + morningPlayList[i].id + '" onclick="addMorningPlaylist(' + morningPlayList[i].id + ')">Утро</button>');
+                // htmlMorningCompilation += ('&nbsp;');
+                // htmlMorningCompilation += ('<button class="' + midd + '" id="btnMiddayPlaylist-' + morningPlayList[i].id + '" onclick="addMiddayPlaylist(' + morningPlayList[i].id + ')">День</button>');
+                // htmlMorningCompilation += ('&nbsp;');
+                // htmlMorningCompilation += ('<button class="' + even + '" id="btnEveningPlaylist-' + morningPlayList[i].id + '" onclick="addEveningPlaylist(' + morningPlayList[i].id + ')">Вечер</button>');
                 htmlMorningCompilation += ('</div>');
                 htmlMorningCompilation += ('</div>');
             }
@@ -232,7 +395,18 @@ function getAllCompilationsInMorningPlaylist() {
 }
 
 //получаем все подборки в дневном плейлисте
-function getAllCompilationsInMiddayPlaylist() {
+function getAllCompilationsInMiddayPlaylist(morn, midd, even) {
+
+    // if (morn === undefined) {
+    //     morn = $("#btnAddMorningPlaylist1-" + idCompilation).attr("class");
+    // }
+    // if (midd === undefined) {
+    //     midd = $("#btnMiddayPlaylist1-" + idCompilation).attr("class");
+    // }
+    // if (even === undefined) {
+    //     even = $("#btnEveningPlaylist1-" + idCompilation).attr("class");
+    // }
+
     $.ajax({
         method: "GET",
         url: '/api/user/play-list/midday-playlist/get/all-song-compilation',
@@ -253,11 +427,11 @@ function getAllCompilationsInMiddayPlaylist() {
                 htmlMiddayCompilation += ('</div>');
                 htmlMiddayCompilation += ('<div class="card-footer">');
                 htmlMiddayCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + middayPlayList[i].id + '" onclick="addMorningPlaylist(' + middayPlayList[i].id + ')">Утро</button>');
-                htmlMiddayCompilation += ('&nbsp;');
-                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + middayPlayList[i].id + '" onclick="addMiddayPlaylist(' + middayPlayList[i].id + ')">День</button>');
-                htmlMiddayCompilation += ('&nbsp;');
-                htmlMiddayCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + middayPlayList[i].id + '" onclick="addEveningPlaylist(' + middayPlayList[i].id + ')">Вечер</button>');
+                // htmlMiddayCompilation += ('<button class="' + morn + '" id="btnAddMorningPlaylist-' + middayPlayList[i].id + '" onclick="addMorningPlaylist(' + middayPlayList[i].id + ')">Утро</button>');
+                // htmlMiddayCompilation += ('&nbsp;');
+                // htmlMiddayCompilation += ('<button class="' + midd + '" id="btnMiddayPlaylist-' + middayPlayList[i].id + '" onclick="addMiddayPlaylist(' + middayPlayList[i].id + ')">День</button>');
+                // htmlMiddayCompilation += ('&nbsp;');
+                // htmlMiddayCompilation += ('<button class="' + even + '" id="btnEveningPlaylist-' + middayPlayList[i].id + '" onclick="addEveningPlaylist(' + middayPlayList[i].id + ')">Вечер</button>');
                 htmlMiddayCompilation += ('</div>');
                 htmlMiddayCompilation += ('</div>');
             }
@@ -294,11 +468,11 @@ function getAllCompilationsInEveningPlaylist() {
                 htmlEveningCompilation += ('</div>');
                 htmlEveningCompilation += ('<div class="card-footer">');
                 htmlEveningCompilation += ('<p class="card-text"><small class="text-muted">Footer: Some text</small></p>');
-                htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + eveningPlayList[i].id + '" onclick="addMorningPlaylist(' + eveningPlayList[i].id + ')">Утро</button>');
-                htmlEveningCompilation += ('&nbsp;');
-                htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + eveningPlayList[i].id + '" onclick="addMiddayPlaylist(' + eveningPlayList[i].id + ')">День</button>');
-                htmlEveningCompilation += ('&nbsp;');
-                htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + eveningPlayList[i].id + '" onclick="addEveningPlaylist(' + eveningPlayList[i].id + ')">Вечер</button>');
+                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnAddMorningPlaylist-' + eveningPlayList[i].id + '" onclick="addMorningPlaylist(' + eveningPlayList[i].id + ')">Утро</button>');
+                // htmlEveningCompilation += ('&nbsp;');
+                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnMiddayPlaylist-' + eveningPlayList[i].id + '" onclick="addMiddayPlaylist(' + eveningPlayList[i].id + ')">День</button>');
+                // htmlEveningCompilation += ('&nbsp;');
+                // htmlEveningCompilation += ('<button class="btn btn-secondary" id="btnEveningPlaylist-' + eveningPlayList[i].id + '" onclick="addEveningPlaylist(' + eveningPlayList[i].id + ')">Вечер</button>');
                 htmlEveningCompilation += ('</div>');
                 htmlEveningCompilation += ('</div>');
             }

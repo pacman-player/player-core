@@ -1,31 +1,33 @@
 package spring.app.service.entity;
 
 public class Track {
-    private final int id;
     private final String author;
-    private final String track;
-    private final String link;
+    private final String song;
+    private final String fullTrackName;
+    private final byte[] track;
 
-    public Track(int id, String author, String track, String link) {
-        this.id = id;
+
+    public Track(String author, String song, String fullTrackName, byte[] track) {
         this.author = author;
+        this.song = song;
+        this.fullTrackName = fullTrackName;
         this.track = track;
-        this.link = link;
-    }
 
-    public int getId() {
-        return id;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public String getTrack() {
-        return track;
+    public String getSong() {
+        return song;
     }
 
-    public String getLink() {
-        return link;
+    public String getFullTrackName() {
+        return fullTrackName;
+    }
+
+    public byte[] getTrack() {
+        return track;
     }
 }

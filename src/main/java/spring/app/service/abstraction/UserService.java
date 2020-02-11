@@ -17,6 +17,8 @@ public interface UserService {
 
 	void addUser(User user);
 
+	void addUserWithEncodePassword(User user);
+
     User getUserByEmail(String email);
 
     void save(UserRegistrationDto registration);
@@ -27,5 +29,15 @@ public interface UserService {
 
 	void updateUser(User user);
 
+	void updateUserWithEncodePassword(User user);
+
 	Long getIdAuthUser();
+
+	boolean isExistUserByEmail(String email);
+
+	boolean isExistUserByEmail(String email, long userId);
+
+	boolean isExistUserByLogin(String login);
+
+	boolean isExistUserByLogin(String login, long userId);
 }

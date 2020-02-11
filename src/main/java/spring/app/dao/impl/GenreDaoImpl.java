@@ -9,8 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 @Repository
-@Transactional
-@SuppressWarnings("unchecked")
+@Transactional(readOnly = true)
 public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     GenreDaoImpl() {
         super(Genre.class);

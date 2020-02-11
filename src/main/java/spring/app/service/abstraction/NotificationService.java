@@ -12,6 +12,8 @@ public interface NotificationService {
 
     void addNotification(String message,Long id) throws InterruptedException;
 
+    void addNotification(String message) throws InterruptedException;
+
     List<Notification> getAllNotification();
 
     List<Notification> getByUserId(Long id);

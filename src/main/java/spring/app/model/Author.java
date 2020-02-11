@@ -8,8 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "author")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Author {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //объекты загружаются лениво, и сериализация происходит до того как они будут загружены полность. Без этой аннотаци не отображаются песни на странице в админке
+public class Author extends Bannable{
 
     @Id
     @GeneratedValue
@@ -22,11 +22,22 @@ public class Author {
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-    private Set<Genre> authorGenres = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+
+    /**
+     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
+     */
+    @Transient
+    private Boolean banned;
 
     public Author(){}
 
     public Author(String name) {
+        this.name = name;
+    }
+
+    public Author(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -47,22 +58,25 @@ public class Author {
     }
 
     public Set<Genre> getAuthorGenres() {
-        return authorGenres;
+        return genres;
     }
 
-    public void setAuthorGenres(Set<Genre> authorGenres) {
-        this.authorGenres = authorGenres;
+    public void setAuthorGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
 
-        Author author = (Author) o;
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedAuthor().contains(this);
+    }
 
-        if (id != null ? !id.equals(author.id) : author.id != null) return false;
-        return name != null ? !name.equals(author.name) : author.name != null;
+    public Boolean getBanned() {
+        return banned;
     }
 
     @Override
@@ -70,5 +84,14 @@ public class Author {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return id.equals(author.id) &&
+                name.equals(author.name);
     }
 }

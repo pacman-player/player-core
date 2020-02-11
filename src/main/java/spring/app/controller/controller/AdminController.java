@@ -41,6 +41,11 @@ public class AdminController {
     public String getVkBot() {
         return "admin/vk_bot";
     }
+
+    @GetMapping("/message")
+    public String getMessage() {
+        return "admin/messages";
+    }
 }
 
 

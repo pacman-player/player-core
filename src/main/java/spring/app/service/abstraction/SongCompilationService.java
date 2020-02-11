@@ -14,10 +14,12 @@ public interface SongCompilationService {
     void addSongCompilationToMiddayPlaylist(Long id);
     void addSongCompilationToEveningPlaylist(Long id);
 
-    List<SongCompilation> getAllCompilationsInMorningPlaylist();
-    List<SongCompilation> getAllCompilationsInMiddayPlaylist();
-    List<SongCompilation> getAllCompilationsInEveningPlaylist();
+    List<SongCompilation> getAllCompilationsInMorningPlaylistByCompanyId(Long id);
+    List<SongCompilation> getAllCompilationsInMiddayPlaylistByCompanyId(Long id);
+    List<SongCompilation> getAllCompilationsInEveningPlaylistByCompanyId(Long id);
 
     SongCompilation getSongCompilationById(Long id);
     SongCompilation getSongCompilationByCompilationName(String compilationName);
+
+    void deleteSongCompilationFromPlayList(Long id, String dayTime);
 }
