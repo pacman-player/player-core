@@ -116,7 +116,22 @@
             </div>
             </div>
             <canvas id="myChart"></canvas>
-
+            <div class="navbar nav-header">
+                <ul class="nav nav-tabs nav-justified">
+                    <li><strong>Список заказов</strong></li>
+                </ul>
+            </div>
+            <div>
+                <table class="table bg-white song-queue-block">
+                    <tbody id="song-orders-list">
+                    <tr>
+                        <td class="text-center">
+                            За данный период не было заказов
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!--        </div>-->
 
@@ -126,34 +141,34 @@
                 <thead>
                 <tr>
                     <th class="orders-title">Заказы</th>
-                    <th class="orders-type-free text-right small text-secondary">Бесплатных</th>
+<!--                    <th class="orders-type-free text-right small text-secondary">Бесплатных</th>-->
                     <th class="orders-type-total text-right">Всего</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td class="orders-today-label">За сегодня</td>
-                    <td class="orders-today-free text-right text-secondary"><span>0</span></td>
+<!--                    <td class="orders-today-free text-right text-secondary"><span>0</span></td>-->
                     <td class="orders-today-total text-right"><span>0</span></td>
                 </tr>
                 <tr>
                     <td class="orders-yesterday-label">За вчера</td>
-                    <td class="orders-yesterday-free text-right text-secondary"><span>0</span></td>
+<!--                    <td class="orders-yesterday-free text-right text-secondary"><span>0</span></td>-->
                     <td class="orders-yesterday-total text-right"><span>0</span></td>
                 </tr>
                 <tr>
                     <td class="orders-week-label">За неделю</td>
-                    <td class="orders-week-free text-right text-secondary"><span>0</span></td>
+<!--                    <td class="orders-week-free text-right text-secondary"><span>0</span></td>-->
                     <td class="orders-week-total text-right"><span>0</span></td>
                 </tr>
                 <tr>
                     <td class="orders-month-label">За месяц</td>
-                    <td class="orders-month-free text-right text-secondary"><span>0</span></td>
+<!--                    <td class="orders-month-free text-right text-secondary"><span>0</span></td>-->
                     <td class="orders-month-total text-right"><span>0</span></td>
                 </tr>
                 <tr>
                     <td class="orders-total-label">За все время</td>
-                    <td class="orders-total-free text-right text-secondary"><span>0</span></td>
+<!--                    <td class="orders-total-free text-right text-secondary"><span>0</span></td>-->
                     <td class="orders-total-total text-right"><span>0</span></td>
                 </tr>
                 </tbody>
@@ -167,13 +182,6 @@
             </div>
             <div id="scrollable-part">
                 <table class="table bg-white song-queue-block">
-                    <thead>
-                    <tr>
-                        <th class="song-queue-block-header">
-                            <span></span>
-                        </th>
-                    </tr>
-                    </thead>
                     <tbody id="song-queue-list">
                     <tr>
                         <td class="text-center">
