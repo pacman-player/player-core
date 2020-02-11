@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.Author;
@@ -13,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/author")
 public class AuthorRestController {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger("AuthorRestController");
     private AuthorService authorService;
     private CompanyService companyService;
 
@@ -25,7 +27,9 @@ public class AuthorRestController {
 
     @GetMapping("allAuthors")
     public List<Author> getAllAuthor() {
-        return authorService.getAllAuthor();
+        List<Author> list = authorService.getAllAuthor();
+        LOGGER.info("GET request 'allAuthors'. Result has {} lines", list.size());
+        return list;
     }
 
     @GetMapping("allAuthorsByName/{name}")
@@ -36,9 +40,8 @@ public class AuthorRestController {
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
-        companyService.checkAndMarkAllBlockedByTheCompany(
-                usersCompany,
-                authors);
+        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, authors);
+        LOGGER.info("GET request 'allAuthorsByName/{}'. Result has {} lines", name, authors.size());
         return authors;
     }
 
@@ -47,10 +50,12 @@ public class AuthorRestController {
                                @RequestBody long authorsId) {
 
         Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedAuthor(authorService.getById(authorsId));
+        Author author = authorService.getById(authorsId);
+        company.addBannedAuthor(author);
 
         companyService.updateCompany(company);
         user.setCompany(company);
+        LOGGER.info("POST request 'authorsBan' with authorsId = {}. Banned Author = {}", authorsId, author);
     }
 
     @PostMapping("authorsUnBan")
@@ -61,6 +66,9 @@ public class AuthorRestController {
         companyService.updateCompany(company);
 
         user.setCompany(company);
+        LOGGER.info("POST request 'authorsUnBan' with authorsId = {}. UnBanned Author = {}",
+                authorsId,
+                authorService.getById(authorsId));
     }
 
 }

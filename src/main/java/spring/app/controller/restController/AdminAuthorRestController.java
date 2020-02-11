@@ -1,27 +1,22 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
-import spring.app.model.Song;
-import spring.app.model.User;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.NotificationService;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/admin/author/")
 public class AdminAuthorRestController {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger("AdminAuthorRestController");
     private final AuthorService authorService;
     private final GenreService genreService;
 
@@ -33,12 +28,15 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/all_authors")
     public List<Author> getAllAuthor(){
         List<Author> list = authorService.getAllAuthor();
+        LOGGER.info("GET request '/all_authors'. Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/{id}")
     public Author getByIdAuthor(@PathVariable(value = "id") Long authorId){
-        return authorService.getById(authorId);
+        Author author = authorService.getById(authorId);
+        LOGGER.info("GET request '/{}'. Found Author = {}", authorId, author);
+        return author;
     }
 
 
@@ -51,6 +49,7 @@ public class AdminAuthorRestController {
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             authorService.addAuthor(author);
+            LOGGER.info("POST request '/add_author'. Added Author = {}", author);
         }
     }
 
@@ -59,17 +58,20 @@ public class AdminAuthorRestController {
         Author author = new Author(newAuthor.getId(),newAuthor.getName());
         author.setAuthorGenres(getGenres(newAuthor.getGenres()));
         authorService.updateAuthor(author);
+        LOGGER.info("PUT request '/update_author'. Updated Author = {}", author);
     }
 
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id){
         authorService.deleteAuthorById(id);
+        LOGGER.info("DELETE request '/delete_author' with id = {}", id);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
         List<Genre> list = genreService.getAllGenre();
+        LOGGER.info("GET request '/all_authors'. Result has {} lines", list.size());
         return list;
     }
 

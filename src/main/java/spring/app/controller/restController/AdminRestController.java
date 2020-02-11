@@ -23,7 +23,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
-    private final Logger LOGGER = LoggerFactory.getLogger("AdminRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger("AdminRestController");
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
@@ -44,25 +44,29 @@ public class AdminRestController {
     public @ResponseBody
     List<User> getAllUsers() {
         List<User> list = userService.getAllUsers();
-        LOGGER.info("Get request 'all_users', result {} lines", list.size());
+        LOGGER.info("GET request '/all_users'. Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-       return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+        User user = userService.getUserById(id);
+        LOGGER.info("GET request '/get_user_by_id/{}'. Found User = {}", id, user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")
     public List<Role> getAllRoles() {
-        return roleService.getAllRoles();
+        List<Role> list = roleService.getAllRoles();
+        LOGGER.info("GET request '/all_roles'. Result has {} lines", list.size());
+        return list;
     }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
         List<Company> list = companyService.getAllCompanies();
-        LOGGER.info("Get request 'all_companies', result {} lines", list.size());
+        LOGGER.info("GET request '/all_companies'. Result has {} lines", list.size());
         return list;
     }
 
@@ -70,7 +74,7 @@ public class AdminRestController {
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
         List<OrgType> list = orgTypeService.getAllOrgType();
-        LOGGER.info("Get request 'all_establishments', result {} lines", list.size());
+        LOGGER.info("GET request '/all_establishments'. Result has {} lines", list.size());
         return list;
     }
 
@@ -79,34 +83,39 @@ public class AdminRestController {
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.addUser(user);
-        LOGGER.info("Post request 'add_user', user is = {}", user);
+        LOGGER.info("POST request '/add_user'. User login = {}", user);
     }
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
+        //TODO проверить и убрать строку ниже
         System.out.println(userDto.getRoles());
+
         User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
-        LOGGER.info("Put request 'update_user', user is = {}", user);
+        LOGGER.info("PUT request '/update_user'. User login = {}", user);
     }
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         userService.deleteUserById(id);
-        LOGGER.info("Delete request 'delete_user' by id = {}", id);
+        LOGGER.info("DELETE request '/delete_user' with id = {}", id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        User user = userService.getUserById(userId);
-        LOGGER.info("Get request 'company/{}' by userId", userId);
-        return ResponseEntity.ok(user.getCompany());
+        Company company = userService.getUserById(userId).getCompany();
+        LOGGER.info("GET request '/company/{}'. Found Company named = {}",
+                userId, company.getName());
+        return ResponseEntity.ok(company);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
         Company company = companyService.getById(companyId);
+        LOGGER.info("GET request '/companyById/{}'. Found Company named = {}",
+                companyId, company.getName());
         return ResponseEntity.ok(company);
     }
 
@@ -117,25 +126,25 @@ public class AdminRestController {
         Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         companyService.updateCompany(company);
-        LOGGER.info("Post request 'company', company is = {}", company);
+        LOGGER.info("POST request '/company'. Updated Company = {}", company);
     }
 
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
         orgTypeService.addOrgType(orgType);
-        LOGGER.info("Post request 'add_establishment', orgType is = {}", orgType);
+        LOGGER.info("POST request '/add_establishment'. Added orgType = {}", orgType);
     }
 
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
         orgTypeService.updateOrgType(orgType);
-        LOGGER.info("Put request 'update_establishment', orgType is = {}", orgType);
+        LOGGER.info("PUT request '/update_establishment'. Updated orgType = {}", orgType);
     }
 
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         orgTypeService.deleteOrgTypeById(id);
-        LOGGER.info("Delete request 'delete_establishment' by id = {}", id);
+        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
     }
 
 
@@ -155,15 +164,20 @@ public class AdminRestController {
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
         companyService.addCompany(company);
+        LOGGER.info("POST request '/add_company'. Added Company = {}", company);
     }
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
-        return Boolean.toString(userService.isExistUserByEmail(email, id));
+        String result = Boolean.toString(userService.isExistUserByEmail(email, id));
+        LOGGER.info("GET request '/check/email' with email = {}, id = {}. Result is = {}", email, id, result);
+        return result;
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-       return Boolean.toString(userService.isExistUserByLogin(login, id));
+       String result = Boolean.toString(userService.isExistUserByLogin(login, id));
+        LOGGER.info("GET request '/check/login' with login = {}, id = {}. Result is = {}", login, id, result);
+        return result;
     }
 }

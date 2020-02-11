@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/song/")
 public class AdminSongRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger("AdminSongRestController");
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
@@ -29,15 +32,16 @@ public class AdminSongRestController {
     }
 
     @GetMapping(value = "/all_songs")
-//    @ResponseBody
     public List<Song> getAllSongs() {
         List<Song> list = songService.getAllSong();
+        LOGGER.info("GET request '/all_songs'. Result has {} lines", list.size());
         return list;
     }
 
     @DeleteMapping(value = "/delete_song/{id}")
     public void deleteSong(@PathVariable("id") Long id) {
         songService.deleteSongById(id);
+        LOGGER.info("DELETE request '/delete_song/{}'", id);
     }
 
     /*
@@ -58,6 +62,7 @@ public class AdminSongRestController {
             song.setGenre(genre);
         }
         songService.addSong(song);
+        LOGGER.info("POST request '/add_song'. Added Song = {}", song);
     }
 
     /*
@@ -72,12 +77,14 @@ public class AdminSongRestController {
         song.setAuthor(author);
         song.setGenre(genre);
         songService.updateSong(song);
+        LOGGER.info("PUT request '/update_song'. Updated Song = {}", song);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<Song> getSongById(@PathVariable(value = "id") Long id) {
         Song song = songService.getSongById(id);
+        LOGGER.info("GET request '/{}'. Found Sing = {}", id, song);
         return ResponseEntity.ok(song);
     }
 
@@ -85,6 +92,7 @@ public class AdminSongRestController {
     @ResponseBody
     public List<Genre> getAllGenre() {
         List<Genre> list = genreService.getAllGenre();
+        LOGGER.info("GET request '/all_genre'. Result has {} lines", list.size());
         return list;
     }
 }

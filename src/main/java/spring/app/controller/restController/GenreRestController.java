@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
-import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
@@ -21,7 +20,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RestController
 @RequestMapping("/api/admin/genre")
 public class GenreRestController {
-    private final Logger LOGGER = LoggerFactory.getLogger("GenreRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger("GenreRestController");
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
 
@@ -36,7 +35,7 @@ public class GenreRestController {
     @GetMapping(value = "/all_genres")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
         List<Genre> genres = genreService.getAllGenre();
-        LOGGER.info("Get request 'all_genres', result {} lines", genres.size());
+        LOGGER.info("GET request '/all_genres'. Result has {} lines", genres.size());
         return genres;
     }
 
@@ -48,13 +47,14 @@ public class GenreRestController {
             Genre genre = new Genre();
             genre.setName(name);
             genreService.addGenre(genre);
-            LOGGER.info("Post request 'add_genre', genre is = {}", genre);
+            LOGGER.info("POST request '/add_genre'. Added Genre with name = {}", name);
             try {
                 String message = "Was added genre " + name;
                 User user = (User) getContext().getAuthentication().getPrincipal();
                 notificationService.addNotification(message, user.getId());
             } catch (InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -62,15 +62,17 @@ public class GenreRestController {
     @PutMapping(value = "/update_genre")
     public void updateGenre(@RequestBody GenreDto genreDto) {
         Genre genre = genreService.getById(genreDto.getId());
-        genre.setName(genreDto.getName());
+        String genreDtoName = genreDto.getName();
+        genre.setName(genreDtoName);
         genreService.updateGenre(genre);
-        LOGGER.info("Put request 'update_genre', genre is = {}", genre);
+        LOGGER.info("PUT request '/update_genre'. Updated Genre with name = {}", genreDtoName);
         try {
-            String message = "Genre name " + genre.getName() + " has been changed to " + genreDto.getName();
+            String message = "Genre name " + genre.getName() + " has been changed to " + genreDtoName;
             User user = (User) getContext().getAuthentication().getPrincipal();
             notificationService.addNotification(message, user.getId());
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -78,13 +80,15 @@ public class GenreRestController {
     public void deleteGenre(@RequestBody Long id) {
         Genre genre = genreService.getById(id);
         genreService.deleteGenreById(id);
-        LOGGER.info("Delete request 'delete_genre' by id {}", id);
+        String genreName = genre.getName();
+        LOGGER.info("DELETE request '/delete_genre' with id = {}. Deleted Genre = {}", id, genreName);
         try {
-            String message = "Was delete genre " + genre.getName();
+            String message = "Was deleted genre " + genreName;
             User user = (User) getContext().getAuthentication().getPrincipal();
             notificationService.addNotification(message, user.getId());
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 }

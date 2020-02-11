@@ -94,4 +94,9 @@ public class Author extends Bannable{
         return id.equals(author.id) &&
                 name.equals(author.name);
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
