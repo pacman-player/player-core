@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Статистика</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -19,15 +20,32 @@
             min-height: 45px;
             height: 45px;
         }
+
         #scrollable-part {
             height: 300px;
             overflow-y: scroll;
             padding: 0px 0px;
         }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .period {
+            text-decoration: none;
+            color: cornflowerblue;
+        }
+
+        .period:hover {
+            color: crimson;
+            cursor: pointer;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
-<body  class="bg-dark">
+<body class="bg-dark">
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
@@ -41,7 +59,7 @@
     <div class="row">
 
         <!--меню слева-->
-        <div id="leftMenu" th:fragment="leftMenu"  class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+        <div id="leftMenu" th:fragment="leftMenu" class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
                     <a href="/user/statistics">Статистика</a>
@@ -74,9 +92,30 @@
         <!--        <div class="tab-content">-->
         <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">
 
-            <H3> Статистика</H3>
-            <div class="common-info" style="height: 200px; width: 100%;"></div>
-            <canvas id="myChart" style="height: 300px; width: 100%;"></canvas>
+            <h4 th:text="'Статистика, ' + ${name}"> Статистика</h4>
+            <div class="common-info" style="height: 300px; width: 100%;"></div>
+            <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav nav-pills nav-justified">
+                    <li>
+                        <a class="period" onclick="getStats('today')">За сегодня</a>
+                    </li>
+                    <li>
+                        <a class="period" onclick="getStats('yesterday')">За вчера</a>
+                    </li>
+                    <li>
+                        <a class="period" onclick="getStats('week')">За неделю</a>
+                    </li>
+                    <li>
+                        <a class="period" onclick="getStats('months')">За месяц</a>
+                    </li>
+                    <li>
+                        <a class="period" onclick="getStats('alltime')">За все время</a>
+                    </li>
+                </ul>
+            </div>
+            </div>
+            <canvas id="myChart"></canvas>
 
         </div>
         <!--        </div>-->
@@ -119,7 +158,13 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="text-center"><h6>Очередь заказов</h6></div>
+            <div class="navbar nav-header">
+                <ul class="nav nav-tabs nav-justified">
+                <li>
+                    <strong>Очередь заказов</strong>
+                </li>
+                </ul>
+            </div>
             <div id="scrollable-part">
                 <table class="table bg-white song-queue-block">
                     <thead>
@@ -142,10 +187,13 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/user/statistics.js" rel="stylesheet"></script>
+<script type="text/javascript" src="../../static/js/user/statistics.js" rel="stylesheet"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
-<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
-
+<script type="text/javascript" src="../../static/js/stomp.js" rel="script"></script>
+<script src="/js/user/script.js"></script>
+<script>
+    document.ready(getStats("today"));
+</script>
 </body>
 </html>

@@ -1,8 +1,11 @@
 package spring.app.controller.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import spring.app.model.User;
 
 @Controller
 @RequestMapping("/user")
@@ -19,7 +22,9 @@ public class UserController {
     }
 
     @GetMapping("/statistics")
-    public String getUserStatistics() {
+    public String getUserStatistics(Model model) {
+        User user = (User)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("name",user.getLogin());
         return "user/statistics";
     }
 
