@@ -59,19 +59,4 @@ public class SongQueue {
         this.company = company;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SongQueue songQueue = (SongQueue) o;
-        return Objects.equals(id, songQueue.id) &&
-                Objects.equals(position, songQueue.position) &&
-                Objects.equals(song, songQueue.song) &&
-                Objects.equals(company, songQueue.company);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, position, song, company);
-    }
 }

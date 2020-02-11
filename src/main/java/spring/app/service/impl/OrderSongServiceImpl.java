@@ -3,8 +3,8 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.model.OrderSong;
-import spring.app.repository.OrderSongRepository;
 import spring.app.service.abstraction.OrderSongService;
 
 import java.sql.Timestamp;
@@ -16,26 +16,22 @@ import java.util.Date;
 public class OrderSongServiceImpl implements OrderSongService {
 
 
-    private OrderSongRepository orderSongRepository;
+    private OrderSongDao orderSongDao;
 
     @Autowired
-    public void setOrderSongRepository(OrderSongRepository orderSongRepository) {
-        this.orderSongRepository = orderSongRepository;
+    public void setOrderSongDao(OrderSongDao orderSongDao) {
+        this.orderSongDao = orderSongDao;
     }
 
     @Override
     public void addSongOrder(OrderSong songOrder) {
-    orderSongRepository.save(songOrder);
+    orderSongDao.save(songOrder);
     }
 
-    @Override
-    public void deleteAllSongOrders() {
-        orderSongRepository.deleteAll();
-    }
 
     @Override
     public long getSongOrdersByCompanyIdAndPeriod(Long id, Long period) {
-       return orderSongRepository.countByCompany_IdAndTimestampAfter(id, new Timestamp(System.currentTimeMillis() - period * 24 * 60 * 60 * 1000));
+       return orderSongDao.getSongOrdersByCompanyIdAndPeriod(id, new Timestamp(System.currentTimeMillis() - period * 24 * 60 * 60 * 1000));
     }
 
     @Override
@@ -52,15 +48,15 @@ public class OrderSongServiceImpl implements OrderSongService {
         cal.set(Calendar.SECOND, 0);
         Date yesterday = cal.getTime();
         Timestamp startOfTheDayYesterday = new Timestamp(yesterday.getTime());
-        Long result = orderSongRepository.countByCompanyIdAndTimestampBetween(id, startOfTheDayToday, new Timestamp(System.currentTimeMillis()));
+        long result = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(id, startOfTheDayToday, new Timestamp(System.currentTimeMillis()));
         if (period.equals("yesterday")) {
-            result = orderSongRepository.countByCompanyIdAndTimestampBetween(id, startOfTheDayYesterday, startOfTheDayToday);
+            result = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(id, startOfTheDayYesterday, startOfTheDayToday);
         }
         return result;
     }
 
     @Override
     public long countAll(Long companyId) {
-        return orderSongRepository.countAllByCompanyId(companyId);
+        return orderSongDao.countAll(companyId);
     }
 }

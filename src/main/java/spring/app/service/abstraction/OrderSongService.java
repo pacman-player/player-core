@@ -7,9 +7,6 @@ import java.sql.Timestamp;
 public interface OrderSongService {
 
     void addSongOrder(OrderSong songOrder);
-
-    void deleteAllSongOrders();
-
     long getSongOrdersByCompanyIdAndPeriod(Long id, Long period);
     long getSongOrdersByCompanyIdAndTimeRange(Long id, String period);
 
