@@ -52,7 +52,7 @@ function getTable() {
 // err messages text JSON-object for add/edit establishment's name
 const errMessages = {
     required: "Укажите название",
-    pattern: "Название может содержать: кирилицу, латиницу, цифры, тире",
+    pattern: "Название может содержать: кирилицу, латиницу, цифры, тире. Минимальная длина - 2 символа.",
     remote: "Такой тип заведения уже существует"
 };
 
@@ -117,7 +117,67 @@ function addButton() {
 
 
 function editButton(id, name) {
-    alert("EDIT")
+    let theModal = $('#editEstablishment');   // modal window's selector
+    let form = $("#establishment-form");
+    let field = $("#updateEstablishmentName");   // field "name" selector
+
+    // autofill
+    $("#updateEstablishmentId").val(id);
+    field.val(name);
+    // show the modal
+    theModal.modal('show');
+    // validation logic
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+                pattern: establishmentsNameRegEx,
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/establishment/est_type_name_is_free",
+                    cache: false,
+                    dataType: "JSON",
+                    parameterData: {
+                        author: () => {
+                            return field.val();
+                        }
+                    }
+                }
+            }
+        },
+        messages: {
+            name: errMessages
+        },
+        submitHandler: () => {
+            $.ajax({
+                method: "PUT",
+                url: "/api/admin/update_establishment",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: id,
+                    name: field.val()
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                cache: false,
+                complete: () => {
+                    getTable();
+                    theModal.modal('hide');
+                },
+                success: () => {
+                    notification(
+                        "edit-establishment" + field.val(),
+                        `  Изменения типа организации с id  ${id} сохранены`,
+                        "establishments-panel");
+                },
+                error: (xhr, status, error) => {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+            })
+        }
+    })
 }
 
 
