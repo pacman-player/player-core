@@ -75,16 +75,19 @@
                 <div role="tabpanel" class="tab-pane active" id="list-establishments">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="user-table-nav" class="active">
-                            <a id="tab-establishments-panel" href="#establishments-panel" aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
+                            <a id="tab-establishments-panel" href="#establishments-panel"
+                               aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
                         </li>
                         <li id="add-user-nav">
-                            <a href="#add-establishments-panel" aria-controls="add-establishments-panel" role="tab" data-toggle="tab">
+                            <a href="#add-establishments-panel" aria-controls="add-establishments-panel" role="tab"
+                               data-toggle="tab">
                                 Новое заведение</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!--таблица заведений-->
+
+                        <!-- Список заведений (таблица) -->
                         <div role="tabpanel" class="tab-pane active" id="establishments-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
@@ -95,7 +98,7 @@
                                                 <th>ID</th>
                                                 <th>Название</th>
                                                 <th>Изменить</th>
-                                                <th>удалить</th>
+                                                <th>Удалить</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -105,26 +108,37 @@
                             </div>
                         </div>
 
-                        <!--добавление заведения-->
-                        <div role="tabpanel" class="tab-pane" id="add-establishments-panel">
+                        <!-- Статическая форма добавления нового заведения (establishment) -->
+                        <div id="add-establishments-panel" class="tab-pane" role="tabpanel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <form id="addForm">
-                                                        <div class="form-group text-center edit-form">
-                                                            <label for="addName">Название</label>
-                                                            <input id="addName" class="form-control" type="text"
-                                                                   placeholder="Название" name="name"/>
 
-                                                            <button type="submit" id="addEstablishmentBtn"
-                                                                    class="btn btn-success btn-lg">
-                                                                Добавить
-                                                            </button>
+                                                    <form id="establishmentsAddForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addName">Название</label>
+                                                                <input id="addName"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="Название"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div>
+                                                                <button id="addEstablishmentBtn"
+                                                                        class="btn btn-success btn-lg"
+                                                                        type="submit"
+                                                                        onclick="addButton()"
+                                                                        style="margin-top: 20px;">
+                                                                    Добавить
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </form>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -133,13 +147,14 @@
                             </div>
                         </div>
 
-                        <!--модалка - заведения-->
+                        <!-- Изменение заведения (модальное окно)-->
                         <div id="editEstablishment" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
                                         <h4 class="modal-title">Информация о заведении</h4>
                                     </div>
 
@@ -151,16 +166,28 @@
                                                     <form id="establishment-form">
                                                         <div class="form-group text-center edit-form">
                                                             <label for="updateEstablishmentId">ID заведения</label>
-                                                            <input id="updateEstablishmentId" class="form-control" disabled="disabled" type="text"
-                                                                   name="id" required=""/>
+                                                            <input id="updateEstablishmentId"
+                                                                   name="id"
+                                                                   class="form-control"
+                                                                   disabled="disabled"
+                                                                   type="text"/>
 
                                                             <label for="updateEstablishmentName">Компания</label>
-                                                            <input id="updateEstablishmentName" class="form-control" type="text" name="company"
-                                                                   required=""/>
+                                                            <input id="updateEstablishmentName"
+                                                                   name="name"
+                                                                   class="form-control"
+                                                                   type="text"/>
 
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                                <button id="editEstablishmentBtn" class="btn btn-primary" data-dismiss="modal" type="submit">Изменить</button>
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Закрыть
+                                                                </button>
+                                                                <button id="editEstablishmentBtn"
+                                                                        class="btn btn-primary"
+                                                                        type="submit">
+                                                                    Изменить
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -179,10 +206,15 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/establishments.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/establishments_tmp.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
