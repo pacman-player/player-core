@@ -35,6 +35,11 @@ public class OrgTypeServiceImpl implements OrgTypeService {
     }
 
     @Override
+    public OrgType getByName(String name) {
+        return orgTypeDao.getByName(name);
+    }
+
+    @Override
     public void deleteOrgTypeById(Long id) {
         orgTypeDao.deleteById(id);
     }
