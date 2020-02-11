@@ -16,6 +16,7 @@ public class Genre extends Bannable{
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @JsonIgnore
