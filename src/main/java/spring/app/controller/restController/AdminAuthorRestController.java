@@ -80,4 +80,9 @@ public class AdminAuthorRestController {
         return genres;
     }
 
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/is_free")
+    public boolean isLoginFree(@RequestParam String name) {
+        return authorService.getByName(name) == null;
+    }
 }

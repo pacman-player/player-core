@@ -135,6 +135,12 @@ public class AdminRestController {
         orgTypeService.updateOrgType(orgType);
     }
 
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/establishment/est_type_name_is_free")
+    public boolean isLoginFree(@RequestParam("name") String name) {
+        return orgTypeService.getByName(name) == null;
+    }
+
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         orgTypeService.deleteOrgTypeById(id);
