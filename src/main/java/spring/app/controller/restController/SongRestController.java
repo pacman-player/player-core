@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.model.Company;
@@ -13,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/music")
 public class SongRestController {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger("SongRestController");
     private CompanyService companyService;
     private SongService songService;
 
@@ -32,6 +34,7 @@ public class SongRestController {
 
         companyService.updateCompany(company);
         user.setCompany(company);
+        LOGGER.info("POST request 'songsBan' by User = {} with SongId = {}", user, songId);
     }
 
     @PostMapping("songsUnBan")
@@ -42,6 +45,7 @@ public class SongRestController {
         companyService.updateCompany(company);
 
         user.setCompany(company);
+        LOGGER.info("POST request 'songsUnBan' by User = {} with SongId = {}", user, songId);
     }
 
     @GetMapping("allSongsByName/{name}")
@@ -52,6 +56,7 @@ public class SongRestController {
         usersCompany = companyService.setBannedEntity(usersCompany);
 
         companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
+        LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
         return songs;
     }
 

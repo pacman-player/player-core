@@ -1,5 +1,6 @@
 package spring.app.controller.restController;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/registration")
 public class RegistrationRestController {
-    private final Logger LOGGER = LoggerFactory.getLogger("RegistrationRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger("RegistrationRestController");
     private UserService userService;
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
@@ -34,26 +35,33 @@ public class RegistrationRestController {
     @PostMapping("/first")
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
-        LOGGER.info("Post request 'first', result is {} (DTO)", userDto);
+        LOGGER.info("POST request '/first' with new User = {}", userDto.getLogin());
     }
 
     @GetMapping("/check/email")
     public String checkEmail(@RequestParam String email) {
-        return Boolean.toString(!userService.isExistUserByEmail(email));
+        boolean isRegistered = userService.isExistUserByEmail(email);
+        LOGGER.info("GET request '/check/email' for email = {}. Result is = {}", email, isRegistered);
+        return Boolean.toString(!isRegistered);
     }
 
     @GetMapping("/check/login")
     public String checkLogin(@RequestParam String login) {
-        return Boolean.toString(!userService.isExistUserByLogin(login));
+        boolean isRegistered = userService.isExistUserByLogin(login);
+        LOGGER.info("GET request '/check/login' for login = {}. Result is = {}", login, isRegistered);
+        return Boolean.toString(!isRegistered);
     }
+
     @GetMapping("/check/company")
     public String checkCompany(@RequestParam String name) {
-        return Boolean.toString(!companyService.isExistCompanyByName(name));
+        boolean isRegistered = companyService.isExistCompanyByName(name);
+        LOGGER.info("GET request '/check/company' for company name = {}. Result is = {}", name, isRegistered);
+        return Boolean.toString(!isRegistered);
     }
 
     @PostMapping("/second")
     public void saveCompany(Company company, @RequestParam String login) {
-        long orgTypeId = Long.parseLong(company.getOrgType().getName());
+        long orgTypeId = Long.parseLong(company.getOrgType().getName()); // ошибка?
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User userByLogin = userService.getUserByLogin(login);
         Role roleUser = roleService.getRoleByName("USER");
@@ -89,7 +97,7 @@ public class RegistrationRestController {
 //        company = companyService.getByCompanyName(company.getName());
 
         userByLogin.setCompany(company);
-        LOGGER.info("Post request 'second', company is = {} (DTO)", company);
+        LOGGER.info("POST request '/second' with Company name = {} and User login = {}", company.getName(), login);
         //здесь обновляю недорегенного юзера с уже зашифрованным паролем
         userService.addUserWithEncodePassword(userByLogin);
 //        userService.updateUserWithEncodePassword(userByLogin);

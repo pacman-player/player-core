@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user/genre")
 public class UserGenreRestController {
-    private final Logger LOGGGER = LoggerFactory.getLogger("UserGenreRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger("UserGenreRestController");
     private GenreService genreService;
     private CompanyService companyService;
 
@@ -30,7 +30,7 @@ public class UserGenreRestController {
     @GetMapping(value = "/get/all-genre")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
         List<Genre> allGenre = genreService.getAllGenre();
-
+        LOGGER.info("GET request '/get/all-genre' for User = {}. Result has {} lines", user, allGenre.size());
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
@@ -50,6 +50,7 @@ public class UserGenreRestController {
 
         companyService.updateCompany(company);
         user.setCompany(company);
+        LOGGER.info("POST request '/genreBan' for User = {} with genreId = {}", user, genreId);
     }
 
     @PostMapping("/genreUnBan")
@@ -60,5 +61,6 @@ public class UserGenreRestController {
         companyService.updateCompany(company);
 
         user.setCompany(company);
+        LOGGER.info("POST request '/genreUnBan' for User = {} with genreId = {}", user, genreId);
     }
 }

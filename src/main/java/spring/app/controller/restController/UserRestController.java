@@ -27,7 +27,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RestController
 @RequestMapping(value = "/api/user")
 public class UserRestController {
-    private final Logger LOGGER = LoggerFactory.getLogger("UserRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger("UserRestController");
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
 	private final UserService userService;
@@ -66,12 +66,11 @@ public class UserRestController {
     public @ResponseBody
     List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
-
+        LOGGER.info("POST request '/song_compilation' with genre = {}", genre);
         if (genre.equals("Все подборки")) {
             return songCompilation.getAllSongCompilations();
         } else {
             Genre genres = genreService.getByName(genre);
-            List<SongCompilation> list = songCompilation.getListSongCompilationsByGenreId(genres.getId());
             return songCompilation.getListSongCompilationsByGenreId(genres.getId());
         }
     }
@@ -79,16 +78,20 @@ public class UserRestController {
     @GetMapping(value = "/get_user")
     public User getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("GET request '/get_user' for authenticated User = {}", user);
         return (userService.getUserById(user.getId()));
     }
+
     @PostMapping(value = "/get_encrypted_pass")
     public ResponseEntity<Boolean> getEncPass(@RequestBody Map<String, String> json) {
+        LOGGER.info("POST request '/get_encrypted_pass'");
         return ResponseEntity.ok(passwordEncoder.matches(json.get("oldPass"), json.get("newPass")));
     }
 
     @PutMapping(value = "/edit_data")
     public ResponseEntity<User> editUserData(@RequestBody User newUser){
         User user = ((User) getContext().getAuthentication().getPrincipal());
+        LOGGER.info("PUT request '/edit_data' for User = {}", user);
         if(!newUser.getLogin().equals(user.getLogin())) {
             if (userService.getUserByLogin(newUser.getLogin()) == null) {
                 user.setLogin(newUser.getLogin());
@@ -104,7 +107,7 @@ public class UserRestController {
             }
         }
         userService.updateUser(user);
-        LOGGER.info("Update user data = {}", user);
+        LOGGER.info("Updated user data for User = {}", user);
         return ResponseEntity.ok(user);
     }
 
@@ -117,13 +120,14 @@ public class UserRestController {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
         userService.updateUser(user);
-        LOGGER.info("Update user data = {}", user);
+        LOGGER.info("PUT request '/edit_pass' for User = {}", user);
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
     public String getUserRoles() {
         String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("POST request '/show_admin' for User = {}", user);
         for (Role roles : user.getRoles()) {
             if (roles.getName().equals("ADMIN")) {
                 role = "admin";
@@ -136,12 +140,14 @@ public class UserRestController {
     @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany() {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        LOGGER.info("GET request '/company'");
         return ResponseEntity.ok(companyService.getById(id));
     }
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        LOGGER.info("GET request '/company/address'");
         return ResponseEntity.ok(addressService.getById(id));
     }
 
@@ -149,11 +155,11 @@ public class UserRestController {
     public void updateCompany(@RequestBody CompanyDto company) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
+        LOGGER.info("PUT request '/company' for Company named = {}", companyForUpdate.getName());
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyService.updateCompany(companyForUpdate);
-        LOGGER.info("Update company data = {}", companyForUpdate);
     }
 
 	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -161,6 +167,7 @@ public class UserRestController {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
         Address addressForUpdate = addressService.getById(id);
+        LOGGER.info("PUT request '/company/address' for Company named = {}", companyForUpdate.getName());
 
         if (addressForUpdate == null) {
             addressService.updateAddress(new Address(
@@ -186,6 +193,7 @@ public class UserRestController {
 
     @PutMapping(value = "/code_check")
     public ResponseEntity<String> codeCheck(@RequestBody String code){
+        LOGGER.info("PUT request '/code_check'");
         code = code.substring(1, code.length()-1);
         if(code.equals(PASSWORD)){
             return ResponseEntity.ok("Пароль совпадает");
@@ -196,6 +204,7 @@ public class UserRestController {
     @PutMapping(value = "/send_mail")
     public void sendMail(){
         User user = ((User) getContext().getAuthentication().getPrincipal());
+        LOGGER.info("PUT request '/send_mail' for User = {}", user);
         EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
         PASSWORD = emailPasswordGeneration.generate();
         System.out.println(PASSWORD);
@@ -206,7 +215,9 @@ public class UserRestController {
                 user.getLogin()
         );
 
-        if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
+        if(user.getEmail() != null
+                && !user.getEmail().equals("user@gmail.com")
+                && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);
         }
 
