@@ -18,15 +18,17 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger("TelegramRestController");
+    @Autowired
+    private OrderSongService orderSongService;
+
     private final TelegramService telegramService;
     private SongService songService;
     private CompanyService companyService;
@@ -113,12 +115,14 @@ public class TelegramRestController {
             songQueue.setCompany(companyById);
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.addSongQueue(songQueue);
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
             companyService.updateCompany(companyById);
         } else {
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.updateSongQueue(songQueue);
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
         }
     }
 }

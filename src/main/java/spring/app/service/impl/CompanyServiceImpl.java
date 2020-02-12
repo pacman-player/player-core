@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
+import spring.app.model.Song;
 import spring.app.service.abstraction.CompanyService;
 
 import java.util.Collections;
@@ -74,5 +75,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company getCompanyByAddressId(long id) {
         return companyDao.getCompanyByAddressId(id);
+    }
+
+    @Override
+    public List<String> getAllSongsInQueueByCompanyId(long id) {
+        return companyDao.getAllSongsInQueueByCompanyId(id);
     }
 }

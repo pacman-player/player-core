@@ -31,4 +31,11 @@ public class UserValidator implements Validator {
 //        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
 
     }
+    public Boolean validateByBan(String login) {
+        boolean result = true;
+        if (userService.getUserByLogin(login) != null) {
+            result = userService.getUserByLogin(login).isEnabled();
+        }
+        return result;
+    }
 }
