@@ -44,6 +44,9 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             session.setAttribute("error", "Вы ввели неверные логин и пароль");
         }
+        if (!userValidator.validateByBan(userForm.getLogin())) {
+            session.setAttribute("error", "Ваш аккаунт забанен");
+        }
 
         //передаем логин с формы логин для недорегенных пользователей без куки
         session.setAttribute("login", userForm.getLogin());
