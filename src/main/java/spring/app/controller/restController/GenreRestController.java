@@ -20,7 +20,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RestController
 @RequestMapping("/api/admin/genre")
 public class GenreRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("GenreRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(GenreRestController.class);
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
 

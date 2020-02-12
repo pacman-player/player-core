@@ -27,7 +27,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RestController
 @RequestMapping(value = "/api/user")
 public class UserRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("UserRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
 	private final UserService userService;

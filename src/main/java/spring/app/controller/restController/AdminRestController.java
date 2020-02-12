@@ -23,7 +23,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("AdminRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminRestController.class);
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
@@ -39,133 +39,146 @@ public class AdminRestController {
         this.genreService = genreService;
         this.orgTypeService = orgTypeService;
     }
+
     @PutMapping(value = "/ban_user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
+        LOGGER.info("PUT request '/ban_user/{}'", id);
         User user = userService.getUserById(id);
         user.setEnabled(false);
         userService.updateUser(user);
+        LOGGER.info("Banned User = {}", user);
     }
 
     @PutMapping(value = "/unban_user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbunUser(@PathVariable("id") Long id) {
+        LOGGER.info("PUT request '/unban_user/{}'", id);
         User user = userService.getUserById(id);
         user.setEnabled(true);
         userService.updateUser(user);
+        LOGGER.info("Unbanned User = {}", id, user);
     }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
     List<User> getAllUsers() {
+        LOGGER.info("GET request '/all_users'");
         List<User> list = userService.getAllUsers();
-        LOGGER.info("GET request '/all_users'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
+        LOGGER.info("GET request '/get_user_by_id/{}'", id);
         User user = userService.getUserById(id);
-        LOGGER.info("GET request '/get_user_by_id/{}'. Found User = {}", id, user);
+        LOGGER.info("Found User = {}", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")
     public List<Role> getAllRoles() {
+        LOGGER.info("GET request '/all_roles'");
         List<Role> list = roleService.getAllRoles();
-        LOGGER.info("GET request '/all_roles'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
+        LOGGER.info("GET request '/all_companies'");
         List<Company> list = companyService.getAllCompanies();
-        LOGGER.info("GET request '/all_companies'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
+        LOGGER.info("GET request '/all_establishments'");
         List<OrgType> list = orgTypeService.getAllOrgType();
-        LOGGER.info("GET request '/all_establishments'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
+        LOGGER.info("POST request '/add_user'");
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.addUser(user);
-        LOGGER.info("POST request '/add_user'. User login = {}", user);
+        LOGGER.info("Added User = {}", user);
     }
 
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
-        //TODO проверить и убрать строку ниже
-        System.out.println(userDto.getRoles());
-
+        LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
-        LOGGER.info("PUT request '/update_user'. User login = {}", user);
+        LOGGER.info("Updated User = {}", user);
     }
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
-        userService.deleteUserById(id);
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
+        userService.deleteUserById(id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
+        LOGGER.info("GET request '/company/{}'", userId);
         Company company = userService.getUserById(userId).getCompany();
-        LOGGER.info("GET request '/company/{}'. Found Company named = {}",
-                userId, company.getName());
+        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
+        LOGGER.info("GET request '/companyById/{}'", companyId);
         Company company = companyService.getById(companyId);
-        LOGGER.info("GET request '/companyById/{}'. Found Company named = {}",
-                companyId, company.getName());
+        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
+        LOGGER.info("POST request '/company'");
         User userId = new User(companyDto.getUserId());
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         companyService.updateCompany(company);
-        LOGGER.info("POST request '/company'. Updated Company = {}", company);
+        LOGGER.info("Updated Company = {}", company);
     }
 
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
+        LOGGER.info("POST request '/add_establishment' with orgType = {}", orgType);
         orgTypeService.addOrgType(orgType);
-        LOGGER.info("POST request '/add_establishment'. Added orgType = {}", orgType);
     }
 
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
+        LOGGER.info("PUT request '/update_establishment' with orgType = {}", orgType);
         orgTypeService.updateOrgType(orgType);
-        LOGGER.info("PUT request '/update_establishment'. Updated orgType = {}", orgType);
     }
 
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/establishment/est_type_name_is_free")
     public boolean isLoginFree(@RequestParam("name") String name) {
-        return orgTypeService.getByName(name) == null;
+        LOGGER.info("GET request '/establishment/est_type_name_is_free' for name = {}", name);
+        boolean isLoginFree = (orgTypeService.getByName(name) == null);
+        LOGGER.info("Returned = {}", isLoginFree);
+        return isLoginFree;
     }
 
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
-        orgTypeService.deleteOrgTypeById(id);
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
+        orgTypeService.deleteOrgTypeById(id);
     }
 
 
@@ -181,24 +194,27 @@ public class AdminRestController {
 
     @PostMapping(value = "/add_company")
     public void addCompany(@RequestBody CompanyDto companyDto) {
+        LOGGER.info("POST request '/add_company'");
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
         companyService.addCompany(company);
-        LOGGER.info("POST request '/add_company'. Added Company = {}", company);
+        LOGGER.info("Added Company = {}", company);
     }
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
+        LOGGER.info("GET request '/check/email' with email = {}, id = {}", email, id);
         String result = Boolean.toString(userService.isExistUserByEmail(email, id));
-        LOGGER.info("GET request '/check/email' with email = {}, id = {}. Result is = {}", email, id, result);
+        LOGGER.info("Result is = {}", result);
         return result;
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-       String result = Boolean.toString(userService.isExistUserByLogin(login, id));
-        LOGGER.info("GET request '/check/login' with login = {}, id = {}. Result is = {}", login, id, result);
+        LOGGER.info("GET request '/check/login' with login = {}, id = {}", login, id);
+        String result = Boolean.toString(userService.isExistUserByLogin(login, id));
+        LOGGER.info("Result is = {}", result);
         return result;
     }
 }

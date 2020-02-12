@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/song-compilation")
 public class UserCompilationRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("UserCompilationRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserCompilationRestController.class);
     private GenreService genreService;
     private SongCompilationService songCompilationService;
 

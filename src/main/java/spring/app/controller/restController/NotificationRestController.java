@@ -15,7 +15,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RestController
 @RequestMapping("/api/admin/notification")
 public class NotificationRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("NotificationRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(NotificationRestController.class);
     private NotificationService notificationService;
 
     @Autowired

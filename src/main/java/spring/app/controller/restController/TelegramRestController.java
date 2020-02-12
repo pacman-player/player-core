@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("TelegramRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
     @Autowired
     private OrderSongService orderSongService;
 

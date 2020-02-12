@@ -46,7 +46,7 @@ import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
-    private final Logger LOGGER = LoggerFactory.getLogger("MainController");
+    private final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
     private final RoleService roleService;
     private final UserService userService;

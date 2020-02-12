@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/song/")
 public class AdminSongRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("AdminSongRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongRestController.class);
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;

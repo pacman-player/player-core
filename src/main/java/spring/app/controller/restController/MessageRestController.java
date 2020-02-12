@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/message")
 public class MessageRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("MessageRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(MessageRestController.class);
     private final MessageService messageService;
 
     @Autowired

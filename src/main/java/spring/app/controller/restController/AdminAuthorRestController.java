@@ -16,7 +16,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/admin/author/")
 public class AdminAuthorRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("AdminAuthorRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
 
@@ -27,51 +27,57 @@ public class AdminAuthorRestController {
 
     @GetMapping(value = "/all_authors")
     public List<Author> getAllAuthor(){
+        LOGGER.info("GET request '/all_authors'");
         List<Author> list = authorService.getAllAuthor();
-        LOGGER.info("GET request '/all_authors'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/{id}")
     public Author getByIdAuthor(@PathVariable(value = "id") Long authorId){
+        LOGGER.info("GET request '/{}'", authorId);
         Author author = authorService.getById(authorId);
-        LOGGER.info("GET request '/{}'. Found Author = {}", authorId, author);
+        LOGGER.info("Found Author = {}", author);
         return author;
     }
 
 
     @PostMapping(value = "/add_author")
     public void addAuthor(@RequestBody AuthorDto newAuthor) {
-        String name = newAuthor.getName();
-        String editName = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+            LOGGER.info("POST request '/add_author' with new Author = {}", newAuthor.getName());
+        String editName = (newAuthor.getName()).replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         if (authorService.getByName(editName) == null) {
             Author author = new Author();
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             authorService.addAuthor(author);
-            LOGGER.info("POST request '/add_author'. Added Author = {}", author);
+            LOGGER.info("Added new Author = {}", author);
+        } else {
+            LOGGER.info("New Author was not added!");
         }
     }
 
     @PutMapping(value = "/update_author")
     public void updateAuthor(@RequestBody AuthorDto newAuthor){
+        LOGGER.info("PUT request '/update_author' to update author = {}", newAuthor.getName());
         Author author = new Author(newAuthor.getId(),newAuthor.getName());
         author.setAuthorGenres(getGenres(newAuthor.getGenres()));
         authorService.updateAuthor(author);
-        LOGGER.info("PUT request '/update_author'. Updated Author = {}", author);
+        LOGGER.info("Updated Author = {}", author);
     }
 
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id){
-        authorService.deleteAuthorById(id);
         LOGGER.info("DELETE request '/delete_author' with id = {}", id);
+        authorService.deleteAuthorById(id);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
+        LOGGER.info("GET request '/all_authors'");
         List<Genre> list = genreService.getAllGenre();
-        LOGGER.info("GET request '/all_authors'. Result has {} lines", list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -85,6 +91,9 @@ public class AdminAuthorRestController {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/is_free")
     public boolean isLoginFree(@RequestParam String name) {
-        return authorService.getByName(name) == null;
+        LOGGER.info("GET request '/is_free' for name = {}", name);
+        boolean isLoginFree = (authorService.getByName(name) == null);
+        LOGGER.info("Returned = {}", isLoginFree);
+        return isLoginFree;
     }
 }

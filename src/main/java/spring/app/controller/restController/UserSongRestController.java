@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/song")
 public class UserSongRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("UserSongRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserSongRestController.class);
     private SongService songService;
 
     @Autowired

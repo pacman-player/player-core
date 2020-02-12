@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/author")
 public class AuthorRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("AuthorRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthorRestController.class);
     private AuthorService authorService;
     private CompanyService companyService;
 

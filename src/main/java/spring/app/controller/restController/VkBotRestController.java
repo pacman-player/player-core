@@ -16,7 +16,7 @@ import spring.app.service.impl.VkBotServiceImpl;
 @RestController
 @RequestMapping(value = "/api/admin/vk_bot")
 public class VkBotRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("VkBotRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(VkBotRestController.class);
     private VkBotServiceImpl vkBotService;
 
     @Autowired

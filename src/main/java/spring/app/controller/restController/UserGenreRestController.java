@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user/genre")
 public class UserGenreRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("UserGenreRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserGenreRestController.class);
     private GenreService genreService;
     private CompanyService companyService;
 

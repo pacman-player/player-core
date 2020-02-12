@@ -16,7 +16,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/registration")
 public class RegistrationRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("RegistrationRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(RegistrationRestController.class);
     private UserService userService;
     private CompanyService companyService;
     private OrgTypeService orgTypeService;

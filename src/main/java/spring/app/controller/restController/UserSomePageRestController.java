@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/api/user/somePage")
 public class UserSomePageRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger("UserSomePageRestController");
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserSomePageRestController.class);
     private final FileUploadService fileUploadService;
 
     @Autowired

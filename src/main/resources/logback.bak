@@ -8,16 +8,21 @@
     </appender>
 
     <logger name="AdminAuthorRestController" level="info" additivity="true">
+
         <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+
             <file>Logs/AdminAuthorRestController/info.log</file>
+
             <encoder>
                 <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
             </encoder>
+
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <onMismatch>DENY</onMismatch>
                 <onMatch>ACCEPT</onMatch>
                 <level>ERROR</level>
             </filter>
+
         </appender>
 
         <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
