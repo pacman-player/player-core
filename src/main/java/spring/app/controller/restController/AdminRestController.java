@@ -45,6 +45,7 @@ public class AdminRestController {
         User user = userService.getUserById(id);
         user.setEnabled(false);
         userService.updateUser(user);
+        LOGGER.info("PUT request '/ban_user/{}'. Banned User = {}", id, user);
     }
 
     @PutMapping(value = "/unban_user/{id}")
@@ -53,6 +54,7 @@ public class AdminRestController {
         User user = userService.getUserById(id);
         user.setEnabled(true);
         userService.updateUser(user);
+        LOGGER.info("PUT request '/unban_user/{}'. Unbanned User = {}", id, user);
     }
 
     @GetMapping(value = "/all_users")
