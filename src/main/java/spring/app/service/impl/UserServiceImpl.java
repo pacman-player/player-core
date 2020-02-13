@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
             userRole = roleDao.getRoleByName("PREUSER");
         }
         user.setRoles(Collections.singleton(userRole));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -67,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }

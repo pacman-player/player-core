@@ -22,18 +22,27 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.*;
+import spring.app.model.Company;
+import spring.app.model.PlayList;
+import spring.app.model.Role;
+import spring.app.model.User;
 import spring.app.service.abstraction.*;
+import spring.app.util.UserValidator;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Controller("/test")
 public class MainController {
@@ -46,6 +55,7 @@ public class MainController {
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
     private final AddressService addressService;
+    private final UserValidator userValidator;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -66,7 +76,7 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService) {
+    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
@@ -74,6 +84,7 @@ public class MainController {
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.addressService = addressService;
+        this.userValidator = userValidator;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -82,8 +93,15 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage() {
-        return new ModelAndView("login");
+    public ModelAndView showLoginPage(HttpSession httpSession) {
+        //получаем error из LoginController
+        String errorFromBindingResult = (String) httpSession.getAttribute("error");
+        ModelAndView modelAndView = new ModelAndView("login");
+            if (errorFromBindingResult != null) {
+                //добавляем сообщение об ошибке во вьюху
+                modelAndView.addObject("error", errorFromBindingResult);
+            }
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
@@ -113,7 +131,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/google")
-    public String GoogleAuthorization(@RequestParam("code") String code) throws IOException {
+    public String GoogleAuthorization(@RequestParam("code") String code, Model model) throws IOException {
         final HttpTransport transport = new NetHttpTransport();
         final JacksonFactory jsonFactory = new JacksonFactory();
 
@@ -173,7 +191,12 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        if (userService.getUserByGoogleId(googleId).isEnabled()) {
+            return "redirect:/user";
+        } else {
+            model.addAttribute("error", "Ваш аккаунт забанен");
+            return "/login";
+        }
     }
 
     @GetMapping("/player")
@@ -190,7 +213,7 @@ public class MainController {
     }
 
     @GetMapping(value = "/vkontakte")
-    public String vkAuthorization(@RequestParam("code") String code) throws ClientException, ApiException {
+    public String vkAuthorization(@RequestParam("code") String code, Model model) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
         UserAuthResponse authResponse = vk.oauth()
@@ -210,6 +233,7 @@ public class MainController {
                     roleSet,
                     companyService.getById(1L),
                     true);
+            user.setLogin("vkAuth");
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
@@ -252,6 +276,11 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        if (userService.getUserByVkId(actor.getId()).isEnabled()) {
+            return "redirect:/user";
+        } else {
+            model.addAttribute("error", "Ваш аккаунт забанен");
+            return "/login";
+        }
     }
 }
