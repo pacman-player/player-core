@@ -3,6 +3,7 @@ package spring.app.service.abstraction;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.model.Genre;
+import spring.app.model.Song;
 
 import java.util.List;
 
@@ -35,4 +36,6 @@ public interface CompanyService {
     Company setBannedEntity(Company company);
 
     Company getCompanyByAddressId(long id);
+
+    List<String> getAllSongsInQueueByCompanyId(long id);
 }

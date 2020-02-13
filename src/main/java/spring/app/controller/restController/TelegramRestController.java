@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
-import spring.app.model.Address;
-import spring.app.model.Company;
-import spring.app.model.Song;
-import spring.app.model.SongQueue;
+import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
+    @Autowired
+    private OrderSongService orderSongService;
 
     private final TelegramService telegramService;
     private SongService songService;
@@ -90,12 +90,14 @@ public class TelegramRestController {
             songQueue.setCompany(companyById);
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.addSongQueue(songQueue);
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
             companyService.updateCompany(companyById);
         } else {
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.updateSongQueue(songQueue);
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
         }
     }
 }

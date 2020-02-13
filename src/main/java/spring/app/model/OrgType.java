@@ -5,9 +5,12 @@ import java.util.Set;
 
 @Entity
 public class OrgType {
+
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)

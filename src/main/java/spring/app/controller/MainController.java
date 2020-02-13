@@ -22,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -130,7 +131,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/google")
-    public String GoogleAuthorization(@RequestParam("code") String code) throws IOException {
+    public String GoogleAuthorization(@RequestParam("code") String code, Model model) throws IOException {
         final HttpTransport transport = new NetHttpTransport();
         final JacksonFactory jsonFactory = new JacksonFactory();
 
@@ -190,7 +191,12 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        if (userService.getUserByGoogleId(googleId).isEnabled()) {
+            return "redirect:/user";
+        } else {
+            model.addAttribute("error", "Ваш аккаунт забанен");
+            return "/login";
+        }
     }
 
     @GetMapping("/player")
@@ -207,7 +213,7 @@ public class MainController {
     }
 
     @GetMapping(value = "/vkontakte")
-    public String vkAuthorization(@RequestParam("code") String code) throws ClientException, ApiException {
+    public String vkAuthorization(@RequestParam("code") String code, Model model) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
         UserAuthResponse authResponse = vk.oauth()
@@ -227,6 +233,7 @@ public class MainController {
                     roleSet,
                     companyService.getById(1L),
                     true);
+            user.setLogin("vkAuth");
             userService.addUser(user);
 
             //здесь сетим дефолтную компанию
@@ -269,6 +276,11 @@ public class MainController {
         }
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return "redirect:/user";
+        if (userService.getUserByVkId(actor.getId()).isEnabled()) {
+            return "redirect:/user";
+        } else {
+            model.addAttribute("error", "Ваш аккаунт забанен");
+            return "/login";
+        }
     }
 }
