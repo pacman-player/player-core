@@ -1,11 +1,14 @@
 package spring.app.configuration.initializer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import spring.app.dto.CompanyUCDto;
+import spring.app.dto.UserUCDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TestDataInit {
@@ -42,6 +45,12 @@ public class TestDataInit {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private RegistrationStepService registrationStepService;
+
+    @Autowired
+    private UserCompanyService userCompanyService;
 
     private void init() {
 
@@ -270,5 +279,40 @@ public class TestDataInit {
 
         company.setAddress(address5);
         companyService.updateCompany(company);
+
+        RegistrationStep rs1 = new RegistrationStep();
+        rs1.setName("registration-step-user");
+        rs1.setPosition(1L);
+        rs1.setScriptName("/js/registrationFirstPage.js");
+        registrationStepService.save(rs1);
+
+        RegistrationStep rs2 = new RegistrationStep();
+        rs2.setName("registration-step-company");
+        rs2.setPosition(2L);
+        rs2.setScriptName("/js/registrationSecondPage.js");
+        registrationStepService.save(rs2);
+
+        RegistrationStep rs3 = new RegistrationStep();
+        rs3.setName("registration-step-address");
+        rs3.setPosition(3L);
+        rs2.setScriptName("/js/registrationAddress.js");
+        registrationStepService.save(rs3);
+
+        User user1 = userService.getUserByLogin("user");
+        Company company1 = companyService.getByCompanyName("Mr.Bo");
+        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
+        UserUCDto userUCDto = new UserUCDto(user1.getId(), user1.getLogin(), user1.getEmail());
+        CompanyUCDto companyUCDto = new CompanyUCDto(company1.getId(), company1.getName());
+
+        UserCompany userCompany = new UserCompany(user1.getId(), company1.getId(), registrationStep.getId());
+        userCompanyService.save(userCompany);
+
+        List<RegistrationStep> registrationStepList = registrationStepService.getAllRegSteps();
+
+        List<RegistrationStep> registrationStepListByUC = userCompanyService.getAllRegSteps();
+
+        List<Long> registrationStepListByUC1 = userCompanyService.getMissedRegSteps(userUCDto.getId());
+        System.out.println(registrationStepListByUC1);
+
     }
 }

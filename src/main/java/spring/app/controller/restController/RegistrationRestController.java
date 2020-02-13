@@ -1,6 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.*;
@@ -8,6 +9,7 @@ import spring.app.service.abstraction.*;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,14 +21,21 @@ public class RegistrationRestController {
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
     private RoleService roleService;
+    private UserCompanyService userCompanyService;
+    private RegistrationStepService registrationStepService;
 
     @Autowired
-    public RegistrationRestController(UserService userService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, RoleService roleService) {
+    public RegistrationRestController(
+            UserService userService, CompanyService companyService, OrgTypeService orgTypeService,
+            PlayListService playListService, RoleService roleService, UserCompanyService userCompanyService,
+            RegistrationStepService registrationStepService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.roleService = roleService;
+        this.userCompanyService = userCompanyService;
+        this.registrationStepService = registrationStepService;
     }
 
     @PostMapping("/first")
@@ -95,4 +104,20 @@ public class RegistrationRestController {
 //            return "exist";
 //        //return "success";
     }
+
+    //ИСПРАВИТЬ
+    @PostMapping ("/getPages")
+    public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String userLogin) {
+        User user = userService.getUserByLogin(userLogin);
+        List<Long> regStepsToPass = userCompanyService.getMissedRegSteps(user.getId());
+
+        return ResponseEntity.ok(regStepsToPass);
+    }
+
+    @PostMapping ("/getOneStep")
+    public ResponseEntity<RegistrationStep> getRegStepToPassNow(@RequestParam Long stepId) {
+        RegistrationStep registrationStep = registrationStepService.getRegStepById(stepId);
+        return ResponseEntity.ok(registrationStep);
+    }
+
 }

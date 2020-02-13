@@ -28,12 +28,12 @@ public class UserRestController {
 
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
-	private final UserService userService;
+    private final UserService userService;
 
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
-	private final AddressService addressService;
+    private final AddressService addressService;
 
     private String PASSWORD = "";
 
@@ -52,12 +52,12 @@ public class UserRestController {
                               SongService songService,
                               SongCompilationService songCompilation,
                               AddressService addressService) {
-		this.roleService = roleService;
+        this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
-		this.addressService = addressService;
+        this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -75,29 +75,30 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/get_user")
-    public User getUserData(){
+    public User getUserData() {
         User user = (User) getContext().getAuthentication().getPrincipal();
         return (userService.getUserById(user.getId()));
     }
+
     @PostMapping(value = "/get_encrypted_pass")
     public ResponseEntity<Boolean> getEncPass(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(passwordEncoder.matches(json.get("oldPass"), json.get("newPass")));
     }
 
     @PutMapping(value = "/edit_data")
-    public ResponseEntity<User> editUserData(@RequestBody User newUser){
+    public ResponseEntity<User> editUserData(@RequestBody User newUser) {
         User user = ((User) getContext().getAuthentication().getPrincipal());
-        if(!newUser.getLogin().equals(user.getLogin())) {
+        if (!newUser.getLogin().equals(user.getLogin())) {
             if (userService.getUserByLogin(newUser.getLogin()) == null) {
                 user.setLogin(newUser.getLogin());
-            }else{
+            } else {
                 return ResponseEntity.badRequest().body(user);
             }
         }
-        if(!newUser.getEmail().equals(user.getEmail())){
-            if(userService.getUserByEmail(newUser.getEmail()) == null){
+        if (!newUser.getEmail().equals(user.getEmail())) {
+            if (userService.getUserByEmail(newUser.getEmail()) == null) {
                 user.setEmail(newUser.getEmail());
-            }else{
+            } else {
                 return ResponseEntity.badRequest().body(user);
             }
         }
@@ -106,10 +107,10 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/edit_pass")
-    public void editUserPass(@RequestBody String newPassword){
-        newPassword = newPassword.substring(1, newPassword.length()-1);
-        newPassword = newPassword.replaceAll("##@##"  , "\"");
-        newPassword = newPassword.replaceAll("##@@##"  ,"\\\\");
+    public void editUserPass(@RequestBody String newPassword) {
+        newPassword = newPassword.substring(1, newPassword.length() - 1);
+        newPassword = newPassword.replaceAll("##@##", "\"");
+        newPassword = newPassword.replaceAll("##@@##", "\\\\");
 
         User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
@@ -151,7 +152,7 @@ public class UserRestController {
         companyService.updateCompany(companyForUpdate);
     }
 
-	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
@@ -180,16 +181,16 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/code_check")
-    public ResponseEntity<String> codeCheck(@RequestBody String code){
-        code = code.substring(1, code.length()-1);
-        if(code.equals(PASSWORD)){
+    public ResponseEntity<String> codeCheck(@RequestBody String code) {
+        code = code.substring(1, code.length() - 1);
+        if (code.equals(PASSWORD)) {
             return ResponseEntity.ok("Пароль совпадает");
         }
         return ResponseEntity.badRequest().body("Пароль не совпадает");
     }
 
     @PutMapping(value = "/send_mail")
-    public void sendMail(){
+    public void sendMail() {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
         PASSWORD = emailPasswordGeneration.generate();
@@ -201,7 +202,7 @@ public class UserRestController {
                 user.getLogin()
         );
 
-        if(user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
+        if (user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);
         }
 

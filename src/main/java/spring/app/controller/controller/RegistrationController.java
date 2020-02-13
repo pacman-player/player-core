@@ -66,4 +66,21 @@ public class RegistrationController {
         response.addCookie(cookie);
         return "login";
     }
+
+    @RequestMapping("registration-step-user")
+    public String getUserReg() {
+        return "user/registration-blocks.html :: registration-step-user";
+    }
+
+    @RequestMapping("registration-step-company")
+    public String getCompanyReg() {
+        return "user/registration-blocks.html :: registration-step-company";
+    }
+
+    @RequestMapping("registration-step-address")
+    public String getAddressReg() {
+        return "user/registration-blocks.html :: registration-step-address";
+    }
+
+
 }

@@ -5,7 +5,7 @@ $(function () {
         event.preventDefault();
         if ($('#registrationFirstForm').valid()) {
             $.post("/api/registration/first", registrationFirstForm.serialize(), function() {
-                location.assign(location.origin + "/registration/second?login=" + $("#login").val());
+                location.assign(location.origin + "/reg_check");
             });
         }
     })
