@@ -2,6 +2,7 @@ package spring.app.configuration.initializer;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import spring.app.model.*;
@@ -54,6 +55,7 @@ public class TestDataInit {
     private String musicPath;
 
     private void init() throws InvalidDataException, IOException, UnsupportedTagException {
+        FileUtils.cleanDirectory(new File(musicPath));
         File musicDirectory = new File(musicPath);
         if (!musicDirectory.exists()) {
             musicDirectory.mkdir();
@@ -356,7 +358,7 @@ public class TestDataInit {
         company6.setBannedGenres(bannedGenres);
         companyService.addCompany(company6);
 
-        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music/");
+        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
 
     }
 }

@@ -1,10 +1,15 @@
 package spring.app.util;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.mpatric.mp3agic.*;
+import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -100,7 +105,7 @@ public class Mp3Parser {
             genre = id3v2Tag.getGenreDescription();
             image = id3v2Tag.getAlbumImage();
         }
-        file.renameTo(new File("music/" + author + "-" + name + ".mp3"));
+
         Author auth = new Author(author);
         Genre gen = genreService.getByName(genre);
         if(gen == null){
@@ -113,6 +118,9 @@ public class Mp3Parser {
         song.setAuthor(auth);
         song.setGenre(gen);
         songService.addSong(song);
+        Path fileO = Paths.get("music/" + songService.getByName(song.getName()).getId() + ".mp3");
+
+        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
         return song;
     }
 }

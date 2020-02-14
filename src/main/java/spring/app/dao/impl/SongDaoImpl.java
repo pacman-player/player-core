@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dto.SongDto;
+import spring.app.model.Author;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
@@ -25,7 +26,19 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         Song song;
         try {
-            song = query.getResultList().get(0);
+            song = query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return song;
+    }
+    @Override
+    public Song getByNameAndAuthor(String author, String name) {
+        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s WHERE s.name = :name AND s.author.name = :author", Song.class);
+        query.setParameter("name", name).setParameter("author", author);
+        Song song;
+        try {
+            song = query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

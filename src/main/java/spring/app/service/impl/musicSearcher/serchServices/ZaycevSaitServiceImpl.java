@@ -46,6 +46,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 String[] perfomerAndSong = trackName.split(" – ");
                 authorName = perfomerAndSong[0];
                 songName = perfomerAndSong[1];
+                trackName = trackName.replaceAll(" – ", "-");
             }
 
             String json = Jsoup.connect(baseUrl + jsonUrl).ignoreContentType(true).execute().body();
@@ -68,19 +69,19 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 byte[] track = restTemplate.getForObject(link, byte[].class);
-
+                Path path = null;
                 if (track.length > 1024 * 10) {    //проверка что песня полноценная
 
-                    Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                    if (path != null) {
-                        try {
-                            Files.write(path, track);  //записываем песню с директорию
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    path = PlayerPaths.getSongsDir(trackName + ".mp3");
+//                    if (path != null) {
+//                        try {
+//                            Files.write(path, track);  //записываем песню с директорию
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 } else return null;  //если песня меньше 2мб возвращаем 0
-                return new Track(authorName, songName, trackName, track);
+                return new Track(authorName, songName, trackName, track, path);
             }
         } catch (Exception e) {
             System.out.println("Ошибка скачивания с zaycev.net");

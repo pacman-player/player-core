@@ -39,7 +39,7 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             author = first.getElementsByClass("artist_name").text();
             song = first.getElementsByClass("song_name").text();
 
-            trackName = author + " – " + song;
+            trackName = author + "-" + song;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
@@ -54,19 +54,19 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             String link = searchSong(author, song);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
-
+            Path path = null;
             if (track.length > 1024 * 20) {    //проверка что песня полноценная
 
-                Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                if (path != null) {
-                    try {
-                        Files.write(path, track);  //записываем песню с директорию
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                path = PlayerPaths.getSongsDir(trackName + ".mp3");
+//                if (path != null) {
+//                    try {
+//                        Files.write(path, track);  //записываем песню с директорию
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             } else return null;  //если песня меньше 2мб возвращаем 0
-            return new Track(authorName, songName, trackName, track);
+            return new Track(authorName, songName, trackName, track, path);
         } catch (IOException e) {
             System.out.println("Ошибка скачивания с krolik.biz");
         }

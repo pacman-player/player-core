@@ -1,11 +1,13 @@
 package spring.app.service.impl;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.app.dao.abstraction.SongDao;
 import spring.app.service.abstraction.MusicService;
 import spring.app.util.MP3TagReader;
 
@@ -17,6 +19,8 @@ import java.io.*;
 @Service
 @Transactional
 public class MusicServiceImpl implements MusicService {
+    @Autowired
+    private SongDao songDao;
 
     @Value("${music.path}")
     private String musicPath;
@@ -60,7 +64,9 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
-        File file = new File(musicPath + musicAuthor + "-" + musicTitle + ".mp3");
+        System.out.println(musicTitle);
+        Long id = songDao.getByNameAndAuthor(musicAuthor, musicTitle).getId();
+        File file = new File(musicPath + id + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;
         try {

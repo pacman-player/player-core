@@ -175,15 +175,4 @@ public class Song extends Bannable {
         return id.equals(song1.id) &&
                 name.equals(song1.name);
     }
-
-    @Override
-    public String toString() {
-        return "Song{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author=" + author +
-                ", genre=" + genre +
-                ", songQueue=" + songQueues +
-                '}';
-    }
 }

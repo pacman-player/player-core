@@ -10,6 +10,8 @@ public interface SongService {
 
     Song getByName(String name);
 
+    Song getByNameAndAuthor(String name, String author);
+
     Song getSongById(Long id);
 
     void addSong(Song song);

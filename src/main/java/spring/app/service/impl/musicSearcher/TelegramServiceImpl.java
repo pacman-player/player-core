@@ -10,8 +10,13 @@ import spring.app.service.CutSongService;
 import spring.app.service.abstraction.MusicSearchService;
 import spring.app.service.abstraction.TelegramService;
 import spring.app.service.entity.Track;
+import spring.app.util.PlayerPaths;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @Transactional
@@ -42,11 +47,22 @@ public class TelegramServiceImpl implements TelegramService {
 
     @Override
     public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
+        //in this line the track is being downloaded and saved to hd (/music)
         track = musicSearchService.getSong(songRequest.getAuthorName(),songRequest.getSongName());
         String trackName = track.getFullTrackName();
         byte[] trackBytes = track.getTrack();
+        //cut song here
         byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
+        //setting songId vis going back to music
         songId = musicSearchService.updateData(track);
+        Path path = PlayerPaths.getSongsDir(songId + ".mp3");
+        if (track.getPath() != null) {
+            try {
+                Files.write(path, track.getTrack());  //записываем песню с директорию
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         SongResponse songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName);
         return songResponse;
     }
