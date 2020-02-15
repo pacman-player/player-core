@@ -11,9 +11,10 @@ import spring.app.util.Mp3Parser;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestDataInit {
 
@@ -43,6 +44,9 @@ public class TestDataInit {
 
     @Autowired
     private SongQueueService songQueueService;
+
+    @Autowired
+    private OrderSongService orderSongService;
 
     @Autowired
     private SongCompilationService songCompilationService;
@@ -247,6 +251,18 @@ public class TestDataInit {
         company6.setEveningPlayList(eveningPlayLists);
         company6.setBannedGenres(bannedGenres);
         companyService.addCompany(company6);
+
+        //adding mock statistics
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, -90);
+        long startDate = cal.getTime().getTime();
+        long endDate = new Date().getTime();
+        Random random = new Random(System.currentTimeMillis());
+        long totalOrders = random.nextInt(3000);
+        for (int i = 0; i < totalOrders; i++) {
+            orderSongService.addSongOrder(new OrderSong(company, new Timestamp(ThreadLocalRandom.current()
+                    .nextLong(startDate, endDate))));
+        }
 
         new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
 
