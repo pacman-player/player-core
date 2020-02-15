@@ -37,6 +37,21 @@ public class AdminRestController {
         this.genreService = genreService;
         this.orgTypeService = orgTypeService;
     }
+    @PutMapping(value = "/ban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void bunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setEnabled(false);
+        userService.updateUser(user);
+    }
+
+    @PutMapping(value = "/unban_user/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unbunUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        user.setEnabled(true);
+        userService.updateUser(user);
+    }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
@@ -118,6 +133,12 @@ public class AdminRestController {
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
         orgTypeService.updateOrgType(orgType);
+    }
+
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/establishment/est_type_name_is_free")
+    public boolean isLoginFree(@RequestParam("name") String name) {
+        return orgTypeService.getByName(name) == null;
     }
 
     @DeleteMapping(value = "/delete_establishment")

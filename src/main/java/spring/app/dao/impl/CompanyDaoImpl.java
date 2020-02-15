@@ -6,10 +6,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Company;
+import spring.app.model.Song;
+import spring.app.model.SongQueue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -72,5 +78,17 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getAllSongsInQueueByCompanyId(long id) {
+        Company company = entityManager.createQuery("SELECT c FROM Company c LEFT JOIN FETCH c.songQueues WHERE c.id = :cId", Company.class).setParameter("cId", id).getSingleResult();
+        List<SongQueue> list = new ArrayList<>(company.getSongQueues());
+        List<String> result = new ArrayList<>();
+        if (!list.isEmpty()) {
+         result = list.stream().map(SongQueue::getSong).map(x -> x.getAuthor().getName() + " - " + x.getName()).collect(Collectors.toList());
+        }
+        return result;
     }
 }
