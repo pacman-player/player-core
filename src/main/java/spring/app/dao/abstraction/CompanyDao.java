@@ -4,6 +4,8 @@ import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 
+import java.util.List;
+
 public interface CompanyDao extends GenericDao<Long, Company> {
     Company getCompanyByCompanyName(String companyName);
     boolean isExistCompanyByName(String name);
