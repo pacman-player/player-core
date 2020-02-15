@@ -1,23 +1,20 @@
 package spring.app.controller.restController;
 
-import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.UserDto;
 import spring.app.model.*;
-import spring.app.service.CutSongService;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
 import java.util.Map;
-import java.util.Random;
 import java.util.List;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
@@ -34,6 +31,7 @@ public class UserRestController {
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
     private final AddressService addressService;
+    private final UserCompanyService userCompanyService;
 
     private String PASSWORD = "";
 
@@ -51,13 +49,14 @@ public class UserRestController {
                               AuthorService authorService,
                               SongService songService,
                               SongCompilationService songCompilation,
-                              AddressService addressService) {
+                              AddressService addressService, UserCompanyService userCompanyService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
         this.addressService = addressService;
+        this.userCompanyService = userCompanyService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -205,6 +204,11 @@ public class UserRestController {
         if (user.getEmail() != null && !user.getEmail().equals("user@gmail.com") && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);
         }
+    }
 
+    @GetMapping(value = "/get_missed_steps")
+    public List<Long>  getMissedRegSteps() {
+        User user = (User) getContext().getAuthentication().getPrincipal();
+     return userCompanyService.getMissedRegSteps(user.getId());
     }
 }

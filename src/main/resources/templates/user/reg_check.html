@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -12,9 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link href="/css/style.css" type="text/css" rel="stylesheet"/>
-    <title>Регистрация: ПРОВЕРКА</title>
+    <title>Регистрация: 1/2</title>
 </head>
-
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
@@ -31,15 +28,7 @@
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="row">
-        <!--<div id="to-replace-div"></div>-->
-        <!--тест включения фрагментов-->
-
-        <div data-th-replace="registration-blocks:: registration-step-user"></div>
-    </div>
-</div>
-
+<div id="htmlPage"></div>
 <script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -52,6 +41,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script src="/js/registrationCheck.js"></script>
+<script type="text/javascript" src="/js/reg-check.js"></script>
 </body>
 </html>
