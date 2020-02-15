@@ -55,6 +55,13 @@ public class OrderSongRestController {
         ordersClassified.add("orders-total-total:" + orderSongService.countAll(companyId));
         return ordersClassified;
     }
+    @GetMapping(value = "/getOrders/{period}")
+    public List<String> getOrders(@PathVariable("period") String period) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user = userService.getUserByLogin(user.getUsername());
+        Long companyId = user.getCompany().getId();
+        return orderSongService.getOrdersSlicedByPeriod(companyId, period);
+    }
     @GetMapping(value = "/getSongsInQueue")
     public List<String> getSongsInQueue() {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

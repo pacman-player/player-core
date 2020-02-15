@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestDataInit {
 
@@ -21,6 +22,9 @@ public class TestDataInit {
 
     @Autowired
     private GenreService genreService;
+
+    @Autowired
+    private OrderSongService orderSongService;
 
     @Autowired
     private OrgTypeService orgTypeService;
@@ -276,5 +280,17 @@ public class TestDataInit {
 
         company.setAddress(address5);
         companyService.updateCompany(company);
+
+        //adding mock statistics
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, -90);
+        long startDate = cal.getTime().getTime();
+        long endDate = new Date().getTime();
+        Random random = new Random(System.currentTimeMillis());
+        long totalOrders = random.nextInt(3000);
+        for (int i = 0; i < totalOrders; i++) {
+            orderSongService.addSongOrder(new OrderSong(company, new Timestamp(ThreadLocalRandom.current()
+                    .nextLong(startDate, endDate))));
+        }
     }
 }
