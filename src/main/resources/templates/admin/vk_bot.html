@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8"/>
     <title>Отчет</title>
@@ -10,7 +11,8 @@
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -19,7 +21,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Выход</a>
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -99,6 +101,8 @@
 <script type="text/javascript" src="/js/admin/vk_bot.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
+
 
 </body>
 </html>

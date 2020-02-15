@@ -29,6 +29,8 @@
         }
     </style>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -72,8 +74,8 @@
                     </div>
 
                     <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
-<!--                    <div class="alert alert-danger" th:text="${captchaError}">123</div>-->
-<!--                    <h3 th:text="${captchaError}">123</h3>-->
+                    <!--                    <div class="alert alert-danger" th:text="${captchaError}">123</div>-->
+                    <!--                    <h3 th:text="${captchaError}">123</h3>-->
 
                     <!--<a href="/google/login">Click here to Google Login</a>-->
                 </form>
@@ -103,6 +105,7 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="/js/login.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
 
 </body>
 </html>

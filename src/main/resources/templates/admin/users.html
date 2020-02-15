@@ -11,7 +11,8 @@
     <link href="/css/style.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -20,7 +21,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Logout</a>
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -97,7 +98,7 @@
                                                 <th>ID</th>
                                                 <th>Роль</th>
                                                 <th>Логин</th>
-<!--                                                <th>Пароль</th>-->
+                                                <!--                                                <th>Пароль</th>-->
                                                 <th>Почта</th>
                                                 <th>Компания</th>
                                                 <th>Изменить</th>
@@ -175,16 +176,16 @@
                                                                                 <div>
                                                                                     <label for="updateUserRole">Роль</label>
                                                                                     <div class="form-control"
-                                                                                            id="updateUserRole"
-                                                                                            name="role">
+                                                                                         id="updateUserRole"
+                                                                                         name="role">
                                                                                         <div id="rlist">
-                                                                                        <input type="checkbox" value="user">USER
-                                                                                        </input>
-                                                                                        <input type="checkbox" value="admin">ADMIN
-                                                                                        </input>
-                                                                                        <input type="checkbox" value="manager">
+                                                                                            <input type="checkbox" value="user">USER
+                                                                                            </input>
+                                                                                            <input type="checkbox" value="admin">ADMIN
+                                                                                            </input>
+                                                                                            <input type="checkbox" value="manager">
                                                                                             MANAGER
-                                                                                        </input>
+                                                                                            </input>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -207,23 +208,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                    <tbody></tbody>
-                                    </table>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!--добавление юзеров-->
-                    <div role="tabpanel" class="tab-pane" id="add-user-panel">
-                        <div class="panel panel-default table-panel">
-                            <div class="tab-content">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                <form id="addForm">
-                                                    <div class="form-group text-center edit-form">
+                        <!--добавление юзеров-->
+                        <div role="tabpanel" class="tab-pane" id="add-user-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
                                                             <div>
                                                                 <label for="addEmail">Почта</label>
                                                                 <input id="addEmail" class="form-control" type="text"
@@ -242,28 +243,29 @@
                                                                        type="password" placeholder="Password"
                                                                        required="required" name="password"/>
                                                             </div>
-                                                        <div>
-                                                            <label for="updateUserRoleA">Роли</label>
-                                                            <div class="form-control"
-                                                                 id="updateUserRoleA"
-                                                                 name="role">
-                                                                <div id="rlistA">
-                                                                    <input type="checkbox" value="user">USER
-                                                                    </input>
-                                                                    <input type="checkbox" value="admin">ADMIN
-                                                                    </input>
-                                                                    <input type="checkbox" value="manager">
-                                                                    MANAGER
-                                                                    </input>
+                                                            <div>
+                                                                <label for="updateUserRoleA">Роли</label>
+                                                                <div class="form-control"
+                                                                     id="updateUserRoleA"
+                                                                     name="role">
+                                                                    <div id="rlistA">
+                                                                        <input type="checkbox" value="user">USER
+                                                                        </input>
+                                                                        <input type="checkbox" value="admin">ADMIN
+                                                                        </input>
+                                                                        <input type="checkbox" value="manager">
+                                                                        MANAGER
+                                                                        </input>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <button type="submit" id="addUserBtn"
+                                                                    class="btn btn-success btn-lg">
+                                                                Добавить
+                                                            </button>
                                                         </div>
-                                                        <button type="submit" id="addUserBtn"
-                                                                class="btn btn-success btn-lg">
-                                                            Добавить
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -272,29 +274,29 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!--модалка - компания-->
-            <div id="editCompany" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+                <!--модалка - компания-->
+                <div id="editCompany" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Информация о компании</h4>
-                        </div>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Информация о компании</h4>
+                            </div>
 
-                        <div class="modal-body">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                        <form id="company-form">
-                                            <div class="form-group text-center edit-form">
+                                            <form id="company-form">
+                                                <div class="form-group text-center edit-form">
                                                     <div class="modal-body" id="company-modal-body"></div>
                                                     <div class="modal-footer" id="modal-footer"></div>
-                                            </div>
-                                        </form>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +306,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script
@@ -323,6 +324,8 @@
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/formValidation.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
+
 
 </body>
 </html>

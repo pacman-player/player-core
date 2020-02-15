@@ -15,6 +15,8 @@
     <script src="../static/js/sound.js" th:src="@{/js/sound.js}"></script>
     <link rel="stylesheet" th:href="@{style.css}"/>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -111,6 +113,7 @@
     </div>
 </div>
 <!--<script type="text/javascript" src="/js/howler.js"></script>-->
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
 
 </body>
 </html>

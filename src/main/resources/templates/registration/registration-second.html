@@ -11,6 +11,8 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link href="/css/style.css" type="text/css" rel="stylesheet"/>
     <title>Регистрация: 2/2</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -74,5 +76,7 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="/js/registrationSecondPage.js"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
+
 </body>
 </html>

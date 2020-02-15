@@ -13,6 +13,8 @@
 
     <link rel="stylesheet" href="сcs/style.css"/>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -20,7 +22,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#">Project name</a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Выход</a>
         </div>
     </div>
 
@@ -61,126 +63,124 @@
             <div id="my-selection" role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 ">
                 <H3> Редактирование профиля </H3>
             </div>
-<!--                <div class="col-fhd-4 col-x1-5 col-lg-6">-->
-                <div class="col-sm-4">
+            <!--                <div class="col-fhd-4 col-x1-5 col-lg-6">-->
+            <div class="col-sm-4">
 
                 <form id="edit-data-form">
-                        <div class="form-group text-center edit-form">
+                    <div class="form-group text-center edit-form">
 
-                            <h4>Персональные данные</h4>
+                        <h4>Персональные данные</h4>
 
-                            <label for="login">Логин</label>
-                            <input id="login" class="form-control" type="text" name="login" required="" />
+                        <label for="login">Логин</label>
+                        <input id="login" class="form-control" type="text" name="login" required="" />
 
-                            <label for="email">Почта</label>
-                            <input id="email" class="form-control" type="email" name="email" required="1"/>
+                        <label for="email">Почта</label>
+                        <input id="email" class="form-control" type="email" name="email" required="1"/>
 
-                            <button id="updateUserDataBtn" class="btn btn-primary" type="submit">Сохранить</button>
+                        <button id="updateUserDataBtn" class="btn btn-primary" type="submit">Сохранить</button>
 
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <form id="edit-password-form">
+                    <div class="form-group text-center edit-form">
+
+                        <h4>Сменить пароль</h4>
+
+                        <h5>Для смены пароля нажмите на кнопку ниже
+                            и в открывшемся окне введите код подтверждения,
+                            который мы отправили на вашу электронную почту</h5>
+
+                        <button id="checkUserPasswordBtn" data-toggle="modal" data-target="#checkUserCode" class="btn btn-primary" type="button">Отправить код</button>
+
+                    </div>
+                </form>
+            </div>
+            <!--модалка - проверка кода-->
+            <div id="checkUserCode" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Проверка кода</h4>
                         </div>
-                    </form>
-                </div>
-                <div class="col-sm-4">
-                    <form id="edit-password-form">
-                        <div class="form-group text-center edit-form">
 
-                            <h4>Сменить пароль</h4>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                            <h5>Для смены пароля нажмите на кнопку ниже
-                                и в открывшемся окне введите код подтверждения,
-                                который мы отправили на вашу электронную почту</h5>
+                                        <form id="code-form">
+                                            <div class="form-group text-center edit-form">
 
-                            <button id="checkUserPasswordBtn" data-toggle="modal" data-target="#checkUserCode" class="btn btn-primary" type="button">Отправить код</button>
+                                                <label for="checkUserCodeId">Введите проверочный код</label>
+                                                <input id="checkUserCodeId" class="form-control" type="text"
+                                                       name="code" required=""/>
 
-                        </div>
-                    </form>
-                </div>
-                <!--модалка - проверка кода-->
-                <div id="checkUserCode" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Проверка кода</h4>
-                            </div>
-
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                            <form id="code-form">
-                                                <div class="form-group text-center edit-form">
-
-                                                    <label for="checkUserCodeId">Введите проверочный код</label>
-                                                    <input id="checkUserCodeId" class="form-control" type="text"
-                                                           name="code" required=""/>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                        <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>
-                                                    </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                                    <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!--модалка - редактирование кода-->
-                <div id="editUserPass" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+            <!--модалка - редактирование кода-->
+            <div id="editUserPass" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Проверка кода</h4>
-                            </div>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Проверка кода</h4>
+                        </div>
 
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                            <form id="update-form">
-                                                <div class="form-group text-center edit-form">
+                                        <form id="update-form">
+                                            <div class="form-group text-center edit-form">
 
-                                                    <label for="oldUserPass">Текущий пароль</label>
-                                                    <input id="oldUserPass" class="form-control" type="password" name="password"
-                                                           required=""/>
+                                                <label for="oldUserPass">Текущий пароль</label>
+                                                <input id="oldUserPass" class="form-control" type="password" name="password"
+                                                       required=""/>
 
-                                                    <label for="newUserPass">Новый пароль</label>
-                                                    <input id="newUserPass" class="form-control" type="password" name="password"
-                                                           required=""/>
+                                                <label for="newUserPass">Новый пароль</label>
+                                                <input id="newUserPass" class="form-control" type="password" name="password"
+                                                       required=""/>
 
-                                                    <label for="updateUserPass">Подтвердите пароль</label>
-                                                    <input id="updateUserPass" class="form-control" type="password" name="password"
-                                                           required=""/>
+                                                <label for="updateUserPass">Подтвердите пароль</label>
+                                                <input id="updateUserPass" class="form-control" type="password" name="password"
+                                                       required=""/>
 
-                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
+                                                <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>
 
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
+            </div>
         </div>
 
     </div>
 </div>
 
 <script type="text/javascript" src="/js/user/edit.js" rel="stylesheet"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
 
 </body>
 </html>

@@ -11,9 +11,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<!--    <link rel="stylesheet" href="сss/style.css"/>-->
+    <!--    <link rel="stylesheet" href="сss/style.css"/>-->
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -21,7 +23,9 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Выход</a>
+
+
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -141,47 +145,48 @@
                     </div>
 
                 </div>
-<!--                здесь были кнопки из футера модалки, удалил-->
+                <!--                здесь были кнопки из футера модалки, удалил-->
             </div>
         </div>
     </div>
 
-<!--    код с дева-->
-<!--    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open-->
-<!--        button-->
-<!--    </button>-->
-<!--    <div class="modal" id="compilationModal">-->
-<!--        <div class="modal-dialog">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <b id="compilationModalCompilationName" class="text-uppercase"></b>-->
-<!--                    <button class="close" data-dismiss="modal">&times;</button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <table class="table table-hover">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>Name</th>-->
-<!--                            <th>Author</th>-->
-<!--                            <th>Genre</th>-->
-<!--                            <th rowspan="2">Options</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody id="compilationModalTableBody"></tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button class="btn" data-dismiss="modal">Close</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    код с дева-->
+    <!--    <button hidden="hidden" id="openCompilationModal" data-target="#compilationModal" data-toggle="modal">Modal open-->
+    <!--        button-->
+    <!--    </button>-->
+    <!--    <div class="modal" id="compilationModal">-->
+    <!--        <div class="modal-dialog">-->
+    <!--            <div class="modal-content">-->
+    <!--                <div class="modal-header">-->
+    <!--                    <b id="compilationModalCompilationName" class="text-uppercase"></b>-->
+    <!--                    <button class="close" data-dismiss="modal">&times;</button>-->
+    <!--                </div>-->
+    <!--                <div class="modal-body">-->
+    <!--                    <table class="table table-hover">-->
+    <!--                        <thead>-->
+    <!--                        <tr>-->
+    <!--                            <th>Name</th>-->
+    <!--                            <th>Author</th>-->
+    <!--                            <th>Genre</th>-->
+    <!--                            <th rowspan="2">Options</th>-->
+    <!--                        </tr>-->
+    <!--                        </thead>-->
+    <!--                        <tbody id="compilationModalTableBody"></tbody>-->
+    <!--                    </table>-->
+    <!--                </div>-->
+    <!--                <div class="modal-footer">-->
+    <!--                    <button class="btn" data-dismiss="modal">Close</button>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
 </div>
 <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
 
 </body>
 </html>

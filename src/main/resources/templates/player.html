@@ -5,6 +5,9 @@
     <meta name="viewport" content="user-scalable=no"/>
     <title>Howler.js Audio Player</title>
     <link rel="stylesheet" href="/css/player.css"/>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <!-- Top Info -->
@@ -48,5 +51,7 @@
 <script src="/js/player/howler.core.js"></script>
 <script src="/js/player/siriwave.js"></script>
 <script src="/js/player/player.js"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
+
 </body>
 </html>

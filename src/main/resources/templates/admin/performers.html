@@ -10,7 +10,8 @@
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -19,7 +20,9 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Выход</a>
+
+
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -72,7 +75,7 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-              <!--общий список и добавление нового автора-->
+                <!--общий список и добавление нового автора-->
                 <div id="list-authors" class="tab-pane active" role="tabpanel">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="authors-table-nav" class="active">
@@ -91,13 +94,13 @@
                                     <div class="panel-body">
                                         <table id="AuthorTable" class="table">
                                             <thead id="getAuthorTable">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Имя</th>
-                                                    <th>Жанр</th>
-                                                    <th>Изменить</th>
-                                                    <th>Удалить</th>
-                                                </tr>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Имя</th>
+                                                <th>Жанр</th>
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
+                                            </tr>
                                             </thead>
 
                                             <!--модальное окно обновления автора-->
@@ -136,7 +139,6 @@
                                                                                     <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
                                                                                     <button id="editAuthorBtn" class="btn btn-primary" type="submit" data-dismiss="modal">Изменить</button>
                                                                                 </div>
-
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -202,6 +204,8 @@
 <script type="text/javascript" src="/js/admin/performers.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
+
 
 </body>
 </html>

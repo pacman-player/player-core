@@ -16,6 +16,9 @@
 
     <link type="text/css" href="/css/style.css" rel="stylesheet"/>
     <link type="text/css" href="/css/user/user.css" rel="stylesheet"/>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 
 <body>
@@ -24,7 +27,9 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <a id="logout-btn" class="navbar-brand pull-right" href="/logout">Выход</a>
+
+
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -107,6 +112,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/csrfToken.js" rel="script"></script>
 
 <script src="https://api-maps.yandex.ru/2.1/?apikey=d447d1ac-67c1-4791-be4a-6c7cb71d1c5e&amp;lang=ru_RU" type="text/javascript"></script>
 
