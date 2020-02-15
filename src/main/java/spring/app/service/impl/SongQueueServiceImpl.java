@@ -9,6 +9,7 @@ import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.abstraction.SongQueueService;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -49,5 +50,15 @@ public class SongQueueServiceImpl implements SongQueueService {
     @Override
     public void deletePlayedSong(Set<SongQueue> songQueues) {
         songQueueDao.deletePlayedSong(songQueues);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        songQueueDao.deleteById(id);
+    }
+
+    @Override
+    public List<SongQueue> getByCompanyId(Long id) {
+        return songQueueDao.getByCompanyId(id);
     }
 }

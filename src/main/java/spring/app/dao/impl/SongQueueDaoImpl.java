@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -61,5 +62,10 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
     @Override
     public void deletePlayedSong(Set<SongQueue> songQueues) {
         entityManager.remove(songQueues.stream().min(Comparator.comparing(SongQueue::getPosition)).get());
+    }
+
+    @Override
+    public List<SongQueue> getByCompanyId(Long id) {
+        return entityManager.createQuery("SELECT sq FROM SongQueue sq WHERE sq.company.id = :id", SongQueue.class).setParameter("id", id).getResultList();
     }
 }

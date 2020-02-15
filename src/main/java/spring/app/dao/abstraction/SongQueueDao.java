@@ -4,6 +4,7 @@ import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 
+import java.util.List;
 import java.util.Set;
 
 public interface SongQueueDao extends GenericDao<Long, SongQueue> {
@@ -14,4 +15,6 @@ public interface SongQueueDao extends GenericDao<Long, SongQueue> {
     void deleteAllSongQueues(Set<SongQueue> songQueues);
 
     void deletePlayedSong(Set<SongQueue> songQueues);
+
+    List<SongQueue> getByCompanyId(Long id);
 }

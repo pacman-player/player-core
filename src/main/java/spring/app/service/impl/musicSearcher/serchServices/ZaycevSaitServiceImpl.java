@@ -47,6 +47,10 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 authorName = perfomerAndSong[0];
                 songName = perfomerAndSong[1];
                 trackName = trackName.replaceAll(" – ", "-");
+            } else {
+                authorName = author;
+                songName = song;
+                trackName = authorName + "-" + songName;
             }
 
             String json = Jsoup.connect(baseUrl + jsonUrl).ignoreContentType(true).execute().body();
