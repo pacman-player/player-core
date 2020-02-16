@@ -52,6 +52,7 @@ $(document).ready(function () {
                         code += '</div>'
                         code += '</div>'
                         htmlPage.insertAdjacentHTML('afterEnd', code);
+                        getAllOrgTypeForAdd();
                         break;
                     case 3:
                         document.write("x равен 3");
