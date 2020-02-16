@@ -220,8 +220,8 @@ public class UserRestController {
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
         }
-
+        List<Long> steps = userCompanyService.getMissedRegSteps(user.getId());
         // ВОТ ТУТ ЧТОТО ПОШЛО НЕ ТАК
-     return userCompanyService.getMissedRegSteps(user.getId());
+     return steps;
     }
 }

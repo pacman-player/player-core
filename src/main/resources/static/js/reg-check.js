@@ -107,8 +107,8 @@ $(document).ready(function () {
 
                         success:
                             function () {
-                                notification("save-company" + companyDto.name,
-                                    "  Добавлена компании c именем " + companyDto.name + " ",
+                                notification("save-company" + company.name,
+                                    "  Добавлена компании c именем " + company.name + " ",
                                     'companies-panel');
                             },
                         error:

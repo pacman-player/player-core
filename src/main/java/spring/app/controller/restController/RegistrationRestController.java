@@ -8,6 +8,8 @@ import spring.app.dto.UserRegistrationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,7 +48,7 @@ public class RegistrationRestController {
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
         User newUser = userService.getUserByLogin(userDto.getLogin());
-        UserCompany userCompany = new UserCompany(newUser.getId(), 0L,  2L);
+        UserCompany userCompany = new UserCompany(newUser.getId(), 0L,  1L);
         userCompanyService.save(userCompany);
     }
 
@@ -65,10 +67,19 @@ public class RegistrationRestController {
     }
 
     @PostMapping("/second")
-    public void saveCompany(@RequestBody CompanyDto companyDto) {
+    public void saveCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) {
 //        long orgTypeId = Long.parseLong(company.getOrgType().getName());
 //        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
-        User user = (User) getContext().getAuthentication().getPrincipal();
+        HttpSession session = request.getSession();
+        String userLogin = (String) session.getAttribute("login");
+
+        User user;
+
+        if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+            user = userService.getUserByLogin(userLogin);
+        } else {
+            user = (User) getContext().getAuthentication().getPrincipal();
+        }
         user = userService.getUserByLogin(user.getLogin());
 
         Role roleUser = roleService.getRoleByName("USER");
