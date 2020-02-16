@@ -27,7 +27,7 @@ public class RegistrationController {
 
     @GetMapping("/first")
     public String getFirstRegistrationPage(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
+        /*Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("firstRegistrationStepDone")) {
@@ -37,11 +37,11 @@ public class RegistrationController {
 //                    return "redirect:/login";
 //                }
             }
-        }
+        }*/
         return "registration/registration-first";
     }
 
-    @GetMapping("/second")
+    /*@GetMapping("/second")
     public String getSecondRegistrationPage(@RequestParam String login, Model model, HttpServletResponse response) {
         response.addCookie(new Cookie("firstRegistrationStepDone", login));
         model.addAttribute("login", login);
@@ -65,22 +65,6 @@ public class RegistrationController {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "login";
-    }
-
-    @RequestMapping("registration-step-user")
-    public String getUserReg() {
-        return "user/registration-blocks.html :: registration-step-user";
-    }
-
-    @RequestMapping("registration-step-company")
-    public String getCompanyReg() {
-        return "user/registration-blocks.html :: registration-step-company";
-    }
-
-    @RequestMapping("registration-step-address")
-    public String getAddressReg() {
-        return "user/registration-blocks.html :: registration-step-address";
-    }
-
+    }*/
 
 }

@@ -66,10 +66,12 @@ public class RegistrationRestController {
 //        long orgTypeId = Long.parseLong(company.getOrgType().getName());
 //        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
         User user = (User) getContext().getAuthentication().getPrincipal();
-//        User userByLogin = userService.getUserByLogin(login);
+        user = userService.getUserByLogin(user.getLogin());
+
         Role roleUser = roleService.getRoleByName("USER");
         OrgType orgType = orgTypeService.getByName(companyDto.getOrgType());
         user.setRoles(Collections.singleton(roleUser));
+
         Company company = new Company();
         company.setName(companyDto.getName());
         company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
@@ -102,11 +104,14 @@ public class RegistrationRestController {
         company.setEveningPlayList(eveningPlaylistSet);
 
         companyService.addCompany(company);
-//        company = companyService.getByCompanyName(company.getName());
+        company = companyService.getByCompanyName(company.getName());
 
         user.setCompany(company);
         //здесь обновляю недорегенного юзера с уже зашифрованным паролем
         userService.addUserWithEncodePassword(user);
+
+        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), 2L);
+        userCompanyService.save(userCompany);
 //        userService.updateUserWithEncodePassword(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());
 //        System.out.println(byCompanyName);
