@@ -5,7 +5,8 @@ $(function () {
         event.preventDefault();
         if ($('#registrationFirstForm').valid()) {
             $.post("/api/registration/first", registrationFirstForm.serialize(), function() {
-                location.assign(location.origin + "/reg_check");
+//                location.assign(location.origin + "/reg_check");
+                    window.location.href = '/registration/reg_check'
             });
         }
     })

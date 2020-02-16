@@ -45,6 +45,9 @@ public class RegistrationRestController {
     @PostMapping("/first")
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
+        User newUser = userService.getUserByLogin(userDto.getLogin());
+        UserCompany userCompany = new UserCompany(newUser.getId(), 0L,  2L);
+        userCompanyService.save(userCompany);
     }
 
     @GetMapping("/check/email")

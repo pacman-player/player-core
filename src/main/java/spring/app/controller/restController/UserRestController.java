@@ -208,7 +208,9 @@ public class UserRestController {
 
     @GetMapping(value = "/get_missed_steps")
     public List<Long>  getMissedRegSteps() {
+
         User user = (User) getContext().getAuthentication().getPrincipal();
+
      return userCompanyService.getMissedRegSteps(user.getId());
     }
 }
