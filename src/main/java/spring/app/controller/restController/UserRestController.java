@@ -13,6 +13,8 @@ import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.List;
@@ -207,10 +209,19 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/get_missed_steps")
-    public List<Long>  getMissedRegSteps() {
+    public List<Long>  getMissedRegSteps(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String userLogin = (String) session.getAttribute("login");
 
-        User user = (User) getContext().getAuthentication().getPrincipal();
+        User user;
 
+        if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+            user = userService.getUserByLogin(userLogin);
+        } else {
+            user = (User) getContext().getAuthentication().getPrincipal();
+        }
+
+        // ВОТ ТУТ ЧТОТО ПОШЛО НЕ ТАК
      return userCompanyService.getMissedRegSteps(user.getId());
     }
 }

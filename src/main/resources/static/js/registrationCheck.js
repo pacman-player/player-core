@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    let userLogin;
+    let login;
     let stepNumOn;
 
     getUserData();
@@ -14,7 +14,7 @@ $(document).ready(function () {
             method: "GET",
             dataType: "json",
             success: function (data) {
-                userLogin = data.login;
+                login = data.login;
             }
         });
     }
@@ -22,7 +22,7 @@ $(document).ready(function () {
     function getPagesToPass() {
         $.ajax({
             url: '/api/registration/getPages',
-            data: {userLogin : userLogin},
+            data: {login : login},
             type: 'POST',
             dataType: 'json',
 

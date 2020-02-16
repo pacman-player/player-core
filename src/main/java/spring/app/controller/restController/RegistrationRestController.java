@@ -125,8 +125,9 @@ public class RegistrationRestController {
 
     //ИСПРАВИТЬ
     @PostMapping ("/getPages")
-    public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String userLogin) {
-        User user = userService.getUserByLogin(userLogin);
+    public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String login) {
+
+        User user = userService.getUserByLogin(login);
         List<Long> regStepsToPass = userCompanyService.getMissedRegSteps(user.getId());
 
         return ResponseEntity.ok(regStepsToPass);
