@@ -105,18 +105,9 @@ $(document).ready(function () {
                         },
                         async: false,
                         cache: false,
-
-                        success:
-                            function () {
-                                notification("save-company" + company.name,
-                                    "  Добавлена компании c именем " + company.name + " ",
-                                    'companies-panel');
-                            },
-                        error:
-                            function (xhr, status, error) {
-                                alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                            }
                     });
             }
+
+
 
 });
