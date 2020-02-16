@@ -42,6 +42,14 @@
             color: crimson;
             cursor: pointer;
         }
+        #container{
+            width: 100%;
+            height: 200px;
+            background-image: url("/img/adds.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
@@ -90,9 +98,10 @@
 
         <!--центральный блок-->
         <!--        <div class="tab-content">-->
-        <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">
+        <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 col-xl-6" id="my-selection">
             <h4 th:text="'Статистика, ' + ${name}"> Статистика</h4>
-            <div class="common-info" style="height: 300px; width: 100%;"></div>
+            <div id="container">
+            </div>
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav nav-pills nav-justified">
