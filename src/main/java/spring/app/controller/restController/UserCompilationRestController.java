@@ -28,27 +28,31 @@ public class UserCompilationRestController {
 
     @PostMapping(value = "/get/all-song-compilation")
     public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
-        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         LOGGER.info("GET request '/get/all-song-compilation' with genre = {}", genre);
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         if (genre.equals("Все подборки")) {
+            LOGGER.info("Returning all compilations");
             return songCompilationService.getAllSongCompilations();
         } else {
+            LOGGER.info("Returning compilations by provided genre...");
             Genre genres = genreService.getByName(genre);
-            return songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            List<SongCompilation> compilations = songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            LOGGER.info("Found {} compilation(s)", compilations.size());
+            return compilations;
         }
     }
 
     @GetMapping(value = "/get/song-compilation/{id}")
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
+        LOGGER.info("GET request '/get/all-song-compilation/{}'", id);
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
-        LOGGER.info("GET request '/get/all-song-compilation/{}'. Found SongCompilation named = {}",
-                id,
-                songCompilation.getName());
+        LOGGER.info("Found compilation = {}", songCompilation.getName());
         return songCompilation;
     }
 
     @GetMapping("/songsBySongCompilation")
     public List<SongDto> getSongsBySongCompilation(String compilationName) {
+        LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
         SongCompilation songCompilation = songCompilationService.getSongCompilationByCompilationName(compilationName);
         List<SongDto> songDtoList = songCompilation.getSong().stream()
                 .map(song -> new SongDto(
@@ -61,9 +65,7 @@ public class UserCompilationRestController {
         for (SongDto songDto : songDtoList) {
             System.out.println(songDto);
         }
-        LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}. Found {} songs",
-                compilationName,
-                songDtoList.size());
+        LOGGER.info("Found {} songs", songDtoList.size());
         return songDtoList;
     }
 }

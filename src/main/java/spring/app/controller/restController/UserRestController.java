@@ -65,20 +65,23 @@ public class UserRestController {
     @PostMapping(value = "/song_compilation")
     public @ResponseBody
     List<SongCompilation> getSongCompilation(@RequestBody String genre) {
-        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         LOGGER.info("POST request '/song_compilation' with genre = {}", genre);
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         if (genre.equals("Все подборки")) {
+            LOGGER.info("Returning all compilations");
             return songCompilation.getAllSongCompilations();
         } else {
             Genre genres = genreService.getByName(genre);
-            return songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            List<SongCompilation> compilations = songCompilation.getListSongCompilationsByGenreId(genres.getId());
+            LOGGER.info("Found {} compilation(s)", compilations.size());
+            return compilations;
         }
     }
 
     @GetMapping(value = "/get_user")
     public User getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/get_user' for authenticated User = {}", user);
+        LOGGER.info("GET request '/get_user' from authenticated User = {}", user);
         return (userService.getUserById(user.getId()));
     }
 
@@ -91,18 +94,22 @@ public class UserRestController {
     @PutMapping(value = "/edit_data")
     public ResponseEntity<User> editUserData(@RequestBody User newUser){
         User user = ((User) getContext().getAuthentication().getPrincipal());
-        LOGGER.info("PUT request '/edit_data' for User = {}", user);
+        LOGGER.info("PUT request '/edit_data' from User = {}", user);
         if(!newUser.getLogin().equals(user.getLogin())) {
             if (userService.getUserByLogin(newUser.getLogin()) == null) {
                 user.setLogin(newUser.getLogin());
+                LOGGER.info("User has changed his login successfully!");
             }else{
+                LOGGER.info("Bad request: User and Principal logins don't match");
                 return ResponseEntity.badRequest().body(user);
             }
         }
         if(!newUser.getEmail().equals(user.getEmail())){
             if(userService.getUserByEmail(newUser.getEmail()) == null){
                 user.setEmail(newUser.getEmail());
+                LOGGER.info("User has changed his email successfully!");
             }else{
+                LOGGER.info("Bad request: User and Principal emails don't match");
                 return ResponseEntity.badRequest().body(user);
             }
         }
@@ -113,63 +120,73 @@ public class UserRestController {
 
     @PutMapping(value = "/edit_pass")
     public void editUserPass(@RequestBody String newPassword){
+        User user = ((User) getContext().getAuthentication().getPrincipal());
+        LOGGER.info("PUT request '/edit_pass' from User = {}", user);
         newPassword = newPassword.substring(1, newPassword.length()-1);
         newPassword = newPassword.replaceAll("##@##"  , "\"");
         newPassword = newPassword.replaceAll("##@@##"  ,"\\\\");
 
-        User user = ((User) getContext().getAuthentication().getPrincipal());
         user.setPassword(newPassword);
         userService.updateUser(user);
-        LOGGER.info("PUT request '/edit_pass' for User = {}", user);
+        LOGGER.info("Password has been changed successfully!");
     }
 
     @PostMapping(value = "/show_admin")//запрос на показ вкладки админ на странице user
     public String getUserRoles() {
-        String role = "user";
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("POST request '/show_admin' for User = {}", user);
+        LOGGER.info("POST request '/show_admin' from User = {}", user);
+        String role = "user";
         for (Role roles : user.getRoles()) {
             if (roles.getName().equals("ADMIN")) {
                 role = "admin";
+                LOGGER.info("User has ADMIN role");
                 return role;
             }
         }
+        LOGGER.info("User doesn't have ADMIN role");
         return role;
     }
 
     @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany() {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-        LOGGER.info("GET request '/company'");
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("GET request '/company' from User = {}", user);
+        long id = user.getCompany().getId();
         return ResponseEntity.ok(companyService.getById(id));
     }
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-        LOGGER.info("GET request '/company/address'");
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("GET request '/company/address' from User = {}", user);
+        long id = user.getCompany().getId();
         return ResponseEntity.ok(addressService.getById(id));
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("PUT request '/company' from User = {}", user);
+        long id = user.getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
-        LOGGER.info("PUT request '/company' for Company named = {}", companyForUpdate.getName());
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyService.updateCompany(companyForUpdate);
+        LOGGER.info("Updated Company named = {}", companyForUpdate.getName());
     }
 
 	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("PUT request '/company/address' from User = {}", user);
+        long id = user.getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
         Address addressForUpdate = addressService.getById(id);
-        LOGGER.info("PUT request '/company/address' for Company named = {}", companyForUpdate.getName());
 
+        LOGGER.info("Updating address for Company named = {}", companyForUpdate.getName());
         if (addressForUpdate == null) {
+            LOGGER.debug("Creating new address...");
             addressService.updateAddress(new Address(
                     addressDto.getCountry(),
                     addressDto.getCity(),
@@ -178,17 +195,21 @@ public class UserRestController {
                     addressDto.getLatitude(),
                     addressDto.getLongitude()
             ));
+            LOGGER.debug("Success!");
         } else {
+            LOGGER.debug("Updating existing new address...");
             addressForUpdate.setCountry(addressDto.getCountry());
             addressForUpdate.setCity(addressDto.getCity());
             addressForUpdate.setStreet(addressDto.getStreet());
             addressForUpdate.setHouse(addressDto.getHouse());
             addressForUpdate.setLatitude(addressDto.getLatitude());
             addressForUpdate.setLongitude(addressDto.getLongitude());
+            LOGGER.debug("Success!");
         }
 
         companyForUpdate.setAddress(addressService.getById(id));
         companyService.updateCompany(companyForUpdate);
+        LOGGER.info("Successfully updated address for the Company");
     }
 
     @PutMapping(value = "/code_check")
@@ -196,8 +217,10 @@ public class UserRestController {
         LOGGER.info("PUT request '/code_check'");
         code = code.substring(1, code.length()-1);
         if(code.equals(PASSWORD)){
+            LOGGER.info("Success!");
             return ResponseEntity.ok("Пароль совпадает");
         }
+        LOGGER.info("Unsuccessful!");
         return ResponseEntity.badRequest().body("Пароль не совпадает");
     }
 

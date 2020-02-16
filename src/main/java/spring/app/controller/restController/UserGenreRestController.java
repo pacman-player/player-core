@@ -29,38 +29,37 @@ public class UserGenreRestController {
 
     @GetMapping(value = "/get/all-genre")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
+        LOGGER.info("GET request '/get/all-genre' for User = {}. Result has {} lines", user);
         List<Genre> allGenre = genreService.getAllGenre();
-        LOGGER.info("GET request '/get/all-genre' for User = {}. Result has {} lines", user, allGenre.size());
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
         companyService.checkAndMarkAllBlockedByTheCompany(
                 usersCompany,
                 allGenre);
-
+        LOGGER.info("Result has {} lines", allGenre.size());
         return allGenre;
     }
 
     @PostMapping("/genreBan")
     public void addGenreInBan(@AuthenticationPrincipal User user,
                               @RequestBody long genreId) {
-
+        LOGGER.info("POST request '/genreBan' for User = {} with genreId = {}", user, genreId);
         Company company = companyService.getById(user.getCompany().getId());
         company.addBannedGenre(genreService.getById(genreId));
 
         companyService.updateCompany(company);
         user.setCompany(company);
-        LOGGER.info("POST request '/genreBan' for User = {} with genreId = {}", user, genreId);
     }
 
     @PostMapping("/genreUnBan")
     public void genreUnBan(@AuthenticationPrincipal User user,
                            @RequestBody long genreId) {
+        LOGGER.info("POST request '/genreUnBan' for User = {} with genreId = {}", user, genreId);
         Company company = user.getCompany();
         company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
         companyService.updateCompany(company);
 
         user.setCompany(company);
-        LOGGER.info("POST request '/genreUnBan' for User = {} with genreId = {}", user, genreId);
     }
 }

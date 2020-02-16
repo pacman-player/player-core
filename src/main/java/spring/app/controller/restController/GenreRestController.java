@@ -34,20 +34,22 @@ public class GenreRestController {
 
     @GetMapping(value = "/all_genres")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
+        LOGGER.info("GET request '/all_genres'");
         List<Genre> genres = genreService.getAllGenre();
-        LOGGER.info("GET request '/all_genres'. Result has {} lines", genres.size());
+        LOGGER.info("Result has {} lines", genres.size());
         return genres;
     }
 
     @PostMapping(value = "/add_genre")
     public void addGenre(@RequestBody String name) {
+        LOGGER.info("POST request '/add_genre'");
         name = name.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genreService.getByName(name) == null) {
             Genre genre = new Genre();
             genre.setName(name);
             genreService.addGenre(genre);
-            LOGGER.info("POST request '/add_genre'. Added Genre with name = {}", name);
+            LOGGER.info("Added Genre with name = {}", name);
             try {
                 String message = "Was added genre " + name;
                 User user = (User) getContext().getAuthentication().getPrincipal();
@@ -61,11 +63,12 @@ public class GenreRestController {
 
     @PutMapping(value = "/update_genre")
     public void updateGenre(@RequestBody GenreDto genreDto) {
+        LOGGER.info("PUT request '/update_genre'");
         Genre genre = genreService.getById(genreDto.getId());
         String genreDtoName = genreDto.getName();
         genre.setName(genreDtoName);
         genreService.updateGenre(genre);
-        LOGGER.info("PUT request '/update_genre'. Updated Genre with name = {}", genreDtoName);
+        LOGGER.info("Updated Genre with name = {}", genreDtoName);
         try {
             String message = "Genre name " + genre.getName() + " has been changed to " + genreDtoName;
             User user = (User) getContext().getAuthentication().getPrincipal();
@@ -78,14 +81,15 @@ public class GenreRestController {
 
     @DeleteMapping(value = "/delete_genre")
     public void deleteGenre(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
         genreService.deleteGenreById(id);
-        String genreName = genre.getName();
-        LOGGER.info("DELETE request '/delete_genre' with id = {}. Deleted Genre = {}", id, genreName);
+        LOGGER.info("Deleted Genre = {}", genre.getName());
         try {
-            String message = "Was deleted genre " + genreName;
+            String message = "Was deleted genre " + genre.getName();
             User user = (User) getContext().getAuthentication().getPrincipal();
             notificationService.addNotification(message, user.getId());
+            LOGGER.info("Sent Notification '{}'", message);
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();

@@ -26,18 +26,19 @@ public class NotificationRestController {
     @GetMapping
     public List<Notification> getNotificationByUserId() {
         User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("GET request '/notification' for User = {}",user.getLogin());
         List<Notification> list = notificationService.getByUserId(user.getId());
-        LOGGER.info("GET request '/notification' for User = {}. Result has {} lines",user.getLogin(), list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @PostMapping(value = "/read")
-    public void readNotificationById(@RequestBody String Id) {
-        Id = Id.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
-        Long id = Long.parseLong(Id);
+    public void readNotificationById(@RequestBody String stringId) {
+        LOGGER.info("POST request '/notification/read' with id = {}", stringId);
+        stringId = stringId.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        Long id = Long.parseLong(stringId);
         Notification notification = notificationService.getNotificationById(id);
         notification.setFlag(false);
         notificationService.updateNotification(notification);
-        LOGGER.info("POST request '/notification/read' with id = {} ", id);
     }
 }

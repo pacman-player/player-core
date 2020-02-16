@@ -25,8 +25,9 @@ public class UserSongRestController {
 
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
     public List<Song> getAllSongInSongCompilation(@PathVariable("id") Long id) {
+        LOGGER.info("GET request '/get/all-song/song-compilation/{}'", id);
         List<Song> list = songService.getAllSongInSongCompilation(id);
-        LOGGER.info("GET request '/get/all-song/song-compilation/{}'. Result has {} lines", id, list.size());
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 }

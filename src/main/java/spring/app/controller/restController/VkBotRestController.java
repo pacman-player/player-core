@@ -26,9 +26,10 @@ public class VkBotRestController {
 
     @PostMapping("/send")
     public void sendMessage(@RequestBody ConversationDto conversationDto) throws ClientException, ApiException {
+        LOGGER.info("POST request '/send'");
         try {
             vkBotService.sendMessage(conversationDto.getId(), conversationDto.getMessage());
-            LOGGER.info("POST request '/send'");
+            LOGGER.info("Success!");
         } catch (ClientException | ApiException e){
             LOGGER.error(e.getMessage(), e);
             throw e;
