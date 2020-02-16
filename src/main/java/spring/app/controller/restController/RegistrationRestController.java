@@ -3,14 +3,18 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -58,14 +62,20 @@ public class RegistrationRestController {
     }
 
     @PostMapping("/second")
-    public void saveCompany(Company company, @RequestParam String login) {
-        long orgTypeId = Long.parseLong(company.getOrgType().getName());
-        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
-        User userByLogin = userService.getUserByLogin(login);
+    public void saveCompany(@RequestBody CompanyDto companyDto) {
+//        long orgTypeId = Long.parseLong(company.getOrgType().getName());
+//        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
+        User user = (User) getContext().getAuthentication().getPrincipal();
+//        User userByLogin = userService.getUserByLogin(login);
         Role roleUser = roleService.getRoleByName("USER");
-        userByLogin.setRoles(Collections.singleton(roleUser));
+        OrgType orgType = orgTypeService.getByName(companyDto.getOrgType());
+        user.setRoles(Collections.singleton(roleUser));
+        Company company = new Company();
+        company.setName(companyDto.getName());
+        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
         company.setOrgType(orgType);
-        company.setUser(userByLogin);
+        company.setUser(user);
 
         //сетим утренний плейлист
         PlayList morningPlayList = new PlayList();
@@ -94,9 +104,9 @@ public class RegistrationRestController {
         companyService.addCompany(company);
 //        company = companyService.getByCompanyName(company.getName());
 
-        userByLogin.setCompany(company);
+        user.setCompany(company);
         //здесь обновляю недорегенного юзера с уже зашифрованным паролем
-        userService.addUserWithEncodePassword(userByLogin);
+        userService.addUserWithEncodePassword(user);
 //        userService.updateUserWithEncodePassword(userByLogin);
 //        Company byCompanyName = companyService.getByCompanyName(company.getName());
 //        System.out.println(byCompanyName);

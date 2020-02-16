@@ -45,7 +45,7 @@ $(document).ready(function () {
                         code += '</select>'
                         code += '</div>'
                         code += '<div class="form-group">'
-                        code += '<input type="submit" class="btn btn-success" value="Зарегестрироваться"/>'
+                        code += '<button id="addCompanyBtn" class="btn btn-sm btn-info" type="button">Регистрация</button>'
                         code += '</div>'
                         code += '</form>'
                         code += '</div>'
@@ -63,11 +63,11 @@ $(document).ready(function () {
         });
     }
 
-        //получаем все жанры песни из БД на выбор
-        getAllGenreForAdd();
+        //получаем все типы заведений песни из БД на выбор
+        getAllOrgTypeForAdd();
 
-        function getAllGenreForAdd() {
-            //очищаю жанры option
+        function getAllOrgTypeForAdd() {
+            //очищаю option
             $('#orgType').empty();
             var genreForAdd = '';
             $.getJSON("/api/user/orgType/get_all_orgType", function (data) {
@@ -78,4 +78,44 @@ $(document).ready(function () {
                 $('#orgType').append(genreForAdd);
             });
         }
+
+
+     //добавляем новую компанию POST song
+            $(document).on('click', '#addCompanyBtn', function () {
+                addCompanyForm();
+            });
+
+            function addCompanyForm() {
+                var company = {
+                    name: $("#name").val(),
+                    startTime: $("#startTime").val(),
+                    closeTime: $("#closeTime").val(),
+                    orgType: $("#orgType").val(),
+                };
+
+                $.ajax({
+                        type: 'POST',
+                        url: "/api/registration/second",
+                        contentType: 'application/json;',
+                        data: JSON.stringify(company),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        async: false,
+                        cache: false,
+
+                        success:
+                            function () {
+                                notification("save-company" + companyDto.name,
+                                    "  Добавлена компании c именем " + companyDto.name + " ",
+                                    'companies-panel');
+                            },
+                        error:
+                            function (xhr, status, error) {
+                                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                            }
+                    });
+            }
+
 });

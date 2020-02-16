@@ -11,7 +11,7 @@ public class CompanyDto {
     private String name;
     private String startTime;
     private String closeTime;
-    private Long orgType;
+    private String orgType;
     private Long userId;
 
     public Long getCompanyId() {
@@ -20,6 +20,16 @@ public class CompanyDto {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public CompanyDto() {
+    }
+
+    public CompanyDto(String name, String startTime, String closeTime, String orgType) {
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.orgType = orgType;
     }
 
     public CompanyDto(Long id, Long companyId, String name) {
@@ -60,11 +70,11 @@ public class CompanyDto {
         this.closeTime = closeTime;
     }
 
-    public Long getOrgType() {
+    public String getOrgType() {
         return orgType;
     }
 
-    public void setOrgType(Long orgType) {
+    public void setOrgType(String orgType) {
         this.orgType = orgType;
     }
 
