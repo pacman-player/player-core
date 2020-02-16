@@ -7,36 +7,11 @@ import java.time.LocalTime;
 public class CompanyDto {
 
     private Long id;
-    private Long companyId;
     private String name;
     private String startTime;
     private String closeTime;
-    private String orgType;
+    private Long orgType;
     private Long userId;
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
-    }
-
-    public CompanyDto() {
-    }
-
-    public CompanyDto(String name, String startTime, String closeTime, String orgType) {
-        this.name = name;
-        this.startTime = startTime;
-        this.closeTime = closeTime;
-        this.orgType = orgType;
-    }
-
-    public CompanyDto(Long id, Long companyId, String name) {
-        this.id = id;
-        this.companyId = companyId;
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
@@ -70,11 +45,11 @@ public class CompanyDto {
         this.closeTime = closeTime;
     }
 
-    public String getOrgType() {
+    public Long getOrgType() {
         return orgType;
     }
 
-    public void setOrgType(String orgType) {
+    public void setOrgType(Long orgType) {
         this.orgType = orgType;
     }
 

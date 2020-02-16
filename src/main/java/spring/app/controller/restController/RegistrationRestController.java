@@ -67,31 +67,26 @@ public class RegistrationRestController {
     }
 
     @PostMapping("/second")
-    public void saveCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) {
-//        long orgTypeId = Long.parseLong(company.getOrgType().getName());
-//        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
+    public void saveCompany(@RequestBody CompanyDto companyDto/*Company company*/, HttpServletRequest request) {
+        long orgTypeId = Long.parseLong(companyDto.getOrgType());
+        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
+
         HttpSession session = request.getSession();
-        String userLogin = (String) session.getAttribute("login");
+        String login = (String) session.getAttribute("login");
 
         User user;
-
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-            user = userService.getUserByLogin(userLogin);
+            user = userService.getUserByLogin(login);
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
         }
-        user = userService.getUserByLogin(user.getLogin());
 
         Role roleUser = roleService.getRoleByName("USER");
-        OrgType orgType = orgTypeService.getByName(companyDto.getOrgType());
         user.setRoles(Collections.singleton(roleUser));
-
-        Company company = new Company();
-        company.setName(companyDto.getName());
-        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
-        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
         company.setOrgType(orgType);
         company.setUser(user);
+
+        user = userService.getUserByLogin(user.getLogin());
 
         //сетим утренний плейлист
         PlayList morningPlayList = new PlayList();

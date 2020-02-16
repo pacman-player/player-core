@@ -73,6 +73,7 @@ $(document).ready(function () {
             var genreForAdd = '';
             $.getJSON("/api/user/orgType/get_all_orgType", function (data) {
                 $.each(data, function (key, value) {
+                    /*<option th:value="${orgType.id}" th:text="${orgType.name}"></option>*/
                     genreForAdd += '<option ';
                     genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
                 });
