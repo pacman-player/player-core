@@ -283,11 +283,12 @@ public class TestDataInit {
 
         //adding mock statistics
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DATE, -90);
+        int periodForMockingInDays = 90;
+        cal.set(Calendar.DATE, -periodForMockingInDays);
         long startDate = cal.getTime().getTime();
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
-        long totalOrders = random.nextInt(3000);
+        long totalOrders = random.nextInt(periodForMockingInDays * 40);
         for (int i = 0; i < totalOrders; i++) {
             orderSongService.addSongOrder(new OrderSong(company, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));

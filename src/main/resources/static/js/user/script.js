@@ -2,52 +2,20 @@
 function getStats(period) {
     var per = [];
     var orders = [];
-    if (period === "today") {
-        per = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        orders = [1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 5, 6, 7, 8, 6, 9, 10, 2, 3, 8, 10, 20];
-        fillOrders(per, orders, "day");
-    } else  if (period === "yesterday") {
-        per = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        orders = [11, 12, 3, 4, 15, 6, 17, 8, 17, 6, 5, 4, 5, 16, 7, 8, 16, 9, 10, 12, 3, 8, 10, 20];
-        fillOrders(per, orders, "day");
-    } else  if (period === "week") {
-        per = ['Понедельник', 'Вторник', 'Среда', "Четверг", "Пятница", "Суббота", "Воскресенье"];
-        orders = [11, 24, 3, 14, 5, 6, 17];
-        fillOrders(per, orders, "week");
-    } else  if (period === "month") {
-        {
-            $.get({
-                url: "/api/v1/getOrders/month",
-                contentType: "application/json",
-                async: false,
-                success: function (data) {
-                    for (let i = 0; i < data.length; i++) {
-                        let current = data[i].split(":");
-                        per.push(current[0]);
-                        orders.push(current[1]);
-                    }
-                }
-            });
-            fillOrders(per, orders, "year");
-        }
-        // per = ["1.02", "2.02", "3.03", "4.02", "5.02", "6.02", "7.02", "8.02", "9.02", "10.02", "11.02", "12.02", "13.02", "14.02", "15.02", "16.02", "17.02", "18.02", "19.02", "20.02", "21.02", "22.02", "23.02", "24.02", "25.02", "26.02", "27.02", "28.02", "29.02", "01.03", "02.03"];
-        // orders = [119, 125, 34, 49, 158, 61, 176, 82, 178, 62, 53, 44, 59, 161, 76, 83, 161, 98, 100, 122, 37, 82, 102, 209, 141];
-        fillOrders(per, orders, "month");
-    } else  if (period === "year") {
         $.get({
-            url: "/api/v1/getOrders/year",
+            url: "/api/v1/getOrders/" + period,
             contentType: "application/json",
             async: false,
             success: function (data) {
-            for (let i = 0; i < data.length; i++) {
-                let current = data[i].split(":");
-                per.push(current[0]);
-                orders.push(current[1]);
-            }
+                for (let i = 0; i < data.length; i++) {
+                    let current = data[i].split(":");
+                    per.push(current[0]);
+                    orders.push(current[1]);
+                }
             }
         });
-        fillOrders(per, orders, "year");
-    }
+        fillOrders(per, orders, period);
+
 // For drawing the lines
 
 
@@ -83,7 +51,7 @@ function fillOrders(per, orders, type) {
     var bullet = "";
     let time = "";
     for (let r = 0; r < per.length; r++) {
-        if (type === "day") {
+        if (type === "today" || type === "yesterday") {
             time = "с " + r + ":00 по " + (r + 1) + ":00";
         } else if (type === "week" || type === "month" || type === "year") {
             time = per[r];
@@ -93,4 +61,16 @@ function fillOrders(per, orders, type) {
         bullet += ("<tr><td>" + time + " - " + ord + " " + zak + "</td></tr>")
     };
     $("#song-orders-list").empty().append(bullet);
+    let appendToOrders = "";
+    switch (type) {
+        case "today" :  appendToOrders = "Список заказов за сегодня по часам"; break;
+        case "yesterday" :  appendToOrders = "Список заказов за вчера по часам"; break;
+        case "week" :  appendToOrders = "Список заказов за неделю по дням"; break;
+        case "month" :  appendToOrders = "Список заказов за месяц по дням"; break;
+        case "year" :  appendToOrders = "Список заказов за год по месяцам"; break;
+    }
+    let total = orders.reduce(function (a, b) {
+    return parseInt(a) + parseInt(b);
+    }, 0);
+    $("#ondemand").empty().append(" " + appendToOrders + " - всего за период " + total);
 }

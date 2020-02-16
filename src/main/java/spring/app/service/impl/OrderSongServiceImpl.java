@@ -73,12 +73,11 @@ public class OrderSongServiceImpl implements OrderSongService {
             for (int i = 0; i < 12; i++) {
                 Timestamp start = new Timestamp(cal.getTime().getTime());
                 cal.add(Calendar.MONTH, incr);
-                String monthName = monthNames[cal.get(Calendar.MONTH)] + "." + cal.get(Calendar.YEAR);
+                String monthName = monthNames[cal.get(Calendar.MONTH)] + "." + String.valueOf(cal.get(Calendar.YEAR)).substring(2);
                 Timestamp end = new Timestamp(cal.getTime().getTime());
                 long ordersInMonths = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(companyId, start, end);
                 result.add(monthName + ":" + ordersInMonths);
             }
-            System.out.println(result);
         } else if (period.equals("month")) {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE, -31);
@@ -90,15 +89,47 @@ public class OrderSongServiceImpl implements OrderSongService {
                 Timestamp start = new Timestamp(cal.getTime().getTime());
                 cal.add(Calendar.DATE, incr);
                 int date = cal.get(Calendar.DATE);
+                Timestamp end = new Timestamp(cal.getTime().getTime());
+                long ordersInDay = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(companyId, start, end);
+                result.add(date + "." + (cal.get(Calendar.MONTH) + 1) + "." + String.valueOf(cal.get(Calendar.YEAR)).substring(2) + ":" + ordersInDay);
+            }
+        } else if (period.equals("week")) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -7);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            int incr = 1;
+            String[] dayNames = {"воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"};
+            for (int i = 0; i < 7; i++) {
+                Timestamp start = new Timestamp(cal.getTime().getTime());
+                cal.add(Calendar.DATE, incr);
+                int date = cal.get(Calendar.DATE);
                 System.out.println(date);
                 Timestamp end = new Timestamp(cal.getTime().getTime());
                 long ordersInDay = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(companyId, start, end);
-                result.add(date + "." + (cal.get(Calendar.MONTH) + 1) + "." + cal.get(Calendar.YEAR) + ":" + ordersInDay);
+                result.add(date + "." + (cal.get(Calendar.MONTH) + 1) + " " + dayNames[cal.get(Calendar.DAY_OF_WEEK) - 1] + ":" + ordersInDay);
             }
-            System.out.println(result);
+        } else if (period.equals("today") || period.equals("yesterday")) {
+            Calendar cal = Calendar.getInstance();
+            int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+            System.out.println(currentHour);
+            if (period.equals("yesterday")) {
+                cal.add(Calendar.DATE, -1);
+                currentHour = 24;
+            }
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            int incr = 1;
+            for (int i = 0; i < currentHour; i++) {
+                Timestamp start = new Timestamp(cal.getTime().getTime());
+                cal.add(Calendar.HOUR_OF_DAY, incr);
+                Timestamp end = new Timestamp(cal.getTime().getTime());
+                long ordersInHour = orderSongDao.getSongOrdersByCompanyIdAndTimeRange(companyId, start, end);
+                result.add("c " + (cal.get(Calendar.HOUR_OF_DAY) - 1) + "-00 до " + (cal.get(Calendar.HOUR_OF_DAY) + "-00") + ":" + ordersInHour);
+            }
         }
-
-
         return result;
     }
 
