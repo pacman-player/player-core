@@ -12,11 +12,9 @@ import spring.app.service.abstraction.TelegramService;
 import spring.app.service.entity.Track;
 import spring.app.util.PlayerPaths;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 @Transactional
@@ -44,6 +42,21 @@ public class TelegramServiceImpl implements TelegramService {
         SongResponse songResponse = new SongResponse(songRequest.getChatId(), songId, trackBytes, trackName);
         return songResponse;
     }
+
+    /**
+     * Получаем с бота SongRequest с информацией о песне которую нужно найти для пользователя.
+     * Ищем трек на сервисах.
+     * Получаем полное название трека.
+     * Создаем 30сек отрезок для бота
+     * Получаем id песни из базы после сохранения
+     * Записываем песню в директорию с именем по id песни в базе (например 1.mp3)
+     * Возвращаем боту SongResponce с необходимой инфой.
+     * @param songRequest
+     * @return
+     * @throws IOException
+     * @throws BitstreamException
+     * @throws DecoderException
+     */
 
     @Override
     public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {

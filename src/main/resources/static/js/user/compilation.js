@@ -526,8 +526,8 @@ let lastPlayedPlaylistName = 'none';
  *  compilationId - id подборки, в которой находится песня
  *  compilationIndex - индекс подборки в данном плейлисте
  *  musicIndex - индекс песни в данном плейлисте.
- * allCompilationsInPlaylist - список подборок соответсующего плейлиста,
- * allSongsInPlaylist - список песен соответсвующего плелиста, список передается пустым.
+ * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
+ * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
  */
 function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
     for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
@@ -778,16 +778,21 @@ function setButtonOnStop(button) {
     button.dataset.playing_state = 'on_stop';
 }
 
-// функция для проигрывания / паузы
-// сперва находится кнопка нажатия и определяется его состояние
-// если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
-// потом смотрим, это текущий плейлист, или нет
-//      если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
-// смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
-// потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
-//
-// а если песня играется - то ставится на паузу
-// а если песня на паузе - то продолжается воспроизведение
+/**
+ * функция для проигрывания / паузы
+ * сперва находится кнопка нажатия и определяется его состояние
+ * если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
+ * потом смотрим, это текущий плейлист, или нет
+ * если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
+ * смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
+ * потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
+ *      а если песня играется - то ставится на паузу
+ *      а если песня на паузе - то продолжается воспроизведение
+ * @param playlistName
+ * @param compilationIndex
+ * @param musicIndex
+ * @param isFromSongQueue
+ */
 function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
     if ($('#playerContainer').css('display') === 'none') {
         $('#playerContainer').css('display', 'block')
@@ -845,12 +850,16 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
     }
 }
 
-// функция для поигрывания плейлистов
-// обычно вызывается прямо из интерфейса
-// но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
-// сначала смотрится, является желаемый плейлист для проигрывания предыдущим
-//      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
-//      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
+/**
+ * функция для поигрывания плейлистов
+ * обычно вызывается прямо из интерфейса
+ * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
+ * сначала смотрится, является желаемый плейлист для проигрывания предыдущим
+ *      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
+ *      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
+ * @param playlistName
+ * @param compilationIndex
+ */
 function playOrPausePlaylist(playlistName, compilationIndex) {
     var currentPlaylist = getCurrentPlaylist(playlistName);
     var clickedButton;
@@ -883,46 +892,106 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
 }
 
 
-// функция для проигрывания следующей песни
-// сперва смотрится на сервере, есть ли на очереди заказанных песен что-то
-//      если есть - то эти песни втискиваются в массив текущих песен сразу после последне-проигранной песни
-//      если нет - то смотрится, нужно ли гирать по-порядку или нет
-//          если не по-порядку, то находится рандомное число в пределах размера текущего списка песен, который не равен индексу последе-проигранной песни и играется
-//          если по-порядку, то выясняется, последняя ли эта песня
-//               если нет, то играется следующая песня
-//               если да, то смотрится, а последний ли это compilation в текущем списке
-//                  если нет, то играется следующий по очереди compilation
-//                  если да, то играется первый compilation в следующем плейлисте
+/**
+ * функция для проигрывания следующей песни
+ * сперва смотрится на сервере, есть ли на очереди заказанных песен что-то
+ *      если есть - то эти песни втискиваются в массив текущих песен сразу после последне-проигранной песни
+ *      если нет - то смотрится, нужно ли гирать по-порядку или нет
+ *          если не по-порядку, то находится рандомное число в пределах размера текущего списка песен, который не равен
+ *          индексу последе-проигранной песни и играется
+ *          если по-порядку, то выясняется, последняя ли эта песня
+ *              если нет, то играется следующая песня
+ *              если да, то смотрится, а последний ли это compilation в текущем списке
+ *                  если нет, то играется следующий по очереди compilation
+ *                  если да, то играется первый compilation в следующем плейлисте
+ */
 function playNext() {
+
+    //получаем наши песни в очереди - из списка заказанных песен
     $.get('/api/user/song/songsInQueue', function (songList) {
+
+        // если в очереди заказанных песен есть песни
         if (songList.length > 0) {
+
+            //массив "следующих песен плейлиста" который сейчас будет играть (следом за играющей)
             let songArrayAfterLastPlayedMusic = [];
+
+            /*
+            lastPlayedMusicIndex - индекс последне-проигранной песни в своем массиве (см. строку 512)
+            allSongsInCurrentPlaylist - текущий плейлист как список песен (см. строку 509)
+            Определяем i - индекс следующей песни на проигрывание, если этот индекс меньше общего количества песен в
+            текущем плейлисте - то в массив песен который сейчас будет играть (следом за играющей) втыкается следующая
+            песня из общего списка песен текущего плейлиста.
+            Иными словами - здесь идет разделение - все следующие песни которые должны играть - это отдельный
+            массив.
+             */
             for (let i = lastPlayedMusicIndex + 1, j = 0; i < allSongsInCurrentPlaylist.length; i++, j++) {
                 songArrayAfterLastPlayedMusic[j] = allSongsInCurrentPlaylist[i];
             }
+
+            //определяем индекс следующей песни которая будет играть
             var ind = lastPlayedMusicIndex + 1;
+
+            /*
+            Пока следующая песня из текущего плейлиста является песней из очереди - увеличиваем индекс следующей
+            песни???
+             */
             while (allSongsInCurrentPlaylist[ind].isFromSongQueue) {
                 ind++;
             }
+
+            /*
+            Для всех песен в нашей очереди заказанных песен - под индекс следующей песни (из общего списка песен в
+            текущем плейлисте) втывается заказанная песня из очереди.
+            musicIndex - индекс для заказанной песни из общего числа песен в текущем плейлисте
+             */
             for (let i = ind, j = 0; j < songList.length; i++, j++) {
+
+                //если есть заказанные песни - следующей песней будет играть песня из очереди
                 allSongsInCurrentPlaylist[i] = songList[j];
+
+                //сетим этой заказанной песне в поле isFromSongQueue - true
                 allSongsInCurrentPlaylist[i].isFromSongQueue = true;
+
+                //песне из очереди втыкаем индекс - какой по счету из всех песен в текущем плейлисте играет
                 allSongsInCurrentPlaylist[i].musicIndex = i;
+
+                /*
+                следующей песне из очереди которая будет играть втыкается id подборки в которой она будет проиграна
+                (была добавлена)???
+                 */
                 allSongsInCurrentPlaylist[i].compilationIndex = lastPlayedCompilationIndex;
             }
+
+            /*
+            Если есть песни в массиве "следующих песен плейлиста" - они будут играть сразу после проигрывания заказанных
+            песен из нашей очереди
+             */
             for (let i = ind + songList.length, j = 0; j < songArrayAfterLastPlayedMusic.length; i++, j++) {
+
+                //после всех заказанных песен будут играть песни из массива "следующих песен плейлиста"
                 allSongsInCurrentPlaylist[i] = songArrayAfterLastPlayedMusic[j];
+
+                //и этим песням присваивается индекс musicIndex
                 allSongsInCurrentPlaylist[i].musicIndex = i;
             }
+
+            //логи в консоль
             console.log(allSongsInCurrentPlaylist);
             fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
             playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex,
                 lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
+
+        //если в очереди заказанных песен нет песен
         } else {
+
+            //если играем песни в перемешку
             if (shuffle) {
                 let playlistsLength = allSongsInCurrentPlaylist.length;
                 let nextMusicIndex;
                 do {
+
+                    //определяем случайный номер песни который будет играть
                     nextMusicIndex = Math.floor(Math.random() * playlistsLength);
                     console.log(nextMusicIndex)
                 } while (nextMusicIndex === lastPlayedMusicIndex);
@@ -930,10 +999,14 @@ function playNext() {
                     nextMusicIndex);
                 return;
             }
+
+            //если это последняя песня
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
                 var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
+
+            //если не последняя - играем следующий плейлист
             } else {
                 let nextPlaylistName = lastPlayedPlaylistName;
                 if (lastPlayedPlaylistName === 'morning') {
@@ -1002,11 +1075,13 @@ function getCurrentPlaylist(playlistName) {
     }
 }
 
-// функция для проигрывания предыдущей песни
-// если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
-// если нет, то смотрится, не первая ли эта песня
-//      если нет то играется предыдущая по индексу песня
-//      если да, то играется последняя песня текущего плейлиста
+/**
+ * функция для проигрывания предыдущей песни
+ * если плеер играет больше 5 секунд, то при нажатии просто возвращается в начало песни
+ * если нет, то смотрится, не первая ли эта песня
+ *      если нет то играется предыдущая по индексу песня
+ *      если да, то играется последняя песня текущего плейлиста
+ */
 function playPrevious() {
     if (playerElement.currentTime > 5) {
         playerElement.currentTime = 0;

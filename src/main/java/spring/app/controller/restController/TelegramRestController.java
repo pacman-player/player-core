@@ -5,13 +5,10 @@ import javazoom.jl.decoder.DecoderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.*;
@@ -19,7 +16,6 @@ import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +45,14 @@ public class TelegramRestController {
         return telegramService.getSong(songRequest);
     }
 
+    /**
+     * Утверждаем песню для проигрывания. Ищем на сервисах. Заносим в базу. Возвращаем 30сек отрезок и id.
+     * @param songRequest
+     * @return
+     * @throws IOException
+     * @throws BitstreamException
+     * @throws DecoderException
+     */
     @PostMapping(value = "/approve")
     public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         return telegramService.approveSong(songRequest);
@@ -69,7 +73,10 @@ public class TelegramRestController {
         return companyService.getAllCompanies();
     }
 
-
+    /**
+     * Добавляем песню в очередь
+     * @param httpEntity
+     */
     @PostMapping("/addSongToQueue")
     public void addSongToQueue(HttpEntity httpEntity) {
         HttpHeaders headers = httpEntity.getHeaders();
