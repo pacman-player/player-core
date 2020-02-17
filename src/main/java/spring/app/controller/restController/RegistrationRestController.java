@@ -68,7 +68,8 @@ public class RegistrationRestController {
 
     @PostMapping("/second")
     public void saveCompany(@RequestBody CompanyDto companyDto/*Company company*/, HttpServletRequest request) {
-        long orgTypeId = Long.parseLong(companyDto.getOrgType());
+        long orgTypeId = companyDto.getOrgType();
+        //long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
 
         HttpSession session = request.getSession();
@@ -83,6 +84,8 @@ public class RegistrationRestController {
 
         Role roleUser = roleService.getRoleByName("USER");
         user.setRoles(Collections.singleton(roleUser));
+
+        Company company = companyService.getByCompanyName(companyDto.getName());
         company.setOrgType(orgType);
         company.setUser(user);
 
@@ -129,7 +132,7 @@ public class RegistrationRestController {
 //        //return "success";
     }
 
-    //ИСПРАВИТЬ
+    //ИСПРАВИТЬ: поиск только по Логин
     @PostMapping ("/getPages")
     public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String login) {
 
