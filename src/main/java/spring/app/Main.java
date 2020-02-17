@@ -37,14 +37,4 @@ public class Main extends WebMvcConfigurerAdapter {
     public TestDataInit initTestData() {
         return new TestDataInit();
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-   /* @Bean
-    public ServerSocket getServer() throws IOException {
-        return new ServerSocket(portNotification);
-    }*/
 }
