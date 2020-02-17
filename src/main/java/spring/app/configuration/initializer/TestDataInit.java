@@ -7,6 +7,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -288,26 +289,25 @@ public class TestDataInit {
 
         RegistrationStep rs1 = new RegistrationStep();
         rs1.setName("registration-step-user");
-        rs1.setPosition(1L);
         registrationStepService.save(rs1);
 
         RegistrationStep rs2 = new RegistrationStep();
         rs2.setName("registration-step-company");
-        rs2.setPosition(2L);
         registrationStepService.save(rs2);
 
         RegistrationStep rs3 = new RegistrationStep();
         rs3.setName("registration-step-address");
-        rs3.setPosition(3L);
         registrationStepService.save(rs3);
 
         User user1 = userService.getUserByLogin("user");
         Company company1 = companyService.getByCompanyName("Mr.Bo");
         RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
+        List<RegistrationStep> registrationSteps = new ArrayList<>();
+        registrationSteps.add(registrationStep);
         UserUCDto userUCDto = new UserUCDto(user1.getId(), user1.getLogin(), user1.getEmail());
         CompanyUCDto companyUCDto = new CompanyUCDto(company1.getId(), company1.getName());
 
-        UserCompany userCompany = new UserCompany(user1.getId(), company1.getId(), registrationStep.getId());
+        UserCompany userCompany = new UserCompany(user1.getId(), company1.getId(), registrationSteps);
         userCompanyService.save(userCompany);
 
         List<RegistrationStep> registrationStepList = registrationStepService.getAllRegSteps();

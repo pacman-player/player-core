@@ -2,6 +2,7 @@ package spring.app.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -61,19 +62,23 @@ public class UserCompany {
     @EmbeddedId
     private UserCompanyKey userCompanyId;
 
-    private Long regStepId;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RegistrationStep.class)
+    @JoinTable(name = "UserCompanyKey_RegistrationStep",
+            joinColumns = {@JoinColumn(name = "userCompanyKey_id")},
+            inverseJoinColumns = {@JoinColumn(name = "registrationStep_id")})
+    private List<RegistrationStep> registrationSteps;
 
     public UserCompany() {
     }
 
-    public UserCompany(UserCompanyKey userCompanyId, Long regStepId) {
+    public UserCompany(UserCompanyKey userCompanyId, List<RegistrationStep> regStepId) {
         this.userCompanyId = userCompanyId;
-        this.regStepId = regStepId;
+        this.registrationSteps = regStepId;
     }
 
-    public UserCompany(Long userId, Long companyId, Long regStepId) {
+    public UserCompany(Long userId, Long companyId, List<RegistrationStep> regStepId) {
         this.userCompanyId = new UserCompanyKey(userId, companyId);
-        this.regStepId = regStepId;
+        this.registrationSteps = regStepId;
     }
 
     public UserCompanyKey getUserCompanyId() {
@@ -84,12 +89,12 @@ public class UserCompany {
         this.userCompanyId = userCompanyId;
     }
 
-    public Long getRegStepId() {
-        return regStepId;
+    public List<RegistrationStep> getRegistrationSteps() {
+        return registrationSteps;
     }
 
-    public void setRegStepId(Long regStepId) {
-        this.regStepId = regStepId;
+    public void setRegistrationSteps(List<RegistrationStep> registrationSteps) {
+        this.registrationSteps = registrationSteps;
     }
 
     @Override
@@ -99,19 +104,19 @@ public class UserCompany {
         UserCompany that = (UserCompany) o;
         return Objects.equals(userCompanyId.userId, that.userCompanyId.userId) &&
                 Objects.equals(userCompanyId.companyId, that.userCompanyId.companyId) &&
-                Objects.equals(regStepId, that.regStepId);
+                Objects.equals(registrationSteps, that.registrationSteps);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userCompanyId.userId, userCompanyId.companyId, regStepId);
+        return Objects.hash(userCompanyId.userId, userCompanyId.companyId, registrationSteps);
     }
 
     @Override
     public String toString() {
         return "UserCompany{" +
                 "userCompanyId=" + userCompanyId +
-                ", registrationSteps=" + regStepId +
+                ", registrationSteps=" + registrationSteps +
                 '}';
     }
 }

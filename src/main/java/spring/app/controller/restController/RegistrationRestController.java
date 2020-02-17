@@ -12,10 +12,7 @@ import spring.app.service.abstraction.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -51,7 +48,9 @@ public class RegistrationRestController {
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
         User newUser = userService.getUserByLogin(userDto.getLogin());
-        UserCompany userCompany = new UserCompany(newUser.getId(), 0L, 1L);
+        List<RegistrationStep> registrationSteps = new ArrayList<>();
+        registrationSteps.add(registrationStepService.getRegStepById(1L));
+        UserCompany userCompany = new UserCompany(newUser.getId(), 0L, registrationSteps);
         userCompanyService.save(userCompany);
     }
 
@@ -128,7 +127,9 @@ public class RegistrationRestController {
         //здесь обновляю недорегенного юзера с уже зашифрованным паролем
         userService.addUserWithEncodePassword(user);
 
-        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), 2L);
+        List<RegistrationStep> registrationSteps = new ArrayList<>();
+        registrationSteps.add(registrationStepService.getRegStepById(2L));
+        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), registrationSteps);
         userCompanyService.save(userCompany);
     }
 
@@ -158,7 +159,9 @@ public class RegistrationRestController {
         company.setAddress(address);
         companyService.updateCompany(company);
 
-        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), 3L);
+        List<RegistrationStep> registrationSteps = new ArrayList<>();
+        registrationSteps.add(registrationStepService.getRegStepById(3L));
+        UserCompany userCompany = new UserCompany(user.getId(), 0L, registrationSteps);
         userCompanyService.save(userCompany);
     }
 

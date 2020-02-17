@@ -1,5 +1,8 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.User;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
@@ -14,15 +17,21 @@ public class RegistrationStep {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private Long position;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = UserCompany.class)
+    @JoinTable(name = "UserCompanyKey_RegistrationStep",
+            joinColumns = {@JoinColumn(name = "registrationStep_id")},
+            inverseJoinColumns = {@JoinColumn(name = "userCompanyKey_id")})
+    private List<UserCompany> userCompanies;
 
     public RegistrationStep() {
     }
 
-    public RegistrationStep(Long id, String name, Long position) {
+    public RegistrationStep(Long id, String name, Long position, List<UserCompany> userCompanies) {
         this.id = id;
         this.name = name;
-        this.position = position;
+        this.userCompanies = userCompanies;
     }
 
     public Long getId() {
@@ -41,12 +50,12 @@ public class RegistrationStep {
         this.name = name;
     }
 
-    public Long getPosition() {
-        return position;
+    public List<UserCompany> getUserCompanies() {
+        return userCompanies;
     }
 
-    public void setPosition(Long position) {
-        this.position = position;
+    public void setUserCompanies(List<UserCompany> userCompanies) {
+        this.userCompanies = userCompanies;
     }
 
 }
