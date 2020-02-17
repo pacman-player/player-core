@@ -14,8 +14,8 @@ $(document).ready(function () {
             cache: false,
             dataType: 'JSON',
             success: function (listSteps) {
-            var code = '';
-            var htmlPage = document.getElementById('htmlPage');
+                var code = '';
+                var htmlPage = document.getElementById('htmlPage');
                 switch (listSteps[0]) {
                     case 1:
 
@@ -45,7 +45,7 @@ $(document).ready(function () {
                         code += '</select>'
                         code += '</div>'
                         code += '<div class="form-group">'
-                        code += '<button id="addCompanyBtn" class="btn btn-sm btn-info" type="button">Регистрация</button>'
+                        code += '<button id="addCompanyBtn" class="btn btn-sm btn-info" type="button">Продолжить регистрацию</button>'
                         code += '</div>'
                         code += '</form>'
                         code += '</div>'
@@ -64,51 +64,106 @@ $(document).ready(function () {
         });
     }
 
-        //получаем все типы заведений песни из БД на выбор
-        getAllOrgTypeForAdd();
+    //получаем все типы заведений песни из БД на выбор
+    getAllOrgTypeForAdd();
 
-        function getAllOrgTypeForAdd() {
-            //очищаю option
-            $('#orgType').empty();
-            var genreForAdd = '';
-            $.getJSON("/api/user/orgType/get_all_orgType", function (data) {
-                $.each(data, function (key, value) {
-                    /*<option th:value="${orgType.id}" th:text="${orgType.name}"></option>*/
-                    genreForAdd += '<option ';
-                    genreForAdd += ' value="' + value.id + '">' + value.name + '</option>';
-                });
-                $('#orgType').append(genreForAdd);
+    function getAllOrgTypeForAdd() {
+        //очищаю option
+        $('#orgType').empty();
+        var genreForAdd = '';
+        $.getJSON("/api/user/orgType/get_all_orgType", function (data) {
+            $.each(data, function (key, value) {
+                /*<option th:value="${orgType.id}" th:text="${orgType.name}"></option>*/
+                genreForAdd += '<option ';
+                genreForAdd += ' value="' + value.id + '">' + value.name + '</option>';
             });
+            $('#orgType').append(genreForAdd);
+        });
+    }
+
+
+    //добавляем новую компанию POST в БД по кнопге регистрация
+    $(document).on('click', '#addCompanyBtn', function () {
+        if ($('#registrationSecondForm').valid()) {
+            addCompanyForm();
+            /*$.post("/api/registration/second", registrationSecondForm.serialize(), function () {
+                location.assign(location.origin + "/reg_check");
+            });*/
         }
+        //addCompanyForm();
+    });
 
+    function addCompanyForm() {
+        var company = {
+            name: $("#name").val(),
+            startTime: $("#startTime").val(),
+            closeTime: $("#closeTime").val(),
+            orgType: $("#orgType").val(),
+        };
 
-     //добавляем новую компанию POST song
-            $(document).on('click', '#addCompanyBtn', function () {
-                addCompanyForm();
-            });
-
-            function addCompanyForm() {
-                var company = {
-                    name: $("#name").val(),
-                    startTime: $("#startTime").val(),
-                    closeTime: $("#closeTime").val(),
-                    orgType: $("#orgType").val(),
-                };
-
-                $.ajax({
-                        type: 'POST',
-                        url: "/api/registration/second",
-                        contentType: 'application/json;',
-                        data: JSON.stringify(company),
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        async: false,
-                        cache: false,
-                    });
+        $.ajax({
+            type: 'POST',
+            url: "/api/registration/second",
+            contentType: 'application/json;',
+            data: JSON.stringify(company),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: false,
+            cache: false,
+            success: function () {
+                window.location.reload();
             }
+        });
 
+
+    }
+
+    $('#registrationSecondForm').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 3,
+                remote: {
+                    url: "/api/registration/check/company",
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+                    parameterData: {
+                        name: function () {
+                            return $("#name").val();
+                        }
+                    },
+                }
+            },
+            startTime: {
+                required: true
+            },
+            closeTime: {
+                required: true
+            },
+            orgType: {
+                required: true
+            }
+        },
+        messages: {
+            name: {
+                required: "Введите название компании",
+                minlength: "Название должно содержать минимум 3 символа",
+                remote: "Компания с таким именем уже зарегистрирована"
+            },
+            startTime: {
+                required: "Укажите время открытия"
+            },
+            closeTime: {
+                required: "Укажите время закрытия"
+            },
+            orgType: {
+                required: "Выберите тип заведения"
+            }
+        }
+    });
 
 
 });

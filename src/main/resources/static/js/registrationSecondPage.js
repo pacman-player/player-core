@@ -12,7 +12,7 @@ $(document).ready(function () {
             }
         })
     });
-    $('#registrationSecon dForm').validate({
+    $('#registrationSecondForm').validate({
         rules: {
             name: {
                 required: true,
