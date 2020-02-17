@@ -5,15 +5,17 @@ public class SongRequest {
     private String authorName;
     private String songName;
     private Long songId;
+    private Long companyId;
 
     public SongRequest() {
     }
 
-    public SongRequest(Long chatId, String authorName, String songName, Long songId) {
+    public SongRequest(Long chatId, String authorName, String songName, Long songId, Long companyId) {
         this.chatId = chatId;
         this.authorName = authorName;
         this.songName = songName;
         this.songId = songId;
+        this.companyId = companyId;
     }
 
     public Long getSongId() {
@@ -46,5 +48,13 @@ public class SongRequest {
 
     public void setSongName(String songName) {
         this.songName = songName;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }
