@@ -3,7 +3,9 @@ $(document).ready(function () {
 
     let formAddEst = $("#establishmentsAddForm");
     let fieldNameAddEstName = $("#addName");
-    $("#addEstablishmentBtn").on("click", function () {
+    $("#addEstablishmentBtn").on("click", function (event) {
+        event.preventDefault();
+
         if (formAddEst.valid()) {
             addEstablishments(formAddEst, fieldNameAddEstName);
             formAddEst.trigger("reset");
@@ -27,11 +29,10 @@ $("#establishmentsAddForm").validate({
         name: {
             required: true,
             pattern: establishmentsNameRegEx,
-            rangelength: [3, 10],
+            rangelength: [3, 30],
             remote: {
                 method: "GET",
                 url: "/api/admin/establishment/est_type_name_is_free",
-                cache: false,
                 data: {
                     name: function () {
                         return $("#addName").val()
@@ -56,7 +57,6 @@ function addEstablishments(form, field) {
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        cache: false,
         complete: () => {
             $("#tab-establishments-panel").tab("show");
             getTable();
@@ -93,7 +93,6 @@ function editButton(id, name) {
                 remote: {
                     method: "GET",
                     url: "/api/admin/establishment/est_type_name_is_free",
-                    cache: false,
                 }
             }
         },
@@ -113,10 +112,9 @@ function editButton(id, name) {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
                 },
-                cache: false,
                 complete: () => {
-                    getTable();
                     theModal.modal("hide");
+                    getTable();
                 },
                 success: () => {
                     notification(
