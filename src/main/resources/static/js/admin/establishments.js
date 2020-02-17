@@ -141,7 +141,6 @@ function deleteButton(id) {
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        cache: false,
         complete: () => {
             getTable();
         },
@@ -167,7 +166,6 @@ function getTable() {
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        cache: false,
         dataType: "JSON",
         success: function (list) {
             let tableBody = $("#establishmentsTable tbody");
@@ -177,7 +175,7 @@ function getTable() {
                 // vars that contains object's fields
                 let id = list[i].id;
                 let name = list[i].name;
-                // parsing fields
+
                 let tr = $("<tr/>");
                 tr.append(`
                             <td> ${id} </td>

@@ -3,7 +3,9 @@ $(document).ready(function () {
 
     let formAddGenre = $("#addForm");
     let fieldNameAddGenre = $("#addGenre");
-    $("#addGenreBtn").on("click", function () {
+    $("#addGenreBtn").on("click", function (event) {
+        event.preventDefault();
+
         if (formAddGenre.valid()) {
             addGenre(formAddGenre, fieldNameAddGenre);
             formAddGenre.trigger("reset");
@@ -28,11 +30,10 @@ $("#addForm").validate({
         name: {
             required: true,
             pattern: genreNameRegEx,
-            rangelength: [3, 10],
+            rangelength: [3, 30],
             remote: {
                 method: "GET",
                 url: "/api/admin/genre/is_free",
-                cache: false,
                 data: {
                     name: function () {
                         return $("#addGenre").val()
@@ -57,7 +58,6 @@ function addGenre(form, field) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        cache: false,
         complete: () => {
             $("#tab-genres-panel").tab('show');
             getTable();
@@ -95,12 +95,6 @@ function editButton(id, name) {
                 remote: {
                     method: "GET",
                     url: "/api/admin/genre/is_free",
-                    cache: false,
-                    data: {
-                        id: function () {
-                            return fieldId.val()
-                        },
-                    }
                 }
             }
         },
@@ -120,10 +114,9 @@ function editButton(id, name) {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                cache: false,
                 complete: () => {
-                    getTable();
                     theModal.modal("hide");
+                    getTable();
                 },
                 success: () => {
                     sendNotification();
@@ -151,8 +144,6 @@ function deleteButton(id) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        async: false,
-        cache: false,
         complete: () => {
             getTable();
         },
@@ -178,7 +169,6 @@ function getTable() {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        cache: false,
         dataType: "JSON",
         success: function (genres) {
             let tableBody = $("#genresTable tbody");
