@@ -1,12 +1,20 @@
 package spring.app.configuration.initializer;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
+import spring.app.util.Mp3Parser;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestDataInit {
 
@@ -38,13 +46,25 @@ public class TestDataInit {
     private SongQueueService songQueueService;
 
     @Autowired
+    private OrderSongService orderSongService;
+
+    @Autowired
     private SongCompilationService songCompilationService;
 
     @Autowired
     private AddressService addressService;
 
-    private void init() {
+    @Value("${music.path}")
+    private String musicPath;
 
+    private void init() throws InvalidDataException, IOException, UnsupportedTagException {
+        if (new File(musicPath).exists()) {
+            FileUtils.cleanDirectory(new File(musicPath));
+        }
+        File musicDirectory = new File(musicPath);
+        if (!musicDirectory.exists()) {
+            musicDirectory.mkdir();
+        }
         Role roleAdmin = new Role();
         roleAdmin.setName("ADMIN");
         roleService.addRole(roleAdmin);
@@ -93,6 +113,46 @@ public class TestDataInit {
         user.setRoles(userRoles);
         userService.addUser(user);
 
+        User user2 = new User();
+        user2.setLogin("user2");
+        user2.setPassword("user2");
+        user2.setEmail("user2@gmail.com");
+        userRoles.add(roleUser);
+        user2.setRoles(userRoles);
+        userService.addUser(user2);
+
+        User user3 = new User();
+        user3.setLogin("user3");
+        user3.setPassword("user3");
+        user3.setEmail("user3@gmail.com");
+        userRoles.add(roleUser);
+        user3.setRoles(userRoles);
+        userService.addUser(user3);
+
+        User user4 = new User();
+        user4.setLogin("user4");
+        user4.setPassword("user4");
+        user4.setEmail("user4@gmail.com");
+        userRoles.add(roleUser);
+        user4.setRoles(userRoles);
+        userService.addUser(user4);
+
+        User user5 = new User();
+        user5.setLogin("user5");
+        user5.setPassword("user5");
+        user5.setEmail("user5@gmail.com");
+        userRoles.add(roleUser);
+        user5.setRoles(userRoles);
+        userService.addUser(user5);
+
+        User user6 = new User();
+        user6.setLogin("user6");
+        user6.setPassword("user6");
+        user6.setEmail("user6@gmail.com");
+        userRoles.add(roleUser);
+        user6.setRoles(userRoles);
+        userService.addUser(user6);
+
         Genre genre = new Genre("world");
         genreService.addGenre(genre);
 
@@ -108,82 +168,16 @@ public class TestDataInit {
         Genre genre4 = new Genre("punk");
         genreService.addGenre(genre4);
 
-        Author author = new Author();
-        author.setName("author-1");
+//        Author author = new Author();
+//        author.setName("author-1");
         Set<Genre> genres = new HashSet<>();
         genres.add(genre);
-        author.setAuthorGenres(genres);
-        authorService.addAuthor(author);
+//        author.setAuthorGenres(genres);
+//        authorService.addAuthor(author);
 
         OrgType orgType = new OrgType("Restaurant");
         orgType.setGenres(genres);
         orgTypeService.addOrgType(orgType);
-
-        Song song = new Song("Attack on titan - Silence");
-        song.setAuthor(author);
-        song.setGenre(genre);
-        songService.addSong(song);
-
-        Song song1 = new Song("Naruto OST - Hero");
-        song1.setAuthor(author);
-        song1.setGenre(genre1);
-        songService.addSong(song1);
-
-        Song song2 = new Song("Hunter X Hunter - Jokers theme");
-        song2.setAuthor(author);
-        song2.setGenre(genre2);
-        songService.addSong(song2);
-
-        Song song3 = new Song("Death Note - Laits theme");
-        song3.setAuthor(author);
-        song3.setGenre(genre3);
-        songService.addSong(song3);
-
-        Song song4 = new Song("One punch man - Hero");
-        song4.setAuthor(author);
-        song4.setGenre(genre4);
-        songService.addSong(song4);
-
-        SongCompilation songCompilation = new SongCompilation();
-        Set<Song> songs = new HashSet<>();
-        songs.add(song);
-        songCompilation.setName("compilation0");
-        songCompilation.setGenre(genre);
-        songCompilation.setSong(songs);
-        songCompilationService.addSongСompilation(songCompilation);
-
-        SongCompilation songCompilation1 = new SongCompilation();
-        Set<Song> songs1 = new HashSet<>();
-        songs1.add(song1);
-        songCompilation1.setName("compilation1");
-        songCompilation1.setGenre(genre1);
-        songCompilation1.setSong(songs1);
-        songCompilationService.addSongСompilation(songCompilation1);
-
-        SongCompilation songCompilation2 = new SongCompilation();
-        Set<Song> songs2 = new HashSet<>();
-        songs2.add(song2);
-        songCompilation2.setName("compilation2");
-        songCompilation2.setGenre(genre2);
-        songCompilation2.setSong(songs2);
-        songCompilationService.addSongСompilation(songCompilation2);
-
-        SongCompilation songCompilation3 = new SongCompilation();
-        Set<Song> songs3 = new HashSet<>();
-        songs3.add(song3);
-        songCompilation3.setName("compilation3");
-        songCompilation3.setGenre(genre3);
-        songCompilation3.setSong(songs3);
-        songCompilationService.addSongСompilation(songCompilation3);
-
-        SongCompilation songCompilation4 = new SongCompilation();
-        Set<Song> songs4 = new HashSet<>();
-        songs4.add(song4);
-        songCompilation4.setName("compilation4");
-        songCompilation4.setGenre(genre4);
-        songCompilation4.setSong(songs4);
-        songCompilationService.addSongСompilation(songCompilation4);
-
 
         PlayList playList = new PlayList();
         playList.setName("All day playlist");
@@ -202,6 +196,11 @@ public class TestDataInit {
         playListService.addPlayList(playList3);
 
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
+        Company company2 = new Company("Mr.Bo2", LocalTime.of(11, 0), LocalTime.of(23, 0), user2, orgType);
+        Company company3 = new Company("Mr.Bo3", LocalTime.of(11, 0), LocalTime.of(23, 0), user3, orgType);
+        Company company4 = new Company("Mr.Bo4", LocalTime.of(11, 0), LocalTime.of(23, 0), user4, orgType);
+        Company company5 = new Company("Mr.Bo5", LocalTime.of(11, 0), LocalTime.of(23, 0), user5, orgType);
+        Company company6 = new Company("Mr.Bo6", LocalTime.of(11, 0), LocalTime.of(23, 0), user6, orgType);
 
         Set<PlayList> allDayPlayLists = new HashSet<>();
         allDayPlayLists.add(playList);
@@ -223,58 +222,49 @@ public class TestDataInit {
         company.setBannedGenres(bannedGenres);
         companyService.addCompany(company);
 
-        SongQueue songQueue = new SongQueue();
-        songQueue.setPosition(1L);
-        songQueue.setSong(song);
-        songQueue.setCompany(company);
-        songQueueService.addSongQueue(songQueue);
+        company2.setMorningPlayList(morningPlayLists);
+        company2.setMiddayPlayList(middayPlayLists);
+        company2.setEveningPlayList(eveningPlayLists);
+        company2.setBannedGenres(bannedGenres);
+        companyService.addCompany(company2);
 
-        Address address = new Address();
-        address.setLatitude(55.754638);
-        address.setLongitude(37.621633);
+        company3.setMorningPlayList(morningPlayLists);
+        company3.setMiddayPlayList(middayPlayLists);
+        company3.setEveningPlayList(eveningPlayLists);
+        company3.setBannedGenres(bannedGenres);
+        companyService.addCompany(company3);
 
-        address.setCountry("Russia");
-        address.setCity("Moscow");
-        address.setStreet("Red Square");
-        address.setHouse("3");
-        addressService.addAddress(address);
+        company4.setMorningPlayList(morningPlayLists);
+        company4.setMiddayPlayList(middayPlayLists);
+        company4.setEveningPlayList(eveningPlayLists);
+        company4.setBannedGenres(bannedGenres);
+        companyService.addCompany(company4);
 
-        Address address2 = new Address();
-        address2.setLatitude(52.022176);
-        address2.setLongitude(47.809058);
-        addressService.addAddress(address2);
+        company5.setMorningPlayList(morningPlayLists);
+        company5.setMiddayPlayList(middayPlayLists);
+        company5.setEveningPlayList(eveningPlayLists);
+        company5.setBannedGenres(bannedGenres);
+        companyService.addCompany(company5);
 
-        Address address3 = new Address();
-        address3.setLatitude(52.021544);
-        address3.setLongitude(47.807657);
-        addressService.addAddress(address3);
+        company6.setMorningPlayList(morningPlayLists);
+        company6.setMiddayPlayList(middayPlayLists);
+        company6.setEveningPlayList(eveningPlayLists);
+        company6.setBannedGenres(bannedGenres);
+        companyService.addCompany(company6);
 
-        Address address4 = new Address();
-        address4.setLatitude(52.021855);
-        address4.setLongitude(47.810864);
-        addressService.addAddress(address4);
+        //adding mock statistics
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, -90);
+        long startDate = cal.getTime().getTime();
+        long endDate = new Date().getTime();
+        Random random = new Random(System.currentTimeMillis());
+        long totalOrders = random.nextInt(3000);
+        for (int i = 0; i < totalOrders; i++) {
+            orderSongService.addSongOrder(new OrderSong(company, new Timestamp(ThreadLocalRandom.current()
+                    .nextLong(startDate, endDate))));
+        }
 
-        Address address5 = new Address();
-        address5.setLatitude(52.02119);
-        address5.setLongitude(47.810112);
+        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
 
-        address5.setCountry("Russia");
-        address5.setCity("Balakovo");
-        address5.setStreet("Lenina");
-        address5.setHouse("4");
-        addressService.addAddress(address5);
-
-        Address address6 = new Address();
-        address6.setLatitude(52.021140);
-        address6.setLongitude(47.808798);
-        addressService.addAddress(address6);
-
-        Address address7 = new Address();
-        address7.setLatitude(52.020369);
-        address7.setLongitude(47.810774);
-        addressService.addAddress(address7);
-
-        company.setAddress(address5);
-        companyService.updateCompany(company);
     }
 }

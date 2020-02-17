@@ -29,4 +29,15 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
         }
         return author;
     }
+
+    @Override
+    public boolean isExist(String name) {
+        TypedQuery<Author> query = entityManager.createQuery("FROM Author WHERE name = :name", Author.class);
+        query.setParameter("name", name);
+        List list = query.getResultList();
+        if(list.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }

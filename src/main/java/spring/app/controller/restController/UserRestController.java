@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.Random;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -67,6 +68,7 @@ public class UserRestController {
     List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         LOGGER.info("POST request '/song_compilation' with genre = {}", genre);
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");
             return songCompilation.getAllSongCompilations();
@@ -160,7 +162,19 @@ public class UserRestController {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("GET request '/company/address' from User = {}", user);
         long id = user.getCompany().getId();
-        return ResponseEntity.ok(addressService.getById(id));
+
+        Address lazyAddressByID = addressService.getById(companyService.getById(id).getAddress().getId());
+        Address realAddress = new Address(
+                lazyAddressByID.getId(),
+                lazyAddressByID.getCountry(),
+                lazyAddressByID.getCity(),
+                lazyAddressByID.getStreet(),
+                lazyAddressByID.getHouse(),
+                lazyAddressByID.getLatitude(),
+                lazyAddressByID.getLongitude()
+                );
+
+        return ResponseEntity.ok(realAddress);
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -182,7 +196,7 @@ public class UserRestController {
         LOGGER.info("PUT request '/company/address' from User = {}", user);
         long id = user.getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
-        Address addressForUpdate = addressService.getById(id);
+        Address addressForUpdate = companyForUpdate.getAddress();
 
         LOGGER.info("Updating address for Company named = {}", companyForUpdate.getName());
         if (addressForUpdate == null) {
@@ -204,10 +218,15 @@ public class UserRestController {
             addressForUpdate.setHouse(addressDto.getHouse());
             addressForUpdate.setLatitude(addressDto.getLatitude());
             addressForUpdate.setLongitude(addressDto.getLongitude());
+
+            companyForUpdate.setAddress(addressForUpdate);
+            companyService.updateCompany(companyForUpdate);
+
             LOGGER.debug("Success!");
+            return;
         }
 
-        companyForUpdate.setAddress(addressService.getById(id));
+        companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
         companyService.updateCompany(companyForUpdate);
         LOGGER.info("Successfully updated address for the Company");
     }

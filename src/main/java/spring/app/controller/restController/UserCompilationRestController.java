@@ -30,6 +30,7 @@ public class UserCompilationRestController {
     public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         LOGGER.info("GET request '/get/all-song-compilation' with genre = {}", genre);
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");
             return songCompilationService.getAllSongCompilations();
@@ -45,9 +46,9 @@ public class UserCompilationRestController {
     @GetMapping(value = "/get/song-compilation/{id}")
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
         LOGGER.info("GET request '/get/all-song-compilation/{}'", id);
-        SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
+        SongCompilation songCompilationById = songCompilationService.getSongCompilationById(id);
         LOGGER.info("Found compilation = {}", songCompilation.getName());
-        return songCompilation;
+        return songCompilationById;
     }
 
     @GetMapping("/songsBySongCompilation")

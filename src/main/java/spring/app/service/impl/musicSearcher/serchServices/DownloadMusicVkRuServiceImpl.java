@@ -50,7 +50,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                     songName = URLDecoder.decode(song, "UTF-8");
                 }
             }
-            trackName = author + " – " + song;
+            trackName = author + "-" + song;
 
              link = "https://downloadmusicvk.ru/audio/download?" +
                     fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
@@ -84,19 +84,19 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                 in.close();
 
                 byte[] track = buffer.toByteArray();
-
+                Path path;
                 if (track.length > 1024 * 20) {    //проверка что песня полноценная
 
-                    Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                    if (path != null) {
-                        try {
-                            Files.write(path, track);  //записываем песню с директорию
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    path = PlayerPaths.getSongsDir(trackName + ".mp3");
+//                    if (path != null) {
+//                        try {
+//                            Files.write(path, track);  //записываем песню с директорию
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 } else return null;
-                return new Track(authorName, songName, trackName, track);
+                return new Track(authorName, songName, trackName, track, path);
             }
         } catch (IOException e) {
             System.out.println("Ошибка скачивания с downloadmusicvk.ru");

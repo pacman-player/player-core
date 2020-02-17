@@ -37,7 +37,7 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             link = first.getElementsByClass("play").attr("data-url");
             authorName = first.getElementsByClass("artist").text();
             songName = first.getElementsByClass("track").text();
-            trackName = author + " – " + song;
+            trackName = author + "-" + song;
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
@@ -51,20 +51,20 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             String link = searchSong(author, song);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
-
+            Path path = null;
             if (track.length > 1024 * 20) {    //проверка что песня полноценная
 
-                Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                if (path != null) {
-                    try {
-                        Files.write(path, track);  //записываем песню с директорию
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                path = PlayerPaths.getSongsDir(trackName + ".mp3");
+//                if (path != null) {
+//                    try {
+//                        Files.write(path, track);  //записываем песню с директорию
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             } else return null;  //если песня меньше 2мб возвращаем 0
 
-            return new Track(authorName, songName, trackName, track);
+            return new Track(authorName, songName, trackName, track, path);
         } catch (Exception e) {
             System.out.println("Ошибка скачивания с muzofond.fm");
         }

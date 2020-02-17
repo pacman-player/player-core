@@ -18,4 +18,6 @@ public interface AddressService {
     Long getId(String latitude, String longitude);
 
     List checkAddress(Address address);
+
+    Long getLastId();
 }
