@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title>Панель админа</title>
@@ -72,14 +72,17 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-              <!--общий список и добавление нового автора-->
+                <!--общий список и добавление нового автора-->
                 <div id="list-authors" class="tab-pane active" role="tabpanel">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="authors-table-nav" class="active">
-                            <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Все исполнители</a>
+                            <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab"
+                               data-toggle="tab">Все исполнители</a>
                         </li>
                         <li id="add-authors-nav">
-                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab">Новый исполнитель</a>
+                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab"
+                               onclick="prepareForm()">
+                                Новый исполнитель</a>
                         </li>
                     </ul>
 
@@ -91,13 +94,13 @@
                                     <div class="panel-body">
                                         <table id="AuthorTable" class="table">
                                             <thead id="getAuthorTable">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Имя</th>
-                                                    <th>Жанр</th>
-                                                    <th>Изменить</th>
-                                                    <th>Удалить</th>
-                                                </tr>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Имя</th>
+                                                <th>Жанр</th>
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
+                                            </tr>
                                             </thead>
 
                                             <!--модальное окно обновления автора-->
@@ -106,7 +109,8 @@
                                                     <div class="modal-content">
 
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true"></button>
                                                             <h4 class="modal-title">Изменить исполнителя</h4>
                                                         </div>
 
@@ -115,26 +119,43 @@
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                        <div id="success-edit-message"
+                                                                             class="alert alert-danger hidden">
                                                                             <div id="message"></div>
                                                                         </div>
                                                                         <form id="edit-form">
                                                                             <div class="form-group text-center edit-form">
                                                                                 <label for="editAuthorId">ID</label>
-                                                                                <input id="editAuthorId" class="form-control" disabled="disabled" type="text" name="id" required=""/>
-                                                                                <input id="id-input-edit-hidden" name="id" type="hidden"/>
+                                                                                <input id="editAuthorId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input id="id-input-edit-hidden"
+                                                                                       name="id" type="hidden"/>
 
                                                                                 <label for="editAuthorName">Имя</label>
-                                                                                <input id="editAuthorName" class="form-control" name="name" type="text" required=""/>
+                                                                                <input id="editAuthorName"
+                                                                                       class="form-control" name="name"
+                                                                                       type="text" required=""/>
 
                                                                                 <label for="editAuthorGenre">Жанр</label>
-                                                                                <select class="form-control" id="editAuthorGenre" name="updateGenre">
+                                                                                <select class="form-control"
+                                                                                        id="editAuthorGenre"
+                                                                                        name="updateGenre">
                                                                                     <!--заполняем через js-->
                                                                                 </select>
 
                                                                                 <div class="modal-footer">
-                                                                                    <button class="btn btn-default" data-dismiss="modal" type="button">Закрыть</button>
-                                                                                    <button id="editAuthorBtn" class="btn btn-primary" type="submit" data-dismiss="modal">Изменить</button>
+                                                                                    <button class="btn btn-default"
+                                                                                            data-dismiss="modal"
+                                                                                            type="button">Закрыть
+                                                                                    </button>
+                                                                                    <button id="editAuthorBtn"
+                                                                                            class="btn btn-primary"
+                                                                                            type="submit"
+                                                                                            data-dismiss="modal">
+                                                                                        Изменить
+                                                                                    </button>
                                                                                 </div>
 
                                                                             </div>
@@ -166,13 +187,18 @@
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
                                                             <label for="addAuthorName">Исполнитель</label>
-                                                            <input id="addAuthorName" class="form-control" type="text" placeholder="Введите имя автора" name="authorName"/>
+                                                            <input id="addAuthorName" class="form-control" type="text"
+                                                                   placeholder="Введите имя автора" name="authorName"/>
 
                                                             <label for="addAuthorGenre">Жанр</label>
-                                                            <select class="form-control" id="addAuthorGenre" name="addGenre">
+                                                            <select class="form-control" id="addAuthorGenre"
+                                                                    name="addGenre">
                                                                 <!--заполняем через js-->
                                                             </select>
-                                                            <button id="addAuthorBtn" class="btn btn-success btn-lg" type="submit" style="margin-top: 20px;">Добавить исполнителя</button>
+                                                            <button id="addAuthorBtn" class="btn btn-success btn-lg"
+                                                                    type="submit" style="margin-top: 20px;">Добавить
+                                                                исполнителя
+                                                            </button>
                                                         </div>
                                                     </form>
 
