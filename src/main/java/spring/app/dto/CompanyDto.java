@@ -7,11 +7,26 @@ import java.time.LocalTime;
 public class CompanyDto {
 
     private Long id;
+    private Long companyId;
     private String name;
     private String startTime;
     private String closeTime;
     private Long orgType;
     private Long userId;
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public CompanyDto(Long id, Long companyId, String name) {
+        this.id = id;
+        this.companyId = companyId;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
