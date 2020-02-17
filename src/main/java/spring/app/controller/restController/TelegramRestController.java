@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.*;
@@ -17,7 +16,7 @@ import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,35 +45,38 @@ public class TelegramRestController {
         return telegramService.getSong(songRequest);
     }
 
+    /**
+     * Утверждаем песню для проигрывания. Ищем на сервисах. Заносим в базу. Возвращаем 30сек отрезок и id.
+     * @param songRequest
+     * @return
+     * @throws IOException
+     * @throws BitstreamException
+     * @throws DecoderException
+     */
     @PostMapping(value = "/approve")
     public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         return telegramService.approveSong(songRequest);
     }
 
     @PostMapping(value = "/location")
-    public HashMap compareAddress(@RequestBody Address geoAddress){
-        List list = addressService.checkAddress(geoAddress);
-        HashMap listCompanyId = new HashMap();
-        while (!list.isEmpty()){
-            int i = 0;
-            Long ii = 1L;
-            Address address = (Address) list.get(i);
-            Company company = companyService.getCompanyByAddressId(address.getId());
-            CompanyDto companyDto = new CompanyDto(ii, company.getId(), company.getName());
-            listCompanyId.put(ii, companyDto.getCompanyId());
-            listCompanyId.put(ii+1, companyDto.getName());
-            list.remove(0);
-            i++;
-        }
-        return listCompanyId;
+    public List allCompaniesByAddress(@RequestBody Address geoAddress){
+        List<Address> addresses = addressService.checkAddress(geoAddress);
+        List<Company> companies = new ArrayList();
+
+        addresses.forEach(address -> companies.add(companyService.getCompanyByAddressId(address.getId())));
+
+        return companies;
     }
 
     @PostMapping(value = "/all_company")
-    public List approve () {
+    public List allCompanies () {
         return companyService.getAllCompanies();
     }
 
-
+    /**
+     * Добавляем песню в очередь
+     * @param httpEntity
+     */
     @PostMapping("/addSongToQueue")
     public void addSongToQueue(HttpEntity httpEntity) {
         HttpHeaders headers = httpEntity.getHeaders();
