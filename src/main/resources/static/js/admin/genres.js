@@ -91,7 +91,7 @@ function editButton(id, name) {
             name: {
                 required: true,
                 pattern: genreNameRegEx,
-                rangelength: [3, 10],
+                rangelength: [3, 30],
                 remote: {
                     method: "GET",
                     url: "/api/admin/genre/is_free",
@@ -122,8 +122,8 @@ function editButton(id, name) {
                 },
                 cache: false,
                 complete: () => {
-                    theModal.modal("hide");
                     getTable();
+                    theModal.modal("hide");
                 },
                 success: () => {
                     sendNotification();

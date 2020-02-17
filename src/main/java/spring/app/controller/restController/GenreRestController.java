@@ -73,7 +73,6 @@ public class GenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam(value = "id", required = false) Long id) {
-        Genre genre = genreService.getByName(name);
-        return genre == null || genre.getId().equals(id);
+        return genreService.getByName(name) == null;
     }
 }

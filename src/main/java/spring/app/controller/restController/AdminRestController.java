@@ -11,7 +11,10 @@ import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.*;
+import spring.app.service.abstraction.CompanyService;
+import spring.app.service.abstraction.OrgTypeService;
+import spring.app.service.abstraction.RoleService;
+import spring.app.service.abstraction.UserService;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -26,18 +29,17 @@ public class AdminRestController {
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
-    private final GenreService genreService;
     private final OrgTypeService orgTypeService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               GenreService genreService, OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
-        this.genreService = genreService;
         this.orgTypeService = orgTypeService;
     }
+
     @PutMapping(value = "/ban_user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
@@ -57,13 +59,12 @@ public class AdminRestController {
     @GetMapping(value = "/all_users")
     public @ResponseBody
     List<User> getAllUsers() {
-        List<User> list = userService.getAllUsers();
-        return list;
+        return userService.getAllUsers();
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-       return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")
@@ -74,8 +75,7 @@ public class AdminRestController {
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
-        List<Company> list = companyService.getAllCompanies();
-        return list;
+        return companyService.getAllCompanies();
     }
 
     @GetMapping(value = "/all_establishments")
@@ -94,7 +94,7 @@ public class AdminRestController {
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
         System.out.println(userDto.getRoles());
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
     }
@@ -160,19 +160,18 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/email")
-    public String checkEmail(@RequestParam String email, @RequestParam long id){
+    public String checkEmail(@RequestParam String email, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByEmail(email, id));
     }
 
     @GetMapping(value = "/check/login")
-    public String checkLogin(@RequestParam String login, @RequestParam long id){
-       return Boolean.toString(userService.isExistUserByLogin(login, id));
+    public String checkLogin(@RequestParam String login, @RequestParam long id) {
+        return Boolean.toString(userService.isExistUserByLogin(login, id));
     }
 
     @GetMapping(value = "/establishment/est_type_name_is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam(value = "id", required = false) Long id) {
-        OrgType org = orgTypeService.getByName(name);
-        return org == null || org.getId().equals(id);
+        return orgTypeService.getByName(name) == null;
     }
 }
