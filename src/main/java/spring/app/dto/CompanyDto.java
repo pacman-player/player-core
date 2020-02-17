@@ -22,10 +22,23 @@ public class CompanyDto {
         this.companyId = companyId;
     }
 
+    public CompanyDto() {
+    }
+
     public CompanyDto(Long id, Long companyId, String name) {
         this.id = id;
         this.companyId = companyId;
         this.name = name;
+    }
+
+    public CompanyDto(Long id, Long companyId, String name, String startTime, String closeTime, Long orgType, Long userId) {
+        this.id = id;
+        this.companyId = companyId;
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.orgType = orgType;
+        this.userId = userId;
     }
 
     public Long getId() {

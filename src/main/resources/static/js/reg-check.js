@@ -75,7 +75,7 @@ $(document).ready(function () {
                 $.each(data, function (key, value) {
                     /*<option th:value="${orgType.id}" th:text="${orgType.name}"></option>*/
                     genreForAdd += '<option ';
-                    genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
+                    genreForAdd += ' value="' + value.id + '">' + value.name + '</option>';
                 });
                 $('#orgType').append(genreForAdd);
             });

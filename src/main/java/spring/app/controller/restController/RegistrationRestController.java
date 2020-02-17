@@ -82,10 +82,15 @@ public class RegistrationRestController {
             user = (User) getContext().getAuthentication().getPrincipal();
         }
 
-        Role roleUser = roleService.getRoleByName("USER");
-        user.setRoles(Collections.singleton(roleUser));
+        /*Role roleUser = roleService.getRoleByName("USER");
+        user.setRoles(Collections.singleton(roleUser));*/
 
-        Company company = companyService.getByCompanyName(companyDto.getName());
+        Company company = new Company(companyDto.getName(),
+                LocalTime.parse(companyDto.getStartTime()), LocalTime.parse(companyDto.getCloseTime()),
+                user, orgType);
+
+        companyService.addCompany(company);
+        company = companyService.getByCompanyName(companyDto.getName());
         company.setOrgType(orgType);
         company.setUser(user);
 
@@ -115,7 +120,7 @@ public class RegistrationRestController {
         eveningPlaylistSet.add(eveningPlayList);
         company.setEveningPlayList(eveningPlaylistSet);
 
-        companyService.addCompany(company);
+        companyService.updateCompany(company);
         company = companyService.getByCompanyName(company.getName());
 
         user.setCompany(company);
