@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
-import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;

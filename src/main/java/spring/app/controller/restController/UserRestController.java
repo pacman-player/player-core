@@ -1,24 +1,20 @@
 package spring.app.controller.restController;
 
-import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
-import spring.app.service.CutSongService;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
-import java.util.Map;
-import java.util.Random;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -138,7 +134,19 @@ public class UserRestController {
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-        return ResponseEntity.ok(addressService.getById(id));
+
+        Address lazyAddressByID = addressService.getById(companyService.getById(id).getAddress().getId());
+        Address realAddress = new Address(
+                lazyAddressByID.getId(),
+                lazyAddressByID.getCountry(),
+                lazyAddressByID.getCity(),
+                lazyAddressByID.getStreet(),
+                lazyAddressByID.getHouse(),
+                lazyAddressByID.getLatitude(),
+                lazyAddressByID.getLongitude()
+                );
+
+        return ResponseEntity.ok(realAddress);
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -155,7 +163,7 @@ public class UserRestController {
     public void updateAddress(@RequestBody AddressDto addressDto) {
         long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
         Company companyForUpdate = companyService.getById(id);
-        Address addressForUpdate = addressService.getById(id);
+        Address addressForUpdate = companyForUpdate.getAddress();
 
         if (addressForUpdate == null) {
             addressService.updateAddress(new Address(
@@ -173,9 +181,14 @@ public class UserRestController {
             addressForUpdate.setHouse(addressDto.getHouse());
             addressForUpdate.setLatitude(addressDto.getLatitude());
             addressForUpdate.setLongitude(addressDto.getLongitude());
+
+            companyForUpdate.setAddress(addressForUpdate);
+            companyService.updateCompany(companyForUpdate);
+
+            return;
         }
 
-        companyForUpdate.setAddress(addressService.getById(id));
+        companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
         companyService.updateCompany(companyForUpdate);
     }
 

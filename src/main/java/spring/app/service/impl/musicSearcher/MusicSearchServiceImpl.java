@@ -49,10 +49,11 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         this.genreDefiner = genreDefiner;
         this.dataUpdater = dataUpdater;
     }
-
     @Override
     public Track getSong(String author, String song) throws IOException {
+        //складываем сервисы поиска в лист
         List<? extends DownloadMusicService> listServices = new ArrayList<>(Arrays.asList(zaycevMusic, vkMusic, krolikMusic, muzofondMusic));
+        //проходим в цикле по каждому сервису, пытаемся найти песню и при положительном исходе брейкаем цикл
         for (DownloadMusicService service : listServices) {
             track = service.getSong(author, song);
             if (track != null) break;

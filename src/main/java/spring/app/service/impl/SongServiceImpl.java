@@ -52,6 +52,11 @@ public class SongServiceImpl implements SongService {
         return songDao.getByName(name);
     }
 
+    @Override
+    public Song getByNameAndAuthor(String name, String author) {
+        return songDao.getByNameAndAuthor(name, author);
+    }
+
 //    @Override
 //    public Song getSongById(long id) {
 //        return songDao.getById(id);
@@ -59,7 +64,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public boolean isExist(String name) {
-        return getByName(name) != null;
+        return songDao.isExist(name);
     }
 
     @Override
@@ -76,8 +81,7 @@ public class SongServiceImpl implements SongService {
     public List<Song> getAllSongInSongCompilation(Long id) {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();
-        List<Song> allSongList = new ArrayList<>(allSongSet);
-        return allSongList;
+        return new ArrayList<>(allSongSet);
     }
 
     @Override

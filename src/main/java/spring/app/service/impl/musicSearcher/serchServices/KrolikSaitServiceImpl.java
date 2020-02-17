@@ -19,7 +19,6 @@ import java.nio.file.Path;
 public class KrolikSaitServiceImpl implements DownloadMusicService {
 
     private RestTemplate restTemplate = new RestTemplate();
-
     private String authorName;
     private String songName;
     private String trackName = "";
@@ -57,10 +56,10 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             String link = searchSong(author, song)[1];
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
-
+            Path path = null;
             if (track.length > 1024 * 20) {    //проверка что песня полноценная
 
-                Path path = PlayerPaths.getSongsDir(trackName + ".mp3");
+               path = PlayerPaths.getSongsDir(trackName + ".mp3");
                 if (path != null) {
                     try {
                         Files.write(path, track);  //записываем песню с директорию
@@ -69,7 +68,7 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
                     }
                 }
             } else return null;  //если песня меньше 2мб возвращаем 0
-            return new Track(authorName, songName, trackName, track);
+            return new Track(authorName, songName, trackName, track, path);
         } catch (IOException e) {
             System.out.println("Ошибка скачивания с krolik.biz");
         }

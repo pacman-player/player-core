@@ -1,0 +1,76 @@
+
+.playBtn {
+    background-image: url("https://img.icons8.com/officexs/40/000000/circled-play.png");
+    /*background-image: url("/img/play.png");*/
+    display: inline-block;
+    /*position: absolute;*/
+    /*border-color: white;*/
+    width: 40px;
+    height: 40px;
+}
+
+.pauseBtn {
+    background-image: url("https://img.icons8.com/office/40/000000/circled-pause.png");
+    /*background-image: url("/img/pause.png");*/
+    width: 40px;
+    height: 40px;
+    /*border-color: white;*/
+    display: none;
+}
+
+.bubble {
+    background-image: url("https://img.icons8.com/ultraviolet/40/000000/active-state.png");
+    position: absolute;
+    display: none;
+    width: 40px;
+    height: 40px;
+}
+
+#playerContainer {
+    position: sticky;
+    background: #ececec;
+    opacity: 0.9;
+    width: 100%;
+    left: 0;
+    height: 110px;
+    bottom: 10px;
+    display: none;
+    /*z-index: 9999;*/
+}
+
+#playerContainer button {
+    position: relative;
+    bottom: 30%;
+}
+
+#albums-cover {
+    height: 100px;
+    width: 100px;
+    margin-right: 10px;
+}
+
+#song-name {
+    font-size: 17px;
+    color: #0f0f0c;
+
+}
+
+#song-author {
+    font-size: 14px;
+    color: #3c3b3d;
+}
+
+#seekbar {
+    width: 300px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+#volumebar {
+    cursor: pointer;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+.container {
+    position: relative;
+    display: inline-block;
+}

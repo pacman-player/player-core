@@ -1,8 +1,6 @@
 package spring.app.dao.impl;
 
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.SongResponse;
-import spring.app.model.Song;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

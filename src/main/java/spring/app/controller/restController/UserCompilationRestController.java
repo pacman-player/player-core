@@ -38,7 +38,9 @@ public class UserCompilationRestController {
 
     @GetMapping(value = "/get/song-compilation/{id}")
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
-        return songCompilationService.getSongCompilationById(id);
+        SongCompilation songCompilationById = songCompilationService.getSongCompilationById(id);
+        System.out.println(songCompilationById);
+        return songCompilationById;
     }
 
     @GetMapping("/songsBySongCompilation")
