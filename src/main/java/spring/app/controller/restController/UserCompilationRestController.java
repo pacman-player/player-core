@@ -47,7 +47,7 @@ public class UserCompilationRestController {
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
         LOGGER.info("GET request '/get/all-song-compilation/{}'", id);
         SongCompilation songCompilationById = songCompilationService.getSongCompilationById(id);
-        LOGGER.info("Found compilation = {}", songCompilation.getName());
+        LOGGER.info("Found compilation = {}", songCompilationById.getName());
         return songCompilationById;
     }
 

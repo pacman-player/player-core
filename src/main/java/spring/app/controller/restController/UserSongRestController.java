@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.model.User;
@@ -15,8 +14,9 @@ import spring.app.service.abstraction.SongQueueService;
 import spring.app.service.abstraction.SongService;
 import spring.app.service.abstraction.UserService;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/song")
@@ -43,12 +43,16 @@ public class UserSongRestController {
 
     @GetMapping("/songsInQueue")
     public List<Song> getSongsInSongQueueOfCompany() {
+        LOGGER.info("GET request '/songsInQueue'");
         User authUser = userService.getUserById(userService.getIdAuthUser());
         Long companyId = authUser.getCompany().getId();
         List<SongQueue> songQueues = songQueueService.getByCompanyId(companyId);
+        LOGGER.info("Logged-in User has {} lines in SongQueue list", songQueues.size());
         if (!songQueues.isEmpty()) {
             songQueueService.deleteById(songQueues.get(0).getId());
             return Arrays.asList(songQueues.get(0).getSong());
-        } else return new ArrayList<>();
+        } else {
+            return new ArrayList<>();
+        }
     }
 }
