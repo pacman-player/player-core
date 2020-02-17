@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
@@ -80,8 +81,7 @@ public class AdminRestController {
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
-        List<OrgType> list = orgTypeService.getAllOrgType();
-        return list;
+        return orgTypeService.getAllOrgType();
     }
 
     @PostMapping(value = "/add_user")
@@ -135,12 +135,6 @@ public class AdminRestController {
         orgTypeService.updateOrgType(orgType);
     }
 
-    // Returns false if author with requested name already exists else true
-    @GetMapping(value = "/establishment/est_type_name_is_free")
-    public boolean isLoginFree(@RequestParam("name") String name) {
-        return orgTypeService.getByName(name) == null;
-    }
-
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         orgTypeService.deleteOrgTypeById(id);
@@ -173,5 +167,12 @@ public class AdminRestController {
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
        return Boolean.toString(userService.isExistUserByLogin(login, id));
+    }
+
+    @GetMapping(value = "/establishment/est_type_name_is_free")
+    public boolean isTypeNameFree(@RequestParam("name") String name,
+                                  @RequestParam(value = "id", required = false) Long id) {
+        OrgType org = orgTypeService.getByName(name);
+        return org == null || org.getId().equals(id);
     }
 }

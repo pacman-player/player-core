@@ -1,18 +1,179 @@
 $(document).ready(function () {
     getTable();
+
+    let formAddEst = $("#establishmentsAddForm");
+    let fieldNameAddEstName = $("#addName");
+    $("#addEstablishmentBtn").on("click", function () {
+        if (formAddEst.valid()) {
+            addEstablishments(formAddEst, fieldNameAddEstName);
+            formAddEst.trigger("reset");
+        }
+    })
 });
+
+
+const errMessages = {
+    required: "Укажите название",
+    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
+    rangelength: "Количество символов должно быть в диапазоне [3-30]",
+    remote: "Имя занято"
+};
+
+const establishmentsNameRegEx = /[\wА-Яа-я\-]/;
+
+
+$("#establishmentsAddForm").validate({
+    rules: {
+        name: {
+            required: true,
+            pattern: establishmentsNameRegEx,
+            rangelength: [3, 10],
+            remote: {
+                method: "GET",
+                url: "/api/admin/establishment/est_type_name_is_free",
+                cache: false,
+                data: {
+                    name: function () {
+                        return $("#addName").val()
+                    },
+                }
+            }
+        }
+    },
+    messages: {
+        name: errMessages
+    }
+});
+
+
+function addEstablishments(form, field) {
+    $.ajax({
+        method: "POST",
+        url: "/api/admin/add_establishment",
+        contentType: "application/json",
+        data: JSON.stringify(field.val()),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        cache: false,
+        complete: () => {
+            $("#tab-establishments-panel").tab("show");
+            getTable();
+        },
+        success: () => {
+            notification(
+                "add-establishment" + field.val(),
+                ` Заведение ${field.val()} добавлено`,
+                "establishments-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+}
+
+
+function editButton(id, name) {
+    let theModal = $("#editEstablishment");
+    let form = $("#establishment-form");
+    let fieldId = $("#updateEstablishmentId");
+    let fieldName = $("#updateEstablishmentName");
+
+    fieldId.val(id);
+    fieldName.val(name);
+
+    theModal.modal("show");
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+                pattern: establishmentsNameRegEx,
+                rangelength: [3, 10],
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/establishment/est_type_name_is_free",
+                    cache: false,
+                    id: function () {
+                        return fieldId.val()
+                    },
+                }
+            }
+        },
+        messages: {
+            name: errMessages
+        },
+        submitHandler: () => {
+            $.ajax({
+                method: "PUT",
+                url: "/api/admin/update_establishment",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id: id,
+                    name: fieldName.val()
+                }),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                cache: false,
+                complete: () => {
+                    theModal.modal("hide");
+                    getTable();
+                },
+                success: () => {
+                    notification(
+                        "edit-establishment" + fieldName.val(),
+                        `  Изменения типа организации с id  ${id} сохранены`,
+                        "establishments-panel");
+                },
+                error: (xhr, status, error) => {
+                    alert(xhr.responseText + "|\n" + status + "|\n" + error);
+                }
+            })
+        }
+    })
+}
+
+
+function deleteButton(id) {
+    $.ajax({
+        method: "DELETE",
+        url: "/api/admin/delete_establishment",
+        contentType: "application/json",
+        data: JSON.stringify(id),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        cache: false,
+        complete: () => {
+            getTable();
+        },
+        success: () => {
+            notification(
+                "delete-establishment" + id,
+                ` Заведение c id ${id} удалено`,
+                "establishments-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+}
+
 
 function getTable() {
     $.ajax({
-        method: 'GET',
+        method: "GET",
         url: "/api/admin/all_establishments",
-        contentType: 'application/json',
+        contentType: "application/json",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Content-Type": "application/json",
         },
         cache: false,
-        dataType: 'JSON',
+        dataType: "JSON",
         success: function (list) {
             let tableBody = $("#establishmentsTable tbody");
 
@@ -22,7 +183,7 @@ function getTable() {
                 let id = list[i].id;
                 let name = list[i].name;
                 // parsing fields
-                let tr = $('<tr/>');
+                let tr = $("<tr/>");
                 tr.append(`
                             <td> ${id} </td>
                             <td> ${name} </td>
@@ -46,163 +207,4 @@ function getTable() {
             }
         }
     });
-}
-
-
-// err messages text JSON-object for add/edit establishment's name
-const errMessages = {
-    required: "Укажите название",
-    pattern: "Название может содержать: кирилицу, латиницу, цифры, тире. Минимальная длина - 2 символа.",
-    remote: "Такой тип заведения уже существует"
-};
-
-// regex for establishment name
-const establishmentsNameRegEx = /^[\wА-Яа-я\-]{2,20}$/; // A-Z, a-z, А-Я, а-я, 0-9, _
-
-
-function addButton() {
-    let form = $("#establishmentsAddForm");
-    let field = $("#addName");
-
-    form.validate({
-        rules: {
-            name: {
-                required: true,
-                pattern: establishmentsNameRegEx,
-                remote: {
-                    method: "GET",
-                    url: "/api/admin/establishment/est_type_name_is_free",
-                    cache: false,
-                    dataType: "JSON",
-                    parameterData: {
-                        author: () => {
-                            return field.val();
-                        }
-                    }
-                }
-            }
-        },
-        messages: {
-            name: errMessages
-        },
-        submitHandler: () => {
-            $.ajax({
-                method: "POST",
-                url: "/api/admin/add_establishment",
-                contentType: 'application/json',
-                data: JSON.stringify(field.val()),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                cache: false,
-                complete: () => {
-                    form.trigger('reset');
-                    getTable();
-                    $("#tab-establishments-panel").tab('show');
-                },
-                success: () => {
-                    notification(
-                        "add-establishment" + field.val(),
-                        ` Заведение ${field.val()} добавлено`,
-                        "establishments-panel");
-                },
-                error: (xhr, status, error) => {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
-            })
-        }
-    })
-}
-
-
-function editButton(id, name) {
-    let theModal = $('#editEstablishment');   // modal window's selector
-    let form = $("#establishment-form");
-    let field = $("#updateEstablishmentName");   // field "name" selector
-
-    // autofill
-    $("#updateEstablishmentId").val(id);
-    field.val(name);
-    // show the modal
-    theModal.modal('show');
-    // validation logic
-    form.validate({
-        rules: {
-            name: {
-                required: true,
-                pattern: establishmentsNameRegEx,
-                remote: {
-                    method: "GET",
-                    url: "/api/admin/establishment/est_type_name_is_free",
-                    cache: false,
-                    dataType: "JSON",
-                    parameterData: {
-                        author: () => {
-                            return field.val();
-                        }
-                    }
-                }
-            }
-        },
-        messages: {
-            name: errMessages
-        },
-        submitHandler: () => {
-            $.ajax({
-                method: "PUT",
-                url: "/api/admin/update_establishment",
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    id: id,
-                    name: field.val()
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                cache: false,
-                complete: () => {
-                    getTable();
-                    theModal.modal('hide');
-                },
-                success: () => {
-                    notification(
-                        "edit-establishment" + field.val(),
-                        `  Изменения типа организации с id  ${id} сохранены`,
-                        "establishments-panel");
-                },
-                error: (xhr, status, error) => {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
-            })
-        }
-    })
-}
-
-
-function deleteButton(id) {
-    $.ajax({
-        method: "DELETE",
-        url: "/api/admin/delete_establishment",
-        contentType: 'application/json',
-        data: JSON.stringify(id),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        cache: false,
-        complete: () => {
-            getTable();
-        },
-        success: () => {
-            notification(
-                "delete-establishment" + id,
-                ` Заведение c id ${id} удалено`,
-                "establishments-panel");
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + '|\n' + status + '|\n' + error);
-        }
-    })
 }
