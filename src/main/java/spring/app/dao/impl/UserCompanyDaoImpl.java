@@ -25,55 +25,55 @@ public class UserCompanyDaoImpl extends AbstractDao<Long, UserCompany> implement
     public UserCompanyDaoImpl() {
         super(UserCompany.class);
     }
-
-    @Override
-    public List<Long> getMissedRegSteps(Long userId) {
-        Query q = entityManager.createNativeQuery(
-                "SELECT rg.id " +
-                        "FROM registration_step rg " +
-                        "WHERE rg.id " +
-                        "NOT IN (" +
-                        "SELECT usr.reg_step_id " +
-                        "FROM user_company usr " +
-                        "WHERE usr.user_id = ?" +
-                        ")"
-        );
-        q.setParameter(1, userId);
-        List stepsList = q.getResultList();
-        
-        List<Long> resultList = new ArrayList<>();
-        for (Object num: stepsList
-             ) {
-            resultList.add(((BigInteger)num).longValue());
-        }
-        return resultList;
-    }
-
-    @Override
-    public List<Long> getPassedRegSteps(Long userId) {
-        Query q = entityManager.createNativeQuery(
-                "SELECT usr.reg_step_id " +
-                        "FROM user_company usr " +
-                        "WHERE usr.user_id = ?"
-        );
-        q.setParameter(1, userId);
-        List stepsList = q.getResultList();
-
-        List<Long> resultList = new ArrayList<>();
-        for (Object num: stepsList
-        ) {
-            resultList.add(((BigInteger)num).longValue());
-        }
-        return resultList;
-    }
-
-    @Override
-    public List<RegistrationStep> getAllRegSteps() {
-        List<RegistrationStep> registrationStepList = entityManager.createQuery(
-                "SELECT rg FROM RegistrationStep rg ",
-                RegistrationStep.class
-        )
-                .getResultList();
-        return registrationStepList;
-    }
+//
+//    @Override
+//    public List<Long> getMissedRegSteps(Long userId) {
+//        Query q = entityManager.createNativeQuery(
+//                "SELECT rg.id " +
+//                        "FROM registration_step rg " +
+//                        "WHERE rg.id " +
+//                        "NOT IN (" +
+//                        "SELECT usr.reg_step_id " +
+//                        "FROM user_company usr " +
+//                        "WHERE usr.user_id = ?" +
+//                        ")"
+//        );
+//        q.setParameter(1, userId);
+//        List stepsList = q.getResultList();
+//
+//        List<Long> resultList = new ArrayList<>();
+//        for (Object num: stepsList
+//             ) {
+//            resultList.add(((BigInteger)num).longValue());
+//        }
+//        return resultList;
+//    }
+//
+//    @Override
+//    public List<Long> getPassedRegSteps(Long userId) {
+//        Query q = entityManager.createNativeQuery(
+//                "SELECT usr.reg_step_id " +
+//                        "FROM user_company usr " +
+//                        "WHERE usr.user_id = ?"
+//        );
+//        q.setParameter(1, userId);
+//        List stepsList = q.getResultList();
+//
+//        List<Long> resultList = new ArrayList<>();
+//        for (Object num: stepsList
+//        ) {
+//            resultList.add(((BigInteger)num).longValue());
+//        }
+//        return resultList;
+//    }
+//
+//    @Override
+//    public List<RegistrationStep> getAllRegSteps() {
+//        List<RegistrationStep> registrationStepList = entityManager.createQuery(
+//                "SELECT rg FROM RegistrationStep rg ",
+//                RegistrationStep.class
+//        )
+//                .getResultList();
+//        return registrationStepList;
+//    }
 }

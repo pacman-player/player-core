@@ -1,13 +1,10 @@
 package spring.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.catalina.User;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 
-import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "registration_step")
@@ -18,17 +15,17 @@ public class RegistrationStep {
     private Long id;
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = UserCompany.class)
-    @JoinTable(name = "UserCompanyKey_RegistrationStep",
-            joinColumns = {@JoinColumn(name = "registrationStep_id")},
-            inverseJoinColumns = {@JoinColumn(name = "userCompanyKey_id")})
-    private List<UserCompany> userCompanies;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @MapKeyJoinColumn(name = "users_id")
+    @JoinTable(name = "steps_user",
+            joinColumns = @JoinColumn(name = "steps_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id"))
+    private Map<User, Company> userCompanies;
 
     public RegistrationStep() {
     }
 
-    public RegistrationStep(Long id, String name, Long position, List<UserCompany> userCompanies) {
+    public RegistrationStep(Long id, String name, Long position, Map<User, Company> userCompanies) {
         this.id = id;
         this.name = name;
         this.userCompanies = userCompanies;
@@ -50,11 +47,11 @@ public class RegistrationStep {
         this.name = name;
     }
 
-    public List<UserCompany> getUserCompanies() {
+    public Map<User, Company> getUserCompanies() {
         return userCompanies;
     }
 
-    public void setUserCompanies(List<UserCompany> userCompanies) {
+    public void setUserCompanies(Map<User, Company> userCompanies) {
         this.userCompanies = userCompanies;
     }
 
