@@ -134,8 +134,10 @@
                                                                     <!--заполняем через js-->
                                                                 </select>
                                                             </div>
-                                                            <button id="addAuthorBtn" class="btn btn-success btn-lg"
-                                                                    type="submit" style="margin-top: 20px;">
+                                                            <button id="addAuthorBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    type="submit"
+                                                                    style="margin-top: 20px;">
                                                                 Добавить исполнителя
                                                             </button>
                                                         </div>
@@ -164,32 +166,31 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                    <div id="success-edit-message"
-                                                         class="alert alert-danger hidden">
-                                                        <div id="message"></div>
-                                                    </div>
                                                     <form id="edit-form">
                                                         <div class="form-group text-center edit-form">
-                                                            <label for="editAuthorId">ID</label>
-                                                            <input id="editAuthorId"
-                                                                   class="form-control"
-                                                                   disabled="disabled" type="text"
-                                                                   name="id"/>
-                                                            <input id="id-input-edit-hidden"
-                                                                   name="id" type="hidden"/>
-
-                                                            <label for="editAuthorName">Имя</label>
-                                                            <input id="editAuthorName"
-                                                                   class="form-control" name="name"
-                                                                   type="text"/>
-
-                                                            <label for="editAuthorGenre">Жанр</label>
-                                                            <select class="form-control"
-                                                                    id="editAuthorGenre"
-                                                                    name="updateGenre">
-                                                                <!--заполняем через js-->
-                                                            </select>
-
+                                                            <div>
+                                                                <label for="editAuthorId">ID</label>
+                                                                <input id="editAuthorId"
+                                                                       class="form-control"
+                                                                       disabled="disabled"
+                                                                       type="text"
+                                                                       name="id"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="editAuthorName">Имя</label>
+                                                                <input id="editAuthorName"
+                                                                       class="form-control"
+                                                                       name="name"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="editAuthorGenre">Жанр</label>
+                                                                <select class="form-control"
+                                                                        id="editAuthorGenre"
+                                                                        name="updateGenre">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-default"
                                                                         data-dismiss="modal"
@@ -201,8 +202,8 @@
                                                                         type="submit">
                                                                     Изменить
                                                                 </button>
-                                                            </div>
 
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>

@@ -6,6 +6,7 @@ $(document).ready(function () {
     let fieldAuthorGenre = $("#addAuthorGenre");
     $("#addAuthorBtn").on("click", function (event) {
         event.preventDefault();
+
         if (formAddAuthor.valid()) {
             addAuthor(formAddAuthor, fieldAuthorName, fieldAuthorGenre);
             formAddAuthor.trigger("reset");
@@ -23,6 +24,7 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
         let option = genres[i].name;
         selectOptions += `<option value="${option}"> ${option} </option>`;
     }
+
     dropDownListSelector.append(selectOptions);
 }
 
@@ -61,7 +63,6 @@ $("#addForm").validate({
             remote: {
                 method: "GET",
                 url: "/api/admin/author/is_free",
-                cache: false,
                 data: {
                     name: function () {
                         return $("#addAuthorName").val()
@@ -88,7 +89,6 @@ function addAuthor(form, name, genre) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        cache: false,
         complete: () => {
             $("#tab-author-panel").tab("show");
             getTable();
@@ -120,7 +120,7 @@ function editButton(id, name) {
     fieldId.val(id);
     fieldName.val(name);
 
-    theModal.modal('show');
+    theModal.modal("show");
     form.validate({
         rules: {
             name: {
@@ -130,12 +130,6 @@ function editButton(id, name) {
                 remote: {
                     method: "GET",
                     url: "/api/admin/author/is_free",
-                    cache: false,
-                    data: {
-                        name: function () {
-                            return $("#addAuthorName").val()
-                        },
-                    }
                 }
             }
         },
@@ -186,8 +180,6 @@ function deleteButton(id) {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        async: false,
-        cache: false,
         complete: () => {
             getTable();
         },
@@ -213,7 +205,6 @@ function getTable() {
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        cache: false,
         dataType: "JSON",
         success: (authors) => {
             let tableBody = $("#AuthorTable tbody");
@@ -228,7 +219,7 @@ function getTable() {
                 for (let gi = 0; gi < genres.length; gi++) {
                     htmlGenres += genres[gi].name + " ";
                 }
-                // parsing fields
+
                 let tr = $("<tr/>");
                 tr.append(`
                             <td> ${id} </td>
