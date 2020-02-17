@@ -1,6 +1,45 @@
 $(document).ready(function () {
     getTable();
+
+    let formAddAuthor = $("#addForm");
+    let fieldAuthorName = $("#addAuthorName");
+    let fieldAuthorGenre = $("#addAuthorGenre");
+    $("#addAuthorBtn").on("click", function (event) {
+        event.preventDefault();
+        if (formAddAuthor.valid()) {
+            addAuthor(formAddAuthor, fieldAuthorName, fieldAuthorGenre);
+            formAddAuthor.trigger("reset");
+        }
+    })
 });
+
+// Drop-down list data
+function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
+    dropDownListSelector.empty();
+    let genres = getGenres();
+
+    let selectOptions = "";
+    for (let i = 0; i < genres.length; i++) {
+        let option = genres[i].name;
+        selectOptions += `<option value="${option}"> ${option} </option>`;
+    }
+    dropDownListSelector.append(selectOptions);
+}
+
+function getGenres() {
+    return $.ajax({
+        method: 'GET',
+        url: "/api/admin/author/all_genre",
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        async: false,
+        cache: false,
+        dataType: "JSON"
+    }).responseJSON;
+}
 
 
 const errMessages = {
@@ -13,34 +52,155 @@ const errMessages = {
 const authorNameRegEx = /[\wА-Яа-я\-]/;
 
 
-function prepareForm() {
-    $("#addAuthorGenre").empty();
-    let genres = getGenres();
-
-    let selectOptions = "";
-    for (let i = 0; i < genres.length; i++) {
-        let option = genres[i].name;
-        selectOptions += `<option value="${option}"> ${option} </option>`;
+$("#addForm").validate({
+    rules: {
+        name: {
+            required: true,
+            pattern: authorNameRegEx,
+            rangelength: [3, 30],
+            remote: {
+                method: "GET",
+                url: "/api/admin/author/is_free",
+                cache: false,
+                data: {
+                    name: function () {
+                        return $("#addAuthorName").val()
+                    },
+                }
+            }
+        }
+    },
+    messages: {
+        name: errMessages
     }
-    selectOptions += `<option value="" selected> Выберите жанр </option>`
+});
 
-    $('#addAuthorGenre').append(selectOptions);
+function addAuthor(form, name, genre) {
+    $.ajax({
+        method: "POST",
+        url: "/api/admin/author/add_author",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            name: name.val(),
+            genres: genre.val()
+        }),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        cache: false,
+        complete: () => {
+            $("#tab-author-panel").tab("show");
+            getTable();
+        },
+        success: () => {
+            notification(
+                "add-author" + name.val(),
+                ` Автор ${name.val()} добавлен`,
+                "authors-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+
 }
 
 
-function getGenres() {
-    return $.ajax({
-        method: 'GET',
-        url: "/api/admin/author/all_genre",
-        contentType: 'application/json',
+function editButton(id, name) {
+    let fieldGenre = $("#editAuthorGenre");
+    // подгрузка жанров в выпадающий список
+    prepareForm(fieldGenre);
+
+    let theModal = $('#editAuthor');
+    let form = $("#edit-form");
+    let fieldId = $("#editAuthorId");
+    let fieldName = $("#editAuthorName");
+
+    fieldId.val(id);
+    fieldName.val(name);
+
+    theModal.modal('show');
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+                pattern: authorNameRegEx,
+                rangelength: [3, 30],
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/author/is_free",
+                    cache: false,
+                    data: {
+                        name: function () {
+                            return $("#addAuthorName").val()
+                        },
+                    }
+                }
+            }
+        },
+        messages: {
+            name: errMessages
+        },
+        submitHandler: () => {
+            $.ajax({
+                method: "PUT",
+                url: "/api/admin/author/update_author",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id: id,
+                    name: fieldName.val(),
+                    genres: fieldGenre.val()
+                }),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                cache: false,
+                complete: () => {
+                    theModal.modal("hide");
+                    getTable();
+                },
+                success: () => {
+                    notification(
+                        "edit-author" + id,
+                        ` Изменения исполнителя с id ${id} сохранены`,
+                        "authors-panel");
+                },
+                error: (xhr, status, error) => {
+                    alert(xhr.responseText + "|\n" + status + "|\n" + error);
+                }
+            })
+        }
+    })
+}
+
+
+function deleteButton(id) {
+    $.ajax({
+        method: "DELETE",
+        url: "/api/admin/author/delete_author",
+        contentType: "application/json",
+        data: JSON.stringify(id),
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Content-Type": "application/json"
         },
         async: false,
         cache: false,
-        dataType: 'JSON'
-    }).responseJSON;
+        complete: () => {
+            getTable();
+        },
+        success: () => {
+            notification(
+                "delete-author" + id,
+                ` Исполнитель c id ${id} удален`,
+                "authors-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
 }
 
 
@@ -51,7 +211,7 @@ function getTable() {
         contentType: "application/json",
         headers: {
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         cache: false,
         dataType: "JSON",
@@ -62,7 +222,6 @@ function getTable() {
             for (let i = 0; i < authors.length; i++) {
                 let id = authors[i].id;
                 let name = authors[i].name;
-
                 // list of genres ()
                 let genres = authors[i].authorGenres;
                 let htmlGenres = "";
@@ -70,7 +229,7 @@ function getTable() {
                     htmlGenres += genres[gi].name + " ";
                 }
                 // parsing fields
-                let tr = $('<tr/>');
+                let tr = $("<tr/>");
                 tr.append(`
                             <td> ${id} </td>
                             <td> ${name} </td>
