@@ -90,6 +90,7 @@ public class TestDataInit {
         admin.setLogin("admin");
         admin.setPassword("admin");
         admin.setEmail("admin@gmail.com");
+//        admin.setEmail("pacmancore26@gmail.com");
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
