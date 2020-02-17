@@ -5,7 +5,7 @@ $(document).ready(function () {
     function getMissedSteps() {
         $.ajax({
             type: 'GET',
-            url: "/api/user/get_missed_steps",
+            url: "/api/registration/get_missed_steps",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -18,44 +18,84 @@ $(document).ready(function () {
                 var htmlPage = document.getElementById('htmlPage');
                 switch (listSteps[0]) {
                     case 1:
-
                         break;
                     case 2:
-                        code += '<div class="container">'
-                        code += '<div class="row">'
-                        code += '<div class="col-md-6 col-md-offset-3">'
-                        code += '<h1>Регистрация: 2/2</h1>'
-                        code += '<form class="text-center" id="registrationSecondForm">'
-                        code += '<input type="hidden" id="login" name="login" th:value="${login}"/>'
-                        code += '<div class="form-group">'
-                        code += '<label for="name" class="control-label">Имя компании</label>'
-                        code += '<input type="text" id="name" class="form-control" placeholder="Введите имя компании" name="name" required="required"/>'
-                        code += '</div>'
-                        code += '<div class="form-group">'
-                        code += '<label for="startTime" class="control-label">Время открытия</label>'
-                        code += '<input type="time" id="startTime" class="form-control" name="startTime" required="required"/>'
-                        code += '</div>'
-                        code += '<div class="form-group">'
-                        code += '<label for="closeTime" class="control-label">Время закрытия</label>'
-                        code += '<input type="time" id="closeTime" class="form-control" name="closeTime" required="required"/>'
-                        code += '</div>'
-                        code += '<div class="form-group">'
-                        code += '<label for="orgType" class="control-label">Тип организации</label>'
-                        code += '<select class="form-control" name="orgType" id="orgType">'
-                        code += '</select>'
-                        code += '</div>'
-                        code += '<div class="form-group">'
-                        code += '<button id="addCompanyBtn" class="btn btn-sm btn-info" type="button">Продолжить регистрацию</button>'
-                        code += '</div>'
-                        code += '</form>'
-                        code += '</div>'
-                        code += '</div>'
-                        code += '</div>'
+                        code += '<div class="container">';
+                        code += '<div class="row">';
+                        code += '<div class="col-md-6 col-md-offset-3">';
+                        code += '<h1>Регистрация: 2/2</h1>';
+                        code += '<form class="text-center" id="registrationCompanyForm">';
+                        code += '<input type="hidden" id="login" name="login" th:value="${login}"/>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="name" class="control-label">Имя компании</label>';
+                        code += '<input type="text" id="name" class="form-control" placeholder="Введите имя компании" name="name" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="startTime" class="control-label">Время открытия</label>';
+                        code += '<input type="time" id="startTime" class="form-control" name="startTime" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="closeTime" class="control-label">Время закрытия</label>';
+                        code += '<input type="time" id="closeTime" class="form-control" name="closeTime" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="orgType" class="control-label">Тип организации</label>';
+                        code += '<select class="form-control" name="orgType" id="orgType">';
+                        code += '</select>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<button id="addCompanyBtn" class="btn btn-sm btn-info" type="button">Продолжить регистрацию</button>';
+                        code += '</div>';
+                        code += '</form>';
+                        code += '</div>';
+                        code += '</div>';
+                        code += '</div>';
                         htmlPage.insertAdjacentHTML('afterEnd', code);
                         getAllOrgTypeForAdd();
                         break;
+
                     case 3:
-                        document.write("x равен 3");
+                        /*String country, String city, String street, String house, double latitude, double longitude*/
+                        code += '<div class="container">';
+                        code += '<div class="row">';
+                        code += '<div class="col-md-6 col-md-offset-3">';
+                        code += '<h1>Регистрация: 3/3</h1>';
+                        code += '<form class="text-center" id="registrationAddressForm">';
+                        code += '<input type="hidden" id="login" name="login" th:value="${login}"/>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="country" class="control-label">Страна</label>';
+                        code += '<input type="text" id="country" class="form-control" placeholder="Введите название страны" name="country" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="city" class="control-label">Город</label>';
+                        code += '<input type="text" id="city" class="form-control" placeholder="Введите название города" name="city" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="street" class="control-label">Улица</label>';
+                        code += '<input type="text" id="street" class="form-control" placeholder="Введите название улицы" name="street" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<label for="house" class="control-label">Дом</label>';
+                        code += '<input type="text" id="house" class="form-control" placeholder="Введите дом" name="house" required="required"/>';
+                        code += '</div>';
+
+                        code += '<div class="form-group">';
+                        code += '<button id="addAddressBtn" class="btn btn-sm btn-info" type="button">Продолжить регистрацию</button>';
+                        code += '</div>';
+                        code += '</form>';
+                        code += '</div>';
+                        code += '</div>';
+                        code += '</div>';
+                        htmlPage.insertAdjacentHTML('afterEnd', code);
                         break;
                     default:
                         location.replace("user/statistics");
@@ -84,13 +124,9 @@ $(document).ready(function () {
 
     //добавляем новую компанию POST в БД по кнопге регистрация
     $(document).on('click', '#addCompanyBtn', function () {
-        if ($('#registrationSecondForm').valid()) {
+        if ($('#registrationCompanyForm').valid()) {
             addCompanyForm();
-            /*$.post("/api/registration/second", registrationSecondForm.serialize(), function () {
-                location.assign(location.origin + "/reg_check");
-            });*/
         }
-        //addCompanyForm();
     });
 
     function addCompanyForm() {
@@ -103,7 +139,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/api/registration/second",
+            url: "/api/registration/company",
             contentType: 'application/json;',
             data: JSON.stringify(company),
             headers: {
@@ -120,7 +156,7 @@ $(document).ready(function () {
 
     }
 
-    $('#registrationSecondForm').validate({
+    $('#registrationCompanyForm').validate({
         rules: {
             name: {
                 required: true,
@@ -164,6 +200,40 @@ $(document).ready(function () {
             }
         }
     });
+
+    //добавляем новый адрес POST в БД по кнопге регистрация
+    $(document).on('click', '#addAddressBtn', function () {
+        if ($('#registrationAddressForm').valid()) {
+            addAddressForm();
+        }
+    });
+
+    function addAddressForm() {
+        let address = {
+            country: $("#country").val(),
+            city: $("#city").val(),
+            street: $("#street").val(),
+            house: $("#house").val(),
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/api/registration/address",
+            contentType: 'application/json;',
+            data: JSON.stringify(address),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: false,
+            cache: false,
+            success: function () {
+                window.location.reload();
+            }
+        });
+
+
+    }
 
 
 });

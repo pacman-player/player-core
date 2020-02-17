@@ -31,6 +31,13 @@ public class AddressDto {
         this.longitude = longitude;
     }
 
+    public AddressDto(String country, String city, String street, String house) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.house = house;
+    }
+
     public Long getId() {
         return id;
     }

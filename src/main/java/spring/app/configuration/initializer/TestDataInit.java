@@ -289,19 +289,16 @@ public class TestDataInit {
         RegistrationStep rs1 = new RegistrationStep();
         rs1.setName("registration-step-user");
         rs1.setPosition(1L);
-        rs1.setScriptName("/js/registrationFirstPage.js");
         registrationStepService.save(rs1);
 
         RegistrationStep rs2 = new RegistrationStep();
         rs2.setName("registration-step-company");
         rs2.setPosition(2L);
-        rs2.setScriptName("/js/registrationSecondPage.js");
         registrationStepService.save(rs2);
 
         RegistrationStep rs3 = new RegistrationStep();
         rs3.setName("registration-step-address");
         rs3.setPosition(3L);
-        rs2.setScriptName("/js/registrationAddress.js");
         registrationStepService.save(rs3);
 
         User user1 = userService.getUserByLogin("user");

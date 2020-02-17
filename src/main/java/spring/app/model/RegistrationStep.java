@@ -15,16 +15,14 @@ public class RegistrationStep {
     private Long id;
     private String name;
     private Long position;
-    private String scriptName;
 
     public RegistrationStep() {
     }
 
-    public RegistrationStep(Long id, String name, Long position, String scriptName) {
+    public RegistrationStep(Long id, String name, Long position) {
         this.id = id;
         this.name = name;
         this.position = position;
-        this.scriptName = scriptName;
     }
 
     public Long getId() {
@@ -51,11 +49,4 @@ public class RegistrationStep {
         this.position = position;
     }
 
-    public String getScriptName() {
-        return scriptName;
-    }
-
-    public void setScriptName(String scriptName) {
-        this.scriptName = scriptName;
-    }
 }

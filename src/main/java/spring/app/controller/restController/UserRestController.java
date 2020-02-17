@@ -207,20 +207,4 @@ public class UserRestController {
             emailSender.send(user.getEmail(), "Смена пароля", message);
         }
     }
-
-    @GetMapping(value = "/get_missed_steps")
-    public List<Long>  getMissedRegSteps(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String userLogin = (String) session.getAttribute("login");
-
-        User user;
-
-        if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-            user = userService.getUserByLogin(userLogin);
-        } else {
-            user = (User) getContext().getAuthentication().getPrincipal();
-        }
-        List<Long> steps = userCompanyService.getMissedRegSteps(user.getId());
-     return steps;
-    }
 }

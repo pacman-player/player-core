@@ -3,6 +3,7 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.*;
@@ -29,12 +30,13 @@ public class RegistrationRestController {
     private RoleService roleService;
     private UserCompanyService userCompanyService;
     private RegistrationStepService registrationStepService;
+    private AddressService addressService;
 
     @Autowired
     public RegistrationRestController(
             UserService userService, CompanyService companyService, OrgTypeService orgTypeService,
             PlayListService playListService, RoleService roleService, UserCompanyService userCompanyService,
-            RegistrationStepService registrationStepService) {
+            RegistrationStepService registrationStepService, AddressService addressService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
@@ -42,13 +44,14 @@ public class RegistrationRestController {
         this.roleService = roleService;
         this.userCompanyService = userCompanyService;
         this.registrationStepService = registrationStepService;
+        this.addressService = addressService;
     }
 
-    @PostMapping("/first")
+    @PostMapping("/user")
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
         User newUser = userService.getUserByLogin(userDto.getLogin());
-        UserCompany userCompany = new UserCompany(newUser.getId(), 0L,  1L);
+        UserCompany userCompany = new UserCompany(newUser.getId(), 0L, 1L);
         userCompanyService.save(userCompany);
     }
 
@@ -61,19 +64,20 @@ public class RegistrationRestController {
     public String checkLogin(@RequestParam String login) {
         return Boolean.toString(!userService.isExistUserByLogin(login));
     }
+
     @GetMapping("/check/company")
     public String checkCompany(@RequestParam String name) {
         return Boolean.toString(!companyService.isExistCompanyByName(name));
     }
 
-    @PostMapping("/second")
-    public void saveCompany(@RequestBody CompanyDto companyDto/*Company company*/, HttpServletRequest request) {
+    @PostMapping("/company")
+    public void saveCompany(@RequestBody CompanyDto companyDto, HttpServletRequest request) {
         long orgTypeId = companyDto.getOrgType();
-        //long orgTypeId = Long.parseLong(company.getOrgType().getName());
         OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
 
         HttpSession session = request.getSession();
         String login = (String) session.getAttribute("login");
+        session.setAttribute("companyName", companyDto.getName());
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
@@ -81,9 +85,6 @@ public class RegistrationRestController {
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
         }
-
-        /*Role roleUser = roleService.getRoleByName("USER");
-        user.setRoles(Collections.singleton(roleUser));*/
 
         Company company = new Company(companyDto.getName(),
                 LocalTime.parse(companyDto.getStartTime()), LocalTime.parse(companyDto.getCloseTime()),
@@ -129,16 +130,40 @@ public class RegistrationRestController {
 
         UserCompany userCompany = new UserCompany(user.getId(), company.getId(), 2L);
         userCompanyService.save(userCompany);
-//        userService.updateUserWithEncodePassword(userByLogin);
-//        Company byCompanyName = companyService.getByCompanyName(company.getName());
-//        System.out.println(byCompanyName);
-//        if (byCompanyName != null) {
-//            return "exist";
-//        //return "success";
+    }
+
+    //ИСПРАВИТЬ ШИРОТУ И ДОЛГОТУ
+    @PostMapping("/address")
+    public void saveAddress(@RequestBody AddressDto addressDto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String login = (String) session.getAttribute("login");
+        String companyName = (String) session.getAttribute("companyName");
+
+        User user;
+        if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+            user = userService.getUserByLogin(login);
+        } else {
+            user = (User) getContext().getAuthentication().getPrincipal();
+        }
+
+        Address address = new Address();
+        address.setCountry(addressDto.getCountry());
+        address.setCity(addressDto.getCity());
+        address.setStreet(addressDto.getStreet());
+        address.setHouse(addressDto.getHouse());
+        addressService.addAddress(address);
+
+
+        Company company = companyService.getByCompanyName(companyName);
+        company.setAddress(address);
+        companyService.updateCompany(company);
+
+        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), 3L);
+        userCompanyService.save(userCompany);
     }
 
     //ИСПРАВИТЬ: поиск только по Логин
-    @PostMapping ("/getPages")
+    @PostMapping("/getPages")
     public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String login) {
 
         User user = userService.getUserByLogin(login);
@@ -147,7 +172,22 @@ public class RegistrationRestController {
         return ResponseEntity.ok(regStepsToPass);
     }
 
-    @PostMapping ("/getOneStep")
+    @GetMapping(value = "/get_missed_steps")
+    public List<Long> getMissedRegSteps(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String userLogin = (String) session.getAttribute("login");
+
+        User user;
+        if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+            user = userService.getUserByLogin(userLogin);
+        } else {
+            user = (User) getContext().getAuthentication().getPrincipal();
+        }
+        List<Long> steps = userCompanyService.getMissedRegSteps(user.getId());
+        return steps;
+    }
+
+    @PostMapping("/getOneStep")
     public ResponseEntity<RegistrationStep> getRegStepToPassNow(@RequestParam Long stepId) {
         RegistrationStep registrationStep = registrationStepService.getRegStepById(stepId);
         return ResponseEntity.ok(registrationStep);
