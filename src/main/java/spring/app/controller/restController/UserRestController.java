@@ -33,7 +33,6 @@ public class UserRestController {
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
     private final AddressService addressService;
-    private final UserCompanyService userCompanyService;
 
     private String PASSWORD = "";
 
@@ -51,14 +50,13 @@ public class UserRestController {
                               AuthorService authorService,
                               SongService songService,
                               SongCompilationService songCompilation,
-                              AddressService addressService, UserCompanyService userCompanyService) {
+                              AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
         this.addressService = addressService;
-        this.userCompanyService = userCompanyService;
     }
 
     @PostMapping(value = "/song_compilation")

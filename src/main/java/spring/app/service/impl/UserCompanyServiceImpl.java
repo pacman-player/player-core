@@ -11,8 +11,8 @@ import spring.app.service.abstraction.UserCompanyService;
 import java.util.List;
 
 
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class UserCompanyServiceImpl implements UserCompanyService {
 
 //    UserCompanyDao userCompanyDao;

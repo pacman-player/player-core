@@ -243,6 +243,6 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, email, password, vkId, firstName, lastName, googleId, company, enabled);
+        return Objects.hash(id, login, email, password, vkId, firstName, lastName, googleId, enabled);
     }
 }

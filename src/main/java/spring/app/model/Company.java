@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -245,5 +246,31 @@ public class Company {
                 ", bannedGenres=" + bannedGenres +
                 ", songQueues=" + songQueues +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return Objects.equals(id, company.id) &&
+                Objects.equals(name, company.name) &&
+                Objects.equals(startTime, company.startTime) &&
+                Objects.equals(closeTime, company.closeTime) &&
+                Objects.equals(user, company.user) &&
+                Objects.equals(orgType, company.orgType) &&
+                Objects.equals(address, company.address) &&
+                Objects.equals(morningPlayList, company.morningPlayList) &&
+                Objects.equals(middayPlayList, company.middayPlayList) &&
+                Objects.equals(eveningPlayList, company.eveningPlayList) &&
+                Objects.equals(bannedGenres, company.bannedGenres) &&
+                Objects.equals(bannedSong, company.bannedSong) &&
+                Objects.equals(bannedAuthor, company.bannedAuthor) &&
+                Objects.equals(songQueues, company.songQueues);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, startTime, closeTime, orgType, address, morningPlayList, middayPlayList, eveningPlayList, bannedGenres, bannedSong, bannedAuthor, songQueues);
     }
 }

@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "user_company")
+//@Entity
+//@Table(name = "user_company")
 public class UserCompany {
 
 //    @Embeddable

@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Repository
-@Transactional(readOnly = true)
+//@Repository
+//@Transactional(readOnly = true)
 public class UserCompanyDaoImpl extends AbstractDao<Long, UserCompany> implements UserCompanyDao {
     private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 

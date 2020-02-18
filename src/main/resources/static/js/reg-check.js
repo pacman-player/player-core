@@ -97,8 +97,14 @@ $(document).ready(function () {
                         code += '</div>';
                         htmlPage.insertAdjacentHTML('afterEnd', code);
                         break;
+
+                    case 13:
+
+                        location.replace("/user/statistics");
+                        break;
+
                     default:
-                        location.replace("user/statistics");
+                        location.replace("/login");
                 }
             }
         });

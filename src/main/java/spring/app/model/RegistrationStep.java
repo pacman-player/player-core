@@ -15,7 +15,7 @@ public class RegistrationStep {
     private Long id;
     private String name;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @MapKeyJoinColumn(name = "users_id")
     @JoinTable(name = "steps_user",
             joinColumns = @JoinColumn(name = "steps_id"),
@@ -33,10 +33,6 @@ public class RegistrationStep {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

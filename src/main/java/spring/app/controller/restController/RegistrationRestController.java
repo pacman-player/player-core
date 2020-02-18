@@ -25,21 +25,19 @@ public class RegistrationRestController {
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
     private RoleService roleService;
-    private UserCompanyService userCompanyService;
     private RegistrationStepService registrationStepService;
     private AddressService addressService;
 
     @Autowired
     public RegistrationRestController(
             UserService userService, CompanyService companyService, OrgTypeService orgTypeService,
-            PlayListService playListService, RoleService roleService, UserCompanyService userCompanyService,
+            PlayListService playListService, RoleService roleService,
             RegistrationStepService registrationStepService, AddressService addressService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.roleService = roleService;
-        this.userCompanyService = userCompanyService;
         this.registrationStepService = registrationStepService;
         this.addressService = addressService;
     }
@@ -48,10 +46,12 @@ public class RegistrationRestController {
     public void saveUser(UserRegistrationDto userDto) {
         userService.save(userDto);
         User newUser = userService.getUserByLogin(userDto.getLogin());
-        List<RegistrationStep> registrationSteps = new ArrayList<>();
-        registrationSteps.add(registrationStepService.getRegStepById(1L));
-        UserCompany userCompany = new UserCompany(newUser.getId(), 0L, registrationSteps);
-        userCompanyService.save(userCompany);
+        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
+        Map<User, Company> userCompanyMap = new HashMap<>();
+        Company company = new Company();
+        userCompanyMap.put(newUser,company);
+        registrationStep.setUserCompanies(userCompanyMap);
+        registrationStepService.save(registrationStep);
     }
 
     @GetMapping("/check/email")
@@ -85,9 +85,19 @@ public class RegistrationRestController {
             user = (User) getContext().getAuthentication().getPrincipal();
         }
 
-        Company company = new Company(companyDto.getName(),
-                LocalTime.parse(companyDto.getStartTime()), LocalTime.parse(companyDto.getCloseTime()),
-                user, orgType);
+        Company company = new Company();
+        RegistrationStep registrationStep1 = registrationStepService.getRegStepById(1L);
+        Map<User, Company> userCompany = registrationStep1.getUserCompanies();
+        for (Map.Entry<User, Company> entry : userCompany.entrySet()) {
+            if (user.equals(entry.getKey())) {
+                company = entry.getValue();
+            }
+        }
+        company.setName(companyDto.getName());
+        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+        company.setUser(user);
+        company.setOrgType(orgType);
 
         companyService.addCompany(company);
         company = companyService.getByCompanyName(companyDto.getName());
@@ -127,10 +137,9 @@ public class RegistrationRestController {
         //здесь обновляю недорегенного юзера с уже зашифрованным паролем
         userService.addUserWithEncodePassword(user);
 
-        List<RegistrationStep> registrationSteps = new ArrayList<>();
-        registrationSteps.add(registrationStepService.getRegStepById(2L));
-        UserCompany userCompany = new UserCompany(user.getId(), company.getId(), registrationSteps);
-        userCompanyService.save(userCompany);
+        RegistrationStep registrationStep2 = registrationStepService.getRegStepById(2L);
+        registrationStep2.getUserCompanies().put(user, company);
+        registrationStepService.save(registrationStep2);
     }
 
     //ИСПРАВИТЬ ШИРОТУ И ДОЛГОТУ
@@ -156,13 +165,20 @@ public class RegistrationRestController {
 
 
         Company company = companyService.getByCompanyName(companyName);
+        RegistrationStep registrationStep = registrationStepService.getRegStepById(2L);
+        Map<User, Company> userCompany = registrationStep.getUserCompanies();
+        for (Map.Entry<User, Company> entry : userCompany.entrySet()) {
+            if (user.equals(entry.getKey()) && company.equals(entry.getValue()) ) {
+                company = entry.getValue();
+            }
+        }
+
         company.setAddress(address);
         companyService.updateCompany(company);
 
-        List<RegistrationStep> registrationSteps = new ArrayList<>();
-        registrationSteps.add(registrationStepService.getRegStepById(3L));
-        UserCompany userCompany = new UserCompany(user.getId(), 0L, registrationSteps);
-        userCompanyService.save(userCompany);
+        RegistrationStep registrationStep1 = registrationStepService.getRegStepById(3L);
+        registrationStep1.getUserCompanies().put(user,company);
+        registrationStepService.save(registrationStep1);
     }
 
     //ИСПРАВИТЬ: поиск только по Логин
@@ -170,7 +186,17 @@ public class RegistrationRestController {
     public ResponseEntity<List<Long>> getMissedRegSteps(@RequestParam String login) {
 
         User user = userService.getUserByLogin(login);
-        List<Long> regStepsToPass = userCompanyService.getMissedRegSteps(user.getId());
+        List<Long> regStepsToPass = new ArrayList<>();
+
+        List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
+        for (RegistrationStep step : registrationSteps) {
+            Map<User, Company> userCompany = step.getUserCompanies();
+            for (User userMap : userCompany.keySet()) {
+                if(!(userMap.equals(user))) {
+                    regStepsToPass.add(step.getId());
+                }
+            }
+        }
 
         return ResponseEntity.ok(regStepsToPass);
     }
@@ -179,14 +205,30 @@ public class RegistrationRestController {
     public List<Long> getMissedRegSteps(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String userLogin = (String) session.getAttribute("login");
+        List<Long> steps = new ArrayList<>();
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
             user = userService.getUserByLogin(userLogin);
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
+            steps.add(13L);
+            return steps;
         }
-        List<Long> steps = userCompanyService.getMissedRegSteps(user.getId());
+
+        steps.add(1L);
+        steps.add(2L);
+        steps.add(3L);
+
+        List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
+        for (RegistrationStep step : registrationSteps) {
+            Map<User, Company> userCompany = step.getUserCompanies();
+            for (User userMap : userCompany.keySet()) {
+                if(userMap.equals(user)) {
+                    steps.remove(step.getId());
+                }
+            }
+        }
         return steps;
     }
 

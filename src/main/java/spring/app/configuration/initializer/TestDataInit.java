@@ -7,10 +7,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TestDataInit {
 
@@ -50,8 +47,8 @@ public class TestDataInit {
     @Autowired
     private RegistrationStepService registrationStepService;
 
-    @Autowired
-    private UserCompanyService userCompanyService;
+//    @Autowired
+//    private UserCompanyService userCompanyService;
 
     private void init() {
 
@@ -301,21 +298,26 @@ public class TestDataInit {
 
         User user1 = userService.getUserByLogin("user");
         Company company1 = companyService.getByCompanyName("Mr.Bo");
+
+//        UserUCDto userUCDto = new UserUCDto(user1.getId(), user1.getLogin(), user1.getEmail());
+//        CompanyUCDto companyUCDto = new CompanyUCDto(company1.getId(), company1.getName());
+
         RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
-        List<RegistrationStep> registrationSteps = new ArrayList<>();
-        registrationSteps.add(registrationStep);
-        UserUCDto userUCDto = new UserUCDto(user1.getId(), user1.getLogin(), user1.getEmail());
-        CompanyUCDto companyUCDto = new CompanyUCDto(company1.getId(), company1.getName());
 
-        UserCompany userCompany = new UserCompany(user1.getId(), company1.getId(), registrationSteps);
-        userCompanyService.save(userCompany);
+        registrationStep.getUserCompanies().put(user1, company1);
+//        UserCompany userCompany = new UserCompany(user1.getId(), company1.getId(), registrationSteps);
 
-        List<RegistrationStep> registrationStepList = registrationStepService.getAllRegSteps();
+        List<Long> steps = new ArrayList<>();
 
-        List<RegistrationStep> registrationStepListByUC = userCompanyService.getAllRegSteps();
-
-        List<Long> registrationStepListByUC1 = userCompanyService.getMissedRegSteps(userUCDto.getId());
-        System.out.println(registrationStepListByUC1);
-
+        List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
+        for (RegistrationStep step : registrationSteps) {
+            Map<User, Company> userCompany = step.getUserCompanies();
+            for (User userMap : userCompany.keySet()) {
+                if(!(userMap.equals(user1))) {
+                    steps.add(step.getId());
+                }
+            }
+        }
+        System.out.println(steps);
     }
 }
