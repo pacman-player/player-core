@@ -84,12 +84,14 @@ public class TelegramServiceImpl implements TelegramService {
         }
 
         //По position определяем позицию песни в очереди song_queue. Если песни нет в очереди - отдаем боту position = 0L
-        Long position = 0L;
+        Long position;
 
         //Достаем очередь по песне и компании
-        SongQueue songQueueBySongAndCompany = songQueueService.getSongQueueBySongAndCompany(songService.getSongById(songId), companyService.getById(songRequest.getCompanyId()));
-        if (songQueueBySongAndCompany != null) {
-            position = songQueueBySongAndCompany.getPosition(); //сетим позицию песни в song_queue которую ищем через бота
+        SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songService.getSongById(songId), companyService.getById(songRequest.getCompanyId()));
+        if (songQueue == null) {
+            position = 0L;
+        } else {
+            position = songQueue.getPosition(); //сетим позицию песни в song_queue которую ищем через бота
         }
 
         SongResponse songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
