@@ -6,7 +6,6 @@ import spring.app.dao.abstraction.SongCompilationDao;
 import spring.app.model.SongCompilation;
 
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 

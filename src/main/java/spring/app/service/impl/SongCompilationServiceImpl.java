@@ -24,17 +24,21 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     private SongCompilationDao songCompilationDao;
     private UserService userService;
     private CompanyService companyService;
+    private SendEmailAboutAddNewCompilationImpl sendEmail;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService, CompanyService companyService) {
+    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService,
+                                      CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail) {
         this.songCompilationDao = songCompilationDao;
         this.userService = userService;
         this.companyService = companyService;
+        this.sendEmail = sendEmail;
     }
 
     @Override
     public void addSongСompilation(SongCompilation songCompilation) {
         songCompilationDao.save(songCompilation);
+        sendEmail.send(songCompilation.getName());
     }
 
     @Override

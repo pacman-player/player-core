@@ -82,4 +82,14 @@ public class SongCompilation {
         result = 31 * result + (genre != null ? genre.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "SongCompilation{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", genre=" + genre +
+                ", song=" + song +
+                '}';
+    }
 }
