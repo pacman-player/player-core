@@ -212,8 +212,19 @@ public class RegistrationRestController {
             user = userService.getUserByLogin(userLogin);
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
-            steps.add(13L);
-            return steps;
+            List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
+            for (RegistrationStep step : registrationSteps) {
+                Map<User, Company> userCompany = step.getUserCompanies();
+                for (User userMap : userCompany.keySet()) {
+                    if(userMap.equals(user)) {
+                        steps.remove(step.getId());
+                    }
+                }
+            }
+            if (steps.size()==0) {
+                steps.add(13L);
+                return steps;
+            }
         }
 
         steps.add(1L);
