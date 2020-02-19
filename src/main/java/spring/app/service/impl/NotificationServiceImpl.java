@@ -9,10 +9,12 @@ import spring.app.controller.controller.NotificationController;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Notification;
+import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -61,8 +63,13 @@ public class NotificationServiceImpl implements NotificationService {
     public void addNotification(String message) throws InterruptedException {
         List<User> users = userDao.getAll();
         for (User user : users) {
-            Notification notification = new Notification(message, true, user);
-            notificationDao.save(notification);
+            Set<Role> roles = user.getRoles();
+            for (Role role: roles) {
+                if (role.getName().equals("ADMIN")) {
+                    Notification notification = new Notification(message, true, user);
+                    notificationDao.save(notification);
+                }
+            }
         }
     }
 
