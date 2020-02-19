@@ -4,6 +4,8 @@
 *.DS_Store
 
 
+player.log*
+
 
 logs/
 **/*.log
