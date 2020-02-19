@@ -51,13 +51,15 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     @BatchSize(size = 1)
     @JsonBackReference
     private Company company;
 
     //@Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
+
+    private Boolean registrationComplete = false;
 
     public User() {
     }
@@ -224,6 +226,14 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public Boolean getRegistrationComplete() {
+        return registrationComplete;
+    }
+
+    public void setRegistrationComplete(Boolean registrationComplete) {
+        this.registrationComplete = registrationComplete;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -237,7 +247,6 @@ public class User implements UserDetails {
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(googleId, user.googleId) &&
-                Objects.equals(company, user.company) &&
                 enabled.equals(user.enabled);
     }
 

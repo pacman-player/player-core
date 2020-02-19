@@ -207,29 +207,20 @@ public class RegistrationRestController {
         String userLogin = (String) session.getAttribute("login");
         List<Long> steps = new ArrayList<>();
 
+        steps.add(1L);
+        steps.add(2L);
+        steps.add(3L);
+
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
             user = userService.getUserByLogin(userLogin);
         } else {
             user = (User) getContext().getAuthentication().getPrincipal();
-            List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
-            for (RegistrationStep step : registrationSteps) {
-                Map<User, Company> userCompany = step.getUserCompanies();
-                for (User userMap : userCompany.keySet()) {
-                    if(userMap.equals(user)) {
-                        steps.remove(step.getId());
-                    }
-                }
-            }
-            if (steps.size()==0) {
-                steps.add(13L);
+            if (user.getRegistrationComplete()) {
+                steps.add(0, 100L);
                 return steps;
             }
         }
-
-        steps.add(1L);
-        steps.add(2L);
-        steps.add(3L);
 
         List<RegistrationStep> registrationSteps = registrationStepService.getAllRegSteps();
         for (RegistrationStep step : registrationSteps) {
@@ -239,6 +230,9 @@ public class RegistrationRestController {
                     steps.remove(step.getId());
                 }
             }
+        }
+        if (steps.size() == 0){
+            user.setRegistrationComplete(true);
         }
         return steps;
     }

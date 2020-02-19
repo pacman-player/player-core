@@ -98,6 +98,7 @@ public class TestDataInit {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleUser);
         user.setRoles(userRoles);
+        user.setRegistrationComplete(true);
         userService.addUser(user);
 
         Genre genre = new Genre("world");
@@ -298,6 +299,8 @@ public class TestDataInit {
 
         User user1 = userService.getUserByLogin("user");
         Company company1 = companyService.getByCompanyName("Mr.Bo");
+
+
 
 //        UserUCDto userUCDto = new UserUCDto(user1.getId(), user1.getLogin(), user1.getEmail());
 //        CompanyUCDto companyUCDto = new CompanyUCDto(company1.getId(), company1.getName());

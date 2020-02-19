@@ -25,7 +25,7 @@ public class Company {
     private LocalTime closeTime;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -34,7 +34,7 @@ public class Company {
     private OrgType orgType;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Address.class)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = Address.class)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -56,25 +56,25 @@ public class Company {
             inverseJoinColumns = {@JoinColumn(name = "play_list_id")})
     private Set<PlayList> eveningPlayList;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Genre.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinTable(name = "company_on_banned_genre",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> bannedGenres;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Song.class)
     @JoinTable(name = "company_on_banned_song",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     private Set<Song> bannedSong;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Author.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Author.class)
     @JoinTable(name = "company_on_banned_author",
             joinColumns = {@JoinColumn(name = "company_id")},
             inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private Set<Author> bannedAuthor;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
     private Set<SongQueue> songQueues;
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {

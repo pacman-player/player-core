@@ -137,8 +137,10 @@ public class UserRestController {
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Address> getUserCompanyAddress() {
-        long id = ((User) getContext().getAuthentication().getPrincipal()).getCompany().getId();
-        return ResponseEntity.ok(addressService.getById(id));
+        User user = (User) getContext().getAuthentication().getPrincipal();
+        Company company = user.getCompany();
+        Address address = company.getAddress();
+        return ResponseEntity.ok(address);
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

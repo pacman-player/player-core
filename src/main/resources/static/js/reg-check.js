@@ -98,7 +98,7 @@ $(document).ready(function () {
                         htmlPage.insertAdjacentHTML('afterEnd', code);
                         break;
 
-                    case 13:
+                    case 100:
 
                         location.replace("/user/statistics");
                         break;
