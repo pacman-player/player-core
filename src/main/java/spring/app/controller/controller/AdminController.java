@@ -22,6 +22,11 @@ public class AdminController {
         return "admin/establishments";
     }
 
+    @GetMapping("/collections")
+    public String getCollections() {
+        return "admin/collections";
+    }
+
     @GetMapping("/genres")
     public String getGenres() {
         return "admin/genres";
