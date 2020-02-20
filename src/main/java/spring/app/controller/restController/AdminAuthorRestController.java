@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/admin/author/")
+@RequestMapping("/api/admin/author")
 public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
@@ -44,7 +44,7 @@ public class AdminAuthorRestController {
 
     @PostMapping(value = "/add_author")
     public void addAuthor(@RequestBody AuthorDto newAuthor) {
-            LOGGER.info("POST request '/add_author' with new Author = {}", newAuthor.getName());
+        LOGGER.info("POST request '/add_author' with new Author = {}", newAuthor.getName());
         String editName = (newAuthor.getName()).replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         if (authorService.getByName(editName) == null) {
             Author author = new Author();
@@ -81,7 +81,7 @@ public class AdminAuthorRestController {
         return list;
     }
 
-    private Set<Genre> getGenres (String nameGenres) {
+    private Set<Genre> getGenres(String nameGenres) {
         Set<Genre> genres = new HashSet<>();
         Genre genre = genreService.getByName(nameGenres);
         genres.add(genre);

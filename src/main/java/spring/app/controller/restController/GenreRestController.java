@@ -95,4 +95,10 @@ public class GenreRestController {
             Thread.currentThread().interrupt();
         }
     }
+
+    @GetMapping(value = "/is_free")
+    public boolean isTypeNameFree(@RequestParam("name") String name,
+                                  @RequestParam(value = "id", required = false) Long id) {
+        return genreService.getByName(name) == null;
+    }
 }

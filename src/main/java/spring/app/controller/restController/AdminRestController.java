@@ -13,7 +13,10 @@ import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.*;
+import spring.app.service.abstraction.CompanyService;
+import spring.app.service.abstraction.OrgTypeService;
+import spring.app.service.abstraction.RoleService;
+import spring.app.service.abstraction.UserService;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -27,16 +30,14 @@ public class AdminRestController {
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
-    private final GenreService genreService;
     private final OrgTypeService orgTypeService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               GenreService genreService, OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
-        this.genreService = genreService;
         this.orgTypeService = orgTypeService;
     }
 
@@ -57,7 +58,7 @@ public class AdminRestController {
         User user = userService.getUserById(id);
         user.setEnabled(true);
         userService.updateUser(user);
-        LOGGER.info("Unbanned User = {}", id, user);
+        LOGGER.info("Unbanned User = {}", user);
     }
 
     @GetMapping(value = "/all_users")
@@ -115,7 +116,7 @@ public class AdminRestController {
     @PutMapping(value = "/update_user")
     public void updateUser(@RequestBody UserDto userDto) {
         LOGGER.info("PUT request '/update_user'");
-        User user = new User(userDto.getId(),userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+        User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         userService.updateUser(user);
         LOGGER.info("Updated User = {}", user);
