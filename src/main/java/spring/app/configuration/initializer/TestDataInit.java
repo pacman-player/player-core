@@ -190,7 +190,7 @@ public class TestDataInit {
                     .nextLong(startDate, endDate))));
         }
 
-//        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
+        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
 
     }
 }
