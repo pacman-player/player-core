@@ -30,6 +30,7 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
 
         final String url = "https://krolik.biz/search/?q=";
         Document document = null;
+        String link = "";
 
         try {
             document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
@@ -39,8 +40,13 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             link = first.getElementsByClass("btn play").attr("data-url");
             authorName = first.getElementsByClass("artist_name").text();
             songName = first.getElementsByClass("song_name").text();
-
-            trackName = authorName + " – " + songName;
+            trackName = authorName + "%" + songName;
+            /**
+             * если имя исполнителя песни содержит дефис необходимо его заменить т.к. в дальнейшем затрудняется
+             * разделение trackName на автора и песню. Используется тернарный оператор
+             */
+            trackName = trackName.replaceAll("-", " ");
+            trackName = trackName.replaceAll("%", "-");
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
@@ -59,14 +65,14 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             Path path = null;
             if (track.length > 1024 * 20) {    //проверка что песня полноценная
 
-               path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                if (path != null) {
-                    try {
-                        Files.write(path, track);  //записываем песню с директорию
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                path = PlayerPaths.getSongsDir(trackName + ".mp3");
+//                if (path != null) {
+//                    try {
+//                        Files.write(path, track);  //записываем песню с директорию
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             } else return null;  //если песня меньше 2мб возвращаем 0
             return new Track(authorName, songName, trackName, track, path);
         } catch (IOException e) {

@@ -2,6 +2,8 @@ package spring.app.service.impl;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.GenreDefinerService;
 
@@ -21,34 +23,43 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
 
     @Override
     public String[] defineGenre(String trackName) throws IOException {
-        String query1 = trackName;
+        Document doc;
+        String query1 = trackName.replaceAll("-", " ");
         String quety2 = " жанр";
         String url = "https://www.google.ru/search?q=" + query1 + quety2;
         String genre = "неизвестно";
 
-        Document doc = Jsoup
-                .connect(url)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                .header("Accept-Language", "ru")
-                .header("Accept-Encoding", "gzip,deflate,br")
-                .timeout(10000).get();
-
         try {
-            genre = doc.getElementsByClass("Z0LcW").first().text();
-        } catch (NullPointerException e) {
-        }
-        if (genre.equals("неизвестно")) {      //для поиска жанра исполнетелей иностранных песен меняется стиль зап
-            quety2 = " genre";
-            url = "https://www.google.ru/search?q=" + query1 + quety2 + "&num=10";
             doc = Jsoup
                     .connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
                     .header("Accept-Language", "ru")
                     .header("Accept-Encoding", "gzip,deflate,br")
-                    .timeout(5000).get();
-
-            try {
+                    .get();
+            Elements elements = doc.getElementsByClass("Z0LcW");
+            if (!elements.isEmpty()) {
                 genre = doc.getElementsByClass("Z0LcW").first().text();
+            }
+        } catch (NullPointerException e) {
+            defineGenreByAuthor(trackName);
+        }
+
+
+        if (genre.equals("неизвестно")) {      //для поиска жанра исполнетелей иностранных песен меняется стиль зап
+            quety2 = " genre";
+            url = "https://www.google.ru/search?q=" + query1 + quety2 + "&num=10";
+            try {
+                doc = Jsoup
+                        .connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
+                        .header("Accept-Language", "ru")
+                        .header("Accept-Encoding", "gzip,deflate,br")
+                        .get();
+
+                Elements elements = doc.getElementsByClass("Z0LcW");
+                if(!elements.isEmpty()) {
+                    genre = doc.getElementsByClass("Z0LcW").first().text();
+                }
             } catch (NullPointerException e) {
             }
         }
@@ -59,35 +70,41 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
     }
 
     public String defineGenreByAuthor(String trackName) throws IOException {
+        Document doc;
         String query1 = trackName;
         String url = "https://music.yandex.com/search?text=" + query1 + "&type=artists";
         String genre = "неизвестно";
-
-        Document doc = Jsoup
-                .connect(url)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                .header("Accept-Language", "ru")
-                .header("Accept-Encoding", "gzip, deflate, br")
-                .timeout(10000).get();
-
         try {
-            genre = doc.getElementsByClass("d-genres").first().text();
-        } catch (NullPointerException e) {
-        }
-
-        if (genre.equals("неизвестно")) {
-            String artistName = query1.split(" – ")[0];
-            url = "https://music.yandex.com/search?text=" + artistName + "&type=artists";
-
             doc = Jsoup
                     .connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
                     .header("Accept-Language", "ru")
                     .header("Accept-Encoding", "gzip, deflate, br")
-                    .timeout(10000).get();
+                    .get();
 
-            try {
+            Elements elements = doc.getElementsByClass("d-genres");
+            if (!elements.isEmpty()) {
                 genre = doc.getElementsByClass("d-genres").first().text();
+            }
+        } catch (NullPointerException e) {
+        }
+
+        if (genre.equals("неизвестно")) {
+            String artistName = query1.split("-")[0];
+            url = "https://music.yandex.com/search?text=" + artistName + "&type=artists";
+            try {
+                doc = Jsoup
+                        .connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
+                        .header("Accept-Language", "ru")
+                        .header("Accept-Encoding", "gzip, deflate, br")
+                        .timeout(10000).get();
+
+
+                Elements elements = doc.getElementsByClass("d-genres");
+                if(!elements.isEmpty()) {
+                    genre = doc.getElementsByClass("d-genres").first().text();
+                }
             } catch (NullPointerException e) {
             }
         }
@@ -98,6 +115,7 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
      * Возможны несколько стилей у одной песни.
      * Поисковики выдают различные ответы с различными приписками к жанрам
      * Очищаем от "мусора" и возвращаем массив строк с названием жанров
+     *
      * @param genre
      * @return
      */

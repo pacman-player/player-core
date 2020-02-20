@@ -48,6 +48,11 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 String[] perfomerAndSong = trackName.split(" – ");
                 authorName = perfomerAndSong[0];
                 songName = perfomerAndSong[1];
+                /**
+                 * если имя исполнителя песни содержит дефис необходимо его заменить т.к. в дальнейшем затрудняется
+                 * разделение trackName на автора и песню. Используется тернарный оператор
+                 */
+                trackName = trackName.replaceAll("-", " ");
                 trackName = trackName.replaceAll(" – ", "-");
             } else {
                 authorName = author;

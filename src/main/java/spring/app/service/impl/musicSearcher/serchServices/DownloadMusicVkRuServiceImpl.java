@@ -51,7 +51,13 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                     songName = URLDecoder.decode(song, "UTF-8");
                 }
             }
-            trackName = author + "-" + song;
+            trackName = authorName + "%" + songName;
+            /**
+             * если имя исполнителя песни содержит дефис необходимо его заменить т.к. в дальнейшем затрудняется
+             * разделение trackName на автора и песню. Используется тернарный оператор
+             */
+            trackName = trackName.replaceAll("-", " ");
+            trackName = trackName.replaceAll("%", "-");
 
              link = "https://downloadmusicvk.ru/audio/download?" +
                     fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];

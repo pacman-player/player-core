@@ -40,7 +40,7 @@ public class TelegramServiceImpl implements TelegramService {
 
     @Override
     public SongResponse getSong(SongRequest songRequest) throws IOException {
-        if(track == null) {
+        if (track == null) {
             track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName());
             songId = musicSearchService.updateData(track);
         }
@@ -59,6 +59,7 @@ public class TelegramServiceImpl implements TelegramService {
      * Получаем id песни из базы после сохранения
      * Записываем песню в директорию с именем по id песни в базе (например 1.mp3)
      * Возвращаем боту SongResponce с необходимой инфой.
+     *
      * @param songRequest
      * @return
      * @throws IOException
@@ -70,9 +71,17 @@ public class TelegramServiceImpl implements TelegramService {
     public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         trackName = musicSearchService.findSongInfo(songRequest.getAuthorName(), songRequest.getSongName());
         track = fromDBMusicService.findTrackFromDB(trackName); // ищи песню в БД?
-        if(track == null) {
+        if (track == null) {
             track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName()); // ищи песню в интернете
             songId = musicSearchService.updateData(track);  //сохраняй данные песни в БД
+            Path path = PlayerPaths.getSongsDir(songId + ".mp3");
+            if (track.getPath() != null) {
+                try {
+                    Files.write(path, track.getTrack());  //записываем песню с директорию
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } else songId = songService.getByName(track.getSong()).getId();
         byte[] trackBytes = track.getTrack();
         //cut song here

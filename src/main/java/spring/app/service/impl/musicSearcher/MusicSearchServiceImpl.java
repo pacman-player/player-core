@@ -2,10 +2,7 @@ package spring.app.service.impl.musicSearcher;
 
 
 import org.springframework.stereotype.Service;
-import spring.app.service.abstraction.DataUpdateService;
-import spring.app.service.abstraction.DownloadMusicService;
-import spring.app.service.abstraction.GenreDefinerService;
-import spring.app.service.abstraction.MusicSearchService;
+import spring.app.service.abstraction.*;
 import spring.app.service.entity.Track;
 import spring.app.service.impl.musicSearcher.serchServices.DownloadMusicVkRuServiceImpl;
 import spring.app.service.impl.musicSearcher.serchServices.KrolikSaitServiceImpl;
@@ -27,8 +24,9 @@ public class MusicSearchServiceImpl implements MusicSearchService {
 
     private Track track;
     private String trackName;
-    private GenreDefinerService genreDefiner;
-    private DataUpdateService dataUpdater;
+    private GenreDefinerService genreDefiner;  // определяет жанр
+    private DataUpdateService dataUpdater;     // сохраняет данные о скачаной песни в БД
+    /* сервисы поиска и сохранения песен */
     private DownloadMusicVkRuServiceImpl vkMusic;
     private KrolikSaitServiceImpl krolikMusic;
     private ZaycevSaitServiceImpl zaycevMusic;

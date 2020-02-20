@@ -39,7 +39,13 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             link = first.getElementsByClass("play").attr("data-url");
             authorName = first.getElementsByClass("artist").text();
             songName = first.getElementsByClass("track").text();
-            trackName = author + "-" + song;
+            trackName = authorName + "%" + songName;
+            /**
+             * если имя исполнителя песни содержит дефис необходимо его заменить т.к. в дальнейшем затрудняется
+             * разделение trackName на автора и песню. Используется тернарный оператор
+             */
+            trackName = trackName.replaceAll("-", " ");
+            trackName = trackName.replaceAll("%", "-");
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error search on muzofond");
