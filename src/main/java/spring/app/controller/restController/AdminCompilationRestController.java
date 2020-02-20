@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/admin/collection")
-public class AdminCollectionRestController {
+@RequestMapping("/api/admin/compilation")
+public class AdminCompilationRestController {
 }

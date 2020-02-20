@@ -22,9 +22,9 @@ public class AdminController {
         return "admin/establishments";
     }
 
-    @GetMapping("/collections")
+    @GetMapping("/compilations")
     public String getCollections() {
-        return "admin/collections";
+        return "admin/compilations";
     }
 
     @GetMapping("/genres")
