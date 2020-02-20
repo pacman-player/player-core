@@ -31,6 +31,10 @@
         <a href="/admin/songs">Песни</a>
     </li>
 
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/compilations' ? 'active' : ''}">
+        <a href="/admin/compilations">Подборки</a>
+    </li>
+
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/vk_bot' ? 'active' : ''}">
         <a href="/admin/vk_bot">Послать отчет</a>
     </li>
