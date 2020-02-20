@@ -1,10 +1,24 @@
 package spring.app.dto;
 
-public class AuthorDto {
 
+public class AuthorDto {
     private Long id;
     private String name;
     private String genres;
+
+    public AuthorDto() {
+    }
+
+    public AuthorDto(String name, String genres) {
+        this.name = name;
+        this.genres = genres;
+    }
+
+    public AuthorDto(Long id, String name, String genres) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+    }
 
     public Long getId() {
         return id;

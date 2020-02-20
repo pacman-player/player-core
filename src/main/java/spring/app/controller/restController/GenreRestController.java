@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,10 @@ import java.util.List;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
+
 @RestController
 @RequestMapping("/api/admin/genre")
 public class GenreRestController {
-
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
 
@@ -32,7 +31,6 @@ public class GenreRestController {
 
     @GetMapping(value = "/all_genres")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-
         return genreService.getAllGenre();
     }
 
@@ -49,7 +47,6 @@ public class GenreRestController {
             User user = (User) getContext().getAuthentication().getPrincipal();
             notificationService.addNotification(message, user.getId());
         }
-
     }
 
     @PutMapping(value = "/update_genre")
@@ -71,5 +68,11 @@ public class GenreRestController {
         String message = "Was delete genre " + genre.getName();
         User user = (User) getContext().getAuthentication().getPrincipal();
         notificationService.addNotification(message, user.getId());
+    }
+
+    @GetMapping(value = "/is_free")
+    public boolean isTypeNameFree(@RequestParam("name") String name,
+                                  @RequestParam(value = "id", required = false) Long id) {
+        return genreService.getByName(name) == null;
     }
 }
