@@ -508,6 +508,9 @@ let allCompilationInCurrentPlaylist;
 //текущий плейлист как список песен
 let allSongsInCurrentPlaylist;
 
+//делаю копию - всегда только песни плейлиста без заказанных
+let allSongsInCurrentPlaylistWithoutSongList;
+
 // индекс последне-проигранной песни в своем массиве
 let lastPlayedMusicIndex = -1;
 
@@ -779,6 +782,9 @@ function setButtonOnStop(button) {
 }
 
 /**
+ * 2 по счету функция после нажатия кнопки плей в добавленной подборки в пустой плейлист
+ * Выполняется так же после функции playNext()
+ *
  * функция для проигрывания / паузы
  * сперва находится кнопка нажатия и определяется его состояние
  * если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
@@ -845,12 +851,14 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
         } else {
             $('#playerContainer').css('background-color', '#ececec')
         }
-        fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
+        fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist); //заполняем модалку песнями
         playerElement.play();
     }
 }
 
 /**
+ * 1 по счету функция после добавления в пустой плейлист подборки и нажатия кнопки плей в этом плейлисте.
+ *
  * функция для поигрывания плейлистов
  * обычно вызывается прямо из интерфейса
  * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
@@ -866,6 +874,13 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     var musicIndex = 0;
     allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
     allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
+
+    /*
+    При первом нажатии плей копирую список песен в отдельный массив. Необходимо для того чтобы очистить список песен
+    плейлиста от заказанных песен в момент когда закончатся песни в плейлисте или плейлистах
+     */
+    allSongsInCurrentPlaylistWithoutSongList = allSongsInCurrentPlaylist.slice(0);
+
     for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
         if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
             musicIndex = i;
@@ -890,7 +905,6 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     console.log(musicIndex)
     playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
 }
-
 
 /**
  * функция для проигрывания следующей песни
@@ -976,9 +990,10 @@ function playNext() {
                 allSongsInCurrentPlaylist[i].musicIndex = i;
             }
 
-            //логи в консоль
-            console.log(allSongsInCurrentPlaylist);
+            //здесь в метод заполнения плейлиста передаю песни текущего плейлиста с заказанными
             fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
+
+            //играем
             playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex,
                 lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
@@ -1002,6 +1017,7 @@ function playNext() {
 
             //если это последняя песня
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
+
                 var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
@@ -1040,9 +1056,21 @@ function playNext() {
                         }
                     }
                 }
+
+                //если есть подборки только в одном плейлисте
                 if (nextPlaylistName === lastPlayedPlaylistName) {
+
+                    //очищаю список песен плейлиста от заказанных песен
+                    allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
+
                     playOrPause(lastPlayedPlaylistName, 0, 0, allSongsInCurrentPlaylist[0].isFromSongQueue)
+
+                //если подборки есть и в других плейлистах
                 } else {
+
+                    //очищаю список песен плейлиста от заказанных песен
+                    allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
+
                     lastPlayedPlaylistName = nextPlaylistName;
                     playOrPausePlaylist(lastPlayedPlaylistName, 0);
                 }
@@ -1052,7 +1080,9 @@ function playNext() {
     });
 }
 
-
+/*
+После добавления подборки в плейлист, и нажатия кнопк плей на подборке выполняется эта функция
+ */
 function getCurrentPlaylist(playlistName) {
     var result = {};
     switch (playlistName) {
