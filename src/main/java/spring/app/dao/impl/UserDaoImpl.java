@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.UserService;
 import spring.app.model.User;
 
 import javax.persistence.NoResultException;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<Long, User> implements UserService {
     private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     public UserDaoImpl() {
@@ -105,4 +105,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
                 .getSingleResult();
         return count > 0;
     }
+
+    @Override
+    public List<User> getUserByRole(String role) {
+        List<User> userList = entityManager.createQuery("SELECT u FROM User u WHERE u.roles.name=: roles", User.class)
+                .setParameter("roles", role)
+                .getResultList();
+        if (userList.isEmpty()) {
+            return null;
+        }
+        return userList;
+    }
+
+
 }

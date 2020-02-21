@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
-import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.UserService;
 import spring.app.model.Notification;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -22,13 +22,13 @@ import java.util.Set;
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
-    private UserDao userDao;
+    private UserService userService;
 
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
+    public NotificationServiceImpl(NotificationDao notificationDao, UserService userDao) {
         this.notificationDao = notificationDao;
-        this.userDao = userDao;
+        this.userService = userDao;
     }
 
 
@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message, Long id) throws InterruptedException {
-        List<User> users = userDao.getAll();
+        List<User> users = userService.getAll();
         for (User user : users) {
             if (!user.getId().equals(id)) {
                 Notification notification = new Notification(message, true, user);
@@ -60,15 +60,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message) throws InterruptedException {
-        List<User> users = userDao.getAll();
-        for (User user : users) {
-            Set<Role> roles = user.getRoles();
-            for (Role role: roles) {
-                if (role.getName().equals("ADMIN")) {
-                    Notification notification = new Notification(message, true, user);
-                    notificationDao.save(notification);
-                }
-            }
+        List<User> usersAdmin = userService.getUserByRole("ADMIN");
+        for (User user : usersAdmin) {
+            Notification notification = new Notification(message, true, user);
+            notificationDao.save(notification);
         }
     }
 

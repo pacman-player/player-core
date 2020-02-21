@@ -6,27 +6,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
-import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.UserService;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.UserService;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements spring.app.service.abstraction.UserService {
 
     private PasswordEncoder passwordEncoder;
 
-    private UserDao userDao;
+    private UserService userDao;
     private RoleDao roleDao;
     private Role userRole;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+    public UserServiceImpl(UserService userDao, RoleDao roleDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
     }
@@ -134,4 +133,11 @@ public class UserServiceImpl implements UserService {
     public boolean isExistUserByLogin(String login, long userId) {
         return userDao.isExistUserByLogin(login, userId);
     }
+
+    @Override
+    public List<User> getUserByRole(String role) {
+        return userDao.getUserByRole(role);
+    }
+
+
 }
