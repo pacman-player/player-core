@@ -508,7 +508,7 @@ let allCompilationInCurrentPlaylist;
 //текущий плейлист как список песен
 let allSongsInCurrentPlaylist;
 
-//делаю копию - всегда только песни плейлиста без заказанных
+//делаю копию текущего плейлста - всегда только песни плейлиста без заказанных
 let allSongsInCurrentPlaylistWithoutSongList;
 
 // индекс последне-проигранной песни в своем массиве
@@ -592,6 +592,7 @@ $(function () {
         playNext();
     });
     // при нажатии на кнопку "список". выводит список песен, который играют на данный момент
+    //эта кнопка появится только после того как добавится первая подборка, нажмется плей у подборки, и появится сам плеер
     $("#currentPlaylistButton").on("click", function () {
         fillModalCurrentPlaylistTable(allSongsInCurrentPlaylist);
     });
@@ -876,8 +877,13 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
 
     /*
-    При первом нажатии плей копирую список песен в отдельный массив. Необходимо для того чтобы очистить список песен
-    плейлиста от заказанных песен в момент когда закончатся песни в плейлисте или плейлистах
+    При первом нажатии плей или начале прогрыша нового плейлиста - копирую список песен в отдельный массив. Необходимо
+    для того чтобы очистить список песен плейлиста от заказанных песен в момент когда закончатся песни в плейлисте или
+    плейлистах. Эта копия актуальна только на проигрывание самой первой песни плейлиста (после начала проигрывания
+    текущего плейлиста и создания копии - пользователь может добавить еще подборки в текущий плейлист и соответственно
+    копия будет не актуальной). При окончании проигрывания 1 песни - копия песен из плейлиста будет делаться в функции
+    playNext() в самом ее начале - до получения заказанных песен.Сделано это для того чтобы постоянно иметь список песен
+    текущего плейлиста без заказанных песен в любом из плейлистов Утро/День/Вечер
      */
     allSongsInCurrentPlaylistWithoutSongList = allSongsInCurrentPlaylist.slice(0);
 
@@ -920,6 +926,11 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
  *                  если да, то играется первый compilation в следующем плейлисте
  */
 function playNext() {
+
+    //здесь копирую список песен в текущем плейлисте - !!!до получения заказанных песен
+    //Если следующий плейлист другой - создается первоначальная копия в playOrPausePlayList()
+    var currentPlaylist = getCurrentPlaylist(lastPlayedPlaylistName);
+    allSongsInCurrentPlaylistWithoutSongList = currentPlaylist.currentSongsList;
 
     //получаем наши песни в очереди - из списка заказанных песен
     $.get('/api/user/song/songsInQueue', function (songList) {
@@ -1015,54 +1026,105 @@ function playNext() {
                 return;
             }
 
-            //если это последняя песня
+            //если это НЕ последняя песня ()
             if (lastPlayedMusicIndex < allSongsInCurrentPlaylist.length - 1) {
 
                 var compilationIndex = allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].compilationIndex;
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
-            //если не последняя - играем следующий плейлист
+            //если ПОСЛЕДНЯЯ - играем следующий плейлист
             } else {
+
+                //следующий плейлист является последним воспроизведенным плейлистом
                 let nextPlaylistName = lastPlayedPlaylistName;
+
+                //если последний воспроизведенный плейлист является Утренним
                 if (lastPlayedPlaylistName === 'morning') {
+
+                    //выполняем Дневной
                     middayPlaylist();
+
+                    //если в Дневном плейлисте есть песни
                     if (allSongsInMiddayPlaylist.length !== 0) {
+
+                        //следующий плейлист будет Дневной
                         nextPlaylistName = 'midday';
+
+                    //иначе
                     } else {
+
+                        //выполняем Вечерний плейлист
                         eveningPlaylist();
+
+                        //если в Вечернем плейлисте есть песни
                         if (allSongsInEveningPlaylist.length !== 0) {
+
+                            //следующий плейлист будет Вечерний
                             nextPlaylistName = 'evening';
                         }
                     }
+
+                //иначе если последний проигранный плейлист является Дневным
                 } else if (lastPlayedPlaylistName === "midday") {
+
+                    //выполняем Вечерний плейлист
                     eveningPlaylist();
+
+                    //если в Вечернем плейлисте есть песни
                     if (allSongsInEveningPlaylist.length !== 0) {
+
+                        //следующий плейлист будет Вечерний
                         nextPlaylistName = 'evening';
+
+                    //иначе
                     } else {
+
+                        //выполняем Утренний плейлист
                         morningPlaylist();
+
+                        //если в Утреннем плейлисте есть песни
                         if (allSongsInMorningPlaylist.length !== 0) {
+
+                            //следующий плейлист будет Утренний
                             nextPlaylistName = 'morning';
                         }
                     }
+
+                //иначе
                 } else {
+
+                    //следующий плейлист будет Утренний
                     morningPlaylist();
+
+                    //если в Утреннем плейлисте есть песни
                     if (allSongsInMorningPlaylist.length !== 0) {
+
+                        //следующий будет Утренний плейлист
                         nextPlaylistName = 'morning';
+
+                    //иначе
                     } else {
+
+                        //выполняем Дневной плейлист
                         middayPlaylist();
+
+                        //если в Дневном плейлисте есть песни
                         if (allSongsInMiddayPlaylist.length !== 0) {
+
+                            //следующий будет Дневной
                             nextPlaylistName = 'midday';
                         }
                     }
                 }
 
-                //если есть подборки только в одном плейлисте
+                //если есть подборки только в одном плейлисте (если следующий плейлист является последним воспроизведенным)
                 if (nextPlaylistName === lastPlayedPlaylistName) {
 
-                    //очищаю список песен плейлиста от заказанных песен
+                    //очищаю ПЕРВОНАЧАЛЬНЫЙ список песен (до нажатия плей) плейлиста от заказанных песен
                     allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
 
+                    //играем последний воспроизведенный плейлист сначала (индекс подборки 0, индекс песни 0)
                     playOrPause(lastPlayedPlaylistName, 0, 0, allSongsInCurrentPlaylist[0].isFromSongQueue)
 
                 //если подборки есть и в других плейлистах
@@ -1071,10 +1133,12 @@ function playNext() {
                     //очищаю список песен плейлиста от заказанных песен
                     allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
 
+                    //последний воспроизведенный плейлист я вляется следующим
                     lastPlayedPlaylistName = nextPlaylistName;
+
+                    //играем плейлист который является последним воспроизведенным с подборки под индексом 0
                     playOrPausePlaylist(lastPlayedPlaylistName, 0);
                 }
-
             }
         }
     });
