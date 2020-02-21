@@ -47,6 +47,8 @@ public class Song extends Bannable {
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
     private Set<SongCompilation> songCompilations;
 
+    private String albumsCover;
+
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
@@ -136,6 +138,14 @@ public class Song extends Bannable {
         this.songQueues = songQueues;
     }
 
+    public String getAlbumsCover() {
+        return albumsCover;
+    }
+
+    public void setAlbumsCover(String albumsCover) {
+        this.albumsCover = albumsCover;
+    }
+
     @Override
     public void setBanned(boolean banned) {
         this.banned = banned;
@@ -164,16 +174,5 @@ public class Song extends Bannable {
         Song song1 = (Song) o;
         return id.equals(song1.id) &&
                 name.equals(song1.name);
-    }
-
-    @Override
-    public String toString() {
-        return "Song{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author=" + author +
-                ", genre=" + genre +
-                ", songQueue=" + songQueues +
-                '}';
     }
 }

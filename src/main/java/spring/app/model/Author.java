@@ -15,6 +15,7 @@ public class Author extends Bannable{
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
@@ -93,5 +94,10 @@ public class Author extends Bannable{
         Author author = (Author) o;
         return id.equals(author.id) &&
                 name.equals(author.name);
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

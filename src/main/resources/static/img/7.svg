@@ -1,0 +1,11 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<defs>
+
+
+
+ <path fill="#000000" id="i-2162" d="M9,16H7v-2h2V16z M45,11H31v2h14V11z M9,17H7v2h2V17z M45,14H31v2h14V14z M5,11H3v2h2V11z M13,17h-2v2h2V17z M48,6v35 h-1.998v1H2v-1H0V6H48z M8,33H7v-9H4v16h4V33z M14,33h-1v-9h-2v9h-1v7h4V33z M20,24h-3v9h-1v7h4V24z M26,33h-1v-9h-2.999v16H26V33z M32,33h-1v-9h-2v9h-1v7h4V33z M38,33h-1v-9h-2v9h-1v7h4V33z M44.002,24H41v9h-1v7h4.002V24z M46,8H2v14h44V8z M5,17H3v2h2V17z M5,14H3v2h2V14z M17,17h-2v2h2V17z M13,11h-2v2h2V11z M13,14h-2v2h2V14z M17,14h-2v2h2V14z M9,11H7v2h2V11z M45,17H31v2h14V17z M17,11h-2v2h2V11z M29,19H19v-8h10V19z M27,13h-6v4h6V13z"/> 
+</defs>
+
+<use x="0" y="0" xlink:href="#i-2162"/>
+
+</svg>

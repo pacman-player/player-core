@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class Dialect extends MySQL5InnoDBDialect {
     @Override
     public String getTableTypeString() {
-        return " ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        return "ENGINE=InnoDB DEFAULT CHARSET=utf8";
     }
 }
