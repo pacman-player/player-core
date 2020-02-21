@@ -47,7 +47,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		if (authorities.contains(new Role("ADMIN"))){
 			return "/admin/users";
 		} else if (authorities.contains(new Role("USER"))) {
-			return "user/statistics";
+//			return "user/statistics";
+			return "user/user-page"; //single page application
 			//если пользователь недорегился перенаправляем на 2шаг регистрации
 		} else if (authorities.contains(new Role("PREUSER"))) {
 			return "registration/preuser";

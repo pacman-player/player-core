@@ -15,12 +15,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 "/**",
                 "/img/**",
                 "/css/**",
-                "/js/**")
+                "/js/**",
+                "/app/**")
                 .addResourceLocations(
                         "classpath:/resources/",
                         "classpath:/static/img/",
                         "classpath:/static/css/",
-                        "classpath:/static/js/");
+                        "classpath:/static/js/",
+                        "classpath:/static/app/");
     }
 
     //add new controller

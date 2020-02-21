@@ -55,4 +55,10 @@ public class UserController {
     public String filterMusicPage() {
         return "user/filterMusic";
     }
+
+    //spa
+    @GetMapping("/user-page")
+    public String userPage() {
+        return "user/userPage";
+    }
 }
