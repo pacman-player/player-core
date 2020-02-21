@@ -50,7 +50,7 @@ public class RegistrationRestController {
         Map<User, Company> userCompanyMap = new HashMap<>();
         Company company = new Company();
         userCompanyMap.put(newUser,company);
-        registrationStep.setUserCompanies(userCompanyMap);
+        registrationStep.,setUserCompanies(userCompanyMap);
         registrationStepService.save(registrationStep);
     }
 
