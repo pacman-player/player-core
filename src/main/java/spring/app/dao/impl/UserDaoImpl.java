@@ -108,8 +108,8 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserService 
 
     @Override
     public List<User> getUserByRole(String role) {
-        List<User> userList = entityManager.createQuery("SELECT u FROM User u WHERE u.roles.name=: roles", User.class)
-                .setParameter("roles", role)
+        List<User> userList = entityManager.createQuery("SELECT usr FROM User usr LEFT JOIN fetch usr.roles rl WHERE rl.name = :name", User.class)
+                .setParameter("name", role)
                 .getResultList();
         if (userList.isEmpty()) {
             return null;
