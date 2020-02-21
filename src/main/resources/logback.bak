@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration version="1.0" name="LoggingConf">
+
+    <appender name="Console-Appender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} %highlight(%-5level) %magenta([%logger{30}.%M]) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="AdminAuthorRestController" level="info" additivity="true">
+
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+
+            <file>Logs/AdminAuthorRestController/info.log</file>
+
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/AdminAuthorRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/AdminAuthorRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="AdminRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/AdminRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/AdminRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/AdminRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="GenreRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/GenreRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/GenreRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/GenreRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="RegistrationRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/RegistrationRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/RegistrationRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/RegistrationRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="TelegramController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/TelegramController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/TelegramController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/TelegramController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="UserCompilationRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserCompilationRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserCompilationRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserCompilationRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="UserGenreRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserGenreRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserGenreRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserGenreRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="UserPlayListController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserPlayListController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserPlayListController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserPlayListController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="UserRestController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserRestController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserRestController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/UserRestController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <logger name="MainController" level="info" additivity="true">
+        <appender name="FileInfo" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/MainController/info.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>INFO</level>
+            </filter>
+        </appender>
+
+        <appender name="FileWarn" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/MainController/warn.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>WARN</level>
+            </filter>
+        </appender>
+
+        <appender name="FileError" class="ch.qos.logback.core.FileAppender">
+            <file>Logs/MainController/error.log</file>
+            <encoder>
+                <pattern>%d{YY/MM/DD HH:mm:ss} %-5level %logger{40}.%M - %msg%n</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <onMismatch>DENY</onMismatch>
+                <onMatch>ACCEPT</onMatch>
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <appender-ref ref="Console-Appender"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="Console-Appender"/>
+    </root>
+
+</configuration>
