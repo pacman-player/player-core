@@ -4,10 +4,13 @@
 *.DS_Store
 
 
-music/
+player.log*
+
+
 logs/
 **/*.log
 **/*.log.gz
+
 
 ## Directory-based project format:
 .idea/

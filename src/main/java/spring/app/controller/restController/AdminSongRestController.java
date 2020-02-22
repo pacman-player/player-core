@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/song/")
 public class AdminSongRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongRestController.class);
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
@@ -29,14 +32,16 @@ public class AdminSongRestController {
     }
 
     @GetMapping(value = "/all_songs")
-//    @ResponseBody
     public List<Song> getAllSongs() {
+        LOGGER.info("GET request '/all_songs'");
         List<Song> list = songService.getAllSong();
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @DeleteMapping(value = "/delete_song/{id}")
     public void deleteSong(@PathVariable("id") Long id) {
+        LOGGER.info("DELETE request '/delete_song/{}'", id);
         songService.deleteSongById(id);
     }
 
@@ -45,6 +50,7 @@ public class AdminSongRestController {
      */
     @PostMapping(value = "/add_song")
     public void addSong(@RequestBody SongDto songDto) {
+        LOGGER.info("POST request '/add_song'");
         Song song = new Song(songDto.getName());
         Author author = authorService.getByName(songDto.getAuthorName());
         if (author != null) {
@@ -58,6 +64,7 @@ public class AdminSongRestController {
             song.setGenre(genre);
         }
         songService.addSong(song);
+        LOGGER.info("Added Song = {}", song);
     }
 
     /*
@@ -65,26 +72,33 @@ public class AdminSongRestController {
      */
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
+        LOGGER.info("PUT request '/update_song'");
         Song oldSong = songService.getSongById(songDto.getId());
+        LOGGER.info("Changing Song = {}", oldSong);
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
         Song song = new Song(songDto.getId(), songDto.getName());
         song.setAuthor(author);
         song.setGenre(genre);
         songService.updateSong(song);
+        LOGGER.info("Updated Song as = {}", song);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<Song> getSongById(@PathVariable(value = "id") Long id) {
+        LOGGER.info("GET request '/{}'", id);
         Song song = songService.getSongById(id);
+        LOGGER.info("Found Sing = {}", song);
         return ResponseEntity.ok(song);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
+        LOGGER.info("GET request '/all_genre'");
         List<Genre> list = genreService.getAllGenre();
+        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 }
