@@ -508,9 +508,6 @@ let allCompilationInCurrentPlaylist;
 //текущий плейлист как список песен
 let allSongsInCurrentPlaylist;
 
-//делаю копию текущего плейлста - всегда только песни плейлиста без заказанных
-let allSongsInCurrentPlaylistWithoutSongList;
-
 // индекс последне-проигранной песни в своем массиве
 let lastPlayedMusicIndex = -1;
 
