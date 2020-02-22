@@ -75,8 +75,7 @@ $(document).ready(function () {
             dataType: 'json',
             async: false,
             success: function (data) {
-                let variant = data.toString();
-                $('#est-address').val(data.country + ', ' + data.city + ', ' + data.street + ', ' + data.house);
+                $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
             },
             error: function (data) {
             }

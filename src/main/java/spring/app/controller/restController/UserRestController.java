@@ -161,6 +161,7 @@ public class UserRestController {
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyAddress() {
         User user = (User) getContext().getAuthentication().getPrincipal();
+        LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
         User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
         Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
         Address address = addressService.getById(company.getAddress().getId());
