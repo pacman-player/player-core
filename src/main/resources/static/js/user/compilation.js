@@ -876,17 +876,6 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
     allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
     allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
 
-    /*
-    При первом нажатии плей или начале проигрыша нового плейлиста - копирую список песен текущего плейлиста в отдельный
-    массив. Необходимо для того чтобы очистить список песен плейлиста от заказанных песен в момент когда закончатся
-    песни в плейлисте или плейлистах. Эта копия актуальна только на проигрывание самой первой песни плейлиста
-    (после начала проигрывания текущего плейлиста и создания копии - пользователь может добавить еще подборки в
-    текущий плейлист и соответственно копия будет не актуальной). При окончании проигрывания 1 песни - копия песен из
-    плейлиста будет делаться в функции playNext() в самом ее начале - до получения заказанных песен.Сделано это для того
-    чтобы постоянно иметь список песен текущего плейлиста без заказанных песен в любом из плейлистов Утро/День/Вечер
-     */
-    allSongsInCurrentPlaylistWithoutSongList = allSongsInCurrentPlaylist.slice(0);
-
     for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
         if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
             musicIndex = i;
@@ -926,11 +915,6 @@ function playOrPausePlaylist(playlistName, compilationIndex) {
  *                  если да, то играется первый compilation в следующем плейлисте
  */
 function playNext() {
-
-    //здесь копирую список песен в текущем плейлисте - !!!до получения заказанных песен
-    //Если следующий плейлист другой - создается первоначальная копия в playOrPausePlayList()
-    var currentPlaylist = getCurrentPlaylist(lastPlayedPlaylistName);
-    allSongsInCurrentPlaylistWithoutSongList = currentPlaylist.currentSongsList;
 
     //получаем наши песни в очереди - из списка заказанных песен
     $.get('/api/user/song/songsInQueue', function (songList) {
@@ -1036,6 +1020,13 @@ function playNext() {
             //если ПОСЛЕДНЯЯ - играем следующий плейлист
             } else {
 
+                //очищаем список песен текущего плейлиста от заказанных песен
+                for (let i = 0; i < allSongsInCurrentPlaylist.length; i++) {
+                    if (allSongsInCurrentPlaylist[i].isFromSongQueue) {
+                        allSongsInCurrentPlaylist.splice(i, 1)
+                    }
+                }
+
                 //следующий плейлист является последним воспроизведенным плейлистом
                 let nextPlaylistName = lastPlayedPlaylistName;
 
@@ -1121,17 +1112,11 @@ function playNext() {
                 //если есть подборки только в одном плейлисте (если следующий плейлист является последним воспроизведенным)
                 if (nextPlaylistName === lastPlayedPlaylistName) {
 
-                    //очищаю список песен плейлиста от заказанных песен
-                    allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
-
                     //играем последний воспроизведенный плейлист сначала (индекс подборки 0, индекс песни 0)
                     playOrPause(lastPlayedPlaylistName, 0, 0, allSongsInCurrentPlaylist[0].isFromSongQueue)
 
                 //если подборки есть и в других плейлистах
                 } else {
-
-                    //очищаю список песен плейлиста от заказанных песен
-                    allSongsInCurrentPlaylist = allSongsInCurrentPlaylistWithoutSongList.slice(0);
 
                     //последний воспроизведенный плейлист я вляется следующим
                     lastPlayedPlaylistName = nextPlaylistName;
