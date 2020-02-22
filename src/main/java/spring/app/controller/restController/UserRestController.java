@@ -153,28 +153,18 @@ public class UserRestController {
     public ResponseEntity<Company> getUserCompany() {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("GET request '/company' from User = {}", user);
-        long id = user.getCompany().getId();
+        User userLazy = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
+        long id = userLazy.getCompany().getId();
         return ResponseEntity.ok(companyService.getById(id));
     }
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Address> getUserCompanyAddress() {
+    public ResponseEntity<Company> getUserCompanyAddress() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/company/address' from User = {}", user);
-        long id = user.getCompany().getId();
-
-        Address lazyAddressByID = addressService.getById(companyService.getById(id).getAddress().getId());
-        Address realAddress = new Address(
-                lazyAddressByID.getId(),
-                lazyAddressByID.getCountry(),
-                lazyAddressByID.getCity(),
-                lazyAddressByID.getStreet(),
-                lazyAddressByID.getHouse(),
-                lazyAddressByID.getLatitude(),
-                lazyAddressByID.getLongitude()
-                );
-
-        return ResponseEntity.ok(realAddress);
+        User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
+        Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
+        Address address = addressService.getById(company.getAddress().getId());
+        return ResponseEntity.ok(company);
     }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
