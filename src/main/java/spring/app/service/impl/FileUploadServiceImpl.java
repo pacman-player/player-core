@@ -15,12 +15,15 @@ import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -32,6 +35,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${uploaded_files_path}")
     private String fileFolder;
+
+    @Value("${uploaded_compilations_covers}")
+    private String coversFolder;
 
     @Autowired
     public FileUploadServiceImpl(GenreService genreService, AuthorService authorService, SongService songService) {
@@ -96,5 +102,22 @@ public class FileUploadServiceImpl implements FileUploadService {
                 .replaceAll("\\%28", "(")
                 .replaceAll("\\%29", ")")
                 .replaceAll("\\%7E", "~");
+    }
+
+    @Override
+    public String upload(MultipartFile file) throws IOException {
+        File coversDir = new File(coversFolder);
+        // Если директория не существует, создать
+        if (!coversDir.exists()) {
+            coversDir.mkdir();
+        }
+        // Назначаем уникальное имя
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFilename = uuidFile + "_" + file.getOriginalFilename();
+        // Сохраняем обложку
+        Path destination = Paths.get(coversDir + File.separator + resultFilename);
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        return resultFilename;
     }
 }

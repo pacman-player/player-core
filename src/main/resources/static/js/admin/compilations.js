@@ -21,7 +21,7 @@ function getTable() {
                 let name = compilations[i].name;
                 let genre = compilations[i].genre.name;
                 let songs;
-                let cover;
+                let cover = compilations[i].cover;
 
                 let tr = $("<tr/>");
                 tr.append(`
@@ -29,7 +29,7 @@ function getTable() {
                             <td> ${name} </td>
                             <td> ${genre} </td>
                             <td> songs </td>
-                            <td> cover </td>
+                            <td> ${cover} </td>
                             <td>
                                 <button type="submit"
                                         class="btn btn-sm btn-info"
