@@ -59,6 +59,6 @@ public class UserController {
     //spa
     @GetMapping("/user-page")
     public String userPage() {
-        return "user/userPage";
+        return "user/user-page";
     }
 }
