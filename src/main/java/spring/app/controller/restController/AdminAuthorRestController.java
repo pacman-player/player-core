@@ -75,9 +75,9 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        LOGGER.info("GET request '/all_authors'");
+        LOGGER.debug("GET request '/all_genres' for 'select' tag");
         List<Genre> list = genreService.getAllGenre();
-        LOGGER.info("Result has {} lines", list.size());
+        LOGGER.debug("Result has {} lines", list.size());
         return list;
     }
 
