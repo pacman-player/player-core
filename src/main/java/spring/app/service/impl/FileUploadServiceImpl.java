@@ -36,7 +36,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${uploaded_files_path}")
     private String fileFolder;
 
-    @Value("${uploaded_compilations_covers}")
+    @Value("${uploaded.compilations.covers}")
     private String coversFolder;
 
     @Autowired

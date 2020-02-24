@@ -31,13 +31,6 @@ public class SongCompilationDto {
         this.listPlayListDto = listPlayListDto;
     }
 
-    public SongCompilationDto(Long id, String name, String genre, MultipartFile cover) {
-        this.id = id;
-        this.name = name;
-        this.genre = genre;
-        this.cover = cover;
-    }
-
     public Long getId() {
         return id;
     }
