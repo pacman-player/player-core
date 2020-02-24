@@ -1,4 +1,4 @@
-let Navbar = {
+let NavBar = {
     render: async () => {
         let view =  /*html*/
         //     `
@@ -62,4 +62,4 @@ let Navbar = {
 
 }
 
-export default Navbar;
+export default NavBar;

@@ -1,4 +1,4 @@
-let Bottombar = {
+let BottomBar = {
     render: async () => {
         let view =  /*html*/
             `
@@ -17,4 +17,4 @@ let Bottombar = {
 
 }
 
-export default Bottombar;
+export default BottomBar;

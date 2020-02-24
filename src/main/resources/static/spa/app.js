@@ -6,8 +6,9 @@ import Error404     from './views/pages/Error404.js'
 import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
 
-import Navbar       from './views/components/Navbar.js'
-import Bottombar    from './views/components/Bottombar.js' 
+import NavBar       from './views/components/NavBar.js'
+import LeftSideBar  from './views/components/LeftSideBar.js'
+import BottomBar    from './views/components/BottomBar.js'
 
 import Utils        from './services/Utils.js'
 
@@ -28,15 +29,21 @@ const router = async () => {
     // Lazy load view element:
     // Элемент просмотра отложенной загрузки:
     const header = null || document.getElementById('header_container');
+    const menu = null || document.getElementById('menu_container');
     const content = null || document.getElementById('page_container');
     const footer = null || document.getElementById('footer_container');
     
-    // Render the Header and footer of the page
-    // Визуализация верхнего и нижнего колонтитула страницы
-    header.innerHTML = await Navbar.render();
-    await Navbar.after_render();
-    footer.innerHTML = await Bottombar.render();
-    await Bottombar.after_render();
+    //отображаем навбар
+    header.innerHTML = await NavBar.render();
+    await NavBar.after_render();
+
+    //отображаем меню слева
+    menu.innerHTML = await LeftSideBar.render();
+    await LeftSideBar.after_render();
+
+    //отображаем футер(плеер)
+    footer.innerHTML = await BottomBar.render();
+    await BottomBar.after_render();
 
 
     // Get the parsed URl from the addressbar
