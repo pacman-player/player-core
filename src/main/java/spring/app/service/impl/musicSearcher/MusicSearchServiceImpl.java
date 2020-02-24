@@ -68,4 +68,10 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
 
+    //заносит данные песни из папки при инициализации в бд и возвращает id песни
+    public Long updateData(String fullTrackName, String author, String songName) throws IOException {
+        String[] genreNames = getGenre(fullTrackName);
+        return dataUpdater.updateData(author, songName, genreNames);
+    }
+
 }
