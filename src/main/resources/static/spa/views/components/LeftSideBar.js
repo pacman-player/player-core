@@ -5,7 +5,7 @@ let LeftSideBar = {
             '        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">\n' +
             '            <ul class="nav nav-pills nav-stacked nav-content bg-dark">\n' +
             '                <li>\n' +
-            '                    <a href="/user/statistics">Статистика</a>\n' +
+            '                    <a href="/user/user-page#/statistics">Статистика</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
             '                    <a href="/user/compilation">Моя подборка</a>\n' +
