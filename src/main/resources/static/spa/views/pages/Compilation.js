@@ -1,4 +1,4 @@
-import Utils        from './../../services/Utils.js'
+import Utils from './../../services/Utils.js'
 
 let Compilation = {
 
@@ -119,8 +119,56 @@ let Compilation = {
 
             getAllGenre();
             showLinkAdmin();
+
+            function getAllGenre() {
+                $.ajax({
+                    type: 'get',
+                    url: '/api/user/genre/get/all-genre',
+                    contentType: 'application/json;',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    async: true,
+                    cache: false,
+                    dataType: 'JSON',
+                    success: function (listGenre) {
+                        var htmlGenres = "Need to add genres";
+                        if (0 < listGenre.length) {
+                            htmlGenres = ('<h3 id="genres">Жанры</h3>');
+                            htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+                            htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                            htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
+                            htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
+                            for (var i = 0; i < listGenre.length; i++) {
+                                htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+                                htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                                htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
+                                    listGenre[i].name + '" >');
+                                htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
+                            }
+                        }
+                        $("#getGenres").append(htmlGenres);
+                    }
+                });
+            }
+
+            function showLinkAdmin() {
+                $.ajax({
+                    type: "post",
+                    url: "/api/user/show_admin",
+                    success: function (role) {
+                        if (role !== "admin") {
+                            $("#adminLink").hide();
+                        }
+                    }
+                });
+            }
+
             //получение и вывод подборок
             $(document).on('click', '#genres', function () {
+            // document.getElementById("#genres").addEventListener("click", () => {
+
                 var genre = $(this).text();
                 $.ajax({
                     type: 'post',
@@ -135,7 +183,7 @@ let Compilation = {
                     cache: false,
                     dataType: 'JSON',
                     success: function (listSongCompilation) {
-                        allCompilationInGenre = listSongCompilation;
+                        allCompilationInGenre = listSongCompilation; //здесь ругается что allCompilationInGenre не определен
                         fillAllSongsPlaylist(allCompilationInGenre, allSongInGenre);
                         let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
                         var htmlCompilation = "Need to add Compilation";
@@ -246,50 +294,9 @@ let Compilation = {
                 getAllGenre();
             });
 
-            function getAllGenre() {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/user/genre/get/all-genre',
-                    contentType: 'application/json;',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    async: true,
-                    cache: false,
-                    dataType: 'JSON',
-                    success: function (listGenre) {
-                        var htmlGenres = "Need to add genres";
-                        if (0 < listGenre.length) {
-                            htmlGenres = ('<h3 id="genres">Жанры</h3>');
-                            htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                            htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                            htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
-                            htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
-                            for (var i = 0; i < listGenre.length; i++) {
-                                htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                                htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                                htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
-                                    listGenre[i].name + '" >');
-                                htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
-                            }
-                        }
-                        $("#getGenres").append(htmlGenres);
-                    }
-                });
-            }
 
-            function showLinkAdmin() {
-                $.ajax({
-                    type: "post",
-                    url: "/api/user/show_admin",
-                    success: function (role) {
-                        if (role !== "admin") {
-                            $("#adminLink").hide();
-                        }
-                    }
-                });
-            }
+
+
 
             //получаем подборки из утреннего плейлиста
             $(document).on('click', '#morning-music-nav', function () {
@@ -305,7 +312,7 @@ let Compilation = {
             $(document).on('click', '#evening-music-nav', function () {
                 eveningPlaylist();
             });
-        });
+        }); //конец
 
 //добавляем/удаляем подборку в/из утреннего плейлиста
         function addMorningPlaylist(idCompilation) {
@@ -584,8 +591,6 @@ let Compilation = {
         function fillModalCurrentPlaylistTable(playlist) {
             fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
         }
-
-
 
 
     }
