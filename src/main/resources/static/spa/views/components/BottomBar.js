@@ -1,3 +1,5 @@
+import Compilation from "../pages/Compilation.js";
+
 let BottomBar = {
     render: async () => {
         let view =  /*html*/
@@ -94,7 +96,7 @@ let BottomBar = {
         let allSongsInMorningPlaylist = [];
         let allSongsInMiddayPlaylist = [];
         let allSongsInEveningPlaylist = [];
-        let allSongInGenre = [];
+        // let allSongInGenre = [];
 
 //текущий плейлист как список compilation
         let allCompilationInCurrentPlaylist;
@@ -105,8 +107,8 @@ let BottomBar = {
 // индекс последне-проигранной песни в своем массиве
         let lastPlayedMusicIndex = -1;
 
-// индекс последне-проигранного массива песен в своем списке
-        let lastPlayedCompilationIndex = -1;
+// // индекс последне-проигранного массива песен в своем списке
+//         let lastPlayedCompilationIndex = -1;
 
 // переменная, которая хранит id кнопки последне-проигранного списка
         let lastPlayedPlaylistId = 'none';
@@ -114,31 +116,31 @@ let BottomBar = {
 // имя текущего раздела
         let lastPlayedPlaylistName = 'none';
 
-        /**
-         * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
-         * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
-         *  compilationId - id подборки, в которой находится песня
-         *  compilationIndex - индекс подборки в данном плейлисте
-         *  musicIndex - индекс песни в данном плейлисте.
-         * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
-         * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
-         */
-        function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
-            for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
-                const id = allCompilationsInPlaylist[i].id;
-                const compilationInd = i;
-                allCompilationsInPlaylist[i].compilationIndex = compilationInd;
-                $.getJSON('/api/user/song/get/all-song/song-compilation/' + id, function (songs) {
-                    for (var j = 0; j < songs.length; j++, k++) {
-                        const musicInd = k;
-                        allSongsInPlaylist[k] = songs[j];
-                        allSongsInPlaylist[k].compilationIndex = compilationInd;
-                        allSongsInPlaylist[k].compilationId = id;
-                        allSongsInPlaylist[k].musicIndex = musicInd;
-                    }
-                });
-            }
-        }
+        // /**
+        //  * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
+        //  * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
+        //  *  compilationId - id подборки, в которой находится песня
+        //  *  compilationIndex - индекс подборки в данном плейлисте
+        //  *  musicIndex - индекс песни в данном плейлисте.
+        //  * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
+        //  * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
+        //  */
+        // function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
+        //     for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
+        //         const id = allCompilationsInPlaylist[i].id;
+        //         const compilationInd = i;
+        //         allCompilationsInPlaylist[i].compilationIndex = compilationInd;
+        //         $.getJSON('/api/user/song/get/all-song/song-compilation/' + id, function (songs) {
+        //             for (var j = 0; j < songs.length; j++, k++) {
+        //                 const musicInd = k;
+        //                 allSongsInPlaylist[k] = songs[j];
+        //                 allSongsInPlaylist[k].compilationIndex = compilationInd;
+        //                 allSongsInPlaylist[k].compilationId = id;
+        //                 allSongsInPlaylist[k].musicIndex = musicInd;
+        //             }
+        //         });
+        //     }
+        // }
 
 //получения утреннего плейлиста, заполнение плелиста плеера
         function morningPlaylist() {
@@ -647,27 +649,27 @@ let BottomBar = {
         }
 
 
-        function getCurrentPlaylist(playlistName) {
-            var result = {};
-            switch (playlistName) {
-                case 'morning':
-                    result.currentCumpilationsList = allCompilationsInMorningPlaylist;
-                    result.currentSongsList = allSongsInMorningPlaylist;
-                    return result;
-                case 'midday' :
-                    result.currentCumpilationsList = allCompilationsInMiddayPlaylist;
-                    result.currentSongsList = allSongsInMiddayPlaylist;
-                    return result;
-                case 'evening' :
-                    result.currentCumpilationsList = allCompilationsInEveningPlaylist;
-                    result.currentSongsList = allSongsInEveningPlaylist;
-                    return result;
-                case 'getGenres':
-                    result.currentCumpilationsList = allCompilationInGenre;
-                    result.currentSongsList = allSongInGenre;
-                    return result;
-            }
-        }
+        // function getCurrentPlaylist(playlistName) {
+        //     var result = {};
+        //     switch (playlistName) {
+        //         case 'morning':
+        //             result.currentCumpilationsList = allCompilationsInMorningPlaylist;
+        //             result.currentSongsList = allSongsInMorningPlaylist;
+        //             return result;
+        //         case 'midday' :
+        //             result.currentCumpilationsList = allCompilationsInMiddayPlaylist;
+        //             result.currentSongsList = allSongsInMiddayPlaylist;
+        //             return result;
+        //         case 'evening' :
+        //             result.currentCumpilationsList = allCompilationsInEveningPlaylist;
+        //             result.currentSongsList = allSongsInEveningPlaylist;
+        //             return result;
+        //         case 'getGenres':
+        //             result.currentCumpilationsList = allCompilationInGenre;
+        //             result.currentSongsList = allSongInGenre;
+        //             return result;
+        //     }
+        // }
 
         /**
          * функция для проигрывания предыдущей песни

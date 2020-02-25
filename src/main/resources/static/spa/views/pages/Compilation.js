@@ -1,4 +1,5 @@
 import Utils from './../../services/Utils.js'
+import BottomBar from "../components/BottomBar.js";
 
 let Compilation = {
 
@@ -117,8 +118,70 @@ let Compilation = {
     , after_render: async () => {
         $(document).ready(function () {
 
+            //=========================== перекидываю из BottomBar.js сюда =============================================
+            let allSongInGenre = [];
+            /**
+             * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
+             * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
+             *  compilationId - id подборки, в которой находится песня
+             *  compilationIndex - индекс подборки в данном плейлисте
+             *  musicIndex - индекс песни в данном плейлисте.
+             * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
+             * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
+             */
+            function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
+                for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
+                    const id = allCompilationsInPlaylist[i].id;
+                    const compilationInd = i;
+                    allCompilationsInPlaylist[i].compilationIndex = compilationInd;
+                    $.getJSON('/api/user/song/get/all-song/song-compilation/' + id, function (songs) {
+                        for (var j = 0; j < songs.length; j++, k++) {
+                            const musicInd = k;
+                            allSongsInPlaylist[k] = songs[j];
+                            allSongsInPlaylist[k].compilationIndex = compilationInd;
+                            allSongsInPlaylist[k].compilationId = id;
+                            allSongsInPlaylist[k].musicIndex = musicInd;
+                        }
+                    });
+                }
+            }
+
+            function getCurrentPlaylist(playlistName) {
+                var result = {};
+                switch (playlistName) {
+                    case 'morning':
+                        result.currentCumpilationsList = allCompilationsInMorningPlaylist;
+                        result.currentSongsList = allSongsInMorningPlaylist;
+                        return result;
+                    case 'midday' :
+                        result.currentCumpilationsList = allCompilationsInMiddayPlaylist;
+                        result.currentSongsList = allSongsInMiddayPlaylist;
+                        return result;
+                    case 'evening' :
+                        result.currentCumpilationsList = allCompilationsInEveningPlaylist;
+                        result.currentSongsList = allSongsInEveningPlaylist;
+                        return result;
+                    case 'getGenres':
+                        result.currentCumpilationsList = BottomBar.allCompilationInGenre;
+                        result.currentSongsList = allSongInGenre;
+                        return result;
+                }
+            }
+
+            // индекс последне-проигранного массива песен в своем списке
+            let lastPlayedCompilationIndex = -1;
+
+
+
+
+
+
+
+            //==========================================================================================
             getAllGenre();
             showLinkAdmin();
+
+
 
             function getAllGenre() {
                 $.ajax({
@@ -167,7 +230,6 @@ let Compilation = {
 
             //получение и вывод подборок
             $(document).on('click', '#genres', function () {
-            // document.getElementById("#genres").addEventListener("click", () => {
 
                 var genre = $(this).text();
                 $.ajax({
@@ -183,8 +245,8 @@ let Compilation = {
                     cache: false,
                     dataType: 'JSON',
                     success: function (listSongCompilation) {
-                        allCompilationInGenre = listSongCompilation; //здесь ругается что allCompilationInGenre не определен
-                        fillAllSongsPlaylist(allCompilationInGenre, allSongInGenre);
+                        BottomBar.allCompilationInGenre = listSongCompilation; //здесь ругается что allCompilationInGenre не определен
+                        fillAllSongsPlaylist(BottomBar.allCompilationInGenre, allSongInGenre);
                         let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
                         var htmlCompilation = "Need to add Compilation";
                         if (0 < listCompilation.length) {
@@ -312,47 +374,88 @@ let Compilation = {
             $(document).on('click', '#evening-music-nav', function () {
                 eveningPlaylist();
             });
-        }); //конец
 
 //добавляем/удаляем подборку в/из утреннего плейлиста
-        function addMorningPlaylist(idCompilation) {
-            let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
+            function addMorningPlaylist(idCompilation) { //здесь ошибка - Uncaught ReferenceError: addMorningPlaylist is not defined at HTMLButtonElement.onclick (user-page:1) onclick @ user-page:1
+                let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
 
-            if (buttonStateElement.hasClass("btn-info")) {
-                buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+                if (buttonStateElement.hasClass("btn-info")) {
+                    buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
 
-                $.ajax({
-                    method: 'POST',
-                    url: '/api/user/play-list/morning-playlist/add/song-compilation/',
-                    contentType: "application/json",
-                    data: JSON.stringify(idCompilation),
-                    success: function () {
-                        //+обновить утренний плейлист
-                        morningPlaylist();
-                        //getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
-                    },
-                    error: function (xhr, status, error) {
-                        alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                    }
-                })
-            } else if (buttonStateElement.hasClass("btn-success")) {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+                        contentType: "application/json",
+                        data: JSON.stringify(idCompilation),
+                        success: function () {
+                            //+обновить утренний плейлист
+                            morningPlaylist();
+                            //getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
+                        },
+                        error: function (xhr, status, error) {
+                            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                        }
+                    })
+                } else if (buttonStateElement.hasClass("btn-success")) {
 
-                buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
-                $.ajax({
-                    method: 'DELETE',
-                    url: '/api/user/play-list/morning-playlist/delete/song-compilation/' + idCompilation,
-                    contentType: "application/json",
-                    success: function () {
-                        //+обновить утренний плейлист
-                        morningPlaylist();
-                        //getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
-                    },
-                    error: function (xhr, status, error) {
-                        alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                    }
-                });
+                    buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+                    $.ajax({
+                        method: 'DELETE',
+                        url: '/api/user/play-list/morning-playlist/delete/song-compilation/' + idCompilation,
+                        contentType: "application/json",
+                        success: function () {
+                            //+обновить утренний плейлист
+                            morningPlaylist();
+                            //getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
+                        },
+                        error: function (xhr, status, error) {
+                            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                        }
+                    });
+                }
             }
-        }
+
+        }); //конец
+
+//// добавляем/удаляем подборку в/из утреннего плейлиста
+//         function addMorningPlaylist(idCompilation) {
+//             let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
+//
+//             if (buttonStateElement.hasClass("btn-info")) {
+//                 buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+//
+//                 $.ajax({
+//                     method: 'POST',
+//                     url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+//                     contentType: "application/json",
+//                     data: JSON.stringify(idCompilation),
+//                     success: function () {
+//                         //+обновить утренний плейлист
+//                         morningPlaylist();
+//                         //getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
+//                     },
+//                     error: function (xhr, status, error) {
+//                         alert(xhr.responseText + '|\n' + status + '|\n' + error);
+//                     }
+//                 })
+//             } else if (buttonStateElement.hasClass("btn-success")) {
+//
+//                 buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+//                 $.ajax({
+//                     method: 'DELETE',
+//                     url: '/api/user/play-list/morning-playlist/delete/song-compilation/' + idCompilation,
+//                     contentType: "application/json",
+//                     success: function () {
+//                         //+обновить утренний плейлист
+//                         morningPlaylist();
+//                         //getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
+//                     },
+//                     error: function (xhr, status, error) {
+//                         alert(xhr.responseText + '|\n' + status + '|\n' + error);
+//                     }
+//                 });
+//             }
+//         }
 
 //добавляем подборку в дневной плейлист
         function addMiddayPlaylist(idCompilation) {
@@ -528,7 +631,6 @@ let Compilation = {
                 $('#modalPlaylistName').text(songCompilation.name);
             });
         }
-
 
 //функция для получения из плейлиста плеера список песен определенной подборки,
 // проиндексированных порядковым номером в плейлисте
