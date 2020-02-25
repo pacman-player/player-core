@@ -137,7 +137,7 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
 
         pattern = Pattern.compile("/|,");
         String[] genres = pattern.split(buffer);
-        LOGGER.debug("  4) Resulting Genres[] are = {}", genres);
+        LOGGER.debug("  4) Resulting Genres[] are = {}", Arrays.asList(genres));
 
         return genres;
     }

@@ -1,9 +1,12 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import spring.app.dto.SongDto;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -48,6 +51,14 @@ public class Song extends Bannable {
     private Set<SongCompilation> songCompilations;
 
     private String albumsCover;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
@@ -144,6 +155,22 @@ public class Song extends Bannable {
 
     public void setAlbumsCover(String albumsCover) {
         this.albumsCover = albumsCover;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
