@@ -106,14 +106,18 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public String upload(MultipartFile file) throws IOException {
-        File dir = new File(coversFolder);
         // Назначаем уникальное имя
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename = uuidFile + "_" + file.getOriginalFilename();
         // Сохраняем обложку
-        Path destination = Paths.get(dir + File.separator + resultFilename);
+        Path destination = Paths.get(coversFolder + File.separator + resultFilename);
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
         return resultFilename;
+    }
+
+    @Override
+    public void eraseCurrentFile(String filename) throws IOException {
+       Files.delete(Paths.get(coversFolder + File.separator + filename));
     }
 }

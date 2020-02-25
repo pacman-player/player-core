@@ -10,4 +10,6 @@ public interface FileUploadService {
     ResponseEntity<String> upload(String songAuthor, String songGenre, String songName, MultipartFile file) throws UnsupportedEncodingException;
 
     String upload(MultipartFile file) throws IOException;
+
+    void eraseCurrentFile(String filename) throws IOException;
 }

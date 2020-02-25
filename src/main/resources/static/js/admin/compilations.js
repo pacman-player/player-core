@@ -22,8 +22,9 @@ function getTable() {
                 // let genre = compilations[i].genre.name;
                 let songs;
                 let cover = compilations[i].cover;
+                // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
                 if (cover == null) {
-                    cover = "na.png"
+                    cover = "na.jpg"
                 }
 
                 let tr = $("<tr/>");
@@ -33,7 +34,7 @@ function getTable() {
                             <td> songs </td>
                             <td> 
                                 <div class="img_wrap">
-                                    <img src="/cover/${cover}" alt="Something went wrong!">
+                                    <img src="/cover/${cover}">
                                 </div>
                             </td>
                             <td>

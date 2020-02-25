@@ -35,6 +35,11 @@ public class AdminCompilationRestController {
 
         if (songCompilationDto.getCover() != null) {
             String coverName = fileUploadService.upload(songCompilationDto.getCover());
+            // Удалить текущую обложку
+            if (compilation.getCover() != null) {
+                fileUploadService.eraseCurrentFile(compilation.getCover());
+            }
+
             compilation.setCover(coverName);
         }
         compilation.setName(songCompilationDto.getName());
