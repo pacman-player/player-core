@@ -106,16 +106,12 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public String upload(MultipartFile file) throws IOException {
-        File coversDir = new File(coversFolder);
-        // Если директория не существует, создать
-        if (!coversDir.exists()) {
-            coversDir.mkdir();
-        }
+        File dir = new File(coversFolder);
         // Назначаем уникальное имя
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename = uuidFile + "_" + file.getOriginalFilename();
         // Сохраняем обложку
-        Path destination = Paths.get(coversDir + File.separator + resultFilename);
+        Path destination = Paths.get(dir + File.separator + resultFilename);
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
         return resultFilename;

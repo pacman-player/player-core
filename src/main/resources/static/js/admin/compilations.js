@@ -76,17 +76,21 @@ function editButton(id, name) {
         formData.append("cover", fieldCover.prop("files")[0]);
 
         $.ajax({
-            method: "PUT",
+            method: "POST",
             url: "/api/admin/compilation/update",
             contentType: false,
             processData: false,
+            mimeType: "multipart/form-data",
             data: formData,
             complete: () => {
                 theModal.modal("hide");
                 getTable();
             },
             success: () => {
-                alert(`${formData.get('id')} - ${formData.get('name')} - ${formData.get('cover')}`)
+                notification(
+                    "edit-compilation" + id,
+                    ` Подборка с id ${id} обновлена`,
+                    "genres-panel");
             },
             error: (xhr, status, error) => {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);

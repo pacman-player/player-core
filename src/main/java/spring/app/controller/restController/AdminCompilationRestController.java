@@ -3,7 +3,6 @@ package spring.app.controller.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongCompilationDto;
-import spring.app.dto.TestDto;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.SongCompilationService;
@@ -30,18 +29,16 @@ public class AdminCompilationRestController {
         return songCompilationService.getAllSongCompilations();
     }
 
-    @PutMapping("/update")
-    public void updateCompilation(@RequestBody TestDto dto) throws IOException {
-        System.out.println("\n\n" + dto.getId() + "\n\n");
-//        SongCompilation compilation = songCompilationService.getSongCompilationById(dto.getId());
+    @PostMapping("/update")
+    public void updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
+        SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
 
-//        if (dto.getCover() != null) {
-//            String coverName = fileUploadService.upload(dto.getCover());
-//            compilation.setCover(coverName);
-//        }
-//        compilation.setName(dto.getName());
-//        System.out.println("\n\n" + compilation + "\n\n");
+        if (songCompilationDto.getCover() != null) {
+            String coverName = fileUploadService.upload(songCompilationDto.getCover());
+            compilation.setCover(coverName);
+        }
+        compilation.setName(songCompilationDto.getName());
 
-//        songCompilationService.updateCompilation(compilation);
+        songCompilationService.updateCompilation(compilation);
     }
 }
