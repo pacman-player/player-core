@@ -20,6 +20,7 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
     let genres = getGenres();
 
     let selectOptions = "";
+    selectOptions += `<option value="" disabled>Выберите жанр:</option>`;
     for (let i = 0; i < genres.length; i++) {
         let option = genres[i].name;
         selectOptions += `<option value="${option}"> ${option} </option>`;
@@ -116,6 +117,18 @@ function editButton(id, name) {
     let form = $("#edit-form");
     let fieldId = $("#editAuthorId");
     let fieldName = $("#editAuthorName");
+
+    let genres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
+    fieldGenre.attr("multiple", "multiple");
+    fieldGenre.attr("size", "9");
+    fieldGenre.val('');
+    fieldGenre.find("option:selected").prop(false);
+
+    if(genres[0] !== "") {
+        for (let i = 0; i < genres.length; i++) {
+            fieldGenre.find(`option:contains(${genres[i]})`).attr("selected", "selected");
+        }
+    }
 
     fieldId.val(id);
     fieldName.val(name);
@@ -217,14 +230,18 @@ function getTable() {
                 let genres = authors[i].authorGenres;
                 let htmlGenres = "";
                 for (let gi = 0; gi < genres.length; gi++) {
-                    htmlGenres += genres[gi].name + " ";
+                    htmlGenres += genres[gi].name;
+                    if (gi < genres.length - 1) {
+                        htmlGenres += ", ";
+                    }
                 }
+
 
                 let tr = $("<tr/>");
                 tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
-                            <td> ${htmlGenres} </td>
+                            <td>${id}</td>
+                            <td>${name}</td>
+                            <td>${htmlGenres}</td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
