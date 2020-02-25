@@ -6,6 +6,7 @@ import Error404     from './views/pages/Error404.js'
 import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
 import Statistics   from "./views/pages/Statistics.js";
+import Compilation  from "./views/pages/Compilation.js";
 
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
@@ -21,6 +22,7 @@ const routes = {
     , '/p/:id'      : PostShow
     , '/register'   : Register
     , '/statistics' : Statistics
+    , '/compilation': Compilation
 };
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.

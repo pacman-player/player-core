@@ -8,7 +8,7 @@ let LeftSideBar = {
             '                    <a href="/user/user-page#/statistics">Статистика</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/compilation">Моя подборка</a>\n' +
+            '                    <a href="/user/user-page#/compilation">Моя подборка</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
             '                    <a href="/user/filter">Фильтр музыки</a>\n' +
