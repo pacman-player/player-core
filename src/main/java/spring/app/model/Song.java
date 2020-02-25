@@ -60,6 +60,9 @@ public class Song extends Bannable {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
+    @Column
+    private Boolean isApproved = false;
+
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
