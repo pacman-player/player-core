@@ -39,7 +39,8 @@ public class AdminCompilationRestController {
         SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
         LOGGER.info("Song compilation with ID = {} exists", compilation.getId());
 
-        if (songCompilationDto.getCover() != null) {
+        if (songCompilationDto.getCover() != null
+                && fileUploadService.isImage(songCompilationDto.getCover().getOriginalFilename())) {
             String coverName = fileUploadService.upload(songCompilationDto.getCover());
             LOGGER.info("Cover uploaded. Cover name: {}", coverName);
             // Удалить текущую обложку

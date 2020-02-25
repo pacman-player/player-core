@@ -12,4 +12,6 @@ public interface FileUploadService {
     String upload(MultipartFile file) throws IOException;
 
     void eraseCurrentFile(String filename) throws IOException;
+
+    boolean isImage(String filename);
 }

@@ -18,6 +18,7 @@ import spring.app.service.abstraction.SongService;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -118,6 +119,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public void eraseCurrentFile(String filename) throws IOException {
-       Files.delete(Paths.get(coversFolder + File.separator + filename));
+        Files.delete(Paths.get(coversFolder + File.separator + filename));
+    }
+
+    @Override
+    public boolean isImage(String filename) {
+        return URLConnection.guessContentTypeFromName(filename).contains("image");
     }
 }
