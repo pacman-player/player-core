@@ -20,13 +20,32 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
     let genres = getGenres();
 
     let selectOptions = "";
-    selectOptions += `<option value="" disabled>Выберите жанр:</option>`;
     for (let i = 0; i < genres.length; i++) {
         let option = genres[i].name;
         selectOptions += `<option value="${option}"> ${option} </option>`;
     }
 
     dropDownListSelector.append(selectOptions);
+}
+
+function prepareFormForAuthor(fieldGenre, id) {
+    fieldGenre.empty();
+    fieldGenre.attr("multiple", "multiple");
+    fieldGenre.attr("size", "8");
+
+    let allGenres = getGenres();
+    let authorGenres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
+    let selectOptions = "";
+
+    for (let i = 0; i < allGenres.length; i++) {
+        let genre = allGenres[i].name;
+        if (authorGenres[0] === genre || authorGenres[1] === genre) {
+            selectOptions += `<option value="${genre}" selected> ${genre} </option>`;
+        } else {
+            selectOptions += `<option value="${genre}"> ${genre} </option>`;
+        }
+    }
+    fieldGenre.append(selectOptions);
 }
 
 function getGenres() {
@@ -111,24 +130,12 @@ function addAuthor(form, name, genre) {
 function editButton(id, name) {
     let fieldGenre = $("#editAuthorGenre");
     // подгрузка жанров в выпадающий список
-    prepareForm(fieldGenre);
+    prepareFormForAuthor(fieldGenre, id);
 
     let theModal = $('#editAuthor');
     let form = $("#edit-form");
     let fieldId = $("#editAuthorId");
     let fieldName = $("#editAuthorName");
-
-    let genres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
-    fieldGenre.attr("multiple", "multiple");
-    fieldGenre.attr("size", "9");
-    fieldGenre.val('');
-    fieldGenre.find("option:selected").prop(false);
-
-    if(genres[0] !== "") {
-        for (let i = 0; i < genres.length; i++) {
-            fieldGenre.find(`option:contains(${genres[i]})`).attr("selected", "selected");
-        }
-    }
 
     fieldId.val(id);
     fieldName.val(name);
