@@ -5,6 +5,7 @@ import About        from './views/pages/About.js'
 import Error404     from './views/pages/Error404.js'
 import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
+import Statistics   from "./views/pages/Statistics.js";
 
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
@@ -19,8 +20,8 @@ const routes = {
     , '/about'      : About
     , '/p/:id'      : PostShow
     , '/register'   : Register
+    , '/statistics' : Statistics
 };
-
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
 // Код роутера. Принимает URL, проверяет список поддерживаемых маршрутов и затем отображает соответствующую страницу содержимого.
