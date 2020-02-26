@@ -19,7 +19,14 @@ function getTable() {
             for (let i = 0; i < compilations.length; i++) {
                 let id = compilations[i].id;
                 let name = compilations[i].name;
-                // let genre = compilations[i].genre.name;
+                // Хардкодная проверка на null, нужно УБРАТЬ НАХУЙ! но не сейчас, а когда прижмет
+                let genre;
+                try {
+                    genre = compilations[i].genre.name;
+                } catch (e) {
+                    genre = null;
+                }
+
                 let songs;
                 let cover = compilations[i].cover;
                 // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
@@ -31,6 +38,7 @@ function getTable() {
                 tr.append(`
                             <td> ${id} </td>
                             <td> ${name} </td>
+                            <td> ${genre} </td>
                             <td> songs </td>
                             <td> 
                                 <div class="img_wrap">
@@ -102,5 +110,27 @@ function editButton(id, name) {
 }
 
 function deleteButton(id) {
-    alert("DELETE!");
+    $.ajax({
+        method: "DELETE",
+        url: "/api/admin/compilation/delete",
+        contentType: "application/json",
+        data: JSON.stringify(id),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        complete: () => {
+            getTable();
+        },
+        success: () => {
+            alert(`Deleted ${id}!`)
+            // notification(
+            //     "delete-compilation" + id,
+            //     ` Подборка c id ${id} удалена`,
+            //     "compilation-panel");
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
 }

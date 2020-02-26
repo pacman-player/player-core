@@ -57,4 +57,10 @@ public class AdminCompilationRestController {
         songCompilationService.updateCompilation(compilation);
         LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
     }
+
+    @DeleteMapping("/delete")
+    public void deleteCompilation(@RequestBody Long id) throws IOException {
+        songCompilationService.deleteSongCompilation(
+                songCompilationService.getSongCompilationById(id));
+    }
 }

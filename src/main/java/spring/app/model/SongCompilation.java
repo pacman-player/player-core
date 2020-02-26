@@ -21,7 +21,7 @@ public class SongCompilation {
     private String cover;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id", nullable = false)
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     @JsonIgnore

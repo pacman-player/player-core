@@ -2,10 +2,11 @@ package spring.app.service.abstraction;
 
 import spring.app.model.SongCompilation;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SongCompilationService {
-    void addSongСompilation(SongCompilation songCompilation);
+    void addSongCompilation(SongCompilation songCompilation);
     List<SongCompilation> getAllSongCompilations();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
     void deleteValByGenreId(Long id);
@@ -24,4 +25,6 @@ public interface SongCompilationService {
     void deleteSongCompilationFromPlayList(Long id, String dayTime);
 
     void updateCompilation(SongCompilation songCompilation);
+
+    void deleteSongCompilation(SongCompilation songCompilation) throws IOException;
 }
