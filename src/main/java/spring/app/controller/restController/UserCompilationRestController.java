@@ -1,5 +1,7 @@
 package spring.app.controller.restController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user/song-compilation")
 public class UserCompilationRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserCompilationRestController.class);
     private GenreService genreService;
     private SongCompilationService songCompilationService;
 
@@ -25,31 +28,45 @@ public class UserCompilationRestController {
 
     @PostMapping(value = "/get/all-song-compilation")
     public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
+        LOGGER.info("GET request '/get/all-song-compilation' with genre = {}", genre);
         genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
 
         if (genre.equals("Все подборки")) {
+            LOGGER.info("Returning all compilations");
             return songCompilationService.getAllSongCompilations();
         } else {
+            LOGGER.info("Returning compilations by provided genre...");
             Genre genres = genreService.getByName(genre);
-            List<SongCompilation> list = songCompilationService.getListSongCompilationsByGenreId(genres.getId());
-            return songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            List<SongCompilation> compilations = songCompilationService.getListSongCompilationsByGenreId(genres.getId());
+            LOGGER.info("Found {} compilation(s)", compilations.size());
+            return compilations;
         }
     }
 
     @GetMapping(value = "/get/song-compilation/{id}")
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
+        LOGGER.info("GET request '/get/all-song-compilation/{}'", id);
         SongCompilation songCompilationById = songCompilationService.getSongCompilationById(id);
-        System.out.println(songCompilationById);
+        LOGGER.info("Found compilation = {}", songCompilationById.getName());
         return songCompilationById;
     }
 
     @GetMapping("/songsBySongCompilation")
     public List<SongDto> getSongsBySongCompilation(String compilationName) {
+        LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
         SongCompilation songCompilation = songCompilationService.getSongCompilationByCompilationName(compilationName);
-        List<SongDto> songDtoList = songCompilation.getSong().stream().map(song -> new SongDto(song.getId(), song.getName(), song.getAuthor().getName(), song.getGenre().getName())).collect(Collectors.toList());
+        List<SongDto> songDtoList = songCompilation.getSong().stream()
+                .map(song -> new SongDto(
+                        song.getId(),
+                        song.getName(),
+                        song.getAuthor().getName(),
+                        song.getGenre().getName())
+                )
+                .collect(Collectors.toList());
         for (SongDto songDto : songDtoList) {
             System.out.println(songDto);
         }
+        LOGGER.info("Found {} songs", songDtoList.size());
         return songDtoList;
     }
 }

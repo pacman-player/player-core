@@ -16,6 +16,7 @@ $(document).ready(function () {
             url: "/api/user/company",
             type: "PUT",
             data: JSON.stringify(formData),
+            async: false,
             complete:
                 function () {
                     getCompanyData();
@@ -48,6 +49,7 @@ $(document).ready(function () {
             contentType: "application/json;",
             url: "/api/user/company/address",
             type: "PUT",
+            async: false,
             data: JSON.stringify(address)
         });
     }
@@ -57,6 +59,7 @@ $(document).ready(function () {
             url: '/api/user/company/',
             method: "GET",
             dataType: "json",
+            async: false,
             success: function (data) {
                 $('#est-name').val(data.name);
                 $('#est-start-time').val(data.startTime);
@@ -68,10 +71,13 @@ $(document).ready(function () {
     function getCompanyAddress() {
         $.ajax({
             url: '/api/user/company/address',
-            method: "GET",
-            dataType: "json",
+            method: 'GET',
+            dataType: 'json',
+            async: false,
             success: function (data) {
-                $('#est-address').val(data.country + ', ' + data.city + ', ' + data.street + ', ' + data.house);
+                $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
+            },
+            error: function (data) {
             }
         })
     }
@@ -85,6 +91,7 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "/api/user/show_admin",
+            async: false,
             success: function (role) {
                 if (role !== "admin") {
                     $("#adminLink").hide();
@@ -107,8 +114,8 @@ $(document).ready(function () {
     }
 
 
-
     ymaps.ready(init);
+
     function init() {
         // Подключаем поисковые подсказки к полю ввода.
         var suggestView = new ymaps.SuggestView('est-address');
@@ -122,12 +129,10 @@ $(document).ready(function () {
         });
 
         // Создаем экземпляр класса ymaps.control.SearchControl
-        let mySearchControl = new ymaps.control.SearchControl({
-        });
+        let mySearchControl = new ymaps.control.SearchControl({});
 
         // Создаем экземпляр класса ymaps.control.ZoomControl
-        let myZoomControl = new ymaps.control.ZoomControl({
-        });
+        let myZoomControl = new ymaps.control.ZoomControl({});
 
         //Добавляем в карту зум
         // map.controls.add(mySearchControl);
@@ -182,13 +187,10 @@ $(document).ready(function () {
                 });
 
 
-
-
-
                 var alertContent = firstGeoObject.getAddressLine();
 
                 // Сетим адрес и координаты в поля
-                function putAddressInField () {
+                function putAddressInField() {
                     $('#est-address').val(alertContent);
                     $('#latitude').val(coords[0]);
                     $('#longitude').val(coords[1]);
