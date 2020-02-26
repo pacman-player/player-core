@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Панель админа</title>
@@ -27,44 +27,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li>
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li class="active">
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li>
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li>
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
@@ -85,7 +49,7 @@
                     </ul>
 
                     <div class="tab-content">
-                        <!--таблица юзеров-->
+                        <!-- Таблица жанров -->
                         <div role="tabpanel" class="tab-pane active" id="genres-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
@@ -95,72 +59,19 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Жанр</th>
-
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
-
-
-                                            <!--модалка - обновление юзеров-->
-                                            <div id="editGenres" class="modal fade">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-hidden="true">×
-                                                            </button>
-                                                            <h4 class="modal-title">Изменить жанр</h4>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                                        <div id="success-edit-message"
-                                                                             class="alert alert-danger hidden">
-                                                                            <div id="message"></div>
-                                                                        </div>
-                                                                        <form id="edit-form">
-                                                                            <div class="form-group text-center edit-form">
-                                                                                <label for="updateGenresId">ID</label>
-                                                                                <input id="updateGenresId"
-                                                                                       class="form-control"
-                                                                                       disabled="disabled" type="text"
-                                                                                       name="id" required=""/>
-                                                                                <input type="hidden"
-                                                                                       id="id-input-edit-hidden"
-                                                                                       name="id"/>
-
-                                                                                <label for="updateGenresName">Жанр</label>
-                                                                                <input id="updateGenresName"
-                                                                                       class="form-control" type="email"
-                                                                                       name="genre"
-                                                                                       required=""/>
-
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                                                    <button id="editGenresBtn" class="btn btn-primary" data-dismiss="modal" type="submit">Изменить</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
 
-                        <!--добавление юзеров-->
-                        <div role="tabpanel" class="tab-pane" id="add-genres-panel">
+                        <!-- Статическая форма добавления нового жанра -->
+                        <div id="add-genres-panel" class="tab-pane" role="tabpanel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -168,18 +79,21 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
-
-                                                            <label for="addGenre">Жанр</label>
-                                                            <input id="addGenre" class="form-control" type="text"
-                                                                   placeholder="Enter genre" name="genre"/>
-
-                                                            <button type="submit" id="addGenreBtn"
+                                                            <div>
+                                                                <label for="addGenre">Жанр</label>
+                                                                <input id="addGenre"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="Genre"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <button id="addGenreBtn"
                                                                     class="btn btn-success btn-lg"
+                                                                    type="submit"
                                                                     style="margin-top: 20px;">
-                                                                Добавить жанр
+                                                                Добавить
                                                             </button>
                                                         </div>
                                                     </form>
@@ -190,23 +104,79 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Изменение жанра (модальное окно) -->
+                        <div id="editGenres" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title">Изменить жанр</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="editForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="updateGenresId">ID</label>
+                                                            <input id="updateGenresId"
+                                                                   name="id"
+                                                                   class="form-control"
+                                                                   disabled="disabled"
+                                                                   type="text"/>
+
+                                                            <label for="updateGenresName">Жанр</label>
+                                                            <input id="updateGenresName"
+                                                                   name="name"
+                                                                   class="form-control"
+                                                                   type="text"/>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button"
+                                                                        class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Закрыть
+                                                                </button>
+                                                                <button id="editGenresBtn"
+                                                                        class="btn btn-primary"
+                                                                        type="submit">
+                                                                    Изменить
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/genres.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 
 </body>
 </html>

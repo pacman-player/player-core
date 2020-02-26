@@ -27,44 +27,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li class="active">
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li>
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li>
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li>
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
@@ -131,7 +95,6 @@
                                                                 <button id="addEstablishmentBtn"
                                                                         class="btn btn-success btn-lg"
                                                                         type="submit"
-                                                                        onclick="addButton()"
                                                                         style="margin-top: 20px;">
                                                                     Добавить
                                                                 </button>
@@ -163,7 +126,7 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                    <form id="establishment-form">
+                                                    <form id="updateEstForm">
                                                         <div class="form-group text-center edit-form">
                                                             <label for="updateEstablishmentId">ID заведения</label>
                                                             <input id="updateEstablishmentId"
@@ -214,7 +177,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/establishments_tmp.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/establishments.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
