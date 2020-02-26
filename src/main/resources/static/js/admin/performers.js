@@ -27,23 +27,28 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
 
     dropDownListSelector.append(selectOptions);
 }
-
-function prepareFormForAuthor(fieldGenre, id) {
+//В модальном окне редактирования исполнителя формируем общий список жанров
+//с выделенными жанрами этого исполнителя
+function prepareGenreFieldForAuthor(fieldGenre, id) {
     fieldGenre.empty();
     fieldGenre.attr("multiple", "multiple");
-    fieldGenre.attr("size", "8");
-
     let allGenres = getGenres();
+    //При большом количестве жанров заменить второй параметр на нужное число,
+    //чтобы список не был слишком длинным
+    fieldGenre.attr("size", `${allGenres.length}`);
+
     let authorGenres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
     let selectOptions = "";
 
-    for (let i = 0; i < allGenres.length; i++) {
+    checkGenre: for (let i = 0; i < allGenres.length; i++) {
         let genre = allGenres[i].name;
-        if (authorGenres[0] === genre || authorGenres[1] === genre) {
-            selectOptions += `<option value="${genre}" selected> ${genre} </option>`;
-        } else {
-            selectOptions += `<option value="${genre}"> ${genre} </option>`;
+        for (let j = 0; j < authorGenres.length; j++) {
+            if (authorGenres[j] === genre) {
+                selectOptions += `<option value="${genre}" selected> ${genre} </option>`;
+                continue checkGenre;
+            }
         }
+        selectOptions += `<option value="${genre}"> ${genre} </option>`;
     }
     fieldGenre.append(selectOptions);
 }
@@ -129,8 +134,8 @@ function addAuthor(form, name, genre) {
 
 function editButton(id, name) {
     let fieldGenre = $("#editAuthorGenre");
-    // подгрузка жанров в выпадающий список
-    prepareFormForAuthor(fieldGenre, id);
+    // подгрузка жанров этого исполнителя в список
+    prepareGenreFieldForAuthor(fieldGenre, id);
 
     let theModal = $('#editAuthor');
     let form = $("#edit-form");
