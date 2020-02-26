@@ -14,6 +14,7 @@ $(document).ready(function () {
     })
 });
 
+
 // Drop-down list data
 function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
     dropDownListSelector.empty();
@@ -27,14 +28,18 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
 
     dropDownListSelector.append(selectOptions);
 }
+
+
 //В модальном окне редактирования исполнителя формируем общий список жанров
 //с выделенными жанрами этого исполнителя
 function prepareGenreFieldForAuthor(fieldGenre, id) {
     fieldGenre.empty();
     fieldGenre.attr("multiple", "multiple");
     let allGenres = getGenres();
-    //При большом количестве жанров заменить второй параметр на нужное число,
-    //чтобы список не был слишком длинным
+
+    //При большом количестве жанров раскомментировать строчку и
+    //закомментировать следующую
+    // fieldGenre.attr("size", "5");
     fieldGenre.attr("size", `${allGenres.length}`);
 
     let authorGenres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
@@ -52,6 +57,7 @@ function prepareGenreFieldForAuthor(fieldGenre, id) {
     }
     fieldGenre.append(selectOptions);
 }
+
 
 function getGenres() {
     return $.ajax({
@@ -75,6 +81,7 @@ const errMessages = {
     rangelength: "Количество символов должно быть в диапазоне [3-30]",
     remote: "Имя занято"
 };
+
 
 const authorNameRegEx = /[\wА-Яа-я\-]/;
 
@@ -100,6 +107,7 @@ $("#addForm").validate({
         name: errMessages
     }
 });
+
 
 function addAuthor(form, name, genre) {
     $.ajax({
@@ -151,11 +159,7 @@ function editButton(id, name) {
             name: {
                 required: true,
                 pattern: authorNameRegEx,
-                rangelength: [3, 30],
-                remote: {
-                    method: "GET",
-                    url: "/api/admin/author/is_free",
-                }
+                rangelength: [3, 30]
             }
         },
         messages: {
@@ -239,15 +243,14 @@ function getTable() {
                 let id = authors[i].id;
                 let name = authors[i].name;
                 // list of genres ()
-                let genres = authors[i].authorGenres;
+                let genres = authors[i].genres;
                 let htmlGenres = "";
                 for (let gi = 0; gi < genres.length; gi++) {
-                    htmlGenres += genres[gi].name;
+                    htmlGenres += genres[gi];
                     if (gi < genres.length - 1) {
                         htmlGenres += ", ";
                     }
                 }
-
 
                 let tr = $("<tr/>");
                 tr.append(`
