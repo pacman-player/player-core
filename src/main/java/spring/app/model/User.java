@@ -1,15 +1,14 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Blob;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -55,6 +54,16 @@ public class User implements UserDetails {
 
     //@Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
+
+    @JsonIgnore
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    @JoinTable(name = "user_on_registrationstep",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "registration_step_id")})
+    private List<RegistrationStep> registrationSteps = new ArrayList<>();
 
     public User() {
     }
@@ -117,6 +126,23 @@ public class User implements UserDetails {
         this.login = login;
     }
 
+    public List<RegistrationStep> getRegistrationSteps() {
+        return registrationSteps;
+    }
+
+    public void setRegistrationSteps(List<RegistrationStep> registrationSteps) {
+        this.registrationSteps = registrationSteps;
+    }
+
+    public void addRegStep(RegistrationStep registrationStep) {
+        registrationSteps.add(registrationStep);
+        registrationStep.getUsersOnStep().add(this);
+    }
+
+    public void removeRegStep(RegistrationStep registrationStep) {
+        registrationSteps.remove(registrationStep);
+        registrationStep.getUsersOnStep().remove(this);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
