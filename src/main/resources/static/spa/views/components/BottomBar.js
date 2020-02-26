@@ -64,7 +64,6 @@ let BottomBar = {
         return view
     },
     after_render: async () => {
-        $(document).ready(function () {
             /**
              * ##########################
              *          PLAYER
@@ -696,7 +695,6 @@ let BottomBar = {
                         allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
                 }
             }
-        })
 
     }
 
