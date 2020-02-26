@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Admin page</title>
@@ -27,44 +27,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li>
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li>
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li>
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li class="active">
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
@@ -79,7 +43,8 @@
                                data-toggle="tab">Все сообщения</a>
                         </li>
                         <li id="add-messages-nav">
-                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab" data-toggle="tab">
+                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab"
+                               data-toggle="tab">
                                 Новые сообщения</a>
                         </li>
                     </ul>
@@ -151,10 +116,12 @@
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            <button id="closeEditMessages" type="button" class="btn btn-default"
+                                                            <button id="closeEditMessages" type="button"
+                                                                    class="btn btn-default"
                                                                     data-dismiss="modal">Закрыть
                                                             </button>
-                                                            <button id="editMessagesBtn" class="btn btn-primary">Изменить
+                                                            <button id="editMessagesBtn" class="btn btn-primary">
+                                                                Изменить
                                                             </button>
                                                         </div>
                                                     </div>

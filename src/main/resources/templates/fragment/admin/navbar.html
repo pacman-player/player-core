@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title></title>
+</head>
+<body>
+
+<ul class="nav nav-pills nav-stacked nav-content" th:fragment="adminNavbar">
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/users' ? 'active' : ''}">
+        <a href="/admin/users">Пользователи</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/companies' ? 'active' : ''}">
+        <a href="/admin/companies">Компании</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/establishments' ? 'active' : ''}">
+        <a href="/admin/establishments">Типы заведений</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/genres' ? 'active' : ''}">
+        <a href="/admin/genres">Жанры</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/performers' ? 'active' : ''}">
+        <a href="/admin/performers">Исполнители</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/songs' ? 'active' : ''}">
+        <a href="/admin/songs">Песни</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/vk_bot' ? 'active' : ''}">
+        <a href="/admin/vk_bot">Послать отчет</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/message' ? 'active' : ''}">
+        <a href="/admin/message">Сообщения</a>
+    </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}">
+        <a href="/user">Меню пользователя</a>
+    </li>
+</ul>
+
+</body>
+</html>
