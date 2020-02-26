@@ -1,5 +1,7 @@
 package spring.app.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ public class SongCompilationDto {
     private String genre;
     private Set<SongDto> setSongDto;
     private List<PlayListDto> listPlayListDto;
+    private MultipartFile cover;
 
     public SongCompilationDto() {
     }
@@ -26,5 +29,53 @@ public class SongCompilationDto {
         this.genre = genre;
         this.setSongDto = setSongDto;
         this.listPlayListDto = listPlayListDto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public Set<SongDto> getSetSongDto() {
+        return setSongDto;
+    }
+
+    public void setSetSongDto(Set<SongDto> setSongDto) {
+        this.setSongDto = setSongDto;
+    }
+
+    public List<PlayListDto> getListPlayListDto() {
+        return listPlayListDto;
+    }
+
+    public void setListPlayListDto(List<PlayListDto> listPlayListDto) {
+        this.listPlayListDto = listPlayListDto;
+    }
+
+    public MultipartFile getCover() {
+        return cover;
+    }
+
+    public void setCover(MultipartFile cover) {
+        this.cover = cover;
     }
 }
