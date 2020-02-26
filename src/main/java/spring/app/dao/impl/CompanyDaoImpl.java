@@ -29,6 +29,24 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
     }
 
     @Override
+    public Company getByIdWithAddress(Long id) {
+        Company company;
+        try {
+            company = entityManager
+                    .createQuery(
+                            "SELECT cmp " +
+                                    "FROM Company cmp " +
+                                    "LEFT JOIN FETCH cmp.address " +
+                                    "WHERE cmp.id = :id", Company.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return company;
+    }
+
+    @Override
     public Company getCompanyByCompanyName(String companyName) {
         Company company;
         try {

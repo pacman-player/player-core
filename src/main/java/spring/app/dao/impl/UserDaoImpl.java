@@ -21,6 +21,21 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     }
 
     @Override
+    public User getUserByLoginWithRegStepsCompany(String login) {
+        List<User> userList = entityManager.createQuery(/*"FROM User WHERE login = :login"*/
+                "SELECT usr FROM User usr " +
+                        "LEFT JOIN FETCH usr.registrationSteps " +
+                        "LEFT JOIN FETCH usr.company " +
+                        "WHERE usr.login = :login", User.class)
+                .setParameter("login", login)
+                .getResultList();
+        if (userList.isEmpty()) {
+            return null;
+        }
+        return userList.get(0);
+    }
+
+    @Override
     public User getUserByLogin(String login) {
         List<User> userList = entityManager.createQuery("FROM User WHERE login = :login", User.class)
                 .setParameter("login", login)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Панель админа</title>
@@ -27,44 +27,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li>
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li>
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li class="active">
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li>
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
@@ -75,7 +39,8 @@
                 <div role="tabpanel" class="tab-pane active" id="list-song">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="song-table-nav" class="active">
-                            <a id="tab-song-panel" href="#song-panel" aria-controls="song-panel" role="tab" data-toggle="tab">Все песни</a>
+                            <a id="tab-song-panel" href="#song-panel" aria-controls="song-panel" role="tab"
+                               data-toggle="tab">Все песни</a>
                         </li>
                         <li id="add-song-nav">
                             <a href="#add-song-panel" aria-controls="add-song-panel" role="tab" data-toggle="tab">
@@ -111,7 +76,9 @@
                                                     <div class="modal-content">
 
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
                                                             <h4 class="modal-title">Изменить песню</h4>
                                                         </div>
 
@@ -120,28 +87,41 @@
                                                                 <div class="row">
                                                                     <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                                        <div id="success-edit-message" class="alert alert-danger hidden">
+                                                                        <div id="success-edit-message"
+                                                                             class="alert alert-danger hidden">
                                                                             <div id="message"></div>
                                                                         </div>
                                                                         <form id="edit-form">
                                                                             <div class="form-group text-center edit-form">
                                                                                 <label for="updateSongId">ID</label>
-                                                                                <input id="updateSongId" class="form-control" disabled="disabled" type="text"
+                                                                                <input id="updateSongId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
                                                                                        name="id" required=""/>
-                                                                                <input type="hidden" id="updateSongIdHidden" name="id"/>
+                                                                                <input type="hidden"
+                                                                                       id="updateSongIdHidden"
+                                                                                       name="id"/>
 
                                                                                 <label for="updateSongAuthor">Автор</label>
-                                                                                <input id="updateSongAuthor" class="form-control" disabled="disabled" type="text"
+                                                                                <input id="updateSongAuthor"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
                                                                                        name="author" required=""/>
-                                                                                <input type="hidden" id="updateSongAuthorHidden" name="id"/>
+                                                                                <input type="hidden"
+                                                                                       id="updateSongAuthorHidden"
+                                                                                       name="id"/>
 
                                                                                 <label for="updateSongName">Название</label>
-                                                                                <input id="updateSongName" class="form-control" type="text" name="name"
+                                                                                <input id="updateSongName"
+                                                                                       class="form-control" type="text"
+                                                                                       name="name"
                                                                                        required=""/>
 
                                                                                 <label for="updateSongGenre">Жанр</label>
-                                                                                <select class="form-control" id="updateSongGenre" name="updateGenre">
-                                                                                <!--заполняем через js-->
+                                                                                <select class="form-control"
+                                                                                        id="updateSongGenre"
+                                                                                        name="updateGenre">
+                                                                                    <!--заполняем через js-->
                                                                                 </select>
                                                                             </div>
                                                                         </form>
@@ -150,8 +130,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                                            <button id="updateSongBtn" class="btn btn-primary" data-dismiss="modal">Изменить</button>
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button id="updateSongBtn" class="btn btn-primary"
+                                                                    data-dismiss="modal">Изменить
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,14 +159,15 @@
 
                                                             <label for="addSongName">Название</label>
                                                             <input id="addSongName" class="form-control" type="text"
-                                                                   placeholder="Enter song name" name="songName" />
+                                                                   placeholder="Enter song name" name="songName"/>
 
                                                             <label for="addSongAuthor">Автор</label>
                                                             <input id="addSongAuthor" class="form-control" type="text"
                                                                    placeholder="Enter author name" name="author"/>
 
                                                             <label for="addSongGenre">Жанр</label>
-                                                            <select class="form-control" id="addSongGenre" name="addGenre">
+                                                            <select class="form-control" id="addSongGenre"
+                                                                    name="addGenre">
                                                                 <!--заполняем через js-->
                                                             </select>
                                                             <button type="button" id="addSongBtn"

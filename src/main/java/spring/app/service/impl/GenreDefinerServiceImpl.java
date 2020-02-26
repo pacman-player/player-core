@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -28,17 +29,20 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         String query2 = " жанр";
         String url = "https://www.google.ru/search?q=" + query1 + query2;
         String genre = "неизвестно";
-
-        Document doc = Jsoup
-                .connect(url)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                .header("Accept-Language", "ru")
-                .header("Accept-Encoding", "gzip,deflate,br")
-                .timeout(10000).get();
+        Document doc;
 
         try {
             LOGGER.debug("Finding genre for '{}'. Google searching for '{}'", trackName, url);
+            doc = Jsoup
+                    .connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
+                    .header("Accept-Language", "ru")
+                    .header("Accept-Encoding", "gzip,deflate,br")
+                    .timeout(10000).get();
+
             genre = doc.getElementsByClass("Z0LcW").first().text();
+        } catch (HttpStatusException se) {
+            LOGGER.info("Google has banned us for suspicious activity, moving on to other searches...");
         } catch (NullPointerException e) {
             LOGGER.debug("Didn't find anything, caught NullPointerException!");
         }
@@ -48,16 +52,18 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
             query2 = " genre";
             url = "https://www.google.ru/search?q=" + query1 + query2 + "&num=10";
 
-            doc = Jsoup
-                    .connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                    .header("Accept-Language", "ru")
-                    .header("Accept-Encoding", "gzip,deflate,br")
-                    .timeout(5000).get();
-
             try {
                 LOGGER.debug("Finding genre for '{}'. Google searching for '{}'", trackName, url);
+                doc = Jsoup
+                        .connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
+                        .header("Accept-Language", "ru")
+                        .header("Accept-Encoding", "gzip,deflate,br")
+                        .timeout(5000).get();
+
                 genre = doc.getElementsByClass("Z0LcW").first().text();
+            } catch (HttpStatusException se) {
+                LOGGER.info("Google has banned us for suspicious activity, moving on to other searches...");
             } catch (NullPointerException e) {
                 LOGGER.debug("Didn't find anything, caught NullPointerException!");
             }
@@ -75,18 +81,19 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         String query1 = trackName;
         String url = "https://music.yandex.com/search?text=" + query1 + "&type=artists";
         String genre = "неизвестно";
-
-        Document doc = Jsoup
-                .connect(url)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                .header("Accept-Language", "ru")
-                .header("Accept-Encoding", "gzip, deflate, br")
-                .timeout(10000).get();
+        Document doc;
 
         try {
             LOGGER.debug("Finding genre for '{}'. Yandex searching for '{}'", trackName, url);
+            doc = Jsoup
+                    .connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
+                    .header("Accept-Language", "ru")
+                    .header("Accept-Encoding", "gzip, deflate, br")
+                    .timeout(10000).get();
+
             genre = doc.getElementsByClass("d-genres").first().text();
-        } catch (NullPointerException e) {
+        } catch (HttpStatusException | NullPointerException e) {
             LOGGER.debug("Didn't find anything, caught NullPointerException!");
         }
         LOGGER.debug("Genre result found so far = {}", genre);
@@ -95,17 +102,17 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
             String artistName = query1.split(" – ")[0];
             url = "https://music.yandex.com/search?text=" + artistName + "&type=artists";
 
-            doc = Jsoup
+            try {
+                LOGGER.debug("Finding genre for '{}'. Yandex searching for '{}'", trackName, url);
+                doc = Jsoup
                     .connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
                     .header("Accept-Language", "ru")
                     .header("Accept-Encoding", "gzip, deflate, br")
                     .timeout(10000).get();
 
-            try {
-                LOGGER.debug("Finding genre for '{}'. Yandex searching for '{}'", trackName, url);
                 genre = doc.getElementsByClass("d-genres").first().text();
-            } catch (NullPointerException e) {
+            } catch (HttpStatusException | NullPointerException e) {
                 LOGGER.debug("Didn't find anything, caught NullPointerException!");
             }
             LOGGER.debug("Genre result found so far = {}", genre);

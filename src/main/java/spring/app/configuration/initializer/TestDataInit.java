@@ -58,6 +58,9 @@ public class TestDataInit {
     @Autowired
     private MusicSearchService musicSearchService;
 
+    @Autowired
+    private RegistrationStepService registrationStepService;
+
     @Value("${music.path}")
     private String musicPath;
 
@@ -85,10 +88,6 @@ public class TestDataInit {
         Role roleAnonymous = new Role();
         roleAnonymous.setName("ANONYMOUS");
         roleService.addRole(roleAnonymous);
-
-        Role rolePreuser = new Role();
-        rolePreuser.setName("PREUSER");
-        roleService.addRole(rolePreuser);
 
         User admin = new User();
         admin.setLogin("admin");
@@ -200,12 +199,12 @@ public class TestDataInit {
         playListService.addPlayList(playList3);
 
         Company company = new Company("Mr.Bo", LocalTime.of(11, 0), LocalTime.of(23, 0), user, orgType);
-        Company company2 = new Company("Mr.Bo2", LocalTime.of(11, 0), LocalTime.of(23, 0), user2, orgType);
+ /*       Company company2 = new Company("Mr.Bo2", LocalTime.of(11, 0), LocalTime.of(23, 0), user2, orgType);
         Company company3 = new Company("Mr.Bo3", LocalTime.of(11, 0), LocalTime.of(23, 0), user3, orgType);
         Company company4 = new Company("Mr.Bo4", LocalTime.of(11, 0), LocalTime.of(23, 0), user4, orgType);
         Company company5 = new Company("Mr.Bo5", LocalTime.of(11, 0), LocalTime.of(23, 0), user5, orgType);
         Company company6 = new Company("Mr.Bo6", LocalTime.of(11, 0), LocalTime.of(23, 0), user6, orgType);
-
+*/
         Set<PlayList> allDayPlayLists = new HashSet<>();
         allDayPlayLists.add(playList);
 
@@ -226,6 +225,7 @@ public class TestDataInit {
         company.setBannedGenres(bannedGenres);
         companyService.addCompany(company);
 
+/*
         company2.setMorningPlayList(morningPlayLists);
         company2.setMiddayPlayList(middayPlayLists);
         company2.setEveningPlayList(eveningPlayLists);
@@ -255,6 +255,7 @@ public class TestDataInit {
         company6.setEveningPlayList(eveningPlayLists);
         company6.setBannedGenres(bannedGenres);
         companyService.addCompany(company6);
+*/
 
         //adding mock statistics
         Calendar cal = Calendar.getInstance();
@@ -269,6 +270,27 @@ public class TestDataInit {
         }
 
         new Mp3Parser(songService, authorService, genreService, songCompilationService, musicSearchService).apply("music1/");
+
+        RegistrationStep rs1 = new RegistrationStep();
+        rs1.setName("registration-step-user");
+        registrationStepService.save(rs1);
+
+        RegistrationStep rs2 = new RegistrationStep();
+        rs2.setName("registration-step-company");
+        registrationStepService.save(rs2);
+
+        RegistrationStep rs3 = new RegistrationStep();
+        rs3.setName("registration-step-address");
+        registrationStepService.save(rs3);
+
+        RegistrationStep rsFinal = new RegistrationStep();
+        rsFinal.setName("registration-step-end");
+        registrationStepService.save(rsFinal);
+
+        User user1 = userService.getUserByLoginWithRegStepsCompany("user");
+        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
+        user1.addRegStep(registrationStep);
+        userService.updateUser(user1);
 
     }
 }

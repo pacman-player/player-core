@@ -39,6 +39,7 @@ public class SendEmailAboutAddNewCompilationImpl implements SendEmailAboutAddNew
                 mailMessage.setTo(user.getEmail());
                 mailMessage.setSubject("Новая подборка");
                 mailMessage.setText(message);
+//                TODO раскомментировать строку для включения отправки писем (нужна своя почта (для тестов))
 //                emailSender.send(mailMessage);
             }
         }
