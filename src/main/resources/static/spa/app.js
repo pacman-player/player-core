@@ -6,11 +6,11 @@ import Error404     from './views/pages/Error404.js'
 import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
 import Statistics   from "./views/pages/Statistics.js";
-import Compilation  from "./views/pages/Compilation.js";
+import Compilation2  from "./views/pages/Compilation2.js";
 
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
-import BottomBar    from './views/components/BottomBar.js'
+import BottomBar2    from './views/components/BottomBar2.js'
 
 import Utils        from './services/Utils.js'
 
@@ -22,7 +22,7 @@ const routes = {
     , '/p/:id'      : PostShow
     , '/register'   : Register
     , '/statistics' : Statistics
-    , '/compilation': Compilation
+    , '/compilation': Compilation2
 };
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
@@ -45,8 +45,8 @@ const router = async () => {
     await LeftSideBar.after_render();
 
     //отображаем футер(плеер)
-    footer.innerHTML = await BottomBar.render();
-    await BottomBar.after_render();
+    footer.innerHTML = await BottomBar2.render();
+    await BottomBar2.after_render();
 
 
     // Get the parsed URl from the addressbar

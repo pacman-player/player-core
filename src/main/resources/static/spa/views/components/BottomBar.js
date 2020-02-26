@@ -2,6 +2,7 @@ import Compilation from "../pages/Compilation.js";
 
 
 
+
 let BottomBar = {
     render: async () => {
         let view =  /*html*/
@@ -71,19 +72,19 @@ let BottomBar = {
              *          PLAYER
              * ##########################
              */
-// объект плеер, который при загрузке страницы сразу находится с jquery
-            let player;
+// // объект плеер, который при загрузке страницы сразу находится с jquery
+//             let player;
 
-// объект плеер, который находится javascript-ом
-            let playerElement = document.getElementById("player");
-            playerElement.volume = 0.3;
-            $('#volumebar').attr('value', playerElement.volume);
+// // объект плеер, который находится javascript-ом
+//             let playerElement = document.getElementById("player");
+//             playerElement.volume = 0.3;
+//             $('#volumebar').attr('value', playerElement.volume);
 
-// адрес, по которому клиент обращается для проигрывания музыки
-            let musicUrl = "/api/music/play/";
+// // адрес, по которому клиент обращается для проигрывания музыки
+//             let musicUrl = "/api/music/play/";
 
-// адрес, по которому клиент обращается для получения обложки песни
-            let albumsCoverUrl = "/api/music/albums-cover/";
+// // адрес, по которому клиент обращается для получения обложки песни
+//             let albumsCoverUrl = "/api/music/albums-cover/";
 
 // переменная, которая говорит, нужно ли играть по порядку или случайным порядком
             let shuffle = false;
@@ -100,14 +101,14 @@ let BottomBar = {
             let allSongsInEveningPlaylist = [];
             // let allSongInGenre = [];
 
-//текущий плейлист как список compilation
-            let allCompilationInCurrentPlaylist;
+// //текущий плейлист как список compilation
+//             let allCompilationInCurrentPlaylist;
 
-//текущий плейлист как список песен
-            let allSongsInCurrentPlaylist;
+// //текущий плейлист как список песен
+//             let allSongsInCurrentPlaylist;
 
-// индекс последне-проигранной песни в своем массиве
-            let lastPlayedMusicIndex = -1;
+// // индекс последне-проигранной песни в своем массиве
+//             let lastPlayedMusicIndex = -1;
 
 // // индекс последне-проигранного массива песен в своем списке
 //         let lastPlayedCompilationIndex = -1;
@@ -115,8 +116,8 @@ let BottomBar = {
 // переменная, которая хранит id кнопки последне-проигранного списка
             let lastPlayedPlaylistId = 'none';
 
-// имя текущего раздела
-            let lastPlayedPlaylistName = 'none';
+// // имя текущего раздела
+//             let lastPlayedPlaylistName = 'none';
 
             // /**
             //  * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
@@ -376,118 +377,118 @@ let BottomBar = {
                 button.dataset.playing_state = 'on_stop';
             }
 
-            /**
-             * функция для проигрывания / паузы
-             * сперва находится кнопка нажатия и определяется его состояние
-             * если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
-             * потом смотрим, это текущий плейлист, или нет
-             * если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
-             * смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
-             * потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
-             *      а если песня играется - то ставится на паузу
-             *      а если песня на паузе - то продолжается воспроизведение
-             * @param playlistName
-             * @param compilationIndex
-             * @param musicIndex
-             * @param isFromSongQueue
-             */
-            function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
-                if ($('#playerContainer').css('display') === 'none') {
-                    $('#playerContainer').css('display', 'block')
-                }
+            // /**
+            //  * функция для проигрывания / паузы
+            //  * сперва находится кнопка нажатия и определяется его состояние
+            //  * если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
+            //  * потом смотрим, это текущий плейлист, или нет
+            //  * если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
+            //  * смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
+            //  * потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
+            //  *      а если песня играется - то ставится на паузу
+            //  *      а если песня на паузе - то продолжается воспроизведение
+            //  * @param playlistName
+            //  * @param compilationIndex
+            //  * @param musicIndex
+            //  * @param isFromSongQueue
+            //  */
+            // function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
+            //     if ($('#playerContainer').css('display') === 'none') {
+            //         $('#playerContainer').css('display', 'block')
+            //     }
+            //
+            //     let clickedButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
+            //     let clickedButton;
+            //     for (var i = 0; i < clickedButtons.length; i++) {
+            //         if ($(clickedButtons[i]).css("display") === "inline-block") {
+            //             clickedButton = clickedButtons[i];
+            //         }
+            //     }
+            //     if (!clickedButton) {
+            //         clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
+            //         for (let i = 0; i < clickedButtons.length; i++) {
+            //             if ($(clickedButtons[i]).css("display") === "inline-block") {
+            //                 clickedButton = clickedButtons[i];
+            //             }
+            //         }
+            //     }
+            //     let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+            //     if (playingState === 'on_play') {
+            //         playerElement.pause();
+            //     } else if (playingState === 'on_pause') {
+            //         playerElement.play();
+            //     } else {
+            //         let lastPlayedMusicsButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
+            //         for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
+            //             setButtonOnStop(lastPlayedMusicsButtons[i]);
+            //         }
+            //
+            //         if (playlistName !== lastPlayedPlaylistName) {
+            //             lastPlayedPlaylistName = playlistName;
+            //             var playList = getCurrentPlaylist(playlistName);
+            //             allSongsInCurrentPlaylist = playList.currentSongsList;
+            //             allCompilationInCurrentPlaylist = playList.currentCumpilationsList;
+            //         }
+            //
+            //         lastPlayedCompilationIndex = compilationIndex;
+            //         lastPlayedMusicIndex = musicIndex;
+            //         let music = allSongsInCurrentPlaylist[musicIndex];
+            //         player.attr('src', musicUrl + music.author.name + "/" + music.name);
+            //         $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
+            //         let songName = document.getElementById('song-name');
+            //         songName.innerHTML = music.name;
+            //         let songAuthor = document.getElementById('song-author');
+            //         songAuthor.innerHTML = music.author.name;
+            //         if (isFromSongQueue) {
+            //             $('#playerContainer').css('background-color', 'rgb(232, 195, 195)')
+            //         } else {
+            //             $('#playerContainer').css('background-color', '#ececec')
+            //         }
+            //         fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
+            //         playerElement.play();
+            //     }
+            // }
 
-                let clickedButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
-                let clickedButton;
-                for (var i = 0; i < clickedButtons.length; i++) {
-                    if ($(clickedButtons[i]).css("display") === "inline-block") {
-                        clickedButton = clickedButtons[i];
-                    }
-                }
-                if (!clickedButton) {
-                    clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
-                    for (let i = 0; i < clickedButtons.length; i++) {
-                        if ($(clickedButtons[i]).css("display") === "inline-block") {
-                            clickedButton = clickedButtons[i];
-                        }
-                    }
-                }
-                let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
-                if (playingState === 'on_play') {
-                    playerElement.pause();
-                } else if (playingState === 'on_pause') {
-                    playerElement.play();
-                } else {
-                    let lastPlayedMusicsButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
-                    for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
-                        setButtonOnStop(lastPlayedMusicsButtons[i]);
-                    }
-
-                    if (playlistName !== lastPlayedPlaylistName) {
-                        lastPlayedPlaylistName = playlistName;
-                        var playList = getCurrentPlaylist(playlistName);
-                        allSongsInCurrentPlaylist = playList.currentSongsList;
-                        allCompilationInCurrentPlaylist = playList.currentCumpilationsList;
-                    }
-
-                    lastPlayedCompilationIndex = compilationIndex;
-                    lastPlayedMusicIndex = musicIndex;
-                    let music = allSongsInCurrentPlaylist[musicIndex];
-                    player.attr('src', musicUrl + music.author.name + "/" + music.name);
-                    $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
-                    let songName = document.getElementById('song-name');
-                    songName.innerHTML = music.name;
-                    let songAuthor = document.getElementById('song-author');
-                    songAuthor.innerHTML = music.author.name;
-                    if (isFromSongQueue) {
-                        $('#playerContainer').css('background-color', 'rgb(232, 195, 195)')
-                    } else {
-                        $('#playerContainer').css('background-color', '#ececec')
-                    }
-                    fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
-                    playerElement.play();
-                }
-            }
-
-            /**
-             * функция для поигрывания плейлистов
-             * обычно вызывается прямо из интерфейса
-             * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
-             * сначала смотрится, является желаемый плейлист для проигрывания предыдущим
-             *      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
-             *      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
-             * @param playlistName
-             * @param compilationIndex
-             */
-            function playOrPausePlaylist(playlistName, compilationIndex) {
-                var currentPlaylist = getCurrentPlaylist(playlistName);
-                var clickedButton;
-                var musicIndex = 0;
-                allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
-                allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
-                for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
-                    if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
-                        musicIndex = i;
-                        break
-                    }
-                }
-                var clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
-                for (let i = 0; i < clickedButtons.length; i++) {
-                    if ($(clickedButtons[i]).css("display") === "inline-block") {
-                        clickedButton = clickedButtons[i];
-                    }
-                }
-                let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
-                if (playingState === 'on_pause' || playingState === 'on_play') {
-                    musicIndex = lastPlayedMusicIndex;
-                }
-                console.log("playlistName")
-                console.log(playlistName)
-                console.log("compilation index")
-                console.log(compilationIndex)
-                console.log("music index")
-                console.log(musicIndex)
-                playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
-            }
+            // /**
+            //  * функция для поигрывания плейлистов
+            //  * обычно вызывается прямо из интерфейса
+            //  * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
+            //  * сначала смотрится, является желаемый плейлист для проигрывания предыдущим
+            //  *      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
+            //  *      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
+            //  * @param playlistName
+            //  * @param compilationIndex
+            //  */
+            // function playOrPausePlaylist(playlistName, compilationIndex) {
+            //     var currentPlaylist = getCurrentPlaylist(playlistName);
+            //     var clickedButton;
+            //     var musicIndex = 0;
+            //     allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
+            //     allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
+            //     for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
+            //         if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
+            //             musicIndex = i;
+            //             break
+            //         }
+            //     }
+            //     var clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
+            //     for (let i = 0; i < clickedButtons.length; i++) {
+            //         if ($(clickedButtons[i]).css("display") === "inline-block") {
+            //             clickedButton = clickedButtons[i];
+            //         }
+            //     }
+            //     let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+            //     if (playingState === 'on_pause' || playingState === 'on_play') {
+            //         musicIndex = lastPlayedMusicIndex;
+            //     }
+            //     console.log("playlistName")
+            //     console.log(playlistName)
+            //     console.log("compilation index")
+            //     console.log(compilationIndex)
+            //     console.log("music index")
+            //     console.log(musicIndex)
+            //     playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
+            // }
 
 
             /**

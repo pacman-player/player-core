@@ -3,14 +3,293 @@ import BottomBar from "../components/BottomBar.js";
 
 //когда js идет до отрисовки html в render - работает
 
+
+// индекс последне-проигранного массива песен в своем списке
+let lastPlayedCompilationIndex = -1;
 let allSongInGenre = [];
 let allSongsInMorningPlaylist = [];
+
+//текущий плейлист как список compilation
+let allCompilationInCurrentPlaylist;
+
+//текущий плейлист как список песен
+let allSongsInCurrentPlaylist;
+// имя текущего раздела
+let lastPlayedPlaylistName = 'none';
+// индекс последне-проигранной песни в своем массиве
+let lastPlayedMusicIndex = -1;
+// адрес, по которому клиент обращается для проигрывания музыки
+let musicUrl = "/api/music/play/";
+// адрес, по которому клиент обращается для получения обложки песни
+let albumsCoverUrl = "/api/music/albums-cover/";
+// объект плеер, который при загрузке страницы сразу находится с jquery
+let player;
+// объект плеер, который находится javascript-ом
+let playerElement = document.getElementById("player");
+if (playerElement) { //добавил
+    playerElement.volume = 0.3;
+    $('#volumebar').attr('value', playerElement.volume);
+}
+
+
+
+
+
+// функия для заполнения модалки песнями, id которого передается первым параметром
+function fillModalTableWithPlaylist(modalId, playlistName, songs) {
+    $(`#${modalId}`).empty();
+    for (let i = 0; i < songs.length; i++) {
+        let song = songs[i];
+        let backgroundColor = song.isFromSongQueue ? 'rgb(232, 195, 195)' : '#ececec';
+        let musicTr = $(`<tr style="background-color:${backgroundColor}"></tr>`);
+        let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
+        let playing_state_play = 'on_stop';
+        let playing_state_pause = 'on_play';
+        let display_play = 'inline-block';
+        let display_pause = 'none';
+        var clickedButton;
+        if (song.compilationIndex === lastPlayedCompilationIndex &&
+            song.musicIndex === lastPlayedMusicIndex &&
+            playlistName === lastPlayedPlaylistName) {
+            let compilationsButtons = $(`button[data-playlist_id='${lastPlayedPlaylistName}_${lastPlayedCompilationIndex}']`);
+            for (var j = 0; j < compilationsButtons.length; j++) {
+                if ($(compilationsButtons[j]).css("display") === "inline-block") {
+                    clickedButton = compilationsButtons[j]
+                }
+            }
+            var state = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+            if (state === 'on_play') {
+                display_play = 'none';
+                display_pause = 'inline-block';
+                playing_state_pause = 'on_play'
+            } else if (state === 'on_pause') {
+                display_play = 'inline-block';
+                display_pause = 'none';
+                playing_state_play = 'on_pause'
+            }
+        }
+        let playButton = `<td><button class="playBtn" style="display: ${display_play}"  data-playing_state="${playing_state_play}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button>`;
+        let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state_pause}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button></td>`;
+        musicTd += playButton;
+        musicTd += pauseButton;
+        musicTr.html(musicTd);
+        $(`#${modalId}`).append(musicTr);
+
+    }
+}
+
+/**
+ * функция для проигрывания / паузы
+ * сперва находится кнопка нажатия и определяется его состояние
+ * если он остановлен - то ищутся предыдуще-игранные кнопки и меняется их состояние
+ * потом смотрим, это текущий плейлист, или нет
+ * если нет - то последне проигранным плейлистом и списком песен отмечаются новые, меняются состояния кнопок
+ * смотрим, это старый список compilation, или нет. если нет - то новый помечается текущим
+ * потом меняются последне проигранные песни и плейлист, музыка на плеере и играет песню
+ *      а если песня играется - то ставится на паузу
+ *      а если песня на паузе - то продолжается воспроизведение
+ * @param playlistName
+ * @param compilationIndex
+ * @param musicIndex
+ * @param isFromSongQueue
+ */
+function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue) {
+    if ($('#playerContainer').css('display') === 'none') {
+        $('#playerContainer').css('display', 'block')
+    }
+
+    let clickedButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
+    let clickedButton;
+    for (var i = 0; i < clickedButtons.length; i++) {
+        if ($(clickedButtons[i]).css("display") === "inline-block") {
+            clickedButton = clickedButtons[i];
+        }
+    }
+    if (!clickedButton) {
+        clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
+        for (let i = 0; i < clickedButtons.length; i++) {
+            if ($(clickedButtons[i]).css("display") === "inline-block") {
+                clickedButton = clickedButtons[i];
+            }
+        }
+    }
+    let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+    if (playingState === 'on_play') {
+        playerElement.pause();
+    } else if (playingState === 'on_pause') {
+        playerElement.play();
+    } else {
+        let lastPlayedMusicsButtons = $(`button[data-music_id="${playlistName}_${compilationIndex}_${musicIndex}"]`);
+        for (let i = 0; i < lastPlayedMusicsButtons.length; i++) {
+            setButtonOnStop(lastPlayedMusicsButtons[i]);
+        }
+
+        if (playlistName !== lastPlayedPlaylistName) {
+            lastPlayedPlaylistName = playlistName;
+            var playList = getCurrentPlaylist(playlistName);
+            allSongsInCurrentPlaylist = playList.currentSongsList;
+            allCompilationInCurrentPlaylist = playList.currentCumpilationsList;
+        }
+
+        lastPlayedCompilationIndex = compilationIndex;
+        lastPlayedMusicIndex = musicIndex;
+        let music = allSongsInCurrentPlaylist[musicIndex];
+        if (player) { //добавил if тк была ошибка Uncaught TypeError: Cannot read property 'attr' of undefined
+            player.attr('src', musicUrl + music.author.name + "/" + music.name);
+        }
+
+        $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
+        let songName = document.getElementById('song-name');
+        songName.innerHTML = music.name;
+        let songAuthor = document.getElementById('song-author');
+        songAuthor.innerHTML = music.author.name;
+        if (isFromSongQueue) {
+            $('#playerContainer').css('background-color', 'rgb(232, 195, 195)')
+        } else {
+            $('#playerContainer').css('background-color', '#ececec')
+        }
+        fillModalTableWithPlaylist('modalCurrentPlaylistTableBody', lastPlayedPlaylistName, allSongsInCurrentPlaylist);
+        if (playerElement) { //добавил тк Uncaught TypeError: Cannot read property 'play'
+            playerElement.play();
+        }
+
+    }
+}
+
+
+
+
+// /**
+//  * функция для поигрывания плейлистов
+//  * обычно вызывается прямо из интерфейса
+//  * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
+//  * сначала смотрится, является желаемый плейлист для проигрывания предыдущим
+//  *      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
+//  *      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
+//  * @param playlistName
+//  * @param compilationIndex
+//  */
+// function playOrPausePlaylist(playlistName, compilationIndex) {
+//     var currentPlaylist = getCurrentPlaylist(playlistName);
+//     var clickedButton;
+//     var musicIndex = 0;
+//     allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
+//     allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
+//     for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
+//         if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
+//             musicIndex = i;
+//             break
+//         }
+//     }
+//     var clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
+//     for (let i = 0; i < clickedButtons.length; i++) {
+//         if ($(clickedButtons[i]).css("display") === "inline-block") {
+//             clickedButton = clickedButtons[i];
+//         }
+//     }
+//     let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+//     if (playingState === 'on_pause' || playingState === 'on_play') {
+//         musicIndex = lastPlayedMusicIndex;
+//     }
+//     console.log("playlistName")
+//     console.log(playlistName)
+//     console.log("compilation index")
+//     console.log(compilationIndex)
+//     console.log("music index")
+//     console.log(musicIndex)
+//     playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
+// }
+
+// //добавляем/удаляем подборку в/из утреннего плейлиста
+// window.addMorningPlaylist = function (idCompilation) {
+//     let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
+//
+//     if (buttonStateElement.hasClass("btn-info")) {
+//         buttonStateElement.removeClass("btn btn-info").addClass("btn btn-success");
+//
+//         $.ajax({
+//             method: 'POST',
+//             url: '/api/user/play-list/morning-playlist/add/song-compilation/',
+//             contentType: "application/json",
+//             data: JSON.stringify(idCompilation),
+//             success: function () {
+//                 //+обновить утренний плейлист
+//                 morningPlaylist();
+//                 //getAllCompilationsInMorningPlaylist("btn btn-success", middayButtonStateElement, eveningButtonStateElement);
+//             },
+//             error: function (xhr, status, error) {
+//                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
+//             }
+//         })
+//     } else if (buttonStateElement.hasClass("btn-success")) {
+//
+//         buttonStateElement.removeClass("btn btn-success").addClass("btn btn-info");
+//         $.ajax({
+//             method: 'DELETE',
+//             url: '/api/user/play-list/morning-playlist/delete/song-compilation/' + idCompilation,
+//             contentType: "application/json",
+//             success: function () {
+//                 //+обновить утренний плейлист
+//                 morningPlaylist();
+//                 //getAllCompilationsInMorningPlaylist("btn btn-info", middayButtonStateElement, eveningButtonStateElement);
+//             },
+//             error: function (xhr, status, error) {
+//                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
+//             }
+//         });
+//     }
+// }
+
+function showLinkAdmin() {
+    $.ajax({
+        type: "post",
+        url: "/api/user/show_admin",
+        success: function (role) {
+            if (role !== "admin") {
+                $("#adminLink").hide();
+            }
+        }
+    });
+}
+
+function getAllGenre() {
+    $.ajax({
+        type: 'get',
+        url: '/api/user/genre/get/all-genre',
+        contentType: 'application/json;',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        async: true,
+        cache: false,
+        dataType: 'JSON',
+        success: function (listGenre) {
+            var htmlGenres = "Need to add genres";
+            if (0 < listGenre.length) {
+                htmlGenres = ('<h3 id="genres">Жанры</h3>');
+                htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+                htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
+                htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
+                for (var i = 0; i < listGenre.length; i++) {
+                    htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+                    htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
+                        listGenre[i].name + '" >');
+                    htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
+                }
+            }
+            $("#getGenres").append(htmlGenres);
+        }
+    });
+}
 
 function getCurrentPlaylist(playlistName) {
     var result = {};
     switch (playlistName) {
         case 'morning':
-            result.currentCumpilationsList = allCompilationsInMorningPlaylist; //остановился здесь!!! ругается на allCompilationsInMorningPlaylist
+            result.currentCumpilationsList = BottomBar.allCompilationsInMorningPlaylist;
             result.currentSongsList = allSongsInMorningPlaylist;
             return result;
         case 'midday' :
@@ -258,14 +537,11 @@ let Compilation = {
         // $(document).ready(function () {
 
             //=========================== перекидываю из BottomBar.js сюда =============================================
-            // let allSongInGenre = [];
-            // let allSongsInMorningPlaylist = [];
 
 
 
 
-            // индекс последне-проигранного массива песен в своем списке
-            let lastPlayedCompilationIndex = -1;
+
 
 
 
@@ -280,51 +556,51 @@ let Compilation = {
             showLinkAdmin();
 
 
+        // function getAllGenre() {
+        //     $.ajax({
+        //         type: 'get',
+        //         url: '/api/user/genre/get/all-genre',
+        //         contentType: 'application/json;',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Content-Type': 'application/json'
+        //         },
+        //         async: true,
+        //         cache: false,
+        //         dataType: 'JSON',
+        //         success: function (listGenre) {
+        //             var htmlGenres = "Need to add genres";
+        //             if (0 < listGenre.length) {
+        //                 htmlGenres = ('<h3 id="genres">Жанры</h3>');
+        //                 htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+        //                 htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+        //                 htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
+        //                 htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
+        //                 for (var i = 0; i < listGenre.length; i++) {
+        //                     htmlGenres += ('<div id="genres" class="col-3 pt-3">');
+        //                     htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+        //                     htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
+        //                         listGenre[i].name + '" >');
+        //                     htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
+        //                 }
+        //             }
+        //             $("#getGenres").append(htmlGenres);
+        //         }
+        //     });
+        // }
 
-            function getAllGenre() {
-                $.ajax({
-                    type: 'get',
-                    url: '/api/user/genre/get/all-genre',
-                    contentType: 'application/json;',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    async: true,
-                    cache: false,
-                    dataType: 'JSON',
-                    success: function (listGenre) {
-                        var htmlGenres = "Need to add genres";
-                        if (0 < listGenre.length) {
-                            htmlGenres = ('<h3 id="genres">Жанры</h3>');
-                            htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                            htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                            htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
-                            htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
-                            for (var i = 0; i < listGenre.length; i++) {
-                                htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                                htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
-                                htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
-                                    listGenre[i].name + '" >');
-                                htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
-                            }
-                        }
-                        $("#getGenres").append(htmlGenres);
-                    }
-                });
-            }
 
-            function showLinkAdmin() {
-                $.ajax({
-                    type: "post",
-                    url: "/api/user/show_admin",
-                    success: function (role) {
-                        if (role !== "admin") {
-                            $("#adminLink").hide();
-                        }
-                    }
-                });
-            }
+            // function showLinkAdmin() {
+            //     $.ajax({
+            //         type: "post",
+            //         url: "/api/user/show_admin",
+            //         success: function (role) {
+            //             if (role !== "admin") {
+            //                 $("#adminLink").hide();
+            //             }
+            //         }
+            //     });
+            // }
 
             //получение и вывод подборок
             $(document).on('click', '#genres', function () {
@@ -473,8 +749,50 @@ let Compilation = {
                 eveningPlaylist();
             });
 
+        /**
+         * функция для поигрывания плейлистов
+         * обычно вызывается прямо из интерфейса
+         * но иногда при окончании предыдущего плейлиста, тоже вызывается из метода playNext()
+         * сначала смотрится, является желаемый плейлист для проигрывания предыдущим
+         *      если да - то просто вызывает метод playOrPause() с последне игранным музыкой
+         *      если нет - то качает из сервера новый compilation и его список песен, запоняет модалку песнями и играет первую его песню
+         * @param playlistName
+         * @param compilationIndex
+         */
+        window.playOrPausePlaylist = function(playlistName, compilationIndex) {
+            var currentPlaylist = getCurrentPlaylist(playlistName);
+            var clickedButton;
+            var musicIndex = 0;
+            allCompilationInCurrentPlaylist = currentPlaylist.currentCumpilationsList;
+            allSongsInCurrentPlaylist = currentPlaylist.currentSongsList;
+            for (var i = 0; i < allSongsInCurrentPlaylist.length; i++) {
+                if (allSongsInCurrentPlaylist[i].compilationIndex === compilationIndex) {
+                    musicIndex = i;
+                    break
+                }
+            }
+            var clickedButtons = $(`button[data-playlist_id="${playlistName}_${compilationIndex}"]`);
+            for (let i = 0; i < clickedButtons.length; i++) {
+                if ($(clickedButtons[i]).css("display") === "inline-block") {
+                    clickedButton = clickedButtons[i];
+                }
+            }
+            let playingState = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+            if (playingState === 'on_pause' || playingState === 'on_play') {
+                musicIndex = lastPlayedMusicIndex;
+            }
+            console.log("playlistName")
+            console.log(playlistName)
+            console.log("compilation index")
+            console.log(compilationIndex)
+            console.log("music index")
+            console.log(musicIndex)
+            playOrPause(playlistName, compilationIndex, musicIndex, allSongsInCurrentPlaylist[musicIndex].isFromSongQueue);
+        }
+
+
 //добавляем/удаляем подборку в/из утреннего плейлиста
-            window.addMorningPlaylist = function (idCompilation) {
+            window.addMorningPlaylist = function(idCompilation) {
                 let buttonStateElement = $("#btnAddMorningPlaylist1-" + idCompilation);
 
                 if (buttonStateElement.hasClass("btn-info")) {
@@ -695,48 +1013,48 @@ let Compilation = {
             return songs;
         }
 
-// функия для заполнения модалки песнями, id которого передается первым параметром
-        function fillModalTableWithPlaylist(modalId, playlistName, songs) {
-            $(`#${modalId}`).empty();
-            for (let i = 0; i < songs.length; i++) {
-                let song = songs[i];
-                let backgroundColor = song.isFromSongQueue ? 'rgb(232, 195, 195)' : '#ececec';
-                let musicTr = $(`<tr style="background-color:${backgroundColor}"></tr>`);
-                let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
-                let playing_state_play = 'on_stop';
-                let playing_state_pause = 'on_play';
-                let display_play = 'inline-block';
-                let display_pause = 'none';
-                var clickedButton;
-                if (song.compilationIndex === lastPlayedCompilationIndex &&
-                    song.musicIndex === lastPlayedMusicIndex &&
-                    playlistName === lastPlayedPlaylistName) {
-                    let compilationsButtons = $(`button[data-playlist_id='${lastPlayedPlaylistName}_${lastPlayedCompilationIndex}']`);
-                    for (var j = 0; j < compilationsButtons.length; j++) {
-                        if ($(compilationsButtons[j]).css("display") === "inline-block") {
-                            clickedButton = compilationsButtons[j]
-                        }
-                    }
-                    var state = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
-                    if (state === 'on_play') {
-                        display_play = 'none';
-                        display_pause = 'inline-block';
-                        playing_state_pause = 'on_play'
-                    } else if (state === 'on_pause') {
-                        display_play = 'inline-block';
-                        display_pause = 'none';
-                        playing_state_play = 'on_pause'
-                    }
-                }
-                let playButton = `<td><button class="playBtn" style="display: ${display_play}"  data-playing_state="${playing_state_play}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button>`;
-                let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state_pause}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button></td>`;
-                musicTd += playButton;
-                musicTd += pauseButton;
-                musicTr.html(musicTd);
-                $(`#${modalId}`).append(musicTr);
-
-            }
-        }
+// // функия для заполнения модалки песнями, id которого передается первым параметром
+//         function fillModalTableWithPlaylist(modalId, playlistName, songs) {
+//             $(`#${modalId}`).empty();
+//             for (let i = 0; i < songs.length; i++) {
+//                 let song = songs[i];
+//                 let backgroundColor = song.isFromSongQueue ? 'rgb(232, 195, 195)' : '#ececec';
+//                 let musicTr = $(`<tr style="background-color:${backgroundColor}"></tr>`);
+//                 let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
+//                 let playing_state_play = 'on_stop';
+//                 let playing_state_pause = 'on_play';
+//                 let display_play = 'inline-block';
+//                 let display_pause = 'none';
+//                 var clickedButton;
+//                 if (song.compilationIndex === lastPlayedCompilationIndex &&
+//                     song.musicIndex === lastPlayedMusicIndex &&
+//                     playlistName === lastPlayedPlaylistName) {
+//                     let compilationsButtons = $(`button[data-playlist_id='${lastPlayedPlaylistName}_${lastPlayedCompilationIndex}']`);
+//                     for (var j = 0; j < compilationsButtons.length; j++) {
+//                         if ($(compilationsButtons[j]).css("display") === "inline-block") {
+//                             clickedButton = compilationsButtons[j]
+//                         }
+//                     }
+//                     var state = clickedButton ? clickedButton.dataset.playing_state : 'on_stop';
+//                     if (state === 'on_play') {
+//                         display_play = 'none';
+//                         display_pause = 'inline-block';
+//                         playing_state_pause = 'on_play'
+//                     } else if (state === 'on_pause') {
+//                         display_play = 'inline-block';
+//                         display_pause = 'none';
+//                         playing_state_play = 'on_pause'
+//                     }
+//                 }
+//                 let playButton = `<td><button class="playBtn" style="display: ${display_play}"  data-playing_state="${playing_state_play}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button>`;
+//                 let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state_pause}" data-music_id="${playlistName}_${song.compilationIndex}_${song.musicIndex}" onclick="playOrPause(\'${playlistName}\', ${song.compilationIndex}, ${song.musicIndex})"></button></td>`;
+//                 musicTd += playButton;
+//                 musicTd += pauseButton;
+//                 musicTr.html(musicTd);
+//                 $(`#${modalId}`).append(musicTr);
+//
+//             }
+//         }
 
 // функия для заполнения модалки текущего списка песен
         function fillModalCurrentPlaylistTable(playlist) {
