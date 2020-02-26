@@ -1,6 +1,145 @@
 import Utils from './../../services/Utils.js'
 import BottomBar from "../components/BottomBar.js";
 
+//когда js идет до отрисовки html в render - работает
+
+let allSongInGenre = [];
+let allSongsInMorningPlaylist = [];
+
+function getCurrentPlaylist(playlistName) {
+    var result = {};
+    switch (playlistName) {
+        case 'morning':
+            result.currentCumpilationsList = allCompilationsInMorningPlaylist; //остановился здесь!!! ругается на allCompilationsInMorningPlaylist
+            result.currentSongsList = allSongsInMorningPlaylist;
+            return result;
+        case 'midday' :
+            result.currentCumpilationsList = allCompilationsInMiddayPlaylist;
+            result.currentSongsList = allSongsInMiddayPlaylist;
+            return result;
+        case 'evening' :
+            result.currentCumpilationsList = allCompilationsInEveningPlaylist;
+            result.currentSongsList = allSongsInEveningPlaylist;
+            return result;
+        case 'getGenres':
+            result.currentCumpilationsList = BottomBar.allCompilationInGenre;
+            result.currentSongsList = allSongInGenre;
+            return result;
+    }
+}
+
+
+//отрисовка всех подборок в плейлисте
+function fillPlaylistsTab(playListName, secondId, playlist) {
+    $(`#${playListName}`).empty();
+    var htmlCompilation = '';
+    //bootstrap card
+    htmlCompilation += (`<div class="card-deck" id="${secondId}">`);
+    for (var i = 0; i < playlist.length; i++) {
+        htmlCompilation += '<div class="card pt-10">'
+            + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
+            + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
+            + '<img src="/img/compilation/compilation' + playlist[i].id + '.svg" width="80" height="80" class="card-img-top" alt="' + playlist[i].name + '">'
+            + '<p>Песни подборки</p></a>'
+            + '<div class="card-body">'
+            + '<h4 class="card-title">' + playlist[i].name + '</h4>'
+            + '<p class="card-text">Description: Some text</p>'
+            + '</div>'
+            + '<div class="card-footer">'
+            + '<p class="card-text"><small class="text-muted">Footer: Some text</small></p>';
+        let playing_state = 'on_stop';
+        let display_play = 'inline-block';
+        let display_pause = 'none';
+        if (playlist[i].compilationIndex === lastPlayedCompilationIndex && playListName === lastPlayedPlaylistName) {
+            playing_state = 'on_play';
+            display_play = 'none';
+            display_pause = 'inline-block';
+        }
+        let playButton = `<button class="playBtn" style="display: ${display_play}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
+        let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
+        let trackBubble = '<div class="d-track__bubble" id="bubble"></div>';
+        htmlCompilation += playButton;
+        htmlCompilation += pauseButton;
+        htmlCompilation += trackBubble;
+        htmlCompilation += '</div>'
+            + '</div>';
+    }
+    //закрываю bootstrap card
+    htmlCompilation += ('</div>');
+    $(`#${playListName} #${secondId}`).remove();
+    $(`#${playListName}`).append(htmlCompilation);
+}
+
+//получаем все подборки в утреннем плейлисте
+function getAllCompilationsInMorningPlaylist() {
+    fillPlaylistsTab('morning', 'morningCompilations', getCurrentPlaylist('morning').currentCumpilationsList);
+}
+
+//получаем все подборки в дневном плейлисте
+function getAllCompilationsInMiddayPlaylist() {
+    fillPlaylistsTab('midday', 'middayCompilations', getCurrentPlaylist('midday').currentCumpilationsList);
+}
+
+//получаем все подборки в вечернем плейлисте, проиндексированные порядковым номером в вечернем плейлисте плеера
+function getAllCompilationsInEveningPlaylist() {
+    fillPlaylistsTab('evening', 'eveningCompilations', getCurrentPlaylist('evening').currentCumpilationsList);
+}
+
+/**
+ * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
+ * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
+ *  compilationId - id подборки, в которой находится песня
+ *  compilationIndex - индекс подборки в данном плейлисте
+ *  musicIndex - индекс песни в данном плейлисте.
+ * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
+ * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
+ */
+function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
+    for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
+        const id = allCompilationsInPlaylist[i].id;
+        const compilationInd = i;
+        allCompilationsInPlaylist[i].compilationIndex = compilationInd;
+        $.getJSON('/api/user/song/get/all-song/song-compilation/' + id, function (songs) {
+            for (var j = 0; j < songs.length; j++, k++) {
+                const musicInd = k;
+                allSongsInPlaylist[k] = songs[j];
+                allSongsInPlaylist[k].compilationIndex = compilationInd;
+                allSongsInPlaylist[k].compilationId = id;
+                allSongsInPlaylist[k].musicIndex = musicInd;
+            }
+        });
+    }
+}
+
+
+
+//получения утреннего плейлиста, заполнение плелиста плеера
+function morningPlaylist() {
+    $.get('/api/user/play-list/morning-playlist/get/all-song-compilation', function (playList) {
+        BottomBar.allCompilationsInMorningPlaylist = playList;
+        fillAllSongsPlaylist(BottomBar.allCompilationsInMorningPlaylist, allSongsInMorningPlaylist)
+        getAllCompilationsInMorningPlaylist();
+    });
+}
+
+function middayPlaylist() {
+    $.get('/api/user/play-list/midday-playlist/get/all-song-compilation', function (playList) {
+        allCompilationsInMiddayPlaylist = playList;
+        fillAllSongsPlaylist(allCompilationsInMiddayPlaylist, allSongsInMiddayPlaylist)
+        getAllCompilationsInMiddayPlaylist();
+    });
+}
+
+function eveningPlaylist() {
+    $.get('/api/user/play-list/evening-playlist/get/all-song-compilation', function (playList) {
+        allCompilationsInEveningPlaylist = playList;
+        fillAllSongsPlaylist(allCompilationsInEveningPlaylist, allSongsInEveningPlaylist)
+        getAllCompilationsInEveningPlaylist();
+    });
+}
+
+
+
 let Compilation = {
 
     render: async () => {
@@ -119,54 +258,11 @@ let Compilation = {
         // $(document).ready(function () {
 
             //=========================== перекидываю из BottomBar.js сюда =============================================
-            let allSongInGenre = [];
-            /**
-             * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
-             * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
-             *  compilationId - id подборки, в которой находится песня
-             *  compilationIndex - индекс подборки в данном плейлисте
-             *  musicIndex - индекс песни в данном плейлисте.
-             * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
-             * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
-             */
-            function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
-                for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
-                    const id = allCompilationsInPlaylist[i].id;
-                    const compilationInd = i;
-                    allCompilationsInPlaylist[i].compilationIndex = compilationInd;
-                    $.getJSON('/api/user/song/get/all-song/song-compilation/' + id, function (songs) {
-                        for (var j = 0; j < songs.length; j++, k++) {
-                            const musicInd = k;
-                            allSongsInPlaylist[k] = songs[j];
-                            allSongsInPlaylist[k].compilationIndex = compilationInd;
-                            allSongsInPlaylist[k].compilationId = id;
-                            allSongsInPlaylist[k].musicIndex = musicInd;
-                        }
-                    });
-                }
-            }
+            // let allSongInGenre = [];
+            // let allSongsInMorningPlaylist = [];
 
-            function getCurrentPlaylist(playlistName) {
-                var result = {};
-                switch (playlistName) {
-                    case 'morning':
-                        result.currentCumpilationsList = allCompilationsInMorningPlaylist;
-                        result.currentSongsList = allSongsInMorningPlaylist;
-                        return result;
-                    case 'midday' :
-                        result.currentCumpilationsList = allCompilationsInMiddayPlaylist;
-                        result.currentSongsList = allSongsInMiddayPlaylist;
-                        return result;
-                    case 'evening' :
-                        result.currentCumpilationsList = allCompilationsInEveningPlaylist;
-                        result.currentSongsList = allSongsInEveningPlaylist;
-                        return result;
-                    case 'getGenres':
-                        result.currentCumpilationsList = BottomBar.allCompilationInGenre;
-                        result.currentSongsList = allSongInGenre;
-                        return result;
-                }
-            }
+
+
 
             // индекс последне-проигранного массива песен в своем списке
             let lastPlayedCompilationIndex = -1;
@@ -547,61 +643,9 @@ let Compilation = {
             }
         }
 
-//получаем все подборки в утреннем плейлисте
-        function getAllCompilationsInMorningPlaylist() {
-            fillPlaylistsTab('morning', 'morningCompilations', getCurrentPlaylist('morning').currentCumpilationsList);
-        }
 
-//получаем все подборки в дневном плейлисте
-        function getAllCompilationsInMiddayPlaylist() {
-            fillPlaylistsTab('midday', 'middayCompilations', getCurrentPlaylist('midday').currentCumpilationsList);
-        }
 
-//получаем все подборки в вечернем плейлисте, проиндексированные порядковым номером в вечернем плейлисте плеера
-        function getAllCompilationsInEveningPlaylist() {
-            fillPlaylistsTab('evening', 'eveningCompilations', getCurrentPlaylist('evening').currentCumpilationsList);
-        }
 
-//отрисовка всех подборок в плейлисте
-        function fillPlaylistsTab(playListName, secondId, playlist) {
-            $(`#${playListName}`).empty();
-            var htmlCompilation = '';
-            //bootstrap card
-            htmlCompilation += (`<div class="card-deck" id="${secondId}">`);
-            for (var i = 0; i < playlist.length; i++) {
-                htmlCompilation += '<div class="card pt-10">'
-                    + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
-                    + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
-                    + '<img src="/img/compilation/compilation' + playlist[i].id + '.svg" width="80" height="80" class="card-img-top" alt="' + playlist[i].name + '">'
-                    + '<p>Песни подборки</p></a>'
-                    + '<div class="card-body">'
-                    + '<h4 class="card-title">' + playlist[i].name + '</h4>'
-                    + '<p class="card-text">Description: Some text</p>'
-                    + '</div>'
-                    + '<div class="card-footer">'
-                    + '<p class="card-text"><small class="text-muted">Footer: Some text</small></p>';
-                let playing_state = 'on_stop';
-                let display_play = 'inline-block';
-                let display_pause = 'none';
-                if (playlist[i].compilationIndex === lastPlayedCompilationIndex && playListName === lastPlayedPlaylistName) {
-                    playing_state = 'on_play';
-                    display_play = 'none';
-                    display_pause = 'inline-block';
-                }
-                let playButton = `<button class="playBtn" style="display: ${display_play}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
-                let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
-                let trackBubble = '<div class="d-track__bubble" id="bubble"></div>';
-                htmlCompilation += playButton;
-                htmlCompilation += pauseButton;
-                htmlCompilation += trackBubble;
-                htmlCompilation += '</div>'
-                    + '</div>';
-            }
-            //закрываю bootstrap card
-            htmlCompilation += ('</div>');
-            $(`#${playListName} #${secondId}`).remove();
-            $(`#${playListName}`).append(htmlCompilation);
-        }
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
         function showAllSongInSongCompilation(compilationListName, id) {
