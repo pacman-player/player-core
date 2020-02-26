@@ -28,7 +28,7 @@ public class AuthorDto {
         this.id = author.getId();
         this.name = author.getName();
         if (author.getAuthorGenres().size() > 0) {
-            this.genres = (String[]) author.getAuthorGenres().stream().map(Genre::getName).toArray();
+            this.genres = author.getAuthorGenres().stream().map(Genre::getName).toArray(String[]::new);
         }
     }
 
