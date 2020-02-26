@@ -39,10 +39,10 @@ function prepareGenreFieldForAuthor(fieldGenre, id) {
 
     //При большом количестве жанров раскомментировать строчку и
     //закомментировать следующую
-    // fieldGenre.attr("size", "5");
-    fieldGenre.attr("size", `${allGenres.length}`);
+    fieldGenre.attr("size", "10");
+    // fieldGenre.attr("size", `${allGenres.length}`);
 
-    let authorGenres = $(`tr:has(td:contains(${id}))`).find(`td:nth-child(3)`).text().split(", ");
+    let authorGenres = $(`tr:nth-child(${id})`).find(`td:nth-child(3)`).text().split(", ");
     let selectOptions = "";
 
     checkGenre: for (let i = 0; i < allGenres.length; i++) {

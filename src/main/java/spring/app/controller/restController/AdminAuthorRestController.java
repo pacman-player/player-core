@@ -45,7 +45,6 @@ public class AdminAuthorRestController {
         return author;
     }
 
-
     @PostMapping(value = "/add_author")
     public void addAuthor(@RequestBody AuthorDto newAuthor) {
         LOGGER.info("POST request '/add_author' with new Author = {}", newAuthor.getName());
