@@ -175,23 +175,6 @@ let Compilation = {
 
 
 
-            function middayPlaylist() {
-                $.get('/api/user/play-list/midday-playlist/get/all-song-compilation', function (playList) {
-                    allCompilationsInMiddayPlaylist = playList;
-                    fillAllSongsPlaylist(allCompilationsInMiddayPlaylist, allSongsInMiddayPlaylist)
-                    getAllCompilationsInMiddayPlaylist();
-                });
-            }
-
-            function eveningPlaylist() {
-                $.get('/api/user/play-list/evening-playlist/get/all-song-compilation', function (playList) {
-                    allCompilationsInEveningPlaylist = playList;
-                    fillAllSongsPlaylist(allCompilationsInEveningPlaylist, allSongsInEveningPlaylist)
-                    getAllCompilationsInEveningPlaylist();
-                });
-            }
-
-
 
 
 
@@ -437,14 +420,7 @@ let Compilation = {
 
         }); //конец
 
-        //получения утреннего плейлиста, заполнение плелиста плеера
-        function morningPlaylist () {
-            $.get('/api/user/play-list/morning-playlist/get/all-song-compilation', function (playList) {
-                allCompilationsInMorningPlaylist = playList;
-                fillAllSongsPlaylist(allCompilationsInMorningPlaylist, allSongsInMorningPlaylist)
-                getAllCompilationsInMorningPlaylist();
-            });
-        }
+
 
 //// добавляем/удаляем подборку в/из утреннего плейлиста
 //         function addMorningPlaylist(idCompilation) {
