@@ -35,6 +35,7 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
 function prepareGenreFieldForAuthor(fieldGenre, id) {
     fieldGenre.empty();
     fieldGenre.attr("multiple", "multiple");
+    fieldGenre.attr("required", "required");
     let allGenres = getGenres();
 
     //При большом количестве жанров раскомментировать строчку и
@@ -42,7 +43,15 @@ function prepareGenreFieldForAuthor(fieldGenre, id) {
     fieldGenre.attr("size", "10");
     // fieldGenre.attr("size", `${allGenres.length}`);
 
-    let authorGenres = $(`tr:nth-child(${id})`).find(`td:nth-child(3)`).text().split(", ");
+    // Ищем нужный столбец с жанрами исполнителя с указанным id:
+    let authorGenres = $("tr").find('td:nth-child(1)') // У каждого ряда достаем первый(1) столбец с айдишником
+        .filter(function(){ // Фильтруем каждый столбец
+            return $(this).text() === `${id}`; // Оставляем только тот столбец, содержимое которого равно id ->
+        }) // -> так мы находим нужную строку
+        .parent() // Обращаемся к этой строке
+        .find(`td:nth-child(3)`) // Находим у неё третий по счёту столбец
+        .text() // Считываем его текст с жанрами
+        .split(", "); // Собираем жанры в массив по разделителю ", "
     let selectOptions = "";
 
     checkGenre: for (let i = 0; i < allGenres.length; i++) {
