@@ -47,15 +47,7 @@ function getTable() {
             for (let i = 0; i < compilations.length; i++) {
                 let id = compilations[i].id;
                 let name = compilations[i].name;
-                // Хардкодная проверка на null, нужно УБРАТЬ НАХУЙ! но не сейчас, а когда прижмет
-                let genre;
-                try {
-                    genre = compilations[i].genre.name;
-                } catch (e) {
-                    console.log(e);
-                    genre = null;
-                }
-
+                let genre = compilations[i].genre.name;
                 let songs;
                 let cover = compilations[i].cover;
                 // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
