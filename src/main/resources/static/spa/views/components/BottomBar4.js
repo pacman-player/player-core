@@ -2,61 +2,173 @@
 
 
 
-let BottomBar3 = {
+let BottomBar4 = {
     render: async () => {
         let view =  /*html*/
             `
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
-                           style="min-width: 500px" hidden="hidden">
-                        Your browser doesnt support the audio element/ Please, update your browser or download
-                        Chrome-browser
-                    </audio>
-                    <div class="row" id="playerContainer">
-                        <div class="col-md-3" style="padding: 37px;">
-                            <button class="media-button" id="previousAudioButton">
-                                <img alt="Previous" class="media-img" src="/img/previous.png"/>
-                            </button>
-                            <button class="media-button" id="playOrPauseAudioButton">
-                                <img alt="Play/Pause" id="globalPlayButton" src="/img/play.png"/>
-                            </button>
-                            <button class="media-button" id="nextAudioButton">
-                                <img alt="Next" class="media-img" src="/img/next.png"/>
-                            </button>
-                            <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
-                                <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
-                            </button>
-                        </div>
-                        <div class="col-md-6" style="padding: 5px">
-                            <div class="card mb-7"
-                                 style="bottom:auto; right: 3%; display: inline-block; min-width: 300px; height: 110px">
-                                <div class="row no-gutters">
-                                    <div class="col-md-4" style="width: 100px">
-                                        <img id="albums-cover" style=" height: 100px;width: 100px;"
-                                             src="/img/defaultAlbumsCover.jpg"/>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="card-body" style="height: 110px">
-                                            <h5 id="song-name" class="card-title" style="margin-left: 10px"></h5>
-                                            <p id="song-author" class="card-text" style="margin-left: 10px"></p>
-                                            <progress id="seekbar" value="0" max="1"></progress>
+                    <div class="container-fluid" style="padding-bottom: 30px">
+                        <div class="row">
+                            <!--центральный блок-->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
+                    
+                                    <H3> Мой плейлист</H3>
+                                    <div class="col-fhd-4 col-xl-5 col-lg-6">
+                                        <ul class="nav nav-tabs nav-content " role="tablist">
+                                            <li id="morning-music-nav" class="active">
+                                                <a href="#morning" aria-controls="morning-music-nav" role="tab" data-toggle="tab">
+                                                    <h5>Утро</h5>8:00 - 12:00</a>
+                                            </li>
+                                            <li id="midday-music-nav">
+                                                <a href="#midday" aria-controls="midday-music-nav" role="tab" data-toggle="tab">
+                                                    <h5>День</h5>12:00 - 18:00</a>
+                                            </li>
+                                            <li id="evening-music-nav">
+                                                <a href="#evening" aria-controls="evening-music-nav" role="tab" data-toggle="tab">
+                                                    <h5>Вечер</h5>18:00 - 8:00</a>
+                                            </li>
+                                        </ul>
+                    
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="morning">
+                                                <div class="panel panel-default table-panel">
+                                                    <div class="tab-content">
+                                                        <div class="panel-body">
+                                                            <h3>Подборки утреннего плейлиста</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="midday">
+                                                <div class="panel panel-default table-panel">
+                                                    <div class="tab-content">
+                                                        <div class="panel-body">
+                                                            <h3>Подборки дневного плейлиста</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="evening">
+                                                <div class="panel panel-default table-panel">
+                                                    <div class="tab-content">
+                                                        <div class="panel-body">
+                                                            <h3>Подборки вечернего плейлиста</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
-                                        <h5 class="card-title" id="duration" style="margin-left: -5px"></h5>
+                    
+                                    <!--подборка по жанрам-->
+                                    <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="currentPlaylist">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <button class="close" data-dismiss="modal">&times;</button>
+                                        <h4>Current playlist</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-condensed table-hover table-striped table-responsive">
+                                            <thead>
+                                            <tr>
+                                                <th>Musics title</th>
+                                                <th>Author</th>
+                                                <th>Genre</th>
+                                                <th style="width: 20%">Options</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="modalCurrentPlaylistTableBody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" style="padding: 37px;">
-                            <progress id="volumebar" value="0" max="1"></progress>
-                            <button class="media-button" id="soundButton" data-sound_state="on">
-                                <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
-                            </button>
-                            <button class="media-button" id="shuffleAudioButton">
-                                <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
-                            </button>
+                        <div class="modal fade" id="modalPlaylist">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button class="close" data-dismiss="modal">&times;</button>
+                                        <h4 id="modalPlaylistName"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-condensed table-hover table-striped table-responsive">
+                                            <thead>
+                                            <tr>
+                                                <th>Musics title</th>
+                                                <th>Author</th>
+                                                <th>Genre</th>
+                                                <th style="width: 20%">Options</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="modalPlaylistTableBody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
+                               style="min-width: 500px" hidden="hidden">
+                            Your browser doesnt support the audio element/ Please, update your browser or download
+                            Chrome-browser
+                        </audio>
+                        <div class="row" id="playerContainer">
+                            <div class="col-md-3" style="padding: 37px;">
+                                <button class="media-button" id="previousAudioButton">
+                                    <img alt="Previous" class="media-img" src="/img/previous.png"/>
+                                </button>
+                                <button class="media-button" id="playOrPauseAudioButton">
+                                    <img alt="Play/Pause" id="globalPlayButton" src="/img/play.png"/>
+                                </button>
+                                <button class="media-button" id="nextAudioButton">
+                                    <img alt="Next" class="media-img" src="/img/next.png"/>
+                                </button>
+                                <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
+                                    <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
+                                </button>
+                            </div>
+                            <div class="col-md-6" style="padding: 5px">
+                                <div class="card mb-7"
+                                     style="bottom:auto; right: 3%; display: inline-block; min-width: 300px; height: 110px">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4" style="width: 100px">
+                                            <img id="albums-cover" style=" height: 100px;width: 100px;"
+                                                 src="/img/defaultAlbumsCover.jpg"/>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body" style="height: 110px">
+                                                <h5 id="song-name" class="card-title" style="margin-left: 10px"></h5>
+                                                <p id="song-author" class="card-text" style="margin-left: 10px"></p>
+                                                <progress id="seekbar" value="0" max="1"></progress>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h5 class="card-title" id="duration" style="margin-left: -5px"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="padding: 37px;">
+                                <progress id="volumebar" value="0" max="1"></progress>
+                                <button class="media-button" id="soundButton" data-sound_state="on">
+                                    <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
+                                </button>
+                                <button class="media-button" id="shuffleAudioButton">
+                                    <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,9 +179,7 @@ let BottomBar3 = {
     },
     after_render: async () => {
 
-
-
-        $(document).ready(function () {
+        // $(document).ready(function () {
 
             getAllGenre();
             showLinkAdmin();
@@ -259,7 +369,7 @@ let BottomBar3 = {
             $(document).on('click', '#evening-music-nav', function () {
                 eveningPlaylist();
             });
-        });
+        // });
 
 //добавляем/удаляем подборку в/из утреннего плейлиста
         window.addMorningPlaylist = function(idCompilation) {
@@ -443,7 +553,7 @@ let BottomBar3 = {
         }
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
-        window.showAllSongInSongCompilation = function(compilationListName, id) {
+        function showAllSongInSongCompilation(compilationListName, id) {
             //достаю инфу о подборке (название, картинку,  пр.) для модалки
             $.getJSON('/api/user/song-compilation/get/song-compilation/' + id, function (songCompilation) {
                 var htmlAboutSongCompilationForModal = '';
@@ -549,11 +659,8 @@ let BottomBar3 = {
 
 // объект плеер, который находится javascript-ом
         let playerElement = document.getElementById("player");
-        if (playerElement) {
-            playerElement.volume = 0.3;
-            $('#volumebar').attr('value', playerElement.volume);
-        }
-
+        playerElement.volume = 0.3;
+        $('#volumebar').attr('value', playerElement.volume);
 
 // адрес, по которому клиент обращается для проигрывания музыки
         let musicUrl = "/api/music/play/";
@@ -692,96 +799,81 @@ let BottomBar3 = {
                 }
             });
             // при проигрывании плеера. ищутся кнопки песен, который играли до этого и которые должны играть сейчас, и меняется изображение в соответствии с их положением
-            if (playerElement) {
-                playerElement.addEventListener("play", function () {
-                    //кнопки подборок
-                    let listCompilationPlayButtons = $('button.playBtn');
-                    for (let i = 0; i < listCompilationPlayButtons.length; i++) {
-                        if (listCompilationPlayButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex ||
-                            listCompilationPlayButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
-                            $(listCompilationPlayButtons[i]).css('display', 'none');
-                        } else {
-                            $(listCompilationPlayButtons[i]).css('display', 'inline-block');
-                        }
-                    }
-                    let listCompilationPauseButtons = $('button.pauseBtn');
-                    for (let i = 0; i < listCompilationPauseButtons.length; i++) {
-                        if (listCompilationPauseButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex ||
-                            listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
-                            $(listCompilationPauseButtons[i]).css('display', 'inline-block');
-                            setButtonOnPlay(listCompilationPauseButtons[i]);
-                        } else {
-                            $(listCompilationPauseButtons[i]).css('display', 'none');
-                        }
-
-                    }
-                    lastPlayedPlaylistId = lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex;
-                    $('#globalPlayButton').prop('src', '/img/pause.png');
-
-                });
-            }
-
-            // при паузе плеера. ищутся кнопки песен, который играли и меняется изображение на "продолжить"
-            if (playerElement) {
-                playerElement.addEventListener("pause", function () {
-                    let listCompilationPauseButtons = $('button.pauseBtn');
-                    for (let i = 0; i < listCompilationPauseButtons.length; i++) {
-                        if (listCompilationPauseButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex) {
-                            $(listCompilationPauseButtons[i]).css('display', 'none');
-                        }
-                        if (listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
-                            $(listCompilationPauseButtons[i]).css('display', 'none');
-                        }
-                    }
-                    let listCompilationPlayButtons = $('button.playBtn');
-                    for (let i = 0; i < listCompilationPlayButtons.length; i++) {
-                        if (listCompilationPlayButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex) {
-                            setButtonOnPause(listCompilationPlayButtons[i]);
-                            $(listCompilationPlayButtons[i]).css('display', 'inline-block');
-                        }
-                        if (listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
-                            setButtonOnPause(listCompilationPlayButtons[i]);
-                            $(listCompilationPlayButtons[i]).css('display', 'inline-block');
-                        }
-                    }
-                    lastPlayedPlaylistId = lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex;
-                    $('#globalPlayButton').prop('src', '/img/pause.png');
-                    $('#globalPlayButton').prop('src', '/img/resume.png');
-                });
-            }
-
-            // при окончании проигрывания текущей песни
-            if (playerElement) {
-                playerElement.addEventListener("ended", function () {
-                    playNext();
-                });
-            }
-
-            // при изменении громкости плеера
-            if (playerElement) {
-                playerElement.addEventListener("volumechange", function () {
-                    $('#volumebar').attr('value', playerElement.volume);
-                    if (playerElement.volume === 0 || playerElement.muted) {
-                        $('#soundImg').prop('src', '/img/soundOff.png');
+            playerElement.addEventListener("play", function () {
+                //кнопки подборок
+                let listCompilationPlayButtons = $('button.playBtn');
+                for (let i = 0; i < listCompilationPlayButtons.length; i++) {
+                    if (listCompilationPlayButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex ||
+                        listCompilationPlayButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
+                        $(listCompilationPlayButtons[i]).css('display', 'none');
                     } else {
-                        $('#soundImg').prop('src', '/img/soundOn.png');
+                        $(listCompilationPlayButtons[i]).css('display', 'inline-block');
                     }
-                });
-            }
+                }
+                let listCompilationPauseButtons = $('button.pauseBtn');
+                for (let i = 0; i < listCompilationPauseButtons.length; i++) {
+                    if (listCompilationPauseButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex ||
+                        listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
+                        $(listCompilationPauseButtons[i]).css('display', 'inline-block');
+                        setButtonOnPlay(listCompilationPauseButtons[i]);
+                    } else {
+                        $(listCompilationPauseButtons[i]).css('display', 'none');
+                    }
 
+                }
+                lastPlayedPlaylistId = lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex;
+                $('#globalPlayButton').prop('src', '/img/pause.png');
+
+            });
+            // при паузе плеера. ищутся кнопки песен, который играли и меняется изображение на "продолжить"
+            playerElement.addEventListener("pause", function () {
+                let listCompilationPauseButtons = $('button.pauseBtn');
+                for (let i = 0; i < listCompilationPauseButtons.length; i++) {
+                    if (listCompilationPauseButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex) {
+                        $(listCompilationPauseButtons[i]).css('display', 'none');
+                    }
+                    if (listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
+                        $(listCompilationPauseButtons[i]).css('display', 'none');
+                    }
+                }
+                let listCompilationPlayButtons = $('button.playBtn');
+                for (let i = 0; i < listCompilationPlayButtons.length; i++) {
+                    if (listCompilationPlayButtons[i].dataset.playlist_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex) {
+                        setButtonOnPause(listCompilationPlayButtons[i]);
+                        $(listCompilationPlayButtons[i]).css('display', 'inline-block');
+                    }
+                    if (listCompilationPauseButtons[i].dataset.music_id === lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex + '_' + lastPlayedMusicIndex) {
+                        setButtonOnPause(listCompilationPlayButtons[i]);
+                        $(listCompilationPlayButtons[i]).css('display', 'inline-block');
+                    }
+                }
+                lastPlayedPlaylistId = lastPlayedPlaylistName + '_' + lastPlayedCompilationIndex;
+                $('#globalPlayButton').prop('src', '/img/pause.png');
+                $('#globalPlayButton').prop('src', '/img/resume.png');
+            });
+            // при окончании проигрывания текущей песни
+            playerElement.addEventListener("ended", function () {
+                playNext();
+            });
+            // при изменении громкости плеера
+            playerElement.addEventListener("volumechange", function () {
+                $('#volumebar').attr('value', playerElement.volume);
+                if (playerElement.volume === 0 || playerElement.muted) {
+                    $('#soundImg').prop('src', '/img/soundOff.png');
+                } else {
+                    $('#soundImg').prop('src', '/img/soundOn.png');
+                }
+            });
 
 
             //при изменении currentTime
-            if (playerElement) {
-                playerElement.addEventListener('timeupdate', function () {
-                    $('#seekbar').attr('value', playerElement.currentTime / playerElement.duration);
-                    var min = Math.floor(playerElement.currentTime / 60);
-                    var sec = Math.floor(playerElement.currentTime % 60);
-                    var s = sec < 10 ? `0${sec}` : sec;
-                    document.getElementById('duration').innerHTML = min + ':' + s;
-                });
-            }
-
+            playerElement.addEventListener('timeupdate', function () {
+                $('#seekbar').attr('value', playerElement.currentTime / playerElement.duration);
+                var min = Math.floor(playerElement.currentTime / 60);
+                var sec = Math.floor(playerElement.currentTime % 60);
+                var s = sec < 10 ? `0${sec}` : sec;
+                document.getElementById('duration').innerHTML = min + ':' + s;
+            });
             var seekBar = document.getElementById('seekbar');
             if (playerElement && seekBar) {
                 seekBar.addEventListener('mousedown', function () {
@@ -804,15 +896,12 @@ let BottomBar3 = {
                 }, true);
             }
 
-            if (seekBar) {
-                seekBar.addEventListener('click', function (event) {
-                    let widthLeft = $('#seekbar').offset().left;
-                    let x = event.pageX - widthLeft;
-                    let xPersent = x / this.offsetWidth;
-                    playerElement.currentTime = playerElement.duration * xPersent;
-                });
-            }
-
+            seekBar.addEventListener('click', function (event) {
+                let widthLeft = $('#seekbar').offset().left;
+                let x = event.pageX - widthLeft;
+                let xPersent = x / this.offsetWidth;
+                playerElement.currentTime = playerElement.duration * xPersent;
+            });
 
             var volumeBar = document.getElementById('volumebar');
             var isDown = false;
@@ -842,21 +931,18 @@ let BottomBar3 = {
         });
 // при нажатии на кнопку "громкость вкл / выкл"
         var soundButton = document.getElementById('soundButton');
-        if (soundButton) {
-            soundButton.addEventListener('click', function (event) {
-                let soundState = $("#soundButton").data("sound_state");
-                if (soundState === "on") {
-                    $("#soundImg").prop("src", "/img/soundOff.png");
-                    $("#soundButton").data("sound_state", "off");
-                    playerElement.muted = true;
-                } else {
-                    $("#soundImg").prop("src", "/img/soundOn.png");
-                    $("#soundButton").data("sound_state", "on");
-                    playerElement.muted = false;
-                }
-            });
-        }
-
+        soundButton.addEventListener('click', function (event) {
+            let soundState = $("#soundButton").data("sound_state");
+            if (soundState === "on") {
+                $("#soundImg").prop("src", "/img/soundOff.png");
+                $("#soundButton").data("sound_state", "off");
+                playerElement.muted = true;
+            } else {
+                $("#soundImg").prop("src", "/img/soundOn.png");
+                $("#soundButton").data("sound_state", "on");
+                playerElement.muted = false;
+            }
+        });
 
 // функция для изменения изображения и data-playing_state на кнопке при проигрывании музыки
         function setButtonOnPlay(button) {
@@ -1194,7 +1280,10 @@ let BottomBar3 = {
                     allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
             }
         }
+
+
+
     }
 }
 
-export default BottomBar3;
+export default BottomBar4;

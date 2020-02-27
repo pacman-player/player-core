@@ -6,13 +6,15 @@ import Error404     from './views/pages/Error404.js'
 import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
 import Statistics   from "./views/pages/Statistics.js";
-import Compilation3  from "./views/pages/Compilation3.js";
+// import Compilation4  from "./views/pages/Compilation4.js";
 
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
-import BottomBar3    from './views/components/BottomBar3.js'
+// import BottomBar4    from './views/components/BottomBar4.js'
 
 import Utils        from './services/Utils.js'
+
+
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 // Список поддерживаемых маршрутов. Любой URL, кроме этих маршрутов, выдаст ошибку 404
@@ -22,7 +24,7 @@ const routes = {
     , '/p/:id'      : PostShow
     , '/register'   : Register
     , '/statistics' : Statistics
-    , '/compilation': Compilation3
+    // , '/compilation': Compilation4
 };
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
@@ -33,8 +35,8 @@ const router = async () => {
     // Элемент просмотра отложенной загрузки:
     const header = null || document.getElementById('header_container');
     const menu = null || document.getElementById('menu_container');
+    // const footer = null || document.getElementById('footer_container');
     const content = null || document.getElementById('page_container');
-    const footer = null || document.getElementById('footer_container');
     
     //отображаем навбар
     header.innerHTML = await NavBar.render();
@@ -44,9 +46,9 @@ const router = async () => {
     menu.innerHTML = await LeftSideBar.render();
     await LeftSideBar.after_render();
 
-    //отображаем футер(плеер)
-    footer.innerHTML = await BottomBar3.render();
-    await BottomBar3.after_render();
+    // //отображаем футер(плеер)
+    // footer.innerHTML = await BottomBar4.render();
+    // await BottomBar4.after_render();
 
 
     // Get the parsed URl from the addressbar
@@ -66,6 +68,8 @@ const router = async () => {
     await page.after_render();
   
 }
+
+
 
 // Listen on hash change:
 // Послушайте изменение хеша:
