@@ -36,6 +36,12 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getById(Long id) {
         return companyDao.getById(id);
     }
+
+    @Override
+    public Company getByIdWithAddress(Long id) {
+        return companyDao.getByIdWithAddress(id);
+    }
+
     @Override
     public Company getByCompanyName(String companyName) {
         return companyDao.getCompanyByCompanyName(companyName);
@@ -52,8 +58,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public boolean isExistCompanyByName(String name){
-       return companyDao.isExistCompanyByName(name);
+    public boolean isExistCompanyByName(String name) {
+        return companyDao.isExistCompanyByName(name);
     }
 
     @Override
