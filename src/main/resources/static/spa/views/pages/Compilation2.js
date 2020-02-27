@@ -11,6 +11,32 @@ import {fillAllSongsPlaylist} from "../components/BottomBar2.js";
 // import {lastPlayedCompilationIndex} from "../components/BottomBar2.js";
 // import {lastPlayedPlaylistName} from "../components/BottomBar2.js";
 import {obj} from "../components/BottomBar2.js";
+import {test1} from "../components/BottomBar2.js";
+import {testObj} from "../components/BottomBar2.js";
+export {testObj}
+
+//111
+console.log("test1 in Conpilation2: " + test1)
+// test1 = 222; //not work - const
+//222
+console.log("test1 in Conpilation2: : " + test1)
+
+//333
+console.log("test2 in Conpilation2: : " + window.test2) //undefined without error
+window.test2 = 444
+//444
+console.log("test2 in Conpilation2: : " + window.test2)
+
+//test3 is not defined
+//555
+// console.log("test3 in Conpilation2: : " + test3) //test3 is not defined
+// window.test3 = 666
+//666
+// console.log("test3 in Conpilation2: : " + test3)
+
+console.log("testObj in Conpilation2: " + testObj.data)
+testObj.change(1)
+console.log("testObj in Conpilation2: " + testObj.data)
 
 
 // $(document).ready(function () {

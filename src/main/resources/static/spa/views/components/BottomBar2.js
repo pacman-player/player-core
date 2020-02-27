@@ -19,6 +19,40 @@ if (playerElement){
     $('#volumebar').attr('value', playerElement.volume);
 }
 
+//=================проверяю изменяются ли переменные из этого жс в Compilation2================
+//not work - const
+export let test1 = 111
+if (test1 === 222) {
+    console.log("test1 in BottomBar2: : " + test1)
+}
+
+//undefined
+let test2 = 333;
+if (test2 === 444) {
+    console.log("test2 in BottomBar2: " + test2)
+}
+
+//test3 is not defined
+var test3 = 555
+if (test3 === 666) {
+    console.log("test3 in BottomBar2: " + test3)
+}
+
+
+export let testObj = {
+    data: [],
+    change: function(prop) {
+        this.data = prop;
+    },
+};
+console.log("testObj in BottomBar2: " + testObj.data)
+if (testObj.data === 1) {
+    console.log("testObj in BottomBar2: " + testObj.data)
+}
+//=================проверяю изменяются ли переменные из этого жс в Compilation2================
+//Ответ: НЕЕЕЕЕЕЕТТТТТТ!!!!!!!!!!!!!!!!!!!!
+
+
 
 // адрес, по которому клиент обращается для проигрывания музыки
 let musicUrl = "/api/music/play/";
@@ -79,7 +113,6 @@ let lastPlayedPlaylistId = 'none';
 export let lastPlayedPlaylistName = 'none';
 
 export let obj = {allCompilationInGenre, allSongInGenre}
-
 /**
  * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
  * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
@@ -748,4 +781,5 @@ let BottomBar2 = {
     after_render: async () => {
     }
 }
+
 export default BottomBar2;
