@@ -169,10 +169,16 @@ function editButton(id, name) {
                 required: true,
                 pattern: authorNameRegEx,
                 rangelength: [3, 30]
+            },
+            updateGenre: {
+                required: true
             }
         },
         messages: {
-            name: errMessages
+            name: errMessages,
+            updateGenre: {
+                required: "Выберете жанр"
+            }
         },
         submitHandler: () => {
             $.ajax({
