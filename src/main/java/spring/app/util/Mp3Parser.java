@@ -82,16 +82,16 @@ public class Mp3Parser {
 
         }
         songCompilation1.setSong(songList1);
-        songCompilation1.setGenre(genreService.getByName("Pop"));
+        songCompilation1.setGenre(genreService.getById(5L));
         songCompilationService.addSongCompilation(songCompilation1);
         songCompilation2.setSong(songList2);
-        songCompilation2.setGenre(genreService.getByName("Pop"));
+        songCompilation2.setGenre(genreService.getById(1L));
         songCompilationService.addSongCompilation(songCompilation2);
         songCompilation3.setSong(songList3);
-        songCompilation3.setGenre(genreService.getByName("Soundtrack"));
+        songCompilation3.setGenre(genreService.getById(10L));
         songCompilationService.addSongCompilation(songCompilation3);
         songCompilation4.setSong(songList4);
-        songCompilation4.setGenre(genreService.getByName("Alternative"));
+        songCompilation4.setGenre(genreService.getById(3L));
         songCompilationService.addSongCompilation(songCompilation4);
     }
 

@@ -140,10 +140,7 @@ function editButton(id, name) {
                 getTable();
             },
             success: () => {
-                notification(
-                    "edit-compilation" + id,
-                    ` Подборка с id ${id} обновлена`,
-                    "genres-panel");
+                alert(`${id} EDITED!`)
             },
             error: (xhr, status, error) => {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -167,10 +164,7 @@ function deleteButton(id) {
             getTable();
         },
         success: () => {
-            notification(
-                "delete-compilation" + id,
-                ` Подборка c id ${id} удалена`,
-                "compilation-panel");
+           alert(`${id} DELETED!`)
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);

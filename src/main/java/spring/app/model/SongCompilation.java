@@ -23,7 +23,7 @@ public class SongCompilation {
     private String cover;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
     @JsonIgnore
