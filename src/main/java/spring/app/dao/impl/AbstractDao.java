@@ -63,7 +63,8 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	public List<T> getAll() {
 		String genericClassName = persistentClass.toGenericString();
 		genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-		String hql = "FROM " + genericClassName;
+		//Получаем списки сущностей из таблиц, отсортированных по id
+		String hql = "FROM " + genericClassName + " order by id asc";
 		TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
 		return query.getResultList();
 	}
