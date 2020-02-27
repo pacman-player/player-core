@@ -33,13 +33,32 @@ let shuffle = false;
 let allCompilationsInMorningPlaylist;
 let allCompilationsInMiddayPlaylist;
 let allCompilationsInEveningPlaylist;
-export let allCompilationInGenre;
+
+
+
+// window.storage = {};
+// export let allCompilationInGenre = {
+//     data: [],
+//     change: function(prop) {
+//         this.data = prop;
+//     },
+// };
+
+// window.storage.allCompilationInGenre;
+let allCompilationInGenre;
 
 //утренний, дневной, вечерний плейлисты как список песен
 let allSongsInMorningPlaylist = [];
 let allSongsInMiddayPlaylist = [];
 let allSongsInEveningPlaylist = [];
-export let allSongInGenre = [];
+// export let allSongInGenre = {
+//     data: [],
+//     change: function(prop) {
+//         this.data = prop;
+//     },
+// };
+// window.storage.allSongInGenre;
+let allSongInGenre;
 
 //текущий плейлист как список compilation
 let allCompilationInCurrentPlaylist;
@@ -59,6 +78,8 @@ let lastPlayedPlaylistId = 'none';
 // имя текущего раздела
 export let lastPlayedPlaylistName = 'none';
 
+export let obj = {allCompilationInGenre, allSongInGenre}
+
 /**
  * Вспомогательная функция для получения утреннего, дневного или вечернего плейлистов.
  * Заполняет список всех песен данного плейлиста, помечает песни доп.информацией:
@@ -68,7 +89,7 @@ export let lastPlayedPlaylistName = 'none';
  * allCompilationsInPlaylist - список подборок соответствующего плейлиста,
  * allSongsInPlaylist - список песен соответствующего плейлиста, список передается пустым.
  */
-function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
+export function fillAllSongsPlaylist(allCompilationsInPlaylist, allSongsInPlaylist) {
     for (var i = 0, k = 0; i < allCompilationsInPlaylist.length; i++) {
         const id = allCompilationsInPlaylist[i].id;
         const compilationInd = i;

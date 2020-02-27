@@ -5,10 +5,12 @@ import {morningPlaylist} from "../components/BottomBar2.js";
 import {middayPlaylist} from "../components/BottomBar2.js";
 import {eveningPlaylist} from "../components/BottomBar2.js";
 import {getCurrentPlaylist} from "../components/BottomBar2.js";
-import {allCompilationInGenre} from "../components/BottomBar2.js";
-import {allSongInGenre} from "../components/BottomBar2.js";
-import {lastPlayedCompilationIndex} from "../components/BottomBar2.js";
-import {lastPlayedPlaylistName} from "../components/BottomBar2.js";
+import {fillAllSongsPlaylist} from "../components/BottomBar2.js";
+// import {allCompilationInGenre} from "../components/BottomBar2.js";
+// import {allSongInGenre} from "../components/BottomBar2.js";
+// import {lastPlayedCompilationIndex} from "../components/BottomBar2.js";
+// import {lastPlayedPlaylistName} from "../components/BottomBar2.js";
+import {obj} from "../components/BottomBar2.js";
 
 
 // $(document).ready(function () {
@@ -143,7 +145,6 @@ import {lastPlayedPlaylistName} from "../components/BottomBar2.js";
     //     getAllGenre();
     // });
 
-let allCompilationInGenreCopy;
 
     function getAllGenre() {
         $.ajax({
@@ -162,12 +163,12 @@ let allCompilationInGenreCopy;
                 if (0 < listGenre.length) {
                     htmlGenres = ('<h3 id="genres">Жанры</h3>');
                     htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                    htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                     htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
                     htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
                     for (var i = 0; i < listGenre.length; i++) {
                         htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                        htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                        htmlGenres += ('<a href="javascript:void(0)" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
                             listGenre[i].name + '" >');
                         htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
@@ -620,9 +621,11 @@ let Compilation2 = {
                 cache: false,
                 dataType: 'JSON',
                 success: function (listSongCompilation) {
-                    allCompilationInGenreCopy = allCompilationInGenre; //получаю импорт (но нужно что б это были общие переменные для 2х файлов js!!!)
-                    allCompilationInGenreCopy = listSongCompilation;
-                    fillAllSongsPlaylist(allCompilationInGenre, allSongInGenre); //остановился здесь
+                    // allCompilationInGenre = listSongCompilation;
+                    // allCompilationInGenre.change(listSongCompilation);
+                    // window.storage.allCompilationInGenre = listSongCompilation;
+                    obj.allCompilationInGenre = listSongCompilation;
+                    fillAllSongsPlaylist(obj.allCompilationInGenre, obj.allSongInGenre); //остановился здесь
                     let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
                     var htmlCompilation = "Need to add Compilation";
                     if (0 < listCompilation.length) {
