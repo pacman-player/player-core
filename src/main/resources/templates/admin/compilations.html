@@ -48,6 +48,15 @@
                                 Подборки
                             </a>
                         </li>
+                        <li id="add-compilation-nav">
+                            <a href="#add-compilation-panel"
+                               aria-controls="add-compilation-panel"
+                               role="tab"
+                               data-toggle="tab"
+                               onclick="prepareForm()">
+                                Новая подборка
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -62,7 +71,7 @@
                                                 <th>ID</th>
                                                 <th>Название</th>
                                                 <th>Жанр</th>
-                                                <th>Песни</th>
+                                                <th>Список песен</th>
                                                 <th>Обложка</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
@@ -70,6 +79,56 @@
                                             </thead>
                                             <tbody></tbody>
                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Статическая форма добавления нового жанра -->
+                        <div id="add-compilation-panel" class="tab-pane" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="addCompilationForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="name">Название</label>
+                                                                <input id="name"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="MyCompilation"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="cover">Обложка</label>
+                                                                <input id="cover"
+                                                                       name="cover"
+                                                                       class="form-control"
+                                                                       type="file"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="genres">Жанр</label>
+                                                                <select id="genres"
+                                                                        name="genres"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+                                                            <button id="addCompilationBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    type="submit"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -114,6 +173,14 @@
                                                                        name="cover"
                                                                        class="form-control"
                                                                        type="file"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationGenre">Жанр</label>
+                                                                <select id="updateCompilationGenre"
+                                                                        name="genre"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button"

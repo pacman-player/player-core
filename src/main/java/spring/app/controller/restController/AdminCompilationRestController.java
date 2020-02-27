@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongCompilationDto;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
+import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
 
 import java.io.IOException;
@@ -18,14 +19,16 @@ import java.util.List;
 public class AdminCompilationRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminCompilationRestController.class);
 
-    private SongCompilationService songCompilationService;
-    private FileUploadService fileUploadService;
+    private final SongCompilationService songCompilationService;
+    private final FileUploadService fileUploadService;
+    private final GenreService genreService;
 
     @Autowired
     public AdminCompilationRestController(SongCompilationService songCompilationService,
-                                          FileUploadService fileUploadService) {
+                                          FileUploadService fileUploadService, GenreService genreService) {
         this.songCompilationService = songCompilationService;
         this.fileUploadService = fileUploadService;
+        this.genreService = genreService;
     }
 
     @GetMapping
@@ -53,6 +56,10 @@ public class AdminCompilationRestController {
             LOGGER.info("Cover updated for song compilation with ID = {}", compilation.getId());
         }
         compilation.setName(songCompilationDto.getName());
+        LOGGER.info("Compilation Editing: name set -> {}", songCompilationDto.getName());
+        compilation.setGenre(
+                genreService.getByName(songCompilationDto.getGenre()));
+        LOGGER.info("Compilation Editing: genre set -> {}", songCompilationDto.getGenre());
 
         songCompilationService.updateCompilation(compilation);
         LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
@@ -60,7 +67,9 @@ public class AdminCompilationRestController {
 
     @DeleteMapping("/delete")
     public void deleteCompilation(@RequestBody Long id) throws IOException {
+        LOGGER.info("DELETE request '/api/admin/compilation/delete' songCompilationDto ID = {}", id);
         songCompilationService.deleteSongCompilation(
                 songCompilationService.getSongCompilationById(id));
+        LOGGER.info("Song compilation with ID = {} deleted successfully", id);
     }
 }

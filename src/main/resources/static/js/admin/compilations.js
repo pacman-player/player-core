@@ -2,6 +2,34 @@ $(document).ready(function () {
     getTable();
 });
 
+function prepareForm(dropDownListSelector = $("#genres")) {
+    dropDownListSelector.empty();
+    let genres = getGenres();
+
+    let selectOptions = "";
+    for (let i = 0; i < genres.length; i++) {
+        let option = genres[i].name;
+        selectOptions += `<option value="${option}"> ${option} </option>`;
+    }
+
+    dropDownListSelector.append(selectOptions);
+}
+
+function getGenres() {
+    return $.ajax({
+        method: 'GET',
+        url: "/api/admin/author/all_genre",
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        async: false,
+        cache: false,
+        dataType: "JSON"
+    }).responseJSON;
+}
+
 function getTable() {
     $.ajax({
         method: "GET",
@@ -76,6 +104,10 @@ function getTable() {
 }
 
 function editButton(id, name) {
+    let fieldGenre = $("#updateCompilationGenre");
+    // подгрузка жанров в выпадающий список
+    prepareForm(fieldGenre);
+
     let theModal = $("#updateCompilationModal");
     let fieldId = $("#updateCompilationId");
     let fieldName = $("#updateCompilationName");
@@ -90,6 +122,7 @@ function editButton(id, name) {
         let formData = new FormData();
         formData.append("id", id);
         formData.append("name", fieldName.val());
+        formData.append("genre", fieldGenre.val());
         let file = fieldCover.prop("files")[0];
         if (file) {
             formData.append("cover", file);
