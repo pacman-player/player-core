@@ -2,7 +2,6 @@ $(document).ready(function () {
     getTable();
 });
 
-
 function getTable() {
     $.ajax({
         method: "GET",
@@ -25,6 +24,7 @@ function getTable() {
                 try {
                     genre = compilations[i].genre.name;
                 } catch (e) {
+                    console.log(e);
                     genre = null;
                 }
 
@@ -40,7 +40,14 @@ function getTable() {
                             <td> ${id} </td>
                             <td> ${name} </td>
                             <td> ${genre} </td>
-                            <td> songs </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        id="showSongsBtn"
+                                        onclick="allSongsButton(${id}, '${name}')">
+                                    Список треков
+                                </button>
+                            </td>
                             <td> 
                                 <div class="img_wrap">
                                     <img src="/cover/${cover}">
@@ -127,14 +134,17 @@ function deleteButton(id) {
             getTable();
         },
         success: () => {
-            alert(`Deleted ${id}!`)
-            // notification(
-            //     "delete-compilation" + id,
-            //     ` Подборка c id ${id} удалена`,
-            //     "compilation-panel");
+            notification(
+                "delete-compilation" + id,
+                ` Подборка c id ${id} удалена`,
+                "compilation-panel");
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
     })
+}
+
+function allSongsButton() {
+    alert("all songs")
 }
