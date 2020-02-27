@@ -74,7 +74,10 @@ function editButton(id, name) {
         let formData = new FormData();
         formData.append("id", id);
         formData.append("name", fieldName.val());
-        formData.append("cover", fieldCover.prop("files")[0]);
+        let file = fieldCover.prop("files")[0];
+        if (file) {
+            formData.append("cover", file);
+        }
 
         $.ajax({
             method: "POST",
