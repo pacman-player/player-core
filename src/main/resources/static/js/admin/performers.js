@@ -35,11 +35,10 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
 function prepareGenreFieldForAuthor(fieldGenre, id) {
     fieldGenre.empty();
     fieldGenre.attr("multiple", "multiple");
-    fieldGenre.attr("required", "required");
     let allGenres = getGenres();
 
-    //При большом количестве жанров раскомментировать строчку и
-    //закомментировать следующую
+    //При большом количестве жанров раскомментировать 1 строчку и
+    //закомментировать 2
     fieldGenre.attr("size", "10");
     // fieldGenre.attr("size", `${allGenres.length}`);
 
@@ -177,7 +176,7 @@ function editButton(id, name) {
         messages: {
             name: errMessages,
             updateGenre: {
-                required: "Выберете жанр"
+                required: "Выберите жанр"
             }
         },
         submitHandler: () => {
@@ -264,7 +263,8 @@ function getTable() {
                 for (let gi = 0; gi < genres.length; gi++) {
                     htmlGenres += genres[gi];
                     if (gi < genres.length - 1) {
-                        htmlGenres += ", ";
+                        htmlGenres += ", "; // Несколько жанров обязательно должны формироваться в строку
+                        // по разделителю ", " иначе отображение жанров в модальном окне будет некорректным
                     }
                 }
 
