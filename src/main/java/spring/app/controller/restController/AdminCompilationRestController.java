@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,13 +65,19 @@ public class AdminCompilationRestController {
     }
 
     @PostMapping
-    public void addCompilation(@ModelAttribute SongCompilationDto songCompilationDto) {
+    public void addCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
         LOGGER.info("POST request on '/api/admin/compilation/' to add a new SongCompilation with temporary name -> {}",
                 songCompilationDto.getName());
+
         // creating and configuring new SongCompilation object
         SongCompilation songCompilation = new SongCompilation();
-        songCompilation.setGenre(genreService.getByName(songCompilationDto.getName()));
-        String
+
+        songCompilation.setName(songCompilationDto.getName());
+        songCompilation.setGenre(genreService.getByName(songCompilationDto.getGenre()));
+        String coverName = uploadCover(songCompilationDto.getCover());
+        if (coverName != null) {
+            songCompilation.setCover(coverName);
+        }
 
         songCompilationService.addSongCompilation(songCompilation);
         LOGGER.info("Song compilation with name -> {} added to DB", songCompilation.getName());
