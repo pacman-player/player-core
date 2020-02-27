@@ -20,6 +20,8 @@ if (playerElement){
 }
 
 //=================проверяю изменяются ли переменные из этого жс в Compilation2================
+//нужно заюзать local storage
+
 //not work - const
 export let test1 = 111
 if (test1 === 222) {
@@ -38,6 +40,10 @@ if (test3 === 666) {
     console.log("test3 in BottomBar2: " + test3)
 }
 
+export var test4 = 10;
+if (test4 === 11) {
+    console.log("test4 in BottomBar2: " + test4)
+}
 
 export let testObj = {
     data: [],

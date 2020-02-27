@@ -14,7 +14,11 @@ import {obj} from "../components/BottomBar2.js";
 import {test1} from "../components/BottomBar2.js";
 import {testObj} from "../components/BottomBar2.js";
 export {testObj}
+import {test4} from "../components/BottomBar2.js";
+export {test4}
 
+
+//=================проверяю изменятся ли переменные в BottomBar2================
 //111
 console.log("test1 in Conpilation2: " + test1)
 // test1 = 222; //not work - const
@@ -38,6 +42,12 @@ console.log("testObj in Conpilation2: " + testObj.data)
 testObj.change(1)
 console.log("testObj in Conpilation2: " + testObj.data)
 
+console.log("test4 in Conpilation2: " + test4)
+test4 = 11
+console.log("test4 in Conpilation2: " + test4)
+
+
+//=================проверяю изменятся ли переменные в BottomBar2================
 
 // $(document).ready(function () {
 
