@@ -43,9 +43,16 @@ testObj.change(1)
 console.log("testObj in Conpilation2: " + testObj.data)
 
 console.log("test4 in Conpilation2: " + test4)
-test4 = 11
+// test4 = 11 //const
 console.log("test4 in Conpilation2: " + test4)
 
+
+
+
+localStorage.getItem('test');
+console.log("localStorage test in Compilation2 before changes: " + localStorage.getItem('test'));
+localStorage.setItem('test', '2');
+console.log("localStorage test in Compilation2 after changes: " + localStorage.getItem('test'));
 
 //=================проверяю изменятся ли переменные в BottomBar2================
 

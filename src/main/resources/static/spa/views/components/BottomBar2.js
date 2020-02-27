@@ -55,6 +55,17 @@ console.log("testObj in BottomBar2: " + testObj.data)
 if (testObj.data === 1) {
     console.log("testObj in BottomBar2: " + testObj.data)
 }
+
+let test;
+console.log("let test in BottomBar2: " + test);
+localStorage.setItem('test', '1');
+console.log("localStorage test in BottomBar2 after init: " + localStorage.getItem('test'));
+if (localStorage.getItem('test') === '2') { //not work
+    console.log("localStorage test in BottomBar2 after Compilation2: " + localStorage.getItem('test'))
+}
+
+
+
 //=================проверяю изменяются ли переменные из этого жс в Compilation2================
 //Ответ: НЕЕЕЕЕЕЕТТТТТТ!!!!!!!!!!!!!!!!!!!!
 
