@@ -2,6 +2,7 @@ $(document).ready(function () {
     getTable();
 });
 
+
 function getTable() {
     $.ajax({
         method: "GET",
