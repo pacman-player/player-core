@@ -2,7 +2,6 @@ let LeftSideBar = {
     render: async () => {
         let view =  /*html*/
             '<!--меню слева-->\n' +
-            '        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">\n' +
             '            <ul class="nav nav-pills nav-stacked nav-content bg-dark">\n' +
             '                <li>\n' +
             '                    <a href="/user/spa#/statistics">Статистика</a>\n' +
