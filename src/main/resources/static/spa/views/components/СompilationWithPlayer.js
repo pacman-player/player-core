@@ -23,7 +23,7 @@ $(document).ready(function () {
                 let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
                 var htmlCompilation = "Need to add Compilation";
                 if (0 < listCompilation.length) {
-                    htmlCompilation = ('<div id="songCompilation"><a href="#" style="margin-right: 10px" id="linkBack">' +
+                    htmlCompilation = ('<div id="songCompilation"><style="margin-right: 10px" id="linkBack">' +
                         '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
                         '<h3 style="display:inline">Подборки песен</h3></div>');
                     for (var i = 0; i < listCompilation.length; i++) {
@@ -83,7 +83,7 @@ $(document).ready(function () {
 
                         htmlCompilation += '<div id="songCompilation" class="card-deck">'
                             + '<div class="card pt-10">'
-                            + '<a href="#" onclick="showAllSongInSongCompilation(\'getGenres\', ' + listCompilation[i].id + ')" data-toggle="modal"' +
+                            + '<a onclick="showAllSongInSongCompilation(\'getGenres\', ' + listCompilation[i].id + ')" data-toggle="modal"' +
                             ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
                             + '<img src="/img/compilation/compilation' + listCompilation[i].id + '.svg" width="80" height="80" alt="' +
                             listCompilation[i].name + '" >'
@@ -146,12 +146,12 @@ $(document).ready(function () {
                 if (0 < listGenre.length) {
                     htmlGenres = ('<h3 id="genres">Жанры</h3>');
                     htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                    htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                    htmlGenres += ('<a class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                     htmlGenres += ('<img src="/img/all.svg" width="50" height="50" alt="Все подборки" >');
                     htmlGenres += ('</img><p>' + "Все подборки" + '</p></a></div>');
                     for (var i = 0; i < listGenre.length; i++) {
                         htmlGenres += ('<div id="genres" class="col-3 pt-3">');
-                        htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
+                        htmlGenres += ('<a class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');
                         htmlGenres += ('<img src="/img/' + listGenre[i].id + '.svg" width="50" height="50" alt="' +
                             listGenre[i].name + '" >');
                         htmlGenres += ('</img><p>' + listGenre[i].name + '</p></a></div>');
@@ -338,7 +338,7 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
     htmlCompilation += (`<div class="card-deck" id="${secondId}">`);
     for (var i = 0; i < playlist.length; i++) {
         htmlCompilation += '<div class="card pt-10">'
-            + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
+            + '<a id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
             + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
             + '<img src="/img/compilation/compilation' + playlist[i].id + '.svg" width="80" height="80" class="card-img-top" alt="' + playlist[i].name + '">'
             + '<p>Песни подборки</p></a>'
@@ -379,7 +379,7 @@ function showAllSongInSongCompilation(compilationListName, id) {
         for (var i = 0; i < songCompilation.length; i++) {
             htmlAboutSongCompilationForModal = '<div class="card-deck" id="aboutCompilations">'
                 + '<div class="card pt-10">'
-                + '<a href="#" id="' + songCompilation[i].id + '" onclick="showAllSongInSongCompilation(\'' + compilationListName + '\' ,' + songCompilation[i].id + ')" data-toggle="modal"'
+                + '<a id="' + songCompilation[i].id + '" onclick="showAllSongInSongCompilation(\'' + compilationListName + '\' ,' + songCompilation[i].id + ')" data-toggle="modal"'
                 + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
                 + '<img src="/img/' + songCompilation[i].id + '.svg" width="50" height="50" class="card-img-top" alt="' + songCompilation[i].name + '"><p>Песни подборки</p></a>'
                 + '<div class="card-body">'

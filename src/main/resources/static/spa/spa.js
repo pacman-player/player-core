@@ -20,7 +20,7 @@ import Utils        from './services/Utils.js'
 // List of supported routes. Any url other than these routes will throw a 404 error
 // Список поддерживаемых маршрутов. Любой URL, кроме этих маршрутов, выдаст ошибку 404
 const routes = {
-    '/'             : Home      //оставил как образец
+    '/'             : Statistics      //оставил как образец
     , '/about'      : About     //оставил как образец
     , '/p/:id'      : PostShow  //оставил как образец
     , '/register'   : Register  //оставил как образец
