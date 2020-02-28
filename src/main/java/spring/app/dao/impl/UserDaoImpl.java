@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
-import spring.app.dao.abstraction.UserService;
 import spring.app.model.User;
 
 import javax.persistence.NoResultException;

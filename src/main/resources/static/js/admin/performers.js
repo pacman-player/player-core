@@ -98,6 +98,7 @@ function addAuthor(form, name, genre) {
                 "add-author" + name.val(),
                 ` Автор ${name.val()} добавлен`,
                 "authors-panel");
+            getNotificationNumber();
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);

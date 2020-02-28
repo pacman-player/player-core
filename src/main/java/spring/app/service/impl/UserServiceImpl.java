@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
-import spring.app.dao.abstraction.UserService;
+import spring.app.dao.abstraction.UserDao;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -20,12 +20,12 @@ public class UserServiceImpl implements spring.app.service.abstraction.UserServi
 
     private PasswordEncoder passwordEncoder;
 
-    private UserService userDao;
+    private UserDao userDao;
     private RoleDao roleDao;
     private Role userRole;
 
     @Autowired
-    public UserServiceImpl(UserService userDao, RoleDao roleDao) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
     }

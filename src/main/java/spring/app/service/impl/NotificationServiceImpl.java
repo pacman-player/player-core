@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
-import spring.app.dao.abstraction.UserService;
+import spring.app.service.abstraction.UserService;
 import spring.app.model.Notification;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message, Long id) throws InterruptedException {
-        List<User> users = userService.getAll();
+        List<User> users = userService.getAllUsers();
         for (User user : users) {
             if (!user.getId().equals(id)) {
                 Notification notification = new Notification(message, true, user);
