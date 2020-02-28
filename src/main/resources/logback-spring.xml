@@ -66,7 +66,7 @@
             <appender-ref ref="ASYNC" />
         </logger>
 
-        <logger name="spring.app" level="info" additivity="false">
+        <logger name="spring.app" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
         </logger>

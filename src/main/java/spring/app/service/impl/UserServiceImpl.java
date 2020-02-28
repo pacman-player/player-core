@@ -35,6 +35,10 @@ public class UserServiceImpl implements spring.app.service.abstraction.UserServi
     }
 
     @Override
+    public User getUserByLoginWithRegStepsCompany(String login) {
+        return userDao.getUserByLoginWithRegStepsCompany(login);
+    }
+    @Override
     public User getUserByLogin(String login) {
         return userDao.getUserByLogin(login);
     }
@@ -44,15 +48,17 @@ public class UserServiceImpl implements spring.app.service.abstraction.UserServi
         return userDao.getUserByGoogleId(googleId);
     }
 
+    @Override
     public User getUserByEmail(String email) {
         return userDao.getByEmail(email);
     }
 
-    public void save(UserRegistrationDto registration) {
-        User user = new User(registration.getEmail(), registration.getLogin(), passwordEncoder.encode(registration.getPassword()), true);
+    @Override
+    public void save(UserRegistrationDto userRegistrationDto) {
+        User user = new User(userRegistrationDto.getEmail(), userRegistrationDto.getLogin(), passwordEncoder.encode(userRegistrationDto.getPassword()), true);
+
         if (userRole == null) {
-            //после 1шага регистрации пользователь еще не USER
-            userRole = roleDao.getRoleByName("PREUSER");
+            userRole = roleDao.getRoleByName("USER");
         }
         user.setRoles(Collections.singleton(userRole));
         userDao.save(user);

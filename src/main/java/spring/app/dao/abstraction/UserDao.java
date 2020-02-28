@@ -5,6 +5,7 @@ import spring.app.model.User;
 import java.util.List;
 
 public interface UserDao extends GenericDao<Long, User> {
+	User getUserByLoginWithRegStepsCompany(String login);
 	User getUserByLogin(String login);
 	User getUserByGoogleId(String googleId);
 	User getByEmail(String email);

@@ -14,6 +14,8 @@ public interface CompanyService {
 
     Company getById(Long id);
 
+    Company getByIdWithAddress(Long id);
+
     Company getByCompanyName(String companyName);
 
     void removeById(Long id);
