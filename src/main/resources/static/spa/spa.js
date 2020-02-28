@@ -80,3 +80,4 @@ window.addEventListener('hashchange', router);
 // Listen on page load:
 // Слушайте на странице загрузки:
 window.addEventListener('load', router);
+
