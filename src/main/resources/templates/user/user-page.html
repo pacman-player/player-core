@@ -15,208 +15,228 @@
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
     <link type="text/css" href="/css/style.css" rel="stylesheet"/>
     <link type="text/css" href="/css/user/user.css" rel="stylesheet"/>
-    <script type="module" src="/spa/app.js"></script>
-
     <link rel="stylesheet" href="/css/player.css"/>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/5e3423a0298c395d1ce587b6/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--    подключаем модуль Single Page Application-->
+    <script type="module" src="/spa/app.js"></script>
 </head>
 
 <body>
-<!--    NavBar-->
-    <div id="header_container"></div>
 
-<!--    LeftSideBar-->
-    <div id="menu_container"></div>
+<!--    Подгружаем сюда NavBar-->
+<div id="header_container"></div>
 
+<div class="container-fluid" style="padding-bottom: 30px">
 
-    <div id="page_container" class="container pageEntry" >
-        <article> Loading....</article>
+    <div class="row">
+        <!--    Подгружаем сюда меню LeftSideBar-->
+        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+            <div id="menu_container"></div>
+        </div>
+
+        <!--    Подгружаем сюда сновной контент-->
+        <div class="tab-content">
+            <div id="my-selection" role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 ">
+                <div id="page_container" class="container pageEntry">
+                    <article> Loading....</article>
+                </div>
+            </div>
+        </div>
     </div>
 
-<!--    BottomBar-->
+    <!--    Подборки + плеер захардкодил в футере-->
     <div id="footer_container">
         <footer class="footer">
             <div class="content has-text-centered">
                 <div class="container-fluid" style="padding-bottom: 30px">
                     <div class="row">
                         <!--центральный блок-->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">
+                        <H3> Мой плейлист</H3>
+                        <div class="col-fhd-4 col-xl-5 col-lg-6">
+                            <ul class="nav nav-tabs nav-content " role="tablist">
+                                <li id="morning-music-nav" class="active">
+                                    <a href="#morning" aria-controls="morning-music-nav" role="tab"
+                                       data-toggle="tab">
+                                        <h5>Утро</h5>8:00 - 12:00</a>
+                                </li>
+                                <li id="midday-music-nav">
+                                    <a href="#midday" aria-controls="midday-music-nav" role="tab"
+                                       data-toggle="tab">
+                                        <h5>День</h5>12:00 - 18:00</a>
+                                </li>
+                                <li id="evening-music-nav">
+                                    <a href="#evening" aria-controls="evening-music-nav" role="tab"
+                                       data-toggle="tab">
+                                        <h5>Вечер</h5>18:00 - 8:00</a>
+                                </li>
+                            </ul>
 
-                                <H3> Мой плейлист</H3>
-                                <div class="col-fhd-4 col-xl-5 col-lg-6">
-                                    <ul class="nav nav-tabs nav-content " role="tablist">
-                                        <li id="morning-music-nav" class="active">
-                                            <a href="#morning" aria-controls="morning-music-nav" role="tab" data-toggle="tab">
-                                                <h5>Утро</h5>8:00 - 12:00</a>
-                                        </li>
-                                        <li id="midday-music-nav">
-                                            <a href="#midday" aria-controls="midday-music-nav" role="tab" data-toggle="tab">
-                                                <h5>День</h5>12:00 - 18:00</a>
-                                        </li>
-                                        <li id="evening-music-nav">
-                                            <a href="#evening" aria-controls="evening-music-nav" role="tab" data-toggle="tab">
-                                                <h5>Вечер</h5>18:00 - 8:00</a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content">
-                                        <div role="tabpanel" class="tab-pane active" id="morning">
-                                            <div class="panel panel-default table-panel">
-                                                <div class="tab-content">
-                                                    <div class="panel-body">
-                                                        <h3>Подборки утреннего плейлиста</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div role="tabpanel" class="tab-pane" id="midday">
-                                            <div class="panel panel-default table-panel">
-                                                <div class="tab-content">
-                                                    <div class="panel-body">
-                                                        <h3>Подборки дневного плейлиста</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div role="tabpanel" class="tab-pane" id="evening">
-                                            <div class="panel panel-default table-panel">
-                                                <div class="tab-content">
-                                                    <div class="panel-body">
-                                                        <h3>Подборки вечернего плейлиста</h3>
-                                                    </div>
-                                                </div>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="morning">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <h3>Подборки утреннего плейлиста</h3>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--подборка по жанрам-->
-                                <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="currentPlaylist">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header text-center">
-                                    <button class="close" data-dismiss="modal">&times;</button>
-                                    <h4>Current playlist</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table table-condensed table-hover table-striped table-responsive">
-                                        <thead>
-                                        <tr>
-                                            <th>Musics title</th>
-                                            <th>Author</th>
-                                            <th>Genre</th>
-                                            <th style="width: 20%">Options</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="modalCurrentPlaylistTableBody"></tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="modalPlaylist">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button class="close" data-dismiss="modal">&times;</button>
-                                    <h4 id="modalPlaylistName"></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table table-condensed table-hover table-striped table-responsive">
-                                        <thead>
-                                        <tr>
-                                            <th>Musics title</th>
-                                            <th>Author</th>
-                                            <th>Genre</th>
-                                            <th style="width: 20%">Options</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="modalPlaylistTableBody"></tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
-                           style="min-width: 500px" hidden="hidden">
-                        Your browser doesnt support the audio element/ Please, update your browser or download
-                        Chrome-browser
-                    </audio>
-                    <div class="row" id="playerContainer">
-                        <div class="col-md-3" style="padding: 37px;">
-                            <button class="media-button" id="previousAudioButton">
-                                <img alt="Previous" class="media-img" src="/img/previous.png"/>
-                            </button>
-                            <button class="media-button" id="playOrPauseAudioButton">
-                                <img alt="Play/Pause" id="globalPlayButton" src="/img/play.png"/>
-                            </button>
-                            <button class="media-button" id="nextAudioButton">
-                                <img alt="Next" class="media-img" src="/img/next.png"/>
-                            </button>
-                            <button class="media-button" id="currentPlaylistButton" data-toggle="modal" data-target="#currentPlaylist">
-                                <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
-                            </button>
-                        </div>
-                        <div class="col-md-6" style="padding: 5px">
-                            <div class="card mb-7"
-                                 style="bottom:auto; right: 3%; display: inline-block; min-width: 300px; height: 110px">
-                                <div class="row no-gutters">
-                                    <div class="col-md-4" style="width: 100px">
-                                        <img id="albums-cover" style=" height: 100px;width: 100px;"
-                                             src="/img/defaultAlbumsCover.jpg"/>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="card-body" style="height: 110px">
-                                            <h5 id="song-name" class="card-title" style="margin-left: 10px"></h5>
-                                            <p id="song-author" class="card-text" style="margin-left: 10px"></p>
-                                            <progress id="seekbar" value="0" max="1"></progress>
+                                <div role="tabpanel" class="tab-pane" id="midday">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <h3>Подборки дневного плейлиста</h3>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
-                                        <h5 class="card-title" id="duration" style="margin-left: -5px"></h5>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="evening">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <h3>Подборки вечернего плейлиста</h3>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" style="padding: 37px;">
-                            <progress id="volumebar" value="0" max="1"></progress>
-                            <button class="media-button" id="soundButton" data-sound_state="on">
-                                <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
-                            </button>
-                            <button class="media-button" id="shuffleAudioButton">
-                                <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
-                            </button>
+                        <!--подборка по жанрам-->
+                        <div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">
+
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="currentPlaylist">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <h4>Current playlist</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-condensed table-hover table-striped table-responsive">
+                                <thead>
+                                <tr>
+                                    <th>Musics title</th>
+                                    <th>Author</th>
+                                    <th>Genre</th>
+                                    <th style="width: 20%">Options</th>
+                                </tr>
+                                </thead>
+                                <tbody id="modalCurrentPlaylistTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalPlaylist">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <h4 id="modalPlaylistName"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-condensed table-hover table-striped table-responsive">
+                                <thead>
+                                <tr>
+                                    <th>Musics title</th>
+                                    <th>Author</th>
+                                    <th>Genre</th>
+                                    <th style="width: 20%">Options</th>
+                                </tr>
+                                </thead>
+                                <tbody id="modalPlaylistTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
+                   style="min-width: 500px" hidden="hidden">
+                Your browser doesnt support the audio element/ Please, update your browser or download
+                Chrome-browser
+            </audio>
+            <div class="row" id="playerContainer">
+                <div class="col-md-3" style="padding: 37px;">
+                    <button class="media-button" id="previousAudioButton">
+                        <img alt="Previous" class="media-img" src="/img/previous.png"/>
+                    </button>
+                    <button class="media-button" id="playOrPauseAudioButton">
+                        <img alt="Play/Pause" id="globalPlayButton" src="/img/play.png"/>
+                    </button>
+                    <button class="media-button" id="nextAudioButton">
+                        <img alt="Next" class="media-img" src="/img/next.png"/>
+                    </button>
+                    <button class="media-button" id="currentPlaylistButton" data-toggle="modal"
+                            data-target="#currentPlaylist">
+                        <img alt="Current playlist" class="media-img" src="/img/playlist.png"/>
+                    </button>
+                </div>
+                <div class="col-md-6" style="padding: 5px">
+                    <div class="card mb-7"
+                         style="bottom:auto; right: 3%; display: inline-block; min-width: 300px; height: 110px">
+                        <div class="row no-gutters">
+                            <div class="col-md-4" style="width: 100px">
+                                <img id="albums-cover" style=" height: 100px;width: 100px;"
+                                     src="/img/defaultAlbumsCover.jpg"/>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body" style="height: 110px">
+                                    <h5 id="song-name" class="card-title" style="margin-left: 10px"></h5>
+                                    <p id="song-author" class="card-text" style="margin-left: 10px"></p>
+                                    <progress id="seekbar" value="0" max="1"></progress>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <h5 class="card-title" id="duration" style="margin-left: -5px"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="padding: 37px;">
+                    <progress id="volumebar" value="0" max="1"></progress>
+                    <button class="media-button" id="soundButton" data-sound_state="on">
+                        <img alt="Sound" class="media-img" id="soundImg" src="/img/soundOn.png"/>
+                    </button>
+                    <button class="media-button" id="shuffleAudioButton">
+                        <img alt="Shuffle" id="shuffleImg" class="media-img" src="/img/shuffleOff.png"/>
+                    </button>
+                </div>
+            </div>
         </footer>
     </div>
+</div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!--    js подборки + плеер-->
+<script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
-
-
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/user/compilation.js" rel="stylesheet"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script type="text/javascript" src="/js/notification.js" rel="script"></script>
-    <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
-<!--    <script type="module" src="/spa/player.js"></script>-->
 </body>
-    
+
 </html>

@@ -1,4 +1,3 @@
-import Utils        from './../../services/Utils.js'
 
 let Statistics = {
 

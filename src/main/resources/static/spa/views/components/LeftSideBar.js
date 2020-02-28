@@ -8,22 +8,19 @@ let LeftSideBar = {
             '                    <a href="/user/user-page#/statistics">Статистика</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/compilation">Моя подборка</a>\n' +
+            '                    <a href="/user/user-page#/filter">Фильтр музыки</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/filter">Фильтр музыки</a>\n' +
+            '                    <a href="/user/user-page#/top">Топ популярных</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/top">Топ популярных</a>\n' +
+            '                    <a href="/user/user-page#/company">Моё заведение</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/company">Моё заведение</a>\n' +
+            '                    <a href="/user/user-page#/promo">Промо - материалы</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/promo">Промо - материалы</a>\n' +
-            '                </li>\n' +
-            '                <li>\n' +
-            '                    <a href="/user/edit">Редактирование профиля</a>\n' +
+            '                    <a href="/user/user-page#/edit">Редактирование профиля</a>\n' +
             '                </li>\n' +
             '                <li id="adminLink">\n' +
             '                    <a href="/admin/users">Администратор</a>\n' +
