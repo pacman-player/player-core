@@ -29,6 +29,9 @@ public class TestDataInit {
     private RoleService roleService;
 
     @Autowired
+    private DataUpdateService dataUpdateService;
+
+    @Autowired
     private AuthorService authorService;
 
     @Autowired
@@ -179,74 +182,19 @@ public class TestDataInit {
             throw e;
         }
 
-        // создаем жанры
-        Genre genre1 = new Genre("поп");
-        genreService.addGenre(genre1);
-        Genre genre2 = new Genre("рок");
-        genreService.addGenre(genre2);
-        Genre genre3 = new Genre("альтернатива");
-        genreService.addGenre(genre3);
-        Genre genre4 = new Genre("инди");
-        genreService.addGenre(genre4);
-        Genre genre5 = new Genre("металл");
-        genreService.addGenre(genre5);
-        Genre genre6 = new Genre("хардкор");
-        genreService.addGenre(genre6);
-        Genre genre7 = new Genre("неизвестно");
-        genreService.addGenre(genre7);
-        Genre genre8 = new Genre("джаз");
-        genreService.addGenre(genre8);
-        Genre genre9 = new Genre("блюз");
-        genreService.addGenre(genre9);
-        Genre genre10 = new Genre("американская");
-        genreService.addGenre(genre10);
-        Genre genre11 = new Genre("пост-панк");
-        genreService.addGenre(genre11);
-        Genre genre12 = new Genre("фолк");
-        genreService.addGenre(genre12);
-
-        // создаем исполнителей
-        Author author1 = new Author("OneRepublic, Logic");
-        authorService.addAuthor(author1);
-        Author author2 = new Author("The Alarm");
-        authorService.addAuthor(author2);
-        Author author3 = new Author("BLACKPINK");
-        authorService.addAuthor(author3);
-        Author author4 = new Author("Billie Eilish, Khalid");
-        authorService.addAuthor(author4);
-        Author author5 = new Author("Katy Perry");
-        authorService.addAuthor(author5);
-        Author author6 = new Author("Telekinesis");
-        authorService.addAuthor(author6);
-        Author author7 = new Author("New Order");
-        authorService.addAuthor(author7);
-        Author author8 = new Author("Parade of Lights");
-        authorService.addAuthor(author8);
-        Author author9 = new Author("Ed Sheeran");
-        authorService.addAuthor(author9);
-        Author author10 = new Author("Yungblud");
-        authorService.addAuthor(author10);
-        Author author11 = new Author("Echo & the Bunnymen");
-        authorService.addAuthor(author11);
-//        Author author12 = new Author("Yungblud, Charlottle Lawrer");
-//        authorService.addAuthor(author12);
-        Author author13 = new Author("Tom Walker");
-        authorService.addAuthor(author13);
-
-        // создаем и заносим песни. Порядок важен для корректности создания id
-        songService.addSong(new Song("Start Again", author1, genre1));
-        songService.addSong(new Song("Strength", author2, genre2));
-        songService.addSong(new Song("Really", author3, genre3));
-        songService.addSong(new Song("lovely", author4, genre1));
-        songService.addSong(new Song("Into Me You See", author5, genre5));
-        songService.addSong(new Song("Falling (In Dreams)", author6, genre6));
-        songService.addSong(new Song("Love Vigilantes", author7, genre7));
-        songService.addSong(new Song("Tangled Up", author8, genre8));
-        songService.addSong(new Song("Small Bump (Live From Wembley Stadium)", author9, genre9));
-        songService.addSong(new Song("Tin Pan Boy", author10, genre10));
-        songService.addSong(new Song("The Killing Moon", author11, genre11));
-        songService.addSong(new Song("Falling Skies", author10, genre12));
-        songService.addSong(new Song("My Way", author13, genre1));
+        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});
+        dataUpdateService.updateData("The Alarm", "Strength", new String[] {"рок"});
+        dataUpdateService.updateData("BLACKPINK", "Really", new String[] {"поп", "r&b"});
+        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[] {"поп", "соул"});
+        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[] {"поп"});
+        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[] {"поп", "электронная"});
+        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[] {"рок", "пост-панк"});
+        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[] {"поп"});
+        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[] {"поп"});
+        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[] {"рок", "альтернатива"});
+        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[] {"пост-панк"});
+        dataUpdateService.updateData("Yungblud", "Falling Skies", new String[] {"соул", "r&b"});
+        dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
@@ -279,25 +227,25 @@ public class TestDataInit {
         songCompilation4.setName("My compilation4");
         // присваиваем подборкам жанры
         songCompilation1.setSong(songList1);
-        songCompilation1.setGenre(genre2);
+        songCompilation1.setGenre(genreService.getByName("рок"));
         songCompilationService.addSongСompilation(songCompilation1);
         songCompilation2.setSong(songList2);
-        songCompilation2.setGenre(genre2);
+        songCompilation2.setGenre(genreService.getByName("r&b"));
         songCompilationService.addSongСompilation(songCompilation2);
         songCompilation3.setSong(songList3);
-        songCompilation3.setGenre(genre1);
+        songCompilation3.setGenre(genreService.getByName("соул"));
         songCompilationService.addSongСompilation(songCompilation3);
         songCompilation4.setSong(songList4);
-        songCompilation4.setGenre(genre3);
+        songCompilation4.setGenre(genreService.getByName("поп"));
         songCompilationService.addSongСompilation(songCompilation4);
 
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
         Set<Genre> genres2 = new HashSet<>();
-        genres1.add(genre1);
-        genres1.add(genre2);
-        genres2.add(genre3);
-        genres2.add(genre4);
+        genres1.add(genreService.getByName("рок"));
+        genres1.add(genreService.getByName("пост-панк"));
+        genres2.add(genreService.getByName("поп"));
+        genres2.add(genreService.getByName("соул"));
         // создаем типы организаций
         OrgType orgType1 = new OrgType("Кальян-бар");
         OrgType orgType2 = new OrgType("Ресторан");
@@ -377,7 +325,7 @@ public class TestDataInit {
 
         // записываем забаненные жанры для конкретного заведения
         Set<Genre> bannedGenres = new HashSet<>();
-        bannedGenres.add(genre7);
+        bannedGenres.add(genreService.getByName("электронная"));
         company1.setBannedGenres(bannedGenres);
         company2.setBannedGenres(bannedGenres);
         // добавляем компании в БД
