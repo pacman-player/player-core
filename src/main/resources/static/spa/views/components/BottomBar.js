@@ -698,10 +698,7 @@ let BottomBar = {
                         allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
                 }
             }
-
     }
-
-
 }
 
 
