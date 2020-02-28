@@ -1,6 +1,4 @@
-// --------------------------------
-//  Define Data Sources
-// --------------------------------
+//оставил как образец
 
 let getPostsList = async () => {
      const options = {
@@ -37,7 +35,6 @@ let Home = {
     }
     , after_render: async () => {
     }
-
 }
 
 export default Home;

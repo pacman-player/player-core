@@ -12,10 +12,8 @@ import Company      from "./views/pages/Company.js";
 import Promo        from "./views/pages/Promo.js";
 import Edit         from "./views/pages/Edit.js";
 
-
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
-// import BottomBar4    from './views/components/BottomBar4.js'
 
 import Utils        from './services/Utils.js'
 
@@ -24,10 +22,10 @@ import Utils        from './services/Utils.js'
 // List of supported routes. Any url other than these routes will throw a 404 error
 // Список поддерживаемых маршрутов. Любой URL, кроме этих маршрутов, выдаст ошибку 404
 const routes = {
-    '/'             : Home
-    , '/about'      : About
-    , '/p/:id'      : PostShow
-    , '/register'   : Register
+    '/'             : Home      //оставил как образец
+    , '/about'      : About     //оставил как образец
+    , '/p/:id'      : PostShow  //оставил как образец
+    , '/register'   : Register  //оставил как образец
     , '/statistics' : Statistics
     , '/filter'     : Filter
     , '/top'        : Top
@@ -44,9 +42,9 @@ const router = async () => {
     // Элемент просмотра отложенной загрузки:
     const header = null || document.getElementById('header_container');
     const menu = null || document.getElementById('menu_container');
-    // const footer = null || document.getElementById('footer_container');
     const content = null || document.getElementById('page_container');
-    
+    // const footer = null || document.getElementById('footer_container');
+
     //отображаем навбар
     header.innerHTML = await NavBar.render();
     await NavBar.after_render();
@@ -55,7 +53,7 @@ const router = async () => {
     menu.innerHTML = await LeftSideBar.render();
     await LeftSideBar.after_render();
 
-    // //отображаем футер(плеер)
+    // здесь так же можно отобразить футер, но чтобы плеер нормально работал - плеер захардкожен в spa.html
     // footer.innerHTML = await BottomBar4.render();
     // await BottomBar4.after_render();
 
@@ -75,10 +73,7 @@ const router = async () => {
     let page = routes[parsedURL] ? routes[parsedURL] : Error404
     content.innerHTML = await page.render();
     await page.after_render();
-  
 }
-
-
 
 // Listen on hash change:
 // Послушайте изменение хеша:

@@ -1,3 +1,5 @@
+//оставил как образец
+
 let About = {
     render : async () => {
         let view =  /*html*/`

@@ -5,22 +5,22 @@ let LeftSideBar = {
             '        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">\n' +
             '            <ul class="nav nav-pills nav-stacked nav-content bg-dark">\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/statistics">Статистика</a>\n' +
+            '                    <a href="/user/spa#/statistics">Статистика</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/filter">Фильтр музыки</a>\n' +
+            '                    <a href="/user/spa#/filter">Фильтр музыки</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/top">Топ популярных</a>\n' +
+            '                    <a href="/user/spa#/top">Топ популярных</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/company">Моё заведение</a>\n' +
+            '                    <a href="/user/spa#/company">Моё заведение</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/promo">Промо - материалы</a>\n' +
+            '                    <a href="/user/spa#/promo">Промо - материалы</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/user-page#/edit">Редактирование профиля</a>\n' +
+            '                    <a href="/user/spa#/edit">Редактирование профиля</a>\n' +
             '                </li>\n' +
             '                <li id="adminLink">\n' +
             '                    <a href="/admin/users">Администратор</a>\n' +

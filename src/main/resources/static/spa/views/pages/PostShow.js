@@ -1,3 +1,5 @@
+//оставил как образец
+
 import Utils        from './../../services/Utils.js'
 
 let getPost = async (id) => {

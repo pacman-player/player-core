@@ -1,3 +1,5 @@
+//оставил как образец
+
 let Register = {
 
     render: async () => {
