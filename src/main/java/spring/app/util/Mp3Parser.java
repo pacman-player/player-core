@@ -23,6 +23,7 @@ public class Mp3Parser {
     private final GenreService genreService;
     private final SongCompilationService songCompilationService;
     private final MusicSearchService musicSearchService;
+    private String musicPath = "music/";
 
     public Mp3Parser(SongService songService,
                      AuthorService authorService,
@@ -43,15 +44,23 @@ public class Mp3Parser {
 
         for (int i = 0; i < songs.length; i++) {
             File song = songs[i];
+            // change to readTags() if you want to parse MP3's through GenreDefiner
+            // But need to alter music block in TestDataInit.init()
             copyInitFile(song, i+1);
         }
     }
 
+    /**
+     * Метод для простого копирования файлов из /music1/ в /music/
+     */
     public void copyInitFile(File file, int fileId) throws IOException {
-        Path fileO = Paths.get("music/" + fileId + ".mp3");
+        Path fileO = Paths.get(musicPath + fileId + ".mp3");
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
     }
 
+    /**
+     * Метод для чтения тегов и поиска информации через музыкальные сервисы на старте программы. Использовать только один из методов.
+     */
     public Song readTags(File file) throws InvalidDataException, IOException, UnsupportedTagException {
         String name = null;
         String author = null;
@@ -89,7 +98,7 @@ public class Mp3Parser {
         */
 
 
-        Path fileO = Paths.get("music/" + id + ".mp3");
+        Path fileO = Paths.get(musicPath + id + ".mp3");
 
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
         return song;
