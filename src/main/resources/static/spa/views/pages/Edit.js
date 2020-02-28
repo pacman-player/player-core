@@ -100,8 +100,8 @@ let Edit = {
     , after_render: async () => {
         $(document).ready(function () {
 
-            //доступ к  ссылки админа
-            showLinkAdmin();
+            // //доступ к  ссылки админа
+            // showLinkAdmin();
 
             var password;
             getUserData();
@@ -204,20 +204,20 @@ let Edit = {
                 });
             }
 
-            function showLinkAdmin() {
-                $.ajax({
-                    type: "post",
-                    url: "/api/user/show_admin",
-
-                    success: function (role) {
-                        if (role !== "admin") {
-                            $("#adminLink").hide();
-                        }
-                    }
-
-                });
-
-            }
+            // function showLinkAdmin() {
+            //     $.ajax({
+            //         type: "post",
+            //         url: "/api/user/show_admin",
+            //
+            //         success: function (role) {
+            //             if (role !== "admin") {
+            //                 $("#adminLink").hide();
+            //             }
+            //         }
+            //
+            //     });
+            //
+            // }
 
             function checkForm() {
 

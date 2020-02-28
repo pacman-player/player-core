@@ -33,8 +33,8 @@ let Company = {
     , after_render: async () => {
         $(document).ready(function () {
 
-            //доступ к  ссылки админа
-            showLinkAdmin();
+            // //доступ к  ссылки админа
+            // showLinkAdmin();
             getCompanyData();
             getCompanyAddress();
 
@@ -114,17 +114,17 @@ let Company = {
                 updateAddress();
             });
 
-            function showLinkAdmin() {
-                $.ajax({
-                    type: "post",
-                    url: "/api/user/show_admin",
-                    success: function (role) {
-                        if (role !== "admin") {
-                            $("#adminLink").hide();
-                        }
-                    }
-                });
-            }
+            // function showLinkAdmin() {
+            //     $.ajax({
+            //         type: "post",
+            //         url: "/api/user/show_admin",
+            //         success: function (role) {
+            //             if (role !== "admin") {
+            //                 $("#adminLink").hide();
+            //             }
+            //         }
+            //     });
+            // }
 
             function notification(notifyId, message) {
                 let notify = document.getElementById('notify');

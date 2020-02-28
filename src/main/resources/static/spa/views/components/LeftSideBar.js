@@ -2,6 +2,7 @@ let LeftSideBar = {
     render: async () => {
         let view =  /*html*/
             '<!--меню слева-->\n' +
+            '        <div class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">\n' +
             '            <ul class="nav nav-pills nav-stacked nav-content bg-dark">\n' +
             '                <li>\n' +
             '                    <a href="/user/spa#/statistics">Статистика</a>\n' +
@@ -31,20 +32,36 @@ let LeftSideBar = {
         return view
     },
     after_render: async () => {
-        $(document).ready(function(){
+
+        $(document).ready(function () {
+
             //Скрыть PopUp при загрузке страницы
             PopUpHide();
-        });
-        //Функция отображения PopUp
-        function PopUpShow(){
-            $("#popup1").show();
-        }
-        //Функция скрытия PopUp
-        function PopUpHide(){
-            $("#popup1").hide();
-        }
-    }
 
+            //доступ к  ссылки админа
+            showLinkAdmin();
+
+            function showLinkAdmin() {
+                $.ajax({
+                    type: "post",
+                    url: "/api/user/show_admin",
+                    success: function (role) {
+                        if (role !== "admin") {
+                            $("#adminLink").hide();
+                        }
+                    }
+                });
+            }
+            //Функция отображения PopUp
+            function PopUpShow(){
+                $("#popup1").show();
+            }
+            //Функция скрытия PopUp
+            function PopUpHide(){
+                $("#popup1").hide();
+            }
+        })
+    }
 }
 
 export default LeftSideBar;
