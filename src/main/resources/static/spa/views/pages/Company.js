@@ -4,32 +4,22 @@ let Company = {
     render: async () => {
         return /*html*/ '<!--центральный блок-->\n' +
             '        <div class="tab-content">\n' +
-            '\n' +
-            '            <!--<div class="tab-pane col-lg-10 col-md-10 col-xs-10" id="my-establishment" role="tabpanel">\n' +
-            '                <p th:inline="text"> [[${#httpServletRequest.remoteUser}]] > Моё заведение</p>-->\n' +
-            '\n' +
             '            <div class="col-lg-6 col-md-10 col-xs-10 " id="my-company">\n' +
             '                <H3> Моё заведение</H3>\n' +
             '                <form class="form-group">\n' +
             '                    <label for="est-name">Наименование организации</label>\n' +
             '                    <input id="est-name" required="required" type="text"/><br/>\n' +
-            '\n' +
             '                    <label for="est-start-time">Время открытия&nbsp;</label>\n' +
             '                    <input id="est-start-time" required="required" type="time"/><br/>\n' +
-            '\n' +
             '                    <label for="est-close-time">Время закрытия&nbsp;</label>\n' +
             '                    <input id="est-close-time" required="required" type="time"/><br/>\n' +
-            '\n' +
             '                    <label for="est-address">Адрес&nbsp;</label>\n' +
             '                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>\n' +
             '                    <button type="submit" id="button">Поиск</button>\n' +
             '                    <br/>\n' +
-            '\n' +
             '                    <input id="latitude" type="hidden"/>\n' +
             '                    <input id="longitude" type="hidden"/>\n' +
-            '\n' +
             '                    <div id="map" style="width: 800px; height: 400px"></div><br/>\n' +
-            '\n' +
             '                    <button class="btn btn-primary" style="margin-left:0" id="est-save-data" type="button">\n' +
             '                        Сохранить\n' +
             '                    </button>\n' +

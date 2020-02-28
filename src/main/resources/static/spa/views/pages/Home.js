@@ -22,7 +22,7 @@ let Home = {
         let posts = await getPostsList()
         let view =  /*html*/`
             <section class="section">
-                <h3> Home page </h3>
+                <h3> Домашняя страница </h3>
                 <h5> ниже использую mockAPI в качестве примера </h5>
                 <ul>
                     ${ posts.map(post => 

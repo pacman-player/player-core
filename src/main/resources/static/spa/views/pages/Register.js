@@ -39,7 +39,6 @@ let Register = {
                         </button>
                     </p>
                 </div>
-
             </section>
         `
     }

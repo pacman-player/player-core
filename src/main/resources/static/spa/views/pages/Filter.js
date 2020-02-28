@@ -5,13 +5,10 @@ let Filter = {
         return /*html*/ '<!--центральный блок-->\n' +
             '        <div class="tab-content">\n' +
             '            <div role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 " id="my-selection">\n' +
-            '\n' +
             '                <H3>Страница Фильтров</H3>\n' +
-            '\n' +
             '                <!-- меню выбора выриантов для блокировки -->\n' +
             '                <div class="col-fhd-4 col-xl-5 col-lg-6">\n' +
             '                    <ul class="nav nav-tabs nav-content " role="tablist">\n' +
-            '\n' +
             '                        <li id="morning-music-nav" class="active">\n' +
             '                            <a href="#genre"\n' +
             '                               aria-controls="genre-music-nav"\n' +
@@ -21,7 +18,6 @@ let Filter = {
             '                                По жанрам\n' +
             '                            </a>\n' +
             '                        </li>\n' +
-            '\n' +
             '                        <li id="day-music-nav">\n' +
             '                            <a href="#artists"\n' +
             '                               aria-controls="artists-music"\n' +
@@ -31,7 +27,6 @@ let Filter = {
             '                                По артистам\n' +
             '                            </a>\n' +
             '                        </li>\n' +
-            '\n' +
             '                        <li id="evening-music-nav">\n' +
             '                            <a href="#songs"\n' +
             '                               aria-controls="evening-music"\n' +
@@ -42,58 +37,47 @@ let Filter = {
             '                            </a>\n' +
             '                        </li>\n' +
             '                    </ul>\n' +
-            '\n' +
             '                    <!-- контент для меню "По жанрам" -->\n' +
             '                    <div class="tab-content active">\n' +
             '                        <div role="tabpanel" class="tab-pane active" id="genre">\n' +
             '                            <div class="panel panel-default table-panel">\n' +
             '                                <div class="tab-content">\n' +
             '                                    <div class="panel-body">\n' +
-            '\n' +
             '                                        <div id="forGenreTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
-            '\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
             '                        </div>\n' +
-            '\n' +
             '                        <!-- контент для меню "По артистам" -->\n' +
             '                        <div role="tabpanel" class="tab-pane" id="artists">\n' +
             '                            <div class="panel panel-default table-panel">\n' +
             '                                <div class="tab-content">\n' +
             '                                    <div class="panel-body">\n' +
-            '\n' +
             '                                        <form class="form-inline authorSearch">\n' +
             '                                            <input class="form-control mr-sm-2 nameForAuthor" type="search" placeholder="Search" aria-label="Search"/>\n' +
             '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>\n' +
             '                                        </form>\n' +
-            '\n' +
             '                                        <div id="forAuthorTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
-            '\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
             '                        </div>\n' +
-            '\n' +
             '                        <!-- контент для меню "По песням" -->\n' +
             '                        <div role="tabpanel" class="tab-pane" id="songs">\n' +
             '                            <div class="panel panel-default table-panel">\n' +
             '                                <div class="tab-content">\n' +
             '                                    <div class="panel-body">\n' +
-            '\n' +
             '                                        <form class="form-inline musicSearch">\n' +
             '                                            <input class="form-control mr-sm-2 nameForMusic" type="search" placeholder="Поиск" aria-label="Search"/>\n' +
             '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>\n' +
             '                                        </form>\n' +
-            '\n' +
             '                                        <div id="forMusicTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
-            '\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
@@ -101,7 +85,6 @@ let Filter = {
             '                    </div>\n' +
             '                </div>\n' +
             '            </div>\n' +
-            '\n' +
             '        </div>'
     }
     // Весь код, связанный с DOM-взаимодействиями и элементами управления, находится здесь.

@@ -3,16 +3,9 @@ let Statistics = {
 
     render: async () => {
         return /*html*/ '        <!--центральный блок-->\n' +
-            '<!--        <div class="tab-content">-->\n' +
             '            <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">\n' +
-            '\n' +
             '                <H3> Статистика</H3>\n' +
-            '\n' +
-            '\n' +
             '            </div>\n' +
-            '<!--        </div>-->\n' +
-            '\n' +
-            '        <!-- right side stats bar-->\n' +
             '        <div class="container col-lg-4 col-md-4 col-xs-4 col-xl-4" id="right-side-bar">\n' +
             '                <table class="table bg-white stats-table">\n' +
             '                    <thead>\n' +

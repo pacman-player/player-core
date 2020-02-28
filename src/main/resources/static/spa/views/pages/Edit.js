@@ -7,37 +7,26 @@ let Edit = {
             '            <div id="my-selection" role="tabpanel" class="tab-pane active col-lg-10 col-md-10 col-xs-10 ">\n' +
             '                <H3> Редактирование профиля </H3>\n' +
             '            </div>\n' +
-            '<!--                <div class="col-fhd-4 col-x1-5 col-lg-6">-->\n' +
             '                <div class="col-sm-4">\n' +
-            '\n' +
             '                <form id="edit-data-form">\n' +
             '                        <div class="form-group text-center edit-form">\n' +
-            '\n' +
             '                            <h4>Персональные данные</h4>\n' +
-            '\n' +
             '                            <label for="login">Логин</label>\n' +
             '                            <input id="login" class="form-control" type="text" name="login" required="" />\n' +
-            '\n' +
             '                            <label for="email">Почта</label>\n' +
             '                            <input id="email" class="form-control" type="email" name="email" required="1"/>\n' +
-            '\n' +
             '                            <button id="updateUserDataBtn" class="btn btn-primary" type="submit">Сохранить</button>\n' +
-            '\n' +
             '                        </div>\n' +
             '                    </form>\n' +
             '                </div>\n' +
             '                <div class="col-sm-4">\n' +
             '                    <form id="edit-password-form">\n' +
             '                        <div class="form-group text-center edit-form">\n' +
-            '\n' +
             '                            <h4>Сменить пароль</h4>\n' +
-            '\n' +
             '                            <h5>Для смены пароля нажмите на кнопку ниже\n' +
             '                                и в открывшемся окне введите код подтверждения,\n' +
             '                                который мы отправили на вашу электронную почту</h5>\n' +
-            '\n' +
             '                            <button id="checkUserPasswordBtn" data-toggle="modal" data-target="#checkUserCode" class="btn btn-primary" type="button">Отправить код</button>\n' +
-            '\n' +
             '                        </div>\n' +
             '                    </form>\n' +
             '                </div>\n' +
@@ -45,24 +34,19 @@ let Edit = {
             '                <div id="checkUserCode" class="modal fade">\n' +
             '                    <div class="modal-dialog">\n' +
             '                        <div class="modal-content">\n' +
-            '\n' +
             '                            <div class="modal-header">\n' +
             '                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>\n' +
             '                                <h4 class="modal-title">Проверка кода</h4>\n' +
             '                            </div>\n' +
-            '\n' +
             '                            <div class="modal-body">\n' +
             '                                <div class="container-fluid">\n' +
             '                                    <div class="row">\n' +
             '                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">\n' +
-            '\n' +
             '                                            <form id="code-form">\n' +
             '                                                <div class="form-group text-center edit-form">\n' +
-            '\n' +
             '                                                    <label for="checkUserCodeId">Введите проверочный код</label>\n' +
             '                                                    <input id="checkUserCodeId" class="form-control" type="text"\n' +
             '                                                           name="code" required=""/>\n' +
-            '\n' +
             '                                                    <div class="modal-footer">\n' +
             '                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>\n' +
             '                                                        <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>\n' +
@@ -76,39 +60,30 @@ let Edit = {
             '                        </div>\n' +
             '                    </div>\n' +
             '                </div>\n' +
-            '\n' +
             '                <!--модалка - редактирование кода-->\n' +
             '                <div id="editUserPass" class="modal fade">\n' +
             '                    <div class="modal-dialog">\n' +
             '                        <div class="modal-content">\n' +
-            '\n' +
             '                            <div class="modal-header">\n' +
             '                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>\n' +
             '                                <h4 class="modal-title">Проверка кода</h4>\n' +
             '                            </div>\n' +
-            '\n' +
             '                            <div class="modal-body">\n' +
             '                                <div class="container-fluid">\n' +
             '                                    <div class="row">\n' +
             '                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">\n' +
-            '\n' +
             '                                            <form id="update-form">\n' +
             '                                                <div class="form-group text-center edit-form">\n' +
-            '\n' +
             '                                                    <label for="oldUserPass">Текущий пароль</label>\n' +
             '                                                    <input id="oldUserPass" class="form-control" type="password" name="password"\n' +
             '                                                           required=""/>\n' +
-            '\n' +
             '                                                    <label for="newUserPass">Новый пароль</label>\n' +
             '                                                    <input id="newUserPass" class="form-control" type="password" name="password"\n' +
             '                                                           required=""/>\n' +
-            '\n' +
             '                                                    <label for="updateUserPass">Подтвердите пароль</label>\n' +
             '                                                    <input id="updateUserPass" class="form-control" type="password" name="password"\n' +
             '                                                           required=""/>\n' +
-            '\n' +
             '                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>\n' +
-            '\n' +
             '                                                </div>\n' +
             '                                            </form>\n' +
             '                                        </div>\n' +
@@ -118,9 +93,6 @@ let Edit = {
             '                        </div>\n' +
             '                    </div>\n' +
             '                </div>\n' +
-            '\n' +
-            '\n' +
-            '\n' +
             '        </div>'
     }
     // Весь код, связанный с DOM-взаимодействиями и элементами управления, находится здесь.
