@@ -22,7 +22,8 @@ let Home = {
         let posts = await getPostsList()
         let view =  /*html*/`
             <section class="section">
-                <h1> Home </h1>
+                <h3> Home page </h3>
+                <h5> ниже использую mockAPI в качестве примера </h5>
                 <ul>
                     ${ posts.map(post => 
                         /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
