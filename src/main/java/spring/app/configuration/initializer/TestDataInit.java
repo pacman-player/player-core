@@ -182,6 +182,7 @@ public class TestDataInit {
             throw e;
         }
 
+        // создаем данные для имеющихся песен в /music
         dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});
         dataUpdateService.updateData("The Alarm", "Strength", new String[] {"рок"});
         dataUpdateService.updateData("BLACKPINK", "Really", new String[] {"поп", "r&b"});
