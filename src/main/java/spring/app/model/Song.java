@@ -40,11 +40,13 @@ public class Song extends Bannable {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL) //здесь убрал orphanRemoval = true тк не удалялась последняя песня
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
 
     //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
-    @ManyToMany(fetch = FetchType.LAZY) //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
+    @ManyToMany(fetch = FetchType.LAZY)
+    //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
@@ -60,9 +62,8 @@ public class Song extends Bannable {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @Column
+    @Column(name = "approved")
     private Boolean isApproved = false;
-
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
@@ -104,6 +105,11 @@ public class Song extends Bannable {
         this.genre = genre;
     }
 
+    public Song(String name) {
+        this.name = name;
+    }
+
+
     public Set<SongCompilation> getSongCompilations() {
         return songCompilations;
     }
@@ -112,32 +118,28 @@ public class Song extends Bannable {
         this.songCompilations = songCompilations;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Song(String name) {
-        this.name = name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Author getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public Genre getGenre() {
@@ -180,9 +182,12 @@ public class Song extends Bannable {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public void setBanned(boolean banned) {
-        this.banned = banned;
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override
@@ -192,6 +197,11 @@ public class Song extends Bannable {
 
     public Boolean getBanned() {
         return banned;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     @Override

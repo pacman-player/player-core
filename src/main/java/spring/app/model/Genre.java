@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,6 +39,17 @@ public class Genre extends Bannable{
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
+    }
+
+    @Column(name = "approved")
+    private Boolean isApproved = false;
 
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
