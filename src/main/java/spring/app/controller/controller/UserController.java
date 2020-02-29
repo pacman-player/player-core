@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
+    @GetMapping("reg_check")
+    public String checkRegistrationPage() {
+        return "user/reg_check";
+    }
+
     @GetMapping
     public String getUserPage() {
         return "user/statistics";

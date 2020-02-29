@@ -2,6 +2,8 @@ package spring.app.controller.restController;
 
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.*;
@@ -22,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
     @Autowired
     private OrderSongService orderSongService;
 
@@ -42,7 +46,18 @@ public class TelegramRestController {
 
     @PostMapping(value = "/song")
     public SongResponse searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
-        return telegramService.getSong(songRequest);
+        LOGGER.info("POST request '/song'");
+        try {
+            LOGGER.info("Requested song Name = {} and Author = {}",
+                    songRequest.getSongName(),
+                    songRequest.getAuthorName());
+            SongResponse songResponse = telegramService.getSong(songRequest);
+            LOGGER.info("Got Song response successfully");
+            return songResponse;
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -55,22 +70,37 @@ public class TelegramRestController {
      */
     @PostMapping(value = "/approve")
     public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
-        return telegramService.approveSong(songRequest);
+        LOGGER.info("POST request '/approve'");
+        try {
+            LOGGER.info("Requested song Name = {} and Author = {}",
+                    songRequest.getSongName(),
+                    songRequest.getAuthorName());
+            SongResponse songResponse = telegramService.approveSong(songRequest);
+            LOGGER.info("Approved Song successfully");
+            return songResponse;
+        } catch (BitstreamException | DecoderException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     @PostMapping(value = "/location")
     public List allCompaniesByAddress(@RequestBody Address geoAddress){
+        LOGGER.info("POST request '/location' with Address = {}", geoAddress);
         List<Address> addresses = addressService.checkAddress(geoAddress);
         List<Company> companies = new ArrayList();
 
         addresses.forEach(address -> companies.add(companyService.getCompanyByAddressId(address.getId())));
-
+        LOGGER.info("Found {} companies", companies.size());
         return companies;
     }
 
     @PostMapping(value = "/all_company")
     public List allCompanies () {
-        return companyService.getAllCompanies();
+        LOGGER.info("POST request '/all_company'");
+        List<Company> list = companyService.getAllCompanies();
+        LOGGER.info("Result has {} lines", list.size());
+        return list;
     }
 
     /**
@@ -79,14 +109,17 @@ public class TelegramRestController {
      */
     @PostMapping("/addSongToQueue")
     public void addSongToQueue(HttpEntity httpEntity) {
+        LOGGER.info("POST request '/addSongToQueue'");
         HttpHeaders headers = httpEntity.getHeaders();
         long songId = Long.parseLong(headers.get("songId").get(0));
         long companyId = Long.parseLong(headers.get("companyId").get(0));
+        LOGGER.info("Provided songId = {} and companyId = {}", songId, companyId);
         Song songById = songService.getSongById(songId);
         Company companyById = companyService.getById(companyId);
         SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
         long lastSongQueuesPosition = songQueueService.getLastSongQueuesNumberFromCompany(companyById);
         if (songQueue == null) {
+            LOGGER.info("Song queue is empty. Adding song to queue...");
             songQueue = new SongQueue();
             songQueue.setSong(songById);
             songQueue.setCompany(companyById);
@@ -96,10 +129,13 @@ public class TelegramRestController {
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
             companyService.updateCompany(companyById);
+            LOGGER.info("Success!");
         } else {
+            LOGGER.info("Adding song to existing queue...");
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.updateSongQueue(songQueue);
             orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            LOGGER.info("Success!");
         }
     }
 }

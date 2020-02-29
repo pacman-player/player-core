@@ -27,44 +27,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li>
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li class="active">
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li>
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li>
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li>
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user/spa#/statistics">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 

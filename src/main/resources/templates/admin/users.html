@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Admin page</title>
@@ -28,44 +28,8 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content">
-                <li class="active">
-                    <a href="/admin/users">Пользователи</a>
-                </li>
-
-                <li>
-                    <a href="/admin/companies">Компании</a>
-                </li>
-
-                <li>
-                    <a href="/admin/establishments">Типы заведений</a>
-                </li>
-
-                <li>
-                    <a href="/admin/genres">Жанры</a>
-                </li>
-
-                <li>
-                    <a href="/admin/performers">Исполнители</a>
-                </li>
-
-                <li>
-                    <a href="/admin/songs">Песни</a>
-                </li>
-
-                <li>
-                    <a href="/admin/vk_bot">Послать отчет</a>
-                </li>
-
-                <li>
-                    <a href="/admin/message">Сообщения</a>
-                </li>
-
-                <li>
-                    <a href="/user/spa#/statistics">Меню пользователя</a>
-                </li>
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
@@ -97,7 +61,7 @@
                                                 <th>ID</th>
                                                 <th>Роль</th>
                                                 <th>Логин</th>
-<!--                                                <th>Пароль</th>-->
+                                                <!--                                                <th>Пароль</th>-->
                                                 <th>Почта</th>
                                                 <th>Компания</th>
                                                 <th>Изменить</th>
@@ -175,16 +139,19 @@
                                                                                 <div>
                                                                                     <label for="updateUserRole">Роль</label>
                                                                                     <div class="form-control"
-                                                                                            id="updateUserRole"
-                                                                                            name="role">
+                                                                                         id="updateUserRole"
+                                                                                         name="role">
                                                                                         <div id="rlist">
-                                                                                        <input type="checkbox" value="user">USER
-                                                                                        </input>
-                                                                                        <input type="checkbox" value="admin">ADMIN
-                                                                                        </input>
-                                                                                        <input type="checkbox" value="manager">
+                                                                                            <input type="checkbox"
+                                                                                                   value="user">USER
+                                                                                            </input>
+                                                                                            <input type="checkbox"
+                                                                                                   value="admin">ADMIN
+                                                                                            </input>
+                                                                                            <input type="checkbox"
+                                                                                                   value="manager">
                                                                                             MANAGER
-                                                                                        </input>
+                                                                                            </input>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -207,23 +174,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                    <tbody></tbody>
-                                    </table>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!--добавление юзеров-->
-                    <div role="tabpanel" class="tab-pane" id="add-user-panel">
-                        <div class="panel panel-default table-panel">
-                            <div class="tab-content">
-                                <div class="panel-body">
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                <form id="addForm">
-                                                    <div class="form-group text-center edit-form">
+                        <!--добавление юзеров-->
+                        <div role="tabpanel" class="tab-pane" id="add-user-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
                                                             <div>
                                                                 <label for="addEmail">Почта</label>
                                                                 <input id="addEmail" class="form-control" type="text"
@@ -242,28 +209,29 @@
                                                                        type="password" placeholder="Password"
                                                                        required="required" name="password"/>
                                                             </div>
-                                                        <div>
-                                                            <label for="updateUserRoleA">Роли</label>
-                                                            <div class="form-control"
-                                                                 id="updateUserRoleA"
-                                                                 name="role">
-                                                                <div id="rlistA">
-                                                                    <input type="checkbox" value="user">USER
-                                                                    </input>
-                                                                    <input type="checkbox" value="admin">ADMIN
-                                                                    </input>
-                                                                    <input type="checkbox" value="manager">
-                                                                    MANAGER
-                                                                    </input>
+                                                            <div>
+                                                                <label for="updateUserRoleA">Роли</label>
+                                                                <div class="form-control"
+                                                                     id="updateUserRoleA"
+                                                                     name="role">
+                                                                    <div id="rlistA">
+                                                                        <input type="checkbox" value="user">USER
+                                                                        </input>
+                                                                        <input type="checkbox" value="admin">ADMIN
+                                                                        </input>
+                                                                        <input type="checkbox" value="manager">
+                                                                        MANAGER
+                                                                        </input>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <button type="submit" id="addUserBtn"
+                                                                    class="btn btn-success btn-lg">
+                                                                Добавить
+                                                            </button>
                                                         </div>
-                                                        <button type="submit" id="addUserBtn"
-                                                                class="btn btn-success btn-lg">
-                                                            Добавить
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -272,29 +240,29 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!--модалка - компания-->
-            <div id="editCompany" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+                <!--модалка - компания-->
+                <div id="editCompany" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Информация о компании</h4>
-                        </div>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Информация о компании</h4>
+                            </div>
 
-                        <div class="modal-body">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                        <form id="company-form">
-                                            <div class="form-group text-center edit-form">
+                                            <form id="company-form">
+                                                <div class="form-group text-center edit-form">
                                                     <div class="modal-body" id="company-modal-body"></div>
                                                     <div class="modal-footer" id="modal-footer"></div>
-                                            </div>
-                                        </form>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +272,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script

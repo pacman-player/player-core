@@ -3,6 +3,8 @@ package spring.app.controller.restController;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +16,7 @@ import spring.app.service.impl.VkBotServiceImpl;
 @RestController
 @RequestMapping(value = "/api/admin/vk_bot")
 public class VkBotRestController {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger(VkBotRestController.class);
     private VkBotServiceImpl vkBotService;
 
     @Autowired
@@ -24,7 +26,14 @@ public class VkBotRestController {
 
     @PostMapping("/send")
     public void sendMessage(@RequestBody ConversationDto conversationDto) throws ClientException, ApiException {
-        vkBotService.sendMessage(conversationDto.getId(), conversationDto.getMessage());
+        LOGGER.info("POST request '/send'");
+        try {
+            vkBotService.sendMessage(conversationDto.getId(), conversationDto.getMessage());
+            LOGGER.info("Success!");
+        } catch (ClientException | ApiException e){
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
 
