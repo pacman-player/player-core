@@ -48,7 +48,7 @@ function editSong(id) {
     });
 }
 
-//получаем жанр песни и список жанров из БД для edit song
+//получаем жанр песни и список жанров из БД для модалки edit song
 function getAllGenreForEdit(genreName) {
     //очищаем option в модалке
     $('#updateSongGenre').empty();

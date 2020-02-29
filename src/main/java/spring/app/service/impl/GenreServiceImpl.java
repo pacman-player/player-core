@@ -36,6 +36,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public List<Genre> getAllApprovedGenre() {
+        return genreDao.getAllApproved();
+    }
+
+    @Override
     public void updateGenre(Genre genre) {
         genreDao.update(genre);
     }

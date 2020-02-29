@@ -67,4 +67,12 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 		TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
 		return query.getResultList();
 	}
+
+	public List<T> getAllApproved() {
+		String genericClassName = persistentClass.toGenericString();
+		genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+		String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
+		TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
+		return query.getResultList();
+	}
 }
