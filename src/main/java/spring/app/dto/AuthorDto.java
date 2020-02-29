@@ -27,8 +27,11 @@ public class AuthorDto {
     public AuthorDto(Author author) {
         this.id = author.getId();
         this.name = author.getName();
-        if (author.getAuthorGenres().size() > 0) {
+        if (!author.getAuthorGenres().isEmpty()) {
             this.genres = author.getAuthorGenres().stream().map(Genre::getName).toArray(String[]::new);
+        } else {// если у автора нет жанра (жанр был удален, например),
+                // то возвращаем массив с пустой строкой, иначе ошибка на фронте
+            this.genres = new String[]{""};
         }
     }
 
