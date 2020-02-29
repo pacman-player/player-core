@@ -5,9 +5,7 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import spring.app.model.Song;
-import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.*;
-
 
 import java.io.File;
 import java.io.FileFilter;
@@ -17,8 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Mp3Parser {
 
@@ -27,6 +23,7 @@ public class Mp3Parser {
     private final GenreService genreService;
     private final SongCompilationService songCompilationService;
     private final MusicSearchService musicSearchService;
+    private String musicPath = "music/";
 
     public Mp3Parser(SongService songService,
                      AuthorService authorService,
@@ -41,60 +38,29 @@ public class Mp3Parser {
     }
 
     public void apply(String path) throws InvalidDataException, IOException, UnsupportedTagException {
-        FileFilter fileFilter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getPath().endsWith(".mp3");
-            }
-        };
-        SongCompilation songCompilation1 = new SongCompilation();
-        songCompilation1.setName("My compilation1");
-        SongCompilation songCompilation2 = new SongCompilation();
-        songCompilation2.setName("My compilation2");
-        SongCompilation songCompilation3 = new SongCompilation();
-        songCompilation3.setName("My compilation3");
-        SongCompilation songCompilation4 = new SongCompilation();
-        songCompilation4.setName("My compilation4");
-        Set<Song> songList1 = new HashSet<>();
-        Set<Song> songList2 = new HashSet<>();
-        Set<Song> songList3 = new HashSet<>();
-        Set<Song> songList4 = new HashSet<>();
+
+        FileFilter fileFilter = pathname -> pathname.getPath().endsWith(".mp3");
         File[] songs = new File(path).listFiles(fileFilter);
-        System.out.println(songs.length);
+
         for (int i = 0; i < songs.length; i++) {
             File song = songs[i];
-            System.out.println(song);
-            System.out.println(song.getPath());
-            System.out.println();
-            Mp3File mp3File = new Mp3File(song);
-            System.out.println(song);
-            Song s = readTags(song);
-            if (i < 3) {
-                songList2.add(s);
-            } else if (i < 6) {
-                songList3.add(s);
-            }
-            else if (i < 9) {
-                songList1.add(s);
-            } else {
-                songList4.add(s);
-            }
-
+            // change to readTags() if you want to parse MP3's through GenreDefiner
+            // But need to alter music block in TestDataInit.init()
+            copyInitFile(song, i+1);
         }
-        songCompilation1.setSong(songList1);
-        songCompilation1.setGenre(genreService.getByName("Pop"));
-        songCompilationService.addSongСompilation(songCompilation1);
-        songCompilation2.setSong(songList2);
-        songCompilation2.setGenre(genreService.getByName("Pop"));
-        songCompilationService.addSongСompilation(songCompilation2);
-        songCompilation3.setSong(songList3);
-        songCompilation3.setGenre(genreService.getByName("Soundtrack"));
-        songCompilationService.addSongСompilation(songCompilation3);
-        songCompilation4.setSong(songList4);
-        songCompilation4.setGenre(genreService.getByName("Alternative"));
-        songCompilationService.addSongСompilation(songCompilation4);
     }
 
+    /**
+     * Метод для простого копирования файлов из /music1/ в /music/
+     */
+    public void copyInitFile(File file, int fileId) throws IOException {
+        Path fileO = Paths.get(musicPath + fileId + ".mp3");
+        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    /**
+     * Метод для чтения тегов и поиска информации через музыкальные сервисы на старте программы. Использовать только один из методов.
+     */
     public Song readTags(File file) throws InvalidDataException, IOException, UnsupportedTagException {
         String name = null;
         String author = null;
@@ -132,7 +98,7 @@ public class Mp3Parser {
         */
 
 
-        Path fileO = Paths.get("music/" + id + ".mp3");
+        Path fileO = Paths.get(musicPath + id + ".mp3");
 
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
         return song;

@@ -78,6 +78,10 @@ public class Song extends Bannable {
     }
 
     public Song(Long id, String name, Author author, Genre genre) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
     }
 
     public Song(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueues) {
