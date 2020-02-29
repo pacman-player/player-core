@@ -185,7 +185,7 @@ function editButton(id, name) {
                 url: "/api/admin/author/update_author",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    id: id,
+                    id: fieldId.val(),
                     name: fieldName.val(),
                     genres: fieldGenre.val()
                 }),
@@ -201,8 +201,8 @@ function editButton(id, name) {
                 },
                 success: () => {
                     notification(
-                        "edit-author" + id,
-                        ` Изменения исполнителя с id ${id} сохранены`,
+                        "edit-author" + fieldId.val(),
+                        ` Изменения исполнителя с id ${fieldId.val()} сохранены`,
                         "authors-panel");
                 },
                 error: (xhr, status, error) => {
