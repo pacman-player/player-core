@@ -251,11 +251,13 @@ function getTable() {
         },
         dataType: "JSON",
         success: (authors) => {
+            console.log(authors) // для дебага
             let tableBody = $("#AuthorTable tbody");
-
             tableBody.empty();
+
             for (let i = 0; i < authors.length; i++) {
                 let id = authors[i].id;
+                let checked = authors[i].approved ? "checked" : "";
                 let name = authors[i].name;
                 // list of genres ()
                 let genres = authors[i].genres;
@@ -271,6 +273,7 @@ function getTable() {
                 let tr = $("<tr/>");
                 tr.append(`
                             <td>${id}</td>
+                            <td><input class="checkbox" type="checkbox" disabled ${checked}/></td>
                             <td>${name}</td>
                             <td>${htmlGenres}</td>
                             <td>

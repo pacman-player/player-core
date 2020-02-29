@@ -64,8 +64,9 @@ public class Song extends Bannable {
 
     @Column(name = "approved")
     private Boolean isApproved = false;
+
     /**
-     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
+     * Вспомогательное поле, которое используеться фронтом для корректного отображения данных.
      */
     @Transient
     private Boolean banned;

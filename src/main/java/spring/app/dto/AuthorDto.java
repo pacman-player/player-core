@@ -8,6 +8,7 @@ public class AuthorDto {
     private Long id;
     private String name;
     private String[] genres;
+    private Boolean isApproved;
 
     public AuthorDto() {
     }
@@ -23,6 +24,13 @@ public class AuthorDto {
         this.genres = genres;
     }
 
+    public AuthorDto(Long id, String name, String[] genres, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.isApproved = isApproved;
+    }
+
     //Для легкого и быстрого создания объекта AuthorDto из Author
     public AuthorDto(Author author) {
         this.id = author.getId();
@@ -33,6 +41,7 @@ public class AuthorDto {
             // иначе ошибка на фронте
             genres = new String[]{""};
         }
+        this.isApproved = author.getApproved();
     }
 
     public Long getId() {
@@ -57,5 +66,13 @@ public class AuthorDto {
 
     public void setGenres(String[] genres) {
         this.genres = genres;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 }

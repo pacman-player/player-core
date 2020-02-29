@@ -5,16 +5,25 @@ function getSongsTable() {
     $.ajax({
         method: 'GET',
         url: "/api/admin/song/all_songs",
-        success: function (listSong) {
+        success: (listSong) => {
+            console.log(listSong) // для дебага
             $('#all-songs').empty();
             var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
+                let checkedBox = "";
+                let songId = listSong[i].id;
+
                 songTable += ('<tr id="listSongs">');
-                songTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
+                songTable += ('<td id="tableSongId">' + songId + '</td>');
+
+                if (listSong[i].approved) {
+                    checkedBox = " checked"
+                }
+                songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
                 songTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
                 songTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
-                songTable += ('<td><a id="editSongBtn' + listSong[i].id + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
+                songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
                 songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
                 songTable += ('</tr>');
@@ -104,7 +113,7 @@ function deleteSong(id) {
     $.ajax({
         method: 'DELETE',
         url: '/api/admin/song/delete_song/' + id,
-        success: function() {
+        success: function () {
             getSongsTable();
         },
         error: function (xhr, status, error) {

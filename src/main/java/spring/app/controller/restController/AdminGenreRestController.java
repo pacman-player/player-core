@@ -19,15 +19,15 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 
 @RestController
 @RequestMapping("/api/admin/genre")
-public class GenreRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(GenreRestController.class);
+public class AdminGenreRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminGenreRestController.class);
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
 
     @Autowired
-    public GenreRestController(GenreService genreService,
-                               NotificationServiceImpl notificationService,
-                               CompanyService companyService) {
+    public AdminGenreRestController(GenreService genreService,
+                                    NotificationServiceImpl notificationService,
+                                    CompanyService companyService) {
         this.genreService = genreService;
         this.notificationService = notificationService;
     }
@@ -67,6 +67,7 @@ public class GenreRestController {
         Genre genre = genreService.getById(genreDto.getId());
         String genreDtoName = genreDto.getName();
         genre.setName(genreDtoName);
+        genre.setApproved(genreDto.getApproved());
         genreService.updateGenre(genre);
         LOGGER.info("Updated Genre with name = {}", genreDtoName);
         try {

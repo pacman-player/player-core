@@ -3,6 +3,23 @@ package spring.app.dto;
 public class SongDto {
 
     private Long id;
+    private Boolean isApproved;
+
+    public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
+        this.isApproved = isApproved;
+        this.name = name;
+        this.authorName = authorName;
+        this.genreName = genreName;
+    }
+
+    public SongDto(Long id, Boolean isApproved, String name, String authorName, String genreName) {
+        this.id = id;
+        this.isApproved = isApproved;
+        this.name = name;
+        this.authorName = authorName;
+        this.genreName = genreName;
+    }
+
     private String name;
     private String authorName;
     private String genreName;
@@ -66,13 +83,22 @@ public class SongDto {
         this.genreName = genreName;
     }
 
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
+    }
+
     @Override
     public String toString() {
         return "SongDto{" +
                 "id=" + id +
+                ", isApproved=" + isApproved +
                 ", name='" + name + '\'' +
-                ", author name='" + authorName + '\'' +
-                ", genre name='" + genreName + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", genreName='" + genreName + '\'' +
                 '}';
     }
 }

@@ -170,19 +170,22 @@ function getTable() {
             "Content-Type": "application/json"
         },
         dataType: "JSON",
-        success: function (genres) {
+        success: (genres) => {
+            console.log(genres)
             let tableBody = $("#genresTable tbody");
 
             tableBody.empty();
             for (let i = 0; i < genres.length; i++) {
                 // vars that contains object's fields
                 let id = genres[i].id;
+                let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
                 // parsing fields
                 let tr = $("<tr/>");
                 tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
+                            <td>${id}</td>
+                            <td><input class="checkbox" type="checkbox" disabled ${checked}/></td>
+                            <td>${name}</td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 

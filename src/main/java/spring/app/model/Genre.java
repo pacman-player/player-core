@@ -40,14 +40,6 @@ public class Genre extends Bannable{
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    public Boolean getApproved() {
-        return isApproved;
-    }
-
-    public void setApproved(Boolean approved) {
-        isApproved = approved;
-    }
-
     @Column(name = "approved")
     private Boolean isApproved = false;
 
@@ -113,6 +105,14 @@ public class Genre extends Bannable{
 
     public Boolean isBanned() {
         return banned;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override

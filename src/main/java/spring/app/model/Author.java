@@ -36,6 +36,10 @@ public class Author extends Bannable{
     @UpdateTimestamp
     private Timestamp updatedAt;
 
+    @Column(name = "approved")
+    private Boolean isApproved = false;
+
+
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
@@ -51,6 +55,30 @@ public class Author extends Bannable{
     public Author(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Author(Long id, String name, Set<Genre> genres, Timestamp createdAt, Timestamp updatedAt, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isApproved = isApproved;
+    }
+
+    public Author(String name, Set<Genre> genres, Timestamp createdAt, Timestamp updatedAt, Boolean isApproved) {
+        this.name = name;
+        this.genres = genres;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isApproved = isApproved;
+    }
+
+    public Author(Long id, String name, Set<Genre> genres, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.isApproved = isApproved;
     }
 
     public void setId(Long id) {
@@ -105,6 +133,14 @@ public class Author extends Bannable{
 
     public Boolean getBanned() {
         return banned;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override
