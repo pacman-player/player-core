@@ -197,7 +197,6 @@ function editButton(id, name) {
                 complete: () => {
                     theModal.modal("hide");
                     getTable();
-                    window.location.reload();
                 },
                 success: () => {
                     notification(
