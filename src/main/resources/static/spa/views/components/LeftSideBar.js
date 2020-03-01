@@ -51,14 +51,15 @@ let LeftSideBar = {
                     }
                 });
             }
+            //закомментил тк эти функции в spa.html
             //Функция отображения PopUp
-            function PopUpShow(){
-                $("#popup1").show();
-            }
-            //Функция скрытия PopUp
-            function PopUpHide(){
-                $("#popup1").hide();
-            }
+            // function PopUpShow(){
+            //     $("#popup1").show();
+            // }
+            // //Функция скрытия PopUp
+            // function PopUpHide(){
+            //     $("#popup1").hide();
+            // }
         })
     }
 }
