@@ -1,8 +1,13 @@
 package spring.app.dto;
 
+import spring.app.model.Song;
+
 public class SongDto {
 
     private Long id;
+    private String name;
+    private String authorName;
+    private String genreName;
     private Boolean isApproved;
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
@@ -19,10 +24,6 @@ public class SongDto {
         this.authorName = authorName;
         this.genreName = genreName;
     }
-
-    private String name;
-    private String authorName;
-    private String genreName;
 
     public SongDto(Long id, String name, String authorName, String genreName) {
         this.id = id;
@@ -49,6 +50,19 @@ public class SongDto {
     }
 
     public SongDto() {
+    }
+
+    //Для легкого и быстрого создания объекта AuthorDto из Author
+    public SongDto(Song song) {
+        this.id = song.getId();
+        this.name = song.getName();
+        this.authorName = song.getAuthor().getName();
+        if (song.getGenre() == null) {// если у автора нет жанра (жанр был удален, например),
+            this.genreName = "";      // то возвращаем пустую строк иначе ошибка на фронте
+        } else {
+            this.genreName = song.getGenre().getName();
+        }
+        this.isApproved = song.getApproved();
     }
 
     public Long getId() {

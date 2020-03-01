@@ -55,7 +55,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 			return query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("сообщение об ощибке: " + e.getMessage());
+			System.out.println("сообщение об ошибке: " + e.getMessage());
 			return null;
 		}
 	}

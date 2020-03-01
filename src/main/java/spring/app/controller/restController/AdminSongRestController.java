@@ -15,6 +15,7 @@ import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin/song/")
@@ -32,9 +33,12 @@ public class AdminSongRestController {
     }
 
     @GetMapping(value = "/all_songs")
-    public List<Song> getAllSongs() {
+    public List<SongDto> getAllSongs() {
         LOGGER.info("GET request '/all_songs'");
-        List<Song> list = songService.getAllSong();
+        List<SongDto> list = songService.getAllSong()
+                .stream()
+                .map(SongDto::new)
+                .collect(Collectors.toList());
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }

@@ -21,8 +21,8 @@ function getSongsTable() {
                 }
                 songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
-                songTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
-                songTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
+                songTable += ('<td id="tableSongAuthor">' + listSong[i].authorName + '</td>');
+                songTable += ('<td id="tableSongGenre">' + listSong[i].genreName + '</td>');
                 songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
                 songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
@@ -46,8 +46,8 @@ function editSong(id) {
             //заполняю модалку
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
-            $("#updateSongAuthor").val(editData.author.name);
-            $("#updateSongGenre").val(editData.genre.name);
+            $("#updateSongAuthor").val(editData.author.name); // если работать с DTO, то поменять на поле authorDto
+            $("#updateSongGenre").val(editData.genre.name); // аналогично выше
             //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genre.name);
         },
