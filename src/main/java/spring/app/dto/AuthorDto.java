@@ -1,23 +1,38 @@
 package spring.app.dto;
 
 
+import spring.app.model.Author;
+import spring.app.model.Genre;
+
 public class AuthorDto {
     private Long id;
     private String name;
-    private String genres;
+    private String[] genres;
 
     public AuthorDto() {
     }
 
-    public AuthorDto(String name, String genres) {
+    public AuthorDto(String name, String[] genres) {
         this.name = name;
         this.genres = genres;
     }
 
-    public AuthorDto(Long id, String name, String genres) {
+    public AuthorDto(Long id, String name, String[] genres) {
         this.id = id;
         this.name = name;
         this.genres = genres;
+    }
+
+    //Для легкого и быстрого создания объекта AuthorDto из Author
+    public AuthorDto(Author author) {
+        this.id = author.getId();
+        this.name = author.getName();
+        if (!author.getAuthorGenres().isEmpty()) {
+            this.genres = author.getAuthorGenres().stream().map(Genre::getName).toArray(String[]::new);
+        } else {// если у автора нет жанра (жанр был удален, например),
+                // то возвращаем массив с пустой строкой, иначе ошибка на фронте
+            this.genres = new String[]{""};
+        }
     }
 
     public Long getId() {
@@ -36,11 +51,11 @@ public class AuthorDto {
         this.name = name;
     }
 
-    public String getGenres() {
+    public String[] getGenres() {
         return genres;
     }
 
-    public void setGenres(String genres) {
+    public void setGenres(String[] genres) {
         this.genres = genres;
     }
 }
