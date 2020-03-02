@@ -148,49 +148,51 @@ function deleteButton(id) {
     })
 }
 
-function allSongsButton() {
+function allSongsButton(compilationName, genreId) {
     $("#songs").modal("show");
-    getSongsOfGenre()
+    getSongsOfGenre(compilationName, genreId)
 }
 
-function getSongsOfGenre(songs) {
-    // $.ajax({
-    //     method: "GET",
-    //     url: "/api/admin/song/all_songs",
-    //     contentType: "application/json",
-    //     headers: {
-    //         "Accept": "application/json",
-    //         "Content-Type": "application/json"
-    //     },
-    //     dataType: "JSON",
-    //     success: function (songs) {
-    let tableBody = $("#songsTable tbody");
+function getSongsOfGenre(compilationName, genreId) {
+    console.log(compilationName + " " + genreId);
 
-    tableBody.empty();
-    for (let i = 0; i < songs.length; i++) {
-        let id = songs[i].id;
-        let name = songs[i].name;
-        let author = songs[i].author.name;
-        let genre = songs[i].genre.name;
+    $.ajax({
+        method: "GET",
+        url: `/api/test/songs_with_genre/${genreId}`,
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        dataType: "JSON",
+        success: function (songs) {
+            let tableBody = $("#songsTable tbody");
 
-        let tr = $("<tr/>");
-        tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
-                            <td> ${author} </td>
-                            <td> ${genre} </td>
-                            <td>
-                                <button type="button"
+            tableBody.empty();
+            for (let i = 0; i < songs.length; i++) {
+                let id = songs[i].id;
+                let name = songs[i].name;
+                let author = songs[i].author.name;
+                let genre = songs[i].genre.name;
+
+                let tr = $("<tr/>");
+                tr.append(`
+                             <td> ${id} </td>
+                             <td> ${name} </td>
+                             <td> ${author} </td>
+                             <td> ${genre} </td>
+                             <td>
+                                 <button type="button"
                                         class="btn btn-sm btn-info"
-                                        id="excludeSongBtn"
-                                        onclick="alert('DELETE!')">
-                                    Удалить
-                                </button>
-                            </td>`);
-        tableBody.append(tr);
-    }
-    // }
-    // });
+                                       id="excludeSongBtn"
+                                         onclick="alert('DELETE!')">
+                                     Удалить
+                                 </button>
+                             </td>`);
+                tableBody.append(tr);
+            }
+        }
+    });
 }
 
 
@@ -212,14 +214,12 @@ function getTable() {
                 let id = compilations[i].id;
                 let name = compilations[i].name;
                 let genre = compilations[i].genre.name;
-                let songs = compilations[i].song;
+                let genreId = compilations[i].genre.id;
                 let cover = compilations[i].cover;
                 // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
                 if (cover == null) {
                     cover = "na.jpg"
                 }
-
-                console.log(songs);
 
                 let tr = $("<tr/>");
                 tr.append(`
@@ -230,7 +230,7 @@ function getTable() {
                                 <button type="button"
                                         class="btn btn-sm btn-success"
                                         id="showSongsBtn"
-                                        onclick="allSongsButton(${JSON.stringify(songs)})">
+                                        onclick="allSongsButton('${name}', ${genreId})">
                                     Список треков
                                 </button>
                             </td>

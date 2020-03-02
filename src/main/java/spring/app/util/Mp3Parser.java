@@ -82,16 +82,16 @@ public class Mp3Parser {
 
         }
         songCompilation1.setSong(songList1);
-        songCompilation1.setGenre(genreService.getById(5L));
+        songCompilation1.setGenre(genreService.getById(13L));
         songCompilationService.addSongCompilation(songCompilation1);
         songCompilation2.setSong(songList2);
-        songCompilation2.setGenre(genreService.getById(1L));
+        songCompilation2.setGenre(genreService.getById(7L));
         songCompilationService.addSongCompilation(songCompilation2);
         songCompilation3.setSong(songList3);
         songCompilation3.setGenre(genreService.getById(10L));
         songCompilationService.addSongCompilation(songCompilation3);
         songCompilation4.setSong(songList4);
-        songCompilation4.setGenre(genreService.getById(3L));
+        songCompilation4.setGenre(genreService.getById(6L));
         songCompilationService.addSongCompilation(songCompilation4);
     }
 
