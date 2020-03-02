@@ -21,7 +21,10 @@ $(document).ready(function () {
                 allCompilationInGenre = listSongCompilation;
                 fillAllSongsPlaylist(allCompilationInGenre, allSongInGenre);
                 let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
-                var htmlCompilation = "Need to add Compilation";
+                var htmlCompilation = ('<div id="songCompilation"><style="margin-right: 10px" id="linkBack">' +
+                    '<div><h3 style="display:inline">Need to add Compilation</h3></div><br>' +
+                    '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
+                    '<h3 style="display:inline">Подборки песен</h3></div>');
                 if (0 < listCompilation.length) {
                     htmlCompilation = ('<div id="songCompilation"><style="margin-right: 10px" id="linkBack">' +
                         '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
