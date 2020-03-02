@@ -9,9 +9,11 @@ import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin/author")
@@ -26,11 +28,13 @@ public class AdminAuthorRestController {
     }
 
     @GetMapping(value = "/all_authors")
-    public List<Author> getAllAuthor(){
+    public List<AuthorDto> getAllAuthor(){
         LOGGER.info("GET request '/all_authors'");
-        List<Author> list = authorService.getAllAuthor();
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+        List<Author> authorList = authorService.getAllAuthor();
+        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
+        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+        LOGGER.info("Result has {} lines", authorDtoList.size());
+        return authorDtoList;
     }
 
     @GetMapping(value = "/{id}")
@@ -40,7 +44,6 @@ public class AdminAuthorRestController {
         LOGGER.info("Found Author = {}", author);
         return author;
     }
-
 
     @PostMapping(value = "/add_author")
     public void addAuthor(@RequestBody AuthorDto newAuthor) {
@@ -58,7 +61,7 @@ public class AdminAuthorRestController {
     }
 
     @PutMapping(value = "/update_author")
-    public void updateAuthor(@RequestBody AuthorDto newAuthor){
+    public void updateAuthor(@RequestBody AuthorDto newAuthor) {
         LOGGER.info("PUT request '/update_author' to update author = {}", newAuthor.getName());
         Author author = new Author(newAuthor.getId(),newAuthor.getName());
         author.setAuthorGenres(getGenres(newAuthor.getGenres()));
@@ -81,11 +84,10 @@ public class AdminAuthorRestController {
         return list;
     }
 
-    private Set<Genre> getGenres(String nameGenres) {
-        Set<Genre> genres = new HashSet<>();
-        Genre genre = genreService.getByName(nameGenres);
-        genres.add(genre);
-        return genres;
+    private Set<Genre> getGenres(String[] genresArr) {
+        //С использованием стримов проходим по каждому жанру в массиве,
+        //находим его в БД и добавляем данный объект Genre в наш Set<Genre>
+        return Arrays.stream(genresArr).map(genreService::getByName).collect(Collectors.toSet());
     }
 
     // Returns false if author with requested name already exists else true
