@@ -28,7 +28,7 @@ $(document).ready(function () {
                 if (0 < listCompilation.length) {
                     htmlCompilation = ('<div id="songCompilation"><style="margin-right: 10px" id="linkBack">' +
                         '<img src="/img/back.svg" width="30" height="30" alt="Назад" ></a>' +
-                        '<h3 style="display:inline">Подборки песен</h3></div>');
+                        '<h3 style="display:inline">Подборки песен</h3></div><br>');
                     for (var i = 0; i < listCompilation.length; i++) {
                         let morningIds = [];
                         let middayIds = [];
