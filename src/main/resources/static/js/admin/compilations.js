@@ -19,7 +19,6 @@ $(document).ready(function () {
 });
 
 
-
 function prepareForm(dropDownListSelector = $("#addCompilationGenre")) {
     dropDownListSelector.empty();
     let genres = getGenres();
@@ -141,7 +140,7 @@ function deleteButton(id) {
             getTable();
         },
         success: () => {
-           alert(`${id} DELETED!`)
+            alert(`${id} DELETED!`)
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -150,8 +149,50 @@ function deleteButton(id) {
 }
 
 function allSongsButton() {
-    alert("all songs")
+    $("#songs").modal("show");
+    getSongsOfGenre()
 }
+
+function getSongsOfGenre(songs) {
+    // $.ajax({
+    //     method: "GET",
+    //     url: "/api/admin/song/all_songs",
+    //     contentType: "application/json",
+    //     headers: {
+    //         "Accept": "application/json",
+    //         "Content-Type": "application/json"
+    //     },
+    //     dataType: "JSON",
+    //     success: function (songs) {
+    let tableBody = $("#songsTable tbody");
+
+    tableBody.empty();
+    for (let i = 0; i < songs.length; i++) {
+        let id = songs[i].id;
+        let name = songs[i].name;
+        let author = songs[i].author.name;
+        let genre = songs[i].genre.name;
+
+        let tr = $("<tr/>");
+        tr.append(`
+                            <td> ${id} </td>
+                            <td> ${name} </td>
+                            <td> ${author} </td>
+                            <td> ${genre} </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-info"
+                                        id="excludeSongBtn"
+                                        onclick="alert('DELETE!')">
+                                    Удалить
+                                </button>
+                            </td>`);
+        tableBody.append(tr);
+    }
+    // }
+    // });
+}
+
 
 function getTable() {
     $.ajax({
@@ -171,12 +212,14 @@ function getTable() {
                 let id = compilations[i].id;
                 let name = compilations[i].name;
                 let genre = compilations[i].genre.name;
-                let songs;
+                let songs = compilations[i].song;
                 let cover = compilations[i].cover;
                 // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
                 if (cover == null) {
                     cover = "na.jpg"
                 }
+
+                console.log(songs);
 
                 let tr = $("<tr/>");
                 tr.append(`
@@ -187,7 +230,7 @@ function getTable() {
                                 <button type="button"
                                         class="btn btn-sm btn-success"
                                         id="showSongsBtn"
-                                        onclick="allSongsButton(${id}, '${name}')">
+                                        onclick="allSongsButton(${JSON.stringify(songs)})">
                                     Список треков
                                 </button>
                             </td>
