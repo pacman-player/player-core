@@ -30,12 +30,15 @@ public class AdminCompilationRestController {
 
     @GetMapping
     public List<SongCompilation> getAllCompilation() {
-        return songCompilationService.getAllSongCompilations();
+        LOGGER.info("GET request '/'");
+        List<SongCompilation> listOfCompilations = songCompilationService.getAllSongCompilations();
+        LOGGER.info("Result has {} lines", listOfCompilations.size());
+        return listOfCompilations;
     }
 
     @PostMapping("/update")
     public void updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
-        LOGGER.info("POST request '/api/admin/compilation/update' songCompilationDto ID = {}", songCompilationDto.getId());
+        LOGGER.info("POST request '/update' songCompilationDto ID = {}", songCompilationDto.getId());
         SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
         LOGGER.info("Song compilation with ID = {} exists", compilation.getId());
 
