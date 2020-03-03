@@ -43,13 +43,15 @@ function editSong(id) {
         url: '/api/admin/song/' + id,
         method: 'GET',
         success: function (editData) {
+            console.log(editData)
             //заполняю модалку
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
-            $("#updateSongAuthor").val(editData.author.name); // если работать с DTO, то поменять на поле authorDto
-            $("#updateSongGenre").val(editData.genre.name); // аналогично выше
+            $("#updateSongAuthor").val(editData.authorName);
+            $("#updateSongGenre").val(editData.genreName);
             //получаем жанр песни и список жанров из БД для edit song
-            getAllGenreForEdit(editData.genre.name);
+            getAllGenreForEdit(editData.genreName);
+            $("#updateSongApproved").prop('checked', editData.approved);
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -84,8 +86,9 @@ $("#updateSongBtn").click(function (event) {
 function updateSongForm() {
     var editSong = {};
     editSong.id = $("#updateSongId").val();
+    editSong.approved = $("#updateSongApproved").prop('checked');
     editSong.name = $("#updateSongName").val();
-    editSong.author = $("#updateSongAuthor").val();
+    editSong.authorName = $("#updateSongAuthor").val();
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',

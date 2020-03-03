@@ -82,6 +82,8 @@ public class AdminSongRestController {
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
         Song song = new Song(songDto.getId(), songDto.getName());
+        Boolean isApproved = songDto.getApproved();
+        song.setApproved(isApproved);
         song.setAuthor(author);
         song.setGenre(genre);
         songService.updateSong(song);
@@ -90,11 +92,11 @@ public class AdminSongRestController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<Song> getSongById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
         LOGGER.info("GET request '/{}'", id);
-        Song song = songService.getSongById(id);
-        LOGGER.info("Found Sing = {}", song);
-        return ResponseEntity.ok(song);
+        SongDto songDto = new SongDto(songService.getSongById(id));
+        LOGGER.info("Found Sing = {}", songDto);
+        return ResponseEntity.ok(songDto);
     }
 
     @GetMapping(value = "/all_genre")
