@@ -148,7 +148,7 @@ function addAuthor(form, name, genre) {
 }
 
 
-function editButton(id, name) {
+function editButton(id, name, approved) {
     let fieldGenre = $("#editAuthorGenre");
     // подгрузка жанров этого исполнителя в список
     prepareGenreFieldForAuthor(fieldGenre, id);
@@ -157,9 +157,11 @@ function editButton(id, name) {
     let form = $("#edit-form");
     let fieldId = $("#editAuthorId");
     let fieldName = $("#editAuthorName");
+    let fieldApproved = $("#editAuthorApproved");
 
     fieldId.val(id);
     fieldName.val(name);
+    fieldApproved.prop('checked', approved);
 
     theModal.modal("show");
     form.validate({
@@ -167,7 +169,16 @@ function editButton(id, name) {
             name: {
                 required: true,
                 pattern: authorNameRegEx,
-                rangelength: [3, 30]
+                rangelength: [2, 40],
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/author/is_free",
+                    data: {
+                        id: () => {
+                            return fieldId.val()
+                        }
+                    }
+                },
             },
             updateGenre: {
                 required: true
@@ -187,7 +198,8 @@ function editButton(id, name) {
                 data: JSON.stringify({
                     id: fieldId.val(),
                     name: fieldName.val(),
-                    genres: fieldGenre.val()
+                    genres: fieldGenre.val(),
+                    approved: fieldApproved.prop('checked')
                 }),
                 headers: {
                     "Accept": "application/json",
@@ -256,6 +268,7 @@ function getTable() {
 
             for (let i = 0; i < authors.length; i++) {
                 let id = authors[i].id;
+                let approved = authors[i].approved;
                 let checked = authors[i].approved ? "checked" : "";
                 let name = authors[i].name;
                 // list of genres ()
@@ -279,7 +292,7 @@ function getTable() {
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editAuthorBtn"
-                                        onclick="editButton(${id}, '${name}')">
+                                        onclick="editButton(${id}, '${name}', ${approved})">
                                     Изменить
                                 </button>
                             </td>
