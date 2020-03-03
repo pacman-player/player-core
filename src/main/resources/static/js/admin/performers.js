@@ -14,6 +14,7 @@ $(document).ready(function () {
     })
 });
 
+
 // Drop-down list data
 function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
     dropDownListSelector.empty();
@@ -27,6 +28,44 @@ function prepareForm(dropDownListSelector = $("#addAuthorGenre")) {
 
     dropDownListSelector.append(selectOptions);
 }
+
+
+//В модальном окне редактирования исполнителя формируем общий список жанров
+//с выделенными жанрами этого исполнителя
+function prepareGenreFieldForAuthor(fieldGenre, id) {
+    fieldGenre.empty();
+    fieldGenre.attr("multiple", "multiple");
+    let allGenres = getGenres();
+
+    //При большом количестве жанров раскомментировать 1 строчку и
+    //закомментировать 2
+    fieldGenre.attr("size", "10");
+    // fieldGenre.attr("size", `${allGenres.length}`);
+
+    // Ищем нужный столбец с жанрами исполнителя с указанным id:
+    let authorGenres = $("tr").find('td:nth-child(1)') // У каждого ряда достаем первый(1) столбец с айдишником
+        .filter(function(){ // Фильтруем каждый столбец
+            return $(this).text() === `${id}`; // Оставляем только тот столбец, содержимое которого равно id ->
+        }) // -> так мы находим нужную строку
+        .parent() // Обращаемся к этой строке
+        .find(`td:nth-child(3)`) // Находим у неё третий по счёту столбец
+        .text() // Считываем его текст с жанрами
+        .split(", "); // Собираем жанры в массив по разделителю ", "
+    let selectOptions = "";
+
+    checkGenre: for (let i = 0; i < allGenres.length; i++) {
+        let genre = allGenres[i].name;
+        for (let j = 0; j < authorGenres.length; j++) {
+            if (authorGenres[j] === genre) {
+                selectOptions += `<option value="${genre}" selected> ${genre} </option>`;
+                continue checkGenre;
+            }
+        }
+        selectOptions += `<option value="${genre}"> ${genre} </option>`;
+    }
+    fieldGenre.append(selectOptions);
+}
+
 
 function getGenres() {
     return $.ajax({
@@ -50,6 +89,7 @@ const errMessages = {
     rangelength: "Количество символов должно быть в диапазоне [3-30]",
     remote: "Имя занято"
 };
+
 
 const authorNameRegEx = /[\wА-Яа-я\-]/;
 
@@ -75,6 +115,7 @@ $("#addForm").validate({
         name: errMessages
     }
 });
+
 
 function addAuthor(form, name, genre) {
     $.ajax({
@@ -110,8 +151,8 @@ function addAuthor(form, name, genre) {
 
 function editButton(id, name) {
     let fieldGenre = $("#editAuthorGenre");
-    // подгрузка жанров в выпадающий список
-    prepareForm(fieldGenre);
+    // подгрузка жанров этого исполнителя в список
+    prepareGenreFieldForAuthor(fieldGenre, id);
 
     let theModal = $('#editAuthor');
     let form = $("#edit-form");
@@ -127,15 +168,17 @@ function editButton(id, name) {
             name: {
                 required: true,
                 pattern: authorNameRegEx,
-                rangelength: [3, 30],
-                remote: {
-                    method: "GET",
-                    url: "/api/admin/author/is_free",
-                }
+                rangelength: [3, 30]
+            },
+            updateGenre: {
+                required: true
             }
         },
         messages: {
-            name: errMessages
+            name: errMessages,
+            updateGenre: {
+                required: "Выберите жанр"
+            }
         },
         submitHandler: () => {
             $.ajax({
@@ -143,7 +186,7 @@ function editButton(id, name) {
                 url: "/api/admin/author/update_author",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    id: id,
+                    id: fieldId.val(),
                     name: fieldName.val(),
                     genres: fieldGenre.val()
                 }),
@@ -158,8 +201,8 @@ function editButton(id, name) {
                 },
                 success: () => {
                     notification(
-                        "edit-author" + id,
-                        ` Изменения исполнителя с id ${id} сохранены`,
+                        "edit-author" + fieldId.val(),
+                        ` Изменения исполнителя с id ${fieldId.val()} сохранены`,
                         "authors-panel");
                 },
                 error: (xhr, status, error) => {
@@ -215,17 +258,21 @@ function getTable() {
                 let id = authors[i].id;
                 let name = authors[i].name;
                 // list of genres ()
-                let genres = authors[i].authorGenres;
+                let genres = authors[i].genres;
                 let htmlGenres = "";
                 for (let gi = 0; gi < genres.length; gi++) {
-                    htmlGenres += genres[gi].name + " ";
+                    htmlGenres += genres[gi];
+                    if (gi < genres.length - 1) {
+                        htmlGenres += ", "; // Несколько жанров обязательно должны формироваться в строку
+                        // по разделителю ", " иначе отображение жанров в модальном окне будет некорректным
+                    }
                 }
 
                 let tr = $("<tr/>");
                 tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
-                            <td> ${htmlGenres} </td>
+                            <td>${id}</td>
+                            <td>${name}</td>
+                            <td>${htmlGenres}</td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
