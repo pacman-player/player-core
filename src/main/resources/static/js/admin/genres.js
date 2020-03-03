@@ -94,11 +94,14 @@ function editButton(id, name, approved) {
                 required: true,
                 pattern: genreNameRegEx,
                 rangelength: [3, 30],
-                //TODO включить обратно, когда будет исправлена логика валидации
-                // если выключить этот блок не замечено ошибок на фронте.
                 remote: {
                     method: "GET",
-                    url: "/api/admin/genre/is_free/" + fieldId.val()
+                    url: "/api/admin/genre/is_free",
+                    data: {
+                        id: () => {
+                            return fieldId.val()
+                        }
+                    }
                 },
             }
         },
@@ -106,7 +109,6 @@ function editButton(id, name, approved) {
             name: errMessages
         },
         submitHandler: () => {
-            console.log(fieldId.val())
             $.ajax({
                 method: "PUT",
                 url: "/api/admin/genre/update_genre",
@@ -177,7 +179,6 @@ function getTable() {
         },
         dataType: "JSON",
         success: (genres) => {
-            console.log(genres)
             let tableBody = $("#genresTable tbody");
 
             tableBody.empty();
