@@ -6,14 +6,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
-import spring.app.service.abstraction.UserService;
+import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Notification;
-import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -22,13 +20,13 @@ import java.util.Set;
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationDao notificationDao;
-    private UserService userService;
+    private UserDao userDao;
 
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserService userDao) {
+    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
         this.notificationDao = notificationDao;
-        this.userService = userDao;
+        this.userDao = userDao;
     }
 
 
@@ -49,7 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message, Long id) throws InterruptedException {
-        List<User> users = userService.getAllUsers();
+        List<User> users = userDao.getAll();
         for (User user : users) {
             if (!user.getId().equals(id)) {
                 Notification notification = new Notification(message, true, user);
@@ -60,7 +58,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message) throws InterruptedException {
-        List<User> usersAdmin = userService.getUserByRole("ADMIN");
+        List<User> usersAdmin = userDao.getUserByRole("ADMIN");
         for (User user : usersAdmin) {
             Notification notification = new Notification(message, true, user);
             notificationDao.save(notification);
