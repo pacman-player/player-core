@@ -11,6 +11,8 @@ public interface SongCompilationDao extends GenericDao<Long, SongCompilation> {
     // Получить содержимое подборки (все песни из подборки)
     List<Song> getSongCompilationContentById(Long compilationId);
 
+    void removeSongFromSongCompilation(SongCompilation songCompilation, Song song);
+
     void deleteValByGenreId(Long id);
 
     SongCompilation getSongCompilationByCompilationName(String compilationName);

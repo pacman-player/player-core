@@ -6,22 +6,40 @@ import spring.app.model.SongCompilation;
 import java.io.IOException;
 import java.util.List;
 
+
 public interface SongCompilationService {
     void addSongCompilation(SongCompilation songCompilation);
+
     List<SongCompilation> getAllSongCompilations();
+
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
+
     List<Song> getSongCompilationContentById(Long compilationId);
+
     void deleteValByGenreId(Long id);
 
+
+
+    // test!
+    void removeSongFromSongCompilation(Long compilationId, Long songId);
+
+
+
+
     void addSongCompilationToMorningPlaylist(Long id);
+
     void addSongCompilationToMiddayPlaylist(Long id);
+
     void addSongCompilationToEveningPlaylist(Long id);
 
     List<SongCompilation> getAllCompilationsInMorningPlaylistByCompanyId(Long id);
+
     List<SongCompilation> getAllCompilationsInMiddayPlaylistByCompanyId(Long id);
+
     List<SongCompilation> getAllCompilationsInEveningPlaylistByCompanyId(Long id);
 
     SongCompilation getSongCompilationById(Long id);
+
     SongCompilation getSongCompilationByCompilationName(String compilationName);
 
     void deleteSongCompilationFromPlayList(Long id, String dayTime);

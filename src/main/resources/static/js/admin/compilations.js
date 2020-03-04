@@ -148,23 +148,15 @@ function deleteButton(id) {
     })
 }
 
-function allSongsButton(compilationName, compilationId) {
+function allSongsButton(compilationId) {
     $("#songs").modal("show");
-    getCompilationContentById(compilationName, compilationId)
+    getCompilationContentById(compilationId)
 }
 
-function getCompilationContentById(compilationName, compilationId) {
-    console.log(compilationName + " " + compilationId);
-
+function getCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
         url: `/api/test/compilation/content/${compilationId}`,
-        contentType: "application/json",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        dataType: "JSON",
         success: function (songs) {
             let tableBody = $("#songsTable tbody");
 
@@ -183,9 +175,9 @@ function getCompilationContentById(compilationName, compilationId) {
                              <td> ${genre} </td>
                              <td>
                                  <button type="button"
-                                        class="btn btn-sm btn-info"
-                                       id="excludeSongBtn"
-                                         onclick="alert('DELETE!')">
+                                         class="btn btn-sm btn-info"
+                                         id="removeSongBtn"
+                                         onclick="removeSongFromCompilation(${compilationId}, ${id})">
                                      Удалить
                                  </button>
                              </td>`);
@@ -193,6 +185,24 @@ function getCompilationContentById(compilationName, compilationId) {
             }
         }
     });
+}
+
+
+function removeSongFromCompilation(compilationId, songId) {
+    $.ajax({
+        method: "DELETE",
+        url: `/api/test/compilation/${compilationId}/${songId}`,
+        contentType: "application/json",
+        complete: () => {
+            getCompilationContentById(compilationId)
+        },
+        success: () => {
+            alert(`${songId} DELETED!`)
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
 }
 
 
@@ -230,7 +240,7 @@ function getTable() {
                                 <button type="button"
                                         class="btn btn-sm btn-success"
                                         id="showSongsBtn"
-                                        onclick="allSongsButton('${name}', ${id})">
+                                        onclick="allSongsButton(${id})">
                                     Список треков
                                 </button>
                             </td>

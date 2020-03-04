@@ -38,6 +38,13 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         return query.getResultList();
     }
 
+    // MySQL native --->
+    // DELETE FROM song_compilation_on_song WHERE song_compilation_id=x AND song_id=y;
+    @Override
+    public void removeSongFromSongCompilation(SongCompilation songCompilation, Song song) {
+        songCompilation.getSong().remove(song);
+        song.getSongCompilations().remove(songCompilation);
+    }
 
     @Override
     public void deleteValByGenreId(Long id) {

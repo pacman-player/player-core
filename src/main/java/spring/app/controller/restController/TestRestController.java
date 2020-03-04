@@ -1,10 +1,7 @@
 package spring.app.controller.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.app.model.Song;
 import spring.app.service.abstraction.SongCompilationService;
 
@@ -24,6 +21,11 @@ public class TestRestController {
     @GetMapping("/compilation/content/{compilationId}")
     public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
         return songCompilationService.getSongCompilationContentById(compilationId);
+    }
+
+    @DeleteMapping("/compilation/{compilationId}/{songId}")
+    public void removeSongFromSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+        songCompilationService.removeSongFromSongCompilation(compilationId, songId);
     }
 
 }

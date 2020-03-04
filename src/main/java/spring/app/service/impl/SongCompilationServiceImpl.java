@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
 import spring.app.model.*;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.FileUploadService;
-import spring.app.service.abstraction.SongCompilationService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,16 +22,18 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     private CompanyService companyService;
     private FileUploadService fileUploadService;
     private SendEmailAboutAddNewCompilationImpl sendEmail;
+    private SongService songService;
 
     @Autowired
     public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
-                                      @Lazy FileUploadService fileUploadService) {
+                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
         this.songCompilationDao = songCompilationDao;
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
         this.fileUploadService = fileUploadService;
+        this.songService = songService;
     }
 
     @Override
@@ -56,6 +55,14 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<Song> getSongCompilationContentById(Long compilationId) {
         return songCompilationDao.getSongCompilationContentById(compilationId);
+    }
+
+
+    @Override
+    public void removeSongFromSongCompilation(Long compilationId, Long songId) {
+        songCompilationDao.removeSongFromSongCompilation(
+                getSongCompilationById(compilationId),
+                songService.getSongById(songId));
     }
 
     @Override
