@@ -38,26 +38,26 @@ public class AdminCompilationRestController {
 
     @PostMapping("/update")
     public void updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
-        LOGGER.info("POST request '/update' songCompilationDto ID = {}", songCompilationDto.getId());
+        LOGGER.info("POST request '/update' to update SongCompilation id = {}", songCompilationDto.getId());
         SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
-        LOGGER.info("Song compilation with ID = {} exists", compilation.getId());
+        LOGGER.info("SongCompilation [name = '{}'; id = {}] found", compilation.getName(), compilation.getId());
 
         if (songCompilationDto.getCover() != null
                 && fileUploadService.isImage(songCompilationDto.getCover().getOriginalFilename())) {
             String coverName = fileUploadService.upload(songCompilationDto.getCover());
-            LOGGER.info("Cover uploaded. Cover name: {}", coverName);
+            LOGGER.info("Cover '{}' uploaded", coverName);
             // Удалить текущую обложку
             if (compilation.getCover() != null) {
                 fileUploadService.eraseCurrentFile(compilation.getCover());
-                LOGGER.info("Old cover deleted");
+                LOGGER.info("Previous cover deleted");
             }
 
             compilation.setCover(coverName);
-            LOGGER.info("Cover updated for song compilation with ID = {}", compilation.getId());
+            LOGGER.info("Cover for SongCompilation with id = {} updated", compilation.getId());
         }
         compilation.setName(songCompilationDto.getName());
 
         songCompilationService.updateCompilation(compilation);
-        LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
+        LOGGER.info("SongCompilation with id = {} updated successfully", compilation.getId());
     }
 }
