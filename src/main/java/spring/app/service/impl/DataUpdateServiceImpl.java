@@ -14,7 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Заносит в базу данные про артиста, песню и жанр
+ * Этот класс существует для наполнения БД из заказанных треков. genreNames - приходит из GenreDefineService.
+ * Т.е. заносит в базу данные про артиста, песню и жанр
  * Возвращает id песни
  */
 @Service
@@ -33,31 +34,39 @@ public class DataUpdateServiceImpl implements DataUpdateService {
 
     @Override
     public Long updateData(String authorName, String songName, String[] genreNames) {
+        Set<Genre> authorGenres;
 
-        Set<Genre> authorGenres = new HashSet<>();
+        Author author = authorService.getByName(authorName);
+        if (author == null) { // если автора нет в БД, тогда сохраняем нового и присваиваем переменной authorGenres пустой сет жанров
+            author = new Author(authorName);
+            authorService.addAuthor(author);
+            authorGenres = new HashSet<>();
+        } else {
+            // если автор есть, записываем его жанры в переменную
+            authorGenres = author.getAuthorGenres();
+        }
+
         for (String genreName : genreNames) {
             Genre genre = genreService.getByName(genreName);
             if (genre == null) {
+                // добавляем новые жанры если мы о них не знаем
                 genre = new Genre(genreName);
                 genreService.addGenre(genre);
             }
+            // записываем жанр в сет жанров
             authorGenres.add(genre);
         }
-
-
-        Author author = authorService.getByName(authorName);
-        if (author == null) {
-            author = new Author(authorName);
-            author.setAuthorGenres(authorGenres);
-            authorService.addAuthor(author);
-        }
+        // сохраняем жанры у автора в БД
+        author.setAuthorGenres(authorGenres);
+        authorService.updateAuthor(author);
 
         Song song = songService.getByName(songName);
         if (song == null || !song.getAuthor().equals(author)) {
+            // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
             song = new Song(songName, author,(Genre)authorGenres.toArray()[0]);
             songService.addSong(song);
         }
-
+        // возвращаем id песни
         return song.getId();
     }
 }
