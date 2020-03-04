@@ -151,7 +151,13 @@ function deleteButton(id) {
                 "establishments-panel");
         },
         error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+            if (xhr.responseText.includes("DataIntegrityViolationException")) {
+                let cautation = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
+                alert(cautation);
+            } else {
+                alert(xhr.responseText + "|\n" + status + "|\n" + error);
+            }
+
         }
     })
 }

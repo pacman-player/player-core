@@ -23,4 +23,14 @@ public class NotificationDaoImpl extends AbstractDao<Long, Notification> impleme
         List<Notification> list = query.getResultList();
         return list;
     }
+
+    @Override
+    public void bulkRemoveNotificationsByUserId(Long userId) {
+        List<Notification> notifications = getByUserId(userId);
+        for (Notification notif : notifications
+             ) {
+            super.deleteById(notif.getId());
+        }
+        entityManager.flush();
+    }
 }
