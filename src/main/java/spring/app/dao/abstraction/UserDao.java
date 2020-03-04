@@ -2,6 +2,8 @@ package spring.app.dao.abstraction;
 
 import spring.app.model.User;
 
+import java.util.List;
+
 public interface UserDao extends GenericDao<Long, User> {
 	User getUserByLoginWithRegStepsCompany(String login);
 	User getUserByLogin(String login);
@@ -12,4 +14,5 @@ public interface UserDao extends GenericDao<Long, User> {
 	boolean isExistUserByEmail(String email, long userId);
 	boolean isExistUserByLogin(String login);
 	boolean isExistUserByLogin(String login, long userId);
+	List<User> getUserByRole(String role);
 }
