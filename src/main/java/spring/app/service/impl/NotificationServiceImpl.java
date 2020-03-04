@@ -58,8 +58,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message) throws InterruptedException {
-        List<User> users = userDao.getAll();
-        for (User user : users) {
+        List<User> usersAdmin = userDao.getUserByRole("ADMIN");
+        for (User user : usersAdmin) {
             Notification notification = new Notification(message, true, user);
             notificationDao.save(notification);
         }

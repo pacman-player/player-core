@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private CompanyService companyService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -122,9 +123,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByVkId(int vkId) {
-        return userDao.getUserByVkId(vkId);
-    }
+	public User getUserByVkId(int vkId) {
+		return userDao.getUserByVkId(vkId);
+	}
 
     @Override
     public Long getIdAuthUser() {
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isExistUserByEmail(String email) {
+    public boolean isExistUserByEmail(String email){
         return userDao.isExistUserByEmail(email);
     }
 
@@ -145,7 +146,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isExistUserByLogin(String login) {
+    public boolean isExistUserByLogin(String login){
         return userDao.isExistUserByLogin(login);
     }
 
@@ -153,4 +154,11 @@ public class UserServiceImpl implements UserService {
     public boolean isExistUserByLogin(String login, long userId) {
         return userDao.isExistUserByLogin(login, userId);
     }
+
+    @Override
+    public List<User> getUserByRole(String role) {
+        return userDao.getUserByRole(role);
+    }
+
+
 }
