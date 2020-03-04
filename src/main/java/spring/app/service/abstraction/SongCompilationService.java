@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ public interface SongCompilationService {
     void addSongCompilation(SongCompilation songCompilation);
     List<SongCompilation> getAllSongCompilations();
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
+    List<Song> getSongCompilationContentById(Long compilationId);
     void deleteValByGenreId(Long id);
 
     void addSongCompilationToMorningPlaylist(Long id);

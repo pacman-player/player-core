@@ -148,17 +148,17 @@ function deleteButton(id) {
     })
 }
 
-function allSongsButton(compilationName, genreId) {
+function allSongsButton(compilationName, compilationId) {
     $("#songs").modal("show");
-    getSongsOfGenre(compilationName, genreId)
+    getCompilationContentById(compilationName, compilationId)
 }
 
-function getSongsOfGenre(compilationName, genreId) {
-    console.log(compilationName + " " + genreId);
+function getCompilationContentById(compilationName, compilationId) {
+    console.log(compilationName + " " + compilationId);
 
     $.ajax({
         method: "GET",
-        url: `/api/test/songs_with_genre/${genreId}`,
+        url: `/api/test/compilation/content/${compilationId}`,
         contentType: "application/json",
         headers: {
             "Accept": "application/json",
@@ -230,7 +230,7 @@ function getTable() {
                                 <button type="button"
                                         class="btn btn-sm btn-success"
                                         id="showSongsBtn"
-                                        onclick="allSongsButton('${name}', ${genreId})">
+                                        onclick="allSongsButton('${name}', ${id})">
                                     Список треков
                                 </button>
                             </td>

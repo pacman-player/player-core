@@ -3,6 +3,7 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
+import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 
 import javax.persistence.TypedQuery;
@@ -19,11 +20,24 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
-        TypedQuery<SongCompilation> query = entityManager.createQuery("FROM SongCompilation WHERE genre_id = :id", SongCompilation.class);
+        TypedQuery<SongCompilation> query = entityManager.createQuery(
+                "SELECT sc FROM SongCompilation sc WHERE sc.genre.id = :id", SongCompilation.class);
         query.setParameter("id", id);
         List<SongCompilation> list = query.getResultList();
         return list;
     }
+
+    // MySQL native --->
+    // SELECT s.* FROM song s JOIN song_compilation_on_song scos ON s.id=scos.song_id WHERE scos.song_compilation_id=1;
+    @Override
+    public List<Song> getSongCompilationContentById(Long compilationId) {
+        TypedQuery<Song> query = entityManager.createQuery(
+                "SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :id ", Song.class);
+        query.setParameter("id", compilationId);
+
+        return query.getResultList();
+    }
+
 
     @Override
     public void deleteValByGenreId(Long id) {

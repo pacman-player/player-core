@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
-import spring.app.model.Company;
-import spring.app.model.PlayList;
-import spring.app.model.SongCompilation;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.SongCompilationService;
@@ -54,6 +51,11 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
         return songCompilationDao.getListSongCompilationsByGenreId(id);
+    }
+
+    @Override
+    public List<Song> getSongCompilationContentById(Long compilationId) {
+        return songCompilationDao.getSongCompilationContentById(compilationId);
     }
 
     @Override
