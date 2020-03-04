@@ -48,7 +48,7 @@ public class AdminAuthorRestController {
     @PostMapping(value = "/add_author")
     public void addAuthor(@RequestBody AuthorDto newAuthor) {
         LOGGER.info("POST request '/add_author' with new Author = {}", newAuthor.getName());
-        String editName = (newAuthor.getName()).replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        String editName = (newAuthor.getName()).replaceAll("[^A-Za-zА-Яа-я0-9-& ]", "");
         if (authorService.getByName(editName) == null) {
             Author author = new Author();
             author.setName(editName);

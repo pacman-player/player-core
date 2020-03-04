@@ -120,4 +120,17 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
                 .getSingleResult();
         return count > 0;
     }
+
+    @Override
+    public List<User> getUserByRole(String role) {
+        List<User> userList = entityManager.createQuery("SELECT usr FROM User usr LEFT JOIN fetch usr.roles rl WHERE rl.name = :name", User.class)
+                .setParameter("name", role)
+                .getResultList();
+        if (userList.isEmpty()) {
+            return null;
+        }
+        return userList;
+    }
+
+
 }
