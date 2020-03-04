@@ -29,7 +29,7 @@ public class UserCompilationRestController {
     @PostMapping(value = "/get/all-song-compilation")
     public List<SongCompilation> getSongCompilation(@RequestBody String genre) {
         LOGGER.info("GET request '/get/all-song-compilation' with genre = {}", genre);
-        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
+        genre = genre.replaceAll("[^A-Za-zА-Яа-я0-9-& ]", "");
 
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");

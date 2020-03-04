@@ -34,7 +34,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     private final AuthorService authorService;
     private final SongService songService;
 
-    @Value("${uploaded_files_path}")
+    @Value("${music.path}")
     private String fileFolder;
 
     @Value("${uploaded.compilations.covers}")
