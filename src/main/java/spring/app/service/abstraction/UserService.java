@@ -42,4 +42,6 @@ public interface UserService {
     boolean isExistUserByLogin(String login);
 
     boolean isExistUserByLogin(String login, long userId);
+
+	List<User> getUserByRole(String role);
 }

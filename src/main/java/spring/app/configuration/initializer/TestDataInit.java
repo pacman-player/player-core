@@ -66,6 +66,9 @@ public class TestDataInit {
     @Autowired
     private RegistrationStepService registrationStepService;
 
+    @Autowired
+    private Mp3Parser mp3Parser;
+
     @Value("${music.path}")
     private String musicPath;
 
@@ -173,8 +176,7 @@ public class TestDataInit {
                 LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
                 musicDirectory.mkdir();
 
-                new Mp3Parser(songService, authorService, genreService, songCompilationService, musicSearchService)
-                        .apply(musicInitPath);
+                mp3Parser.apply(musicInitPath);
             }
         } catch (Exception e) {
             LOGGER.error("We have issues reading or writing music files during init. Please check if init data is accessible and '/music' directory is writable", e);
