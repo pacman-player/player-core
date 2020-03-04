@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
+import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 import spring.app.util.Mp3Parser;
 
 import java.io.File;
@@ -53,6 +54,9 @@ public class TestDataInit {
 
     @Autowired
     private AddressService addressService;
+
+    @Autowired
+    private MusicSearchService musicSearchService;
 
     @Autowired
     private RegistrationStepService registrationStepService;
@@ -265,7 +269,7 @@ public class TestDataInit {
                     .nextLong(startDate, endDate))));
         }
 
-        new Mp3Parser(songService, authorService, genreService, songCompilationService).apply("music1/");
+        new Mp3Parser(songService, authorService, genreService, songCompilationService, musicSearchService).apply("music1/");
 
         RegistrationStep rs1 = new RegistrationStep();
         rs1.setName("registration-step-user");
