@@ -43,7 +43,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public void addSongCompilation(SongCompilation songCompilation) {
         songCompilationDao.save(songCompilation);
-        sendEmail.send(songCompilation.getName());
+//        sendEmail.send(songCompilation.getName());
     }
 
     @Override
