@@ -47,10 +47,10 @@ public class RegistrationController {
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-            return "/login";
+            return "redirect:/login";
 
         } else {
-            return "user/statistics";
+            return "redirect:/user/statistics";
         }
     }
 }
