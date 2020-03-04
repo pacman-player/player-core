@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private CompanyService companyService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
