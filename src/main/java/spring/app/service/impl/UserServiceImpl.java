@@ -10,14 +10,13 @@ import spring.app.dao.abstraction.UserDao;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
-import spring.app.service.abstraction.UserService;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements spring.app.service.abstraction.UserService {
 
     private PasswordEncoder passwordEncoder;
 
@@ -140,4 +139,11 @@ public class UserServiceImpl implements UserService {
     public boolean isExistUserByLogin(String login, long userId) {
         return userDao.isExistUserByLogin(login, userId);
     }
+
+    @Override
+    public List<User> getUserByRole(String role) {
+        return userDao.getUserByRole(role);
+    }
+
+
 }

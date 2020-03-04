@@ -2,24 +2,19 @@ package spring.app.controller.restController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.vk.api.sdk.actions.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
 import spring.app.model.*;
-import spring.app.service.CutSongService;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
 import spring.app.service.abstraction.*;
 
 import java.time.LocalTime;
-import java.util.Map;
-import java.util.Random;
 import java.util.List;
 import java.util.Map;
 
@@ -164,7 +159,7 @@ public class UserRestController {
         LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
         User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
         Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
-        Address address = addressService.getById(company.getAddress().getId());
+//        Address address = addressService.getById(company.getAddress().getId()); // строчка не нужна, т.к. в js address получаем  из объекта company
         return ResponseEntity.ok(company);
     }
 
