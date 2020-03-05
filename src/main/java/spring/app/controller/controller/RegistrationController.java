@@ -37,8 +37,8 @@ public class RegistrationController {
         return "user/reg_check";
     }
 
-//    @GetMapping("/end")
-    @GetMapping("/spa")
+    //попадаем сюда из reg_check.js
+    @GetMapping("/end")
     public String endRegistration(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String login = (String) session.getAttribute("login");
@@ -49,7 +49,7 @@ public class RegistrationController {
 
         } else {
 //            return "user/statistics";
-            return "user/spa"; //возвращаем Single Page Application
+            return "user/spa"; //переходим на Single Page Application
         }
     }
 }

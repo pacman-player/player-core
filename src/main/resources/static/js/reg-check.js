@@ -99,8 +99,7 @@ $(document).ready(function () {
                         break;
                     default:
                         //location.replace("user/statistics");
-                        // location.replace("/registration/end");
-                        location.replace("/user/spa");
+                        location.replace("/registration/end");
                 }
             }
         });

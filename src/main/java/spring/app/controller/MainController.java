@@ -193,7 +193,8 @@ public class MainController {
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         if (userService.getUserByGoogleId(googleId).isEnabled()) {
-            return "redirect:/user";
+//            return "redirect:/user";
+            return "redirect:/user/spa";
         } else {
             model.addAttribute("error", "Ваш аккаунт забанен");
             return "/login";
@@ -280,7 +281,8 @@ public class MainController {
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         if (userService.getUserByVkId(actor.getId()).isEnabled()) {
-            return "redirect:/user";
+//            return "redirect:/user";
+            return "redirect:/user/spa";
         } else {
             model.addAttribute("error", "Ваш аккаунт забанен");
             return "/login";

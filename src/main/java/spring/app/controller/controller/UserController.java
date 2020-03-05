@@ -13,6 +13,13 @@ public class UserController {
         return "user/reg_check";
     }
 
+    //попадаем сюда из RegistrationController или MainController
+    @GetMapping("/spa")
+    public String userPage() {
+        return "user/spa"; //возвращаем SPA
+    }
+
+    //ниже старые html страницы
     @GetMapping
     public String getUserPage() {
         return "user/statistics";
@@ -59,11 +66,5 @@ public class UserController {
     @GetMapping("/filterMusic")
     public String filterMusicPage() {
         return "user/filterMusic";
-    }
-
-    //spa
-    @GetMapping("/spa")
-    public String userPage() {
-        return "user/spa";
     }
 }
