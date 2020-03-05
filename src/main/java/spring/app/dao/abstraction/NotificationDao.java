@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface NotificationDao extends GenericDao<Long, Notification> {
     void bulkRemoveNotificationsByUserId(Long userId);
+
     List<Notification> getByUserId(Long id);
+
 }

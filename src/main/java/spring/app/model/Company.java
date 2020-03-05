@@ -78,13 +78,6 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
-    /*@OneToMany(
-            mappedBy = "company",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<OrderSong> orderSongs = new ArrayList<>();*/
-
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
         this.startTime = startTime;
@@ -113,24 +106,6 @@ public class Company {
 
     public Company() {
     }
-
-    /*public void addOrderSong(OrderSong orderSong) {
-        orderSongs.add(orderSong);
-        orderSong.setCompany(this);
-    }
-
-    public void removeOrderSong(OrderSong orderSong) {
-        orderSongs.remove(orderSong);
-        orderSong.setCompany(null);
-    }
-
-    public List<OrderSong> getOrderSongs() {
-        return orderSongs;
-    }
-
-    public void setOrderSongs(List<OrderSong> orderSongs) {
-        this.orderSongs = orderSongs;
-    }*/
 
     public Long getId() {
         return id;
