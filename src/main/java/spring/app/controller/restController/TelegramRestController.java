@@ -125,7 +125,7 @@ public class TelegramRestController {
             songQueue.setCompany(companyById);
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.addSongQueue(songQueue);
-            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis()), songById));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
             companyService.updateCompany(companyById);
@@ -134,7 +134,7 @@ public class TelegramRestController {
             LOGGER.info("Adding song to existing queue...");
             songQueue.setPosition(lastSongQueuesPosition + 1L);
             songQueueService.updateSongQueue(songQueue);
-            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis()), songById));
             LOGGER.info("Success!");
         }
     }
