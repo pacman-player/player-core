@@ -124,6 +124,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public boolean isImage(String filename) {
-        return URLConnection.guessContentTypeFromName(filename).contains("image");
+        String contentType = URLConnection.guessContentTypeFromName(filename);
+        return contentType != null && contentType.contains("image");
     }
 }

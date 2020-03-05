@@ -106,9 +106,9 @@ function editButton(id, name) {
         $.ajax({
             method: "POST",
             url: "/api/admin/compilation/update",
+            cache: false,
             contentType: false,
             processData: false,
-            mimeType: "multipart/form-data",
             data: formData,
             complete: () => {
                 theModal.modal("hide");
