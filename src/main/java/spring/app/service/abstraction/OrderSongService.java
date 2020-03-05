@@ -3,6 +3,7 @@ package spring.app.service.abstraction;
 import spring.app.model.OrderSong;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public interface OrderSongService {
 
@@ -11,4 +12,7 @@ public interface OrderSongService {
     long getSongOrdersByCompanyIdAndTimeRange(Long id, String period);
 
     long countAll(Long id);
+
+    List<Long> getListSongIdByCompanyIdAndPeriod(Long id, Long period);
+    List<Long> getListSongIdByCompanyIdAndTimeRange(Long id, String period);
 }
