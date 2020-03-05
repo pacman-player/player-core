@@ -69,6 +69,7 @@ $(document).ready(function () {
                 },
             success:
                 function () {
+                    getCompaniesTable();
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании c id " + companyDto.id + " сохранены",
                         'companies-panel');
