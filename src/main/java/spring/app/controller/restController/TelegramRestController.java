@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.model.*;
@@ -34,14 +33,16 @@ public class TelegramRestController {
     private CompanyService companyService;
     private SongQueueService songQueueService;
     private AddressService addressService;
+    private TelegramUserService telegramUserService;
 
     @Autowired
-    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService, AddressService addressService) {
+    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService, AddressService addressService, TelegramUserService telegramUserService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
         this.songQueueService = songQueueService;
         this.addressService = addressService;
+        this.telegramUserService = telegramUserService;
     }
 
     @PostMapping(value = "/song")
@@ -137,5 +138,20 @@ public class TelegramRestController {
             orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             LOGGER.info("Success!");
         }
+    }
+
+    @PostMapping("/isTelegramUserExists")
+    public String isTelegramUserExists(@RequestBody Long telegramUserId) {
+        LOGGER.info("POST request '/isTelegramUserExists'");
+        boolean isExists = telegramUserService.isTelegramUserExists(telegramUserId);
+        LOGGER.info("This Telegram user is registered = {}", isExists);
+        return Boolean.toString(isExists);
+    }
+
+    @PostMapping("/addTelegramUser")
+    public void addTelegramUser(@RequestBody TelegramUser telegramUser) {
+        LOGGER.info("POST request '/addTelegramUser'");
+        telegramUserService.addTelegramUser(telegramUser);
+        LOGGER.info("Telegram user with id = {} was added", telegramUser.getId());
     }
 }
