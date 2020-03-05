@@ -78,6 +78,80 @@ function addCompilation(form, name, cover, genre) {
 }
 
 
+function getTable() {
+    $.ajax({
+        method: "GET",
+        url: "/api/admin/compilation",
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        dataType: "JSON",
+        success: function (compilations) {
+            let tableBody = $("#compilationsTable tbody");
+
+            tableBody.empty();
+            for (let i = 0; i < compilations.length; i++) {
+                let id = compilations[i].id;
+                let name = compilations[i].name;
+                let genre = compilations[i].genre.name;
+                let genreId = compilations[i].genre.id;
+                let cover = compilations[i].cover;
+                // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
+                if (cover == null) {
+                    cover = "na.jpg"
+                }
+
+                let tr = $("<tr/>");
+                tr.append(`
+                            <td> ${id} </td>
+                            <td> ${name} </td>
+                            <td> ${genre} </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        id="showSongsBtn"
+                                        onclick="allSongsButton(${id})">
+                                    Посмотреть текущие
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        id="showAvailableSongsBtn"
+                                        onclick="availableSongsButton(${id})">
+                                    Добавить песни
+                                </button>
+                            </td>
+                            <td> 
+                                <div class="img_wrap">
+                                    <img src="/cover/${cover}">
+                                </div>
+                            </td>
+                            <td>
+                                <button type="submit"
+                                        class="btn btn-sm btn-info"
+                                        id="editGenreBtn"
+                                        onclick="editButton(${id}, '${name}')">
+                                    Изменить
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-sm btn-info"
+                                        id="deleteGenreBtn"
+                                        onclick="deleteButton(${id})">
+                                    Удалить
+                                </button>
+                            </td>`);
+                tableBody.append(tr);
+            }
+        }
+    });
+}
+
+
 function editButton(id, name) {
     let fieldGenre = $("#updateCompilationGenre");
     // подгрузка жанров в выпадающий список
@@ -102,7 +176,6 @@ function editButton(id, name) {
         if (file) {
             formData.append("cover", file);
         }
-
         $.ajax({
             method: "POST",
             url: "/api/admin/compilation/update",
@@ -121,7 +194,6 @@ function editButton(id, name) {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);
             }
         })
-
     });
 }
 
@@ -206,67 +278,59 @@ function removeSongFromCompilation(compilationId, songId) {
 }
 
 
-function getTable() {
+function availableSongsButton(compilationId) {
+    $("#availableSongs").modal("show");
+    getAvailableCompilationContentById(compilationId)
+}
+
+function getAvailableCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
-        url: "/api/admin/compilation",
-        contentType: "application/json",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        dataType: "JSON",
-        success: function (compilations) {
-            let tableBody = $("#compilationsTable tbody");
+        url: `/api/test/compilation/content/${compilationId}`,
+        success: function (songs) {
+            let tableBody = $("#availableSongsTable tbody");
 
             tableBody.empty();
-            for (let i = 0; i < compilations.length; i++) {
-                let id = compilations[i].id;
-                let name = compilations[i].name;
-                let genre = compilations[i].genre.name;
-                let genreId = compilations[i].genre.id;
-                let cover = compilations[i].cover;
-                // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
-                if (cover == null) {
-                    cover = "na.jpg"
-                }
+            for (let i = 0; i < songs.length; i++) {
+                let id = songs[i].id;
+                let name = songs[i].name;
+                let author = songs[i].author.name;
+                let genre = songs[i].genre.name;
 
                 let tr = $("<tr/>");
                 tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
-                            <td> ${genre} </td>
-                            <td>
-                                <button type="button"
-                                        class="btn btn-sm btn-success"
-                                        id="showSongsBtn"
-                                        onclick="allSongsButton(${id})">
-                                    Список треков
-                                </button>
-                            </td>
-                            <td> 
-                                <div class="img_wrap">
-                                    <img src="/cover/${cover}">
-                                </div>
-                            </td>
-                            <td>
-                                <button type="submit"
-                                        class="btn btn-sm btn-info"
-                                        id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}')">
-                                    Изменить
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button"
-                                        class="btn btn-sm btn-info"
-                                        id="deleteGenreBtn"
-                                        onclick="deleteButton(${id})">
-                                    Удалить
-                                </button>
-                            </td>`);
+                             <td> ${id} </td>
+                             <td> ${name} </td>
+                             <td> ${author} </td>
+                             <td> ${genre} </td>
+                             <td>
+                                 <button type="button"
+                                         class="btn btn-sm btn-info"
+                                         id="includeSongBtn"
+                                         onclick="includeSongToCompilation(${compilationId}, ${id})">
+                                     Добавить
+                                 </button>
+                             </td>`);
                 tableBody.append(tr);
             }
         }
     });
+}
+
+
+function includeSongToCompilation(compilationId, songId) {
+    $.ajax({
+        method: "DELETE",
+        url: `/api/test/compilation/${compilationId}/${songId}`,
+        contentType: "application/json",
+        complete: () => {
+            getCompilationContentById(compilationId)
+        },
+        success: () => {
+            alert(`${songId} ADDED!`)
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
 }
