@@ -41,7 +41,8 @@ public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements Or
     @Override
     public long countAll(Long id) {
         return entityManager.createQuery("SELECT COUNT(o) FROM OrderSong o WHERE o.company.id = :id", Long.class)
-                .setParameter("id", id).getSingleResult();
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Override
