@@ -152,8 +152,8 @@ function deleteButton(id) {
         },
         error: (xhr, status, error) => {
             if (xhr.responseText.includes("DataIntegrityViolationException")) {
-                let cautation = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
-                alert(cautation);
+                let caution = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
+                alert(caution);
             } else {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);
             }
