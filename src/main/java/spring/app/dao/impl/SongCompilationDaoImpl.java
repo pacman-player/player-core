@@ -38,6 +38,17 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         return query.getResultList();
     }
 
+    @Override
+    public List<Song> getAvailableContentForCompilationById(SongCompilation songCompilation) {
+        TypedQuery<Song> query = entityManager.createQuery(
+                "SELECT s FROM Song s WHERE s.genre.id = :genreId AND s NOT IN " +
+                        "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", Song.class);
+        query.setParameter("genreId", songCompilation.getGenre().getId());
+        query.setParameter("compilationId", songCompilation.getId());
+
+        return query.getResultList();
+    }
+
     // MySQL native --->
     // DELETE FROM song_compilation_on_song WHERE song_compilation_id=x AND song_id=y;
     @Override

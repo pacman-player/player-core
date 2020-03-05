@@ -19,11 +19,11 @@ public interface SongCompilationService {
     void deleteValByGenreId(Long id);
 
 
-
-    // test!
     void removeSongFromSongCompilation(Long compilationId, Long songId);
 
 
+    // test
+    List<Song> getAvailableSongsForCompilationById(Long compilationId);
 
 
     void addSongCompilationToMorningPlaylist(Long id);

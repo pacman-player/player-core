@@ -286,7 +286,7 @@ function availableSongsButton(compilationId) {
 function getAvailableCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
-        url: `/api/test/compilation/content/${compilationId}`,
+        url: `/api/test/compilation/content/available/${compilationId}`,
         success: function (songs) {
             let tableBody = $("#availableSongsTable tbody");
 

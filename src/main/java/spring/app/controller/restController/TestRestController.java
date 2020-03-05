@@ -6,6 +6,7 @@ import spring.app.model.Song;
 import spring.app.service.abstraction.SongCompilationService;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -21,6 +22,11 @@ public class TestRestController {
     @GetMapping("/compilation/content/{compilationId}")
     public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
         return songCompilationService.getSongCompilationContentById(compilationId);
+    }
+
+    @GetMapping("/compilation/content/available/{compilationId}")
+    public List<Song> getAvailableWithGenreByGenreId(@PathVariable Long compilationId) {
+        return songCompilationService.getAvailableSongsForCompilationById(compilationId);
     }
 
     @DeleteMapping("/compilation/{compilationId}/{songId}")
