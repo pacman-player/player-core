@@ -264,6 +264,7 @@ $(document).ready(function () {
                 },
             success:
                 function () {
+                    $('#editCompany').modal('hide');
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании сохранены",
                         'user-panel');
