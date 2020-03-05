@@ -32,6 +32,7 @@ function prepareForm(dropDownListSelector = $("#addCompilationGenre")) {
     dropDownListSelector.append(selectOptions);
 }
 
+
 function getGenres() {
     return $.ajax({
         method: 'GET',
@@ -108,6 +109,11 @@ function getTable() {
                             <td> ${id} </td>
                             <td> ${name} </td>
                             <td> ${genre} </td>
+                            <td> 
+                                <div class="img_wrap">
+                                    <img src="/cover/${cover}" alt="IN YOUR FACE!">
+                                </div>
+                            </td>
                             <td>
                                 <button type="button"
                                         class="btn btn-sm btn-success"
@@ -123,11 +129,6 @@ function getTable() {
                                         onclick="availableSongsButton(${id})">
                                     Добавить песни
                                 </button>
-                            </td>
-                            <td> 
-                                <div class="img_wrap">
-                                    <img src="/cover/${cover}">
-                                </div>
                             </td>
                             <td>
                                 <button type="submit"
@@ -220,6 +221,7 @@ function deleteButton(id) {
     })
 }
 
+
 function allSongsButton(compilationId) {
     $("#songs").modal("show");
     getCompilationContentById(compilationId)
@@ -228,7 +230,7 @@ function allSongsButton(compilationId) {
 function getCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
-        url: `/api/test/compilation/content/${compilationId}`,
+        url: `/api/admin/compilation/content/${compilationId}`,
         success: function (songs) {
             let tableBody = $("#songsTable tbody");
 
@@ -263,13 +265,12 @@ function getCompilationContentById(compilationId) {
 function removeSongFromCompilation(compilationId, songId) {
     $.ajax({
         method: "DELETE",
-        url: `/api/test/compilation/${compilationId}/${songId}`,
-        contentType: "application/json",
+        url: `/api/admin/compilation/content/remove/${compilationId}/${songId}`,
         complete: () => {
             getCompilationContentById(compilationId)
         },
         success: () => {
-            alert(`${songId} DELETED!`)
+            console.log(`${songId} DELETED!`)
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -286,7 +287,7 @@ function availableSongsButton(compilationId) {
 function getAvailableCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
-        url: `/api/test/compilation/content/available/${compilationId}`,
+        url: `/api/admin/compilation/content/available/${compilationId}`,
         success: function (songs) {
             let tableBody = $("#availableSongsTable tbody");
 
@@ -306,8 +307,8 @@ function getAvailableCompilationContentById(compilationId) {
                              <td>
                                  <button type="button"
                                          class="btn btn-sm btn-info"
-                                         id="includeSongBtn"
-                                         onclick="includeSongToCompilation(${compilationId}, ${id})">
+                                         id="addSongBtn"
+                                         onclick="addSongToCompilation(${compilationId}, ${id})">
                                      Добавить
                                  </button>
                              </td>`);
@@ -318,16 +319,15 @@ function getAvailableCompilationContentById(compilationId) {
 }
 
 
-function includeSongToCompilation(compilationId, songId) {
+function addSongToCompilation(compilationId, songId) {
     $.ajax({
-        method: "DELETE",
-        url: `/api/test/compilation/${compilationId}/${songId}`,
-        contentType: "application/json",
+        method: "POST",
+        url: `/api/admin/compilation/content/add/${compilationId}/${songId}`,
         complete: () => {
-            getCompilationContentById(compilationId)
+            getAvailableCompilationContentById(compilationId)
         },
         success: () => {
-            alert(`${songId} ADDED!`)
+            console.log(`${songId} ADDED!`)
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);

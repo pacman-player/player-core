@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.SongCompilationDto;
+import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.GenreService;
@@ -17,16 +18,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/compilation")
-public class AdminCompilationRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AdminCompilationRestController.class);
+public class AdminSongCompilationRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongCompilationRestController.class);
 
     private final SongCompilationService songCompilationService;
     private final FileUploadService fileUploadService;
     private final GenreService genreService;
 
     @Autowired
-    public AdminCompilationRestController(SongCompilationService songCompilationService,
-                                          FileUploadService fileUploadService, GenreService genreService) {
+    public AdminSongCompilationRestController(SongCompilationService songCompilationService,
+                                              FileUploadService fileUploadService, GenreService genreService) {
         this.songCompilationService = songCompilationService;
         this.fileUploadService = fileUploadService;
         this.genreService = genreService;
@@ -35,6 +36,23 @@ public class AdminCompilationRestController {
     @GetMapping
     public List<SongCompilation> getAllCompilation() {
         return songCompilationService.getAllSongCompilations();
+    }
+
+    @GetMapping("/content/{compilationId}")
+    public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
+        return songCompilationService.getSongCompilationContentById(compilationId);
+    }
+
+    @GetMapping("/content/available/{compilationId}")
+    public List<Song> getAvailableWithGenreByGenreId(@PathVariable Long compilationId) {
+        return songCompilationService.getAvailableSongsForCompilationById(compilationId);
+    }
+
+    @PostMapping("/content/add/{compilationId}/{songId}")
+    public void addSongToSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+        LOGGER.info("POST request '/content/add/' [SongCompilation ID = {}; Song ID = {}]", compilationId, songId);
+        songCompilationService.addSongToSongCompilation(compilationId, songId);
+        LOGGER.info("SongCompilation ID = {} now contains Song ID = {}", compilationId, songId);
     }
 
     @PostMapping("/update")
@@ -69,9 +87,7 @@ public class AdminCompilationRestController {
         LOGGER.info("POST request on '/api/admin/compilation/' to add a new SongCompilation with temporary name -> {}",
                 songCompilationDto.getName());
 
-        // creating and configuring new SongCompilation object
         SongCompilation songCompilation = new SongCompilation();
-
         songCompilation.setName(songCompilationDto.getName());
         songCompilation.setGenre(genreService.getByName(songCompilationDto.getGenre()));
         String coverName = uploadCover(songCompilationDto.getCover());
@@ -86,9 +102,15 @@ public class AdminCompilationRestController {
     @DeleteMapping("/delete")
     public void deleteCompilation(@RequestBody Long id) throws IOException {
         LOGGER.info("DELETE request '/api/admin/compilation/delete' songCompilationDto ID = {}", id);
-        songCompilationService.deleteSongCompilation(
-                songCompilationService.getSongCompilationById(id));
+        songCompilationService.deleteSongCompilation(songCompilationService.getSongCompilationById(id));
         LOGGER.info("Song compilation with ID = {} deleted successfully", id);
+    }
+
+    @DeleteMapping("/content/remove/{compilationId}/{songId}")
+    public void removeSongFromSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+        LOGGER.info("DELETE request '/content/delete/' [SongCompilation ID = {}; Song ID = {}]", compilationId, songId);
+        songCompilationService.removeSongFromSongCompilation(compilationId, songId);
+        LOGGER.info("Song ID = {} removed from SongCompilation ID = {}", songId, compilationId);
     }
 
     private String uploadCover(MultipartFile file) throws IOException {
@@ -97,7 +119,6 @@ public class AdminCompilationRestController {
             coverName = fileUploadService.upload(file);
             LOGGER.info("Cover uploaded. Cover name: {}", coverName);
         }
-
         return coverName;
     }
 }

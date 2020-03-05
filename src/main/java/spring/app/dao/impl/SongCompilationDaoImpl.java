@@ -27,8 +27,6 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         return list;
     }
 
-    // MySQL native --->
-    // SELECT s.* FROM song s JOIN song_compilation_on_song scos ON s.id=scos.song_id WHERE scos.song_compilation_id=1;
     @Override
     public List<Song> getSongCompilationContentById(Long compilationId) {
         TypedQuery<Song> query = entityManager.createQuery(
@@ -49,12 +47,14 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
         return query.getResultList();
     }
 
-    // MySQL native --->
-    // DELETE FROM song_compilation_on_song WHERE song_compilation_id=x AND song_id=y;
     @Override
     public void removeSongFromSongCompilation(SongCompilation songCompilation, Song song) {
-        songCompilation.getSong().remove(song);
         song.getSongCompilations().remove(songCompilation);
+    }
+
+    @Override
+    public void addSongToSongCompilation(SongCompilation songCompilation, Song song) {
+        songCompilation.getSong().add(song);
     }
 
     @Override

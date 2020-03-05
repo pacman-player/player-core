@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 @Service
 @Transactional
 public class SongCompilationServiceImpl implements SongCompilationService {
-
     private SongCompilationDao songCompilationDao;
     private UserService userService;
     private CompanyService companyService;
@@ -63,6 +63,12 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         return songCompilationDao.getSongCompilationContentById(compilationId);
     }
 
+    @Override
+    public void addSongToSongCompilation(Long compilationId, Long songId) {
+        songCompilationDao.addSongToSongCompilation(
+                getSongCompilationById(compilationId),
+                songService.getSongById(songId));
+    }
 
     @Override
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
