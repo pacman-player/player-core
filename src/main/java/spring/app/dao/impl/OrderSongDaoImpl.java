@@ -64,13 +64,10 @@ public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements Or
     }
 
     @Override
-
     public void bulkRemoveOrderSongByCompany(Long companyId) {
-        List<Long> songIds = getAllByCompanyId(companyId);
-        for (Long song : songIds
-        ) {
-            super.deleteById(song);
-        }
+        entityManager.createQuery("DELETE FROM OrderSong o WHERE o.company.id = :companyId")
+                .setParameter("companyId", companyId)
+                .executeUpdate();
         entityManager.flush();
     }
 }
