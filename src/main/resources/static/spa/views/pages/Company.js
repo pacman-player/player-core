@@ -104,7 +104,7 @@ let Company = {
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
-                        $('#est-address').val(data.country + ', ' + data.city + ', ' + data.street + ', ' + data.house);
+                        $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
                     }
                 })
             }
