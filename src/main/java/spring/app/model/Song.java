@@ -6,6 +6,7 @@ import spring.app.dto.SongDto;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "song")
 @SqlResultSetMappings({
@@ -37,11 +38,13 @@ public class Song extends Bannable {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL) //здесь убрал orphanRemoval = true тк не удалялась последняя песня
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
+    //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
 
     //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
-    @ManyToMany(fetch = FetchType.LAZY) //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
+    @ManyToMany(fetch = FetchType.LAZY)
+    //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})

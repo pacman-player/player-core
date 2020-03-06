@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Repository
 @Transactional(readOnly = true)
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
@@ -63,21 +64,21 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     public List<Song> findByNameContaining(String param) {
 
         @SuppressWarnings("unchecked")
-        List<SongDto> songDtoList = entityManager.createNativeQuery("SELECT s.id, s.name from song s",
+        List<SongDto> songDtoList = entityManager.createNativeQuery("SELECT s.id, s.name FROM song s",
                 "SongDtoMapping")
                 .getResultList();
 
         List<Song> songs = new ArrayList<>(songDtoList.size());
-
         songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
 
         return songs;
     }
 
     public boolean isExist(String name) {
-        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE name = :name", Song.class);
+        TypedQuery<Song> query = entityManager.createQuery(
+                "SELECT s FROM Song s WHERE s.name = :name", Song.class);
         query.setParameter("name", name);
-        List list = query.getResultList();
+        List<Song> list = query.getResultList();
         return !list.isEmpty();
     }
 }
