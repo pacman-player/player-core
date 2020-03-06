@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -14,6 +15,7 @@ import java.util.Set;
 public class Company {
     @Id
     @GeneratedValue
+    @Column(name = "company_id")
     private Long id;
     private String name;
 
@@ -75,6 +77,10 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
+
+    @OneToMany(mappedBy = "primaryKey.company",
+            cascade = CascadeType.ALL)
+    private Set<TelegramUserCompaniesVisits> telegramUserCompanies = new HashSet<>();
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -228,6 +234,14 @@ public class Company {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Set<TelegramUserCompaniesVisits> getTelegramUserCompanies() {
+        return telegramUserCompanies;
+    }
+
+    public void setTelegramUserCompanies(Set<TelegramUserCompaniesVisits> telegramUserCompanies) {
+        this.telegramUserCompanies = telegramUserCompanies;
     }
 
     @Override

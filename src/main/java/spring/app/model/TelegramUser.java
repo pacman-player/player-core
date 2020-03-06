@@ -1,10 +1,9 @@
 package spring.app.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Класс, описывающий посетителя заведения - пользователя мессенджера Telegram,
@@ -28,6 +27,10 @@ public class TelegramUser {
     private String userName;
 
     private String languageCode;
+
+    @OneToMany(mappedBy = "primaryKey.telegramUser",
+            cascade = CascadeType.ALL)
+    private Set<TelegramUserCompaniesVisits> telegramUserCompanies = new HashSet<>();
 
     public TelegramUser() {}
 
@@ -86,6 +89,14 @@ public class TelegramUser {
 
     public void setLanguageCode(String languageCode) {
         this.languageCode = languageCode;
+    }
+
+    public Set<TelegramUserCompaniesVisits> getTelegramUserCompanies() {
+        return telegramUserCompanies;
+    }
+
+    public void setTelegramUserCompanies(Set<TelegramUserCompaniesVisits> telegramUserCompanies) {
+        this.telegramUserCompanies = telegramUserCompanies;
     }
 
     @Override
