@@ -1,10 +1,11 @@
 package spring.app.service.impl.musicSearcher.serchServices;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -15,20 +16,19 @@ import spring.app.util.PlayerPaths;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
 @Transactional
 public class ZaycevSaitServiceImpl implements DownloadMusicService {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger(ZaycevSaitServiceImpl.class);
     private RestTemplate restTemplate = new RestTemplate();
     private String authorName;
     private String songName;
     private String trackName;
 
     public String searchSong(String author, String song) {
-
+        LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net...", author, song);
         String baseUrl = "https://zaycev.net";
         String searchUrl = "https://zaycev.net/search.html?query_search=";
         Document document = null;
@@ -57,7 +57,8 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             JSONObject jsonObj = new JSONObject(json);
             link = jsonObj.getString("url");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net неуспешен! :(", author, song);
+//            e.printStackTrace();
         }
         return link;  // ссылка на скачивание
     }
@@ -67,6 +68,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
     public Track getSong(String author, String song) throws IOException {
         try {
             String link = searchSong(author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net...", author, song);
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -88,7 +90,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
                 return new Track(authorName, songName, trackName, track, path);
             }
         } catch (Exception e) {
-            System.out.println("Ошибка скачивания с zaycev.net");
+            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net неуспешно! :(", author, song);
         }
         return null;
     }
