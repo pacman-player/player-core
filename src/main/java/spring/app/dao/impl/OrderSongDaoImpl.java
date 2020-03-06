@@ -6,6 +6,7 @@ import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.model.OrderSong;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -38,5 +39,23 @@ public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements Or
         return entityManager.createQuery("SELECT COUNT(o) FROM OrderSong o WHERE o.company.id = :id", Long.class)
                 .setParameter("id", id)
                 .getSingleResult();
+    }
+
+
+    @Override
+    public List<Long> getListSongIdByCompanyIdAndPeriod(Long id, Timestamp after) {
+        return entityManager.createQuery("SELECT o.song.id FROM OrderSong o WHERE o.company.id = :id AND o.timestamp > :after", Long.class)
+                .setParameter("id", id)
+                .setParameter("after", after)
+                .getResultList();
+    }
+
+    @Override
+    public List<Long> getListSongIdByCompanyIdAndTimeRange(Long id, Timestamp start, Timestamp end) {
+        return entityManager.createQuery("SELECT o.song.id FROM OrderSong o WHERE o.company.id = :id AND o.timestamp BETWEEN :start AND :end", Long.class)
+                .setParameter("id", id)
+                .setParameter("start", start)
+                .setParameter("end", end)
+                .getResultList();
     }
 }
