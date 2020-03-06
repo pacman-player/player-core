@@ -31,9 +31,9 @@ public class AdminCompilationRestController {
     @GetMapping
     public List<SongCompilation> getAllCompilation() {
         LOGGER.info("GET request '/'");
-        List<SongCompilation> listOfCompilations = songCompilationService.getAllSongCompilations();
-        LOGGER.info("Result has {} lines", listOfCompilations.size());
-        return listOfCompilations;
+        List<SongCompilation> compilations = songCompilationService.getAllSongCompilations();
+        LOGGER.info("Result has {} lines", compilations.size());
+        return compilations;
     }
 
     @PostMapping("/update")
