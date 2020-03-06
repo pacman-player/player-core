@@ -49,36 +49,6 @@ function getGenres() {
 }
 
 
-function addCompilation(form, name, cover, genre) {
-    console.log(genre);
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("genre", genre);
-    if (cover) {
-        formData.append("cover", cover);
-    }
-
-    $.ajax({
-        method: "POST",
-        url: "/api/admin/compilation",
-        contentType: false,
-        processData: false,
-        mimeType: "multipart/form-data",
-        data: formData,
-        complete: () => {
-            $("#tab-compilations-panel").tab("show");
-            getTable();
-        },
-        success: () => {
-            alert(`${name} ADDED!`)
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
-        }
-    })
-}
-
-
 function getTable() {
     $.ajax({
         method: "GET",
@@ -153,80 +123,6 @@ function getTable() {
 }
 
 
-function editButton(id, name) {
-    let fieldGenre = $("#updateCompilationGenre");
-    // подгрузка жанров в выпадающий список
-    prepareForm(fieldGenre);
-
-    let theModal = $("#updateCompilationModal");
-    let fieldId = $("#updateCompilationId");
-    let fieldName = $("#updateCompilationName");
-    let fieldCover = $("#updateCompilationCover");
-
-    fieldId.val(id);
-    fieldName.val(name);
-
-    theModal.modal("show");
-
-    $("#updateCompilationBtn").on("click", function () {
-        let formData = new FormData();
-        formData.append("id", id);
-        formData.append("name", fieldName.val());
-        formData.append("genre", fieldGenre.val());
-        let file = fieldCover.prop("files")[0];
-        if (file) {
-            formData.append("cover", file);
-        }
-        $.ajax({
-            method: "POST",
-            url: "/api/admin/compilation/update",
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: formData,
-            complete: () => {
-                theModal.modal("hide");
-                getTable();
-            },
-            success: () => {
-                alert(`${id} EDITED!`)
-            },
-            error: (xhr, status, error) => {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
-            }
-        })
-    });
-}
-
-
-function deleteButton(id) {
-    $.ajax({
-        method: "DELETE",
-        url: "/api/admin/compilation/delete",
-        contentType: "application/json",
-        data: JSON.stringify(id),
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        complete: () => {
-            getTable();
-        },
-        success: () => {
-            alert(`${id} DELETED!`)
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
-        }
-    })
-}
-
-
-function allSongsButton(compilationId) {
-    $("#songs").modal("show");
-    getCompilationContentById(compilationId)
-}
-
 function getCompilationContentById(compilationId) {
     $.ajax({
         method: "GET",
@@ -261,28 +157,6 @@ function getCompilationContentById(compilationId) {
     });
 }
 
-
-function removeSongFromCompilation(compilationId, songId) {
-    $.ajax({
-        method: "DELETE",
-        url: `/api/admin/compilation/content/remove/${compilationId}/${songId}`,
-        complete: () => {
-            getCompilationContentById(compilationId)
-        },
-        success: () => {
-            console.log(`${songId} DELETED!`)
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
-        }
-    })
-}
-
-
-function availableSongsButton(compilationId) {
-    $("#availableSongs").modal("show");
-    getAvailableCompilationContentById(compilationId)
-}
 
 function getAvailableCompilationContentById(compilationId) {
     $.ajax({
@@ -319,6 +193,36 @@ function getAvailableCompilationContentById(compilationId) {
 }
 
 
+function addCompilation(form, name, cover, genre) {
+    console.log(genre);
+    let formData = new FormData();
+    formData.append("name", name);
+    formData.append("genre", genre);
+    if (cover) {
+        formData.append("cover", cover);
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "/api/admin/compilation",
+        contentType: false,
+        processData: false,
+        mimeType: "multipart/form-data",
+        data: formData,
+        complete: () => {
+            $("#tab-compilations-panel").tab("show");
+            getTable();
+        },
+        success: () => {
+            console.log(`SONG COMPILATION ${name} ADDED!`)
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+}
+
+
 function addSongToCompilation(compilationId, songId) {
     $.ajax({
         method: "POST",
@@ -327,10 +231,108 @@ function addSongToCompilation(compilationId, songId) {
             getAvailableCompilationContentById(compilationId)
         },
         success: () => {
-            console.log(`${songId} ADDED!`)
+            console.log(`SONG ${songId} ADDED TO SONG COMPILATION ${compilationId}!`)
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
     })
+}
+
+
+function editButton(id, name) {
+    let fieldGenre = $("#updateCompilationGenre");
+    // подгрузка жанров в выпадающий список
+    prepareForm(fieldGenre);
+
+    let theModal = $("#updateCompilationModal");
+    let fieldId = $("#updateCompilationId");
+    let fieldName = $("#updateCompilationName");
+    let fieldCover = $("#updateCompilationCover");
+
+    fieldId.val(id);
+    fieldName.val(name);
+
+    theModal.modal("show");
+
+    $("#updateCompilationBtn").on("click", function () {
+        let formData = new FormData();
+        formData.append("id", id);
+        formData.append("name", fieldName.val());
+        formData.append("genre", fieldGenre.val());
+        let file = fieldCover.prop("files")[0];
+        if (file) {
+            formData.append("cover", file);
+        }
+        $.ajax({
+            method: "POST",
+            url: "/api/admin/compilation/update",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            complete: () => {
+                theModal.modal("hide");
+                getTable();
+            },
+            success: () => {
+                console.log(`SONG COMPILATION ${id} EDITED!`)
+            },
+            error: (xhr, status, error) => {
+                alert(xhr.responseText + "|\n" + status + "|\n" + error);
+            }
+        })
+    });
+}
+
+
+function deleteButton(id) {
+    $.ajax({
+        method: "DELETE",
+        url: "/api/admin/compilation/delete",
+        contentType: "application/json",
+        data: JSON.stringify(id),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        complete: () => {
+            getTable();
+        },
+        success: () => {
+            console.log(`SONG COMPILATION ${id} DELETED!`)
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+}
+
+
+function removeSongFromCompilation(compilationId, songId) {
+    $.ajax({
+        method: "DELETE",
+        url: `/api/admin/compilation/content/remove/${compilationId}/${songId}`,
+        complete: () => {
+            getCompilationContentById(compilationId)
+        },
+        success: () => {
+            console.log(`SONG ${songId} REMOVED FROM COMPILATION ${compilationId}!`)
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    })
+}
+
+
+function allSongsButton(compilationId) {
+    $("#songs").modal("show");
+    getCompilationContentById(compilationId)
+}
+
+
+function availableSongsButton(compilationId) {
+    $("#availableSongs").modal("show");
+    getAvailableCompilationContentById(compilationId)
 }
