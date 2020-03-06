@@ -28,10 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.app.model.Company;
-import spring.app.model.PlayList;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.UserValidator;
 
@@ -159,6 +156,11 @@ public class MainController {
             company.setOrgType(orgTypeService.getOrgTypeById(1L));
             company.setUser(userService.getUserByGoogleId(googleId));
 
+            //cетим дефолтный адрес компании
+            Address defaultAddress = new Address("Country", "City", "Street", "House", 0.0, 0.0);
+            addressService.addAddress(defaultAddress);
+            company.setAddress(defaultAddress);
+
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
             morningPlayList.setName("Morning playlist");
@@ -247,6 +249,11 @@ public class MainController {
             company.setCloseTime(LocalTime.of(23, 0));
             company.setOrgType(orgTypeService.getOrgTypeById(1L));
             company.setUser(userService.getUserByVkId(actor.getId()));
+
+            //cетим дефолтный адрес компании
+            Address defaultAddress = new Address("Country", "City", "Street", "House", 0.0, 0.0);
+            addressService.addAddress(defaultAddress);
+            company.setAddress(defaultAddress);
 
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
