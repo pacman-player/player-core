@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,10 @@ import spring.app.service.abstraction.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -27,7 +29,8 @@ public class RegistrationRestController {
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
-    private RoleService roleService;private RegistrationStepService registrationStepService;
+    private RoleService roleService;
+    private RegistrationStepService registrationStepService;
     private AddressService addressService;
 
     @Autowired
