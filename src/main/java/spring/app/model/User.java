@@ -48,7 +48,6 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @BatchSize(size = 1)
     @JsonBackReference
     private Company company;
 
