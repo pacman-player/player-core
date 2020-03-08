@@ -79,4 +79,9 @@ public class NotificationServiceImpl implements NotificationService {
     public void deleteNotificationById(Long id) {
         notificationDao.deleteById(id);
     }
+
+    @Override
+    public void removeAllNotificationsFromUser(Long userId) {
+        notificationDao.bulkRemoveNotificationsByUserId(userId);
+    }
 }
