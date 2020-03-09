@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -112,7 +114,6 @@ public class Company {
 
     public Company() {
     }
-
 
     public Long getId() {
         return id;
