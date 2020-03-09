@@ -22,12 +22,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 "/img/**",
                 "/css/**",
                 "/js/**",
+                "/spa/**",
                 "/cover/**")
                 .addResourceLocations(
                         "classpath:/resources/",
                         "classpath:/static/img/",
                         "classpath:/static/css/",
                         "classpath:/static/js/",
+                        "classpath:/static/spa/",
                         "file:" + coversDir + File.separator);
     }
 
