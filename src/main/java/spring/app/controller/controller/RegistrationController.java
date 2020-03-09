@@ -48,7 +48,7 @@ public class RegistrationController {
             return "redirect:/login";
 
         } else {
-            return "user/spa"; //переходим на Single Page Application
+            return "redirect:/user/spa"; //переходим на Single Page Application
             //return "redirect:/user/statistics";
         }
     }
