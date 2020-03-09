@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
-import spring.app.dto.TelegramUserCompanyIdDto;
+
+import spring.app.dto.VisitDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -25,7 +26,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
+
     @Autowired
     private OrderSongService orderSongService;
 
@@ -34,18 +37,21 @@ public class TelegramRestController {
     private CompanyService companyService;
     private SongQueueService songQueueService;
     private AddressService addressService;
-    private TelegramUserService telegramUserService;
-    private TelegramUserCompaniesVisitsService telegramUserCompaniesVisitsService;
+    private VisitService visitService;
 
     @Autowired
-    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService, AddressService addressService, TelegramUserService telegramUserService, TelegramUserCompaniesVisitsService telegramUserCompaniesVisitsService) {
+    public TelegramRestController(TelegramService telegramService,
+                                  SongService songService,
+                                  CompanyService companyService,
+                                  SongQueueService songQueueService,
+                                  AddressService addressService,
+                                  VisitService visitService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
         this.songQueueService = songQueueService;
         this.addressService = addressService;
-        this.telegramUserService = telegramUserService;
-        this.telegramUserCompaniesVisitsService = telegramUserCompaniesVisitsService;
+        this.visitService = visitService;
     }
 
     @PostMapping(value = "/song")
@@ -143,29 +149,12 @@ public class TelegramRestController {
         }
     }
 
-    @PostMapping("/isTelegramUserExists")
-    public String isTelegramUserExists(@RequestBody Long telegramUserId) {
-        LOGGER.info("POST request '/isTelegramUserExists'");
-        boolean isExists = telegramUserService.isTelegramUserExists(telegramUserId);
-        LOGGER.info("This Telegram user is registered = {}", isExists);
-        return Boolean.toString(isExists);
-    }
-
-    @PostMapping("/addTelegramUser")
-    public void addTelegramUser(@RequestBody TelegramUser telegramUser) {
-        LOGGER.info("POST request '/addTelegramUser'");
-        telegramUserService.addTelegramUser(telegramUser);
-        LOGGER.info("Telegram user with id = {} was added", telegramUser.getId());
-    }
-
-    @PostMapping("/registerVisit")
-    public void registerTelegramUserCompanyVisit(@RequestBody TelegramUserCompanyIdDto telegramUserCompanyIdDto) {
-        LOGGER.info("POST request '/registerVisit'");
-        TelegramUser telegramUser = telegramUserCompanyIdDto.getTelegramUser();
-        Company company = companyService.getById(telegramUserCompanyIdDto.getCompanyId());
-        TelegramUserCompaniesVisitsPrimaryKey primaryKey = new TelegramUserCompaniesVisitsPrimaryKey(telegramUser, company);
-        TelegramUserCompaniesVisits visit = new TelegramUserCompaniesVisits(primaryKey, new Timestamp(System.currentTimeMillis()));
-        telegramUserCompaniesVisitsService.addVisit(visit);
-        LOGGER.info("New visit of Telegram user with id = {} to company with id = {} was added", telegramUser.getId(), company.getId());
+    @PostMapping("/registerTelegramUserAndVisit")
+    public void registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
+        LOGGER.info("POST request '/registerTelegramUserAndVisit'");
+        visitService.registerTelegramUserAndVisit(visitDto);
+        LOGGER.info("New visit of Telegram user with id = {} to company with id = {} was added",
+                visitDto.getTelegramUserDto().getId(), visitDto.getCompanyId()
+        );
     }
 }

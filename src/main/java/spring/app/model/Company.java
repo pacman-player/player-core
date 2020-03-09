@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -78,9 +79,10 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
 
-    @OneToMany(mappedBy = "primaryKey.company",
+    @JsonIgnore // Во избежание бесконечной JSON рекурсии
+    @OneToMany(mappedBy = "visitsPrimaryKey.company",
             cascade = CascadeType.ALL)
-    private Set<TelegramUserCompaniesVisits> telegramUserCompanies = new HashSet<>();
+    private Set<Visit> visits = new HashSet<>();
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -236,12 +238,12 @@ public class Company {
         this.address = address;
     }
 
-    public Set<TelegramUserCompaniesVisits> getTelegramUserCompanies() {
-        return telegramUserCompanies;
+    public Set<Visit> getVisits() {
+        return visits;
     }
 
-    public void setTelegramUserCompanies(Set<TelegramUserCompaniesVisits> telegramUserCompanies) {
-        this.telegramUserCompanies = telegramUserCompanies;
+    public void setVisits(Set<Visit> visits) {
+        this.visits = visits;
     }
 
     @Override

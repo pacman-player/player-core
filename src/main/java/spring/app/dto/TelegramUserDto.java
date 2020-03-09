@@ -1,54 +1,24 @@
-package spring.app.model;
+package spring.app.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import spring.app.dto.TelegramUserDto;
-
-import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Класс, описывающий посетителя заведения - пользователя мессенджера Telegram,
- * обратившегося к нашему боту для заказа песни. Эквивалентен объекту User из Telegram API.
+ * обратившегося к нашему боту для заказа песни. Объект данного класса предназначен
+ * для обмена между pacman-player-core и player-bot. Схож с объектом User из Telegram API.
  */
+public class TelegramUserDto {
 
-@Entity
-@Table(name = "telegram_users")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class TelegramUser {
-
-    @Id
-    @Column(name = "telegram_user_id")
     private Long id;
-
     private String firstName;
-
     private Boolean isBot;
-
     private String lastName;
-
     private String userName;
-
     private String languageCode;
 
-    @OneToMany(mappedBy = "visitsPrimaryKey.telegramUser",
-            cascade = CascadeType.ALL)
-    private Set<Visit> visits = new HashSet<>();
+    public TelegramUserDto() {}
 
-    public TelegramUser() {}
-
-    public TelegramUser(TelegramUserDto telegramUserDto) {
-        this.id = telegramUserDto.getId();
-        this.firstName = telegramUserDto.getFirstName();
-        this.isBot = telegramUserDto.getBot();
-        this.lastName = telegramUserDto.getLastName();
-        this.userName = telegramUserDto.getUserName();
-        this.languageCode = telegramUserDto.getLanguageCode();
-    }
-
-    public TelegramUser(Long id, String firstName, Boolean isBot, String lastName, String userName, String languageCode) {
+    public TelegramUserDto(Long id, String firstName, Boolean isBot, String lastName, String userName, String languageCode) {
         this.id = id;
         this.firstName = firstName;
         this.isBot = isBot;
@@ -105,26 +75,17 @@ public class TelegramUser {
         this.languageCode = languageCode;
     }
 
-    @JsonIgnore // Во избежание бесконечной JSON рекурсии
-    public Set<Visit> getVisits() {
-        return visits;
-    }
-
-    public void setVisits(Set<Visit> visits) {
-        this.visits = visits;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TelegramUser telegramUser = (TelegramUser) o;
-        return Objects.equals(id, telegramUser.id) &&
-                Objects.equals(firstName, telegramUser.firstName) &&
-                Objects.equals(isBot, telegramUser.isBot) &&
-                Objects.equals(lastName, telegramUser.lastName) &&
-                Objects.equals(userName, telegramUser.userName) &&
-                Objects.equals(languageCode, telegramUser.languageCode);
+        TelegramUserDto telegramUserDto = (TelegramUserDto) o;
+        return Objects.equals(id, telegramUserDto.id) &&
+                Objects.equals(firstName, telegramUserDto.firstName) &&
+                Objects.equals(isBot, telegramUserDto.isBot) &&
+                Objects.equals(lastName, telegramUserDto.lastName) &&
+                Objects.equals(userName, telegramUserDto.userName) &&
+                Objects.equals(languageCode, telegramUserDto.languageCode);
     }
 
     @Override
