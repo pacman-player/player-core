@@ -79,13 +79,16 @@ $(document).ready(function () {
 
                         let eve = $("#btnEveningPlaylist1-" + listCompilation[i].id).attr("class");
                         eve = eveningIds.includes(listCompilation[i].id) ? "btn btn-success" : "btn btn-info";
-
+                        let cover = listCompilation[i].cover;
+                        if (cover == null) {
+                            cover = "na.jpg"
+                        }
 
                         htmlCompilation += '<div id="songCompilation" class="card-deck">'
                             + '<div class="card pt-10">'
                             + '<a href="#" onclick="showAllSongInSongCompilation(\'getGenres\', ' + listCompilation[i].id + ')" data-toggle="modal"' +
                             ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
-                            + '<img src="/img/compilation/compilation' + listCompilation[i].id + '.svg" width="80" height="80" alt="' +
+                            + '<img src="/cover/' + cover + '" width="80" height="80" alt="' +
                             listCompilation[i].name + '" >'
                             + '<p>Песни подборки</p></a>'
                             + '<div class="card-body">'
@@ -337,10 +340,14 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
     //bootstrap card
     htmlCompilation += (`<div class="card-deck" id="${secondId}">`);
     for (var i = 0; i < playlist.length; i++) {
+        let cover = playlist[i].cover;
+        if (cover == null) {
+            cover = "na.jpg"
+        }
         htmlCompilation += '<div class="card pt-10">'
             + '<a href="#" id="' + playlist[i].id + '" onclick="showAllSongInSongCompilation(\'' + playListName + '\', ' + playlist[i].id + ')" data-toggle="modal"'
             + ' data-target="#modalPlaylist" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">'
-            + '<img src="/img/compilation/compilation' + playlist[i].id + '.svg" width="80" height="80" class="card-img-top" alt="' + playlist[i].name + '">'
+            + '<img src="/cover/' + cover + '" width="80" height="80" class="card-img-top" alt="' + playlist[i].name + '">'
             + '<p>Песни подборки</p></a>'
             + '<div class="card-body">'
             + '<h4 class="card-title">' + playlist[i].name + '</h4>'
