@@ -3,16 +3,13 @@ package spring.app.controller.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring.app.model.User;
 import spring.app.service.abstraction.OrgTypeService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
@@ -40,6 +37,7 @@ public class RegistrationController {
         return "user/reg_check";
     }
 
+    //попадаем сюда из reg_check.js
     @GetMapping("/end")
     public String endRegistration(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -50,7 +48,8 @@ public class RegistrationController {
             return "redirect:/login";
 
         } else {
-            return "redirect:/user/statistics";
+            return "user/spa"; //переходим на Single Page Application
+            //return "redirect:/user/statistics";
         }
     }
 }
