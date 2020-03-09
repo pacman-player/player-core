@@ -1,8 +1,9 @@
 package spring.app.service.abstraction;
 
-import spring.app.dto.VisitDto;
+import spring.app.model.Company;
+import spring.app.model.TelegramUser;
 
 public interface VisitService {
 
-    void registerTelegramUserAndVisit(VisitDto visitDto);
+    void registerVisit(TelegramUser telegramUser, Company company);
 }

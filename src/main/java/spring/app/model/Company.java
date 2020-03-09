@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 
@@ -82,7 +80,7 @@ public class Company {
     private Set<SongQueue> songQueues;
 
     @JsonIgnore // Во избежание бесконечной JSON рекурсии
-    @OneToMany(mappedBy = "visitsPrimaryKey.company",
+    @OneToMany(mappedBy = "visitPrimaryKey.company",
             cascade = CascadeType.ALL)
     private Set<Visit> visits = new HashSet<>();
 

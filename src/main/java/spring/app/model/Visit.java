@@ -36,6 +36,12 @@ public class Visit {
         this.visitPrimaryKey = visitPrimaryKey;
     }
 
+    public Visit(TelegramUser telegramUser, Company company) {
+        this.visitPrimaryKey = new VisitPrimaryKey(
+                telegramUser, company, new Timestamp(System.currentTimeMillis())
+        );
+    }
+
     public TelegramUser getTelegramUser() {
         return getVisitPrimaryKey().getTelegramUser();
     }

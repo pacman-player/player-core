@@ -37,6 +37,7 @@ public class TelegramRestController {
     private CompanyService companyService;
     private SongQueueService songQueueService;
     private AddressService addressService;
+    private TelegramUserService telegramUserService;
     private VisitService visitService;
 
     @Autowired
@@ -45,12 +46,14 @@ public class TelegramRestController {
                                   CompanyService companyService,
                                   SongQueueService songQueueService,
                                   AddressService addressService,
+                                  TelegramUserService telegramUserService,
                                   VisitService visitService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
         this.songQueueService = songQueueService;
         this.addressService = addressService;
+        this.telegramUserService = telegramUserService;
         this.visitService = visitService;
     }
 
@@ -152,9 +155,12 @@ public class TelegramRestController {
     @PostMapping("/registerTelegramUserAndVisit")
     public void registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
         LOGGER.info("POST request '/registerTelegramUserAndVisit'");
-        visitService.registerTelegramUserAndVisit(visitDto);
-        LOGGER.info("New visit of Telegram user with id = {} to company with id = {} was added",
-                visitDto.getTelegramUserDto().getId(), visitDto.getCompanyId()
+        TelegramUser telegramUser = new TelegramUser(visitDto.getTelegramUserDto());
+        Company company = companyService.getById(visitDto.getCompanyId());
+        telegramUserService.addTelegramUser(telegramUser);
+        visitService.registerVisit(telegramUser, company);
+        LOGGER.info("New visit of Telegram user with id = {} to Company with id = {} was added",
+                telegramUser.getId(), company.getId()
         );
     }
 }

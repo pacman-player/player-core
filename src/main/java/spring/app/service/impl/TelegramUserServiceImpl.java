@@ -23,6 +23,8 @@ public class TelegramUserServiceImpl implements TelegramUserService {
 
     @Override
     public void addTelegramUser(TelegramUser telegramUser) {
-        telegramUserDao.save(telegramUser);
+        if (!isTelegramUserExists(telegramUser.getId())) {
+            telegramUserDao.save(telegramUser);
+        }
     }
 }

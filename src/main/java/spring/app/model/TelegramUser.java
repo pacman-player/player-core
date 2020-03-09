@@ -33,7 +33,7 @@ public class TelegramUser {
 
     private String languageCode;
 
-    @OneToMany(mappedBy = "visitsPrimaryKey.telegramUser",
+    @OneToMany(mappedBy = "visitPrimaryKey.telegramUser",
             cascade = CascadeType.ALL)
     private Set<Visit> visits = new HashSet<>();
 
