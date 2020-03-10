@@ -2,6 +2,7 @@ package spring.app.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * Класс-таблица для сохранения даты и времени посещения telegramUser`ом
@@ -72,5 +73,18 @@ public class Visit {
 
     public void setVisitPrimaryKey(VisitPrimaryKey primaryKey) {
         this.visitPrimaryKey = primaryKey;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Visit)) return false;
+        Visit visit = (Visit) o;
+        return visitPrimaryKey.equals(visit.visitPrimaryKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(visitPrimaryKey);
     }
 }

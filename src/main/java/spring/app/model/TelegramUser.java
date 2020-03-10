@@ -34,7 +34,8 @@ public class TelegramUser {
     private String languageCode;
 
     @OneToMany(mappedBy = "visitPrimaryKey.telegramUser",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Set<Visit> visits = new HashSet<>();
 
     public TelegramUser() {}
@@ -117,19 +118,16 @@ public class TelegramUser {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TelegramUser telegramUser = (TelegramUser) o;
-        return Objects.equals(id, telegramUser.id) &&
-                Objects.equals(firstName, telegramUser.firstName) &&
-                Objects.equals(isBot, telegramUser.isBot) &&
-                Objects.equals(lastName, telegramUser.lastName) &&
-                Objects.equals(userName, telegramUser.userName) &&
-                Objects.equals(languageCode, telegramUser.languageCode);
+        if (!(o instanceof TelegramUser)) return false;
+        TelegramUser that = (TelegramUser) o;
+        return id.equals(that.id) &&
+                firstName.equals(that.firstName) &&
+                languageCode.equals(that.languageCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, isBot, lastName, userName, languageCode);
+        return Objects.hash(id, firstName, languageCode);
     }
 
     @Override

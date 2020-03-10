@@ -3,6 +3,7 @@ package spring.app.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * Класс, являющийся композитным первичным ключом для сущности Visits,
@@ -12,10 +13,10 @@ import java.sql.Timestamp;
 @Embeddable
 public class VisitPrimaryKey implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private TelegramUser telegramUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Company company;
 
     @Column(name = "date_and_time_of_visit")
@@ -52,5 +53,20 @@ public class VisitPrimaryKey implements Serializable {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VisitPrimaryKey)) return false;
+        VisitPrimaryKey that = (VisitPrimaryKey) o;
+        return telegramUser.equals(that.telegramUser) &&
+                company.equals(that.company) &&
+                timestamp.equals(that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(telegramUser, company, timestamp);
     }
 }
