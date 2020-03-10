@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+
 public class TestDataInit {
     private final static Logger LOGGER = LoggerFactory.getLogger(TestDataInit.class);
 
@@ -198,6 +199,20 @@ public class TestDataInit {
         dataUpdateService.updateData("Yungblud", "Falling Skies", new String[] {"соул", "r&b"});
         dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
 
+        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        Song song1 = songService.getSongById(1L);
+        Song song2 = songService.getSongById(3L);
+        song1.setApproved(true);
+        song2.setApproved(true);
+        songService.updateSong(song1);
+        songService.updateSong(song2);
+        Author author1 = authorService.getById(1L);
+        Author author2 = authorService.getById(3L);
+        author1.setApproved(true);
+        author2.setApproved(true);
+        authorService.updateAuthor(author1);
+        authorService.updateAuthor(author2);
+
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
         Set<Song> songList2 = new HashSet<>();
@@ -244,13 +259,28 @@ public class TestDataInit {
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
         Set<Genre> genres2 = new HashSet<>();
-        genres1.add(genreService.getByName("рок"));
-        genres1.add(genreService.getByName("пост-панк"));
-        genres2.add(genreService.getByName("поп"));
-        genres2.add(genreService.getByName("соул"));
+
+        Genre rock = genreService.getByName("рок");
+        Genre pop = genreService.getByName("поп");
+        Genre postPunk = genreService.getByName("пост-панк");
+        Genre soul = genreService.getByName("соул");
+        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        rock.setApproved(true);
+        pop.setApproved(true);
+        postPunk.setApproved(true);
+        soul.setApproved(true);
+        genreService.updateGenre(rock);
+        genreService.updateGenre(pop);
+        genreService.updateGenre(postPunk);
+        genreService.updateGenre(soul);
+        genres1.add(rock);
+        genres1.add(postPunk);
+        genres2.add(pop);
+        genres2.add(soul);
         // создаем типы организаций
         OrgType orgType1 = new OrgType("Кальян-бар");
         OrgType orgType2 = new OrgType("Ресторан");
+        // необходимо уточнить логику этого функционала. Дополнительный фильтр по жанрам на основе огранизаций?
         orgType1.setGenres(genres1);
         orgType2.setGenres(genres2);
         orgTypeService.addOrgType(orgType1);

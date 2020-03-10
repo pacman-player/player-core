@@ -9,6 +9,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 
 </head>
@@ -27,39 +28,42 @@
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
-            <!--меню слева-->
+            <!-- меню слева -->
             <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
             </ul>
         </div>
 
-        <!--центральный блок-->
+        <!-- центральный блок -->
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="list-genres">
+                <div role="tabpanel" class="tab-pane active" id="list-compilations">
                     <ul class="nav nav-tabs nav-content" role="tablist">
-                        <li id="genres-table-nav" class="active">
-                            <a id="tab-genres-panel" href="#genres-panel" aria-controls="genres-panel" role="tab"
-                               data-toggle="tab">Все жанры</a>
-                        </li>
-                        <li id="add-genres-nav">
-                            <a href="#add-genres-panel" aria-controls="add-genres-panel" role="tab" data-toggle="tab">
-                                Новый жанр</a>
+                        <li id="compilations-table-nav" class="active">
+                            <a id="tab-compilations-panel"
+                               href="#compilations-panel"
+                               aria-controls="compilations-panel"
+                               role="tab"
+                               data-toggle="tab">
+                                Подборки
+                            </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!-- Таблица жанров -->
-                        <div role="tabpanel" class="tab-pane active" id="genres-panel">
+                        <!-- Таблица подборок -->
+                        <div role="tabpanel" class="tab-pane active" id="compilations-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <table id="genresTable" class="table">
-                                            <thead id="getGenresTable">
+                                        <table id="compilationsTable" class="table">
+                                            <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Разрешен</th>
-                                                <th>Жанр</th>
+                                                <th>Название</th>
+<!--                                                <th>Жанр</th>-->
+                                                <th>Песни</th>
+                                                <th>Обложка</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
                                             </tr>
@@ -71,50 +75,15 @@
                             </div>
                         </div>
 
-                        <!-- Статическая форма добавления нового жанра -->
-                        <div id="add-genres-panel" class="tab-pane" role="tabpanel">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                    <form id="addForm">
-                                                        <div class="form-group text-center edit-form">
-                                                            <div>
-                                                                <label for="addGenre">Жанр</label>
-                                                                <input id="addGenre"
-                                                                       name="name"
-                                                                       type="text"
-                                                                       placeholder="Genre"
-                                                                       class="form-control"/>
-                                                            </div>
-                                                            <button id="addGenreBtn"
-                                                                    class="btn btn-success btn-lg"
-                                                                    type="submit"
-                                                                    style="margin-top: 20px;">
-                                                                Добавить
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Изменение жанра (модальное окно) -->
-                        <div id="editGenres" class="modal fade">
+                        <!-- Обновление подборки (модальное окно)-->
+                        <div id="updateCompilationModal" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
                                         </button>
-                                        <h4 class="modal-title">Изменить жанр</h4>
+                                        <h4 class="modal-title">Изменить подборку</h4>
                                     </div>
 
                                     <div class="modal-body">
@@ -122,35 +91,37 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                    <form id="editForm">
+                                                    <form id="updateCompilationForm">
                                                         <div class="form-group text-center edit-form">
-                                                            <label for="updateGenresId">ID</label>
-                                                            <input id="updateGenresId"
-                                                                   name="id"
-                                                                   class="form-control"
-                                                                   disabled="disabled"
-                                                                   type="text"/>
-
-                                                            <label for="updateGenresName">Жанр</label>
-                                                            <input id="updateGenresName"
-                                                                   name="name"
-                                                                   class="form-control"
-                                                                   type="text"/>
-
-                                                            <label for="updateGenreApproved" class="checkbox-inline">
-                                                                <input id="updateGenreApproved"
-                                                                       name="approved"
+                                                            <div>
+                                                                <label for="updateCompilationId">ID</label>
+                                                                <input id="updateCompilationId"
+                                                                       name="id"
                                                                        class="form-control"
-                                                                       type="checkbox"/>Разрешен</label>
-
-
+                                                                       disabled="disabled"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationName">Название</label>
+                                                                <input id="updateCompilationName"
+                                                                       name="name"
+                                                                       class="form-control"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationCover">Обложка</label>
+                                                                <input id="updateCompilationCover"
+                                                                       name="cover"
+                                                                       class="form-control"
+                                                                       type="file"/>
+                                                            </div>
                                                             <div class="modal-footer">
                                                                 <button type="button"
                                                                         class="btn btn-default"
                                                                         data-dismiss="modal">
                                                                     Закрыть
                                                                 </button>
-                                                                <button id="editGenresBtn"
+                                                                <button id="updateCompilationBtn"
                                                                         class="btn btn-primary"
                                                                         type="submit">
                                                                     Изменить
@@ -182,7 +153,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/genres.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/compilations.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
