@@ -94,7 +94,7 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
     public Track getSong(String author, String song) throws IOException {
         try {
             String link = searchSong(author, song);
-            LOGGER.debug("Скачивание трека: {} - {} c Muzofond.fm...", author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c Muzofond.fm via {}...", author, song, link);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
             Path path = null;

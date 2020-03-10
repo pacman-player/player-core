@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.entity.Track;
 import spring.app.util.PlayerPaths;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 @Transactional
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
+    private RestTemplate restTemplate = new RestTemplate();
     private String authorName;
     private String songName;
     private String trackName;
@@ -76,7 +78,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     public Track getSong(String author, String song) throws IOException {
         try {
             String link = searchSong(author, song);
-            LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru...", author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru via {}...", author, song, link);
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");

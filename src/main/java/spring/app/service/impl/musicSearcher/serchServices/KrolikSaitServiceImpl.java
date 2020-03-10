@@ -60,7 +60,7 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
     public Track getSong(String author, String song) throws IOException {
         try {
             String link = searchSong(author, song);
-            LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz...", author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz via {}...", author, song, link);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
             Path path = null;

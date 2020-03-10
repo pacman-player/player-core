@@ -76,7 +76,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
     public Track getSong(String author, String song) throws IOException {
         try {
             String link = searchSong(author, song);
-            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net...", author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net via {}...", author, song, link);
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
