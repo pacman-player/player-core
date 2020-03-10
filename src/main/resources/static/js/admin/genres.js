@@ -76,14 +76,16 @@ function addGenre(form, field) {
 }
 
 
-function editButton(id, name) {
+function editButton(id, name, approved) {
     let theModal = $("#editGenres");
     let form = $("#editForm");
     let fieldId = $("#updateGenresId");
     let fieldName = $("#updateGenresName");
+    let fieldApproved = $("#updateGenreApproved");
 
     fieldId.val(id);
     fieldName.val(name);
+    fieldApproved.prop('checked', approved);
 
     theModal.modal("show");
     form.validate({
@@ -95,7 +97,12 @@ function editButton(id, name) {
                 remote: {
                     method: "GET",
                     url: "/api/admin/genre/is_free",
-                }
+                    data: {
+                        id: () => {
+                            return fieldId.val()
+                        }
+                    }
+                },
             }
         },
         messages: {
@@ -107,8 +114,9 @@ function editButton(id, name) {
                 url: "/api/admin/genre/update_genre",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    id: id,
-                    name: fieldName.val()
+                    id: fieldId.val(),
+                    name: fieldName.val(),
+                    approved: fieldApproved.prop('checked')
                 }),
                 headers: {
                     "Accept": "application/json",
@@ -121,8 +129,8 @@ function editButton(id, name) {
                 success: () => {
                     sendNotification();
                     notification(
-                        "edit-genre" + id,
-                        ` Жанр с id ${id} изменен`,
+                        "edit-genre" + fieldId.val(),
+                        ` Жанр с id ${fieldId.val()} изменен`,
                         "genres-panel");
                 },
                 error: (xhr, status, error) => {
@@ -170,24 +178,27 @@ function getTable() {
             "Content-Type": "application/json"
         },
         dataType: "JSON",
-        success: function (genres) {
+        success: (genres) => {
             let tableBody = $("#genresTable tbody");
 
             tableBody.empty();
             for (let i = 0; i < genres.length; i++) {
                 // vars that contains object's fields
                 let id = genres[i].id;
+                let approved = genres[i].approved;
+                let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
                 // parsing fields
                 let tr = $("<tr/>");
                 tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
+                            <td>${id}</td>
+                            <td><input class="checkbox" type="checkbox" disabled ${checked}/></td>
+                            <td>${name}</td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}')">
+                                        onclick="editButton(${id}, '${name}', ${approved})">
                                     Изменить
                                 </button>
                             </td>

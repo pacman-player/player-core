@@ -40,6 +40,7 @@ public class RegistrationController {
         return "user/reg_check";
     }
 
+    // попадаем сюда из reg_check.js
     @GetMapping("/end")
     public String endRegistration(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -47,10 +48,11 @@ public class RegistrationController {
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-            return "/login";
+            return "redirect:/login";
 
         } else {
-            return "user/statistics";
+            return "redirect:/user/spa"; //переходим на Single Page Application
+            //return "redirect:/user/statistics";
         }
     }
 }

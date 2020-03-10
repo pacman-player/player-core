@@ -1,8 +1,11 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +28,18 @@ public class Author extends Bannable{
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> genres = new HashSet<>();
 
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
+    @Column(name = "approved")
+    private Boolean isApproved = false;
+
+
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
@@ -40,6 +55,30 @@ public class Author extends Bannable{
     public Author(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Author(Long id, String name, Set<Genre> genres, Timestamp createdAt, Timestamp updatedAt, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isApproved = isApproved;
+    }
+
+    public Author(String name, Set<Genre> genres, Timestamp createdAt, Timestamp updatedAt, Boolean isApproved) {
+        this.name = name;
+        this.genres = genres;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isApproved = isApproved;
+    }
+
+    public Author(Long id, String name, Set<Genre> genres, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.isApproved = isApproved;
     }
 
     public void setId(Long id) {
@@ -66,6 +105,22 @@ public class Author extends Bannable{
         this.genres = genres;
     }
 
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public void setBanned(boolean banned) {
         this.banned = banned;
@@ -78,6 +133,14 @@ public class Author extends Bannable{
 
     public Boolean getBanned() {
         return banned;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override

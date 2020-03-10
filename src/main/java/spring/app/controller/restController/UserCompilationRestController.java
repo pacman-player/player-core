@@ -56,16 +56,8 @@ public class UserCompilationRestController {
         LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
         SongCompilation songCompilation = songCompilationService.getSongCompilationByCompilationName(compilationName);
         List<SongDto> songDtoList = songCompilation.getSong().stream()
-                .map(song -> new SongDto(
-                        song.getId(),
-                        song.getName(),
-                        song.getAuthor().getName(),
-                        song.getGenre().getName())
-                )
+                .map(SongDto::new)
                 .collect(Collectors.toList());
-        for (SongDto songDto : songDtoList) {
-            System.out.println(songDto);
-        }
         LOGGER.info("Found {} songs", songDtoList.size());
         return songDtoList;
     }

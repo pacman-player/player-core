@@ -1,9 +1,12 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import spring.app.dto.SongDto;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 
@@ -52,8 +55,19 @@ public class Song extends Bannable {
 
     private String albumsCover;
 
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
+    @Column(name = "approved")
+    private Boolean isApproved = false;
+
     /**
-     * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
+     * Вспомогательное поле, которое используеться фронтом для корректного отображения данных.
      */
     @Transient
     private Boolean banned;
@@ -93,6 +107,11 @@ public class Song extends Bannable {
         this.genre = genre;
     }
 
+    public Song(String name) {
+        this.name = name;
+    }
+
+
     public Set<SongCompilation> getSongCompilations() {
         return songCompilations;
     }
@@ -101,32 +120,28 @@ public class Song extends Bannable {
         this.songCompilations = songCompilations;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Song(String name) {
-        this.name = name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Author getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public Genre getGenre() {
@@ -153,9 +168,28 @@ public class Song extends Bannable {
         this.albumsCover = albumsCover;
     }
 
-    @Override
-    public void setBanned(boolean banned) {
-        this.banned = banned;
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override
@@ -165,6 +199,11 @@ public class Song extends Bannable {
 
     public Boolean getBanned() {
         return banned;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     @Override

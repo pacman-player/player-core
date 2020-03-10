@@ -8,7 +8,6 @@ import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,16 +61,16 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     @Override
     public List<Song> findByNameContaining(String param) {
+        try {
+            String hql = "FROM Song s WHERE s.name LIKE :param";
+            TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
+            // знак % обозначает, что перед передаваемым значение может быть, или колько угодно символов, или ноль.
+            query.setParameter("param", "%" + param + "%");
 
-        @SuppressWarnings("unchecked")
-        List<SongDto> songDtoList = entityManager.createNativeQuery("SELECT s.id, s.name FROM song s",
-                "SongDtoMapping")
-                .getResultList();
-
-        List<Song> songs = new ArrayList<>(songDtoList.size());
-        songDtoList.forEach(songDto -> songs.add(new Song(songDto.getId(), songDto.getName())));
-
-        return songs;
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public boolean isExist(String name) {

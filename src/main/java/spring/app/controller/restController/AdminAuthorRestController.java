@@ -10,7 +10,6 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,8 +62,11 @@ public class AdminAuthorRestController {
     @PutMapping(value = "/update_author")
     public void updateAuthor(@RequestBody AuthorDto newAuthor) {
         LOGGER.info("PUT request '/update_author' to update author = {}", newAuthor.getName());
-        Author author = new Author(newAuthor.getId(),newAuthor.getName());
-        author.setAuthorGenres(getGenres(newAuthor.getGenres()));
+        Author author = new Author(
+                newAuthor.getId(),
+                newAuthor.getName(),
+                getGenres(newAuthor.getGenres()),
+                newAuthor.getApproved());
         authorService.updateAuthor(author);
         LOGGER.info("Updated Author = {}", author);
     }
@@ -90,12 +92,14 @@ public class AdminAuthorRestController {
         return Arrays.stream(genresArr).map(genreService::getByName).collect(Collectors.toSet());
     }
 
-    // Returns false if author with requested name already exists else true
+    /**
+     * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого исполнителя (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
+     * */
     @GetMapping(value = "/is_free")
-    public boolean isLoginFree(@RequestParam String name) {
-        LOGGER.info("GET request '/is_free' for name = {}", name);
-        boolean isLoginFree = (authorService.getByName(name) == null);
-        LOGGER.info("Returned = {}", isLoginFree);
-        return isLoginFree;
+    public boolean isLoginFree(@RequestParam String name,
+                               @RequestParam("id") Long id) {
+        LOGGER.info("GET request '/is_free/{}' with Author name = {}", id, name);
+        Author author = authorService.getByName(name);
+        return (author == null || author == authorService.getById(id));
     }
 }
