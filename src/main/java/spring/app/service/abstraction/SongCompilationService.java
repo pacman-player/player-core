@@ -22,4 +22,6 @@ public interface SongCompilationService {
     SongCompilation getSongCompilationByCompilationName(String compilationName);
 
     void deleteSongCompilationFromPlayList(Long id, String dayTime);
+
+    void updateCompilation(SongCompilation songCompilation);
 }

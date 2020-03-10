@@ -211,4 +211,10 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         PlayList pl = new ArrayList<>(playList).get(0);
         pl.getSongCompilation().remove(newSongCompilation);
     }
+
+
+    @Override
+    public void updateCompilation(SongCompilation songCompilation) {
+        songCompilationDao.update(songCompilation);
+    }
 }
