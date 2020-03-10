@@ -10,6 +10,8 @@ public interface GenreService {
 
     List<Genre> getAllGenre();
 
+    List<Genre> getAllApprovedGenre();
+
     Genre getByName(String name);
 
     Genre getById(Long id);

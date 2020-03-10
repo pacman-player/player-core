@@ -5,7 +5,7 @@ function banUser(id) {
         url: '/api/admin/ban_user/' + id,
         success: function () {
             $("#banButton".concat(id)).empty();
-            $("#banButton".concat(id)).append('<td id="banButton"' + id +'><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + id + ')">разбанить</button></td>');
+            $("#banButton".concat(id)).append('<td id="banButton"' + id + '><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + id + ')">разбанить</button></td>');
         }
     })
 }
@@ -17,7 +17,7 @@ function unbanUser(id) {
         url: '/api/admin/unban_user/' + id,
         success: function () {
             $("#banButton".concat(id)).empty();
-            $("#banButton".concat(id)).append('<td id="banButton"' + id +'><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick="banUser(' + id + ')">забанить</button></td>');
+            $("#banButton".concat(id)).append('<td id="banButton"' + id + '><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick="banUser(' + id + ')">забанить</button></td>');
         }
     })
 }
@@ -44,7 +44,7 @@ $(document).ready(function () {
                 var htmlTable = "";
                 $("#UserTable tbody").empty();
                 for (var i = 0; i < listUsers.length; i++) {
-                    var htmlRole ="";
+                    var htmlRole = "";
                     for (var j = 0; j < listUsers[i].roles.length; j++) {
                         htmlRole += listUsers[i].roles[j].name + ", ";
                     }
@@ -62,9 +62,9 @@ $(document).ready(function () {
                     htmlTable += ('<td><button id="editUserBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editUser">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
-                        htmlTable += listUsers[i].enabled === true ?
-                            '<td id="banButton' + listUsers[i].id +'"><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick= "banUser(' + listUsers[i].id + ')">забанить</button></td>'
-                            : ('<td id="banButton'+ listUsers[i].id +'"><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + listUsers[i].id + ')">разбанить</button></td>');
+                    htmlTable += listUsers[i].enabled === true ?
+                        '<td id="banButton' + listUsers[i].id + '"><button id="bunUser" class="btn btn-sm btn-danger" type="button" onclick= "banUser(' + listUsers[i].id + ')">забанить</button></td>'
+                        : ('<td id="banButton' + listUsers[i].id + '"><button id="unbunUser" class="btn btn-sm btn-info" type="button" onclick="unbanUser(' + listUsers[i].id + ')">разбанить</button></td>');
                     htmlTable += ('</tr>');
                 }
                 $("#UserTable tbody").append(htmlTable);
@@ -74,17 +74,17 @@ $(document).ready(function () {
                     url: "/api/admin/get_all_roles",
                     contentType: "application/json",
                     success: function (roleList) {
-                    var rolesHtmlA = "";
-                    let rolesHtmlB ="";
-                    for (var r = 0; r < roleList.length; r++) {
-                        if (roleList[r].name !== "ANONYMOUS" && roleList[r].name !== "PREUSER") {
-                            rolesHtmlA += "<input class = \"roleA\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
-                                "</input>"
-                            rolesHtmlB += "<input class = \"roleB\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
-                                "</input>"
+                        var rolesHtmlA = "";
+                        let rolesHtmlB = "";
+                        for (var r = 0; r < roleList.length; r++) {
+                            if (roleList[r].name !== "ANONYMOUS" && roleList[r].name !== "PREUSER") {
+                                rolesHtmlA += "<input class = \"roleA\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
+                                    "</input>"
+                                rolesHtmlB += "<input class = \"roleB\" type=\"checkbox\" value=\"" + roleList[r].name + "\">" + roleList[r].name +
+                                    "</input>"
+                            }
                         }
-                    }
-                    $("#rlist").append(rolesHtmlB);
+                        $("#rlist").append(rolesHtmlB);
                         $("#rlistA").append(rolesHtmlA);
                     }
                 })
@@ -116,7 +116,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
-                    htmlTable += ('<td><button id="editCompanyBtn1" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                    htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
                     htmlTable += ('</tr>');
@@ -137,7 +137,7 @@ $(document).ready(function () {
     });
 
     function addUser() {
-        var roleListArr=[];
+        var roleListArr = [];
         var rls = document.getElementsByClassName("roleA");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
@@ -191,7 +191,7 @@ $(document).ready(function () {
 
     function updateUser() {
 
-        var roleListArr=[];
+        var roleListArr = [];
         var rls = document.getElementsByClassName("roleB");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
@@ -233,8 +233,8 @@ $(document).ready(function () {
         });
     }
 
-    $("#editCompanyBtn").click(function (event) {
-        event.preventDefault();
+    $(document).on('click', '#editCompanyBtn', function (e) {
+        e.preventDefault();
         updateCompanyForm();
     });
 
@@ -264,6 +264,7 @@ $(document).ready(function () {
                 },
             success:
                 function () {
+                    $('#editCompany').modal('hide');
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании сохранены",
                         'user-panel');
@@ -355,31 +356,78 @@ $(document).ready(function () {
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
 
+        let companyList;
         $.ajax({
             url: "/api/admin/all_establishments",
             method: "GET",
             dataType: "json",
             success: function (data) {
-                var selectBody = $('#updateOrgType');
+                /*var selectBody = $('#updateOrgType');*/
                 $(data).each(function (i, org) {
-                    selectBody.append(`
-            <option value="${org.id}" >${org.name}</option>
-            `);
+                    companyList = companyList + `<option value="${org.id}" >${org.name}</option>`;
                 })
             },
-        })
+
+        });
 
         $.ajax({
             url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
             method: "GET",
             dataType: "json",
             success: function (data) {
+                $('#company-modal-body').empty();
+                var modalInnerText = '';
+                modalInnerText = modalInnerText + '<label for="updateCompanyId">ID компании</label>\n' +
+                    '<input id="updateCompanyId" class="form-control"\n' +
+                    'disabled="disabled" type="text"\n' +
+                    'name="id" required=""/>\n' +
+                    '\n' +
+                    '<label for="updateIdUser">ID пользователя</label>\n' +
+                    '<input id="updateIdUser" class="form-control"\n' +
+                    'disabled="disabled"\n' +
+                    'type="text" name="id-user" required=""/>\n' +
+                    '\n' +
+                    '<label for="updateNameCompany">Компания</label>\n' +
+                    '<input id="updateNameCompany" class="form-control" type="text"\n' +
+                    'name="company"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateStartTime">Время открытия</label>\n' +
+                    '<input id="updateStartTime" class="form-control" type="time"\n' +
+                    'name="start-time"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateCloseTime">Время закрытия</label>\n' +
+                    '<input id="updateCloseTime" class="form-control" type="time"\n' +
+                    'name="close-time"\n' +
+                    'required=""/>\n' +
+                    '\n' +
+                    '<label for="updateOrgType">Тип компании</label>\n' +
+                    '<select id="updateOrgType" class="form-control" name="role">\n' +
+                    '</select>\n';
+
+                $('#company-modal-body').append(modalInnerText);
+
                 $('#updateCompanyId').val(data.id);
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
                 $('#updateIdUser').val(data.user.id);
+                $('#updateOrgType').append(companyList);
+
                 $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
+
+                $('#modal-footer').empty();
+                var buttons = '<button type="button" class="btn btn-default" data-dismiss="modal" id = "modal-footer-clsbtn">Закрыть</button>\n' +
+                    '<button id="editCompanyBtn" class="btn btn-primary" type="submit">Изменить</button>';
+
+                $('#modal-footer').append(buttons);
+
+            },
+            error: function () {
+                $('#company-modal-body').empty().append("Пользователю не присвоена ни одна компания");
+                var buttons = '<button type="button" class="btn btn-default" data-dismiss="modal" id = "modal-footer-clsbtn">Закрыть</button>';
+                $('#modal-footer').empty().append(buttons);
             }
         })
     });

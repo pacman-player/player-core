@@ -25,13 +25,13 @@ public class OrderSongServiceImpl implements OrderSongService {
 
     @Override
     public void addSongOrder(OrderSong songOrder) {
-    orderSongDao.save(songOrder);
+        orderSongDao.save(songOrder);
     }
 
 
     @Override
     public long getSongOrdersByCompanyIdAndPeriod(Long id, Long period) {
-       return orderSongDao.getSongOrdersByCompanyIdAndPeriod(id, new Timestamp(System.currentTimeMillis() - period * 24 * 60 * 60 * 1000));
+        return orderSongDao.getSongOrdersByCompanyIdAndPeriod(id, new Timestamp(System.currentTimeMillis() - period * 24 * 60 * 60 * 1000));
     }
 
     @Override
@@ -58,5 +58,11 @@ public class OrderSongServiceImpl implements OrderSongService {
     @Override
     public long countAll(Long companyId) {
         return orderSongDao.countAll(companyId);
+    }
+
+
+    @Override
+    public void bulkRemoveByCompany(Long companyId) {
+        orderSongDao.bulkRemoveOrderSongByCompany(companyId);
     }
 }
