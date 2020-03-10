@@ -45,11 +45,11 @@ public class RegistrationController {
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-            return "/login";
+            return "redirect:/login";
 
         } else {
-//            return "user/statistics";
-            return "user/spa"; //переходим на Single Page Application
+            return "redirect:/user/spa"; //переходим на Single Page Application
+            //return "redirect:/user/statistics";
         }
     }
 }
