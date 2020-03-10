@@ -63,7 +63,15 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
         return link;
     }
 
-
+    /**
+     * Основной метод получения искомого трека.
+     * Запускает метод {@link #searchSong} для создания поискового запроса на данный музыкальный сервис и
+     * получения ссылки на скачивания трека. Затем происходит скачивание трека и сохранение его в
+     * директорию с музыкой в формате songId.mp3.
+     * @param author - имя исполнителя
+     * @param song - название песни
+     * @return возвращение нового экземпляра класса Track.
+     */
     @Override
     public Track getSong(String author, String song) throws IOException {
         try {
