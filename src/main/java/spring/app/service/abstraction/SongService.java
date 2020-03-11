@@ -4,6 +4,7 @@ import spring.app.model.Song;
 
 import java.util.List;
 
+
 public interface SongService {
 
     List<Song> getAllSong();
@@ -26,12 +27,14 @@ public interface SongService {
 
     /**
      * возвращает все песни, в которых содержиться передаваемое значение
+     *
      * @return List<Song>
      */
     List<Song> findSongsByNameContaining(String name);
 
     /**
      * Возвращает песню по id
+     *
      * @return Song
      */
     Song getById(long songId);
