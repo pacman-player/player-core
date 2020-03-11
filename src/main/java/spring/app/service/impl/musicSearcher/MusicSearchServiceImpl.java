@@ -24,7 +24,6 @@ import java.util.List;
 @Service
 @Transactional
 public class MusicSearchServiceImpl implements MusicSearchService {
-
     private Track track;
     private GenreDefinerService genreDefiner;
     private DataUpdateService dataUpdater;
@@ -45,14 +44,24 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         this.krolikMusic = krolikMusic;
         this.genreDefiner = genreDefiner;
         this.dataUpdater = dataUpdater;
-        this.genreDefiner = genreDefiner;
-        this.dataUpdater = dataUpdater;
     }
+
+
+    /**
+     * Метод который ищет трек в списке добавленных сервисов поиска музыки {@link DownloadMusicService}
+     *
+     * @param author имя исполнителя
+     * @param song название песни
+     * @return экземпляр {@link Track}
+     * @throws IOException
+     */
     @Override
     public Track getSong(String author, String song) throws IOException {
-        //складываем сервисы поиска в лист
-        List<? extends DownloadMusicService> listServices = new ArrayList<>(Arrays.asList(zaycevMusic, muzofondMusic, krolikMusic, vkMusic));
-        //проходим в цикле по каждому сервису, пытаемся найти песню и при положительном исходе брейкаем цикл
+        // складываем сервисы поиска в лист
+        List<? extends DownloadMusicService> listServices
+                = new ArrayList<>(Arrays.asList(zaycevMusic, muzofondMusic, krolikMusic, vkMusic));
+        // проходим в цикле по каждому сервису,
+        // пытаемся найти песню и при положительном исходе брейкаем цикл
         for (DownloadMusicService service : listServices) {
             track = service.getSong(author, song);
             if (track != null) {
@@ -62,11 +71,11 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return track;
     }
 
-
     //определяет жанр песни
     public String[] getGenre(String trackName) throws IOException {
         return genreDefiner.defineGenre(trackName);
     }
+
     //заносит данные скачаной песни в бд и возвращает id песни
     public Long updateData(Track track) throws IOException {
         String[] genreNames = getGenre(track.getFullTrackName());

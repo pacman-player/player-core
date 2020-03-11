@@ -99,15 +99,7 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             byte[] track = restTemplate.getForObject(link, byte[].class);
             Path path = null;
             if (track.length > 2000000) {    //проверка что песня полноценная, т.е. более 2 Мбайт
-
                 path = PlayerPaths.getSongsDir(trackName + ".mp3");
-//                if (path != null) {
-//                    try {
-//                        Files.write(path, track);  //записываем песню с директорию
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
             } else {
                 return null;  //если песня меньше 2мб возвращаем 0
             }
