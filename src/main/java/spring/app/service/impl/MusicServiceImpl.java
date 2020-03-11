@@ -4,7 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.*;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
@@ -62,9 +65,16 @@ public class MusicServiceImpl implements MusicService {
     }
 
 
+    /**
+     * Метод для воспроизведения mp3 файла на плеер на фронте.
+     * Получаем id песни, по нему создаем InputStreamResource из файла.
+     *
+     * @param musicAuthor
+     * @param musicTitle
+     * @return InputStreamResource из файла, обернутый в ResponseEntity
+     */
     @Override
     public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
-        System.out.println(musicTitle);
         Long id = songDao.getByNameAndAuthor(musicAuthor, musicTitle).getId();
         File file = new File(musicPath + id + ".mp3");
         long length = file.length();

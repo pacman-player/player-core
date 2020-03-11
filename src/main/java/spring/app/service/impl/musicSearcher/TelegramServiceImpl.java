@@ -28,7 +28,11 @@ public class TelegramServiceImpl implements TelegramService {
     private final SongService songService;
     private final CompanyService companyService;
 
-    public TelegramServiceImpl(MusicSearchService musicSearchService, CutSongService cutSongService, SongQueueService songQueueService, SongService songService, CompanyService companyService) {
+    public TelegramServiceImpl(MusicSearchService musicSearchService,
+                               CutSongService cutSongService,
+                               SongQueueService songQueueService,
+                               SongService songService,
+                               CompanyService companyService) {
         this.musicSearchService = musicSearchService;
         this.cutSongService = cutSongService;
         this.songQueueService = songQueueService;
@@ -53,26 +57,28 @@ public class TelegramServiceImpl implements TelegramService {
      * Получаем с бота SongRequest с информацией о песне которую нужно найти для пользователя.
      * Ищем трек на сервисах.
      * Получаем полное название трека.
-     * Создаем 30сек отрезок для бота
-     * Получаем id песни из базы после сохранения
-     * Записываем песню в директорию с именем по id песни в базе (например 1.mp3)
-     * Определяем позицию в очереди
-     * Возвращаем боту SongResponce с необходимой инфой.
-     * @param songRequest
-     * @return
+     * Создаем 30сек отрезок для бота.
+     * Получаем id песни из базы после сохранения.
+     * Записываем песню в директорию с именем по id песни в базе (например 1.mp3).
+     * Определяем позицию в очереди.
+     *
+     * @param songRequest - SongRequest с информацией о песне которую нужно найти для пользователя
+     * @return Возвращаем боту SongResponse с необходимой инфой
      * @throws IOException
      * @throws BitstreamException
      * @throws DecoderException
      */
     @Override
-    public SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
-        //in this line the track is being downloaded and saved to hd (/music)
+    public SongResponse approveSong(SongRequest songRequest)
+            throws IOException, BitstreamException, DecoderException {
+        // Ищем запрошенный трек в музыкальных сервисах
         track = musicSearchService.getSong(songRequest.getAuthorName(),songRequest.getSongName());
+
         String trackName = track.getFullTrackName();
         byte[] trackBytes = track.getTrack();
-        //cut song here
+        // создаем 30-секундный отрезок для превью
         byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
-        //setting songId vis going back to music
+        // получаем id песни после занесения в БД
         songId = musicSearchService.updateData(track);
         Path path = PlayerPaths.getSongsDir(songId + ".mp3");
         if (track.getPath() != null) {
@@ -83,11 +89,15 @@ public class TelegramServiceImpl implements TelegramService {
             }
         }
 
-        //По position определяем позицию песни в очереди song_queue. Если песни нет в очереди - отдаем боту position = 0L
+        // По position определяем позицию песни в очереди song_queue.
+        // Если песни нет в очереди - отдаем боту position = 0L
         Long position;
 
         //Достаем очередь по песне и компании
-        SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songService.getSongById(songId), companyService.getById(songRequest.getCompanyId()));
+        SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(
+                songService.getSongById(songId),
+                companyService.getById(songRequest.getCompanyId())
+        );
         if (songQueue == null) {
             position = 0L;
         } else {
