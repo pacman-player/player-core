@@ -245,16 +245,16 @@ public class TestDataInit {
         // присваиваем подборкам жанры
         songCompilation1.setSong(songList1);
         songCompilation1.setGenre(genreService.getByName("рок"));
-        songCompilationService.addSongСompilation(songCompilation1);
+        songCompilationService.addSongCompilation(songCompilation1);
         songCompilation2.setSong(songList2);
         songCompilation2.setGenre(genreService.getByName("r&b"));
-        songCompilationService.addSongСompilation(songCompilation2);
+        songCompilationService.addSongCompilation(songCompilation2);
         songCompilation3.setSong(songList3);
         songCompilation3.setGenre(genreService.getByName("соул"));
-        songCompilationService.addSongСompilation(songCompilation3);
+        songCompilationService.addSongCompilation(songCompilation3);
         songCompilation4.setSong(songList4);
         songCompilation4.setGenre(genreService.getByName("поп"));
-        songCompilationService.addSongСompilation(songCompilation4);
+        songCompilationService.addSongCompilation(songCompilation4);
 
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
@@ -380,8 +380,7 @@ public class TestDataInit {
         long startDate = cal.getTime().getTime();
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
-//        long totalOrders = random.nextInt(3000);
-        long totalOrders = random.nextInt(30);
+        long totalOrders = random.nextInt(3000);
         for (int i = 0; i < totalOrders; i++) {
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));

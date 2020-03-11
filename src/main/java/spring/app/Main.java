@@ -10,6 +10,7 @@ import spring.app.configuration.initializer.TestDataInit;
 
 import javax.annotation.PostConstruct;
 
+
 @SpringBootApplication
 @EnableAsync
 @EnableCaching
