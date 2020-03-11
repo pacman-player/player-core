@@ -87,5 +87,10 @@ public class OrderSongServiceImpl implements OrderSongService {
         }
         return result;
     }
-}
 
+
+    @Override
+    public void bulkRemoveByCompany(Long companyId) {
+        orderSongDao.bulkRemoveOrderSongByCompany(companyId);
+    }
+}

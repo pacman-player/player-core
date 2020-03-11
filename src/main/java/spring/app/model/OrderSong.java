@@ -13,7 +13,7 @@ public class OrderSong {
     private Timestamp timestamp;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "company_id")
+    @JoinColumn(name = "company_id")
     private Company company;
 
     @ManyToOne

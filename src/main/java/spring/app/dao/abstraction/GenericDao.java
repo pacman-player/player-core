@@ -11,6 +11,8 @@ public interface GenericDao<PK extends Serializable, T> {
 
 	List<T> getAll();
 
+	List<T> getAllApproved();
+
 	void update(T group);
 
 	void deleteById(PK id);

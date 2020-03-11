@@ -41,6 +41,32 @@ public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements Or
                 .getSingleResult();
     }
 
+    @Override
+    public List<Long> getAllByCompanyId(Long companyId) {
+
+        Query q = entityManager.createNativeQuery(
+                "SELECT osng.id " +
+                        "FROM order_song osng " +
+                        "WHERE osng.company_id = ?"
+        );
+        q.setParameter(1, companyId);
+        List idsList = q.getResultList();
+        List<Long> resultList = new ArrayList<>();
+        for (Object num : idsList
+        ) {
+            resultList.add(((BigInteger) num).longValue());
+        }
+        return resultList;
+    }
+
+    @Override
+    public void bulkRemoveOrderSongByCompany(Long companyId) {
+        entityManager.createQuery("DELETE FROM OrderSong o WHERE o.company.id = :companyId")
+                .setParameter("companyId", companyId)
+                .executeUpdate();
+        entityManager.flush();
+    }
+
 
     @Override
     public List<Long> getListSongIdByCompanyIdAndPeriod(Long id, Timestamp after) {

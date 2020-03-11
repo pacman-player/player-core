@@ -5,16 +5,25 @@ function getSongsTable() {
     $.ajax({
         method: 'GET',
         url: "/api/admin/song/all_songs",
-        success: function (listSong) {
+        success: (listSong) => {
+            console.log(listSong) // для дебага
             $('#all-songs').empty();
             var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
+                let checkedBox = "";
+                let songId = listSong[i].id;
+
                 songTable += ('<tr id="listSongs">');
-                songTable += ('<td id="tableSongId">' + listSong[i].id + '</td>');
+                songTable += ('<td id="tableSongId">' + songId + '</td>');
+
+                if (listSong[i].approved) {
+                    checkedBox = " checked"
+                }
+                songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
-                songTable += ('<td id="tableSongAuthor">' + listSong[i].author.name + '</td>');
-                songTable += ('<td id="tableSongGenre">' + listSong[i].genre.name + '</td>');
-                songTable += ('<td><a id="editSongBtn' + listSong[i].id + '" onclick="editSong(' + listSong[i].id + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
+                songTable += ('<td id="tableSongAuthor">' + listSong[i].authorName + '</td>');
+                songTable += ('<td id="tableSongGenre">' + listSong[i].genreName + '</td>');
+                songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
                 songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
                 songTable += ('</tr>');
@@ -34,13 +43,15 @@ function editSong(id) {
         url: '/api/admin/song/' + id,
         method: 'GET',
         success: function (editData) {
+            console.log(editData)
             //заполняю модалку
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
-            $("#updateSongAuthor").val(editData.author.name);
-            $("#updateSongGenre").val(editData.genre.name);
+            $("#updateSongAuthor").val(editData.authorName);
+            $("#updateSongGenre").val(editData.genreName);
             //получаем жанр песни и список жанров из БД для edit song
-            getAllGenreForEdit(editData.genre.name);
+            getAllGenreForEdit(editData.genreName);
+            $("#updateSongApproved").prop('checked', editData.approved);
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -48,7 +59,7 @@ function editSong(id) {
     });
 }
 
-//получаем жанр песни и список жанров из БД для edit song
+//получаем жанр песни и список жанров из БД для модалки edit song
 function getAllGenreForEdit(genreName) {
     //очищаем option в модалке
     $('#updateSongGenre').empty();
@@ -75,8 +86,9 @@ $("#updateSongBtn").click(function (event) {
 function updateSongForm() {
     var editSong = {};
     editSong.id = $("#updateSongId").val();
+    editSong.approved = $("#updateSongApproved").prop('checked');
     editSong.name = $("#updateSongName").val();
-    editSong.author = $("#updateSongAuthor").val();
+    editSong.authorName = $("#updateSongAuthor").val();
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
@@ -104,7 +116,7 @@ function deleteSong(id) {
     $.ajax({
         method: 'DELETE',
         url: '/api/admin/song/delete_song/' + id,
-        success: function() {
+        success: function () {
             getSongsTable();
         },
         error: function (xhr, status, error) {
