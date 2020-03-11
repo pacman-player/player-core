@@ -385,8 +385,9 @@ public class TestDataInit {
         Song song = new Song();
         long songIdRandom = 0;
         for (int i = 0; i < totalOrders; i++) {
+            songIdRandom = 1 + (long) (Math.random() * 13);
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
-                    .nextLong(startDate, endDate))));
+                    .nextLong(startDate, endDate)), song = songService.getSongById(songIdRandom) ));
         }
 
     }
