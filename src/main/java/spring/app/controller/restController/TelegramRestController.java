@@ -34,7 +34,11 @@ public class TelegramRestController {
     private AddressService addressService;
 
     @Autowired
-    public TelegramRestController(TelegramService telegramService, SongService songService, CompanyService companyService, SongQueueService songQueueService, AddressService addressService) {
+    public TelegramRestController(TelegramService telegramService,
+                                  SongService songService,
+                                  CompanyService companyService,
+                                  SongQueueService songQueueService,
+                                  AddressService addressService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
@@ -43,16 +47,22 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/song")
-    public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException {
+    public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException,
+            BitstreamException, DecoderException{
         LOGGER.info("POST request '/song'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
             SongResponse songResponse = telegramService.getSong(songRequest);
-            LOGGER.info("Got Song response successfully");
+
+            if (songResponse != null) {
+                LOGGER.info("Got Song response successfully");
+            } else {
+                LOGGER.error("Requested song was NOT found! :(");
+            }
             return songResponse;
-        } catch (IOException e) {
+        } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
         }
@@ -76,7 +86,12 @@ public class TelegramRestController {
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
             SongResponse songResponse = telegramService.approveSong(songRequest);
-            LOGGER.info("Approved Song successfully");
+
+            if (songResponse != null) {
+                LOGGER.info("Approved Song successfully!");
+            } else {
+                LOGGER.error("Requested song was NOT found! :(");
+            }
             return songResponse;
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);

@@ -67,7 +67,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
             }
             trackName = author + "-" + song;
 
-             link = "https://downloadmusicvk.ru/audio/download?" +
+            link = "https://downloadmusicvk.ru/audio/download?" +
                     fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
         } catch (Exception e) {
             LOGGER.debug("Поиск трека: {} - {} c DownloadMusicVK.ru неуспешен! :(", author, song);
