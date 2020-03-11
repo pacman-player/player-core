@@ -1,13 +1,11 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Objects;
+
 import java.util.Set;
 
 
@@ -79,12 +77,6 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
-
-    @JsonIgnore // Во избежание бесконечной JSON рекурсии
-    @OneToMany(mappedBy = "visitPrimaryKey.company",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private Set<Visit> visits = new HashSet<>();
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -237,30 +229,6 @@ public class Company {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public Set<Visit> getVisits() {
-        return visits;
-    }
-
-    public void setVisits(Set<Visit> visits) {
-        this.visits = visits;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Company)) return false;
-        Company company = (Company) o;
-        return id.equals(company.id) &&
-                name.equals(company.name) &&
-                user.equals(company.user) &&
-                address.equals(company.address);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, user, address);
     }
 
     @Override

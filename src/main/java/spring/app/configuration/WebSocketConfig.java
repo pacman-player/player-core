@@ -1,5 +1,6 @@
 package spring.app.configuration;
 
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
