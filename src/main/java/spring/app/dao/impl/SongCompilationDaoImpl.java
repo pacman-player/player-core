@@ -37,7 +37,7 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
     }
 
     @Override
-    public List<Song> getAvailableContentForCompilationById(SongCompilation songCompilation) {
+    public List<Song> getAvailableContentForCompilation(SongCompilation songCompilation) {
         TypedQuery<Song> query = entityManager.createQuery(
                 "SELECT s FROM Song s WHERE s.genre.id = :genreId AND s NOT IN " +
                         "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", Song.class);
