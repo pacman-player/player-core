@@ -1,42 +1,43 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
-import spring.app.model.Company;
-import spring.app.model.PlayList;
-import spring.app.model.SongCompilation;
-import spring.app.model.User;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.SongCompilationService;
-import spring.app.service.abstraction.UserService;
+import spring.app.model.*;
+import spring.app.service.abstraction.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 @Service
 @Transactional
 public class SongCompilationServiceImpl implements SongCompilationService {
-
     private SongCompilationDao songCompilationDao;
     private UserService userService;
     private CompanyService companyService;
+    private FileUploadService fileUploadService;
     private SendEmailAboutAddNewCompilationImpl sendEmail;
+    private SongService songService;
 
     @Autowired
     public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService,
-                                      CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail) {
+                                      CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
+                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
         this.songCompilationDao = songCompilationDao;
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
+        this.fileUploadService = fileUploadService;
+        this.songService = songService;
     }
 
     @Override
-    public void addSongСompilation(SongCompilation songCompilation) {
+    public void addSongCompilation(SongCompilation songCompilation) {
         songCompilationDao.save(songCompilation);
 //        sendEmail.send(songCompilation.getName());
     }
@@ -49,6 +50,30 @@ public class SongCompilationServiceImpl implements SongCompilationService {
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
         return songCompilationDao.getListSongCompilationsByGenreId(id);
+    }
+
+    @Override
+    public List<Song> getAvailableSongsForCompilationById(Long compilationId) {
+        return songCompilationDao.getAvailableContentForCompilation(songCompilationDao.getById(compilationId));
+    }
+
+    @Override
+    public List<Song> getSongCompilationContentById(Long compilationId) {
+        return songCompilationDao.getSongCompilationContentById(compilationId);
+    }
+
+    @Override
+    public void addSongToSongCompilation(Long compilationId, Long songId) {
+        songCompilationDao.addSongToSongCompilation(
+                getSongCompilationById(compilationId),
+                songService.getSongById(songId));
+    }
+
+    @Override
+    public void removeSongFromSongCompilation(Long compilationId, Long songId) {
+        songCompilationDao.removeSongFromSongCompilation(
+                getSongCompilationById(compilationId),
+                songService.getSongById(songId));
     }
 
     @Override
@@ -193,14 +218,14 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         User authUser = userService.getUserById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
-        switch(dayTime) {
-            case "morning" :
+        switch (dayTime) {
+            case "morning":
                 changeCompanyPlaylist(oldCompany.getMorningPlayList(), newSongCompilation);
                 break;
-            case "midday" :
+            case "midday":
                 changeCompanyPlaylist(oldCompany.getMiddayPlayList(), newSongCompilation);
                 break;
-            case "evening" :
+            case "evening":
                 changeCompanyPlaylist(oldCompany.getEveningPlayList(), newSongCompilation);
                 break;
         }
@@ -212,9 +237,17 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         pl.getSongCompilation().remove(newSongCompilation);
     }
 
-
     @Override
     public void updateCompilation(SongCompilation songCompilation) {
         songCompilationDao.update(songCompilation);
+    }
+
+    @Override
+    public void deleteSongCompilation(SongCompilation songCompilation) throws IOException {
+        if (songCompilation.getCover() != null) {
+            fileUploadService.eraseCurrentFile(songCompilation.getCover());
+        }
+
+        songCompilationDao.deleteById(songCompilation.getId());
     }
 }
