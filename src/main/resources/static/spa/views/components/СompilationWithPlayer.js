@@ -1171,4 +1171,3 @@ function playPrevious() {
             allSongsInCurrentPlaylist[allSongsInCurrentPlaylist.length - 1].isFromSongQueue);
     }
 }
-
