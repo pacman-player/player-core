@@ -18,6 +18,7 @@ public class SongCompilation {
     private Long id;
 
     private String name;
+    private String cover;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
@@ -83,6 +84,14 @@ public class SongCompilation {
         return result;
     }
 
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
     @Override
     public String toString() {
         return "SongCompilation{" +
@@ -90,6 +99,7 @@ public class SongCompilation {
                 ", name='" + name + '\'' +
                 ", genre=" + genre +
                 ", song=" + song +
+                ", cover=" + cover +
                 '}';
     }
 }
