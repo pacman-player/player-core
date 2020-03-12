@@ -60,6 +60,7 @@
                                             <thead id="getAuthorTable">
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Разрешен</th>
                                                 <th>Имя</th>
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
@@ -155,6 +156,13 @@
                                                                     <!--заполняем через js-->
                                                                 </select>
                                                             </div>
+                                                               <div> <label for="editAuthorApproved" class="checkbox-inline">
+                                                                    <input id="editAuthorApproved"
+                                                                           name="approved"
+                                                                           class="form-control"
+                                                                           type="checkbox"/>Разрешен</label>
+                                                               </div>
+
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-default"
                                                                         data-dismiss="modal"
