@@ -5,7 +5,7 @@
 
 
 player.log*
-
+music/
 
 logs/
 **/*.log

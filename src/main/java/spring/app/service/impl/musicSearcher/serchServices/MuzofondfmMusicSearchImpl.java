@@ -19,7 +19,7 @@ import java.nio.file.Path;
 /**
  * Класс для поиска и скачивания песен с сервиса <i>muzofond.fm</i>.
  */
-@Service
+@Service("muzofondfmMusicSearchImpl")
 @Transactional
 public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MuzofondfmMusicSearchImpl.class);

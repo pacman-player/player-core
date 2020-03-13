@@ -15,7 +15,7 @@ import spring.app.util.PlayerPaths;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Service
+@Service("krolikSaitServiceImpl")
 @Transactional
 public class KrolikSaitServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(KrolikSaitServiceImpl.class);

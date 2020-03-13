@@ -29,6 +29,12 @@ public class Main extends WebMvcConfigurerAdapter {
 //        KrolikSaitServiceImpl krolikSait = new KrolikSaitServiceImpl();
 //        krolikSait.getSong("король и шут", "сосиска");
 
+//        try {
+//        MusicSearchServiceImpl mssi = new MusicSearchServiceImpl();
+//            mssi.getSong("abba", "money");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Bean(initMethod = "init")

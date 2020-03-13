@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Path;
 
-@Service
+@Service("zaycevSaitServiceImpl")
 @Transactional
 public class ZaycevSaitServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(ZaycevSaitServiceImpl.class);

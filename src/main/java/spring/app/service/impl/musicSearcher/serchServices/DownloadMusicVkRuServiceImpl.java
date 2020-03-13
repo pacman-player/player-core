@@ -19,7 +19,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 
-@Service
+@Service("downloadMusicVkRuServiceImpl")
 @Transactional
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
