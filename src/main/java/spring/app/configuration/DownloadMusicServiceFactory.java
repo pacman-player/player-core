@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import spring.app.service.abstraction.DownloadMusicService;
+import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class DownloadMusicServiceFactory {
     @Qualifier("downloadMusicVkRuServiceImpl")
     private DownloadMusicService downloadMusicVkRuServiceImpl;
 
+    private List<DownloadMusicService> services = new ArrayList<>();
+
 
     public DownloadMusicServiceFactory() {
     }
@@ -86,15 +89,23 @@ public class DownloadMusicServiceFactory {
     }
 
     /** Метод, формирующий список сервисов, который поочередно используется в поиске трека
-     * в классе {@link spring.app.service.impl.musicSearcher.MusicSearchServiceImpl}
+     * в классе {@link MusicSearchServiceImpl}
      */
     public List<DownloadMusicService> getDownloadServices() {
-        List<DownloadMusicService> list = new ArrayList<>();
-        list.add(getService(one));
-        list.add(getService(two));
-        list.add(getService(three));
-        list.add(getService(four));
-        return list;
+        try {
+            services.clear();
+            services.add(getService(one));
+            services.add(getService(two));
+            services.add(getService(three));
+            services.add(getService(four));
+        } catch (Exception e) { // На случай ошибок в файле конфигурации, возвращаем очередность по-умолчанию
+            services.clear();
+            services.add(zaycevSaitServiceImpl);
+            services.add(muzofondfmMusicSearchImpl);
+            services.add(krolikSaitServiceImpl);
+            services.add(downloadMusicVkRuServiceImpl);
+        }
+        return services;
     }
 
 }
