@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spring.app.configuration.DownloadMusicServiceConfig;
+import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.service.abstraction.DataUpdateService;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.abstraction.GenreDefinerService;
@@ -29,18 +29,20 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 public class MusicSearchServiceImpl implements MusicSearchService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MusicSearchServiceImpl.class);
     private Track track;
+
     @Autowired
     private GenreDefinerService genreDefiner;
+
     @Autowired
     private DataUpdateService dataUpdater;
 
     @Autowired
-    DownloadMusicServiceConfig cfg;
+    private DownloadMusicServiceFactory cfg;
 
 
-    public MusicSearchServiceImpl(/*DataUpdateService dataUpdater*/) throws IOException {
-/*        this.genreDefiner = genreDefiner;
-        this.dataUpdater = dataUpdater;*/
+    public MusicSearchServiceImpl(DataUpdateService dataUpdater) throws IOException {
+        this.genreDefiner = genreDefiner;
+        this.dataUpdater = dataUpdater;
     }
 
 
