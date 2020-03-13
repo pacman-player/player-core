@@ -158,7 +158,11 @@ public class TelegramRestController {
         TelegramUser telegramUser = new TelegramUser(visitDto.getTelegramUserDto());
         Company company = companyService.getById(visitDto.getCompanyId());
         telegramUserService.addTelegramUser(telegramUser);
-        visitService.registerVisit(telegramUser, company);
+//        VisitPK visitPK = new VisitPK(telegramUser, company);
+        visitService.addVisit(telegramUser, company);
+        telegramUserService.deleteTelegramUserById(telegramUser.getId());
+//        companyService.deleteCompanyById(company.getId());
+//        visitService.deleteVisitById(visitPK);
         LOGGER.info("New visit of Telegram user with id = {} to Company with id = {} was added",
                 telegramUser.getId(), company.getId()
         );

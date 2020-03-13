@@ -76,6 +76,12 @@ public class TestDataInit {
     @Value("${music.initPath}")
     private String  musicInitPath;
 
+    @Autowired
+    private TelegramUserService telegramUserService;
+
+    @Autowired
+    private VisitService visitService;
+
     private void init() throws InvalidDataException, IOException, UnsupportedTagException {
 
         // Создаем роли
@@ -386,5 +392,14 @@ public class TestDataInit {
                     .nextLong(startDate, endDate))));
         }
 
+
+        TelegramUser telegramUser = new TelegramUser(1234L, "eldar", false, "suin", "el", "ru");
+        Company company = companyService.getById(2L);
+        telegramUserService.addTelegramUser(telegramUser);
+//        VisitPK visitPK = new VisitPK(telegramUser, company);
+        visitService.addVisit(telegramUser, company);
+        telegramUserService.deleteTelegramUserById(telegramUser.getId());
+        companyService.deleteCompanyById(company.getId());
+//        visitService.deleteVisitById(visitPK);
     }
 }

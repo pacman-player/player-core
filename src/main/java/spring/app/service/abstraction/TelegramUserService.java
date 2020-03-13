@@ -7,4 +7,6 @@ public interface TelegramUserService {
     boolean isTelegramUserExists(Long telegramUserId);
 
     void addTelegramUser(TelegramUser telegramUser);
+
+    void deleteTelegramUserById(Long id);
 }

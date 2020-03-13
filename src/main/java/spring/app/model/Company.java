@@ -1,11 +1,12 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -15,7 +16,7 @@ import java.util.Set;
 public class Company {
     @Id
     @GeneratedValue
-    @Column(name = "company_id")
+//    @Column(name = "company_id")
     private Long id;
     private String name;
 
@@ -77,6 +78,14 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private Set<SongQueue> songQueues;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company",
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY,
+            orphanRemoval=true
+    )
+    private Set<Visit> visits = new HashSet<>();
 
     public Company(String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.name = name;
@@ -229,6 +238,14 @@ public class Company {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Set<Visit> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(Set<Visit> visits) {
+        this.visits = visits;
     }
 
     @Override

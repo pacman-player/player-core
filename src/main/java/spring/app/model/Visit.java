@@ -3,6 +3,7 @@ package spring.app.model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Класс-таблица для сохранения даты и времени посещения telegramUser`ом
@@ -14,16 +15,28 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "visits")
-@AssociationOverrides({
-        @AssociationOverride(name = "visitPrimaryKey.telegramUser",
-                joinColumns = @JoinColumn(name = "telegram_user_id")),
-        @AssociationOverride(name = "visitPrimaryKey.company",
-                joinColumns = @JoinColumn(name = "company_id")) })
+//@AssociationOverrides({
+//        @AssociationOverride(name = "visitPK.telegramUser",
+//                joinColumns = @JoinColumn(name = "telegram_user_id")),
+//        @AssociationOverride(name = "visitPK.company",
+//                joinColumns = @JoinColumn(name = "company_id")) })
 public class Visit {
 
     // Это поле будет являться первичным ключом в нашей таблице
-    @EmbeddedId
-    private VisitPrimaryKey visitPrimaryKey = new VisitPrimaryKey();
+//    @EmbeddedId
+//    private VisitPK visitPK = new VisitPK();
+
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
+    private Timestamp timestamp;
+
+    @ManyToOne
+    private TelegramUser telegramUser;
+
+    @ManyToOne
+    private Company company;
 
     /**
      * Здесь можно создавать поля для добавления новых столбцов в таблицу,
@@ -31,60 +44,49 @@ public class Visit {
      */
 
     public Visit() {
+//        this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public Visit(VisitPrimaryKey visitPrimaryKey) {
-        this.visitPrimaryKey = visitPrimaryKey;
-    }
+//    public Visit(VisitPK visitPK) {
+//        this.visitPK = visitPK;
+//    }
 
     public Visit(TelegramUser telegramUser, Company company) {
-        this.visitPrimaryKey = new VisitPrimaryKey(
-                telegramUser, company, new Timestamp(System.currentTimeMillis())
-        );
+//        this.visitPK = new VisitPK(telegramUser, company);
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.telegramUser = telegramUser;
+        this.company = company;
     }
 
-    public TelegramUser getTelegramUser() {
-        return getVisitPrimaryKey().getTelegramUser();
-    }
-
-    public void setTelegramUser(TelegramUser telegramUser) {
-        getVisitPrimaryKey().setTelegramUser(telegramUser);
-    }
-
-    public Company getCompany() {
-        return getVisitPrimaryKey().getCompany();
-    }
-
-    public void setCompany(Company company) {
-        getVisitPrimaryKey().setCompany(company);
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public Timestamp getTimestamp() {
-        return getVisitPrimaryKey().getTimestamp();
+        return timestamp;
     }
 
     public void setTimestamp(Timestamp timestamp) {
-        getVisitPrimaryKey().setTimestamp(timestamp);
+        this.timestamp = timestamp;
     }
 
-    public VisitPrimaryKey getVisitPrimaryKey() {
-        return visitPrimaryKey;
+    public TelegramUser getTelegramUser() {
+        return telegramUser;
     }
 
-    public void setVisitPrimaryKey(VisitPrimaryKey primaryKey) {
-        this.visitPrimaryKey = primaryKey;
+    public void setTelegramUser(TelegramUser telegramUser) {
+        this.telegramUser = telegramUser;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Visit)) return false;
-        Visit visit = (Visit) o;
-        return visitPrimaryKey.equals(visit.visitPrimaryKey);
+    public Company getCompany() {
+        return company;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(visitPrimaryKey);
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

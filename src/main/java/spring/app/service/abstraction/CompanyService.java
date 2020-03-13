@@ -40,4 +40,6 @@ public interface CompanyService {
     Company getCompanyByAddressId(long id);
 
     List<String> getAllSongsInQueueByCompanyId(long id);
+
+    void deleteCompanyById(Long id);
 }

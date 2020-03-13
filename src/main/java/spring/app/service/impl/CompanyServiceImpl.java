@@ -86,4 +86,9 @@ public class CompanyServiceImpl implements CompanyService {
     public List<String> getAllSongsInQueueByCompanyId(long id) {
         return companyDao.getAllSongsInQueueByCompanyId(id);
     }
+
+    @Override
+    public void deleteCompanyById(Long id) {
+        companyDao.deleteById(id);
+    }
 }

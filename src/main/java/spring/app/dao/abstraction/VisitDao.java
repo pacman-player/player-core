@@ -1,7 +1,9 @@
 package spring.app.dao.abstraction;
 
 import spring.app.model.Visit;
-import spring.app.model.VisitPrimaryKey;
+//import spring.app.model.VisitPK;
 
-public interface VisitDao extends GenericDao<VisitPrimaryKey, Visit> {
+import java.sql.Timestamp;
+
+public interface VisitDao extends GenericDao<Long, Visit> {
 }

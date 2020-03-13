@@ -20,7 +20,7 @@ import java.util.Set;
 public class TelegramUser {
 
     @Id
-    @Column(name = "telegram_user_id")
+//    @Column(name = "telegram_user_id")
     private Long id;
 
     private String firstName;
@@ -33,9 +33,12 @@ public class TelegramUser {
 
     private String languageCode;
 
-    @OneToMany(mappedBy = "visitPrimaryKey.telegramUser",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "telegramUser",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY,
+            orphanRemoval=true
+    )
     private Set<Visit> visits = new HashSet<>();
 
     public TelegramUser() {}
@@ -106,7 +109,6 @@ public class TelegramUser {
         this.languageCode = languageCode;
     }
 
-    @JsonIgnore // Во избежание бесконечной JSON рекурсии
     public Set<Visit> getVisits() {
         return visits;
     }
