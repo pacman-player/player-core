@@ -85,9 +85,6 @@ public class TestDataInit {
         Role roleUser = new Role("USER");
         roleService.addRole(roleUser);
 
-        Role roleManager = new Role("ACTUATOR");
-        roleService.addRole(roleManager);
-
         Role roleAnonymous = new Role("ANONYMOUS");
         roleService.addRole(roleAnonymous);
 
@@ -116,7 +113,6 @@ public class TestDataInit {
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
-        adminRoles.add(roleManager);
         admin.setRoles(adminRoles);
         userService.addUser(admin);
 
@@ -386,6 +382,5 @@ public class TestDataInit {
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));
         }
-
     }
 }
