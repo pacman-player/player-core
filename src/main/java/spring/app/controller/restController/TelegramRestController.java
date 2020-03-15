@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
-
 import spring.app.dto.VisitDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
@@ -154,7 +154,7 @@ public class TelegramRestController {
     }
 
     @PostMapping("/registerTelegramUserAndVisit")
-    public void registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
+    public ResponseEntity<?> registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
         LOGGER.info("POST request '/registerTelegramUserAndVisit'");
         TelegramUser telegramUser = visitDto.getTelegramUser();
         Company company = companyService.getById(visitDto.getCompanyId());
@@ -164,5 +164,6 @@ public class TelegramRestController {
                 "New visit of Telegram user with id = {} to Company with id = {} was added",
                 telegramUser.getId(), company.getId()
         );
+        return ResponseEntity.ok().build();
     }
 }
