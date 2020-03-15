@@ -7,11 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="play_list")
+@Table(name = "playlists")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PlayList {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
@@ -24,7 +25,8 @@ public class PlayList {
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
     private Set<SongCompilation> songCompilation = new HashSet<>();
 
-    public PlayList(){}
+    public PlayList() {
+    }
 
     public PlayList(String name, Set<SongCompilation> songCompilation) {
         this.name = name;

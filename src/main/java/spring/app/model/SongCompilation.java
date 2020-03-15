@@ -10,13 +10,13 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "song_compilation")
+@Table(name = "song_compilations")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class SongCompilation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;

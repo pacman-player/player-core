@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "org_types")
 public class OrgType {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)

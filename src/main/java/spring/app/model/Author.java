@@ -10,18 +10,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "author")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //объекты загружаются лениво, и сериализация происходит до того как они будут загружены полность. Без этой аннотаци не отображаются песни на странице в админке
-public class Author extends Bannable{
+@Table(name = "authors")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//объекты загружаются лениво, и сериализация происходит до того как они будут загружены полность.
+// Без этой аннотаци не отображаются песни на странице в админке
+public class Author extends Bannable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)
     private String name;
 
-    //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
+    //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany,
+    //    закомментил тк все норм работает
     @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "author_id")},
@@ -46,7 +49,8 @@ public class Author extends Bannable{
     @Transient
     private Boolean banned;
 
-    public Author(){}
+    public Author() {
+    }
 
     public Author(String name) {
         this.name = name;

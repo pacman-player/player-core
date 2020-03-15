@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "registration_step")
+@Table(name = "registration_steps")
 public class RegistrationStep {
 
     @Id
     @Column(name = "registration_step_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
 

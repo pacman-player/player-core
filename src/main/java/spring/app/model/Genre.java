@@ -10,12 +10,12 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(name = "genre")
+@Table(name = "genres")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class Genre extends Bannable{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)
