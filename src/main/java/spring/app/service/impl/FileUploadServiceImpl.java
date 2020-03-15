@@ -119,11 +119,15 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public void eraseCurrentFile(String filename) throws IOException {
-        Files.delete(Paths.get(coversFolder + File.separator + filename));
+        Path previousCover = Paths.get(coversFolder + File.separator + filename);
+        if (Files.exists(previousCover)) {
+            Files.delete(previousCover);
+        }
     }
 
     @Override
     public boolean isImage(String filename) {
-        return URLConnection.guessContentTypeFromName(filename).contains("image");
+        String contentType = URLConnection.guessContentTypeFromName(filename);
+        return contentType != null && contentType.contains("image");
     }
 }

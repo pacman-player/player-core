@@ -51,6 +51,10 @@ public class UserCompilationRestController {
         return songCompilationById;
     }
 
+    /*
+     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+     * Необходимо сделать так, чтобы DAO возвращал список DTO
+     */
     @GetMapping("/songsBySongCompilation")
     public List<SongDto> getSongsBySongCompilation(String compilationName) {
         LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
