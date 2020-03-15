@@ -1,92 +1,136 @@
 package spring.app.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
 
 /**
- * Класс-таблица для сохранения даты и времени посещения telegramUser`ом
- * конкретного заведения (company). В данной таблице первичным ключом служит
- * класс VisitsPrimaryKey, в котором содержится
- * комбинация из 3-х составляющих: id пользователя Telegram (посетителя),
- * id компании (заведения) и дата со временем (Timestamp).
+ * Класс-таблица для сохранения факта посещения заведения (Company)
+ * нашим пользователем Telegram-бота (TelegramUser).
+ * В данной таблице первичным ключом служит класс VisitPK, в
+ * котором содержится комбинация из 3-х составляющих:
+ * - дата и время посещения (Timestamp),
+ * - id пользователя Telegram-бота (TelegramUser),
+ * - id заведения (Company).
  */
 
 @Entity
 @Table(name = "visits")
-//@AssociationOverrides({
-//        @AssociationOverride(name = "visitPK.telegramUser",
-//                joinColumns = @JoinColumn(name = "telegram_user_id")),
-//        @AssociationOverride(name = "visitPK.company",
-//                joinColumns = @JoinColumn(name = "company_id")) })
 public class Visit {
 
-    // Это поле будет являться первичным ключом в нашей таблице
-//    @EmbeddedId
-//    private VisitPK visitPK = new VisitPK();
+    // Это поле является композитным первичным ключом в нашей таблице
+    @EmbeddedId
+    private VisitPK visitPK = new VisitPK();
 
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
-    private Timestamp timestamp;
-
-    @ManyToOne
-    private TelegramUser telegramUser;
-
-    @ManyToOne
-    private Company company;
-
-    /**
-     * Здесь можно создавать поля для добавления новых столбцов в таблицу,
-     * например заказанных песен, жанров, исполнителей.
-     */
-
-    public Visit() {
-//        this.timestamp = new Timestamp(System.currentTimeMillis());
-    }
-
-//    public Visit(VisitPK visitPK) {
-//        this.visitPK = visitPK;
-//    }
+    public Visit() {}
 
     public Visit(TelegramUser telegramUser, Company company) {
-//        this.visitPK = new VisitPK(telegramUser, company);
-        this.timestamp = new Timestamp(System.currentTimeMillis());
-        this.telegramUser = telegramUser;
-        this.company = company;
+        this.visitPK = new VisitPK(telegramUser, company);
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public VisitPK getVisitPK() {
+        return visitPK;
+    }
+
+    public void setVisitPK(VisitPK visitPK) {
+        this.visitPK = visitPK;
+    }
 
     public Timestamp getTimestamp() {
-        return timestamp;
+        return getVisitPK().getTimestamp();
     }
 
     public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+        getVisitPK().setTimestamp(timestamp);
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUser;
+        return getVisitPK().getTelegramUser();
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUser = telegramUser;
+        getVisitPK().setTelegramUser(telegramUser);
     }
 
     public Company getCompany() {
-        return company;
+        return getVisitPK().getCompany();
     }
 
     public void setCompany(Company company) {
-        this.company = company;
+        getVisitPK().setCompany(company);
+    }
+
+    /**
+     * Класс, являющийся композитным первичным ключом у класса Visit
+     */
+    @Embeddable
+    public static class VisitPK implements Serializable {
+
+        private Timestamp timestamp;
+
+        /**
+         * Hibernate-аннотация @OnDelete позволяет при удалении
+         * TelegramUser или Company, являющихся "детьми" в связи с
+         * Visit ("родитель"), удалять одновременно все записи
+         * с ними в таблице visits.
+         */
+        @ManyToOne
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        private TelegramUser telegramUser;
+
+        @ManyToOne
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        private Company company;
+
+        public VisitPK() {}
+
+        public VisitPK(TelegramUser telegramUser, Company company) {
+            this.timestamp = new Timestamp(System.currentTimeMillis());
+            this.telegramUser = telegramUser;
+            this.company = company;
+        }
+
+        public Timestamp getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(Timestamp timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public TelegramUser getTelegramUser() {
+            return telegramUser;
+        }
+
+        public void setTelegramUser(TelegramUser telegramUser) {
+            this.telegramUser = telegramUser;
+        }
+
+        public Company getCompany() {
+            return company;
+        }
+
+        public void setCompany(Company company) {
+            this.company = company;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof VisitPK)) return false;
+            VisitPK visitPK = (VisitPK) o;
+            return timestamp.equals(visitPK.timestamp) &&
+                    telegramUser.equals(visitPK.telegramUser) &&
+                    company.equals(visitPK.company);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(timestamp, telegramUser, company);
+        }
     }
 }

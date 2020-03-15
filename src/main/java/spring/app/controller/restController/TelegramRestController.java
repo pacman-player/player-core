@@ -29,9 +29,7 @@ public class TelegramRestController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
 
-    @Autowired
-    private OrderSongService orderSongService;
-
+    private final OrderSongService orderSongService;
     private final TelegramService telegramService;
     private SongService songService;
     private CompanyService companyService;
@@ -47,7 +45,7 @@ public class TelegramRestController {
                                   SongQueueService songQueueService,
                                   AddressService addressService,
                                   TelegramUserService telegramUserService,
-                                  VisitService visitService) {
+                                  VisitService visitService, OrderSongService orderSongService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
@@ -55,10 +53,11 @@ public class TelegramRestController {
         this.addressService = addressService;
         this.telegramUserService = telegramUserService;
         this.visitService = visitService;
+        this.orderSongService = orderSongService;
     }
 
     @PostMapping(value = "/song")
-    public SongResponse searchRequestedSong (@RequestBody SongRequest songRequest) throws IOException {
+    public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException {
         LOGGER.info("POST request '/song'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
@@ -75,6 +74,7 @@ public class TelegramRestController {
 
     /**
      * Утверждаем песню для проигрывания. Ищем на сервисах. Заносим в базу. Возвращаем 30сек отрезок и id.
+     *
      * @param songRequest
      * @return
      * @throws IOException
@@ -82,7 +82,7 @@ public class TelegramRestController {
      * @throws DecoderException
      */
     @PostMapping(value = "/approve")
-    public SongResponse approve (@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
+    public SongResponse approve(@RequestBody SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/approve'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
@@ -98,7 +98,7 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/location")
-    public List allCompaniesByAddress(@RequestBody Address geoAddress){
+    public List allCompaniesByAddress(@RequestBody Address geoAddress) {
         LOGGER.info("POST request '/location' with Address = {}", geoAddress);
         List<Address> addresses = addressService.checkAddress(geoAddress);
         List<Company> companies = new ArrayList();
@@ -109,7 +109,7 @@ public class TelegramRestController {
     }
 
     @PostMapping(value = "/all_company")
-    public List allCompanies () {
+    public List allCompanies() {
         LOGGER.info("POST request '/all_company'");
         List<Company> list = companyService.getAllCompanies();
         LOGGER.info("Result has {} lines", list.size());
@@ -118,6 +118,7 @@ public class TelegramRestController {
 
     /**
      * Добавляем песню в очередь
+     *
      * @param httpEntity
      */
     @PostMapping("/addSongToQueue")
@@ -155,15 +156,12 @@ public class TelegramRestController {
     @PostMapping("/registerTelegramUserAndVisit")
     public void registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
         LOGGER.info("POST request '/registerTelegramUserAndVisit'");
-        TelegramUser telegramUser = new TelegramUser(visitDto.getTelegramUserDto());
+        TelegramUser telegramUser = visitDto.getTelegramUser();
         Company company = companyService.getById(visitDto.getCompanyId());
         telegramUserService.addTelegramUser(telegramUser);
-//        VisitPK visitPK = new VisitPK(telegramUser, company);
         visitService.addVisit(telegramUser, company);
-        telegramUserService.deleteTelegramUserById(telegramUser.getId());
-//        companyService.deleteCompanyById(company.getId());
-//        visitService.deleteVisitById(visitPK);
-        LOGGER.info("New visit of Telegram user with id = {} to Company with id = {} was added",
+        LOGGER.info(
+                "New visit of Telegram user with id = {} to Company with id = {} was added",
                 telegramUser.getId(), company.getId()
         );
     }

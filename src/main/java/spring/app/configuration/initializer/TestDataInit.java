@@ -74,7 +74,7 @@ public class TestDataInit {
     private String musicPath;
 
     @Value("${music.initPath}")
-    private String  musicInitPath;
+    private String musicInitPath;
 
     @Autowired
     private TelegramUserService telegramUserService;
@@ -179,7 +179,7 @@ public class TestDataInit {
                 //если каталог присутствует, но количество файлов не совпадает, удаляем каталог и копируем все заново
                 FileUtils.deleteDirectory(musicDirectory);
             }
-            if (!musicDirectory.exists()){
+            if (!musicDirectory.exists()) {
                 LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
                 musicDirectory.mkdir();
 
@@ -191,19 +191,19 @@ public class TestDataInit {
         }
 
         // создаем данные для имеющихся песен в /music
-        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});
-        dataUpdateService.updateData("The Alarm", "Strength", new String[] {"рок"});
-        dataUpdateService.updateData("BLACKPINK", "Really", new String[] {"поп", "r&b"});
-        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[] {"поп", "соул"});
-        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[] {"поп"});
-        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[] {"поп", "электронная"});
-        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[] {"рок", "пост-панк"});
-        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[] {"поп"});
-        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[] {"поп"});
-        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[] {"рок", "альтернатива"});
-        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[] {"пост-панк"});
-        dataUpdateService.updateData("Yungblud", "Falling Skies", new String[] {"соул", "r&b"});
-        dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
+        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"поп"});
+        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"рок"});
+        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
+        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
+        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"поп"});
+        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"поп", "электронная"});
+        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"рок", "пост-панк"});
+        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"поп"});
+        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"поп"});
+        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
+        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"пост-панк"});
+        dataUpdateService.updateData("Yungblud", "Falling Skies", new String[]{"соул", "r&b"});
+        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"поп", "соул"});
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
         Song song1 = songService.getSongById(1L);
@@ -232,8 +232,7 @@ public class TestDataInit {
                 songList2.add(s);
             } else if (i < 6) {
                 songList3.add(s);
-            }
-            else if (i < 9) {
+            } else if (i < 9) {
                 songList1.add(s);
             } else {
                 songList4.add(s);
@@ -370,8 +369,8 @@ public class TestDataInit {
         companyService.addCompany(company1);
         companyService.addCompany(company2);
         // сохраняем адреса и записываем их в компании
-        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "38",0,0);
-        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5",0,0);
+        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "38", 0, 0);
+        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5", 0, 0);
         addressService.addAddress(address1);
         addressService.addAddress(address2);
         company1.setAddress(address1);
@@ -392,14 +391,46 @@ public class TestDataInit {
                     .nextLong(startDate, endDate))));
         }
 
+        TelegramUser telegramUser1 = new TelegramUser(1111L, "telegram1", "user1", "tu1", "ru", false);
+        TelegramUser telegramUser2 = new TelegramUser(2222L, "telegram2", "user2", "tu2", "ru", false);
+        TelegramUser telegramUser3 = new TelegramUser(3333L, "telegram3", "user3", "tu3", "ru", false);
+        TelegramUser telegramUser4 = new TelegramUser(4444L, "telegram4", "user4", "tu4", "ru", false);
+        Company pacman = companyService.getById(1L);
+        Company oblomov = companyService.getById(2L);
+        telegramUserService.addTelegramUser(telegramUser1);
+        telegramUserService.addTelegramUser(telegramUser2);
+        telegramUserService.addTelegramUser(telegramUser3);
+        telegramUserService.addTelegramUser(telegramUser4);
+        visitService.addVisit(telegramUser1, pacman);
+        visitService.addVisit(telegramUser1, oblomov);
+        visitService.addVisit(telegramUser2, pacman);
+        visitService.addVisit(telegramUser2, oblomov);
+        visitService.addVisit(telegramUser3, pacman);
+        visitService.addVisit(telegramUser3, oblomov);
+        visitService.addVisit(telegramUser4, pacman);
+        visitService.addVisit(telegramUser4, oblomov);
 
-        TelegramUser telegramUser = new TelegramUser(1234L, "eldar", false, "suin", "el", "ru");
-        Company company = companyService.getById(2L);
-        telegramUserService.addTelegramUser(telegramUser);
-//        VisitPK visitPK = new VisitPK(telegramUser, company);
-        visitService.addVisit(telegramUser, company);
-        telegramUserService.deleteTelegramUserById(telegramUser.getId());
-        companyService.deleteCompanyById(company.getId());
-//        visitService.deleteVisitById(visitPK);
+        visitService.addVisit(telegramUser1, pacman);
+        visitService.addVisit(telegramUser1, oblomov);
+        visitService.addVisit(telegramUser2, pacman);
+        visitService.addVisit(telegramUser2, oblomov);
+        visitService.addVisit(telegramUser3, pacman);
+        visitService.addVisit(telegramUser3, oblomov);
+        visitService.addVisit(telegramUser4, pacman);
+        visitService.addVisit(telegramUser4, oblomov);
+
+        List<Visit> visits1 = visitService.getAllByCompanyId(1L);
+        List<Visit> visits2 = visitService.getAllByCompanyId(2L);
+        List<Visit> visits3 = visitService.getAllByTelegramUserId(1111L);
+        List<Visit> visits4 = visitService.getAllByTelegramUserId(2222L);
+        List<Visit> visits5 = visitService.getAllByTelegramUserId(3333L);
+        List<Visit> visits6 = visitService.getAllByTelegramUserId(4444L);
+        List<Visit> visits7 = visitService.getAllByTelegramUserIdAndCompanyId(1111L, 1L);
+        List<Visit> visits8 = visitService.getAllByTelegramUserIdAndCompanyId(1111L, 2L);
+        List<Visit> visits9 = visitService.getAllByTelegramUserIdAndCompanyId(2222L, 1L);
+        List<Visit> visits10 = visitService.getAllByTelegramUserIdAndCompanyId(2222L, 2L);
+
+        telegramUserService.deleteById(1111L);
+        companyService.deleteCompanyById(2L);
     }
 }

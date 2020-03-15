@@ -1,13 +1,10 @@
 package spring.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import spring.app.dto.TelegramUserDto;
-
-import javax.persistence.*;
-import java.util.HashSet;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Класс, описывающий посетителя заведения - пользователя мессенджера Telegram,
@@ -16,49 +13,37 @@ import java.util.Set;
 
 @Entity
 @Table(name = "telegram_users")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TelegramUser {
 
     @Id
-//    @Column(name = "telegram_user_id")
+    @Column(name = "t_user_id")
     private Long id;
 
+    @Column(name = "t_user_first_name")
     private String firstName;
 
-    private Boolean isBot;
-
+    @Column(name = "t_user_last_name")
     private String lastName;
 
+    @Column(name = "t_user_name")
     private String userName;
 
+    @Column(name = "t_user_lang")
     private String languageCode;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "telegramUser",
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY,
-            orphanRemoval=true
-    )
-    private Set<Visit> visits = new HashSet<>();
+    @Column(name = "is_t_user_bot")
+    private Boolean isBot;
 
-    public TelegramUser() {}
-
-    public TelegramUser(TelegramUserDto telegramUserDto) {
-        this.id = telegramUserDto.getId();
-        this.firstName = telegramUserDto.getFirstName();
-        this.isBot = telegramUserDto.getBot();
-        this.lastName = telegramUserDto.getLastName();
-        this.userName = telegramUserDto.getUserName();
-        this.languageCode = telegramUserDto.getLanguageCode();
+    public TelegramUser() {
     }
 
-    public TelegramUser(Long id, String firstName, Boolean isBot, String lastName, String userName, String languageCode) {
+    public TelegramUser(Long id, String firstName, String lastName, String userName, String languageCode, Boolean isBot) {
         this.id = id;
         this.firstName = firstName;
-        this.isBot = isBot;
         this.lastName = lastName;
         this.userName = userName;
         this.languageCode = languageCode;
+        this.isBot = isBot;
     }
 
     public Long getId() {
@@ -75,14 +60,6 @@ public class TelegramUser {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public Boolean getBot() {
-        return isBot;
-    }
-
-    public void setBot(Boolean bot) {
-        isBot = bot;
     }
 
     public String getLastName() {
@@ -109,12 +86,12 @@ public class TelegramUser {
         this.languageCode = languageCode;
     }
 
-    public Set<Visit> getVisits() {
-        return visits;
+    public Boolean getBot() {
+        return isBot;
     }
 
-    public void setVisits(Set<Visit> visits) {
-        this.visits = visits;
+    public void setBot(Boolean bot) {
+        isBot = bot;
     }
 
     @Override
@@ -122,14 +99,12 @@ public class TelegramUser {
         if (this == o) return true;
         if (!(o instanceof TelegramUser)) return false;
         TelegramUser that = (TelegramUser) o;
-        return id.equals(that.id) &&
-                firstName.equals(that.firstName) &&
-                languageCode.equals(that.languageCode);
+        return id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, languageCode);
+        return Objects.hash(id);
     }
 
     @Override
@@ -137,10 +112,10 @@ public class TelegramUser {
         return "TelegramUser{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", isBot=" + isBot +
                 ", lastName='" + lastName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", languageCode='" + languageCode + '\'' +
+                ", isBot=" + isBot +
                 '}';
     }
 }

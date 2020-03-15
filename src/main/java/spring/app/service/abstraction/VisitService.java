@@ -3,17 +3,16 @@ package spring.app.service.abstraction;
 import spring.app.model.Company;
 import spring.app.model.TelegramUser;
 import spring.app.model.Visit;
-//import spring.app.model.VisitPK;
 
-import java.sql.Timestamp;
+import java.util.List;
 
 public interface VisitService {
 
     void addVisit(TelegramUser telegramUser, Company company);
 
-//    void addVisit(VisitPK visitPK);
+    List<Visit> getAllByCompanyId(Long id);
 
-    void addVisit(Visit visit);
+    List<Visit> getAllByTelegramUserId(Long id);
 
-//    void deleteVisitById(Timestamp timestamp);
+    List<Visit> getAllByTelegramUserIdAndCompanyId(Long telegramUserId, Long companyId);
 }
