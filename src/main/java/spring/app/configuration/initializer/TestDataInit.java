@@ -151,15 +151,15 @@ public class TestDataInit {
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
         user2 = userService.getUserByLoginWithRegStepsCompany("user2");
-        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
-        registrationStep = registrationStepService.getRegStepById(2L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
-        registrationStep = registrationStepService.getRegStepById(3L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
+//        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
+        user.addRegStep(rs1);
+        user2.addRegStep(rs1);
+//        registrationStep = registrationStepService.getRegStepById(2L);
+        user.addRegStep(rs2);
+        user2.addRegStep(rs2);
+//        registrationStep = registrationStepService.getRegStepById(3L);
+        user.addRegStep(rs3);
+        user2.addRegStep(rs3);
         userService.updateUser(user);
         userService.updateUser(user2);
 
@@ -200,18 +200,18 @@ public class TestDataInit {
         dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
-        Song song1 = songService.getSongById(1L);
-        Song song2 = songService.getSongById(3L);
+        Song song1 = songService.getByName("Start Again");
+        Song song3 = songService.getByName("Really");
         song1.setApproved(true);
-        song2.setApproved(true);
+        song3.setApproved(true);
         songService.updateSong(song1);
-        songService.updateSong(song2);
-        Author author1 = authorService.getById(1L);
-        Author author2 = authorService.getById(3L);
+        songService.updateSong(song3);
+        Author author1 = authorService.getByName("OneRepublic, Logic");
+        Author author3 = authorService.getByName("BLACKPINK");
         author1.setApproved(true);
-        author2.setApproved(true);
+        author3.setApproved(true);
         authorService.updateAuthor(author1);
-        authorService.updateAuthor(author2);
+        authorService.updateAuthor(author3);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
