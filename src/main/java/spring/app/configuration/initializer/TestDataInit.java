@@ -68,6 +68,12 @@ public class TestDataInit {
     private RegistrationStepService registrationStepService;
 
     @Autowired
+    private TelegramUserService telegramUserService;
+
+    @Autowired
+    private VisitService visitService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -382,5 +388,48 @@ public class TestDataInit {
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));
         }
+
+        // Tests:
+        TelegramUser telegramUser1 = new TelegramUser(1111L, "telegram1", "user1", "tu1", "ru", false);
+        TelegramUser telegramUser2 = new TelegramUser(2222L, "telegram2", "user2", "tu2", "ru", false);
+        TelegramUser telegramUser3 = new TelegramUser(3333L, "telegram3", "user3", "tu3", "ru", false);
+        TelegramUser telegramUser4 = new TelegramUser(4444L, "telegram4", "user4", "tu4", "ru", false);
+        Company pacman = companyService.getById(1L);
+        Company oblomov = companyService.getById(2L);
+        telegramUserService.addTelegramUser(telegramUser1);
+        telegramUserService.addTelegramUser(telegramUser2);
+        telegramUserService.addTelegramUser(telegramUser3);
+        telegramUserService.addTelegramUser(telegramUser4);
+        visitService.addVisit(telegramUser1, pacman);
+        visitService.addVisit(telegramUser1, oblomov);
+        visitService.addVisit(telegramUser2, pacman);
+        visitService.addVisit(telegramUser2, oblomov);
+        visitService.addVisit(telegramUser3, pacman);
+        visitService.addVisit(telegramUser3, oblomov);
+        visitService.addVisit(telegramUser4, pacman);
+        visitService.addVisit(telegramUser4, oblomov);
+
+        visitService.addVisit(telegramUser1, pacman);
+        visitService.addVisit(telegramUser1, oblomov);
+        visitService.addVisit(telegramUser2, pacman);
+        visitService.addVisit(telegramUser2, oblomov);
+        visitService.addVisit(telegramUser3, pacman);
+        visitService.addVisit(telegramUser3, oblomov);
+        visitService.addVisit(telegramUser4, pacman);
+        visitService.addVisit(telegramUser4, oblomov);
+
+        List<Visit> visits1 = visitService.getAllByCompanyId(1L);
+        List<Visit> visits2 = visitService.getAllByCompanyId(2L);
+        List<Visit> visits3 = visitService.getAllByTelegramUserId(1111L);
+        List<Visit> visits4 = visitService.getAllByTelegramUserId(2222L);
+        List<Visit> visits5 = visitService.getAllByTelegramUserId(3333L);
+        List<Visit> visits6 = visitService.getAllByTelegramUserId(4444L);
+        List<Visit> visits7 = visitService.getAllByTelegramUserIdAndCompanyId(1111L, 1L);
+        List<Visit> visits8 = visitService.getAllByTelegramUserIdAndCompanyId(1111L, 2L);
+        List<Visit> visits9 = visitService.getAllByTelegramUserIdAndCompanyId(2222L, 1L);
+        List<Visit> visits10 = visitService.getAllByTelegramUserIdAndCompanyId(2222L, 2L);
+
+        telegramUserService.deleteById(1111L);
+        companyService.removeById(2L);
     }
 }
