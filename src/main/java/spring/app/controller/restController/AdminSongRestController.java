@@ -33,6 +33,10 @@ public class AdminSongRestController {
         this.genreService = genreService;
     }
 
+    /*
+     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+     * Необходимо сделать так, чтобы DAO возвращал список DTO
+     */
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
         LOGGER.info("GET request '/all_songs'");

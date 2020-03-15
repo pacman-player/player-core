@@ -26,6 +26,10 @@ public class AdminAuthorRestController {
         this.genreService = genreService;
     }
 
+    /*
+    * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+    * Необходимо сделать так, чтобы DAO возвращал список DTO
+    */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
         LOGGER.info("GET request '/all_authors'");

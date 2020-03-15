@@ -52,7 +52,6 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         return songCompilationDao.getListSongCompilationsByGenreId(id);
     }
 
-
     @Override
     public List<Song> getAvailableSongsForCompilationById(Long compilationId) {
         return songCompilationDao.getAvailableContentForCompilation(songCompilationDao.getById(compilationId));
