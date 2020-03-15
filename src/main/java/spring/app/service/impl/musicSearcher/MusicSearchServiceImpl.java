@@ -41,7 +41,6 @@ public class MusicSearchServiceImpl implements MusicSearchService {
 
 
     public MusicSearchServiceImpl(DataUpdateService dataUpdater) throws IOException {
-        this.genreDefiner = genreDefiner;
         this.dataUpdater = dataUpdater;
     }
 
@@ -61,6 +60,7 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         // пытаемся найти песню и при положительном исходе брейкаем цикл
         for (DownloadMusicService service : cfg.getDownloadServices()) {
             try {
+                //noinspection UnstableApiUsage
                 track = SimpleTimeLimiter
                         .create(newCachedThreadPool())
                         .callWithTimeout(

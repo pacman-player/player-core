@@ -100,14 +100,17 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             Path path = null;
             if (track.length > 2000000) {    //проверка что песня полноценная, т.е. более 2 Мбайт
                 path = PlayerPaths.getSongsDir(trackName + ".mp3");
+                LOGGER.debug("Path created!");
             } else {
+                LOGGER.debug("Path created!");
                 return null;  //если песня меньше 2мб возвращаем 0
             }
             return new Track(authorName, songName, trackName, track, path);
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c Muzofond.fm неуспешно! :(", author, song);
+            throw e;
         }
-        return null;
+//        return null;
     }
 
 }
