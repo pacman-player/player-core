@@ -151,13 +151,10 @@ public class TestDataInit {
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
         user2 = userService.getUserByLoginWithRegStepsCompany("user2");
-//        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
         user.addRegStep(rs1);
         user2.addRegStep(rs1);
-//        registrationStep = registrationStepService.getRegStepById(2L);
         user.addRegStep(rs2);
         user2.addRegStep(rs2);
-//        registrationStep = registrationStepService.getRegStepById(3L);
         user.addRegStep(rs3);
         user2.addRegStep(rs3);
         userService.updateUser(user);
