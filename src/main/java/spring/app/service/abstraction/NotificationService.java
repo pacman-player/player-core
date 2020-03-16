@@ -21,6 +21,4 @@ public interface NotificationService {
     Notification getNotificationById(Long id);
 
     void deleteNotificationById(Long id);
-
-    void removeAllNotificationsFromUser(Long userId);
 }

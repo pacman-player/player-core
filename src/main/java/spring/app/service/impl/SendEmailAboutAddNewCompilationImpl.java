@@ -5,8 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import spring.app.model.User;
-import spring.app.service.abstraction.SendEmailAboutAddNewCompilation;
 import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.SendEmailAboutAddNewCompilation;
 
 import java.util.List;
 

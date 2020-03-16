@@ -11,6 +11,4 @@ public interface OrderSongService {
     long getSongOrdersByCompanyIdAndTimeRange(Long id, String period);
 
     long countAll(Long id);
-
-    void bulkRemoveByCompany(Long userId);
 }
