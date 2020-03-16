@@ -48,6 +48,15 @@
                                 Подборки
                             </a>
                         </li>
+                        <li id="add-compilation-nav">
+                            <a href="#add-compilation-panel"
+                               aria-controls="add-compilation-panel"
+                               role="tab"
+                               data-toggle="tab"
+                               onclick="prepareForm()">
+                                Новая подборка
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -61,15 +70,66 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Название</th>
-<!--                                                <th>Жанр</th>-->
-                                                <th>Песни</th>
+                                                <th>Жанр</th>
                                                 <th>Обложка</th>
+                                                <th>Включенные песни</th>
+                                                <th>Доступные песни</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Статическая форма добавления нового жанра -->
+                        <div id="add-compilation-panel" class="tab-pane" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="addCompilationForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addCompilationName">Название</label>
+                                                                <input id="addCompilationName"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="MyCompilation"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addCompilationCover">Обложка</label>
+                                                                <input id="addCompilationCover"
+                                                                       name="cover"
+                                                                       class="form-control"
+                                                                       type="file"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addCompilationGenre">Жанр</label>
+                                                                <select id="addCompilationGenre"
+                                                                        name="genre"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+                                                            <button id="addCompilationBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    type="submit"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -115,6 +175,14 @@
                                                                        class="form-control"
                                                                        type="file"/>
                                                             </div>
+                                                            <div>
+                                                                <label for="updateCompilationGenre">Жанр</label>
+                                                                <select id="updateCompilationGenre"
+                                                                        name="genre"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
                                                             <div class="modal-footer">
                                                                 <button type="button"
                                                                         class="btn btn-default"
@@ -132,6 +200,79 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="songs" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Содержание подборки</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table id="songsTable" class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Автор</th>
+                                                <th>Жанр</th>
+                                                <th>Удалить</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="availableSongs" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Доступные песни</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table id="availableSongsTable" class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Автор</th>
+                                                <th>Жанр</th>
+                                                <th>Добавить</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                        </button>
                                     </div>
                                 </div>
                             </div>

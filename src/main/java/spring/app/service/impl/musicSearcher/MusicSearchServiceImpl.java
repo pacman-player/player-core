@@ -48,6 +48,7 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         this.genreDefiner = genreDefiner;
         this.dataUpdater = dataUpdater;
     }
+
     @Override
     public Track getSong(String author, String song) throws IOException {
         //складываем сервисы поиска в лист
