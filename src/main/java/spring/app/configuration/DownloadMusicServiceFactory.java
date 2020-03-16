@@ -2,10 +2,8 @@ package spring.app.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
@@ -20,28 +18,28 @@ import java.util.List;
  */
 @Configuration
 @ComponentScan("spring.app")
-@PropertySource("classpath:application.properties")
-public class DownloadMusicServiceFactory {
+//@PropertySource("classpath:application.properties")
+public class DownloadMusicServiceFactory implements DownloadMusicServiceFactoryMBean {
     /**
      * Имя первого сервиса для поиска
      */
-    @Value("${music.searchService.one}")
-    String one;
+//    @Value("${music.searchService.one}")
+    String one = "muzofondfmMusicSearchImpl";
     /**
      * Имя второго сервиса для поиска
      */
-    @Value("${music.searchService.two}")
-    String two;
+//    @Value("${music.searchService.two}")
+    String two = "zaycevSaitServiceImpl";
     /**
      * Имя третьего сервиса для поиска
      */
-    @Value("${music.searchService.three}")
-    String three;
+//    @Value("${music.searchService.three}")
+    String three = "krolikSaitServiceImpl";
     /**
      * Имя четвертого сервиса для поиска
      */
-    @Value("${music.searchService.four}")
-    String four;
+//    @Value("${music.searchService.four}")
+    String four = "downloadMusicVkRuServiceImpl";
 
     @Autowired
     @Qualifier("zaycevSaitServiceImpl")
@@ -61,6 +59,37 @@ public class DownloadMusicServiceFactory {
 
     private List<DownloadMusicService> services = new ArrayList<>();
 
+    public String getOne() {
+        return one;
+    }
+
+    public void setOne(String one) {
+        this.one = one;
+    }
+
+    public String getTwo() {
+        return two;
+    }
+
+    public void setTwo(String two) {
+        this.two = two;
+    }
+
+    public String getThree() {
+        return three;
+    }
+
+    public void setThree(String three) {
+        this.three = three;
+    }
+
+    public String getFour() {
+        return four;
+    }
+
+    public void setFour(String four) {
+        this.four = four;
+    }
 
     public DownloadMusicServiceFactory() {
     }

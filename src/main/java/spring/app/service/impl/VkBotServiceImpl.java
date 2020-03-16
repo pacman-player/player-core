@@ -6,36 +6,28 @@ import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.VkBotService;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 @Service
-@PropertySource("classpath:application.properties")
 public class VkBotServiceImpl implements VkBotService {
+
     private VkApiClient vkApiClient;
     private GroupActor actor;
-
-    @Value("${group_id}")
-    private String groupIdString;
-
-    @Value("${access_token}")
-    private String accessToken;
 
     public VkBotServiceImpl() throws IOException {
         TransportClient transportClient = HttpTransportClient.getInstance();
         vkApiClient = new VkApiClient(transportClient);
 
-//        Properties prop = new Properties();
-//        prop.load(new FileInputStream("src/main/resources/application.properties"));
-//        int groupId = Integer.valueOf(prop.getProperty("group_id"));
-//        String access_token = prop.getProperty("access_token");
-        System.out.println(groupIdString);
-        Integer groupId = Integer.valueOf(groupIdString);
-        actor = new GroupActor(groupId, accessToken);
+        Properties prop = new Properties();
+        prop.load(new FileInputStream("src/main/resources/application.properties"));
+        int groupId = Integer.valueOf(prop.getProperty("group_id"));
+        String access_token = prop.getProperty("access_token");
+        actor = new GroupActor(groupId, access_token);
     }
 
     /*
