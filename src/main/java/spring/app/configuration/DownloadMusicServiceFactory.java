@@ -19,7 +19,7 @@ import java.util.List;
 @Configuration
 @ComponentScan("spring.app")
 //@PropertySource("classpath:application.properties")
-public class DownloadMusicServiceFactory implements DownloadMusicServiceFactoryMBean {
+public class DownloadMusicServiceFactory{
     /**
      * Имя первого сервиса для поиска
      */
@@ -59,6 +59,11 @@ public class DownloadMusicServiceFactory implements DownloadMusicServiceFactoryM
 
     private List<DownloadMusicService> services = new ArrayList<>();
 
+
+    public DownloadMusicServiceFactory() {
+    }
+
+
     public String getOne() {
         return one;
     }
@@ -91,8 +96,6 @@ public class DownloadMusicServiceFactory implements DownloadMusicServiceFactoryM
         this.four = four;
     }
 
-    public DownloadMusicServiceFactory() {
-    }
 
     /** Метод для получения нужной имплементации музыкального сервиса.
      * @param implName - значение имени сервиса в файле application.properties

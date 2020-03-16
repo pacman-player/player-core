@@ -5,8 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import spring.app.configuration.DownloadMusicServiceConfigurer;
+import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
-import spring.app.configuration.DownloadMusicServiceFactoryMBean;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
@@ -65,6 +66,9 @@ public class TestDataInit {
 
     @Autowired
     private MusicSearchService musicSearchService;
+
+    @Autowired
+    private DownloadMusicServiceFactory downloadMusicServiceFactory;
 
     @Autowired
     private RegistrationStepService registrationStepService;
@@ -390,9 +394,9 @@ public class TestDataInit {
         }
 
         //Mbean setup here
-        DownloadMusicServiceFactoryMBean  serviceFactory = new DownloadMusicServiceFactory();
+        DownloadMusicServiceConfigurerMBean serviceConfigurer = new DownloadMusicServiceConfigurer(downloadMusicServiceFactory);
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name = new ObjectName("ServerManager:type=DownloadMusicServiceFactory");
-        mBeanServer.registerMBean(serviceFactory, name);
+        ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
+        mBeanServer.registerMBean(serviceConfigurer, name);
     }
 }
