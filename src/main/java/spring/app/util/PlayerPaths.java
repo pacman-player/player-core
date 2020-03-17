@@ -19,11 +19,11 @@ public class PlayerPaths {
 
         try {
             Path pathProject = (Paths.get(Main.class.getResource(".").toURI())).getParent().getParent();
-            LOGGER.debug("pathProject = {}", pathProject);
+            LOGGER.trace("pathProject = {}", pathProject);
             Path pathDownload = Paths.get(pathProject.getParent().getParent().toString() + separator + "music");
-            LOGGER.debug("pathDownload = {}", pathDownload);
+            LOGGER.trace("pathDownload = {}", pathDownload);
             if (!Files.exists(pathDownload)) {
-                LOGGER.debug("Creating pathDownload");
+                LOGGER.trace("Creating pathDownload");
                 Files.createDirectories(pathDownload);
             }
             return filename == null ? pathDownload : Paths.get(String.format("%s%s%s", pathDownload, separator, filename));
