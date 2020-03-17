@@ -380,11 +380,14 @@ public class TestDataInit {
         long startDate = cal.getTime().getTime();
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
-//        long totalOrders = random.nextInt(3000);
-        long totalOrders = random.nextInt(30);
+        long totalOrders = random.nextInt(3000);
+
+        Song song = new Song();
+        long songIdRandom = 0;
         for (int i = 0; i < totalOrders; i++) {
+            songIdRandom = 1 + (long) (Math.random() * 13);
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
-                    .nextLong(startDate, endDate))));
+                    .nextLong(startDate, endDate)), song = songService.getSongById(songIdRandom) ));
         }
 
     }

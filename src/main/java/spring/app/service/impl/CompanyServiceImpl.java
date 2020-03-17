@@ -4,23 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
-import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
+import spring.app.model.Song;
+import spring.app.service.abstraction.CompanyService;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyDao companyDao;
-    private final OrderSongDao orderSongDao;
 
     @Autowired
-    public CompanyServiceImpl(CompanyDao companyDao, OrderSongDao orderSongDao) {
+    public CompanyServiceImpl(CompanyDao companyDao) {
         this.companyDao = companyDao;
-        this.orderSongDao = orderSongDao;
     }
 
     @Override
@@ -50,7 +49,6 @@ public class CompanyServiceImpl implements spring.app.service.abstraction.Compan
 
     @Override
     public void removeById(Long id) {
-        orderSongDao.bulkRemoveOrderSongByCompany(id);
         companyDao.deleteById(id);
     }
 

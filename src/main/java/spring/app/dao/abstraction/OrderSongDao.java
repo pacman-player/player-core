@@ -13,6 +13,9 @@ public interface OrderSongDao extends GenericDao<Long, OrderSong> {
 
     long countAll(Long id);
 
+    List<Long> getListSongIdByCompanyIdAndPeriod(Long id, Timestamp after);
+    List<Long> getListSongIdByCompanyIdAndTimeRange(Long id, Timestamp start, Timestamp end);
+
     List<Long> getAllByCompanyId(Long companyId);
 
     void bulkRemoveOrderSongByCompany(Long userId);

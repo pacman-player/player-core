@@ -13,8 +13,12 @@ public class OrderSong {
     private Timestamp timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(columnDefinition = "company_id")
     private Company company;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "song_id")
+    private Song song;
 
     public OrderSong() {
     }
@@ -22,6 +26,12 @@ public class OrderSong {
     public OrderSong(Company company, Timestamp timestamp) {
         this.company = company;
         this.timestamp = timestamp;
+    }
+
+    public OrderSong(Company company, Timestamp timestamp, Song song) {
+        this.company = company;
+        this.timestamp = timestamp;
+        this.song = song;
     }
 
 
@@ -47,5 +57,13 @@ public class OrderSong {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Song getSong() {
+        return song;
+    }
+
+    public void setSong(Song song) {
+        this.song = song;
     }
 }

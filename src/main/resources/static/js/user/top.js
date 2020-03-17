@@ -3,6 +3,7 @@ $(document).ready(function () {
     //доступ к  ссылки админа
     showLinkAdmin();
 
+
     function showLinkAdmin() {
         $.ajax({
             type: "post",

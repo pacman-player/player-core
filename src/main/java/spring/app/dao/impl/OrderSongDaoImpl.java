@@ -70,4 +70,22 @@ public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements Or
                 .executeUpdate();
         entityManager.flush();
     }
+
+
+    @Override
+    public List<Long> getListSongIdByCompanyIdAndPeriod(Long id, Timestamp after) {
+        return entityManager.createQuery("SELECT o.song.id FROM OrderSong o WHERE o.company.id = :id AND o.timestamp > :after", Long.class)
+                .setParameter("id", id)
+                .setParameter("after", after)
+                .getResultList();
+    }
+
+    @Override
+    public List<Long> getListSongIdByCompanyIdAndTimeRange(Long id, Timestamp start, Timestamp end) {
+        return entityManager.createQuery("SELECT o.song.id FROM OrderSong o WHERE o.company.id = :id AND o.timestamp BETWEEN :start AND :end", Long.class)
+                .setParameter("id", id)
+                .setParameter("start", start)
+                .setParameter("end", end)
+                .getResultList();
+    }
 }
