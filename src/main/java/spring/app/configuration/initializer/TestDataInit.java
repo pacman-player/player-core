@@ -361,8 +361,8 @@ public class TestDataInit {
         companyService.addCompany(company1);
         companyService.addCompany(company2);
         // сохраняем адреса и записываем их в компании
-        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "38",0,0);
-        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5",0,0);
+        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39",59.923527,30.307792);
+        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5",55.732388,37.628235);
         addressService.addAddress(address1);
         addressService.addAddress(address2);
         company1.setAddress(address1);
