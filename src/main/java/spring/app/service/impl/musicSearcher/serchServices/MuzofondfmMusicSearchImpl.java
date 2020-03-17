@@ -108,9 +108,8 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             return new Track(authorName, songName, trackName, track, path);
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c Muzofond.fm неуспешно! :(", author, song);
-            throw e;
         }
-//        return null;
+        return null;
     }
 
 }

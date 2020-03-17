@@ -39,11 +39,6 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     @Autowired
     private DownloadMusicServiceFactory downloadMusicServiceFactory;
 
-//    @Lookup
-//    public DownloadMusicServiceFactory getDownloadMusicServiceFactory() {
-//        return null;
-//    }
-
 
     public MusicSearchServiceImpl(DataUpdateService dataUpdater) throws IOException {
         this.dataUpdater = dataUpdater;

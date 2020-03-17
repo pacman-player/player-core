@@ -9,8 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Класс, в котором реализована логика выбора очередности музыкальных сервисов.
@@ -62,7 +62,8 @@ public class DownloadMusicServiceFactory {
     @Qualifier("downloadMusicVkRuServiceImpl")
     private DownloadMusicService downloadMusicVkRuServiceImpl;
 
-    private List<DownloadMusicService> services = new ArrayList<>();
+    // поле изменил на LinkedHashSet, чтобы исключить дублирование сервисов в коллекции
+    private Set<DownloadMusicService> services = new LinkedHashSet<>();
 
 
     public DownloadMusicServiceFactory() {
@@ -107,8 +108,8 @@ public class DownloadMusicServiceFactory {
      *
      * @param implName - строковое значение имени требуемого сервиса
      */
-    public DownloadMusicService getService(String implName) {
-        DownloadMusicService dms = null;
+    public DownloadMusicService getService(String implName) throws ClassNotFoundException {
+        DownloadMusicService dms;
 
         switch (implName) {
             case "zaycevSaitServiceImpl":
@@ -123,8 +124,9 @@ public class DownloadMusicServiceFactory {
             case "downloadMusicVkRuServiceImpl":
                 dms = downloadMusicVkRuServiceImpl;
                 break;
-//            default:
-//                throw new RuntimeException();
+            default: // если мы допустили ошибку при конфигурации или при удаленном изменении через
+                     // jconsole, необходимо отменить создание коллекции сервисов и вернуть по-умолчанию
+                throw new ClassNotFoundException();
         }
         return dms;
     }
@@ -133,14 +135,15 @@ public class DownloadMusicServiceFactory {
      * Метод, формирующий список сервисов, которые поочередно используются в поиске трека
      * в классе {@link MusicSearchServiceImpl}
      */
-    public List<DownloadMusicService> getDownloadServices() {
+    public Set<DownloadMusicService> getDownloadServices() {
         try {
             services.clear();
             services.add(getService(one));
             services.add(getService(two));
             services.add(getService(three));
             services.add(getService(four));
-        } catch (Exception e) { // На случай ошибок в файле конфигурации, возвращаем очередность по-умолчанию
+        } catch (NullPointerException | ClassNotFoundException e) {
+            // На случай ошибок в файле конфигурации, возвращаем очередность по-умолчанию
             services.clear();
             services.add(zaycevSaitServiceImpl);
             services.add(muzofondfmMusicSearchImpl);

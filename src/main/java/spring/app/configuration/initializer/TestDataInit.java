@@ -398,5 +398,24 @@ public class TestDataInit {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
         mBeanServer.registerMBean(serviceConfigurer, name);
+        // Тестирование downloadMusicServiceFactory, удалить после тестов.
+        System.out.println();
+        System.out.println(" ######################### TESTING START ######################### ");
+        System.out.println(" сервисы  из application.properties:");
+        System.out.println(downloadMusicServiceFactory.getDownloadServices());
+        // 1 - пишем чушь, должен вернуть default сет
+        downloadMusicServiceFactory.setOne("foubfsjbsdlv");
+        System.out.println("Сервисы после изменения:");
+        System.out.println(downloadMusicServiceFactory.getDownloadServices());
+        // 2 - сетим null, должен вернуть default сет
+        downloadMusicServiceFactory.setOne(null);
+        System.out.println("Сервисы после изменения:");
+        System.out.println(downloadMusicServiceFactory.getDownloadServices());
+        // 3 - сетим дубль, должно быть сет из трех сервисов
+        downloadMusicServiceFactory.setOne("zaycevSaitServiceImpl");
+        System.out.println("Сервисы после изменения:");
+        System.out.println(downloadMusicServiceFactory.getDownloadServices());
+
+        System.out.println(" ######################### TESTING END ######################### ");
     }
 }
