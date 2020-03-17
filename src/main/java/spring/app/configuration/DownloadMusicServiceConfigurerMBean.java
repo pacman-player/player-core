@@ -1,5 +1,10 @@
 package spring.app.configuration;
 
+/**
+ * Интерфейс, необходимый для реализации JMX API, для подключения к приложению в Runtime
+ * и изменения параметров, в частности, очередности музыкальных сервисов.
+ * Должен находиться в одном пакете с реализующим его классом {@link DownloadMusicServiceConfigurer}
+ */
 public interface DownloadMusicServiceConfigurerMBean {
 
     String getOne();
@@ -17,8 +22,4 @@ public interface DownloadMusicServiceConfigurerMBean {
     String getFour();
 
     void setFour(String four);
-
-//    public DownloadMusicService getService(String implName);
-//
-//    public List<DownloadMusicService> getDownloadServices();
 }

@@ -5,7 +5,6 @@ import com.google.common.util.concurrent.SimpleTimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
 import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.service.abstraction.DataUpdateService;
@@ -23,11 +22,10 @@ import java.util.concurrent.TimeoutException;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
- * класс для поиска песен по разным сервисам, в зависимости от результата
+ * Класс для поиска песен по разным сервисам, в зависимости от результата
  */
 @Service
 @Transactional
-//@Scope("prototype")
 public class MusicSearchServiceImpl implements MusicSearchService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MusicSearchServiceImpl.class);
     private Track track;
@@ -38,13 +36,13 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     @Autowired
     private DataUpdateService dataUpdater;
 
-//    @Autowired
-//    private DownloadMusicServiceFactory cfg;
+    @Autowired
+    private DownloadMusicServiceFactory downloadMusicServiceFactory;
 
-    @Lookup
-    public DownloadMusicServiceFactory getDownloadMusicServiceFactory() {
-        return null;
-    }
+//    @Lookup
+//    public DownloadMusicServiceFactory getDownloadMusicServiceFactory() {
+//        return null;
+//    }
 
 
     public MusicSearchServiceImpl(DataUpdateService dataUpdater) throws IOException {
@@ -65,7 +63,7 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         // складываем сервисы поиска в лист
         // проходим в цикле по каждому сервису,
         // пытаемся найти песню и при положительном исходе брейкаем цикл
-        for (DownloadMusicService service : getDownloadMusicServiceFactory().getDownloadServices()) {
+        for (DownloadMusicService service : downloadMusicServiceFactory.getDownloadServices()) {
             try {
                 //noinspection UnstableApiUsage
                 track = SimpleTimeLimiter
