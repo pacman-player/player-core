@@ -8,9 +8,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "song_compilation")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class SongCompilation {
 
     @Id
@@ -18,9 +20,10 @@ public class SongCompilation {
     private Long id;
 
     private String name;
+    private String cover;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
     @JsonIgnore
@@ -83,6 +86,14 @@ public class SongCompilation {
         return result;
     }
 
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
     @Override
     public String toString() {
         return "SongCompilation{" +
@@ -90,6 +101,7 @@ public class SongCompilation {
                 ", name='" + name + '\'' +
                 ", genre=" + genre +
                 ", song=" + song +
+                ", cover=" + cover +
                 '}';
     }
 }

@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 @Service
 @Transactional
 public class SongServiceImpl implements SongService {
-
     private final SongDao songDao;
     private final SongCompilationService songCompilationService;
 
@@ -30,12 +30,6 @@ public class SongServiceImpl implements SongService {
     public List<Song> getAllSong() {
         return songDao.getAll();
     }
-
-//    @Override
-//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
-//    public List<Song> getAllSongNonLazy() {
-//        return songDao.getAll();
-//    }
 
     @Override
     public void deleteSongById(Long id) {
@@ -56,11 +50,6 @@ public class SongServiceImpl implements SongService {
     public Song getByNameAndAuthor(String name, String author) {
         return songDao.getByNameAndAuthor(name, author);
     }
-
-//    @Override
-//    public Song getSongById(long id) {
-//        return songDao.getById(id);
-//    }
 
     @Override
     public boolean isExist(String name) {
@@ -88,12 +77,6 @@ public class SongServiceImpl implements SongService {
     public void updateSong(Song song) {
         songDao.update(song);
     }
-
-//    @Override
-//    @Fetch(FetchMode.JOIN) //подгружаем внутренние объекты
-//    public void updateSongNonLazy(Song song) {
-//        songDao.update(song);
-//    }
 
     @Override
     public Song getSongById(Long id) {

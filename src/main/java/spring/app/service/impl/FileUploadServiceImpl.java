@@ -15,12 +15,16 @@ import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -32,6 +36,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${music.path}")
     private String fileFolder;
+
+    @Value("${uploaded.compilations.covers}")
+    private String coversFolder;
 
     @Autowired
     public FileUploadServiceImpl(GenreService genreService, AuthorService authorService, SongService songService) {
@@ -96,5 +103,31 @@ public class FileUploadServiceImpl implements FileUploadService {
                 .replaceAll("\\%28", "(")
                 .replaceAll("\\%29", ")")
                 .replaceAll("\\%7E", "~");
+    }
+
+    @Override
+    public String upload(MultipartFile file) throws IOException {
+        // Назначаем уникальное имя
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFilename = uuidFile + "_" + file.getOriginalFilename();
+        // Сохраняем обложку
+        Path destination = Paths.get(coversFolder + File.separator + resultFilename);
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        return resultFilename;
+    }
+
+    @Override
+    public void eraseCurrentFile(String filename) throws IOException {
+        Path previousCover = Paths.get(coversFolder + File.separator + filename);
+        if (Files.exists(previousCover)) {
+            Files.delete(previousCover);
+        }
+    }
+
+    @Override
+    public boolean isImage(String filename) {
+        String contentType = URLConnection.guessContentTypeFromName(filename);
+        return contentType != null && contentType.contains("image");
     }
 }

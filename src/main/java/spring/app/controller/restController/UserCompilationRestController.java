@@ -51,21 +51,17 @@ public class UserCompilationRestController {
         return songCompilationById;
     }
 
+    /*
+     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+     * Необходимо сделать так, чтобы DAO возвращал список DTO
+     */
     @GetMapping("/songsBySongCompilation")
     public List<SongDto> getSongsBySongCompilation(String compilationName) {
         LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
         SongCompilation songCompilation = songCompilationService.getSongCompilationByCompilationName(compilationName);
         List<SongDto> songDtoList = songCompilation.getSong().stream()
-                .map(song -> new SongDto(
-                        song.getId(),
-                        song.getName(),
-                        song.getAuthor().getName(),
-                        song.getGenre().getName())
-                )
+                .map(SongDto::new)
                 .collect(Collectors.toList());
-        for (SongDto songDto : songDtoList) {
-            System.out.println(songDto);
-        }
         LOGGER.info("Found {} songs", songDtoList.size());
         return songDtoList;
     }

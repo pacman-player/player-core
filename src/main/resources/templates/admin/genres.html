@@ -39,8 +39,13 @@
                 <div role="tabpanel" class="tab-pane active" id="list-genres">
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="genres-table-nav" class="active">
-                            <a id="tab-genres-panel" href="#genres-panel" aria-controls="genres-panel" role="tab"
-                               data-toggle="tab">Все жанры</a>
+                            <a id="tab-genres-panel"
+                               href="#genres-panel"
+                               aria-controls="genres-panel"
+                               role="tab"
+                               data-toggle="tab">
+                                Все жанры
+                            </a>
                         </li>
                         <li id="add-genres-nav">
                             <a href="#add-genres-panel" aria-controls="add-genres-panel" role="tab" data-toggle="tab">
@@ -58,6 +63,7 @@
                                             <thead id="getGenresTable">
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Разрешен</th>
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
@@ -135,6 +141,13 @@
                                                                    name="name"
                                                                    class="form-control"
                                                                    type="text"/>
+
+                                                            <label for="updateGenreApproved" class="checkbox-inline">
+                                                                <input id="updateGenreApproved"
+                                                                       name="approved"
+                                                                       class="form-control"
+                                                                       type="checkbox"/>Разрешен</label>
+
 
                                                             <div class="modal-footer">
                                                                 <button type="button"

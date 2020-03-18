@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Панель админа</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+            <!-- меню слева -->
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
+            </ul>
+        </div>
+
+        <!-- центральный блок -->
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="list-compilations">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="compilations-table-nav" class="active">
+                            <a id="tab-compilations-panel"
+                               href="#compilations-panel"
+                               aria-controls="compilations-panel"
+                               role="tab"
+                               data-toggle="tab">
+                                Подборки
+                            </a>
+                        </li>
+                        <li id="add-compilation-nav">
+                            <a href="#add-compilation-panel"
+                               aria-controls="add-compilation-panel"
+                               role="tab"
+                               data-toggle="tab"
+                               onclick="prepareForm()">
+                                Новая подборка
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- Таблица подборок -->
+                        <div role="tabpanel" class="tab-pane active" id="compilations-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="compilationsTable" class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Жанр</th>
+                                                <th>Обложка</th>
+                                                <th>Включенные песни</th>
+                                                <th>Доступные песни</th>
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Статическая форма добавления нового жанра -->
+                        <div id="add-compilation-panel" class="tab-pane" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="addCompilationForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addCompilationName">Название</label>
+                                                                <input id="addCompilationName"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="MyCompilation"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addCompilationCover">Обложка</label>
+                                                                <input id="addCompilationCover"
+                                                                       name="cover"
+                                                                       class="form-control"
+                                                                       type="file"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addCompilationGenre">Жанр</label>
+                                                                <select id="addCompilationGenre"
+                                                                        name="genre"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+                                                            <button id="addCompilationBtn"
+                                                                    class="btn btn-success btn-lg"
+                                                                    type="submit"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Обновление подборки (модальное окно)-->
+                        <div id="updateCompilationModal" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title">Изменить подборку</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="updateCompilationForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="updateCompilationId">ID</label>
+                                                                <input id="updateCompilationId"
+                                                                       name="id"
+                                                                       class="form-control"
+                                                                       disabled="disabled"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationName">Название</label>
+                                                                <input id="updateCompilationName"
+                                                                       name="name"
+                                                                       class="form-control"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationCover">Обложка</label>
+                                                                <input id="updateCompilationCover"
+                                                                       name="cover"
+                                                                       class="form-control"
+                                                                       type="file"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="updateCompilationGenre">Жанр</label>
+                                                                <select id="updateCompilationGenre"
+                                                                        name="genre"
+                                                                        class="form-control">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button"
+                                                                        class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Закрыть
+                                                                </button>
+                                                                <button id="updateCompilationBtn"
+                                                                        class="btn btn-primary"
+                                                                        type="submit">
+                                                                    Изменить
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="songs" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Содержание подборки</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table id="songsTable" class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Автор</th>
+                                                <th>Жанр</th>
+                                                <th>Удалить</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="availableSongs" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Доступные песни</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <table id="availableSongsTable" class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Автор</th>
+                                                <th>Жанр</th>
+                                                <th>Добавить</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/compilations.js" rel="script"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+
+</body>
+</html>
