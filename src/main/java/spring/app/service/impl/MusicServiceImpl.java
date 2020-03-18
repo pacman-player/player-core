@@ -64,8 +64,8 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
-        System.out.println(musicTitle);
-        Long id = songDao.getByNameAndAuthor(musicAuthor, musicTitle).getId();
+        System.out.println(musicAuthor);
+        Long id = songDao.getByAuthorAndName(musicAuthor, musicTitle).getId();
         File file = new File(musicPath + id + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;

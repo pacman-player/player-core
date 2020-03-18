@@ -74,7 +74,7 @@ public class TestDataInit {
     private String musicPath;
 
     @Value("${music.initPath}")
-    private String  musicInitPath;
+    private String musicInitPath;
 
     private void init() throws InvalidDataException, IOException, UnsupportedTagException {
 
@@ -156,6 +156,21 @@ public class TestDataInit {
         userService.updateUser(user);
         userService.updateUser(user2);
 
+        // создаем данные для имеющихся песен в /music
+        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
+        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
+        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"пост-панк"});
+        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"поп"});
+        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"поп"});
+        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"рок", "пост-панк"});
+        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"поп"});
+        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"поп"});
+        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"поп", "электронная"});
+        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"рок"});
+        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"поп", "соул"});
+        dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
+        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
+
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
@@ -166,7 +181,7 @@ public class TestDataInit {
                 //если каталог присутствует, но количество файлов не совпадает, удаляем каталог и копируем все заново
                 FileUtils.deleteDirectory(musicDirectory);
             }
-            if (!musicDirectory.exists()){
+            if (!musicDirectory.exists()) {
                 LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
                 musicDirectory.mkdir();
 
@@ -176,21 +191,6 @@ public class TestDataInit {
             LOGGER.error("We have issues reading or writing music files during init. Please check if init data is accessible and '/music' directory is writable", e);
             throw e;
         }
-
-        // создаем данные для имеющихся песен в /music
-        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});
-        dataUpdateService.updateData("The Alarm", "Strength", new String[] {"рок"});
-        dataUpdateService.updateData("BLACKPINK", "Really", new String[] {"поп", "r&b"});
-        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[] {"поп", "соул"});
-        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[] {"поп"});
-        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[] {"поп", "электронная"});
-        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[] {"рок", "пост-панк"});
-        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[] {"поп"});
-        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[] {"поп"});
-        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[] {"рок", "альтернатива"});
-        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[] {"пост-панк"});
-        dataUpdateService.updateData("Yungblud", "Falling Skies", new String[] {"соул", "r&b"});
-        dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
         Song song1 = songService.getByName("Start Again");
@@ -219,8 +219,7 @@ public class TestDataInit {
                 songList2.add(s);
             } else if (i < 6) {
                 songList3.add(s);
-            }
-            else if (i < 9) {
+            } else if (i < 9) {
                 songList1.add(s);
             } else {
                 songList4.add(s);
@@ -357,8 +356,8 @@ public class TestDataInit {
         companyService.addCompany(company1);
         companyService.addCompany(company2);
         // сохраняем адреса и записываем их в компании
-        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39",59.923527,30.307792);
-        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5",55.732388,37.628235);
+        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39", 59.923527, 30.307792);
+        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5", 55.732388, 37.628235);
         addressService.addAddress(address1);
         addressService.addAddress(address2);
         company1.setAddress(address1);

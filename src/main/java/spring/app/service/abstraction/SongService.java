@@ -11,7 +11,7 @@ public interface SongService {
 
     Song getByName(String name);
 
-    Song getByNameAndAuthor(String name, String author);
+    Song getByAuthorAndName(String author, String name);
 
     Song getSongById(Long id);
 

@@ -23,7 +23,7 @@ import java.nio.file.StandardCopyOption;
 public class Mp3Parser {
 
     @Autowired
-    private final SongService songService   ;
+    private final SongService songService;
     @Autowired
     private final AuthorService authorService;
     @Autowired
@@ -54,11 +54,8 @@ public class Mp3Parser {
         FileFilter fileFilter = pathname -> pathname.getPath().endsWith(".mp3");
         File[] songs = new File(path).listFiles(fileFilter);
 
-        for (int i = 0; i < songs.length; i++) {
-            File song = songs[i];
-            // change to readTags() if you want to parse MP3's through GenreDefiner
-            // But need to alter music block in TestDataInit.init()
-            copyInitFile(song, i+1);
+        for (File song : songs) {
+            copyInitSongs(song);
         }
     }
 
@@ -114,5 +111,20 @@ public class Mp3Parser {
 
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
         return song;
+    }
+
+    public void copyInitSongs(File file) throws InvalidDataException, IOException, UnsupportedTagException {
+        String name = null;
+        String author = null;
+
+        Mp3File mp3File = new Mp3File(file);
+        if (mp3File.hasId3v2Tag()) {
+            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+            name = id3v2Tag.getTitle();
+            author = id3v2Tag.getArtist();
+        }
+        Song song = songService.getByAuthorAndName(author, name);
+        Path fileO = Paths.get(musicPath + song.getId() + ".mp3");
+        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
     }
 }
