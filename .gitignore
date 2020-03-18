@@ -11,6 +11,8 @@ logs/
 **/*.log
 **/*.log.gz
 
+music/
+# исправил с /music/ на music/, теперь gitignore работает.
 
 ## Directory-based project format:
 .idea/
@@ -62,5 +64,5 @@ crashlytics-build.properties
 Будет удалено .gitignore
 Будет удалено pom.xml
 Будет удалено src/
-/resources/
-/music/
+#/resources/
+#/music/
