@@ -11,8 +11,8 @@ logs/
 **/*.log
 **/*.log.gz
 
-#music/
 # исправил с /music/ на music/, теперь gitignore работает.
+music/
 
 ## Directory-based project format:
 .idea/
