@@ -18,24 +18,37 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Path;
 
-@Service
+@Service("zaycevSaitServiceImpl")
 @Transactional
 public class ZaycevSaitServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(ZaycevSaitServiceImpl.class);
     private RestTemplate restTemplate = new RestTemplate();
+
+    /** Имя исполнителя, полученное от сервиса. */
     private String authorName;
+
+    /** Название трека, полученное от сервиса. */
     private String songName;
+
+    /** Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}. */
     private String trackName;
 
+    /**
+     * Метод для создания поискового запроса на данный музыкальный сервис и
+     * получения ссылки на скачивания трека.
+     *
+     * @param author - имя исполнителя
+     * @param song   - название песни
+     * @return ссылка на скачивание .mp3 файла.
+     */
     public String searchSong(String author, String song) {
         LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net...", author, song);
         String baseUrl = "https://zaycev.net";
         String searchUrl = "https://zaycev.net/search.html?query_search=";
-        Document document = null;
         String link = "";
 
         try {
-            document = Jsoup.connect(searchUrl + author + " " + song).get();
+            Document document = Jsoup.connect(searchUrl + author + " " + song).get();
 
             Element div = document.getElementsByClass("musicset-track clearfix ").get(0);
             String jsonUrl = div.attr("data-url");   // url на json в котором хранится ссылка для скачивания
@@ -58,7 +71,6 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             link = jsonObj.getString("url");
         } catch (Exception e) {
             LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net неуспешен! :(", author, song);
-//            e.printStackTrace();
         }
         return link;  // ссылка на скачивание
     }
@@ -68,8 +80,9 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
      * Запускает метод {@link #searchSong} для создания поискового запроса на данный музыкальный сервис и
      * получения ссылки на скачивания трека. Затем происходит скачивание трека и сохранение его в
      * директорию с музыкой в формате songId.mp3.
+     *
      * @param author - имя исполнителя
-     * @param song - название песни
+     * @param song   - название песни
      * @return возвращение нового экземпляра класса Track.
      */
     @Override
@@ -81,20 +94,15 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             int responseCode = con.getResponseCode();
+
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 byte[] track = restTemplate.getForObject(link, byte[].class);
                 Path path = null;
                 if (track.length > 1024 * 10) {    //проверка что песня полноценная
-
                     path = PlayerPaths.getSongsDir(trackName + ".mp3");
-//                    if (path != null) {
-//                        try {
-//                            Files.write(path, track);  //записываем песню с директорию
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-                } else return null;  //если песня меньше 2мб возвращаем 0
+                } else {
+                    return null;  //если песня меньше 2мб возвращаем 0
+                }
                 return new Track(authorName, songName, trackName, track, path);
             }
         } catch (Exception e) {

@@ -19,23 +19,36 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 
-@Service
+@Service("downloadMusicVkRuServiceImpl")
 @Transactional
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
+
+    /** Имя исполнителя, полученное от сервиса. */
     private String authorName;
+
+    /** Название трека, полученное от сервиса. */
     private String songName;
+
+    /** Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}. */
     private String trackName;
 
+
+    /**
+     * Метод для создания поискового запроса на данный музыкальный сервис и
+     * получения ссылки на скачивания трека.
+     *
+     * @param author - имя исполнителя
+     * @param song   - название песни
+     * @return ссылка на скачивание .mp3 файла.
+     */
     public String searchSong(String author, String song) throws IOException {
         LOGGER.debug("Поиск трека: {} - {} c DownloadMusicVK.ru...", author, song);
-
         String searchUrl = "https://downloadmusicvk.ru/audio/search?q=";
-        Document document = null;
         String link = "";
 
         try {
-            document = Jsoup.connect(searchUrl + author + " " + song).get();
+            Document document = Jsoup.connect(searchUrl + author + " " + song).get();
 
             Element div = document.getElementsByClass("btn btn-primary btn-xs download").get(0);
             String songUrl = div.attr("href");   // url  в котором хранится ссылка для скачивания
@@ -54,11 +67,10 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
             }
             trackName = author + "-" + song;
 
-             link = "https://downloadmusicvk.ru/audio/download?" +
+            link = "https://downloadmusicvk.ru/audio/download?" +
                     fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
         } catch (Exception e) {
             LOGGER.debug("Поиск трека: {} - {} c DownloadMusicVK.ru неуспешен! :(", author, song);
-//            e.printStackTrace();
         }
         return link;
     }
@@ -97,16 +109,10 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                 byte[] track = buffer.toByteArray();
                 Path path;
                 if (track.length > 1024 * 20) {    //проверка что песня полноценная
-
                     path = PlayerPaths.getSongsDir(trackName + ".mp3");
-//                    if (path != null) {
-//                        try {
-//                            Files.write(path, track);  //записываем песню с директорию
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-                } else return null;
+                } else {
+                    return null;
+                }
                 return new Track(authorName, songName, trackName, track, path);
             }
         } catch (Exception e) {
