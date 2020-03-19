@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
+import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
+import spring.app.service.abstraction.NotificationTemplateService;
 
 import java.util.List;
 
@@ -16,11 +18,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
     private NotificationService notificationService;
+    private NotificationTemplateService notificationTemplateService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService) {
+    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
         this.authorDao = authorDao;
         this.notificationService = notificationService;
+        this.notificationTemplateService = notificationTemplateService;
     }
 
     @Override
@@ -31,12 +35,21 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
-        String name = author.getName();
+        NotificationTemplate notificationTemplate = notificationTemplateService.getById(1L);
+        String link = " <a href=\"performers\">ссылке</a>";
+        if (notificationTemplate == null) {
+            notificationTemplate = new NotificationTemplate();
+            notificationTemplate.setTemplate("Был добавлен новый автор {author}, нужно проверить жанры по {link}");
+            notificationTemplateService.create(notificationTemplate);
+        }
 
-        String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
-                + " <a href=\"performers\">ссылке</a>" ;
+        String notification = notificationTemplateService.getById(1L).getTemplate();
+
+        notification = notification.replace("{author}", author.getName());
+        notification = notification.replace("{link}", link);
+
         try {
-            notificationService.addNotification(message);
+            notificationService.addNotification(notification);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

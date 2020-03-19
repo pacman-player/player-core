@@ -76,4 +76,14 @@ public class Notification {
     public int hashCode() {
         return Objects.hash(id, message, flag, user);
     }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", flag=" + flag +
+                ", user=" + user +
+                '}';
+    }
 }

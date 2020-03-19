@@ -42,10 +42,15 @@
                             <a id="tab-messages-panel" href="#messages-panel" aria-controls="messages-panel" role="tab"
                                data-toggle="tab">Все уведомления</a>
                         </li>
-                        <li id="add-messages-nav">
-                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab"
+                        <li id="add-notifications-nav">
+                            <a href="#add-notifications-panel" aria-controls="add-messages-panel" role="tab"
                                data-toggle="tab">
                                 Создать новое уведомление</a>
+                        </li>
+                        <li id="add-messages-nav">
+                            <a href="#notifications-template-panel" aria-controls="add-messages-panel" role="tab"
+                               data-toggle="tab">
+                                Редактировать шаблон уведомления</a>
                         </li>
                     </ul>
 
@@ -138,7 +143,7 @@
                         </div>
 
                         <!--добавление уведомлений-->
-                        <div role="tabpanel" class="tab-pane" id="add-messages-panel">
+                        <div role="tabpanel" class="tab-pane" id="add-notifications-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -153,8 +158,9 @@
                                                                    placeholder="Введите текст уведомления" name="message"/>
 <!--                                                            TODO: сделать выбор через select-->
                                                             <label for="addUser">Пользователь</label>
-                                                            <input id="addUser" class="form-control" type="number"
-                                                                   placeholder="Введите ID пользователя" name="template"/>
+                                                            <select id="addUser" class="form-control" name="template">
+
+                                                            </select>
 
                                                             <button type="submit" id="addNotificationBtn"
                                                                     class="btn btn-success col-xs-5"
@@ -166,6 +172,37 @@
                                                                     class="btn btn-warning col-xs-5"
                                                                     style="margin-top: 20px;">
                                                                 Добавить уведомление для админов
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="notifications-template-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="templateForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="templateText">Шаблон автоматического уведомления</label>
+                                                            <span>
+                                                                <p>Используйте {author} для подстановки автора в шаблоне</p>
+                                                                <p>Используйте {link} для подстановки ссылки в шаблоне</p>
+                                                            </span>
+                                                            <input id="templateText" class="form-control" type="text"
+                                                                   placeholder="Введите текст уведомления" name="template"/>
+                                                            <button type="button" id="editTemplateBtn"
+                                                                    class="btn btn-success"
+                                                                    style="margin-top: 20px;">
+                                                                Изменить шаблон
                                                             </button>
                                                         </div>
                                                     </form>

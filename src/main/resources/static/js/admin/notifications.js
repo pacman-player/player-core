@@ -1,5 +1,50 @@
 $(document).ready(function () {
 
+    getAllUsers();
+
+    function getAllUsers() {
+
+        $.ajax({
+            type: 'GET',
+            url: "/api/admin/all_users",
+            contentType: 'application/json;',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            async: true,
+            cache: false,
+            success: function (userList) {
+                for(let i = 0; i < userList.length; i++)
+                $("#addUser").append(`<option value="${userList[i].id}">${userList[i].login}</option>`)
+            }
+
+        });
+    }
+
+    getTemplate();
+
+    function getTemplate() {
+
+        $.ajax({
+            type: 'GET',
+            url: "/api/admin/notification/template/1",
+            contentType: 'application/json;',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            async: true,
+            cache: false,
+            success: function (template) {
+                $("#templateText").val(template.template);
+            }
+
+        });
+    }
+
     getTable();
 
     function getTable() {
@@ -35,7 +80,50 @@ $(document).ready(function () {
         });
     };
 
-    $("#addGlobalNotificationBtn").click(function (event) {
+    $("#editTemplateBtn").click(function (event) {
+        event.preventDefault();
+        editTemplate();
+    });
+
+    function editTemplate() {
+        let template = {
+            id: 1,
+            'template': $("#templateText").val()
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: "/api/admin/notification/template",
+
+            contentType: 'application/json;',
+            data: JSON.stringify(template),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            complete:
+                function () {
+                    getTable();
+                    getTemplate();
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("add-user" + name,
+                        " Шаблон изменен",
+                        'notifications-template-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+        });
+
+    }
+
+    $("#addAdminNotificationBtn").click(function (event) {
         event.preventDefault();
         addAdminNotification();
         $(':input', '#addForm').val('');
@@ -49,7 +137,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: "/api/admin/notification/global",
+            url: "/api/admin/notification/admin",
 
             contentType: 'application/json;',
             data: JSON.stringify(addNotification),
@@ -233,3 +321,4 @@ $(document).ready(function () {
         });
     });
 });
+
