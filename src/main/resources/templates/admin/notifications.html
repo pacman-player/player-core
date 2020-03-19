@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
+            </ul>
+        </div>
+
+        <!--центральный блок-->
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="list-messages">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="messages-table-nav" class="active">
+                            <a id="tab-messages-panel" href="#messages-panel" aria-controls="messages-panel" role="tab"
+                               data-toggle="tab">Все уведомления</a>
+                        </li>
+                        <li id="add-messages-nav">
+                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab"
+                               data-toggle="tab">
+                                Создать новое уведомление</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--таблица уведомлений-->
+                        <div role="tabpanel" class="tab-pane active" id="messages-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <table id="notificationTable" class="table">
+                                            <thead id="getNotificationTable">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Уведомление</th>
+                                                <th>Пользователь</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+
+                                            <!--модалка - обновление уведомлений-->
+                                            <div id="editNotifications" class="modal fade">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true">×
+                                                            </button>
+                                                            <h4 class="modal-title">Изменить уведомление</h4>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                                        <div id="success-edit-message"
+                                                                             class="alert alert-danger hidden">
+                                                                            <div id="message"></div>
+                                                                        </div>
+                                                                        <form id="edit-form">
+                                                                            <div class="form-group text-center edit-form">
+                                                                                <label for="updateNotificationsId">ID</label>
+                                                                                <input id="updateNotificationsId"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden"
+                                                                                       name="id"/>
+
+                                                                                <label for="updateNotificationsUser">User</label>
+                                                                                <input id="updateNotificationsUser"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden-user"
+                                                                                       name="user"/>
+
+                                                                                <label for="updateNotificationsMessage">Текст Уведомления</label>
+                                                                                <input id="updateNotificationsMessage"
+                                                                                       class="form-control" type="text"
+                                                                                       name="name"
+                                                                                       required=""/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button id="closeEditNotifications" type="button"
+                                                                    class="btn btn-default"
+                                                                    data-dismiss="modal">Закрыть
+                                                            </button>
+                                                            <button id="editNotificationsBtn" class="btn btn-primary">
+                                                                Изменить
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--добавление уведомлений-->
+                        <div role="tabpanel" class="tab-pane" id="add-messages-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="addForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="addMessage">Текст уведомления</label>
+                                                            <input id="addMessage" class="form-control" type="text"
+                                                                   placeholder="Введите текст уведомления" name="message"/>
+<!--                                                            TODO: сделать выбор через select-->
+                                                            <label for="addUser">Пользователь</label>
+                                                            <input id="addUser" class="form-control" type="number"
+                                                                   placeholder="Введите ID пользователя" name="template"/>
+
+                                                            <button type="submit" id="addNotificationBtn"
+                                                                    class="btn btn-success col-xs-5"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить уведомление
+                                                            </button>
+                                                            <div class="col-xs-1"></div>
+                                                            <button type="submit" id="addAdminNotificationBtn"
+                                                                    class="btn btn-warning col-xs-5"
+                                                                    style="margin-top: 20px;">
+                                                                Добавить уведомление для админов
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/notifications.js" rel="script"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
+
+</body>
+</html>
