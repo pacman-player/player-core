@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
+import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
@@ -15,11 +16,13 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
+    private SongDao songDao;
     private NotificationService notificationService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService) {
+    public AuthorServiceImpl(AuthorDao authorDao, SongDao songDao, NotificationService notificationService) {
         this.authorDao = authorDao;
+        this.songDao = songDao;
         this.notificationService = notificationService;
     }
 
@@ -62,8 +65,12 @@ public class AuthorServiceImpl implements AuthorService {
         authorDao.update(author);
     }
 
+    /** Когда удаляется Автор, удаляются все его песни */
     @Override
     public void deleteAuthorById(Long id) {
+        // удаляем песни с данным автором
+        songDao.bulkRemoveSongsByAuthorId(id);
+        // теперь удаляем автора
         authorDao.deleteById(id);
     }
 

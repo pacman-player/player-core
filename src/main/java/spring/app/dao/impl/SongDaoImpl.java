@@ -3,7 +3,6 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
-import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
@@ -79,5 +78,13 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         List<Song> list = query.getResultList();
         return !list.isEmpty();
+    }
+
+    @Override
+    public void bulkRemoveSongsByAuthorId(Long authorId) {
+        entityManager.createQuery("DELETE FROM Song s WHERE s.author.id = :authorId")
+                .setParameter("authorId", authorId)
+                .executeUpdate();
+        entityManager.flush();
     }
 }

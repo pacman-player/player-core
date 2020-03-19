@@ -43,11 +43,6 @@
                             <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab"
                                data-toggle="tab">Все исполнители</a>
                         </li>
-                        <li id="add-authors-nav">
-                            <a href="#add-author-panel" aria-controls="add-authors-panel" role="tab" data-toggle="tab"
-                               onclick="prepareForm()">
-                                Новый исполнитель</a>
-                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -69,47 +64,6 @@
                                             </thead>
                                             <tbody></tbody>
                                         </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Статическая форма добавление автора -->
-                        <div id="add-author-panel" class="tab-pane" role="tabpanel">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                    <form id="addForm">
-                                                        <div class="form-group text-center edit-form">
-                                                            <div>
-                                                                <label for="addAuthorName">Исполнитель</label>
-                                                                <input id="addAuthorName" class="form-control"
-                                                                       type="text"
-                                                                       placeholder="Введите имя автора"
-                                                                       name="name"/>
-                                                            </div>
-                                                            <div>
-                                                                <label for="addAuthorGenre">Жанр</label>
-                                                                <select class="form-control" id="addAuthorGenre"
-                                                                        name="addGenre">
-                                                                    <!--заполняем через js-->
-                                                                </select>
-                                                            </div>
-                                                            <button id="addAuthorBtn"
-                                                                    class="btn btn-success btn-lg"
-                                                                    type="submit"
-                                                                    style="margin-top: 20px;">
-                                                                Добавить исполнителя
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
