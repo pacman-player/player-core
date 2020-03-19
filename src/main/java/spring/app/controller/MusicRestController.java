@@ -1,6 +1,5 @@
 package spring.app.controller;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +17,14 @@ public class MusicRestController {
     }
 
     @GetMapping("/play/{musicAuthor}/{musicTitle}")
-    public ResponseEntity playMusic(@PathVariable String musicAuthor, @PathVariable String musicTitle) {
+    public ResponseEntity playMusic(@PathVariable String musicAuthor,
+                                    @PathVariable String musicTitle) {
         return musicService.playMusic(musicAuthor, musicTitle);
     }
 
     @GetMapping("/albums-cover/{musicAuthor}/{musicTitle}")
-    public ResponseEntity getAlbumsCover(@PathVariable String musicAuthor, @PathVariable String musicTitle){
+    public ResponseEntity getAlbumsCover(@PathVariable String musicAuthor,
+                                         @PathVariable String musicTitle){
         return musicService.albumsCover(musicAuthor, musicTitle);
     }
 }

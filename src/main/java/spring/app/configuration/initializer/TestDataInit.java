@@ -1,18 +1,21 @@
 package spring.app.configuration.initializer;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import spring.app.configuration.DownloadMusicServiceConfigurer;
+import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
+import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.File;
-import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.*;
@@ -65,6 +68,9 @@ public class TestDataInit {
     private MusicSearchService musicSearchService;
 
     @Autowired
+    private DownloadMusicServiceFactory downloadMusicServiceFactory;
+
+    @Autowired
     private RegistrationStepService registrationStepService;
 
     @Autowired
@@ -76,7 +82,7 @@ public class TestDataInit {
     @Value("${music.initPath}")
     private String  musicInitPath;
 
-    private void init() throws InvalidDataException, IOException, UnsupportedTagException {
+    private void init() throws Exception {
 
         // Создаем роли
         Role roleAdmin = new Role("ADMIN");
@@ -387,5 +393,10 @@ public class TestDataInit {
                     .nextLong(startDate, endDate))));
         }
 
+        //Mbean setup here
+        DownloadMusicServiceConfigurerMBean serviceConfigurer = new DownloadMusicServiceConfigurer(downloadMusicServiceFactory);
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
+        mBeanServer.registerMBean(serviceConfigurer, name);
     }
 }

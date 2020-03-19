@@ -19,7 +19,7 @@ import java.nio.file.Path;
 /**
  * Класс для поиска и скачивания песен с сервиса <i>muzofond.fm</i>.
  */
-@Service
+@Service("muzofondfmMusicSearchImpl")
 @Transactional
 public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MuzofondfmMusicSearchImpl.class);
@@ -99,16 +99,10 @@ public class MuzofondfmMusicSearchImpl implements DownloadMusicService {
             byte[] track = restTemplate.getForObject(link, byte[].class);
             Path path = null;
             if (track.length > 2000000) {    //проверка что песня полноценная, т.е. более 2 Мбайт
-
                 path = PlayerPaths.getSongsDir(trackName + ".mp3");
-//                if (path != null) {
-//                    try {
-//                        Files.write(path, track);  //записываем песню с директорию
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                LOGGER.debug("Path created!");
             } else {
+                LOGGER.debug("Path created!");
                 return null;  //если песня меньше 2мб возвращаем 0
             }
             return new Track(authorName, songName, trackName, track, path);

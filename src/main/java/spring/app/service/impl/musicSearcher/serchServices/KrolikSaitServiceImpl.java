@@ -15,31 +15,41 @@ import spring.app.util.PlayerPaths;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Service
+@Service("krolikSaitServiceImpl")
 @Transactional
 public class KrolikSaitServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(KrolikSaitServiceImpl.class);
     private RestTemplate restTemplate = new RestTemplate();
+
+    /** Имя исполнителя, полученное от сервиса. */
     private String authorName;
+
+    /** Название трека, полученное от сервиса. */
     private String songName;
+
+    /** Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}. */
     private String trackName;
 
-
+    /**
+     * Метод для создания поискового запроса на данный музыкальный сервис и
+     * получения ссылки на скачивания трека.
+     *
+     * @param author - имя исполнителя
+     * @param song   - название песни
+     * @return ссылка на скачивание .mp3 файла.
+     */
     public String searchSong(String author, String song) throws IOException {
         LOGGER.debug("Поиск трека: {} - {} c Krolik.biz...", author, song);
         final String url = "https://krolik.biz/search/?q=";
-        Document document = null;
         String link = "";
 
         try {
-            document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
-
+            Document document = Jsoup.connect(String.format("%s%s %s", url, author, song)).get();
             Element first = document.getElementsByAttributeValue("class", "mp3").first();
-
             link = first.getElementsByClass("btn play").attr("data-url");
-            author = first.getElementsByClass("artist_name").text();
-            song = first.getElementsByClass("song_name").text();
 
+            authorName = first.getElementsByClass("artist_name").text();
+            songName = first.getElementsByClass("song_name").text();
             trackName = author + "-" + song;
         } catch (Exception e) {
             LOGGER.debug("Поиск трека: {} - {} c Krolik.biz неуспешен! :(", author, song);
@@ -52,8 +62,9 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
      * Запускает метод {@link #searchSong} для создания поискового запроса на данный музыкальный сервис и
      * получения ссылки на скачивания трека. Затем происходит скачивание трека и сохранение его в
      * директорию с музыкой в формате songId.mp3.
+     *
      * @param author - имя исполнителя
-     * @param song - название песни
+     * @param song   - название песни
      * @return возвращение нового экземпляра класса Track.
      */
     @Override
@@ -65,16 +76,10 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             byte[] track = restTemplate.getForObject(link, byte[].class);
             Path path = null;
             if (track.length > 1024 * 20) {    //проверка что песня полноценная
-
                 path = PlayerPaths.getSongsDir(trackName + ".mp3");
-//                if (path != null) {
-//                    try {
-//                        Files.write(path, track);  //записываем песню с директорию
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-            } else return null;  //если песня меньше 2мб возвращаем 0
+            } else {
+                return null;  //если песня меньше 2мб возвращаем 0
+            }
             return new Track(authorName, songName, trackName, track, path);
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz неуспешно! :(", author, song);

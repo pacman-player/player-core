@@ -8,9 +8,7 @@ import spring.app.dto.SongResponse;
 import java.io.IOException;
 
 public interface TelegramService {
-    SongResponse getSong(SongRequest songRequest) throws IOException;
+    SongResponse getSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
 
     SongResponse approveSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
-
-
 }

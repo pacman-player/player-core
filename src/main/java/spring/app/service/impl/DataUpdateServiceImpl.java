@@ -26,7 +26,9 @@ public class DataUpdateServiceImpl implements DataUpdateService {
     private SongService songService;
     private GenreService genreService;
 
-    public DataUpdateServiceImpl(AuthorService authorService, SongService songService, GenreService genreService) {
+    public DataUpdateServiceImpl(AuthorService authorService,
+                                 SongService songService,
+                                 GenreService genreService) {
         this.authorService = authorService;
         this.songService = songService;
         this.genreService = genreService;
@@ -37,7 +39,8 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         Set<Genre> authorGenres;
 
         Author author = authorService.getByName(authorName);
-        if (author == null) { // если автора нет в БД, тогда сохраняем нового и присваиваем переменной authorGenres пустой сет жанров
+        if (author == null) { // если автора нет в БД, тогда сохраняем нового
+                              // и присваиваем переменной authorGenres пустой сет жанров
             author = new Author(authorName);
             authorService.addAuthor(author);
             authorGenres = new HashSet<>();
