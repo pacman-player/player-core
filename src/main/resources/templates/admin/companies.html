@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Панель админа</title>
@@ -14,7 +14,6 @@
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
-
 </head>
 
 <body>
@@ -46,10 +45,6 @@
                             <a id="tab-company-panel" href="#company-panel" aria-controls="company-panel" role="tab"
                                data-toggle="tab">Все компании</a>
                         </li>
-                        <li id="add-company-nav">
-                            <a href="#add-company-panel" aria-controls="add-company-panel" role="tab" data-toggle="tab">
-                                Новая компания</a>
-                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -79,58 +74,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!--добавление компаний-->
-                        <div role="tabpanel" class="tab-pane" id="add-company-panel">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <form id="addCompanyForm">
-                                                        <div class="form-group text-center edit-form">
-
-                                                            <label for="addCompanyName">Название</label>
-                                                            <input id="addCompanyName" class="form-control" type="text"
-                                                                   placeholder="Enter company name" name="compName"/>
-
-                                                            <label for="addStart">Начало работы</label>
-                                                            <input id="addStart" class="form-control" type="time"
-                                                                   placeholder="Opening at" name="begin-time"/>
-
-                                                            <label for="addClose">Конец работы</label>
-                                                            <input id="addClose" class="form-control"
-                                                                   type="time" placeholder="Closing at"
-                                                                   name="end-time"/>
-
-                                                            <label for="addCompType">Тип компании</label>
-                                                            <select class="form-control" id="addCompType"
-                                                                    name="compType">
-                                                                <option value="test">Test company TO CHANGE</option>
-                                                                <option value="test2">Test company TO CHANGE 2</option>
-                                                            </select>
-
-                                                            <button type="submit" id="addCompanyBtn"
-                                                                    class="btn btn-success btn-lg">
-                                                                Добавить
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
                 <!--модалка - компания-->
                 <div id="editCompany" class="modal fade">
-                    <div class="modal-dialog" id="editCompany-dialog" >
+                    <div class="modal-dialog" id="editCompany-dialog">
                         <div class="modal-content">
 
                             <div class="modal-header">
