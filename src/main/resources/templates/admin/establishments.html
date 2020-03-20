@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>Admin page</title>
+    <title>Панель админа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
@@ -19,7 +19,7 @@
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
             <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Logout</a>
+            <a class="navbar-brand pull-right" href="/logout">Выход</a>
             <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
             <div id="listNotification" class="pull-right"></div>
         </div>
@@ -36,106 +36,44 @@
         <div class="col-lg-9 col-md-10 col-xs-10">
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane active" id="list-messages">
+                <div role="tabpanel" class="tab-pane active" id="list-establishments">
                     <ul class="nav nav-tabs nav-content" role="tablist">
-                        <li id="messages-table-nav" class="active">
-                            <a id="tab-messages-panel" href="#messages-panel" aria-controls="messages-panel" role="tab"
-                               data-toggle="tab">Все заведения</a>
+                        <li id="user-table-nav" class="active">
+                            <a id="tab-establishments-panel" href="#establishments-panel"
+                               aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
                         </li>
-                        <li id="add-messages-nav">
-                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab"
+                        <li id="add-user-nav">
+                            <a href="#add-establishments-panel" aria-controls="add-establishments-panel" role="tab"
                                data-toggle="tab">
-                                Добавить новый тип заведения</a>
+                                Новое заведение</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!--таблица юзеров-->
-                        <div role="tabpanel" class="tab-pane active" id="messages-panel">
+
+                        <!-- Список заведений (таблица) -->
+                        <div role="tabpanel" class="tab-pane active" id="establishments-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <table id="messagesTable" class="table">
-                                            <thead id="getMessagesTable">
+                                        <table id="establishmentsTable" class="table">
+                                            <thead id="getEstablishmentsTable">
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Имя</th>
-                                                <th>Шаблон</th>
+                                                <th>Название</th>
+                                                <th>Изменить</th>
+                                                <th>Удалить</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
-
-                                            <!--модалка - обновление юзеров-->
-                                            <div id="editMessages" class="modal fade">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-hidden="true">×
-                                                            </button>
-                                                            <h4 class="modal-title">Изменить тип заведенения</h4>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                                        <div id="success-edit-message"
-                                                                             class="alert alert-danger hidden">
-                                                                            <div id="message"></div>
-                                                                        </div>
-                                                                        <form id="edit-form">
-                                                                            <div class="form-group text-center edit-form">
-                                                                                <label for="updateMessagesId">ID</label>
-                                                                                <input id="updateMessagesId"
-                                                                                       class="form-control"
-                                                                                       disabled="disabled" type="text"
-                                                                                       name="id" required=""/>
-                                                                                <input type="hidden"
-                                                                                       id="id-input-edit-hidden"
-                                                                                       name="id"/>
-
-                                                                                <label for="updateMessagesName">Имя</label>
-                                                                                <input id="updateMessagesName"
-                                                                                       class="form-control" type="text"
-                                                                                       name="name"
-                                                                                       required=""/>
-
-                                                                                <label for="updateMessagesTemplate">Шаблон</label>
-                                                                                <input id="updateMessagesTemplate"
-                                                                                       class="form-control" type="text"
-                                                                                       name="template"
-                                                                                       required=""/>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button id="closeEditMessages" type="button"
-                                                                    class="btn btn-default"
-                                                                    data-dismiss="modal">Закрыть
-                                                            </button>
-                                                            <button id="editMessagesBtn" class="btn btn-primary">
-                                                                Изменить
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
 
-                        <!--добавление юзеров-->
-                        <div role="tabpanel" class="tab-pane" id="add-messages-panel">
+                        <!-- Статическая форма добавления нового заведения (establishment) -->
+                        <div id="add-establishments-panel" class="tab-pane" role="tabpanel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
@@ -143,22 +81,77 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
 
-                                                    <form id="addForm">
+                                                    <form id="establishmentsAddForm">
                                                         <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addName">Название</label>
+                                                                <input id="addName"
+                                                                       name="name"
+                                                                       type="text"
+                                                                       placeholder="Название"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div>
+                                                                <button id="addEstablishmentBtn"
+                                                                        class="btn btn-success btn-lg"
+                                                                        type="submit"
+                                                                        style="margin-top: 20px;">
+                                                                    Добавить
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
 
-                                                            <label for="addName">Имя</label>
-                                                            <input id="addName" class="form-control" type="text"
-                                                                   placeholder="Ввидите имя сообщения" name="message"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                                            <label for="addTemplate">Шаблон</label>
-                                                            <input id="addTemplate" class="form-control" type="text"
-                                                                   placeholder="Ввидите шаблон" name="template"/>
+                        <!-- Изменение заведения (модальное окно)-->
+                        <div id="editEstablishment" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
 
-                                                            <button type="submit" id="addMessageBtn"
-                                                                    class="btn btn-success btn-lg"
-                                                                    style="margin-top: 20px;">
-                                                                Добавить сообщение
-                                                            </button>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title">Информация о заведении</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="updateEstForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="updateEstablishmentId">ID заведения</label>
+                                                            <input id="updateEstablishmentId"
+                                                                   name="id"
+                                                                   class="form-control"
+                                                                   disabled="disabled"
+                                                                   type="text"/>
+
+                                                            <label for="updateEstablishmentName">Компания</label>
+                                                            <input id="updateEstablishmentName"
+                                                                   name="name"
+                                                                   class="form-control"
+                                                                   type="text"/>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Закрыть
+                                                                </button>
+                                                                <button id="editEstablishmentBtn"
+                                                                        class="btn btn-primary"
+                                                                        type="submit">
+                                                                    Изменить
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -176,13 +169,17 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Jquery validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script type="text/javascript" src="/js/admin/messages.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/establishments.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 
 </body>
 </html>
