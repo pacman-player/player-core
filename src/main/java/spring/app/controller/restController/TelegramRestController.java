@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
+import spring.app.dto.VisitDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -56,7 +57,7 @@ public class TelegramRestController {
 
     @PostMapping(value = "/song")
     public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException,
-            BitstreamException, DecoderException{
+            BitstreamException, DecoderException {
         LOGGER.info("POST request '/song'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
@@ -87,7 +88,7 @@ public class TelegramRestController {
      */
     @PostMapping(value = "/approve")
     public SongResponse approve(@RequestBody SongRequest songRequest)
-                                 throws IOException, BitstreamException, DecoderException {
+            throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/approve'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",

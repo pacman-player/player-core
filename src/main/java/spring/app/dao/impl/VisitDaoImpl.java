@@ -1,7 +1,6 @@
 package spring.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.VisitDao;
 import spring.app.model.Visit;
 
@@ -10,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class VisitDaoImpl extends AbstractDao<Visit.VisitPK, Visit> implements VisitDao {
 
     @PersistenceContext
