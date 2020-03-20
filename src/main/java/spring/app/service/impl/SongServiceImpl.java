@@ -47,8 +47,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Song getByNameAndAuthor(String name, String author) {
-        return songDao.getByNameAndAuthor(name, author);
+    public Song getByAuthorAndName(String author, String name) {
+        return songDao.getByAuthorAndName(author, name);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface SongDao extends GenericDao<Long, Song> {
 
     Song getByName(String name);
 
-    Song getByNameAndAuthor(String name, String author);
+    Song getByAuthorAndName(String author, String name);
 
     List<Song> getAllWithGenreByGenreId(Long id);
 

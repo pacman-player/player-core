@@ -7,12 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
+import spring.app.dto.VisitDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -25,30 +27,37 @@ import java.util.List;
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
+    private final OrderSongService orderSongService;
     private final TelegramService telegramService;
-    @Autowired
-    private OrderSongService orderSongService;
     private SongService songService;
     private CompanyService companyService;
     private SongQueueService songQueueService;
     private AddressService addressService;
+    private TelegramUserService telegramUserService;
+    private VisitService visitService;
 
     @Autowired
     public TelegramRestController(TelegramService telegramService,
                                   SongService songService,
                                   CompanyService companyService,
                                   SongQueueService songQueueService,
-                                  AddressService addressService) {
+                                  AddressService addressService,
+                                  TelegramUserService telegramUserService,
+                                  VisitService visitService,
+                                  OrderSongService orderSongService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
         this.songQueueService = songQueueService;
         this.addressService = addressService;
+        this.telegramUserService = telegramUserService;
+        this.visitService = visitService;
+        this.orderSongService = orderSongService;
     }
 
     @PostMapping(value = "/song")
     public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException,
-            BitstreamException, DecoderException{
+            BitstreamException, DecoderException {
         LOGGER.info("POST request '/song'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
@@ -79,7 +88,7 @@ public class TelegramRestController {
      */
     @PostMapping(value = "/approve")
     public SongResponse approve(@RequestBody SongRequest songRequest)
-                                 throws IOException, BitstreamException, DecoderException {
+            throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/approve'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
@@ -161,5 +170,19 @@ public class TelegramRestController {
             orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             LOGGER.info("Success!");
         }
+    }
+
+    @PostMapping("/registerTelegramUserAndVisit")
+    public ResponseEntity<?> registerTelegramUserAndVisit(@RequestBody VisitDto visitDto) {
+        LOGGER.info("POST request '/registerTelegramUserAndVisit'");
+        TelegramUser telegramUser = visitDto.getTelegramUser();
+        Company company = companyService.getById(visitDto.getCompanyId());
+        telegramUserService.addTelegramUser(telegramUser);
+        visitService.addVisit(telegramUser, company);
+        LOGGER.info(
+                "New visit of Telegram user with id = {} to Company \"{}\" was added",
+                telegramUser.getId(), company.getName()
+        );
+        return ResponseEntity.ok().build();
     }
 }
