@@ -150,28 +150,18 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
                                                             <label for="addMessage">Текст уведомления</label>
                                                             <input id="addMessage" class="form-control" type="text"
                                                                    placeholder="Введите текст уведомления" name="message"/>
-<!--                                                            TODO: сделать выбор через select-->
                                                             <label for="addUser">Пользователь</label>
                                                             <select id="addUser" class="form-control" name="template">
-
                                                             </select>
-
                                                             <button type="submit" id="addNotificationBtn"
-                                                                    class="btn btn-success col-xs-5"
+                                                                    class="btn btn-success"
                                                                     style="margin-top: 20px;">
-                                                                Добавить уведомление
-                                                            </button>
-                                                            <div class="col-xs-1"></div>
-                                                            <button type="submit" id="addAdminNotificationBtn"
-                                                                    class="btn btn-warning col-xs-5"
-                                                                    style="margin-top: 20px;">
-                                                                Добавить уведомление для админов
+                                                                Отправить уведомление
                                                             </button>
                                                         </div>
                                                     </form>
@@ -182,7 +172,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div role="tabpanel" class="tab-pane" id="notifications-template-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
@@ -194,8 +183,8 @@
                                                         <div class="form-group text-center edit-form">
                                                             <label for="templateText">Шаблон автоматического уведомления</label>
                                                             <span>
-                                                                <p>Используйте {author} для подстановки автора в шаблоне</p>
-                                                                <p>Используйте {link} для подстановки ссылки в шаблоне</p>
+                                                                <p>Используйте {subject} для подстановки автора в уведомлении</p>
+                                                                <p>Используйте {link:ссылка:текст:} для подстановки ссылки в уведомление</p>
                                                             </span>
                                                             <input id="templateText" class="form-control" type="text"
                                                                    placeholder="Введите текст уведомления" name="template"/>

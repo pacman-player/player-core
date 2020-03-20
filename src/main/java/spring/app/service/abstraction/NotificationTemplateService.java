@@ -14,4 +14,6 @@ public interface NotificationTemplateService {
     NotificationTemplate update(NotificationTemplate notificationTemplate);
 
     void deleteById(Long id);
+
+    NotificationTemplate getByName(String name);
 }

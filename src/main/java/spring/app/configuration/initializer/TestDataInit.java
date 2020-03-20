@@ -74,6 +74,9 @@ public class TestDataInit {
     private RegistrationStepService registrationStepService;
 
     @Autowired
+    private NotificationTemplateService notificationTemplateService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -189,6 +192,13 @@ public class TestDataInit {
             LOGGER.error("We have issues reading or writing music files during init. Please check if init data is accessible and '/music' directory is writable", e);
             throw e;
         }
+
+        //создаем дефолтный шаблон для уведомлений
+        NotificationTemplate notificationTemplate = new NotificationTemplate();
+        notificationTemplate = new NotificationTemplate();
+        notificationTemplate.setName("default");
+        notificationTemplate.setTemplate("Был добавлен новый автор {subject}, нужно проверить жанры по {link:genres:ссылке:}");
+        notificationTemplateService.create(notificationTemplate);
 
         // создаем данные для имеющихся песен в /music
         dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});

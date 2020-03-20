@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.model.Author;
 import spring.app.model.Notification;
+import spring.app.model.NotificationTemplate;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
@@ -58,6 +60,28 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void addNotification(String message) throws InterruptedException {
+        List<User> usersAdmin = userDao.getUserByRole("ADMIN");
+        for (User user : usersAdmin) {
+            Notification notification = new Notification(message, true, user);
+            notificationDao.save(notification);
+        }
+    }
+
+    @Override
+    public void addNotification(Author author, NotificationTemplate notificationTemplate) throws InterruptedException {
+        String template = notificationTemplate.getTemplate();
+        try {
+            String linkMeta, link;
+            linkMeta = notificationTemplate.getTemplate().substring(notificationTemplate.getTemplate().indexOf("{link:"),
+                    notificationTemplate.getTemplate().indexOf(":}") + 2);
+            String[] linkDetails = linkMeta.substring(6, linkMeta.length() - 2).split(":");
+            link = "<a href=\"" + linkDetails[0] + "\">" + linkDetails[1] + "</a>";
+            template = notificationTemplate.getTemplate().replace(linkMeta, link);
+        } catch (StringIndexOutOfBoundsException ignore) {
+            //ignored
+        }
+        String message = template;
+        message = message.replaceAll("\\{subject}", author.getName());
         List<User> usersAdmin = userDao.getUserByRole("ADMIN");
         for (User user : usersAdmin) {
             Notification notification = new Notification(message, true, user);

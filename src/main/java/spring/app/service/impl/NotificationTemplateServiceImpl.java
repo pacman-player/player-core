@@ -7,6 +7,7 @@ import spring.app.dao.abstraction.NotificationTemplateDao;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.NotificationTemplateService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -48,5 +49,11 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     @Override
     public void deleteById(Long id) {
         notificationTemplateDao.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public NotificationTemplate getByName(String name) {
+        return notificationTemplateDao.getByName(name);
     }
 }

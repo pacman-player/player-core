@@ -7,11 +7,11 @@ import java.util.Objects;
 @Table(name = "notification_template")
 public class NotificationTemplate {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Basic

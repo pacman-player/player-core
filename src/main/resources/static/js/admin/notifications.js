@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     function editTemplate() {
         let template = {
-            id: 1,
+            name: "default",
             'template': $("#templateText").val()
         };
 
@@ -111,7 +111,7 @@ $(document).ready(function () {
             success:
                 function () {
                     sendNotification();
-                    notification("add-user" + name,
+                    notification("edit-template" + name,
                         " Шаблон изменен",
                         'notifications-template-panel');
                 },
@@ -155,7 +155,7 @@ $(document).ready(function () {
             success:
                 function () {
                     sendNotification();
-                    notification("add-user" + name,
+                    notification("add-notification" + name,
                         " Уведомление " + name + " добавлено ",
                         'messages-panel');
                 },
@@ -202,7 +202,7 @@ $(document).ready(function () {
             success:
                 function () {
                     sendNotification();
-                    notification("add-user" + name,
+                    notification("add-notification" + name,
                         " Уведомление " + name + " добавлено ",
                         'messages-panel');
                 },
@@ -243,7 +243,7 @@ $(document).ready(function () {
             success:
                 function () {
                     sendNotification();
-                    notification("delete-user" + id,
+                    notification("delete-notification" + id,
                         "  Уведомление c id " + id + " удалено",
                         'messages-panel');
                 },

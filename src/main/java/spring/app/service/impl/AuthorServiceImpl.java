@@ -35,22 +35,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
-        NotificationTemplate notificationTemplate = notificationTemplateService.getById(1L);
-        String link = " <a href=\"performers\">ссылке</a>";
-
-        if (notificationTemplate == null) {
-            notificationTemplate = new NotificationTemplate();
-            notificationTemplate.setTemplate("Был добавлен новый автор {author}, нужно проверить жанры по {link}");
-            notificationTemplateService.create(notificationTemplate);
-        }
-
-        String notification = notificationTemplateService.getById(1L).getTemplate();
-
-        notification = notification.replace("{author}", author.getName());
-        notification = notification.replace("{link}", link);
-
+        NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
         try {
-            notificationService.addNotification(notification);
+            notificationService.addNotification(author, notificationTemplate);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
