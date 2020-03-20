@@ -74,6 +74,12 @@ public class TestDataInit {
     private RegistrationStepService registrationStepService;
 
     @Autowired
+    private TelegramUserService telegramUserService;
+
+    @Autowired
+    private VisitService visitService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -90,9 +96,6 @@ public class TestDataInit {
 
         Role roleUser = new Role("USER");
         roleService.addRole(roleUser);
-
-        Role roleManager = new Role("ACTUATOR");
-        roleService.addRole(roleManager);
 
         Role roleAnonymous = new Role("ANONYMOUS");
         roleService.addRole(roleAnonymous);
@@ -122,7 +125,6 @@ public class TestDataInit {
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
-        adminRoles.add(roleManager);
         admin.setRoles(adminRoles);
         userService.addUser(admin);
 
