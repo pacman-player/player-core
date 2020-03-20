@@ -9,11 +9,12 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "company")
+@Table(name = "companies")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
 
@@ -92,6 +93,7 @@ public class Company {
         this.user = user;
         this.orgType = orgType;
     }
+
     public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType, Address address) {
         this.id = id;
         this.name = name;
@@ -104,7 +106,6 @@ public class Company {
 
     public Company() {
     }
-
 
     public Long getId() {
         return id;

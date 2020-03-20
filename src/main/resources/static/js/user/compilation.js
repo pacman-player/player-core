@@ -146,7 +146,7 @@ $(document).ready(function () {
             dataType: 'JSON',
             success: function (listGenre) {
                 var htmlGenres = "Need to add genres";
-                if (0 < listGenre.length) {
+                if (listGenre.length > 0) {
                     htmlGenres = ('<h3 id="genres">Жанры</h3>');
                     htmlGenres += ('<div id="genres" class="col-3 pt-3">');
                     htmlGenres += ('<a href="#" class="pt-5 col-fhd-2 col-xl-sm col-lg-4 col-md-6 col-sm-4 col-sm mt-5">');

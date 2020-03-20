@@ -11,7 +11,7 @@ public interface SongService {
 
     Song getByName(String name);
 
-    Song getByNameAndAuthor(String name, String author);
+    Song getByAuthorAndName(String author, String name);
 
     Song getSongById(Long id);
 
@@ -28,7 +28,7 @@ public interface SongService {
     /**
      * возвращает все песни, в которых содержиться передаваемое значение
      *
-     * @return List<Author>
+     * @return List<Song>
      */
     List<Song> findSongsByNameContaining(String name);
 

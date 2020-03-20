@@ -19,15 +19,15 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 
 @RestController
 @RequestMapping("/api/admin/genre")
-public class GenreRestController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(GenreRestController.class);
+public class AdminGenreRestController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminGenreRestController.class);
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
 
     @Autowired
-    public GenreRestController(GenreService genreService,
-                               NotificationServiceImpl notificationService,
-                               CompanyService companyService) {
+    public AdminGenreRestController(GenreService genreService,
+                                    NotificationServiceImpl notificationService,
+                                    CompanyService companyService) {
         this.genreService = genreService;
         this.notificationService = notificationService;
     }
@@ -67,6 +67,7 @@ public class GenreRestController {
         Genre genre = genreService.getById(genreDto.getId());
         String genreDtoName = genreDto.getName();
         genre.setName(genreDtoName);
+        genre.setApproved(genreDto.getApproved());
         genreService.updateGenre(genre);
         LOGGER.info("Updated Genre with name = {}", genreDtoName);
         try {
@@ -96,9 +97,14 @@ public class GenreRestController {
         }
     }
 
+/**
+ * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого жанра (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
+ * */
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
-                                  @RequestParam(value = "id", required = false) Long id) {
-        return genreService.getByName(name) == null;
+                                  @RequestParam("id") Long id) {
+          LOGGER.info("GET request '/is_free/{}' with Genre name = {}", id, name);
+          Genre genre = genreService.getByName(name);
+          return (genre == null || genre == genreService.getById(id));
     }
 }

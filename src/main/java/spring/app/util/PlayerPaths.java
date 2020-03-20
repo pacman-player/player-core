@@ -12,18 +12,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class PlayerPaths {
+    private final static Logger LOGGER = LoggerFactory.getLogger(PlayerPaths.class);
+
     public static Path getSongsDir(String filename) {
-        final Logger LOGGER = LoggerFactory.getLogger(PlayerPaths.class);
         final String separator = File.separator;
 
         try {
             Path pathProject = (Paths.get(Main.class.getResource(".").toURI())).getParent().getParent();
+            LOGGER.trace("pathProject = {}", pathProject);
             Path pathDownload = Paths.get(pathProject.getParent().getParent().toString() + separator + "music");
+            LOGGER.trace("pathDownload = {}", pathDownload);
             if (!Files.exists(pathDownload)) {
+                LOGGER.trace("Creating pathDownload");
                 Files.createDirectories(pathDownload);
             }
             return filename == null ? pathDownload : Paths.get(String.format("%s%s%s", pathDownload, separator, filename));
         } catch (URISyntaxException | IOException ex) {
+            LOGGER.error("Error! :(");
             LOGGER.error(ex.getMessage(), ex);
         }
         return null;

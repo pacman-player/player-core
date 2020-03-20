@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,10 @@ import spring.app.service.abstraction.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -27,7 +29,8 @@ public class RegistrationRestController {
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
-    private RoleService roleService;private RegistrationStepService registrationStepService;
+    private RoleService roleService;
+    private RegistrationStepService registrationStepService;
     private AddressService addressService;
 
     @Autowired
@@ -50,7 +53,7 @@ public class RegistrationRestController {
         LOGGER.info("POST request '/first' with new User = {}", userDto.getLogin());
         userService.save(userDto);
         User newUser = userService.getUserByLoginWithRegStepsCompany(userDto.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(1L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-user"));
         /*userService.updateUser(newUser);*/
         userService.addUser(newUser);
         LOGGER.info("User registered");
@@ -143,7 +146,7 @@ public class RegistrationRestController {
         LOGGER.info("Success!");
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(2L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-company"));
         userService.updateUser(newUser);
     }
 
@@ -175,7 +178,7 @@ public class RegistrationRestController {
         companyService.updateCompany(company);
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(3L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-address"));
         userService.updateUser(newUser);
     }
 

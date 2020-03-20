@@ -1,22 +1,26 @@
 package spring.app.configuration.initializer;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import spring.app.configuration.DownloadMusicServiceConfigurer;
+import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
+import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.File;
-import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
 
 public class TestDataInit {
     private final static Logger LOGGER = LoggerFactory.getLogger(TestDataInit.class);
@@ -64,7 +68,16 @@ public class TestDataInit {
     private MusicSearchService musicSearchService;
 
     @Autowired
+    private DownloadMusicServiceFactory downloadMusicServiceFactory;
+
+    @Autowired
     private RegistrationStepService registrationStepService;
+
+    @Autowired
+    private TelegramUserService telegramUserService;
+
+    @Autowired
+    private VisitService visitService;
 
     @Autowired
     private Mp3Parser mp3Parser;
@@ -73,9 +86,9 @@ public class TestDataInit {
     private String musicPath;
 
     @Value("${music.initPath}")
-    private String  musicInitPath;
+    private String musicInitPath;
 
-    private void init() throws InvalidDataException, IOException, UnsupportedTagException {
+    private void init() throws Exception {
 
         // Создаем роли
         Role roleAdmin = new Role("ADMIN");
@@ -83,9 +96,6 @@ public class TestDataInit {
 
         Role roleUser = new Role("USER");
         roleService.addRole(roleUser);
-
-        Role roleManager = new Role("ACTUATOR");
-        roleService.addRole(roleManager);
 
         Role roleAnonymous = new Role("ANONYMOUS");
         roleService.addRole(roleAnonymous);
@@ -115,7 +125,6 @@ public class TestDataInit {
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
-        adminRoles.add(roleManager);
         admin.setRoles(adminRoles);
         userService.addUser(admin);
 
@@ -150,29 +159,39 @@ public class TestDataInit {
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
         user2 = userService.getUserByLoginWithRegStepsCompany("user2");
-        RegistrationStep registrationStep = registrationStepService.getRegStepById(1L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
-        registrationStep = registrationStepService.getRegStepById(2L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
-        registrationStep = registrationStepService.getRegStepById(3L);
-        user.addRegStep(registrationStep);
-        user2.addRegStep(registrationStep);
+        user.addRegStep(rs1);
+        user2.addRegStep(rs1);
+        user.addRegStep(rs2);
+        user2.addRegStep(rs2);
+        user.addRegStep(rs3);
+        user2.addRegStep(rs3);
         userService.updateUser(user);
         userService.updateUser(user2);
+
+        // создаем данные для имеющихся песен в /music
+        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
+        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
+        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"пост-панк"});
+        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"поп"});
+        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"поп"});
+        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"рок", "пост-панк"});
+        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"поп"});
+        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"поп"});
+        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"поп", "электронная"});
+        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"рок"});
+        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"поп", "соул"});
+        dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
+        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
 
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
-            File musicInitDirectory = new File(musicInitPath);
             File musicDirectory = new File(musicPath);
-            if (musicDirectory.exists()
-                    && (musicDirectory.length() != musicInitDirectory.length())) {
-                //если каталог присутствует, но количество файлов не совпадает, удаляем каталог и копируем все заново
+            //если каталог присутствует - удаляем каталог
+            if (musicDirectory.exists()) {
                 FileUtils.deleteDirectory(musicDirectory);
             }
-            if (!musicDirectory.exists()){
+            if (!musicDirectory.exists()) {
                 LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
                 musicDirectory.mkdir();
 
@@ -183,20 +202,19 @@ public class TestDataInit {
             throw e;
         }
 
-        // создаем данные для имеющихся песен в /music
-        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[] {"поп"});
-        dataUpdateService.updateData("The Alarm", "Strength", new String[] {"рок"});
-        dataUpdateService.updateData("BLACKPINK", "Really", new String[] {"поп", "r&b"});
-        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[] {"поп", "соул"});
-        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[] {"поп"});
-        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[] {"поп", "электронная"});
-        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[] {"рок", "пост-панк"});
-        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[] {"поп"});
-        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[] {"поп"});
-        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[] {"рок", "альтернатива"});
-        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[] {"пост-панк"});
-        dataUpdateService.updateData("Yungblud", "Falling Skies", new String[] {"соул", "r&b"});
-        dataUpdateService.updateData("Tom Walker", "My Way", new String[] {"поп", "соул"});
+        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        Song song1 = songService.getByName("Start Again");
+        Song song3 = songService.getByName("Really");
+        song1.setApproved(true);
+        song3.setApproved(true);
+        songService.updateSong(song1);
+        songService.updateSong(song3);
+        Author author1 = authorService.getByName("OneRepublic, Logic");
+        Author author3 = authorService.getByName("BLACKPINK");
+        author1.setApproved(true);
+        author3.setApproved(true);
+        authorService.updateAuthor(author1);
+        authorService.updateAuthor(author3);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
@@ -211,8 +229,7 @@ public class TestDataInit {
                 songList2.add(s);
             } else if (i < 6) {
                 songList3.add(s);
-            }
-            else if (i < 9) {
+            } else if (i < 9) {
                 songList1.add(s);
             } else {
                 songList4.add(s);
@@ -244,13 +261,28 @@ public class TestDataInit {
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
         Set<Genre> genres2 = new HashSet<>();
-        genres1.add(genreService.getByName("рок"));
-        genres1.add(genreService.getByName("пост-панк"));
-        genres2.add(genreService.getByName("поп"));
-        genres2.add(genreService.getByName("соул"));
+
+        Genre rock = genreService.getByName("рок");
+        Genre pop = genreService.getByName("поп");
+        Genre postPunk = genreService.getByName("пост-панк");
+        Genre soul = genreService.getByName("соул");
+        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        rock.setApproved(true);
+        pop.setApproved(true);
+        postPunk.setApproved(true);
+        soul.setApproved(true);
+        genreService.updateGenre(rock);
+        genreService.updateGenre(pop);
+        genreService.updateGenre(postPunk);
+        genreService.updateGenre(soul);
+        genres1.add(rock);
+        genres1.add(postPunk);
+        genres2.add(pop);
+        genres2.add(soul);
         // создаем типы организаций
         OrgType orgType1 = new OrgType("Кальян-бар");
         OrgType orgType2 = new OrgType("Ресторан");
+        // необходимо уточнить логику этого функционала. Дополнительный фильтр по жанрам на основе огранизаций?
         orgType1.setGenres(genres1);
         orgType2.setGenres(genres2);
         orgTypeService.addOrgType(orgType1);
@@ -334,8 +366,8 @@ public class TestDataInit {
         companyService.addCompany(company1);
         companyService.addCompany(company2);
         // сохраняем адреса и записываем их в компании
-        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "38",0,0);
-        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5",0,0);
+        Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39", 59.923527, 30.307792);
+        Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5", 55.732388, 37.628235);
         addressService.addAddress(address1);
         addressService.addAddress(address2);
         company1.setAddress(address1);
@@ -350,11 +382,17 @@ public class TestDataInit {
         long startDate = cal.getTime().getTime();
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
-        long totalOrders = random.nextInt(3000);
+//        long totalOrders = random.nextInt(3000);
+        long totalOrders = random.nextInt(30);
         for (int i = 0; i < totalOrders; i++) {
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));
         }
 
+        //Mbean setup here
+        DownloadMusicServiceConfigurerMBean serviceConfigurer = new DownloadMusicServiceConfigurer(downloadMusicServiceFactory);
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
+        mBeanServer.registerMBean(serviceConfigurer, name);
     }
 }

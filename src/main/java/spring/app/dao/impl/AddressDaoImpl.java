@@ -63,7 +63,7 @@ public class AddressDaoImpl extends AbstractDao<Long, Address> implements Addres
         Long id;
 
         try {
-            id = ((Number) entityManager.createNativeQuery("select max(id) from address;").getSingleResult()).longValue();
+            id = ((Number) entityManager.createNativeQuery("select max(id) from addresses;").getSingleResult()).longValue();
         } catch (NoResultException e) {
             return null;
         }

@@ -2,18 +2,20 @@ package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(name = "genre")
+@Table(name = "genres")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class Genre extends Bannable{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)
@@ -30,11 +32,20 @@ public class Genre extends Bannable{
             inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private Set<Author> authors;
 
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
+    @Column(name = "approved")
+    private Boolean isApproved = false;
+
     /**
      * Вспомогательное поле, кокоторое используеться фронтом для корректного отображения данных.
      */
-
-
     @Transient
     private Boolean banned;
 
@@ -76,8 +87,32 @@ public class Genre extends Bannable{
         return name;
     }
 
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Boolean isBanned() {
         return banned;
+    }
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     @Override

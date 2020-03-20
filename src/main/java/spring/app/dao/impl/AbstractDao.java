@@ -55,7 +55,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 			return query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("сообщение об ощибке: " + e.getMessage());
+			System.out.println("сообщение об ошибке: " + e.getMessage());
 			return null;
 		}
 	}
@@ -64,6 +64,14 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 		String genericClassName = persistentClass.toGenericString();
 		genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
 		String hql = "FROM " + genericClassName;
+		TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
+		return query.getResultList();
+	}
+
+	public List<T> getAllApproved() {
+		String genericClassName = persistentClass.toGenericString();
+		genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+		String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
 		TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
 		return query.getResultList();
 	}
