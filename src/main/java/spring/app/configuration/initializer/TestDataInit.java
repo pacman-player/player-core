@@ -180,13 +180,14 @@ public class TestDataInit {
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
-            File musicInitDirectory = new File(musicInitPath);
+//            File musicInitDirectory = new File(musicInitPath);
             File musicDirectory = new File(musicPath);
-            if (musicDirectory.exists()
-                    && (musicDirectory.length() != musicInitDirectory.length())) {
-                //если каталог присутствует, но количество файлов не совпадает, удаляем каталог и копируем все заново
-                FileUtils.deleteDirectory(musicDirectory);
-            }
+//            if (musicDirectory.exists()
+//                    && (musicDirectory.length() != musicInitDirectory.length())) {
+//                //если каталог присутствует, но количество файлов не совпадает, удаляем каталог и копируем все заново
+//                FileUtils.deleteDirectory(musicDirectory);
+//            }
+            FileUtils.deleteDirectory(musicDirectory);
             if (!musicDirectory.exists()) {
                 LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
                 musicDirectory.mkdir();
