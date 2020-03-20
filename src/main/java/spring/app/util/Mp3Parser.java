@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 @Component
 public class Mp3Parser {
@@ -53,6 +54,7 @@ public class Mp3Parser {
 
         FileFilter fileFilter = pathname -> pathname.getPath().endsWith(".mp3");
         File[] songs = new File(path).listFiles(fileFilter);
+        System.out.println(Arrays.asList(songs));
 
         for (File song : songs) {
             copyInitSongs(song);
