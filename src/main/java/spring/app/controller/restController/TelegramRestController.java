@@ -180,7 +180,7 @@ public class TelegramRestController {
         telegramUserService.addTelegramUser(telegramUser);
         visitService.addVisit(telegramUser, company);
         LOGGER.info(
-                "New visit of Telegram user with id = {} to Company '\"'{}'\"' was added",
+                "New visit of Telegram user with id = {} to Company \"{}\" was added",
                 telegramUser.getId(), company.getName()
         );
         return ResponseEntity.ok().build();
