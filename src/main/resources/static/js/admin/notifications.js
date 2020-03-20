@@ -123,50 +123,7 @@ $(document).ready(function () {
 
     }
 
-    $("#addAdminNotificationBtn").click(function (event) {
-        event.preventDefault();
-        addAdminNotification();
-        $(':input', '#addForm').val('');
-    });
-
-    function addAdminNotification() {
-
-        let addNotification = {
-            'message': $("#addMessage").val()
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: "/api/admin/notification/admin",
-
-            contentType: 'application/json;',
-            data: JSON.stringify(addNotification),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            complete:
-                function () {
-                    getTable();
-                    $("#tab-messages-panel").tab('show');
-                },
-            success:
-                function () {
-                    sendNotification();
-                    notification("add-notification" + name,
-                        " Уведомление " + name + " добавлено ",
-                        'messages-panel');
-                },
-            error:
-                function (xhr, status, error) {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
-        });
-    }
-
-    //addMessage
+    //addNotify
     $("#addNotificationBtn").click(function (event) {
         event.preventDefault();
         addNotification();
