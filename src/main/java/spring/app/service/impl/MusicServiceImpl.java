@@ -1,7 +1,6 @@
 package spring.app.service.impl;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.CacheControl;
@@ -22,11 +21,14 @@ import java.io.*;
 @Service
 @Transactional
 public class MusicServiceImpl implements MusicService {
-    @Autowired
-    private SongDao songDao;
+    private final SongDao songDao;
 
     @Value("${music.path}")
     private String musicPath;
+
+    public MusicServiceImpl(SongDao songDao) {
+        this.songDao = songDao;
+    }
 
 
     @Override

@@ -4,7 +4,6 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.app.model.Song;
@@ -23,15 +22,10 @@ import java.util.Arrays;
 @Component
 public class Mp3Parser {
 
-    @Autowired
     private final SongService songService;
-    @Autowired
     private final AuthorService authorService;
-    @Autowired
     private final GenreService genreService;
-    @Autowired
     private final SongCompilationService songCompilationService;
-    @Autowired
     private final MusicSearchService musicSearchService;
 
     @Value("${music.path}")
