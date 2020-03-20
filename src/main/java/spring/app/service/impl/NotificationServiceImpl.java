@@ -72,11 +72,11 @@ public class NotificationServiceImpl implements NotificationService {
         String template = notificationTemplate.getTemplate();
         try {
             String linkMeta, link;
-            linkMeta = notificationTemplate.getTemplate().substring(notificationTemplate.getTemplate().indexOf("{link:"),
-                    notificationTemplate.getTemplate().indexOf(":}") + 2);
+            linkMeta = template.substring(template.indexOf("{link:"),
+                    template.indexOf(":}") + 2);
             String[] linkDetails = linkMeta.substring(6, linkMeta.length() - 2).split(":");
             link = "<a href=\"" + linkDetails[0] + "\">" + linkDetails[1] + "</a>";
-            template = notificationTemplate.getTemplate().replace(linkMeta, link);
+            template = template.replace(linkMeta, link);
         } catch (StringIndexOutOfBoundsException ignore) {
             //ignored
         }
