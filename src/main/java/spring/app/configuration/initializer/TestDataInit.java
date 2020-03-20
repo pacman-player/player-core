@@ -201,7 +201,6 @@ public class TestDataInit {
 
         //создаем дефолтный шаблон для уведомлений
         NotificationTemplate notificationTemplate = new NotificationTemplate();
-        notificationTemplate = new NotificationTemplate();
         notificationTemplate.setName("default");
         notificationTemplate.setTemplate("Был добавлен новый автор {subject}, нужно проверить жанры по {link:genres:ссылке:}");
         notificationTemplateService.create(notificationTemplate);
