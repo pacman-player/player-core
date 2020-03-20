@@ -1,209 +1,179 @@
 $(document).ready(function () {
+
     getTable();
 
-    let formAddEst = $("#establishmentsAddForm");
-    let fieldNameAddEstName = $("#addName");
-    $("#addEstablishmentBtn").on("click", function (event) {
+    function getTable() {
+
+        $.ajax({
+            type: 'GET',
+            url: "/api/admin/message/all_messages",
+            contentType: 'application/json;',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            success: function (listMessages) {
+                var htmlTable = "";
+                //  $("#MessagesTable #list").remove();
+                $("#messagesTable tbody").empty();
+
+                for (var i = 0; i < listMessages.length; i++) {
+                    htmlTable += ('<tr id="list">');
+                    htmlTable += ('<td id="messagesId">' + listMessages[i].id + '</td>');
+                    htmlTable += ('<td id="messagesName">' + listMessages[i].name + '</td>');
+                    htmlTable += ('<td id="messagesTemplate">' + listMessages[i].template + '</td>');
+                    htmlTable += ('<td><button id="editMessagesBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
+                        ' data-target="#editMessages">изменить</button></td>');
+                    htmlTable += ('<td><button id="deleteMessages" class="btn btn-sm btn-info" type="button">удалить</button></td>');
+                    htmlTable += ('</tr>');
+                }
+                // $("#getMessagesTable").after(htmlTable);
+                $("#messagesTable tbody").append(htmlTable);
+            }
+
+        });
+    };
+
+    //addMessage
+    $("#addMessageBtn").click(function (event) {
         event.preventDefault();
-
-        if (formAddEst.valid()) {
-            addEstablishments(formAddEst, fieldNameAddEstName);
-            formAddEst.trigger("reset");
-        }
-    })
-});
-
-
-const errMessages = {
-    required: "Укажите название",
-    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
-    rangelength: "Количество символов должно быть в диапазоне [3-30]",
-    remote: "Имя занято"
-};
-
-const establishmentsNameRegEx = /[\wА-Яа-я\-]/;
-
-
-$("#establishmentsAddForm").validate({
-    rules: {
-        name: {
-            required: true,
-            pattern: establishmentsNameRegEx,
-            rangelength: [3, 30],
-            remote: {
-                method: "GET",
-                url: "/api/admin/establishment/est_type_name_is_free",
-                data: {
-                    name: function () {
-                        return $("#addName").val()
-                    },
-                }
-            }
-        }
-    },
-    messages: {
-        name: errMessages
-    }
-});
-
-
-function addEstablishments(form, field) {
-    $.ajax({
-        method: "POST",
-        url: "/api/admin/add_establishment",
-        contentType: "application/json",
-        data: JSON.stringify(field.val()),
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        complete: () => {
-            $("#tab-establishments-panel").tab("show");
-            getTable();
-        },
-        success: () => {
-            notification(
-                "add-establishment" + field.val(),
-                ` Заведение ${field.val()} добавлено`,
-                "establishments-panel");
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
-        }
-    })
-}
-
-
-function editButton(id, name) {
-    let theModal = $("#editEstablishment");
-    let form = $("#updateEstForm");
-    let fieldId = $("#updateEstablishmentId");
-    let fieldName = $("#updateEstablishmentName");
-
-    fieldId.val(id);
-    fieldName.val(name);
-
-    theModal.modal("show");
-    form.validate({
-        rules: {
-            name: {
-                required: true,
-                pattern: establishmentsNameRegEx,
-                rangelength: [3, 30],
-                remote: {
-                    method: "GET",
-                    url: "/api/admin/establishment/est_type_name_is_free",
-                }
-            }
-        },
-        messages: {
-            name: errMessages
-        },
-        submitHandler: () => {
-            $.ajax({
-                method: "PUT",
-                url: "/api/admin/update_establishment",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    id: id,
-                    name: fieldName.val()
-                }),
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                complete: () => {
-                    theModal.modal("hide");
-                    getTable();
-                },
-                success: () => {
-                    notification(
-                        "edit-establishment" + fieldName.val(),
-                        `  Изменения типа организации с id  ${id} сохранены`,
-                        "establishments-panel");
-                },
-                error: (xhr, status, error) => {
-                    alert(xhr.responseText + "|\n" + status + "|\n" + error);
-                }
-            })
-        }
-    })
-}
-
-
-function deleteButton(id) {
-    $.ajax({
-        method: "DELETE",
-        url: "/api/admin/delete_establishment",
-        contentType: "application/json",
-        data: JSON.stringify(id),
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        complete: () => {
-            getTable();
-        },
-        success: () => {
-            notification(
-                "delete-establishment" + id,
-                ` Заведение c id ${id} удалено`,
-                "establishments-panel");
-        },
-        error: (xhr, status, error) => {
-            if (xhr.responseText.includes("DataIntegrityViolationException")) {
-                let caution = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
-                alert(caution);
-            } else {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
-            }
-
-        }
-    })
-}
-
-
-function getTable() {
-    $.ajax({
-        method: "GET",
-        url: "/api/admin/all_establishments",
-        contentType: "application/json",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        dataType: "JSON",
-        success: function (list) {
-            let tableBody = $("#establishmentsTable tbody");
-
-            tableBody.empty();
-            for (let i = 0; i < list.length; i++) {
-                // vars that contains object's fields
-                let id = list[i].id;
-                let name = list[i].name;
-
-                let tr = $("<tr/>");
-                tr.append(`
-                            <td> ${id} </td>
-                            <td> ${name} </td>
-                            <td>
-                                <button type="submit" 
-                                        class="btn btn-sm btn-info" 
-                                        id="editEstBtn"
-                                        onclick="editButton(${id}, '${name}')">
-                                    Изменить
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button"
-                                        class="btn btn-sm btn-info"
-                                        id="deleteEstBtn"
-                                        onclick="deleteButton(${id})">
-                                    Удалить
-                                </button>
-                            </td>`);
-                tableBody.append(tr);
-            }
-        }
+        addMessage();
+        $(':input', '#addForm').val('');
     });
-}
+
+    function addMessage() {
+
+        var message = {
+            'name': $("#addName").val(),
+            'template': $("#addTemplate").val(),
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/api/admin/message/add_message",
+
+            contentType: 'application/json;',
+            data: JSON.stringify(message),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-messages-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("add-user" + name,
+                        " Сообшение " + name+ " добавлен ",
+                        'messages-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+        });
+
+        //  $("#tab-messages-panel").tab('show');
+        // location.reload();
+    }
+
+    //deleteForm
+    $(document).on('click', '#deleteMessages', function () {
+        var id = $(this).closest("tr").find("#messagesId").text();
+        deleteUser(id);
+        // getTable();
+    });
+
+    function deleteUser(id) {
+        $.ajax({
+            type: 'delete',
+            url: "/api/admin/message/delete_message",
+            contentType: 'application/json;',
+            data: JSON.stringify(id),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: false,
+            cache: false,
+            complete:
+                function () {
+                    getTable();
+                    $("#tab-messages-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("delete-user" + id,
+                        "  сообщение c id " + id + " удален",
+                        'messages-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+        });
+        // location.reload();
+    };
+
+    //updateForm
+    $("#editMessagesBtn").click(function (event) {
+        event.preventDefault();
+        updateForm();
+        $(this).parent().find("#closeEditMessages").click();
+    });
+
+    function updateForm() {
+        var message = {
+            'id': $("#updateMessagesId").val(),
+            'name': $("#updateMessagesName").val(),
+            'template': $("#updateMessagesTemplate").val()
+        };
+
+        $.ajax({
+            type: 'put',
+            url: "/api/admin/message/update_message",
+
+            contentType: 'application/json;',
+            data: JSON.stringify(message),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+            complete:
+                function () {
+                    getTable();
+                    // $("#tab-messages-panel").tab('show');
+                },
+            success:
+                function () {
+                    sendNotification();
+                    notification("add-user" + name,
+                        " ообщение " + name+ " обнавлен ",
+                        'messages-panel');
+                },
+            error:
+                function (xhr, status, error) {
+                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                }
+        });
+
+        //  location.reload();
+    };
+
+    //modal form заполнение
+    $(document).on('click', '#editMessagesBtn', function () {
+        $("#updateMessagesId").val($(this).closest("tr").find("#messagesId").text());
+        $("#updateMessagesName").val($(this).closest("tr").find("#messagesName").text());
+        $("#updateMessagesTemplate").val($(this).closest("tr").find("#messagesTemplate").text());
+    });
+});
