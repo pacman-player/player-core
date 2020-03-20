@@ -7,9 +7,14 @@ import java.util.Objects;
 @Table(name = "notification_template")
 public class NotificationTemplate {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Basic
+    @Column(name = "name")
+    private String name;
+
+    @Basic
     @Column(name = "template")
     private String template;
 
@@ -19,6 +24,14 @@ public class NotificationTemplate {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTemplate() {
@@ -34,18 +47,20 @@ public class NotificationTemplate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NotificationTemplate that = (NotificationTemplate) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "NotificationTemplate{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", template='" + template + '\'' +
                 '}';
     }

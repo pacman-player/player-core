@@ -37,6 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorDao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getById(1L);
         String link = " <a href=\"performers\">ссылке</a>";
+
         if (notificationTemplate == null) {
             notificationTemplate = new NotificationTemplate();
             notificationTemplate.setTemplate("Был добавлен новый автор {author}, нужно проверить жанры по {link}");
