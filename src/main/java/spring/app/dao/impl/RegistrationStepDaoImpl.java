@@ -73,7 +73,7 @@ public class RegistrationStepDaoImpl extends AbstractDao<Long, RegistrationStep>
     public List<Long> getMissedRegStepsByUserId(Long userId) {
         Query q = entityManager.createNativeQuery(
                 "SELECT rg.registration_step_id " +
-                        "FROM registration_step rg " +
+                        "FROM registration_steps rg " +
                         "WHERE rg.registration_step_id " +
                         "NOT IN (" +
                         "SELECT usr.registration_step_id " +

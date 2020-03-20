@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "address")
+@Table(name = "addresses")
 public class Address {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "country")
@@ -29,7 +29,8 @@ public class Address {
     @Column(name = "longitude")
     private double longitude;
 
-    public Address() {}
+    public Address() {
+    }
 
     public Address(String country, String city, String street, String house, double latitude, double longitude) {
         this.country = country;
