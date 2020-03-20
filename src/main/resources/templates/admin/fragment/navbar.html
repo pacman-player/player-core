@@ -42,10 +42,6 @@
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/message' ? 'active' : ''}">
         <a href="/admin/message">Сообщения</a>
     </li>
-
-    <li th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}">
-        <a href="/user/spa">Меню пользователя</a>
-    </li>
 </ul>
 
 </body>
