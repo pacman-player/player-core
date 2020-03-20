@@ -29,7 +29,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: "/api/admin/notification/template/1",
+            url: "/api/admin/notification/template",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -38,8 +38,8 @@ $(document).ready(function () {
 
             async: true,
             cache: false,
-            success: function (template) {
-                $("#templateText").val(template.template);
+            success: function (templates) {
+                $("#templateText").val(templates[0].template);
             }
 
         });
