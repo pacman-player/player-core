@@ -1,8 +1,5 @@
 package spring.app.dao.impl;
 
-import com.vk.api.sdk.objects.ads.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.TelegramUserDao;
 import spring.app.model.TelegramUser;
