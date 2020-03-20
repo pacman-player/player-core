@@ -53,7 +53,7 @@ public class RegistrationRestController {
         LOGGER.info("POST request '/first' with new User = {}", userDto.getLogin());
         userService.save(userDto);
         User newUser = userService.getUserByLoginWithRegStepsCompany(userDto.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(1L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-user"));
         /*userService.updateUser(newUser);*/
         userService.addUser(newUser);
         LOGGER.info("User registered");
@@ -146,7 +146,7 @@ public class RegistrationRestController {
         LOGGER.info("Success!");
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(2L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-company"));
         userService.updateUser(newUser);
     }
 
@@ -178,7 +178,7 @@ public class RegistrationRestController {
         companyService.updateCompany(company);
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepById(3L));
+        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-address"));
         userService.updateUser(newUser);
     }
 

@@ -153,7 +153,7 @@ public class MainController {
             company.setName(companyName);
             company.setStartTime(LocalTime.of(11, 0));
             company.setCloseTime(LocalTime.of(23, 0));
-            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setOrgType(orgTypeService.getByName("Кальян-бар"));
             company.setUser(userService.getUserByGoogleId(googleId));
 
             //cетим дефолтный адрес компании
@@ -236,7 +236,7 @@ public class MainController {
                     new String(list.get(0).getLastName().getBytes(StandardCharsets.UTF_8)),
                     authResponse.getEmail(),
                     roleSet,
-                    companyService.getById(1L),
+                    companyService.getByCompanyName("Pacman"),
                     true);
             user.setLogin("vkAuth");
             userService.addUser(user);
@@ -247,7 +247,7 @@ public class MainController {
             company.setName(companyName);
             company.setStartTime(LocalTime.of(11, 0));
             company.setCloseTime(LocalTime.of(23, 0));
-            company.setOrgType(orgTypeService.getOrgTypeById(1L));
+            company.setOrgType(orgTypeService.getByName("Кальян-бар"));
             company.setUser(userService.getUserByVkId(actor.getId()));
 
             //cетим дефолтный адрес компании

@@ -4,15 +4,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "songs_that_play_now")
 public class SongThatPlayNow {
+
     @Embeddable
     public static class SongThatPlayNowId implements Serializable {
         @Column(name = "companyId")
         protected long companyId;
         @Column(name = "songId")
         protected long songId;
+
         public SongThatPlayNowId() {
         }
+
         public long getCompanyId() {
             return companyId;
         }
@@ -52,11 +56,11 @@ public class SongThatPlayNow {
     private SongThatPlayNowId songThatPlayNow;
 
     @ManyToOne(targetEntity = Company.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "companyId", insertable = false,updatable = false)
+    @JoinColumn(name = "companyId", insertable = false, updatable = false)
     private Company company;
 
     @ManyToOne(targetEntity = Song.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "songId", insertable = false,updatable = false)
+    @JoinColumn(name = "songId", insertable = false, updatable = false)
     private Song song;
 
     public Song getSong() {

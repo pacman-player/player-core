@@ -7,10 +7,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
+@Table(name = "song_queues")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//без этой аннотации LAZY не работало (по-моему не отображались песни)
 public class SongQueue {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Long position;
 
