@@ -13,6 +13,8 @@ let Company = {
             '                    <input id="est-start-time" required="required" type="time"/><br/>\n' +
             '                    <label for="est-close-time">Время закрытия&nbsp;</label>\n' +
             '                    <input id="est-close-time" required="required" type="time"/><br/>\n' +
+            '                    <label for="est-tariff">Тариф за песню&nbsp;</label>\n' +
+            '                    <input id="est-tariff" required="required" type="number"/><br/>\n' +
             '                    <label for="est-address">Адрес&nbsp;</label>\n' +
             '                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>\n' +
             '                    <button type="submit" id="button">Поиск</button>\n' +
@@ -39,11 +41,13 @@ let Company = {
             getCompanyAddress();
 
             function updateCompany() {
-                var formData = {
+                let formData = {
                     name: $('#est-name').val(),
                     startTime: $('#est-start-time').val(),
+                    tariff: $('#est-tariff').val(),
                     closeTime: $('#est-close-time').val()
                 };
+                console.log(formData.tariff);
                 $.ajax({
                     contentType: "application/json;",
                     url: "/api/user/company",
@@ -55,6 +59,7 @@ let Company = {
                         },
                     success:
                         function () {
+                        console.log(formData.tariff);
                             notification("edit-company-data" + formData.name.replace(/[^\w]|_/g, ''),
                                 "  Изменения сохранены");
                         },
@@ -94,6 +99,7 @@ let Company = {
                         $('#est-name').val(data.name);
                         $('#est-start-time').val(data.startTime);
                         $('#est-close-time').val(data.closeTime);
+                        $('#est-tariff').val(data.tariff);
                     }
                 })
             }
