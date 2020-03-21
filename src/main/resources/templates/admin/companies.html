@@ -67,7 +67,8 @@
                                                 <th>Начало работы</th>
                                                 <th>Конец работы</th>
                                                 <th>Тип организации</th>
-                                                <th>ID пользователя</th>
+                                                <th>Пользователь</th>
+                                                <th>Тариф</th>
                                                 <th>Изменить</th>
                                                 <!--                                                <th>Удалить</th>-->
                                             </tr>
@@ -174,6 +175,12 @@
                                                     <select id="updateOrgType" class="form-control" name="role">
                                                         <!--                                                        onchange="getAllEstablishments()"-->
                                                     </select>
+
+                                                    <label for="updateTariff">Тариф</label>
+                                                    <input id="updateTariff" class="form-control" type="number"
+                                                           name="tariff"
+                                                           required=""/>
+
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">Закрыть

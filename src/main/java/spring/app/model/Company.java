@@ -29,6 +29,10 @@ public class Company {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Basic
+    @Column(name = "tariff")
+    private Long tariff;
+
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
     @JoinColumn(name = "org_type_id")
     private OrgType orgType;
@@ -85,6 +89,15 @@ public class Company {
         this.orgType = orgType;
     }
 
+    public Company(String name, LocalTime startTime, LocalTime closeTime, User user, Long tariff, OrgType orgType) {
+        this.name = name;
+        this.startTime = startTime;
+        this.closeTime = closeTime;
+        this.user = user;
+        this.tariff = tariff;
+        this.orgType = orgType;
+    }
+
     public Company(Long id, String name, LocalTime startTime, LocalTime closeTime, User user, OrgType orgType) {
         this.id = id;
         this.name = name;
@@ -125,6 +138,14 @@ public class Company {
 
     public User getUser() {
         return user;
+    }
+
+    public Long getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Long tariff) {
+        this.tariff = tariff;
     }
 
     public OrgType getOrgType() {
@@ -239,11 +260,15 @@ public class Company {
                 ", startTime=" + startTime +
                 ", closeTime=" + closeTime +
                 ", user=" + user +
+                ", tariff=" + tariff +
                 ", orgType=" + orgType +
+                ", address=" + address +
                 ", morningPlayList=" + morningPlayList +
                 ", middayPlayList=" + middayPlayList +
                 ", eveningPlayList=" + eveningPlayList +
                 ", bannedGenres=" + bannedGenres +
+                ", bannedSong=" + bannedSong +
+                ", bannedAuthor=" + bannedAuthor +
                 ", songQueues=" + songQueues +
                 '}';
     }

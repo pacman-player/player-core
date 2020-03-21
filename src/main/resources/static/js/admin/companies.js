@@ -18,14 +18,18 @@ $(document).ready(function () {
                 var htmlTable = "";
                 $("#companiesTable tbody").empty();
                 for (var i = 0; i < listCompanies.length; i++) {
-
+                    let tariff = listCompanies[i].tariff + "";
+                    let pennies = tariff.substr(tariff.length - 2, tariff.length);
+                    tariff = tariff.substr(0, tariff.length - 2) + "," + pennies;
+                    console.log(typeof tariff);
                     htmlTable += ('<tr id="listCompanies">');
                     htmlTable += ('<td id="tableCompaniesId">' + listCompanies[i].id + '</td>');
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
                     htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
-                    htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
+                    htmlTable += ('<td id="tableUser">' + listCompanies[i].user.login + '</td>');
+                    htmlTable += ('<td id="tableTariff">' + tariff + '₽' +  '</td>');
                     htmlTable += ('<td><button id="showEditModalCompaniesBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     // htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
@@ -48,6 +52,7 @@ $(document).ready(function () {
             name: $("#updateNameCompany").val(),
             startTime: $("#updateStartTime").val(),
             closeTime: $("#updateCloseTime").val(),
+            tariff: $("#updateTariff").val(),
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
         };
@@ -105,16 +110,17 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/api/admin/company/' + $(this).closest("tr").find("#tableId").text(),
+            url: '/api/admin/companyById/' + $(this).closest("tr").find("#tableCompaniesId").text(),
             method: "GET",
             dataType: "json",
-            success: function (data) {
-                $('#updateCompanyId').val(data.id);
-                $('#updateNameCompany').val(data.name);
-                $('#updateStartTime').val(data.startTime);
-                $('#updateCloseTime').val(data.closeTime);
-                $('#updateIdUser').val(data.user.id);
-                $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
+            success: function (companies) {
+                $('#updateCompanyId').val(companies.id);
+                $('#updateNameCompany').val(companies.name);
+                $('#updateStartTime').val(companies.startTime);
+                $('#updateCloseTime').val(companies.closeTime);
+                $('#updateIdUser').val(companies.user.id);
+                $('#updateTariff').val(companies.tariff);
+                $("#updateOrgType option[value='" + companies.orgType.id + "'] ").prop("selected", true);
             },
             error:  function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
