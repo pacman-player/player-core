@@ -222,6 +222,7 @@ $(document).ready(function () {
                 },
             success:
                 function () {
+                    checkForUserRole();
                     notification("edit-user" + user.id,
                         "  Изменения пользователя c id  " + user.id + " сохранены",
                         'user-panel');
@@ -232,6 +233,8 @@ $(document).ready(function () {
                 }
         });
     }
+
+
 
     $(document).on('click', '#editCompanyBtn', function (e) {
         e.preventDefault();
