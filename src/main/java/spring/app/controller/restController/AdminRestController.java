@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
@@ -22,6 +23,8 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -118,6 +121,16 @@ public class AdminRestController {
         LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
+        User userAuth = (User) getContext().getAuthentication().getPrincipal();
+        if (userAuth.getId().equals(user.getId())) {
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            user.getPassword(),
+                            user.getAuthorities()
+                    );
+            getContext().setAuthentication(token);
+        }
         userService.updateUser(user);
         LOGGER.info("Updated User = {}", user);
     }
