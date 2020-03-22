@@ -7,6 +7,8 @@ import spring.app.model.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -51,5 +53,13 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         querySong.executeUpdate();
 
         super.deleteById(id);
+    }
+
+    @Override
+    public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return entityManager
+                .createQuery("FROM Genre g WHERE g.createdAt >= :dateFrom AND g.createdAt <= :dateTo ORDER BY g.createdAt", Genre.class)
+                .setParameter("dateFrom", dateFrom)
+                .setParameter("dateTo", dateTo).getResultList();
     }
 }

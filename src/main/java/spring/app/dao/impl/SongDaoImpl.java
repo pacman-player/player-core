@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.bouncycastle.util.Times;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
@@ -7,6 +8,9 @@ import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -78,5 +82,13 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         query.setParameter("name", name);
         List<Song> list = query.getResultList();
         return !list.isEmpty();
+    }
+
+    @Override
+    public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return entityManager
+                .createQuery("FROM Song s WHERE s.createdAt >= :dateFrom AND s.createdAt <= :dateTo ORDER BY s.createdAt", Song.class)
+                .setParameter("dateFrom", dateFrom)
+                .setParameter("dateTo", dateTo).getResultList();
     }
 }
