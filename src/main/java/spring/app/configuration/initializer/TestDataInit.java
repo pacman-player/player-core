@@ -203,10 +203,14 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        songService.getAllSong().forEach(song -> {
+            song.setApproved(true);
+            songService.updateSong(song);
+        });
         Song song1 = songService.getByName("Start Again");
         Song song3 = songService.getByName("Really");
-        song1.setApproved(true);
-        song3.setApproved(true);
+        song1.setApproved(false);
+        song3.setApproved(false);
         songService.updateSong(song1);
         songService.updateSong(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");
