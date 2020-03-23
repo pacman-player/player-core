@@ -121,6 +121,8 @@ public class AdminRestController {
         LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
+        // If admin is editing himself, then we need put his renewed account
+        // in SecurityContext
         User userAuth = (User) getContext().getAuthentication().getPrincipal();
         if (userAuth.getId().equals(user.getId())) {
             UsernamePasswordAuthenticationToken token =
