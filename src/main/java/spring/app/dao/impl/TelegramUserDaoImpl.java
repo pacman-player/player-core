@@ -4,10 +4,6 @@ import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.TelegramUserDao;
 import spring.app.model.TelegramUser;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 @Repository
 public class TelegramUserDaoImpl extends AbstractDao<Long, TelegramUser> implements TelegramUserDao {
 
