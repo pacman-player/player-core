@@ -80,7 +80,7 @@ public class TestDataInit {
     private VisitService visitService;
 
     @Autowired
-    NotificationTemplateService notificationTemplateService;
+    private NotificationTemplateService notificationTemplateService;
 
     @Autowired
     private Mp3Parser mp3Parser;

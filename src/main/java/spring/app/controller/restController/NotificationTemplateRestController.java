@@ -22,13 +22,11 @@ public class NotificationTemplateRestController {
 
     @GetMapping()
     public List<NotificationTemplate> getAll() {
-        LOGGER.info("GET request '/template'");
         return notificationTemplateService.getAll();
     }
 
     @GetMapping("{id}")
     public NotificationTemplate getById(@PathVariable String id) {
-        LOGGER.info("GET request '/template/{}'", id);
         return notificationTemplateService.getById(Long.parseLong(id));
     }
 

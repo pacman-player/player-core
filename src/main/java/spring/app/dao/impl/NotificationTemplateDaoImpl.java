@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 @Repository
 public class NotificationTemplateDaoImpl extends AbstractDao<Long, NotificationTemplate> implements NotificationTemplateDao {
-    NotificationTemplateDaoImpl() {
+    public NotificationTemplateDaoImpl() {
         super(NotificationTemplate.class);
     }
 
