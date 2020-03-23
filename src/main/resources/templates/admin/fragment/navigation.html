@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div class="row" th:fragment="adminHeader" xmlns:th="http://www.thymeleaf.org">
+    <div class="navbar navbar-inverse navbar-static-top header">
+        <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+        <ul class="nav navbar-nav">
+            <li id="headerUserBtn" style="display: none"><a href="/user/spa">Меню пользователя</a></li>
+        </ul>
+        <a class="navbar-brand pull-right" href="/logout">Выход</a>
+        <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+        <div id="listNotification" class="pull-right"></div>
+    </div>
+</div>
 
-<head>
-    <title></title>
-</head>
-<body>
-
-<ul class="nav nav-pills nav-stacked nav-content" th:fragment="adminNavbar">
+<ul class="nav nav-pills nav-stacked nav-content" th:fragment="adminNavbar" xmlns:th="http://www.thymeleaf.org">
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/users' ? 'active' : ''}">
         <a href="/admin/users">Пользователи</a>
     </li>
@@ -42,11 +46,4 @@
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/message' ? 'active' : ''}">
         <a href="/admin/message">Сообщения</a>
     </li>
-
-    <li th:classappend="${#httpServletRequest.getRequestURI() == '/user' ? 'active' : ''}">
-        <a href="/user/spa">Меню пользователя</a>
-    </li>
 </ul>
-
-</body>
-</html>

@@ -22,3 +22,36 @@ function notification(notifyId, message, panelId) {
         $('#success-alert-' + notifyId).fadeOut(400, "linear", $(this).remove());
     }, 3000);
 }
+
+$(document).ready(function () {
+   checkForUserRole();
+});
+
+function checkForUserRole() {
+    $.ajax({
+        type: 'GET',
+        url: "/api/user/get_user",
+        contentType: 'application/json;',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        async: true,
+        cache: false,
+        success:
+            function (user) {
+                for(let i = 0; i < user.roles.length; i ++) {
+                    if (user.roles[i].name === "USER") {
+                        $("#headerUserBtn").attr("style", "display: inline");
+                    } else {
+                        $("#headerUserBtn").attr("style", "display: none");
+                    }
+                }
+
+            },
+        error:
+            function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+    });
+}
