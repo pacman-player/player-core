@@ -10,7 +10,7 @@ import spring.app.service.abstraction.NotificationTemplateService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/notification/template")
+@RequestMapping("/api/notification/template")
 public class NotificationTemplateRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(NotificationTemplateRestController.class);
     private final NotificationTemplateService notificationTemplateService;
@@ -28,6 +28,11 @@ public class NotificationTemplateRestController {
     @GetMapping("{id}")
     public NotificationTemplate getById(@PathVariable String id) {
         return notificationTemplateService.getById(Long.parseLong(id));
+    }
+
+    @GetMapping("/name/{name}")
+    public NotificationTemplate getByName(@PathVariable String name) {
+        return notificationTemplateService.getByName(name);
     }
 
     @PostMapping

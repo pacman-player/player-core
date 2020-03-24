@@ -37,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorDao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
         try {
-            notificationService.addNotification(author, notificationTemplate);
+            notificationService.addNotification(author);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

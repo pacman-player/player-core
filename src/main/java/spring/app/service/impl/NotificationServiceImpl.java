@@ -68,23 +68,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void addNotification(Author author, NotificationTemplate notificationTemplate) throws InterruptedException {
-        String template = notificationTemplate.getTemplate();
-        try {
-            String linkMeta, link;
-            linkMeta = template.substring(template.indexOf("{link:"),
-                    template.indexOf(":}") + 2);
-            String[] linkDetails = linkMeta.substring(6, linkMeta.length() - 2).split(":");
-            link = "<a href=\"" + linkDetails[0] + "\">" + linkDetails[1] + "</a>";
-            template = template.replace(linkMeta, link);
-        } catch (StringIndexOutOfBoundsException ignore) {
-            //ignored
-        }
-        String message = template;
-        message = message.replaceAll("\\{subject}", author.getName());
+    public void addNotification(Author author) throws InterruptedException {
         List<User> usersAdmin = userDao.getUserByRole("ADMIN");
         for (User user : usersAdmin) {
-            Notification notification = new Notification(message, true, user);
+            Notification notification = new Notification("{patterned}" + author.getName(), true, user);
             notificationDao.save(notification);
         }
     }

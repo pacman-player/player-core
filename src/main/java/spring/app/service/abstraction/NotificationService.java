@@ -16,7 +16,7 @@ public interface NotificationService {
 
     void addNotification(String message) throws InterruptedException;
 
-    void addNotification(Author author, NotificationTemplate notificationTemplate) throws InterruptedException;
+    void addNotification(Author author) throws InterruptedException;
 
     List<Notification> getAllNotification();
 

@@ -29,7 +29,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: "/api/admin/notification/template",
+            url: "/api/notification/template",
             contentType: 'application/json;',
             headers: {
                 'Accept': 'application/json',
@@ -67,7 +67,7 @@ $(document).ready(function () {
                 for (let i = 0; i < listNotifications.length; i++) {
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="notificationsId">' + listNotifications[i].id + '</td>');
-                    htmlTable += ('<td id="notificationsMessage">' + listNotifications[i].message + '</td>');
+                    htmlTable += ('<td id="notificationsMessage" class="notificationElement">' + listNotifications[i].message + '</td>');
                     htmlTable += ('<td id="notificationsUser">' + listNotifications[i].user.login + '</td>');
                     htmlTable += ('<td><button id="editNotificationsBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editNotifications">изменить</button></td>');
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'PUT',
-            url: "/api/admin/notification/template",
+            url: "/api/notification/template",
 
             contentType: 'application/json;',
             data: JSON.stringify(template),
@@ -107,6 +107,7 @@ $(document).ready(function () {
                 function () {
                     getTable();
                     getTemplate();
+                    getTemplateProcessNotify("default");
                 },
             success:
                 function () {
@@ -154,6 +155,7 @@ $(document).ready(function () {
             complete:
                 function () {
                     getTable();
+                    getTemplateProcessNotify("default");
                     $("#tab-messages-panel").tab('show');
                 },
             success:
@@ -195,6 +197,7 @@ $(document).ready(function () {
             complete:
                 function () {
                     getTable();
+                    getTemplateProcessNotify("default");
                     $("#tab-messages-panel").tab('show');
                 },
             success:
@@ -238,7 +241,10 @@ $(document).ready(function () {
             cache: false,
             complete:
                 function () {
+                    getTemplateProcessNotify("default");
                     getTable();
+                    getTemplateProcessNotify("default");
+                    location.reload()
                 },
             error:
                 function (xhr, status, error) {
@@ -266,10 +272,12 @@ $(document).ready(function () {
             success: function(notification) {
                 $("#updateNotificationsUser").val(notification.user.login);
                 $("#updateNotificationsMessage").val(notification.message);
+                getTemplateProcessNotify("default");
             },
             complete:
                 function () {
                     getTable();
+                    getTemplateProcessNotify("default");
                 },
             error:
                 function (xhr, status, error) {
