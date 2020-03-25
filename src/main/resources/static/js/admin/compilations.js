@@ -19,14 +19,19 @@ $(document).ready(function () {
 });
 
 
-function prepareForm(dropDownListSelector = $("#addCompilationGenre")) {
+function prepareForm(dropDownListSelector = $("#addCompilationGenre"), selectedGenre) {
     dropDownListSelector.empty();
     let genres = getGenres();
 
     let selectOptions = "";
     for (let i = 0; i < genres.length; i++) {
         let option = genres[i].name;
-        selectOptions += `<option value="${option}"> ${option} </option>`;
+        selectOptions += `<option `;
+        //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
+        if (selectedGenre === option) {
+            selectOptions += `selected`;
+        }
+        selectOptions += ` value="${option}">${option}</option>`;
     }
 
     dropDownListSelector.append(selectOptions);
@@ -104,7 +109,7 @@ function getTable() {
                                 <button type="submit"
                                         class="btn btn-sm btn-info"
                                         id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}')">
+                                        onclick="editButton(${id}, '${name}', '${genre}')">
                                     Изменить
                                 </button>
                             </td>
@@ -194,7 +199,6 @@ function getAvailableCompilationContentById(compilationId) {
 
 
 function addCompilation(form, name, cover, genre) {
-    console.log(genre);
     let formData = new FormData();
     formData.append("name", name);
     formData.append("genre", genre);
@@ -240,10 +244,10 @@ function addSongToCompilation(compilationId, songId) {
 }
 
 
-function editButton(id, name) {
+function editButton(id, name, genre) {
     let fieldGenre = $("#updateCompilationGenre");
     // подгрузка жанров в выпадающий список
-    prepareForm(fieldGenre);
+    prepareForm(fieldGenre, genre);
 
     let theModal = $("#updateCompilationModal");
     let fieldId = $("#updateCompilationId");
@@ -257,7 +261,7 @@ function editButton(id, name) {
 
     $("#updateCompilationBtn").on("click", function () {
         let formData = new FormData();
-        formData.append("id", id);
+        formData.append("id", fieldId.val());
         formData.append("name", fieldName.val());
         formData.append("genre", fieldGenre.val());
         let file = fieldCover.prop("files")[0];
@@ -276,7 +280,7 @@ function editButton(id, name) {
                 getTable();
             },
             success: () => {
-                console.log(`SONG COMPILATION ${id} EDITED!`)
+                console.log(`SONG COMPILATION ${fieldId.val()} EDITED!`)
             },
             error: (xhr, status, error) => {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);

@@ -80,6 +80,9 @@ public class TestDataInit {
     private VisitService visitService;
 
     @Autowired
+    private NotificationTemplateService notificationTemplateService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -168,6 +171,12 @@ public class TestDataInit {
         userService.updateUser(user);
         userService.updateUser(user2);
 
+        //создаем дефолтный шаблон для уведомлений
+        NotificationTemplate notificationTemplate = new NotificationTemplate();
+        notificationTemplate.setName("default");
+        notificationTemplate.setTemplate("Был добавлен новый автор {subject}, нужно проверить жанры по {link:genres:ссылке:}");
+        notificationTemplateService.create(notificationTemplate);
+
         // создаем данные для имеющихся песен в /music
         dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
         dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
@@ -203,10 +212,14 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        songService.getAllSong().forEach(song -> {
+            song.setApproved(true);
+            songService.updateSong(song);
+        });
         Song song1 = songService.getByName("Start Again");
         Song song3 = songService.getByName("Really");
-        song1.setApproved(true);
-        song3.setApproved(true);
+        song1.setApproved(false);
+        song3.setApproved(false);
         songService.updateSong(song1);
         songService.updateSong(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");

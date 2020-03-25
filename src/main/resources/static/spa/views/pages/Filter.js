@@ -1,4 +1,3 @@
-
 let Filter = {
 
     render: async () => {
@@ -86,10 +85,11 @@ let Filter = {
             '                </div>\n' +
             '            </div>\n' +
             '        </div>'
-    }
+    },
     // Весь код, связанный с DOM-взаимодействиями и элементами управления, находится здесь.
     // Это отдельный вызов, так как они могут быть зарегистрированы только после того, как DOM будет окрашен
-    , after_render: async () => {
+
+    after_render: async () => {
         // получение всех жанров и заполнение таблицы в пункте "По жанрам"
         $.ajax({
             type: 'get',
@@ -112,7 +112,6 @@ let Filter = {
 
         function renderGenre(genre) {
             let checkBanned = Boolean(genre.banned);
-
             return `
                 <tr>
                     <td>
@@ -138,8 +137,8 @@ let Filter = {
         }
 
 // функция для добавления/удаления жанра в/из список(а) запрещеных
-        $(document).on('click', '.addGenreToFilter', function addGenreToFilter() {
-
+        $(document).off('click', '.addGenreToFilter');
+        $(document).on('click', '.addGenreToFilter', function() {
             const $button = $(this);
             // ищем в кнопке атрибут и достаем его значение
             // преобразовываем их в тип соответсвующей функцией
@@ -223,6 +222,7 @@ let Filter = {
         }
 
 // функция для добавления исполнителя в список запрещеных вызываеться при клике на кнопку
+        $(document).off('click', '.addAuthorToFilter');
         $(document).on('click', '.addAuthorToFilter', function addAuthorToFilter() {
             const $button = $(this);
             // ищем в кнопке атрибут и достаем его значение
@@ -303,6 +303,7 @@ let Filter = {
         }
 
 // функция для добавления песни(ен) в список запрещеных вызываеться при клике на кнопку
+        $(document).off('click', '.addMusicToFilter');
         $(document).on('click', '.addMusicToFilter', function addMusicToFilter() {
 
             const $button = $(this);

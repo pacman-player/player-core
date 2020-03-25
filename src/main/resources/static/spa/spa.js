@@ -50,7 +50,7 @@ const router = async () => {
 
     //отображаем меню слева
     menu.innerHTML = await LeftSideBar.render();
-    await LeftSideBar.after_render();
+
 
     // здесь так же можно отобразить футер, но чтобы плеер нормально работал - плеер захардкожен в spa.html
     // footer.innerHTML = await BottomBar4.render();
