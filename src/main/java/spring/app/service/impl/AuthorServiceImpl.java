@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
+import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
+import spring.app.service.abstraction.NotificationTemplateService;
 
 import java.util.List;
 
@@ -16,11 +18,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
     private NotificationService notificationService;
+    private NotificationTemplateService notificationTemplateService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService) {
+    public AuthorServiceImpl(AuthorDao authorDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
         this.authorDao = authorDao;
         this.notificationService = notificationService;
+        this.notificationTemplateService = notificationTemplateService;
     }
 
     @Override
@@ -31,12 +35,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
-        String name = author.getName();
-
-        String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
-                + " <a href=\"performers\">ссылке</a>" ;
+        NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
         try {
-            notificationService.addNotification(message);
+            notificationService.addNotification(author);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
