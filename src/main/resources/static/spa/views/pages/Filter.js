@@ -55,10 +55,10 @@ let Filter = {
             '                            <div class="panel panel-default table-panel">\n' +
             '                                <div class="tab-content">\n' +
             '                                    <div class="panel-body">\n' +
-            '                                        <form class="form-inline authorSearch">\n' +
-            '                                            <input class="form-control mr-sm-2 nameForAuthor" type="search" placeholder="Search" aria-label="Search"/>\n' +
-            '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>\n' +
-            '                                        </form>\n' +
+            // '                                        <form class="form-inline authorSearch">\n' +
+            // '                                            <input class="form-control mr-sm-2 nameForAuthor" type="search" placeholder="Search" aria-label="Search"/>\n' +
+            // '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>\n' +
+            // '                                        </form>\n' +
             '                                        <div id="forAuthorTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
@@ -71,10 +71,10 @@ let Filter = {
             '                            <div class="panel panel-default table-panel">\n' +
             '                                <div class="tab-content">\n' +
             '                                    <div class="panel-body">\n' +
-            '                                        <form class="form-inline musicSearch">\n' +
-            '                                            <input class="form-control mr-sm-2 nameForMusic" type="search" placeholder="Поиск" aria-label="Search"/>\n' +
-            '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>\n' +
-            '                                        </form>\n' +
+            // '                                        <form class="form-inline musicSearch">\n' +
+            // '                                            <input class="form-control mr-sm-2 nameForMusic" type="search" placeholder="Поиск" aria-label="Search"/>\n' +
+            // '                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>\n' +
+            // '                                        </form>\n' +
             '                                        <div id="forMusicTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
@@ -175,27 +175,40 @@ let Filter = {
             });
         });
 
-// код для поиска и генерации таблицы авторов
-        let $authorForms = $(".authorSearch");
-// при клике на кнопку ".on" перехватывает событие и вызывает вместо него функцию
-        $authorForms.on("submit", function (searchAuthor) {
+// // код для поиска и генерации таблицы авторов
+//         let $authorForms = $(".authorSearch");
+// // при клике на кнопку ".on" перехватывает событие и вызывает вместо него функцию
+//         $authorForms.on("submit", function (searchAuthor) {
+//
+//             // блокирует стандартный ход исполнения события "submit"
+//             searchAuthor.preventDefault();
+//
+//             const authorName = $(this).find(".nameForAuthor").val();
+//
+//             $.ajax({
+//                 type: 'get',
+//                 url: '/api/author/allAuthorsByName/' + authorName,
+//                 contentType: 'application/json;',
+//
+//                 success: function (allAuthors) {
+//                     $("#forAuthorTable").html(`<table class="table table-borderless">
+//                 ${allAuthors.map(renderAuthors).join('')}
+//                 </table>`);
+//                 }
+//             });
+//         });
 
-            // блокирует стандартный ход исполнения события "submit"
-            searchAuthor.preventDefault();
+        //получение списка авторов и заполнение таблицы авторов
+        $.ajax({
+            type: 'get',
+            url: '/api/author/allApprovedAuthors',
+            contentType: 'application/json;',
 
-            const authorName = $(this).find(".nameForAuthor").val();
-
-            $.ajax({
-                type: 'get',
-                url: '/api/author/allAuthorsByName/' + authorName,
-                contentType: 'application/json;',
-
-                success: function (allAuthors) {
-                    $("#forAuthorTable").html(`<table class="table table-borderless">
+            success: function (allAuthors) {
+                $("#forAuthorTable").html(`<table class="table table-borderless">
                 ${allAuthors.map(renderAuthors).join('')}
                 </table>`);
-                }
-            });
+            }
         });
 
         function renderAuthors(author) {
@@ -259,24 +272,37 @@ let Filter = {
             });
         });
 
-// код для поиска и вывода песен
-        let $musicForm = $(".musicSearch");
-        $musicForm.on("submit", function (searchMusics) {
+// // код для поиска и вывода песен
+//         let $musicForm = $(".musicSearch");
+//         $musicForm.on("submit", function (searchMusics) {
+//
+//             searchMusics.preventDefault();
+//             const musicName = $(this).find(".nameForMusic").val();
+//
+//             $.ajax({
+//                 type: 'get',
+//                 url: '/api/music/allSongsByName/' + musicName,
+//                 contentType: 'application/json;',
+//
+//                 success: function (allMusics) {
+//                     $("#forMusicTable").html(`<table class="table table-borderless">
+//                 ${allMusics.map(renderMusics).join('')}
+//                 </table>`);
+//                 }
+//             });
+//         });
 
-            searchMusics.preventDefault();
-            const musicName = $(this).find(".nameForMusic").val();
+        //получение списка песен и заполнение таблицы песен
+        $.ajax({
+            type: 'get',
+            url: '/api/music/allApprovedSongs',
+            contentType: 'application/json;',
 
-            $.ajax({
-                type: 'get',
-                url: '/api/music/allSongsByName/' + musicName,
-                contentType: 'application/json;',
-
-                success: function (allMusics) {
-                    $("#forMusicTable").html(`<table class="table table-borderless">
-                ${allMusics.map(renderMusics).join('')}
+            success: function (allSongs) {
+                $("#forMusicTable").html(`<table class="table table-borderless">
+                ${allSongs.map(renderMusics).join('')}
                 </table>`);
-                }
-            });
+            }
         });
 
         function renderMusics(music) {

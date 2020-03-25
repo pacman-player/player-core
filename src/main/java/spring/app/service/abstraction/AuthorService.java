@@ -1,12 +1,15 @@
 package spring.app.service.abstraction;
 
 import spring.app.model.Author;
+import spring.app.model.Genre;
 
 import java.util.List;
 
 public interface AuthorService {
 
     List<Author> getAllAuthor();
+
+    List<Author> getAllApprovedAuthor();
 
     Author getByName(String name);
 

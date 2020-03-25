@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.model.Author;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.User;
@@ -23,6 +24,44 @@ public class SongRestController {
                               SongService songService) {
         this.companyService = companyService;
         this.songService = songService;
+    }
+
+    @GetMapping("allSongs")
+    public List<Song> getAllSongs() {
+        LOGGER.info("GET request 'allSongs'");
+        List<Song> list = songService.getAllSong();
+        LOGGER.info("Result has {} lines", list.size());
+        return list;
+    }
+
+    @GetMapping("allApprovedSongs")
+    public List<Song> getAllApprovedSongs(@AuthenticationPrincipal User user) {
+        LOGGER.info("GET request 'allApprovedSongs'");
+        List<Song> list = songService.getAllApprovedSong();
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                list);
+
+        LOGGER.info("Result has {} lines", list.size());
+        return list;
+    }
+
+    @GetMapping("allSongsByName/{name}")
+    public List<Song> searchByNameInSongs(@PathVariable String name,
+                                          @AuthenticationPrincipal User user) {
+        LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
+        List<Song> songs = songService.findSongsByNameContaining(name);
+        Company usersCompany = user.getCompany();
+        usersCompany = companyService.setBannedEntity(usersCompany);
+
+        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
+        LOGGER.info("Song list ({} song(s)) was added to ban for the Company = {}",
+                songs.size(),
+                usersCompany.getName());
+        return songs;
     }
 
     @PostMapping("songsBan")
@@ -48,21 +87,6 @@ public class SongRestController {
 
         user.setCompany(company);
         LOGGER.info("Song was removed from ban for the Company = {}", company.getName());
-    }
-
-    @GetMapping("allSongsByName/{name}")
-    public List<Song> searchByNameInSongs(@PathVariable String name,
-                                          @AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
-        List<Song> songs = songService.findSongsByNameContaining(name);
-        Company usersCompany = user.getCompany();
-        usersCompany = companyService.setBannedEntity(usersCompany);
-
-        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
-        LOGGER.info("Song list ({} song(s)) was added to ban for the Company = {}",
-                songs.size(),
-                usersCompany.getName());
-        return songs;
     }
 
 }

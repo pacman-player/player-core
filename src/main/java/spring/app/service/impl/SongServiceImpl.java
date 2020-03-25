@@ -32,6 +32,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> getAllApprovedSong() {
+        return songDao.getAllApproved();
+    }
+
+    @Override
     public void deleteSongById(Long id) {
         songDao.deleteById(id);
     }
