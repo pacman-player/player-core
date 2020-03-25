@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
 <head>
     <meta charset="utf-8"/>
     <title>Панель админа</title>
@@ -170,7 +170,7 @@
                                                     </select>
 
                                                     <label for="updateTariff">Тариф</label>
-                                                    <input id="updateTariff" class="form-control" type="number"
+                                                    <input id="updateTariff" class="form-control money" type="text"
                                                            name="tariff"
                                                            required=""/>
 
@@ -203,6 +203,7 @@
 
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="/js/jquery/jquery.mask.min.js"></script>
 <script type="text/javascript" src="/js/admin/companies.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>

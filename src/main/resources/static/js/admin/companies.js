@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('.money').mask('000.000.000.000.000,00', {reverse: true});
 
     getCompaniesTable();
 
@@ -52,7 +53,7 @@ $(document).ready(function () {
             name: $("#updateNameCompany").val(),
             startTime: $("#updateStartTime").val(),
             closeTime: $("#updateCloseTime").val(),
-            tariff: $("#updateTariff").val(),
+            tariff: $("#updateTariff").val().replace(/[^0-9]/g, ''),
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
         };

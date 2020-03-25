@@ -14,7 +14,7 @@ let Company = {
             '                    <label for="est-close-time">Время закрытия&nbsp;</label>\n' +
             '                    <input id="est-close-time" required="required" type="time"/><br/>\n' +
             '                    <label for="est-tariff">Тариф за песню&nbsp;</label>\n' +
-            '                    <input id="est-tariff" required="required" type="number"/><br/>\n' +
+            '                    <input id="est-tariff" class="money" required="required" type="text"/><br/>\n' +
             '                    <label for="est-address">Адрес&nbsp;</label>\n' +
             '                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>\n' +
             '                    <button type="submit" id="button">Поиск</button>\n' +
@@ -44,7 +44,7 @@ let Company = {
                 let formData = {
                     name: $('#est-name').val(),
                     startTime: $('#est-start-time').val(),
-                    tariff: $('#est-tariff').val(),
+                    tariff: $('#est-tariff').val().replace(/[^0-9]/g, ''),
                     closeTime: $('#est-close-time').val()
                 };
                 console.log(formData.tariff);
@@ -283,9 +283,10 @@ let Company = {
             }
         });
 
-
+        $('.money').mask('000.000.000.000.000,00', {reverse: true});
     }
-}
+
+};
 
 
 export default Company;
