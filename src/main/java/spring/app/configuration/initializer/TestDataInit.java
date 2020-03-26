@@ -80,6 +80,9 @@ public class TestDataInit {
     private VisitService visitService;
 
     @Autowired
+    private NotificationTemplateService notificationTemplateService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -167,6 +170,12 @@ public class TestDataInit {
         user2.addRegStep(rs3);
         userService.updateUser(user);
         userService.updateUser(user2);
+
+        //создаем дефолтный шаблон для уведомлений
+        NotificationTemplate notificationTemplate = new NotificationTemplate();
+        notificationTemplate.setName("default");
+        notificationTemplate.setTemplate("Был добавлен новый автор {subject}, нужно проверить жанры по {link:genres:ссылке:}");
+        notificationTemplateService.create(notificationTemplate);
 
         // создаем данные для имеющихся песен в /music
         dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
