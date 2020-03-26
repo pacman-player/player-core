@@ -27,12 +27,12 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> getAllSong() {
+    public List<Song> getAllSongs() {
         return songDao.getAll();
     }
 
     @Override
-    public List<Song> getAllApprovedSong() {
+    public List<Song> getAllApprovedSongs() {
         return songDao.getAllApproved();
     }
 

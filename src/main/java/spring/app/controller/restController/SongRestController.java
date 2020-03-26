@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import spring.app.model.Author;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.User;
@@ -29,7 +28,7 @@ public class SongRestController {
     @GetMapping("allSongs")
     public List<Song> getAllSongs() {
         LOGGER.info("GET request 'allSongs'");
-        List<Song> list = songService.getAllSong();
+        List<Song> list = songService.getAllSongs();
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }
@@ -37,7 +36,7 @@ public class SongRestController {
     @GetMapping("allApprovedSongs")
     public List<Song> getAllApprovedSongs(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request 'allApprovedSongs'");
-        List<Song> list = songService.getAllApprovedSong();
+        List<Song> list = songService.getAllApprovedSongs();
 
         Company company = user.getCompany();
         company = companyService.setBannedEntity(company);

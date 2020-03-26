@@ -28,12 +28,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAllAuthor() {
+    public List<Author> getAllAuthors() {
         return authorDao.getAll();
     }
 
     @Override
-    public List<Author> getAllApprovedAuthor() {
+    public List<Author> getAllApprovedAuthors() {
         return authorDao.getAllApproved();
     }
 

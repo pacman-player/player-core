@@ -1,6 +1,5 @@
 package spring.app.service.abstraction;
 
-import spring.app.model.Author;
 import spring.app.model.Song;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 
 public interface SongService {
 
-    List<Song> getAllSong();
+    List<Song> getAllSongs();
 
-    List<Song> getAllApprovedSong();
+    List<Song> getAllApprovedSongs();
 
     Song getByName(String name);
 

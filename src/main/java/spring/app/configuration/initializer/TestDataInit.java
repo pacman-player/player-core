@@ -212,7 +212,7 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
-        songService.getAllSong().forEach(song -> {
+        songService.getAllSongs().forEach(song -> {
             song.setApproved(true);
             songService.updateSong(song);
         });
@@ -234,7 +234,7 @@ public class TestDataInit {
         Set<Song> songList2 = new HashSet<>();
         Set<Song> songList3 = new HashSet<>();
         Set<Song> songList4 = new HashSet<>();
-        List<Song> allSongs = songService.getAllSong();
+        List<Song> allSongs = songService.getAllSongs();
         // записываем треки по сетам
         for (int i = 0; i < allSongs.size(); i++) {
             Song s = allSongs.get(i);

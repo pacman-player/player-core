@@ -28,7 +28,7 @@ public class AuthorRestController {
     @GetMapping("allAuthors")
     public List<Author> getAllAuthors() {
         LOGGER.info("GET request 'allAuthors'");
-        List<Author> list = authorService.getAllAuthor();
+        List<Author> list = authorService.getAllAuthors();
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }
@@ -36,7 +36,7 @@ public class AuthorRestController {
     @GetMapping("allApprovedAuthors")
     public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request 'allApprovedAuthors'");
-        List<Author> list = authorService.getAllApprovedAuthor();
+        List<Author> list = authorService.getAllApprovedAuthors();
 
         Company company = user.getCompany();
         company = companyService.setBannedEntity(company);

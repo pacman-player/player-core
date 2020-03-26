@@ -1,15 +1,14 @@
 package spring.app.service.abstraction;
 
 import spring.app.model.Author;
-import spring.app.model.Genre;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    List<Author> getAllAuthor();
+    List<Author> getAllAuthors();
 
-    List<Author> getAllApprovedAuthor();
+    List<Author> getAllApprovedAuthors();
 
     Author getByName(String name);
 
@@ -17,12 +16,14 @@ public interface AuthorService {
 
     /**
      * Возвращает всех авторов, у которых совпадает передаваемое значение
+     *
      * @return list<Author>
      */
     List<Author> findAuthorsByNameContaining(String name);
 
     /**
      * Возвращает автора по id
+     *
      * @return Author
      */
     Author getById(long authorsId);
