@@ -47,6 +47,11 @@ public class AdminController {
         return "admin/vk_bot";
     }
 
+    @GetMapping("/notifications")
+    public String getNotifications() {
+        return "admin/notifications";
+    }
+
     @GetMapping("/message")
     public String getMessage() {
         return "admin/messages";

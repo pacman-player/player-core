@@ -4,7 +4,6 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.app.model.Song;
@@ -23,15 +22,10 @@ import java.util.Arrays;
 @Component
 public class Mp3Parser {
 
-    @Autowired
-    private final SongService songService   ;
-    @Autowired
+    private final SongService songService;
     private final AuthorService authorService;
-    @Autowired
     private final GenreService genreService;
-    @Autowired
     private final SongCompilationService songCompilationService;
-    @Autowired
     private final MusicSearchService musicSearchService;
 
     @Value("${music.path}")
@@ -56,11 +50,8 @@ public class Mp3Parser {
         File[] songs = new File(path).listFiles(fileFilter);
         System.out.println(Arrays.asList(songs));
 
-        for (int i = 0; i < songs.length; i++) {
-            File song = songs[i];
-            // change to readTags() if you want to parse MP3's through GenreDefiner
-            // But need to alter music block in TestDataInit.init()
-            copyInitFile(song, i+1);
+        for (File song : songs) {
+            copyInitSongs(song);
         }
     }
 
@@ -116,5 +107,20 @@ public class Mp3Parser {
 
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
         return song;
+    }
+
+    public void copyInitSongs(File file) throws InvalidDataException, IOException, UnsupportedTagException {
+        String name = null;
+        String author = null;
+
+        Mp3File mp3File = new Mp3File(file);
+        if (mp3File.hasId3v2Tag()) {
+            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+            name = id3v2Tag.getTitle();
+            author = id3v2Tag.getArtist();
+        }
+        Song song = songService.getByAuthorAndName(author, name);
+        Path fileO = Paths.get(musicPath + song.getId() + ".mp3");
+        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
     }
 }

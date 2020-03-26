@@ -19,19 +19,12 @@
 <body>
 <div class="container-fluid">
 
-    <div class="row">
-        <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
-            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
-            <div id="listNotification" class="pull-right"></div>
-        </div>
-    </div>
+    <div class="row" th:include="admin/fragment/navigation :: adminHeader"></div>
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
             <!--меню слева-->
-            <ul class="nav nav-pills nav-stacked nav-content" th:include="fragment/admin/navbar :: adminNavbar">
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="admin/fragment/navigation :: adminNavbar">
             </ul>
         </div>
 
@@ -155,6 +148,7 @@
 <script type="text/javascript" src="/js/admin/companies.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/notificationsHandler.js" rel="script"></script>
 
 </body>
 </html>
