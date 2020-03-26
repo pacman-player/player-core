@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.model.Author;
 import spring.app.model.Notification;
+import spring.app.model.NotificationTemplate;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
 
@@ -61,6 +63,15 @@ public class NotificationServiceImpl implements NotificationService {
         List<User> usersAdmin = userDao.getUserByRole("ADMIN");
         for (User user : usersAdmin) {
             Notification notification = new Notification(message, true, user);
+            notificationDao.save(notification);
+        }
+    }
+
+    @Override
+    public void addNotification(Author author) throws InterruptedException {
+        List<User> usersAdmin = userDao.getUserByRole("ADMIN");
+        for (User user : usersAdmin) {
+            Notification notification = new Notification("{patterned}" + author.getName(), true, user);
             notificationDao.save(notification);
         }
     }

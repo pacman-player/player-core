@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "org_types")
 public class OrgType {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)
@@ -67,6 +68,15 @@ public class OrgType {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrgType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", genres=" + genres +
+                '}';
     }
 }
 

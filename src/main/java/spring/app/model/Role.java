@@ -10,20 +10,20 @@ import java.util.List;
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "name", length = 20, nullable = false)
     private String name;
 
     @JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
-	@JoinTable(name = "permissions",
-			joinColumns = {@JoinColumn(name = "role_id")},
-			inverseJoinColumns = {@JoinColumn(name = "user_id")})
-	private List<User> users;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
+    @JoinTable(name = "permissions",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> users;
 
     public Role() {
     }

@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
+import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
+import spring.app.service.abstraction.NotificationTemplateService;
 
 import java.util.List;
 
@@ -18,12 +20,14 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorDao authorDao;
     private SongDao songDao;
     private NotificationService notificationService;
+    private NotificationTemplateService notificationTemplateService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, SongDao songDao, NotificationService notificationService) {
+    public AuthorServiceImpl(AuthorDao authorDao, SongDao songDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
         this.authorDao = authorDao;
         this.songDao = songDao;
         this.notificationService = notificationService;
+        this.notificationTemplateService = notificationTemplateService;
     }
 
     @Override
@@ -35,6 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void addAuthor(Author author) {
         authorDao.save(author);
         String name = author.getName();
+        NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
         String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
                 + " <a href=\"performers\">ссылке</a>" ;

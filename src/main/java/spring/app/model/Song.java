@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "song")
+@Table(name = "songs")
 @SqlResultSetMappings({
         @SqlResultSetMapping(
                 name = "SongDtoMapping",
@@ -28,7 +28,7 @@ import java.util.Set;
 public class Song extends Bannable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;

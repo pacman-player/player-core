@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "notification")
+@Table(name = "notifications")
 public class Notification {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String message;
@@ -75,5 +75,15 @@ public class Notification {
     @Override
     public int hashCode() {
         return Objects.hash(id, message, flag, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", flag=" + flag +
+                ", user=" + user +
+                '}';
     }
 }
