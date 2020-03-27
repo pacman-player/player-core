@@ -7,7 +7,6 @@ import PostShow     from './views/pages/PostShow.js'
 import Register     from './views/pages/Register.js'
 import Statistics   from "./views/pages/Statistics.js";
 import Filter       from "./views/pages/Filter.js";
-import Top          from "./views/pages/Top.js";
 import Company      from "./views/pages/Company.js";
 import Promo        from "./views/pages/Promo.js";
 import Edit         from "./views/pages/Edit.js";
@@ -27,7 +26,6 @@ const routes = {
     , '/register'   : Register      //оставил как образец
     , '/statistics' : Statistics
     , '/filter'     : Filter
-    , '/top'        : Top
     , '/company'    : Company
     , '/promo'      : Promo
     , '/edit'       : Edit
