@@ -151,6 +151,7 @@ public class AdminRestController {
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+        company.setTariff(companyDto.getTariff());
         companyService.updateCompany(company);
         LOGGER.info("Updated Company = {}", company);
     }
