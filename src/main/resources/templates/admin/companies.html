@@ -55,7 +55,8 @@
                                                 <th>Начало работы</th>
                                                 <th>Конец работы</th>
                                                 <th>Тип организации</th>
-                                                <th>ID пользователя</th>
+                                                <th>Пользователь</th>
+                                                <th>Тариф</th>
                                                 <th>Изменить</th>
                                                 <!--                                                <th>Удалить</th>-->
                                             </tr>
@@ -116,6 +117,12 @@
                                                     <select id="updateOrgType" class="form-control" name="role">
                                                         <!--                                                        onchange="getAllEstablishments()"-->
                                                     </select>
+
+                                                    <label for="updateTariff">Тариф</label>
+                                                    <input id="updateTariff" class="form-control money" type="text"
+                                                           name="tariff"
+                                                           required=""/>
+
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">Закрыть
@@ -145,6 +152,7 @@
 
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="/js/jquery/jquery.mask.min.js"></script>
 <script type="text/javascript" src="/js/admin/companies.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
