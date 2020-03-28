@@ -48,29 +48,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().addFilterBefore(filter, CsrfFilter.class);
 
         http
-                .authorizeRequests()
-                .antMatchers("/api/**", "/registration**")
-                .permitAll()
-                .and()
-                .formLogin()
+            .authorizeRequests()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/registration/**").permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/processing-url")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .and()
-                .logout()
+                .permitAll()
+            .and()
+            .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
                 .logoutSuccessHandler(customLogoutSuccessHandler)
                 .permitAll();
-
-		/*
-				/*.and()
-				.exceptionHandling()
-				.accessDeniedPage("/error");*/
     }
 
     @Bean
@@ -84,9 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
         auth.userDetailsService(authenticationService).passwordEncoder(getPasswordEncoder());
     }
-
-
-
 
 	/*@Bean
 	public FilterRegistrationBean myFilter() {
@@ -112,4 +108,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return registration;
 	}*/
 }
-

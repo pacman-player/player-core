@@ -14,33 +14,29 @@ import java.io.IOException;
 @Service
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	int loginAttempt = 0;
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    int loginAttempt = 0;
 
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-										AuthenticationException exception) throws IOException {
-		HttpSession session = request.getSession();
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("loginCount") == null) {
+            session.setAttribute("loginCount", 1);
+        } else {
+            loginAttempt = (Integer) session.getAttribute("loginCount");
+            loginAttempt++;
+            session.setAttribute("loginCount", loginAttempt);
+        }
+        String targetUrl = determineTargetUrl();
+        redirectStrategy.sendRedirect(request, response, targetUrl);
+    }
 
-		if (session.getAttribute("loginCount") == null)
-		{
-			session.setAttribute("loginCount", 1);
-
-		} else {
-			loginAttempt = (Integer) session.getAttribute("loginCount");
-			loginAttempt++;
-			session.setAttribute("loginCount", loginAttempt);
-		}
-
-		String targetUrl = determineTargetUrl();
-		redirectStrategy.sendRedirect(request, response, targetUrl);
-	}
-
-	private String determineTargetUrl() {
-		if (loginAttempt > 3) {
-			return "/login-captcha";
-		} else {
-			return "/login";
-		}
-	}
+    private String determineTargetUrl() {
+        if (loginAttempt > 3) {
+            return "/login-captcha";
+        } else {
+            return "/login";
+        }
+    }
 }

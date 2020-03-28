@@ -1,18 +1,14 @@
 package spring.app.controller.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import spring.app.dto.CaptchaResponseDto;
-import spring.app.model.User;
 import spring.app.model.User;
 import spring.app.util.UserValidator;
 
@@ -23,18 +19,24 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collections;
 
-@RestController
+@Controller
 public class LoginController {
     private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     @Value("${recaptcha.secret}")
     private String secret;
     private RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    private UserValidator userValidator;
+    private final UserValidator userValidator;
+
+    public LoginController(UserValidator userValidator) {
+        this.userValidator = userValidator;
+    }
 
     @PostMapping("/login")
-    public void login(HttpServletResponse response, HttpServletRequest request, @ModelAttribute("userForm") User userForm, BindingResult bindingResult) throws IOException, ServletException {
+    public void login(HttpServletRequest request,
+                      HttpServletResponse response,
+                      @ModelAttribute("userForm") User userForm,
+                      BindingResult bindingResult) throws IOException, ServletException {
         int loginAttempt = 1;
         HttpSession session = request.getSession();
 
@@ -51,8 +53,7 @@ public class LoginController {
         //передаем логин с формы логин для недорегенных пользователей без куки
         session.setAttribute("login", userForm.getLogin());
 
-        if (session.getAttribute("loginCount") == null)
-        {
+        if (session.getAttribute("loginCount") == null) {
             session.setAttribute("loginCount", 1);
         }
 
@@ -73,7 +74,6 @@ public class LoginController {
             Model model) throws IOException, ServletException {
         String url = String.format(CAPTCHA_URL, secret, captchaResponce);
         CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-
 
         if (!captchaResponse.isSuccess()) {
             //        вывод сообщения в html, если капча не введена
