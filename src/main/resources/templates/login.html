@@ -68,6 +68,9 @@
                             </div>
                         </div>
                         <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
+<!--                        При включенной в Spring Security CSRF-защите при логине пользователя мы обязаны передавать -->
+<!--                        на сервер CSRF-токен, полученный от этого же сервера ранее, чтобы подтвердить, что мы - -->
+<!--                        это мы, а не мошенники обращаются к серверу под видом нас.-->
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     </div>
                 </form>
