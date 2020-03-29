@@ -53,7 +53,14 @@
                     <div id="success-message">Вы успешно вышли из системы.</div>
                 </div>
                 <h2>Пожалуйста, войдите в систему</h2>
-                <form action="/processing-url" method="POST">
+
+<!--                При включенной в Spring Security CSRF-защите при логине пользователя мы обязаны передавать-->
+<!--                на сервер CSRF-токен, полученный от этого же сервера ранее, чтобы подтвердить, что мы - -->
+<!--                это мы, а не мошенники обращаются к серверу под видом нас.-->
+<!--                В форме необходимо обязательно указать th:action="...", а не просто action="...", чтобы-->
+<!--                Thymeleaf сам подставил в форму следующее поле c CSRF-токеном:-->
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                <form th:action="processing-url" method="POST">
                     <div class="form-group ${error != null ? 'has-error' : ''}">
                         <!--                        <span>${message}</span>-->
                         <div class="form-group login-group">
@@ -61,17 +68,13 @@
                                    required="" th:value="admin"/>
                             <input type="password" class="form-control" id="uPass" name="password"
                                    required="" th:value="admin" placeholder="Password"/>
-                            <!--                            <span>${error}</span>-->
+                            <!--<span>${error}</span>-->
                             <!--выводим сообщение о неверном логине и пароле-->
                             <div id="validate-form">
                                 <p th:text="${error}"></p>
                             </div>
                         </div>
                         <input type="submit" class="btn btn-primary btn-block btn-pull-center" value="Вход"/>
-<!--                        При включенной в Spring Security CSRF-защите при логине пользователя мы обязаны передавать -->
-<!--                        на сервер CSRF-токен, полученный от этого же сервера ранее, чтобы подтвердить, что мы - -->
-<!--                        это мы, а не мошенники обращаются к серверу под видом нас.-->
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     </div>
                 </form>
                 <div class="form-group">

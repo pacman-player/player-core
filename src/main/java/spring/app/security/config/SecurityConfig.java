@@ -47,15 +47,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
         http.addFilterBefore(filter, CsrfFilter.class);
 
+        // Отключим проверку CSRF для подключений нашего бота к серверу.
+        http.csrf().ignoringAntMatchers("/api/tlg/**");
+
         http
-            .authorizeRequests()
+                .httpBasic()
+                .and()
+                .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/api/tlg/**").hasAuthority("BOT")
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/registration/**").permitAll()
                 .anyRequest().authenticated()
-            .and()
-            .formLogin()
+                .and()
+                .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/processing-url")
                 .successHandler(customAuthenticationSuccessHandler)
@@ -63,8 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .permitAll()
-            .and()
-            .logout()
+                .and()
+                .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
@@ -79,9 +85,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        //The name of the configureGlobal method is not important. However,
+        // The name of the configureGlobal method is not important. However,
         // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
         auth.userDetailsService(authenticationService).passwordEncoder(getPasswordEncoder());
+    }
+
+    /**
+     * Создадим в памяти пользователя под которым наш player-bot будет подключаться к
+     * РЕСТ-контроллерам player-core.
+     *
+     * @param auth
+     * @throws Exception
+     */
+    @Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("bot")
+                .password("bot")
+                .authorities("BOT");
     }
 
 	/*@Bean
