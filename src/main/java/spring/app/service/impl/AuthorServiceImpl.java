@@ -38,13 +38,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
-        String name = author.getName();
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
-        String message = "Был дабавлен новый автор " + name + " , нужно проверить жанры по "
-                + " <a href=\"performers\">ссылке</a>" ;
         try {
-            notificationService.addNotification(message);
+            notificationService.addNotification(author);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
