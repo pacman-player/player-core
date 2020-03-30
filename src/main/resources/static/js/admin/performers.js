@@ -1,17 +1,5 @@
 $(document).ready(function () {
     getTable();
-
-    let formAddAuthor = $("#addForm");
-    let fieldAuthorName = $("#addAuthorName");
-    let fieldAuthorGenre = $("#addAuthorGenre");
-    $("#addAuthorBtn").on("click", function (event) {
-        event.preventDefault();
-
-        if (formAddAuthor.valid()) {
-            addAuthor(formAddAuthor, fieldAuthorName, fieldAuthorGenre);
-            formAddAuthor.trigger("reset");
-        }
-    })
 });
 
 
@@ -94,61 +82,6 @@ const errMessages = {
 const authorNameRegEx = /[\wА-Яа-я\-]/;
 
 
-$("#addForm").validate({
-    rules: {
-        name: {
-            required: true,
-            pattern: authorNameRegEx,
-            rangelength: [3, 30],
-            remote: {
-                method: "GET",
-                url: "/api/admin/author/is_free",
-                data: {
-                    name: function () {
-                        return $("#addAuthorName").val()
-                    },
-                }
-            }
-        }
-    },
-    messages: {
-        name: errMessages
-    }
-});
-
-
-function addAuthor(form, name, genre) {
-    $.ajax({
-        method: "POST",
-        url: "/api/admin/author/add_author",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            name: name.val(),
-            genres: genre.val()
-        }),
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        complete: () => {
-            $("#tab-author-panel").tab("show");
-            getTable();
-        },
-        success: () => {
-            notification(
-                "add-author" + name.val(),
-                ` Автор ${name.val()} добавлен`,
-                "authors-panel");
-            getNotificationNumber();
-        },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
-        }
-    })
-
-}
-
-
 function editButton(id, name, approved) {
     let fieldGenre = $("#editAuthorGenre");
     // подгрузка жанров этого исполнителя в список
@@ -214,7 +147,7 @@ function editButton(id, name, approved) {
                 success: () => {
                     notification(
                         "edit-author" + fieldId.val(),
-                        ` Изменения исполнителя с id ${fieldId.val()} сохранены`,
+                        ` Изменения исполнителя ${fieldName.val()} сохранены`,
                         "authors-panel");
                 },
                 error: (xhr, status, error) => {
@@ -226,7 +159,7 @@ function editButton(id, name, approved) {
 }
 
 
-function deleteButton(id) {
+function deleteButton(id, name) {
     $.ajax({
         method: "DELETE",
         url: "/api/admin/author/delete_author",
@@ -242,7 +175,7 @@ function deleteButton(id) {
         success: () => {
             notification(
                 "delete-author" + id,
-                ` Исполнитель c id ${id} удален`,
+                ` Исполнитель ${name} удален`,
                 "authors-panel");
         },
         error: (xhr, status, error) => {
@@ -263,7 +196,6 @@ function getTable() {
         },
         dataType: "JSON",
         success: (authors) => {
-            console.log(authors) // для дебага
             let tableBody = $("#AuthorTable tbody");
             tableBody.empty();
 
@@ -301,7 +233,7 @@ function getTable() {
                                 <button type="button"
                                         class="btn btn-sm btn-info"
                                         id="deleteAuthorBtn"
-                                        onclick="deleteButton(${id})">
+                                        onclick="deleteButton(${id}, '${name}')">
                                     Удалить
                                 </button>
                             </td>`);
