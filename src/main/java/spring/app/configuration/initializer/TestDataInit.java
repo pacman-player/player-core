@@ -80,6 +80,9 @@ public class TestDataInit {
     private VisitService visitService;
 
     @Autowired
+    private NotificationTemplateService notificationTemplateService;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -168,6 +171,12 @@ public class TestDataInit {
         userService.updateUser(user);
         userService.updateUser(user2);
 
+        //создаем дефолтный шаблон для уведомлений
+        NotificationTemplate notificationTemplate = new NotificationTemplate();
+        notificationTemplate.setName("default");
+        notificationTemplate.setTemplate("Был добавлен новый автор {subject}, нужно проверить жанры по {link:genres:ссылке:}");
+        notificationTemplateService.create(notificationTemplate);
+
         // создаем данные для имеющихся песен в /music
         dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
         dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
@@ -203,10 +212,14 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+        songService.getAllSong().forEach(song -> {
+            song.setApproved(true);
+            songService.updateSong(song);
+        });
         Song song1 = songService.getByName("Start Again");
         Song song3 = songService.getByName("Really");
-        song1.setApproved(true);
-        song3.setApproved(true);
+        song1.setApproved(false);
+        song3.setApproved(false);
         songService.updateSong(song1);
         songService.updateSong(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");
@@ -289,8 +302,8 @@ public class TestDataInit {
         orgTypeService.addOrgType(orgType2);
 
         // создаем компании для наших пользователей
-        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, orgType1);
-        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, orgType2);
+        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, orgType1);
+        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, 10000L, orgType2);
 
         // создаем пустые плейлисты, которые нужны для возможности добавлять
         // и воспроизводить в них музыку (подборки)

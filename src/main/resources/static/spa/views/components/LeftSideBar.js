@@ -1,16 +1,12 @@
 let LeftSideBar = {
     render: async () => {
-        let view =  /*html*/
-            '<!--меню слева-->\n' +
+        return '<!--меню слева-->\n' +
             '            <ul class="nav nav-pills nav-stacked nav-content bg-dark">\n' +
             '                <li>\n' +
             '                    <a href="/user/spa#/statistics">Статистика</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
             '                    <a href="/user/spa#/filter">Фильтр музыки</a>\n' +
-            '                </li>\n' +
-            '                <li>\n' +
-            '                    <a href="/user/spa#/top">Топ популярных</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
             '                    <a href="/user/spa#/company">Моё заведение</a>\n' +
@@ -24,44 +20,8 @@ let LeftSideBar = {
             '                <li>\n' +
             '                    <a href="javascript:PopUpShow()">Показать плеер</a>\n' +
             '                </li>\n' +
-            '                <li id="adminLink">\n' +
-            '                    <a href="/admin/users">Администратор</a>\n' +
-            '                </li>\n' +
             '            </ul>\n'
-        return view
-    },
-    after_render: async () => {
-
-        $(document).ready(function () {
-
-            //Скрыть PopUp при загрузке страницы
-            PopUpHide();
-
-            //доступ к  ссылки админа
-            showLinkAdmin();
-
-            function showLinkAdmin() {
-                $.ajax({
-                    type: "post",
-                    url: "/api/user/show_admin",
-                    success: function (role) {
-                        if (role !== "admin") {
-                            $("#adminLink").hide();
-                        }
-                    }
-                });
-            }
-            //закомментил тк эти функции в spa.html
-            //Функция отображения PopUp
-            // function PopUpShow(){
-            //     $("#popup1").show();
-            // }
-            // //Функция скрытия PopUp
-            // function PopUpHide(){
-            //     $("#popup1").hide();
-            // }
-        })
     }
-}
+};
 
 export default LeftSideBar;

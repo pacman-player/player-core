@@ -105,7 +105,7 @@ function editButton(id, name) {
                 url: "/api/admin/update_establishment",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    id: id,
+                    id: fieldId.val(),
                     name: fieldName.val()
                 }),
                 headers: {
@@ -119,7 +119,7 @@ function editButton(id, name) {
                 success: () => {
                     notification(
                         "edit-establishment" + fieldName.val(),
-                        `  Изменения типа организации с id  ${id} сохранены`,
+                        `  Изменения типа организации с id  ${fieldId.val()} сохранены`,
                         "establishments-panel");
                 },
                 error: (xhr, status, error) => {

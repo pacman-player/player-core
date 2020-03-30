@@ -95,10 +95,16 @@ function updateSongForm() {
         url: '/api/admin/song/update_song',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(editSong),
-        success: function () {
+        complete: function () {
             $('#editSong').modal('hide');
             $('#song-table-nav').tab('show');
             getSongsTable();
+        },
+        success: () => {
+            notification(
+                "update-song" + editSong.id,
+                ` Песня ${editSong.name} изменена`,
+                "song-panel");
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -109,15 +115,22 @@ function updateSongForm() {
 //удаляем песню DELETE song
 $(document).on('click', '#deleteSongBtn', function () {
     var id = $(this).closest('tr').find('#tableSongId').text();
-    deleteSong(id);
+    var name = $(this).closest('tr').find('#tableSongName').text();
+    deleteSong(id, name);
 });
 
-function deleteSong(id) {
+function deleteSong(id, name) {
     $.ajax({
         method: 'DELETE',
         url: '/api/admin/song/delete_song/' + id,
-        success: function () {
+        complete: () => {
             getSongsTable();
+        },
+        success: () => {
+            notification(
+                "delete-song" + id,
+                ` Песня ${name} удалена`,
+                "song-panel");
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText + '|\n' + status + '|\n' + error);

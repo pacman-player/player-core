@@ -18,5 +18,7 @@ public interface SongDao extends GenericDao<Long, Song> {
     boolean isExist(String name);
 
     List<Song> getByCreatedDateRange(Timestamp from, Timestamp to);
+
+    void bulkRemoveSongsByAuthorId(Long id);
 }
 
