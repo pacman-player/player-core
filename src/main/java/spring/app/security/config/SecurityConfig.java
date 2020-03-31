@@ -45,12 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
-        http.addFilterBefore(filter, CsrfFilter.class);
-
-        // Отключим проверку CSRF для подключений нашего бота к серверу.
-        http.csrf().ignoringAntMatchers("/api/tlg/**");
-
         http
+                .addFilterBefore(filter, CsrfFilter.class)
+                // Отключим проверку CSRF для подключений нашего бота к серверу.
+//                .csrf().ignoringAntMatchers("/api/tlg/**")
+//                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
@@ -71,10 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
-                .logoutSuccessHandler(customLogoutSuccessHandler)
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login?logout")
+//                .invalidateHttpSession(true)
+//                .logoutSuccessHandler(customLogoutSuccessHandler)
                 .permitAll();
     }
 
@@ -88,21 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // The name of the configureGlobal method is not important. However,
         // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
         auth.userDetailsService(authenticationService).passwordEncoder(getPasswordEncoder());
-    }
-
-    /**
-     * Создадим в памяти пользователя под которым наш player-bot будет подключаться к
-     * РЕСТ-контроллерам player-core.
-     *
-     * @param auth
-     * @throws Exception
-     */
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("bot")
-                .password("bot")
-                .authorities("BOT");
     }
 
 	/*@Bean
