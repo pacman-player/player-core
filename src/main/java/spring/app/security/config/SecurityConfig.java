@@ -47,7 +47,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAuthority("USER")
                 .antMatchers("/api/tlg/**").hasAuthority("BOT")
                 .antMatchers("/api/**").authenticated()
-                .antMatchers("/registration/**").permitAll()
+                .antMatchers("/notification",
+                        "/fragment",
+                        "/topic",
+                        "/app")
+                .authenticated()
+                .antMatchers("/registration/**",
+                        "/login-captcha",
+                        "/translation",
+                        "/google",
+                        "/googleAuth",
+                        "/player",
+                        "/vkAuth",
+                        "/vkontakte")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

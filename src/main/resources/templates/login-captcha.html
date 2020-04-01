@@ -2,8 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Страница входа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -16,8 +14,8 @@
         }
 
         .login-form {
-            /*margin-top: 100px;*/
-            margin-top: 12px;
+            margin-top: 100px;
+            /*margin-top: 12px;*/
         }
 
         .login-group :last-child {
@@ -28,7 +26,6 @@
             height: 88px;
         }
     </style>
-
 </head>
 
 <body>
@@ -37,19 +34,22 @@
         <div class="col-lg-6 col-md-6 col-xs-11 col-md-offset-3 col-xs-offset-2 login-form text-center">
             <div class="col-xs-8 col-md-offset-2">
 
-                <div class="empty-block" th:if="${isNotValid == null and logout == null}"></div>
+<!--                <div class="empty-block" th:if="${isNotValid == null and logout == null}"></div>-->
 
 
-                <div class="alert alert-danger" th:if="${isNotValid}">
-                    <h3>Неверная пара логин/пароль!</h3>
-                    <div id="error-message"></div>
+<!--                <div class="alert alert-danger" th:if="${isNotValid}">-->
+<!--                    <h3>Неверная пара логин/пароль!</h3>-->
+<!--                    <div id="error-message"></div>-->
+<!--                </div>-->
+                <div class="alert alert-danger" th:if="${captchaError}">
+                    <h3>Ошибка!</h3>
+                    <div id="error-message" th:text="${captchaError}"></div>
                 </div>
 
-
-                <div class="alert alert-success" th:if="${logout}">
-                    <h3>Выход из системы прошёл успешно.</h3>
-                    <div id=""></div>
-                </div>
+<!--                <div class="alert alert-success" th:if="${logout}">-->
+<!--                    <h3>Выход из системы прошёл успешно.</h3>-->
+<!--                    <div id=""></div>-->
+<!--                </div>-->
 
                 <div id="logout-message" class="alert alert-success hidden">
                     <h3>Успешно!</h3>
@@ -58,7 +58,7 @@
 
 
                 <h2>Пожалуйста войдите в систему</h2>
-                <form action="/login-captcha" method="POST">
+                <form th:action="login-captcha" method="POST">
                     <div class="form-group login-group">
                         <!--                        <input type="text" id="g-recaptcha-response" name="g-recaptcha-response"/>-->
                         <input type="text" class="form-control" id="uName" name="login" placeholder="Email address"
@@ -82,7 +82,7 @@
 
 
                 <div class="form-group">
-                    <span>Новый пользователь? <a href="/registration/first">Зарегестрируйтесь здесь</a></span>
+                    <span>Новый пользователь? <a href="/registration/user">Зарегистрируйтесь здесь</a></span>
                 </div>
             </div>
         </div>
@@ -104,6 +104,6 @@
 
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-<script type="text/javascript" src="/js/login.js" rel="script"></script>
+<!--<script type="text/javascript" src="/js/login.js" rel="script"></script>-->
 </body>
 </html>

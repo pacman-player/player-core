@@ -23,36 +23,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import spring.app.dto.CaptchaResponseDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
-import spring.app.util.UserValidator;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Controller("/test")
 public class MainController {
     private final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
-
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     private final RoleService roleService;
     private final UserService userService;
-    private final GenreService genreService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
     private final AddressService addressService;
-    private final UserValidator userValidator;
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -64,24 +61,28 @@ public class MainController {
     private String googleScope;
     @Value("${googleClientSecret}")
     private String googleClientSecret;
-
     @Value("${vkAppId}")
     private String appId;
     @Value("${vkClientSecret}")
     private String clientSecret;
     @Value("${vkRedirectUri}")
     private String redirectUri;
+    @Value("${recaptcha.secret}")
+    private String secret;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
+    public MainController(RoleService roleService,
+                          UserService userService,
+                          CompanyService companyService,
+                          OrgTypeService orgTypeService,
+                          PlayListService playListService,
+                          AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.genreService = genreService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.addressService = addressService;
-        this.userValidator = userValidator;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -91,7 +92,6 @@ public class MainController {
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView showLoginPage(HttpSession httpSession) {
-        //получаем error из LoginController
         String errorFromBindingResult = (String) httpSession.getAttribute("error");
         ModelAndView modelAndView = new ModelAndView("login");
             if (errorFromBindingResult != null) {
@@ -104,6 +104,24 @@ public class MainController {
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
     public ModelAndView showLoginPageCaptcha() {
         return new ModelAndView("login-captcha");
+    }
+
+    @PostMapping("/login-captcha")
+    public void loginCaptcha(
+            HttpServletResponse response,
+            HttpServletRequest request,
+            @RequestParam("g-recaptcha-response") String captchaResponce,
+            Model model) throws IOException, ServletException {
+        String url = String.format(CAPTCHA_URL, secret, captchaResponce);
+        CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+
+        if (!captchaResponse.isSuccess()) {
+            //        вывод сообщения в html, если капча не введена
+            model.addAttribute("captchaError", "Fill captcha");
+            response.sendRedirect("/login-captcha");
+        } else {
+            request.getRequestDispatcher("/processing-url").forward(request, response);
+        }
     }
 
     @RequestMapping(value = {"/translation"}, method = RequestMethod.GET)

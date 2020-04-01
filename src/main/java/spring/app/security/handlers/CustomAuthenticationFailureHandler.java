@@ -5,6 +5,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,15 +19,25 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     int loginAttempt = 0;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         HttpSession session = request.getSession();
         if (session.getAttribute("loginCount") == null) {
             session.setAttribute("loginCount", 1);
+            loginAttempt = 1;
         } else {
             loginAttempt = (Integer) session.getAttribute("loginCount");
             loginAttempt++;
             session.setAttribute("loginCount", loginAttempt);
+        }
+        switch (exception.getMessage()) {
+            case "User is disabled":
+                session.setAttribute("error", "Ваш аккаунт забанен.");
+                break;
+            case "Bad credentials":
+                session.setAttribute("error", "Логин или пароль некорректны.");
+                break;
         }
         String targetUrl = determineTargetUrl();
         redirectStrategy.sendRedirect(request, response, targetUrl);
