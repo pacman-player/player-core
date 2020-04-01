@@ -11,11 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
-import spring.app.security.handlers.CustomLogoutSuccessHandler;
 import spring.app.security.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -27,26 +24,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl authenticationService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Autowired
     public SecurityConfig(UserDetailsServiceImpl authenticationService,
                           CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
-                          CustomLogoutSuccessHandler customLogoutSuccessHandler) {
+                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.authenticationService = authenticationService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
-        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-        filter.setEncoding("UTF-8");
-        filter.setForceEncoding(true);
         http
-                .addFilterBefore(filter, CsrfFilter.class)
                 // Отключим проверку CSRF для подключений нашего бота к серверу.
                 .csrf().ignoringAntMatchers("/api/tlg/**")
                 .and()
@@ -70,10 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
-//                .invalidateHttpSession(true)
-//                .logoutSuccessHandler(customLogoutSuccessHandler)
                 .permitAll();
     }
 
@@ -88,28 +74,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // it is important to only configure AuthenticationManagerBuilder in a class annotated with either @EnableWebSecurity
         auth.userDetailsService(authenticationService).passwordEncoder(getPasswordEncoder());
     }
-
-	/*@Bean
-	public FilterRegistrationBean myFilter() {
-		CharacterEncodingFilter filter = new CharacterEncodingFilter();
-		filter.setEncoding("UTF-8");
-		filter.setForceEncoding(true);
-
-		FilterRegistrationBean registration = new FilterRegistrationBean();
-		registration.setFilter(filter);
-		registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
-		return registration;
-	}*/
-
-	/*@Bean
-	@ConditionalOnBean(name = DEFAULT_FILTER_NAME)
-	public DelegatingFilterProxyRegistrationBean securityFilterChainRegistration(
-			SecurityProperties securityProperties) {
-		DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean(
-				DEFAULT_FILTER_NAME);
-		registration.setOrder(securityProperties.getFilterOrder());
-		registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ERROR,
-				DispatcherType.ASYNC);
-		return registration;
-	}*/
 }
