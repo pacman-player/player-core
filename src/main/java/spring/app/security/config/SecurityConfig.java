@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterBefore(filter, CsrfFilter.class)
                 // Отключим проверку CSRF для подключений нашего бота к серверу.
-//                .csrf().ignoringAntMatchers("/api/tlg/**")
-//                .and()
+                .csrf().ignoringAntMatchers("/api/tlg/**")
+                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
