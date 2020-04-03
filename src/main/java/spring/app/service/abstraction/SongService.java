@@ -11,6 +11,10 @@ public interface SongService {
 
     List<Song> getAllApprovedSongs();
 
+    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedSongsPageNumber(int pageSize);
+
     Song getByName(String name);
 
     Song getByAuthorAndName(String author, String name);

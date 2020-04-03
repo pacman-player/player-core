@@ -48,6 +48,28 @@ public class SongRestController {
         return list;
     }
 
+    @GetMapping("approvedSongsPage")
+    public List<Song> getApprovedSongsPage(@AuthenticationPrincipal User user,
+                                               @RequestParam(defaultValue = "1") Integer pageNumber,
+                                               @RequestParam(defaultValue = "5") Integer pageSize) {
+        LOGGER.info("GET request 'approvedSongsPage'");
+        List<Song> songsPage = songService.getApprovedSongsPage(pageNumber, pageSize);
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                songsPage);
+
+        LOGGER.info("Result has {} lines", songsPage.size());
+        return songsPage;
+    }
+
+    @GetMapping("lastApprovedSongsPageNumber")
+    public Integer getLastApprovedSongsPageNumber(@RequestParam(defaultValue = "5") Integer pageSize) {
+        return songService.getLastApprovedSongsPageNumber(pageSize);
+    }
+
     @GetMapping("allSongsByName/{name}")
     public List<Song> searchByNameInSongs(@PathVariable String name,
                                           @AuthenticationPrincipal User user) {

@@ -61,6 +61,11 @@ let Filter = {
             '                                        <div id="forAuthorTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
+            '                                        <nav aria-label="author_page_navigation">\n' +
+            '                                           <ul class="pagination" id="forAuthorTablePagesNav">\n' +
+            '                                               <!-- скрипт заполнения панели пагинации авторов в файле filterMusic.js -->\n' +
+            '                                           </ul>\n' +
+            '                                        </nav>\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
@@ -77,6 +82,11 @@ let Filter = {
             '                                        <div id="forMusicTable">\n' +
             '                                            <!-- скрипт заполнения таблицы в файле filterMusic.js -->\n' +
             '                                        </div>\n' +
+            '                                        <nav aria-label="music_page_navigation">\n' +
+            '                                           <ul class="pagination" id="forMusicTablePagesNav">\n' +
+            '                                               <!-- скрипт заполнения панели пагинации песен в файле filterMusic.js -->\n' +
+            '                                           </ul>\n' +
+            '                                        </nav>\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
@@ -200,13 +210,50 @@ let Filter = {
         //получение списка авторов и заполнение таблицы авторов
         $.ajax({
             type: 'get',
-            url: '/api/author/allApprovedAuthors',
-            contentType: 'application/json;',
+            url: '/api/author/approvedAuthorsPage',
+            contentType: 'application/json',
 
             success: function (allAuthors) {
-                $("#forAuthorTable").html(`<table class="table table-borderless">
-                ${allAuthors.map(renderAuthors).join('')}
-                </table>`);
+                $("#forAuthorTable").html(
+                    `<table class="table table-borderless">
+                        ${allAuthors.map(renderAuthors).join('')}
+                    </table>`
+                );
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '/api/author/lastApprovedAuthorsPageNumber',
+            contentType: 'application/json',
+
+            success: function (lastPageNumber) {
+                for (let i = 1; i <= lastPageNumber; i++) {
+                    $("#forAuthorTablePagesNav").append(
+                        `<li class="page-item">
+                            <a  id="author-page-number-link" class="page-link">${i}</a>
+                        </li>`
+                    );
+                }
+
+                $("nav #author-page-number-link").click(function () {
+                    var pageNumber = $(this).text();
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/author/approvedAuthorsPage',
+                        contentType: 'application/json',
+                        data: 'pageNumber=' + pageNumber,
+
+                        success: function (allAuthors) {
+                            $("#forAuthorTable").html(
+                                `<table class="table table-borderless">
+                                    ${allAuthors.map(renderAuthors).join('')}
+                                </table>`
+                            );
+                        }
+                    });
+                });
+
             }
         });
 
@@ -295,13 +342,50 @@ let Filter = {
         //получение списка песен и заполнение таблицы песен
         $.ajax({
             type: 'get',
-            url: '/api/music/allApprovedSongs',
-            contentType: 'application/json;',
+            url: '/api/music/approvedSongsPage',
+            contentType: 'application/json',
 
             success: function (allSongs) {
-                $("#forMusicTable").html(`<table class="table table-borderless">
-                ${allSongs.map(renderMusics).join('')}
-                </table>`);
+                $("#forMusicTable").html(
+                    `<table class="table table-borderless">
+                        ${allSongs.map(renderMusics).join('')}
+                    </table>`
+                );
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '/api/music/lastApprovedSongsPageNumber',
+            contentType: 'application/json',
+
+            success: function (lastPageNumber) {
+                for (let i = 1; i <= lastPageNumber; i++) {
+                    $("#forMusicTablePagesNav").append(
+                        `<li class="page-item">
+                            <a  id="music-page-number-link" class="page-link">${i}</a>
+                        </li>`
+                    );
+                }
+
+                $("nav #music-page-number-link").click(function () {
+                    var pageNumber = $(this).text();
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/music/approvedSongsPage',
+                        contentType: 'application/json',
+                        data: 'pageNumber=' + pageNumber,
+
+                        success: function (allSongs) {
+                            $("#forMusicTable").html(
+                                `<table class="table table-borderless">
+                                    ${allSongs.map(renderMusics).join('')}
+                                </table>`
+                            );
+                        }
+                    });
+                });
+
             }
         });
 

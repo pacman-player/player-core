@@ -13,6 +13,10 @@ public interface GenericDao<PK extends Serializable, T> {
 
 	List<T> getAllApproved();
 
+	List<T> getApprovedPage(int pageNumber, int pageSize);
+
+	int getLastApprovedPageNumber(int pageSize);
+
 	void update(T group);
 
 	void deleteById(PK id);

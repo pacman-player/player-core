@@ -37,6 +37,16 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {
+        return songDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedSongsPageNumber(int pageSize) {
+        return songDao.getLastApprovedPageNumber(pageSize);
+    }
+
+    @Override
     public void deleteSongById(Long id) {
         songDao.deleteById(id);
     }

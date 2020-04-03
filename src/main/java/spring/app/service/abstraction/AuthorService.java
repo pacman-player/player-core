@@ -10,6 +10,10 @@ public interface AuthorService {
 
     List<Author> getAllApprovedAuthors();
 
+    List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedAuthorsPageNumber(int pageSize);
+
     Author getByName(String name);
 
     void addAuthor(Author author);

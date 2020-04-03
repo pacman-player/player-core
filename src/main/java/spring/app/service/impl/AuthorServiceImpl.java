@@ -38,6 +38,16 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize) {
+        return authorDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedAuthorsPageNumber(int pageSize) {
+        return authorDao.getLastApprovedPageNumber(pageSize);
+    }
+
+    @Override
     public void addAuthor(Author author) {
         authorDao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");

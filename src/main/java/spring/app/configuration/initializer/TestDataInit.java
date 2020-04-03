@@ -224,10 +224,22 @@ public class TestDataInit {
         songService.updateSong(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");
         Author author3 = authorService.getByName("BLACKPINK");
+        Author author2 = authorService.getByName("Yungblud");
+        Author author4 = authorService.getByName("Yungblud, Charlottle Lawrer");
+        Author author5 = authorService.getByName("Tom Walker");
+        Author author6 = authorService.getByName("The Alarm");
         author1.setApproved(true);
         author3.setApproved(true);
+        author2.setApproved(true);
+        author4.setApproved(true);
+        author5.setApproved(true);
+        author6.setApproved(true);
         authorService.updateAuthor(author1);
         authorService.updateAuthor(author3);
+        authorService.updateAuthor(author2);
+        authorService.updateAuthor(author4);
+        authorService.updateAuthor(author5);
+        authorService.updateAuthor(author6);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
