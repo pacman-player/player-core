@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -62,13 +64,13 @@
                         </label>
                     </div>
                 </div>
-
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Далее</button>
                 </div>
             </form>
             <div class="form-group text-center">
-                <span>Уже зарегестрированы? <a href="/login">Войдите здесь</a></span>
+                <span>Уже зарегистрированы? <a href="/login">Войдите здесь</a></span>
             </div>
         </div>
     </div>
@@ -85,6 +87,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="/js/security.js"></script>
 <script src="/js/registrationFirstPage.js"></script>
 </body>
 </html>

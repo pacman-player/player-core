@@ -36,7 +36,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 session.setAttribute("error", "Ваш аккаунт забанен.");
                 break;
             case "Bad credentials":
-                session.setAttribute("error", "Логин или пароль некорректны.");
+                session.setAttribute("error", "Неверная пара логин/пароль.");
                 break;
         }
         String targetUrl = determineTargetUrl();

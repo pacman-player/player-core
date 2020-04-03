@@ -30,9 +30,6 @@ import spring.app.dto.CaptchaResponseDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -91,48 +88,85 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPage(HttpSession httpSession) {
-        String errorFromBindingResult = (String) httpSession.getAttribute("error");
-        ModelAndView modelAndView = new ModelAndView("login");
-            if (errorFromBindingResult != null) {
-                //добавляем сообщение об ошибке во вьюху
-                modelAndView.addObject("error", errorFromBindingResult);
-            }
+    public ModelAndView showLoginPage(HttpSession session, ModelAndView modelAndView) {
+        modelAndView.setViewName("login");
+        addAttributesFromSession(session, modelAndView);
         return modelAndView;
     }
 
     @RequestMapping(value = {"/login-captcha"}, method = RequestMethod.GET)
-    public ModelAndView showLoginPageCaptcha() {
-        return new ModelAndView("login-captcha");
+    public ModelAndView showLoginPageCaptcha(HttpSession session, ModelAndView modelAndView) {
+        modelAndView.setViewName("login-captcha");
+        addAttributesFromSession(session, modelAndView);
+        return modelAndView;
     }
 
+    /**
+     * Метод обрабатывает POST-запросы с формы логина с капчей. Сначала производится ощистка
+     * сессии от старых атрибутов, если они были. Затем, если капча введена корректно,
+     * то метод форвардит на /processing-url, тем самым передавая управление Spring Security
+     * для проверки введенных в форме логина и пароля. Если капча введена неверно, то метод
+     * добавляет атрибут "error" и редиректит на /login-captcha для повторного ввода данных.
+     *
+     * @param captchaResponse Строковый объект для проверки капчи.
+     * @param session         Текущая сессия.
+     * @return Адрес для перехода.
+     */
     @PostMapping("/login-captcha")
-    public void loginCaptcha(
-            HttpServletResponse response,
-            HttpServletRequest request,
-            @RequestParam("g-recaptcha-response") String captchaResponce,
-            Model model) throws IOException, ServletException {
-        String url = String.format(CAPTCHA_URL, secret, captchaResponce);
-        CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-
-        if (!captchaResponse.isSuccess()) {
-            //        вывод сообщения в html, если капча не введена
-            model.addAttribute("captchaError", "Fill captcha");
-            response.sendRedirect("/login-captcha");
+    public String loginCaptcha(@RequestParam("g-recaptcha-response") String captchaResponse,
+                               HttpSession session) {
+        removeAttributesFromSession(session, "error");
+        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
+        CaptchaResponseDto captchaGoogleResponse =
+                restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+        if (!captchaGoogleResponse.isSuccess()) {
+            session.setAttribute("error", "Проверка \"Я не робот\" не пройдена.");
+            return "redirect:/login-captcha";
         } else {
-            request.getRequestDispatcher("/processing-url").forward(request, response);
+            return "forward:/processing-url";
+        }
+    }
+
+    /**
+     * Метод удалит все атрибуты у сессии, чтобы, в случае наличия ранее атрибута
+     * error, он не появлялся еще раз.
+     *
+     * @param session    Текущая сессия.
+     * @param attributes Атрибуты, которые следует удалить из текущей сессии.
+     */
+    private void removeAttributesFromSession(HttpSession session, String... attributes) {
+        Enumeration<String> sessionAttributes = session.getAttributeNames();
+        while (sessionAttributes.hasMoreElements()) {
+            String sessionAttribute = sessionAttributes.nextElement();
+            for (String attribute : attributes) {
+                if (attribute.equals(sessionAttribute)) {
+                    session.removeAttribute(attribute);
+                }
+            }
+        }
+    }
+
+    /**
+     * Метод добавляет в ModelAndView атрибуты из сессии для отображения на странице.
+     *
+     * @param session      Текущая сессия.
+     * @param modelAndView Объект ModelAndView.
+     */
+    private void addAttributesFromSession(HttpSession session, ModelAndView modelAndView) {
+        Enumeration<String> sessionAttributes = session.getAttributeNames();
+        while (sessionAttributes.hasMoreElements()) {
+            String sessionAttribute = sessionAttributes.nextElement();
+            modelAndView.addObject(sessionAttribute, session.getAttribute(sessionAttribute));
         }
     }
 
     @RequestMapping(value = {"/translation"}, method = RequestMethod.GET)
     public ModelAndView showPlayerPage() {
-
         return new ModelAndView("translation");
     }
 
     @RequestMapping(value = "/googleAuth")
     public String GoogleAuthorization() {
-
         StringBuilder url = new StringBuilder();
         url.append("https://accounts.google.com/o/oauth2/auth?redirect_uri=")
                 .append(googleRedirectUri)

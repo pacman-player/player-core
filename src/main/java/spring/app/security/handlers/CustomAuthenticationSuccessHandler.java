@@ -32,6 +32,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         LOGGER.info("Successful authentication of '{}'.", ((User) authentication.getPrincipal()).getLogin());
         HttpSession session = httpServletRequest.getSession();
         session.setAttribute("loginCount", 1);
+        session.removeAttribute("error");
         handle(httpServletRequest, httpServletResponse, authentication);
         clearAuthenticationAttributes(httpServletRequest);
     }

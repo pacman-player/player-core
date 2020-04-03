@@ -43,24 +43,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").hasAuthority("USER")
-                .antMatchers("/api/tlg/**").hasAuthority("BOT")
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/notification",
-                        "/fragment",
-                        "/topic",
-                        "/app")
-                .authenticated()
                 .antMatchers("/registration/**",
+                        "/api/registration/**",
+                        "/api/user/orgType/get_all_orgType",
                         "/login-captcha",
+                        "/notFound",
                         "/translation",
                         "/google",
                         "/googleAuth",
                         "/player",
                         "/vkAuth",
-                        "/vkontakte")
+                        "/vkontakte",
+                        "/css/style.css",
+                        "/js/security.js",
+                        "/js/reg-check.js",
+                        "/js/registrationFirstPage.js")
                 .permitAll()
+                .antMatchers("/notification",
+                        "/fragment",
+                        "/topic",
+                        "/app")
+                .authenticated()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/api/tlg/**").hasAuthority("BOT")
+                .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
