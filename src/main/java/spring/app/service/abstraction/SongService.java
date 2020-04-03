@@ -38,4 +38,12 @@ public interface SongService {
      * @return Song
      */
     Song getById(long songId);
+
+    /**
+     * Возвращает песню по id жанра
+     *
+     * @return List<Song>
+     */
+    List<Song> findSongsByGenreId(Long id);
+
 }

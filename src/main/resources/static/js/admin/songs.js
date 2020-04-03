@@ -59,6 +59,20 @@ function editSong(id) {
     });
 }
 
+// Listen for click on toggle checkbox
+$('#select-all').click(function(event) {
+    if(this.checked) {
+        // Iterate each checkbox
+        $(':checkbox').each(function() {
+            this.checked = true;
+        });
+    } else {
+        $(':checkbox').each(function() {
+            this.checked = false;
+        });
+    }
+});
+
 //получаем жанр песни и список жанров из БД для модалки edit song
 function getAllGenreForEdit(genreName) {
     //очищаем option в модалке

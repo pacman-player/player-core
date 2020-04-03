@@ -67,6 +67,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public List<Song> findSongsByGenreId(Long id) {
+        return songDao.getAllWithGenreByGenreId(id);
+    }
+
+    @Override
     public List<Song> getAllSongInSongCompilation(Long id) {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();

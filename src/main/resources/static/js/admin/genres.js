@@ -209,9 +209,128 @@ function getTable() {
                                         onclick="deleteButton(${id})">
                                     Удалить
                                 </button>
-                            </td>`);
+                            </td>
+                            
+                            <td>
+                                <button type="submit" 
+                                        class="btn btn-sm btn-info" 
+                                        id="editGenreBtn"
+                                        onclick="editGenreOfSongs(${id}, '${name}', ${approved})">
+                                    Управление песнями
+                                </button>
+                            </td>
+
+
+
+`);
                 tableBody.append(tr);
             }
         }
     });
 }
+// выводим список всех песен в модальное окно "songGenreManagement"
+$.getJSON('/api/admin/song/all_songs',
+    function (json) {
+        let tr = [];
+        for (let i = 0; i < json.length; i++) {
+            tr.push('<tr class="trSongId" id=' + json[i].id + '>');
+            tr.push('<td class="song_name" id="'+json[i].genreName+'" visibility: hidden  > <input type="checkbox" >' +' '+ json[i].name + '--'+json[i].genreName+'</td>');
+        }
+        $("#listOfSongsByGenre").append($(tr.join('')));
+    });
+//
+function editGenreOfSongs(id, name, approved) {
+    let theModal = $("#songGenreManagement");
+    let form = $("#editForm");
+    let fieldId = $("#GenresId");
+    let fieldName = $("#GenresName");
+
+   $('#'+name+'').show();
+    fieldId.val(id);
+    fieldName.val(name);
+
+
+    theModal.modal("show");
+    getAllGenreForEdit(fieldName);
+
+
+
+    $('.close').click(function() {
+        $('#'+name+'').hide();
+    });
+
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+                pattern: genreNameRegEx,
+                rangelength: [3, 30],
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/genre/is_free",
+                    data: {
+                        id: () => {
+                            return fieldId.val()
+                        }
+                    }
+                },
+            }
+        },
+        messages: {
+            name: errMessages
+        },
+        submitHandler: () => {
+            $.ajax({
+                method: "PUT",
+                url: "/api/admin/genre/update_genre",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id: fieldId.val(),
+                    name: fieldName.val(),
+                    approved: fieldApproved.prop('checked')
+                }),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                complete: () => {
+                    theModal.modal("hide");
+                    getTable();
+                    $('#'+name+'').hide();
+                },
+                success: () => {
+                    sendNotification();
+                    notification(
+                        "edit-genre" + fieldId.val(),
+                        ` Жанр с id ${fieldId.val()} изменен`,
+                        "genres-panel");
+                    $('#'+name+'').hide();
+                },
+                error: (xhr, status, error) => {
+                    alert(xhr.responseText + "|\n" + status + "|\n" + error);
+                    $('#'+name+'').hide();
+                }
+            })
+        }
+    })
+}
+
+
+//получаем жанр песни и список жанров из БД для модалки edit song
+function getAllGenre(genreName) {
+    //очищаем option в модалке
+    $('#updateSongGenre').empty();
+    var genreForEdit = '';
+    $.getJSON("/api/admin/song/all_genre", function (data) {
+        $.each(data, function (key, value) {
+            genreForEdit += '<option id="' + value.id + '" ';
+            //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
+            if (genreName == value.name) {
+                genreForEdit += 'selected';
+            }
+            genreForEdit += ' value="' + value.name + '">' + value.name + '</option>';
+        });
+        $('#updateSongGenre').append(genreForEdit);
+    });
+}
+
