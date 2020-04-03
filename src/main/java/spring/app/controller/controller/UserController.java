@@ -25,11 +25,6 @@ public class UserController {
         return "user/statistics";
     }
 
-    @GetMapping("/top")
-    public String getUserTop() {
-        return "user/top";
-    }
-
     @GetMapping("/statistics")
     public String getUserStatistics() {
         return "user/statistics";
