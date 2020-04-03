@@ -1,37 +1,33 @@
 package spring.app.dto;
 
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.Song;
-
 import java.util.List;
 
 public class AuthorSongGenreListDto {
-    private List<Author> authors;
-    private List<Song> songs;
-    private List<Genre> genres;
+    private List<AuthorDto> authors;
+    private List<SongDto> songs;
+    private List<GenreDto> genres;
 
-    public List<Author> getAuthors() {
+    public List<AuthorDto> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(List<AuthorDto> authors) {
         this.authors = authors;
     }
 
-    public List<Song> getSongs() {
+    public List<SongDto> getSongs() {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(List<SongDto> songs) {
         this.songs = songs;
     }
 
-    public List<Genre> getGenres() {
+    public List<GenreDto> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<GenreDto> genres) {
         this.genres = genres;
     }
 }

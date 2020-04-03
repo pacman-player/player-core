@@ -1,5 +1,7 @@
 package spring.app.dto;
 
+import spring.app.model.Genre;
+
 public class GenreDto {
 
     private Long id;
@@ -7,6 +9,13 @@ public class GenreDto {
     private Boolean isApproved;
 
     public GenreDto() {
+    }
+
+    //Для легкого и быстрого создания объекта GenreDto из Genre
+    public GenreDto(Genre genre) {
+        this.id = genre.getId();
+        this.name = genre.getName();
+        this.isApproved = genre.getApproved();
     }
 
     public GenreDto(Long id, String name) {
