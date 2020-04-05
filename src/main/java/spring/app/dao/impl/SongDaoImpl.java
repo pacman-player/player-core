@@ -79,4 +79,12 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         List<Song> list = query.getResultList();
         return !list.isEmpty();
     }
+
+    @Override
+    public void bulkRemoveSongsByAuthorId(Long authorId) {
+        entityManager.createQuery("DELETE FROM Song s WHERE s.author.id = :authorId")
+                .setParameter("authorId", authorId)
+                .executeUpdate();
+        entityManager.flush();
+    }
 }

@@ -7,6 +7,7 @@ public class CompanyDto {
     private String startTime;
     private String closeTime;
     private Long orgType;
+    private Long tariff;
     private Long userId;
 
     public Long getId() {
@@ -49,6 +50,14 @@ public class CompanyDto {
         this.orgType = orgType;
     }
 
+    public Long getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Long tariff) {
+        this.tariff = tariff;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -57,13 +66,16 @@ public class CompanyDto {
         this.userId = userId;
     }
 
+    @Override
     public String toString() {
-        return "Company{" +
+        return "CompanyDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", startTime=" + startTime +
-                ", closeTime=" + closeTime +
+                ", startTime='" + startTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
                 ", orgType=" + orgType +
+                ", tariff=" + tariff +
+                ", userId=" + userId +
                 '}';
     }
 }

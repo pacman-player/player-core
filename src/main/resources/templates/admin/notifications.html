@@ -33,33 +33,38 @@
                     <ul class="nav nav-tabs nav-content" role="tablist">
                         <li id="messages-table-nav" class="active">
                             <a id="tab-messages-panel" href="#messages-panel" aria-controls="messages-panel" role="tab"
-                               data-toggle="tab">Все сообщения</a>
+                               data-toggle="tab">Все уведомления</a>
+                        </li>
+                        <li id="add-notifications-nav">
+                            <a href="#add-notifications-panel" aria-controls="add-messages-panel" role="tab"
+                               data-toggle="tab">
+                                Создать новое уведомление</a>
                         </li>
                         <li id="add-messages-nav">
-                            <a href="#add-messages-panel" aria-controls="add-messages-panel" role="tab"
+                            <a href="#notifications-template-panel" aria-controls="add-messages-panel" role="tab"
                                data-toggle="tab">
-                                Новые сообщения</a>
+                                Редактировать шаблон уведомления</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <!--таблица юзеров-->
+                        <!--таблица уведомлений-->
                         <div role="tabpanel" class="tab-pane active" id="messages-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
-                                        <table id="messagesTable" class="table">
-                                            <thead id="getMessagesTable">
+                                        <table id="notificationTable" class="table">
+                                            <thead id="getNotificationTable">
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Имя</th>
-                                                <th>Шаблон</th>
+                                                <th>Уведомление</th>
+                                                <th>Пользователь</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
 
-                                            <!--модалка - обновление юзеров-->
-                                            <div id="editMessages" class="modal fade">
+                                            <!--модалка - обновление уведомлений-->
+                                            <div id="editNotifications" class="modal fade">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
 
@@ -67,7 +72,7 @@
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-hidden="true">×
                                                             </button>
-                                                            <h4 class="modal-title">Изменить сообщение</h4>
+                                                            <h4 class="modal-title">Изменить уведомление</h4>
                                                         </div>
 
                                                         <div class="modal-body">
@@ -81,8 +86,8 @@
                                                                         </div>
                                                                         <form id="edit-form">
                                                                             <div class="form-group text-center edit-form">
-                                                                                <label for="updateMessagesId">ID</label>
-                                                                                <input id="updateMessagesId"
+                                                                                <label for="updateNotificationsId">ID</label>
+                                                                                <input id="updateNotificationsId"
                                                                                        class="form-control"
                                                                                        disabled="disabled" type="text"
                                                                                        name="id" required=""/>
@@ -90,16 +95,19 @@
                                                                                        id="id-input-edit-hidden"
                                                                                        name="id"/>
 
-                                                                                <label for="updateMessagesName">Имя</label>
-                                                                                <input id="updateMessagesName"
+                                                                                <label for="updateNotificationsUser">User</label>
+                                                                                <input id="updateNotificationsUser"
+                                                                                       class="form-control"
+                                                                                       disabled="disabled" type="text"
+                                                                                       name="id" required=""/>
+                                                                                <input type="hidden"
+                                                                                       id="id-input-edit-hidden-user"
+                                                                                       name="user"/>
+
+                                                                                <label for="updateNotificationsMessage">Текст Уведомления</label>
+                                                                                <input id="updateNotificationsMessage"
                                                                                        class="form-control" type="text"
                                                                                        name="name"
-                                                                                       required=""/>
-
-                                                                                <label for="updateMessagesTemplate">Шаблон</label>
-                                                                                <input id="updateMessagesTemplate"
-                                                                                       class="form-control" type="text"
-                                                                                       name="template"
                                                                                        required=""/>
                                                                             </div>
                                                                         </form>
@@ -109,11 +117,11 @@
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            <button id="closeEditMessages" type="button"
+                                                            <button id="closeEditNotifications" type="button"
                                                                     class="btn btn-default"
                                                                     data-dismiss="modal">Закрыть
                                                             </button>
-                                                            <button id="editMessagesBtn" class="btn btn-primary">
+                                                            <button id="editNotificationsBtn" class="btn btn-primary">
                                                                 Изменить
                                                             </button>
                                                         </div>
@@ -127,30 +135,56 @@
                             </div>
                         </div>
 
-                        <!--добавление юзеров-->
-                        <div role="tabpanel" class="tab-pane" id="add-messages-panel">
+                        <!--добавление уведомлений-->
+                        <div role="tabpanel" class="tab-pane" id="add-notifications-panel">
                             <div class="panel panel-default table-panel">
                                 <div class="tab-content">
                                     <div class="panel-body">
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
                                                     <form id="addForm">
                                                         <div class="form-group text-center edit-form">
-
-                                                            <label for="addName">Имя</label>
-                                                            <input id="addName" class="form-control" type="text"
-                                                                   placeholder="Ввидите имя сообщения" name="message"/>
-
-                                                            <label for="addTemplate">Шаблон</label>
-                                                            <input id="addTemplate" class="form-control" type="text"
-                                                                   placeholder="Ввидите шаблон" name="template"/>
-
-                                                            <button type="submit" id="addMessageBtn"
-                                                                    class="btn btn-success btn-lg"
+                                                            <label for="addMessage">Текст уведомления</label>
+                                                            <input id="addMessage" class="form-control" type="text"
+                                                                   placeholder="Введите текст уведомления" name="message"/>
+                                                            <label for="addUser">Пользователь</label>
+                                                            <select id="addUser" class="form-control" name="template">
+                                                            </select>
+                                                            <button type="submit" id="addNotificationBtn"
+                                                                    class="btn btn-success"
                                                                     style="margin-top: 20px;">
-                                                                Добавить сообщение
+                                                                Отправить уведомление
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="notifications-template-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="templateForm">
+                                                        <div class="form-group text-center edit-form">
+                                                            <label for="templateText">Шаблон автоматического уведомления</label>
+                                                            <span>
+                                                                <p>Используйте {subject} для подстановки текста в уведомление</p>
+                                                                <p>Используйте {link:ссылка:текст:} для подстановки ссылки в уведомление</p>
+                                                            </span>
+                                                            <input id="templateText" class="form-control" type="text"
+                                                                   placeholder="Введите текст уведомления" name="template"/>
+                                                            <button type="button" id="editTemplateBtn"
+                                                                    class="btn btn-success"
+                                                                    style="margin-top: 20px;">
+                                                                Изменить шаблон
                                                             </button>
                                                         </div>
                                                     </form>
@@ -171,7 +205,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script type="text/javascript" src="/js/admin/messages.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/notifications.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>

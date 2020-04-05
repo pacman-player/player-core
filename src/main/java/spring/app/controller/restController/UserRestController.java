@@ -172,8 +172,9 @@ public class UserRestController {
         companyForUpdate.setName(company.getName());
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
+        companyForUpdate.setTariff(company.getTariff());
         companyService.updateCompany(companyForUpdate);
-        LOGGER.info("Updated Company named = {}", companyForUpdate.getName());
+        LOGGER.info("Updated Company = {}", companyForUpdate);
     }
 
 	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

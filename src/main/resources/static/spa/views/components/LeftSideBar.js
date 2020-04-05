@@ -9,9 +9,6 @@ let LeftSideBar = {
             '                    <a href="/user/spa#/filter">Фильтр музыки</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="/user/spa#/top">Топ популярных</a>\n' +
-            '                </li>\n' +
-            '                <li>\n' +
             '                    <a href="/user/spa#/company">Моё заведение</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
