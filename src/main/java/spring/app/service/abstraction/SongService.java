@@ -38,4 +38,8 @@ public interface SongService {
      * @return Song
      */
     Song getById(long songId);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }

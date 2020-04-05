@@ -2,35 +2,43 @@ package spring.app.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spring.app.Main;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import spring.app.service.abstraction.SongService;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Component
 public class PlayerPaths {
-    private final static Logger LOGGER = LoggerFactory.getLogger(PlayerPaths.class);
 
-    public static Path getSongsDir(String filename) {
-        final String separator = File.separator;
+    private final Logger LOGGER = LoggerFactory.getLogger(PlayerPaths.class);
+    private final String separator = File.separator;
+    private SongService songService;
+    private Path defaultMusicPath;
 
+    public PlayerPaths(@Value("${music.path}") String musicPath, SongService songService) {
+        this.defaultMusicPath = Paths.get(musicPath).toAbsolutePath();
+        this.songService = songService;
+    }
+
+    public Path getSongDir(Long songId) {
+        Long authorId = songService.getAuthorIdBySongId(songId);
+        Path authorPath = defaultMusicPath.resolve(String.valueOf(authorId));
+        String filename = songId + ".mp3";
         try {
-            Path pathProject = (Paths.get(Main.class.getResource(".").toURI())).getParent().getParent();
-            LOGGER.trace("pathProject = {}", pathProject);
-            Path pathDownload = Paths.get(pathProject.getParent().getParent().toString() + separator + "music");
-            LOGGER.trace("pathDownload = {}", pathDownload);
-            if (!Files.exists(pathDownload)) {
-                LOGGER.trace("Creating pathDownload");
-                Files.createDirectories(pathDownload);
+            if (!Files.exists(authorPath)) {
+                LOGGER.trace("Creating authorPath: " + authorPath.toAbsolutePath().toString());
+                Files.createDirectories(authorPath);
             }
-            return filename == null ? pathDownload : Paths.get(String.format("%s%s%s", pathDownload, separator, filename));
-        } catch (URISyntaxException | IOException ex) {
-            LOGGER.error("Error! :(");
+            return Paths.get(String.format("%s%s%s", authorPath, separator, filename));
+        } catch (IOException ex) {
+            LOGGER.error("Error creating directory: " + authorPath.toAbsolutePath().toString());
             LOGGER.error(ex.getMessage(), ex);
         }
-        return null;
+        return defaultMusicPath.resolve(filename);
     }
 }
