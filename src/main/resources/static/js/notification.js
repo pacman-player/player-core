@@ -91,15 +91,12 @@ $(document).ready(function () {
                 let notification = '';
                 if (0 < listNotification.length) {
                     let length = listNotification.length - 1;
-                    for (var i = 0; i < listNotification.length; i++) {
-                        if (listNotification[length-i].flag === true) {
-                            notification += ('<div class="elemNotification" id="' + listNotification[length-i].id + '"><input type = "button" ' +
-                                'class = "btnNotificationActive" >' + listNotification[length-i].message + '</div>');
-                        } else {
-                            notification += ('<div class="elemNotification" id="' + listNotification[length-i].id + '"><input type = "button" ' +
-                                'class = "btnNotificationNotActive" >' + listNotification[length-i].message + '</div>');
-                        }
+                    for (let i = 0; i < listNotification.length; i++) {
+                        let active = listNotification[length-i].flag ? "btnNotificationActive" : "btnNotificationNotActive";
+                            notification += (`<div class="elemNotification" id="${listNotification[length-i].id}"><input type="button"
+                                class="${active}"><span class="notificationElement">${listNotification[length-i].message}</span></div>`);
                     }
+                    getTemplateProcessNotify("default");
                     $("#listNotification").html(notification);
                 }
             },
