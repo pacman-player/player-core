@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Отчет</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="admin/fragment/navigation :: adminNavbar">
+            </ul>
+        </div>
+
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="list-messages">
+                    <ul class="nav nav-tabs nav-content" role="tablist">
+                        <li id="messages-table-nav" class="active">
+                            <a id="tab-messages-panel" href="#report-panel" aria-controls="messages-panel" role="tab"
+                               data-toggle="tab">Новые за сегодня</a>
+                        </li>
+                        <li id="add-messages-nav">
+                            <a href="#send-report-panel" aria-controls="add-messages-panel" role="tab"
+                               data-toggle="tab">
+                                Послать отчет</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!--таблицы нового за сегодня-->
+                        <div role="tabpanel" class="tab-pane active" id="report-panel">
+                            <ul class="nav nav-tabs nav-content" role="tablist">
+                                <li id="report-table-nav" class="active">
+                                    <a id="tab-report-panel" href="#authors-panel"
+                                       aria-controls="authors-panel" role="tab"
+                                       data-toggle="tab">Авторы</a>
+                                </li>
+                                <li id="report-songs-nav">
+                                    <a href="#songs-panel" aria-controls="songs-panel" role="tab"
+                                       data-toggle="tab">
+                                        Песни</a>
+                                </li>
+                                <li id="send-report-nav">
+                                    <a href="#genres-panel" aria-controls="genres-panel" role="tab"
+                                       data-toggle="tab">
+                                        Жанры</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="authors-panel">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <table id="AuthorTable" class="table">
+                                                    <thead id="getAuthorTable">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Имя</th>
+                                                        <th>Время создания</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div role="tabpanel" class="tab-pane" id="songs-panel">
+                                        <div class="panel panel-default table-panel">
+                                            <div class="tab-content">
+                                                <div class="panel-body">
+                                                    <table id="SongsTable" class="table">
+                                                        <thead id="getSongsTable">
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Имя</th>
+                                                            <th>Время создания</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div role="tabpanel" class="tab-pane" id="genres-panel">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <table id="GenresTable" class="table">
+                                                    <thead id="getGenresTable">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Имя</th>
+                                                        <th>Время создания</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Отправить отчет в ВК-->
+                        <div role="tabpanel" class="tab-pane" id="send-report-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <div class="col-lg-9 col-md-10 col-xs-10">
+                                                        <div class="tab-content">
+                                                            <div class="col-lg-6 col-md-10 col-xs-10 "
+                                                                 id="conversation">
+                                                                <H3>Вы можете отослать отчет в
+                                                                    группу вк</H3>
+                                                                <form id="sendMessageForm">
+                                                                    <input id="idConversation"
+                                                                           required="required"
+                                                                           type="number"
+                                                                           placeholder="Id беседы Вк"
+                                                                           title="id для каждой беседы можно найти в адресе группы например vk.com/gim190607919?sel=c15 - здесь id = 15"/><br/>
+
+                                                                    <textarea id="message"
+                                                                              name="comment"
+                                                                              cols="40"
+                                                                              rows="3"
+                                                                              placeholder="Отчет"
+                                                                              style="margin-top: 10px"></textarea><br/>
+
+                                                                    <button class="btn btn-primary"
+                                                                            id="sendMessage"
+                                                                            type="button"
+                                                                            style="margin-top: 10px">
+                                                                        Послать отчет
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/report.js" rel="script"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+
+</body>
+</html>

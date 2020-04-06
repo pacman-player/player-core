@@ -4,10 +4,13 @@ package spring.app.dto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 
+import java.sql.Timestamp;
+
 public class AuthorDto {
     private Long id;
     private String name;
     private String[] genres;
+    private Timestamp createdAt;
     private Boolean isApproved;
 
     public AuthorDto() {
@@ -41,6 +44,7 @@ public class AuthorDto {
             // иначе ошибка на фронте
             this.genres = new String[]{""};
         }
+        this.createdAt = author.getCreatedAt();
         this.isApproved = author.getApproved();
     }
 
@@ -66,6 +70,14 @@ public class AuthorDto {
 
     public void setGenres(String[] genres) {
         this.genres = genres;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Boolean getApproved() {
