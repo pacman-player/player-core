@@ -167,7 +167,7 @@
 
                         <!-- Изменение жанра песен относящихся к выбранному жанру (модальное окно) -->
                         <div id="songGenreManagement" class="modal fade">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
 
                                     <div class="modal-header">
@@ -180,24 +180,24 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="editFormGenreSong">
 
-
-                                                        <div class="row">
+                                                        <div class="row" >
 
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <table id="listOfSongsByGenre" class="table">
                                                                             <tr>
-                                                                                <th>Список песен</th>
+                                                                                <td><input type="checkbox" name="" id="select-all" th:marginheight="auto"/> Выбрать все</td>
                                                                                 <!-- select all boxes -->
-                                                                                <input type="checkbox" name="select-all" id="select-all" />
+
                                                                             </tr>
                                                                         </table>
 
                                                                     </div>
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-6" >
 
-                                                                        <label for="updateSongGenre">Жанр</label>
+                                                                        <label for="updateSongGenre">Назначить жанр</label>
                                                                         <select class="form-control"
                                                                                 id="updateSongGenre"
                                                                                 name="updateGenre">
@@ -210,17 +210,17 @@
                                                         </div>
 
 
-                                                    <form id="editFormGenreSong">
+
                                                         <div class="form-group text-center edit-form">
 
 
                                                            <div class="modal-footer">
                                                                 <button type="button"
-                                                                        class="close"
+                                                                        class="close btn-primary"
                                                                         data-dismiss="modal">
                                                                     Закрыть
                                                                 </button>
-                                                                <button id="GenresBtn"
+                                                                <button id="changeGenresBtn"
                                                                         class="btn btn-primary"
                                                                         type="submit">
                                                                     Изменить

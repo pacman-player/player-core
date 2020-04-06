@@ -14,7 +14,9 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -119,6 +121,22 @@ public class AdminSongRestController {
         List<Song> list = songService.findSongsByGenreId(id);
         LOGGER.info("Result has {} lines", list.size());
         return list;
+    }
+
+    /*
+        Изменение жанра у нескольких песен
+    */
+    @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
+        Genre newGenre = genreService.getByName(updateObject.get(-1));
+        updateObject.forEach((key, value)->{
+              if(key!=-1){
+                  Song editSong = songService.getSongById(Long.parseLong(value));
+                  editSong.setGenre(newGenre);
+                  songService.updateSong(editSong);
+              }
+          });
+        LOGGER.info("PUT request '/update_genre'");
     }
 
 }
