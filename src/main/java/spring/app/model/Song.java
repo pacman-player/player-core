@@ -72,6 +72,9 @@ public class Song extends Bannable {
     @Transient
     private Boolean banned;
 
+    @Column(name = "search_tags")
+    private Set<String> searchTags;
+
     public Song() {
     }
 
@@ -204,6 +207,14 @@ public class Song extends Bannable {
     @Override
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public Set<String> getSearchTags() {
+        return searchTags;
+    }
+
+    public void setSearchTags(Set<String> searchTags) {
+        this.searchTags = searchTags;
     }
 
     @Override
