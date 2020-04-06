@@ -45,7 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/registration/**",
                         "/api/registration/**",
-                        "/api/user/orgType/get_all_orgType",
                         "/login-captcha",
                         "/notFound",
                         "/translation",
