@@ -7,6 +7,7 @@ import spring.app.dto.SongDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -41,6 +42,10 @@ public class Song extends Bannable {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @ElementCollection
+    @Column(name = "search_tags")
+    private Set<String> searchTags = new HashSet<>();
+
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
@@ -71,9 +76,6 @@ public class Song extends Bannable {
      */
     @Transient
     private Boolean banned;
-
-    @Column(name = "search_tags")
-    private Set<String> searchTags;
 
     public Song() {
     }
