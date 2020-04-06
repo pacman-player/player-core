@@ -188,7 +188,7 @@
                                                                     <div class="col-md-6">
                                                                         <table id="listOfSongsByGenre" class="table">
                                                                             <tr>
-                                                                                <td><input type="checkbox" name="" id="select-all" th:marginheight="auto"/> Выбрать все</td>
+                                                                                <td><input class="chcheckAll" type="checkbox" name="" id="select-all" th:marginheight="auto"/> Выбрать все</td>
                                                                                 <!-- select all boxes -->
 
                                                                             </tr>
@@ -215,16 +215,18 @@
 
 
                                                            <div class="modal-footer">
+                                                               <button id="changeGenresBtn"
+                                                                       class="btn btn-success"
+                                                                       type="submit">
+                                                                   Изменить
+                                                               </button>
                                                                 <button type="button"
-                                                                        class="close btn-primary"
+                                                                        id="btnClose"
+                                                                        class="btn btn-default"
                                                                         data-dismiss="modal">
                                                                     Закрыть
                                                                 </button>
-                                                                <button id="changeGenresBtn"
-                                                                        class="btn btn-primary"
-                                                                        type="submit">
-                                                                    Изменить
-                                                                </button>
+
                                                             </div>
                                                         </div>
                                                     </form>
