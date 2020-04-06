@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
+import spring.app.model.Song;
 import spring.app.service.abstraction.GenreService;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -48,6 +50,11 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public void deleteGenreById(Long id) {
         genreDao.deleteById(id);
+    }
+
+    @Override
+    public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return genreDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override

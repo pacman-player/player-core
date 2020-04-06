@@ -4,9 +4,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
+import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -39,5 +41,13 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return entityManager
+                .createQuery("FROM Author a WHERE a.createdAt >= :dateFrom AND a.createdAt <= :dateTo ORDER BY a.createdAt", Author.class)
+                .setParameter("dateFrom", dateFrom)
+                .setParameter("dateTo", dateTo).getResultList();
     }
 }
