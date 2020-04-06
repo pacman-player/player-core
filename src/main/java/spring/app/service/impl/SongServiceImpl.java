@@ -9,7 +9,10 @@ import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -79,6 +82,11 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song getById(long songId) {
         return songDao.getById(songId);
+    }
+
+    @Override
+    public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return songDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override

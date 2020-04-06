@@ -2,6 +2,7 @@ package spring.app.service.abstraction;
 
 import spring.app.model.Author;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface AuthorService {
@@ -35,6 +36,8 @@ public interface AuthorService {
     void updateAuthor(Author author);
 
     void deleteAuthorById(Long id);
+
+    List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     boolean isExist(String name);
 }

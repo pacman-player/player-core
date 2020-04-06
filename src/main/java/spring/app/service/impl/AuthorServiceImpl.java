@@ -6,11 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
+import spring.app.model.Song;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
 import spring.app.service.abstraction.NotificationTemplateService;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -89,6 +91,11 @@ public class AuthorServiceImpl implements AuthorService {
         songDao.bulkRemoveSongsByAuthorId(id);
         // теперь удаляем автора
         authorDao.deleteById(id);
+    }
+
+    @Override
+    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return authorDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override

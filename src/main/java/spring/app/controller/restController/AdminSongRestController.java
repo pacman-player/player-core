@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AuthorDto;
+import spring.app.dto.AuthorSongGenreListDto;
+import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
@@ -14,6 +17,8 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,5 +116,16 @@ public class AdminSongRestController {
         List<Genre> list = genreService.getAllGenre();
         LOGGER.info("Result has {} lines", list.size());
         return list;
+    }
+
+    @GetMapping("/authors_songs_genres_for_today")
+    public AuthorSongGenreListDto getAuthorSongGenreListForToday() {
+        AuthorSongGenreListDto authorSongGenreListDto = new AuthorSongGenreListDto();
+        Timestamp dateFrom = Timestamp.valueOf(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).minusNanos(0));
+        Timestamp dateTo = Timestamp.valueOf(LocalDateTime.now());
+        authorSongGenreListDto.setSongs(songService.getByCreatedDateRange(dateFrom, dateTo).stream().map(SongDto::new).collect(Collectors.toList()));
+        authorSongGenreListDto.setAuthors(authorService.getByCreatedDateRange(dateFrom, dateTo).stream().map(AuthorDto::new).collect(Collectors.toList()));
+        authorSongGenreListDto.setGenres(genreService.getByCreatedDateRange(dateFrom, dateTo).stream().map(GenreDto::new).collect(Collectors.toList()));
+        return authorSongGenreListDto;
     }
 }
