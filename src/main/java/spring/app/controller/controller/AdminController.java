@@ -42,9 +42,9 @@ public class AdminController {
         return "admin/songs";
     }
 
-    @GetMapping("/vk_bot")
+    @GetMapping("/report")
     public String getVkBot() {
-        return "admin/vk_bot";
+        return "admin/report";
     }
 
     @GetMapping("/notifications")
