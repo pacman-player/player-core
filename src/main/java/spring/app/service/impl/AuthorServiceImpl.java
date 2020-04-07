@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
-import spring.app.model.Song;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
@@ -33,6 +32,54 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public void addAuthor(Author author) {
+        authorDao.save(author);
+        NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
+
+        try {
+            notificationService.addNotification(author);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateAuthor(Author author) {
+        authorDao.update(author);
+    }
+
+    /**
+     * Когда удаляется Автор, удаляются все его песни
+     */
+    @Override
+    public void deleteAuthorById(Long id) {
+        // удаляем песни с данным автором
+        songDao.bulkRemoveSongsByAuthorId(id);
+        // теперь удаляем автора
+        authorDao.deleteById(id);
+    }
+
+    @Override
+    public Author getById(long authorsId) {
+        return authorDao.getById(authorsId);
+    }
+
+    @Override
+    public Author getByName(String name) {
+        return authorDao.getByName(name);
+    }
+
+    @Override
+    public List<Author> findAuthorsByNameContaining(String name) {
+        return authorDao.findByNameContaining(name);
+    }
+
+    @Override
+    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return authorDao.getByCreatedDateRange(dateFrom, dateTo);
+    }
+
+    @Override
     public List<Author> getAllAuthors() {
         return authorDao.getAll();
     }
@@ -50,52 +97,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int getLastApprovedAuthorsPageNumber(int pageSize) {
         return authorDao.getLastApprovedPageNumber(pageSize);
-    }
-
-    @Override
-    public void addAuthor(Author author) {
-        authorDao.save(author);
-        NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
-
-        try {
-            notificationService.addNotification(author);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Author getByName(String name) {
-        return authorDao.getByName(name);
-    }
-
-    @Override
-    public List<Author> findAuthorsByNameContaining(String name) {
-        return authorDao.findByNameContaining(name);
-    }
-
-    @Override
-    public Author getById(long authorsId) {
-        return authorDao.getById(authorsId);
-    }
-
-    @Override
-    public void updateAuthor(Author author) {
-        authorDao.update(author);
-    }
-
-    /** Когда удаляется Автор, удаляются все его песни */
-    @Override
-    public void deleteAuthorById(Long id) {
-        // удаляем песни с данным автором
-        songDao.bulkRemoveSongsByAuthorId(id);
-        // теперь удаляем автора
-        authorDao.deleteById(id);
-    }
-
-    @Override
-    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return authorDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override

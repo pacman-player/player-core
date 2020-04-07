@@ -3,20 +3,10 @@ package spring.app.service.abstraction;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
 public interface SongService {
-
-    List<Song> getAllSongs();
-
-    List<Song> getAllApprovedSongs();
-
-    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
-
-    int getLastApprovedSongsPageNumber(int pageSize);
 
     Song getByName(String name);
 
@@ -35,6 +25,14 @@ public interface SongService {
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     List<Song> getAllSongInSongCompilation(Long id);
+
+    List<Song> getAllSongs();
+
+    List<Song> getAllApprovedSongs();
+
+    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedSongsPageNumber(int pageSize);
 
     /**
      * возвращает все песни, в которых содержиться передаваемое значение

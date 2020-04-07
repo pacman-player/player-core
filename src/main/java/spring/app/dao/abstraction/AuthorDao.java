@@ -11,4 +11,10 @@ public interface AuthorDao extends GenericDao<Long, Author> {
     boolean isExist(String name);
 
     List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+
+    List<Author> getAllApproved();
+
+    List<Author> getApprovedPage(int pageNumber, int pageSize);
+
+    int getLastApprovedPageNumber(int pageSize);
 }

@@ -4,7 +4,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
@@ -68,34 +67,6 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         String hql = "FROM " + genericClassName;
         TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
         return query.getResultList();
-    }
-
-    public List<T> getAllApproved() {
-        String genericClassName = persistentClass.toGenericString();
-        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<T> query = entityManager.createQuery(hql, persistentClass);
-        return query.getResultList();
-    }
-
-    public List<T> getApprovedPage(int pageNumber, int pageSize) {
-        String genericClassName = persistentClass.toGenericString();
-        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-        String jql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<T> query = entityManager.createQuery(jql, persistentClass);
-        query.setFirstResult((pageNumber - 1) * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
-    }
-
-    public int getLastApprovedPageNumber(int pageSize) {
-        String genericClassName = persistentClass.toGenericString();
-        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-        String jql = "Select count(*) from " + genericClassName + " WHERE isApproved = true";
-        Query query = entityManager.createQuery(jql);
-        long count = (long) query.getSingleResult();
-        int lastPageNumber = (int) ((count / pageSize) + 1);
-        return lastPageNumber;
     }
 
 }
