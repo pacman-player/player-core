@@ -39,7 +39,6 @@ import java.util.*;
 @Controller("/test")
 public class MainController {
     private final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
-    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
@@ -66,6 +65,8 @@ public class MainController {
     private String redirectUri;
     @Value("${recaptcha.secret}")
     private String secret;
+    @Value("${googleCaptchaURL}")
+    private String googleCaptchaURL;
 
     @Autowired
     public MainController(RoleService roleService,
@@ -116,7 +117,7 @@ public class MainController {
     public String loginCaptcha(@RequestParam("g-recaptcha-response") String captchaResponse,
                                HttpSession session) {
         removeAttributesFromSession(session, "error");
-        String url = String.format(CAPTCHA_URL, secret, captchaResponse);
+        String url = String.format(googleCaptchaURL, secret, captchaResponse);
         CaptchaResponseDto captchaGoogleResponse =
                 restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
         if (!captchaGoogleResponse.isSuccess()) {
