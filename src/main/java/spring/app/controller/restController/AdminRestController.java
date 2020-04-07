@@ -128,7 +128,7 @@ public class AdminRestController {
         userService.deleteUserById(id);
     }
 
-    @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
         LOGGER.info("GET request '/company/{}'", userId);
         Company company = userService.getUserById(userId).getCompany();
@@ -136,7 +136,7 @@ public class AdminRestController {
         return ResponseEntity.ok(company);
     }
 
-    @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
         LOGGER.info("GET request '/companyById/{}'", companyId);
         Company company = companyService.getById(companyId);

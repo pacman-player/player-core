@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import spring.app.configuration.initializer.TestDataInit;
 
 import javax.annotation.PostConstruct;
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @EnableAsync
 @EnableCaching
-public class Main extends WebMvcConfigurerAdapter {
+public class Main implements WebMvcConfigurer {
 
     /*@Value("${portNotification}")
     private int portNotification;*/

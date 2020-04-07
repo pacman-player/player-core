@@ -47,12 +47,10 @@ public class MainController {
 
     private final RoleService roleService;
     private final UserService userService;
-    private final GenreService genreService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
     private final PlayListService playListService;
     private final AddressService addressService;
-    private final UserValidator userValidator;
 
     @Value("${googleRedirectUri}")
     private String googleRedirectUri;
@@ -73,15 +71,18 @@ public class MainController {
     private String redirectUri;
 
     @Autowired
-    public MainController(RoleService roleService, UserService userService, GenreService genreService, CompanyService companyService, OrgTypeService orgTypeService, PlayListService playListService, AddressService addressService, UserValidator userValidator) {
+    public MainController(RoleService roleService,
+                          UserService userService,
+                          CompanyService companyService,
+                          OrgTypeService orgTypeService,
+                          PlayListService playListService,
+                          AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.genreService = genreService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
         this.addressService = addressService;
-        this.userValidator = userValidator;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -221,7 +222,7 @@ public class MainController {
         LOGGER.info("VK auth code is {}", code);
         TransportClient transportClient = HttpTransportClient.getInstance();
         VkApiClient vk = new VkApiClient(transportClient);
-        UserAuthResponse authResponse = vk.oauth()
+        UserAuthResponse authResponse = vk.oAuth()
                 .userAuthorizationCodeFlow(Integer.parseInt(appId), clientSecret, redirectUri, code)
                 .execute();
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());

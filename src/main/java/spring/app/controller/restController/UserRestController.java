@@ -144,7 +144,7 @@ public class UserRestController {
         return role;
     }
 
-    @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Company> getUserCompany() {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("GET request '/company' from User = {}", user);
@@ -153,7 +153,7 @@ public class UserRestController {
         return ResponseEntity.ok(companyService.getById(id));
     }
 
-    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Company> getUserCompanyAddress() {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
@@ -163,7 +163,7 @@ public class UserRestController {
         return ResponseEntity.ok(company);
     }
 
-    @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("PUT request '/company' from User = {}", user);
@@ -177,7 +177,7 @@ public class UserRestController {
         LOGGER.info("Updated Company = {}", companyForUpdate);
     }
 
-	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("PUT request '/company/address' from User = {}", user);

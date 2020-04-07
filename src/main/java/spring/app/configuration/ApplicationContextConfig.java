@@ -9,24 +9,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
 @ComponentScan("spring.app")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class ApplicationContextConfig {
-
-    @Bean
-    public TemplateResolver springThymeleafTemplateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/templates/");
-        resolver.setSuffix(".html");
-        resolver.setOrder(1);
-        resolver.setCacheable(false);
-        return resolver;
-    }
 
     @Bean
     public ObjectMapper jsonObjectMapper() {
