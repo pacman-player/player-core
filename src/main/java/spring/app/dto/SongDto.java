@@ -2,12 +2,15 @@ package spring.app.dto;
 
 import spring.app.model.Song;
 
+import java.sql.Timestamp;
+
 public class SongDto {
 
     private Long id;
     private String name;
     private String authorName;
     private String genreName;
+    private Timestamp createdAt;
     private Boolean isApproved;
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
@@ -62,6 +65,7 @@ public class SongDto {
         } else {
             this.genreName = song.getGenre().getName();
         }
+        this.createdAt = song.getCreatedAt();
         this.isApproved = song.getApproved();
     }
 
@@ -95,6 +99,14 @@ public class SongDto {
 
     public void setGenreName(String genreName) {
         this.genreName = genreName;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Boolean getApproved() {
