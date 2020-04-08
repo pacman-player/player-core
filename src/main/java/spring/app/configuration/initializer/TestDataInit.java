@@ -104,6 +104,9 @@ public class TestDataInit {
         Role roleAnonymous = new Role("ANONYMOUS");
         roleService.addRole(roleAnonymous);
 
+        Role roleBot = new Role("BOT");
+        roleService.addRole(roleBot);
+
         // содаем и добавляем в БД регистрационные шаги для пользователей
         RegistrationStep rs1 = new RegistrationStep();
         rs1.setName("registration-step-user");
@@ -159,6 +162,15 @@ public class TestDataInit {
         user2Roles.add(roleUser);
         user2.setRoles(user2Roles);
         userService.addUser(user2);
+
+        // тестовые аккаунты: Bot
+        User bot = new User();
+        bot.setLogin("bot");
+        bot.setPassword("bot");
+        Set<Role> botRoles = new HashSet<>();
+        botRoles.add(roleBot);
+        bot.setRoles(botRoles);
+        userService.addUser(bot);
 
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
