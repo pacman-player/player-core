@@ -26,11 +26,48 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthors")
-    public List<Author> getAllAuthor() {
+    public List<Author> getAllAuthors() {
         LOGGER.info("GET request 'allAuthors'");
-        List<Author> list = authorService.getAllAuthor();
+        List<Author> list = authorService.getAllAuthors();
         LOGGER.info("Result has {} lines", list.size());
         return list;
+    }
+
+    @GetMapping("allApprovedAuthors")
+    public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
+        LOGGER.info("GET request 'allApprovedAuthors'");
+        List<Author> list = authorService.getAllApprovedAuthors();
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                list);
+
+        LOGGER.info("Result has {} lines", list.size());
+        return list;
+    }
+
+    @GetMapping("approvedAuthorsPage")
+    public List<Author> getApprovedAuthorsPage(@AuthenticationPrincipal User user,
+                                               @RequestParam(defaultValue = "1") Integer pageNumber,
+                                               @RequestParam(defaultValue = "5") Integer pageSize) {
+        LOGGER.info("GET request 'approvedAuthorsPage'");
+        List<Author> authorsPage = authorService.getApprovedAuthorsPage(pageNumber, pageSize);
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                authorsPage);
+
+        LOGGER.info("Result has {} lines", authorsPage.size());
+        return authorsPage;
+    }
+
+    @GetMapping("lastApprovedAuthorsPageNumber")
+    public Integer getLastApprovedAuthorsPageNumber(@RequestParam(defaultValue = "5") Integer pageSize) {
+        return authorService.getLastApprovedAuthorsPageNumber(pageSize);
     }
 
     @GetMapping("allAuthorsByName/{name}")

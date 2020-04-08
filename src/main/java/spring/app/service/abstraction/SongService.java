@@ -40,4 +40,10 @@ public interface SongService {
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     List<Song> getAllSongInSongCompilation(Long id);
+
+    List<Song> getAllApprovedSongs();
+
+    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedSongsPageNumber(int pageSize);
 }
