@@ -1,16 +1,14 @@
 package spring.app.dao.impl;
 
-import org.bouncycastle.util.Times;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -91,14 +89,6 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         }
     }
 
-    public boolean isExist(String name) {
-        TypedQuery<Song> query = entityManager.createQuery(
-                "SELECT s FROM Song s WHERE s.name = :name", Song.class);
-        query.setParameter("name", name);
-        List<Song> list = query.getResultList();
-        return !list.isEmpty();
-    }
-
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return entityManager
@@ -107,11 +97,47 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
                 .setParameter("dateTo", dateTo).getResultList();
     }
 
+    public List<Song> getAllApproved() {
+        String genericClassName = Song.class.toGenericString();
+        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
+        TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
+        return query.getResultList();
+    }
+
+    public List<Song> getApprovedPage(int pageNumber, int pageSize) {
+        String genericClassName = Song.class.toGenericString();
+        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+        String jql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
+        TypedQuery<Song> query = entityManager.createQuery(jql, Song.class);
+        query.setFirstResult((pageNumber - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
+
+    public int getLastApprovedPageNumber(int pageSize) {
+        String genericClassName = Song.class.toGenericString();
+        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+        String jql = "Select count(*) from " + genericClassName + " WHERE isApproved = true";
+        Query query = entityManager.createQuery(jql);
+        long count = (long) query.getSingleResult();
+        int lastPageNumber = (int) ((count / pageSize) + 1);
+        return lastPageNumber;
+    }
+
     @Override
     public void bulkRemoveSongsByAuthorId(Long authorId) {
         entityManager.createQuery("DELETE FROM Song s WHERE s.author.id = :authorId")
                 .setParameter("authorId", authorId)
                 .executeUpdate();
         entityManager.flush();
+    }
+
+    public boolean isExist(String name) {
+        TypedQuery<Song> query = entityManager.createQuery(
+                "SELECT s FROM Song s WHERE s.name = :name", Song.class);
+        query.setParameter("name", name);
+        List<Song> list = query.getResultList();
+        return !list.isEmpty();
     }
 }

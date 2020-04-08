@@ -10,9 +10,7 @@ import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -27,11 +25,6 @@ public class SongServiceImpl implements SongService {
     public SongServiceImpl(SongDao songDao, SongCompilationService songCompilationService) {
         this.songDao = songDao;
         this.songCompilationService = songCompilationService;
-    }
-
-    @Override
-    public List<Song> getAllSong() {
-        return songDao.getAll();
     }
 
     @Override
@@ -89,6 +82,26 @@ public class SongServiceImpl implements SongService {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();
         return new ArrayList<>(allSongSet);
+    }
+
+    @Override
+    public List<Song> getAllSongs() {
+        return songDao.getAll();
+    }
+
+    @Override
+    public List<Song> getAllApprovedSongs() {
+        return songDao.getAllApproved();
+    }
+
+    @Override
+    public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {
+        return songDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedSongsPageNumber(int pageSize) {
+        return songDao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override
