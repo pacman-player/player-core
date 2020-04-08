@@ -4,10 +4,6 @@ import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.TelegramUserDao;
 import spring.app.model.TelegramUser;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 @Repository
 public class TelegramUserDaoImpl extends AbstractDao<Long, TelegramUser> implements TelegramUserDao {
 
@@ -17,11 +13,9 @@ public class TelegramUserDaoImpl extends AbstractDao<Long, TelegramUser> impleme
 
     @Override
     public boolean isTelegramUserExists(Long telegramUserId) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = cb.createQuery(Long.class);
-        Root<TelegramUser> root = query.from(TelegramUser.class);
-        query.select(cb.count(root));
-        Long count = entityManager.createQuery(query).getSingleResult();
-        return count > 0;
+        return (Long) entityManager.createQuery(
+                "SELECT COUNT(tu.id) FROM TelegramUser tu WHERE tu.id = :id")
+                .setParameter("id", telegramUserId)
+                .getSingleResult() > 0;
     }
 }
