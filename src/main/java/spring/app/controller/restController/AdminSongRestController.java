@@ -45,7 +45,7 @@ public class AdminSongRestController {
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
         LOGGER.info("GET request '/all_songs'");
-        List<SongDto> list = songService.getAllSong()
+        List<SongDto> list = songService.getAllSongs()
                 .stream()
                 .map(SongDto::new)
                 .collect(Collectors.toList());

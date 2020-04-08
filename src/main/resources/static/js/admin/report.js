@@ -77,8 +77,9 @@ $(document).ready(function () {
                     tr.append(`
                             <td>${id}</td>   
                             <td>${name}</td>
-                            <td>${createTime.getHours() + ':' +
-                    createTime.getMinutes() + ':' + createTime.getSeconds()}</td>
+                            <td>${checkTime(createTime.getHours()) + ':' +
+                                    checkTime(createTime.getMinutes()) + ':' + 
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableAuthorsBody.append(tr);
                 }
@@ -92,8 +93,9 @@ $(document).ready(function () {
                     tr.append(`
                             <td>${id}</td>   
                             <td>${name}</td>
-                            <td>${createTime.getHours() + ':' +
-                    createTime.getMinutes() + ':' + createTime.getSeconds()}</td>
+                            <td>${checkTime(createTime.getHours()) + ':' +
+                                    checkTime(createTime.getMinutes()) + ':' +
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableSongsBody.append(tr);
                 }
@@ -107,12 +109,20 @@ $(document).ready(function () {
                     tr.append(`
                             <td>${id}</td>   
                             <td>${name}</td>
-                            <td>${createTime.getHours() + ':' +
-                    createTime.getMinutes() + ':' + createTime.getSeconds()}</td>
+                            <td>${checkTime(createTime.getHours()) + ':' +
+                                    checkTime(createTime.getMinutes()) + ':' +
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableGenresBody.append(tr);
                 }
             }
         });
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
     }
 });
