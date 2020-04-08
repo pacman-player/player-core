@@ -35,7 +35,7 @@ public interface SongService {
      */
     List<Song> findSongsByNameContaining(String name);
 
-    List<Song> getAllSong();
+    List<Song> getAllSongs();
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
