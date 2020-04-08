@@ -1,5 +1,6 @@
 package spring.app.configuration.initializer;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -204,19 +205,47 @@ public class TestDataInit {
         dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
         dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
 
-//        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"}, Sets.newHashSet("Billie", "Eilish", "Khalid", "Lovely"));
-//        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"}, Sets.newHashSet("BLACKPINK", "Really"));
-//        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"пост-панк"}, Sets.newHashSet("Echo", "Bunnymen", "Killing Moon"));
-//        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"поп"}, Sets.newHashSet("Ed Sheeran", "Small Bump"));
-//        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"поп"}, Sets.newHashSet("Katy Perry", "Into Me You See"));
-//        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"рок", "пост-панк"}, Sets.newHashSet("New Order", "Love Vigilantes"));
-//        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"поп"}, Sets.newHashSet("OneRepublic", "Logic", "Start Again"));
-//        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"поп"}, Sets.newHashSet("Parade of Lights", "Tangled Up"));
-//        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"поп", "электронная"}, Sets.newHashSet("Telekinesis", "Falling In Dreams"));
-//        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"рок"}, Sets.newHashSet("The Alarm", "Strength"));
-//        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"поп", "соул"}, Sets.newHashSet("Tom Walker", "My Way"));
-//        dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"}, Sets.newHashSet("Yungblud", "Charlottle Lawrer", "Falling Skies"));
-//        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"}, Sets.newHashSet("Yungblud", "Tin Pan Boy"));
+        Song song_1 = songService.getByName("Lovely");
+        Song song_2 = songService.getByName("Really");
+        Song song_3 = songService.getByName("The Killing Moon");
+        Song song_4 = songService.getByName("Small Bump (Live From Wembley Stadium)");
+        Song song_5 = songService.getByName("Into Me You See");
+        Song song_6 = songService.getByName("Love Vigilantes");
+        Song song_7 = songService.getByName("Start Again");
+        Song song_8 = songService.getByName("Tangled Up");
+        Song song_9 = songService.getByName("Falling (In Dreams)");
+        Song song_10 = songService.getByName("Strength");
+        Song song_11 = songService.getByName("My Way");
+        Song song_12 = songService.getByName("Falling Skies");
+        Song song_13 = songService.getByName("Tin Pan Boy");
+
+        song_1.setSearchTags(Sets.newHashSet("Billie", "Eilish", "Khalid", "Lovely"));
+        song_2.setSearchTags(Sets.newHashSet("BLACKPINK", "Really"));
+        song_3.setSearchTags(Sets.newHashSet("Echo", "Bunnymen", "Killing Moon"));
+        song_4.setSearchTags(Sets.newHashSet("Ed Sheeran", "Small Bump"));
+        song_5.setSearchTags(Sets.newHashSet("Katy Perry", "Into Me You See"));
+        song_6.setSearchTags(Sets.newHashSet("New Order", "Love Vigilantes"));
+        song_7.setSearchTags(Sets.newHashSet("OneRepublic", "Logic", "Start Again"));
+        song_8.setSearchTags(Sets.newHashSet("Parade of Lights", "Tangled Up"));
+        song_9.setSearchTags(Sets.newHashSet("Telekinesis", "Falling In Dreams"));
+        song_10.setSearchTags(Sets.newHashSet("The Alarm", "Strength"));
+        song_11.setSearchTags(Sets.newHashSet("Tom Walker", "My Way"));
+        song_12.setSearchTags(Sets.newHashSet("Yungblud", "Charlottle Lawrer", "Falling Skies"));
+        song_13.setSearchTags(Sets.newHashSet("Yungblud", "Tin Pan Boy"));
+
+        songService.updateSong(song_1);
+        songService.updateSong(song_2);
+        songService.updateSong(song_3);
+        songService.updateSong(song_4);
+        songService.updateSong(song_5);
+        songService.updateSong(song_6);
+        songService.updateSong(song_7);
+        songService.updateSong(song_8);
+        songService.updateSong(song_9);
+        songService.updateSong(song_10);
+        songService.updateSong(song_11);
+        songService.updateSong(song_12);
+        songService.updateSong(song_13);
 
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
