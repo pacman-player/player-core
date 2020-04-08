@@ -54,6 +54,7 @@
                                                 <th>Разрешена</th>
                                                 <th>Название</th>
                                                 <th>Автор</th>
+                                                <th>Поисковые теги</th>
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
@@ -111,6 +112,12 @@
                                                                                        name="name"
                                                                                        required=""/>
 
+                                                                                <label for="updateSongSearchTags">Поисковые теги</label>
+                                                                                <input id="updateSongSearchTags"
+                                                                                       class="form-control" type="text"
+                                                                                       name="searchTags"
+                                                                                       required=""/>
+
                                                                                 <label for="updateSongGenre">Жанр</label>
                                                                                 <select class="form-control"
                                                                                         id="updateSongGenre"
@@ -165,11 +172,16 @@
                                                             <input id="addSongAuthor" class="form-control" type="text"
                                                                    placeholder="Enter author name" name="author"/>
 
+                                                            <label for="addSongTags">Поисковые теги</label>
+                                                            <input id="addSongTags" class="form-control" type="text"
+                                                                   placeholder="Enter search tags" name="searchTags"/>
+
                                                             <label for="addSongGenre">Жанр</label>
                                                             <select class="form-control" id="addSongGenre"
                                                                     name="addGenre">
                                                                 <!--заполняем через js-->
                                                             </select>
+
                                                             <button type="button" id="addSongBtn"
                                                                     class="btn btn-success btn-lg">
                                                                 Добавить

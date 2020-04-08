@@ -22,6 +22,7 @@ function getSongsTable() {
                 songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
                 songTable += ('<td id="tableSongAuthor">' + listSong[i].authorName + '</td>');
+                songTable += ('<td id="tableSongSearchTags">' + listSong[i].searchTags + '</td>');
                 songTable += ('<td id="tableSongGenre">' + listSong[i].genreName + '</td>');
                 songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
@@ -48,6 +49,7 @@ function editSong(id) {
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
             $("#updateSongAuthor").val(editData.authorName);
+            $("#updateSongSearchTags").val(editData.searchTags);
             $("#updateSongGenre").val(editData.genreName);
             //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genreName);
@@ -89,6 +91,7 @@ function updateSongForm() {
     editSong.approved = $("#updateSongApproved").prop('checked');
     editSong.name = $("#updateSongName").val();
     editSong.authorName = $("#updateSongAuthor").val();
+    editSong.searchTags = $("#updateSongSearchTags").val();
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
@@ -148,6 +151,7 @@ function addSongForm() {
     var addSong = {};
     addSong.name = $('#addSongName').val();
     addSong.authorName = $('#addSongAuthor').val();
+    addSong.searchTags = $('#addSongTags').val();
     addSong.genreName = $('#addSongGenre').val();
     $.ajax({
         method: 'POST',
@@ -157,6 +161,7 @@ function addSongForm() {
         success: function () {
             $('#addSongName').val('');
             $('#addSongAuthor').val('');
+            $('#addSongTags').val('');
             $('#tab-song-panel').tab('show');
             getSongsTable();
         },

@@ -1,5 +1,6 @@
 package spring.app.controller.restController;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,7 @@ public class AdminSongRestController {
         if (genre != null) {
             song.setGenre(genre);
         }
+        song.setSearchTags(Sets.newHashSet(songDto.getSearchTags().split(" ")));
         songService.addSong(song);
         LOGGER.info("Added Song = {}", song);
     }
@@ -95,6 +97,7 @@ public class AdminSongRestController {
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
+        song.setSearchTags(Sets.newHashSet(songDto.getSearchTags().split(" ")));
         song.setGenre(genre);
         songService.updateSong(song);
         LOGGER.info("Updated Song as = {}", song);

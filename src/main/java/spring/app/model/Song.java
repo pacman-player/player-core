@@ -43,7 +43,8 @@ public class Song extends Bannable {
     private Genre genre;
 
     @ElementCollection
-    @Column(name = "search_tags")
+    @CollectionTable(name = "song_search_tags", joinColumns = @JoinColumn(name = "song_id"))
+    @Column(name = "search_tag")
     private Set<String> searchTags = new HashSet<>();
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
@@ -110,6 +111,13 @@ public class Song extends Bannable {
         this.name = name;
         this.author = author;
         this.genre = genre;
+    }
+
+    public Song(String name, Author author, Genre genre, Set<String> searchTags) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.searchTags = searchTags;
     }
 
     public Song(String name) {

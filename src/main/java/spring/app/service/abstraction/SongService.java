@@ -3,20 +3,9 @@ package spring.app.service.abstraction;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-
 public interface SongService {
-
-    List<Song> getAllSong();
-
-    Song getByName(String name);
-
-    Song getByAuthorAndName(String author, String name);
-
-    Song getSongById(Long id);
 
     void addSong(Song song);
 
@@ -26,9 +15,18 @@ public interface SongService {
 
     boolean isExist(String name);
 
-    List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+    Song getSongById(Long id);
 
-    List<Song> getAllSongInSongCompilation(Long id);
+    Song getByName(String name);
+
+    Song getByAuthorAndName(String author, String name);
+
+    /**
+     * Возвращает песню по id
+     *
+     * @return Song
+     */
+    Song getById(long songId);
 
     /**
      * возвращает все песни, в которых содержиться передаваемое значение
@@ -37,10 +35,9 @@ public interface SongService {
      */
     List<Song> findSongsByNameContaining(String name);
 
-    /**
-     * Возвращает песню по id
-     *
-     * @return Song
-     */
-    Song getById(long songId);
+    List<Song> getAllSong();
+
+    List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+
+    List<Song> getAllSongInSongCompilation(Long id);
 }
