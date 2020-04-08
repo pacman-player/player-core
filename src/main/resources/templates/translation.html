@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Панель админа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -14,9 +16,7 @@
     <script src="../static/js/howler.js" th:src="@{/js/howler.js}"></script>
     <script src="../static/js/sound.js" th:src="@{/js/sound.js}"></script>
     <link rel="stylesheet" th:href="@{style.css}"/>
-
 </head>
-
 <body>
 <div class="container-fluid">
     <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
@@ -60,7 +60,7 @@
                                     <i class="fas fa-play play"></i>
                                     <i class="fas fa-pause pause hide"></i>
                                 </button>
-                                <button type="button"  class="static soundBtnStop">
+                                <button type="button" class="static soundBtnStop">
                                     <i class="fas fa-stop"></i>
                                 </button>
                                 <p class="songName">GorProject_LA</p>
@@ -68,11 +68,11 @@
                             </li>
 
                             <li class="list-group-item borderless" id="Florence">
-                                <button type="button"  class="static soundBtn">
+                                <button type="button" class="static soundBtn">
                                     <i class="fas fa-play play"></i>
                                     <i class="fas fa-pause pause hide"></i>
                                 </button>
-                                <button type="button"  class="static soundBtnStop">
+                                <button type="button" class="static soundBtnStop">
                                     <i class="fas fa-stop"></i>
                                 </button>
                                 <p class="songName">Florence</p>
@@ -110,7 +110,6 @@
         </div>
     </div>
 </div>
-<!--<script type="text/javascript" src="/js/howler.js"></script>-->
-
+<script type="text/javascript" src="/js/csrf.js" rel="script"></script>
 </body>
 </html>
