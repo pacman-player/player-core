@@ -8,7 +8,9 @@ import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.TrashService;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -20,18 +22,22 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
+    private TrashService<Author> trashService;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
+    public AdminAuthorRestController(AuthorService authorService,
+                                     GenreService genreService,
+                                     TrashService<Author> trashService) {
         this.authorService = authorService;
         this.genreService = genreService;
+        this.trashService = trashService;
     }
 
     /*
-    * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
-    * Необходимо сделать так, чтобы DAO возвращал список DTO
-    */
+     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+     * Необходимо сделать так, чтобы DAO возвращал список DTO
+     */
     @GetMapping(value = "/all_authors")
-    public List<AuthorDto> getAllAuthor(){
+    public List<AuthorDto> getAllAuthor() {
         LOGGER.info("GET request '/all_authors'");
         List<Author> authorList = authorService.getAllAuthor();
         //Проходимся по листу авторов и делаем AuthorDto из каждого Author
@@ -41,7 +47,7 @@ public class AdminAuthorRestController {
     }
 
     @GetMapping(value = "/{id}")
-    public Author getByIdAuthor(@PathVariable(value = "id") Long authorId){
+    public Author getByIdAuthor(@PathVariable(value = "id") Long authorId) {
         LOGGER.info("GET request '/{}'", authorId);
         Author author = authorService.getById(authorId);
         LOGGER.info("Found Author = {}", author);
@@ -56,7 +62,7 @@ public class AdminAuthorRestController {
             Author author = new Author();
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
-            authorService.addAuthor(author);
+            authorService.save(author);
             LOGGER.info("Added new Author = {}", author);
         } else {
             LOGGER.info("New Author was not added!");
@@ -76,9 +82,10 @@ public class AdminAuthorRestController {
     }
 
     @DeleteMapping(value = "/delete_author")
-    public void deleteAuthor(@RequestBody Long id){
+    public void deleteAuthor(@RequestBody Long id) throws IOException, InterruptedException {
         LOGGER.info("DELETE request '/delete_author' with id = {}", id);
-        authorService.deleteAuthorById(id);
+        Author author = authorService.getById(id);
+        trashService.moveToTrash(author);
     }
 
     @GetMapping(value = "/all_genre")
@@ -98,7 +105,7 @@ public class AdminAuthorRestController {
 
     /**
      * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого исполнителя (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
-     * */
+     */
     @GetMapping(value = "/is_free")
     public boolean isLoginFree(@RequestParam String name,
                                @RequestParam("id") Long id) {

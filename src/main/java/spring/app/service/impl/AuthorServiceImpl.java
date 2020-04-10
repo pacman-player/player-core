@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
-import spring.app.model.Song;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
@@ -38,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void addAuthor(Author author) {
+    public void save(Author author) {
         authorDao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
@@ -69,15 +68,6 @@ public class AuthorServiceImpl implements AuthorService {
         authorDao.update(author);
     }
 
-    /** Когда удаляется Автор, удаляются все его песни */
-    @Override
-    public void deleteAuthorById(Long id) {
-        // удаляем песни с данным автором
-        songDao.bulkRemoveSongsByAuthorId(id);
-        // теперь удаляем автора
-        authorDao.deleteById(id);
-    }
-
     @Override
     public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return authorDao.getByCreatedDateRange(dateFrom, dateTo);
@@ -88,4 +78,11 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDao.isExist(name);
     }
 
+    @Override
+    public void deleteEntity(Author entity) {
+        // удаляем песни с данным автором
+        songDao.bulkRemoveSongsByAuthorId(entity.getId());
+        // теперь удаляем автора
+        authorDao.deleteEntity(entity);
+    }
 }

@@ -40,9 +40,9 @@ public class DataUpdateServiceImpl implements DataUpdateService {
 
         Author author = authorService.getByName(authorName);
         if (author == null) { // если автора нет в БД, тогда сохраняем нового
-                              // и присваиваем переменной authorGenres пустой сет жанров
+            // и присваиваем переменной authorGenres пустой сет жанров
             author = new Author(authorName);
-            authorService.addAuthor(author);
+            authorService.save(author);
             authorGenres = new HashSet<>();
         } else {
             // если автор есть, записываем его жанры в переменную
@@ -66,8 +66,8 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         Song song = songService.getByName(songName);
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
-            song = new Song(songName, author,(Genre)authorGenres.toArray()[0]);
-            songService.addSong(song);
+            song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
+            songService.save(song);
         }
         // возвращаем id песни
         return song.getId();

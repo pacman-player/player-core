@@ -72,7 +72,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         if (author == null) {
             Author author1 = new Author(songAuthor);
             author1.getAuthorGenres().add(genre);
-            authorService.addAuthor(author1);
+            authorService.save(author1);
             author = authorService.getByName(songAuthor);
         } else {
             author.getAuthorGenres().add(genre);
@@ -81,7 +81,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         Song song = new Song(songName);
         song.setAuthor(author);
         song.setGenre(genre);
-        songService.addSong(song);
+        songService.save(song);
         song = songService.getByName(songName);
 
         try {

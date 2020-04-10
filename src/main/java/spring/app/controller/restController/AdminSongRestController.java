@@ -16,7 +16,9 @@ import spring.app.model.Song;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
+import spring.app.service.abstraction.TrashService;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,12 +32,17 @@ public class AdminSongRestController {
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private TrashService<Song> trashService;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
+    public AdminSongRestController(SongService songService,
+                                   AuthorService authorService,
+                                   GenreService genreService,
+                                   TrashService<Song> trashService) {
         this.songService = songService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.trashService = trashService;
     }
 
     /*
@@ -54,9 +61,10 @@ public class AdminSongRestController {
     }
 
     @DeleteMapping(value = "/delete_song/{id}")
-    public void deleteSong(@PathVariable("id") Long id) {
+    public void deleteSong(@PathVariable("id") Long id) throws IOException, InterruptedException {
         LOGGER.info("DELETE request '/delete_song/{}'", id);
-        songService.deleteSongById(id);
+        Song song = songService.getById(id);
+        trashService.moveToTrash(song);
     }
 
     /*
@@ -70,14 +78,14 @@ public class AdminSongRestController {
         if (author != null) {
             song.setAuthor(author);
         } else {
-            authorService.addAuthor(new Author(songDto.getAuthorName()));
+            authorService.save(new Author(songDto.getAuthorName()));
             song.setAuthor(authorService.getByName(songDto.getAuthorName()));
         }
         Genre genre = genreService.getByName(songDto.getGenreName());
         if (genre != null) {
             song.setGenre(genre);
         }
-        songService.addSong(song);
+        songService.save(song);
         LOGGER.info("Added Song = {}", song);
     }
 

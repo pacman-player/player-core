@@ -10,9 +10,7 @@ import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -40,8 +38,13 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void addSong(Song song) {
+    public void save(Song song) {
         songDao.save(song);
+    }
+
+    @Override
+    public void deleteEntity(Song entity) {
+        songDao.deleteEntity(entity);
     }
 
     @Override

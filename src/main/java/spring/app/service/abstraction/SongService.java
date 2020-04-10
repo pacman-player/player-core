@@ -3,12 +3,10 @@ package spring.app.service.abstraction;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
-public interface SongService {
+public interface SongService extends GenericService<Song> {
 
     List<Song> getAllSong();
 
@@ -17,8 +15,6 @@ public interface SongService {
     Song getByAuthorAndName(String author, String name);
 
     Song getSongById(Long id);
-
-    void addSong(Song song);
 
     void updateSong(Song song);
 

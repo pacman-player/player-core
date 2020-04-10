@@ -5,22 +5,25 @@ import java.util.List;
 
 public interface GenericDao<PK extends Serializable, T> {
 
-	void save(T entity);
+    void save(T entity);
 
-	T getById(PK id);
+    T getById(PK id);
 
-	List<T> getAll();
+    List<T> getAll();
 
-	List<T> getAllApproved();
+    List<T> getAllApproved();
 
-	void update(T group);
+    void update(T group);
 
-	void deleteById(PK id);
+    void deleteById(PK id);
 
-	/**
-	 * Возвращает список сущностей, в имени которых содержиться переданный параметр
-	 * @return List<Song>
-	 */
-	List<T> findByNameContaining(String param);
+    void deleteEntity(T entity);
+
+    /**
+     * Возвращает список сущностей, в имени которых содержиться переданный параметр
+     *
+     * @return List<Song>
+     */
+    List<T> findByNameContaining(String param);
 
 }
