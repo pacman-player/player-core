@@ -99,7 +99,7 @@ public class AdminRestController {
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
         LOGGER.info("GET request '/all_establishments'");
-        List<OrgType> list = orgTypeService.getAllOrgType();
+        List<OrgType> list = orgTypeService.getAllOrgTypes();
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }

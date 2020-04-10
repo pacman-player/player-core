@@ -7,16 +7,9 @@ import java.util.List;
 
 public interface AuthorService extends GenericService<Author> {
 
-    List<Author> getAllAuthor();
-
     Author getByName(String name);
 
-    /**
-     * Возвращает всех авторов, у которых совпадает передаваемое значение
-     *
-     * @return list<Author>
-     */
-    List<Author> findAuthorsByNameContaining(String name);
+    void deleteAuthorById(Long id);
 
     /**
      * Возвращает автора по id
@@ -25,9 +18,24 @@ public interface AuthorService extends GenericService<Author> {
      */
     Author getById(long authorsId);
 
+    /**
+     * Возвращает всех авторов, у которых совпадает передаваемое значение
+     *
+     * @return list<Author>
+     */
+    List<Author> findAuthorsByNameContaining(String name);
+
     void updateAuthor(Author author);
 
     List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+
+    List<Author> getAllAuthors();
+
+    List<Author> getAllApprovedAuthors();
+
+    List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedAuthorsPageNumber(int pageSize);
 
     boolean isExist(String name);
 }

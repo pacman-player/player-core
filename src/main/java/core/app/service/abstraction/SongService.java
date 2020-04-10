@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface SongService extends GenericService<Song> {
 
-    List<Song> getAllSong();
-
     Song getByName(String name);
 
     Song getByAuthorAndName(String author, String name);
@@ -26,6 +24,14 @@ public interface SongService extends GenericService<Song> {
 
     List<Song> getAllSongInSongCompilation(Long id);
 
+    List<Song> getAllSongs();
+
+    List<Song> getAllApprovedSongs();
+
+    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
+
+    int getLastApprovedSongsPageNumber(int pageSize);
+
     /**
      * возвращает все песни, в которых содержиться передаваемое значение
      *
@@ -39,4 +45,8 @@ public interface SongService extends GenericService<Song> {
      * @return Song
      */
     Song getById(long songId);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }

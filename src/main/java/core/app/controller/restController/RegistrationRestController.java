@@ -29,24 +29,23 @@ public class RegistrationRestController {
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
-    private RoleService roleService;
     private RegistrationStepService registrationStepService;
     private AddressService addressService;
 
     @Autowired
-    public RegistrationRestController(
-            UserService userService, CompanyService companyService, OrgTypeService orgTypeService,
-            PlayListService playListService, RoleService roleService,
-            RegistrationStepService registrationStepService, AddressService addressService) {
+    public RegistrationRestController(UserService userService,
+                                      CompanyService companyService,
+                                      OrgTypeService orgTypeService,
+                                      PlayListService playListService,
+                                      RegistrationStepService registrationStepService,
+                                      AddressService addressService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
-        this.roleService = roleService;
         this.registrationStepService = registrationStepService;
         this.addressService = addressService;
     }
-
 
     @PostMapping("/user")
     public void saveUser(UserRegistrationDto userDto) {
@@ -201,8 +200,7 @@ public class RegistrationRestController {
     public List<String> getMissedRegStepsNames(HttpServletRequest request) {
         List<Long> stepsIds = getMissedRegStepsIds(request);
         List<String> stepsNames = new ArrayList<>();
-        for (Long id : stepsIds
-             ) {
+        for (Long id : stepsIds) {
             stepsNames.add(registrationStepService.getRegStepById(id).getName());
         }
         return stepsNames;
@@ -215,5 +213,8 @@ public class RegistrationRestController {
         return ResponseEntity.ok(registrationStep);
     }
 
-
+    @GetMapping(value = "/get_all_orgTypes")
+    public List<OrgType> getAllOrgTypes() {
+        return orgTypeService.getAllOrgTypes();
+    }
 }

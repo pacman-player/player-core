@@ -9,5 +9,7 @@ public interface GenreDao extends GenericDao<Long, Genre> {
     Genre getByName(String name);
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+
+    List<Genre> getAllApproved();
 }
 

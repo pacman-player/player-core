@@ -24,6 +24,7 @@ public class TelegramServiceImpl implements TelegramService {
     private final SongQueueService songQueueService;
     private final SongService songService;
     private final CompanyService companyService;
+    private PlayerPaths playerPaths;
     private Track track = null;
     private Long songId;
 
@@ -31,12 +32,14 @@ public class TelegramServiceImpl implements TelegramService {
                                CutSongService cutSongService,
                                SongQueueService songQueueService,
                                SongService songService,
-                               CompanyService companyService) {
+                               CompanyService companyService,
+                               PlayerPaths playerPaths) {
         this.musicSearchService = musicSearchService;
         this.cutSongService = cutSongService;
         this.songQueueService = songQueueService;
         this.songService = songService;
         this.companyService = companyService;
+        this.playerPaths = playerPaths;
     }
 
     @Override
@@ -82,13 +85,11 @@ public class TelegramServiceImpl implements TelegramService {
             byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
             // получаем id песни после занесения в БД
             songId = musicSearchService.updateData(track);
-            Path path = PlayerPaths.getSongsDir(songId + ".mp3");
-            if (track.getPath() != null) {
-                try {
-                    Files.write(path, track.getTrack());  //записываем песню с директорию
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            Path path = playerPaths.getSongDir(songId);
+            try {
+                Files.write(path, track.getTrack());  //записываем песню в директорию
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             // По position определяем позицию песни в очереди song_queue.

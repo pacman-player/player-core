@@ -24,6 +24,7 @@ public class OrgTypeServiceImpl implements OrgTypeService {
     public void addOrgType(OrgType orgType) {
         orgTypeDao.save(orgType);
     }
+
     @Override
     public List<OrgType> getAllOrgTypes() {
         return orgTypeDao.getAll();
@@ -47,10 +48,5 @@ public class OrgTypeServiceImpl implements OrgTypeService {
     @Override
     public void updateOrgType(OrgType orgType) {
         orgTypeDao.update(orgType);
-    }
-
-    @Override
-    public List<OrgType> getAllOrgType() {
-        return orgTypeDao.getAll();
     }
 }

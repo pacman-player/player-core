@@ -13,10 +13,20 @@ public interface SongDao extends GenericDao<Long, Song> {
 
     List<Song> getAllWithGenreByGenreId(Long id);
 
-    boolean isExist(String name);
-
     List<Song> getByCreatedDateRange(Timestamp from, Timestamp to);
 
+    List<Song> getAllApproved();
+
+    List<Song> getApprovedPage(int pageNumber, int pageSize);
+
+    int getLastApprovedPageNumber(int pageSize);
+
     void bulkRemoveSongsByAuthorId(Long id);
+
+    boolean isExist(String name);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }
 

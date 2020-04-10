@@ -14,13 +14,13 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @EnableAsync
 @EnableCaching
-public class Main implements WebMvcConfigurer {
+public class CoreApplication implements WebMvcConfigurer {
 
     /*@Value("${portNotification}")
     private int portNotification;*/
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(CoreApplication.class, args);
 
 //        //для тестирования Zaycev
 //        ZaycevSaitServiceImpl zaycevSaitServise = new ZaycevSaitServiceImpl();

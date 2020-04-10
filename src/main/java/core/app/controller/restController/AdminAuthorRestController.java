@@ -39,7 +39,7 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor() {
         LOGGER.info("GET request '/all_authors'");
-        List<Author> authorList = authorService.getAllAuthor();
+        List<Author> authorList = authorService.getAllAuthors();
         //Проходимся по листу авторов и делаем AuthorDto из каждого Author
         List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
         LOGGER.info("Result has {} lines", authorDtoList.size());

@@ -58,7 +58,7 @@ public class User implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE},
             fetch = FetchType.LAZY)
-    @JoinTable(name = "user_on_registrationstep",
+    @JoinTable(name = "users_on_registrationsteps",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "registration_step_id")})
     private List<RegistrationStep> registrationSteps = new ArrayList<>();

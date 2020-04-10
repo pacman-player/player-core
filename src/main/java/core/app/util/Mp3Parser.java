@@ -22,24 +22,18 @@ import java.util.Arrays;
 public class Mp3Parser {
 
     private final SongService songService;
-    private final AuthorService authorService;
-    private final GenreService genreService;
-    private final SongCompilationService songCompilationService;
     private final MusicSearchService musicSearchService;
+    private PlayerPaths playerPaths;
 
     @Value("${music.path}")
     private String musicPath;
 
     public Mp3Parser(SongService songService,
-                     AuthorService authorService,
-                     GenreService genreService,
-                     SongCompilationService songCompilationService,
-                     MusicSearchService musicSearchService) {
+                     MusicSearchService musicSearchService,
+                     PlayerPaths playerPaths) {
         this.songService = songService;
-        this.authorService = authorService;
-        this.genreService = genreService;
-        this.songCompilationService = songCompilationService;
         this.musicSearchService = musicSearchService;
+        this.playerPaths = playerPaths;
     }
 
 
@@ -118,8 +112,8 @@ public class Mp3Parser {
             name = id3v2Tag.getTitle();
             author = id3v2Tag.getArtist();
         }
-        Song song = songService.getByAuthorAndName(author, name);
-        Path fileO = Paths.get(musicPath + song.getId() + ".mp3");
-        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
+        Long songId = songService.getSongIdByAuthorAndName(author, name);
+        Path pathToSaveFile = playerPaths.getSongDir(songId);
+        Files.copy(new FileInputStream(file), pathToSaveFile, StandardCopyOption.REPLACE_EXISTING);
     }
 }

@@ -6,7 +6,7 @@ let NavBar = {
             '        <ul class="nav navbar-nav">\n' +
             '            <li id="adminLink" style="display: none"><a href="/admin/users">Меню администратора</a></li>\n' +
             '        </ul>' +
-            '            <a class="navbar-brand pull-right" href="/logout">Выход</a>\n' +
+            '            <a class="navbar-brand pull-right" href="#" id="logout-btn">Выход</a>\n' +
             '            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>\n' +
             '            <div id="listNotification" class="pull-right"></div>\n' +
             '        </div>\n' +
@@ -31,9 +31,6 @@ let NavBar = {
         })
     }
 };
-
-
-
 
 
 export default NavBar;

@@ -32,11 +32,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAllAuthor() {
-        return authorDao.getAll();
-    }
-
-    @Override
     public void save(Author author) {
         authorDao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
@@ -46,6 +41,27 @@ public class AuthorServiceImpl implements AuthorService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateAuthor(Author author) {
+        authorDao.update(author);
+    }
+
+    /**
+     * Когда удаляется Автор, удаляются все его песни
+     */
+    @Override
+    public void deleteAuthorById(Long id) {
+        // удаляем песни с данным автором
+        songDao.bulkRemoveSongsByAuthorId(id);
+        // теперь удаляем автора
+        authorDao.deleteById(id);
+    }
+
+    @Override
+    public Author getById(long authorsId) {
+        return authorDao.getById(authorsId);
     }
 
     @Override
@@ -59,18 +75,28 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(long authorsId) {
-        return authorDao.getById(authorsId);
-    }
-
-    @Override
-    public void updateAuthor(Author author) {
-        authorDao.update(author);
-    }
-
-    @Override
     public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return authorDao.getByCreatedDateRange(dateFrom, dateTo);
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        return authorDao.getAll();
+    }
+
+    @Override
+    public List<Author> getAllApprovedAuthors() {
+        return authorDao.getAllApproved();
+    }
+
+    @Override
+    public List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize) {
+        return authorDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedAuthorsPageNumber(int pageSize) {
+        return authorDao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override

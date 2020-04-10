@@ -28,11 +28,6 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> getAllSong() {
-        return songDao.getAll();
-    }
-
-    @Override
     public void deleteSongById(Long id) {
         songDao.deleteById(id);
     }
@@ -78,10 +73,40 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Long getSongIdByAuthorAndName(String author, String name) {
+        return songDao.getSongIdByAuthorAndName(author, name);
+    }
+
+    @Override
+    public Long getAuthorIdBySongId(Long songId) {
+        return songDao.getAuthorIdBySongId(songId);
+    }
+
+    @Override
     public List<Song> getAllSongInSongCompilation(Long id) {
         SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
         Set<Song> allSongSet = songCompilation.getSong();
         return new ArrayList<>(allSongSet);
+    }
+
+    @Override
+    public List<Song> getAllSongs() {
+        return songDao.getAll();
+    }
+
+    @Override
+    public List<Song> getAllApprovedSongs() {
+        return songDao.getAllApproved();
+    }
+
+    @Override
+    public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {
+        return songDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedSongsPageNumber(int pageSize) {
+        return songDao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override

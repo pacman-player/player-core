@@ -1,6 +1,5 @@
 package core.app.service.impl.musicSearcher.serchServices;
 
-import core.app.util.PlayerPaths;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,20 +16,25 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.file.Path;
 
 @Service("downloadMusicVkRuServiceImpl")
 @Transactional
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
 
-    /** Имя исполнителя, полученное от сервиса. */
+    /**
+     * Имя исполнителя, полученное от сервиса.
+     */
     private String authorName;
 
-    /** Название трека, полученное от сервиса. */
+    /**
+     * Название трека, полученное от сервиса.
+     */
     private String songName;
 
-    /** Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}. */
+    /**
+     * Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}.
+     */
     private String trackName;
 
 
@@ -80,12 +84,13 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
      * Запускает метод {@link #searchSong} для создания поискового запроса на данный музыкальный сервис и
      * получения ссылки на скачивания трека. Затем происходит скачивание трека и сохранение его в
      * директорию с музыкой в формате songId.mp3.
+     *
      * @param author - имя исполнителя
-     * @param song - название песни
+     * @param song   - название песни
      * @return возвращение нового экземпляра класса Track.
      */
     @Override
-    public Track getSong(String author, String song) throws IOException {
+    public Track getSong(String author, String song) {
         try {
             String link = searchSong(author, song);
             LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru via {}...", author, song, link);
@@ -107,13 +112,10 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                 in.close();
 
                 byte[] track = buffer.toByteArray();
-                Path path;
-                if (track.length > 1024 * 20) {    //проверка что песня полноценная
-                    path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                } else {
-                    return null;
+                if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
+                    return null;    //если песня меньше заданного размера, возвращаем null
                 }
-                return new Track(authorName, songName, trackName, track, path);
+                return new Track(authorName, songName, trackName, track);
             }
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru неуспешно! :(", author, song);

@@ -9,17 +9,17 @@ public interface GenreService {
 
     void addGenre(Genre genre);
 
-    List<Genre> getAllGenre();
+    void updateGenre(Genre genre);
 
-    List<Genre> getAllApprovedGenre();
+    void deleteGenreById(Long id);
+
+    Genre getById(Long id);
 
     Genre getByName(String name);
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    Genre getById(Long id);
+    List<Genre> getAllGenre();
 
-    void updateGenre(Genre genre);
-
-    void deleteGenreById(Long id);
+    List<Genre> getAllApprovedGenre();
 }

@@ -1,30 +1,16 @@
 package core.app.service.entity;
 
-import java.nio.file.Path;
-
 public class Track {
     private final String author;
     private final String song;
     private final String fullTrackName;
     private final byte[] track;
-    private Path path;
 
-
-    public Track(String author, String song, String fullTrackName, byte[] track, Path path) {
+    public Track(String author, String song, String fullTrackName, byte[] track) {
         this.author = author;
         this.song = song;
         this.fullTrackName = fullTrackName;
         this.track = track;
-        this.path = path;
-
-    }
-
-    public Path getPath() {
-        return path;
-    }
-
-    public void setPath(Path path) {
-        this.path = path;
     }
 
     public String getAuthor() {

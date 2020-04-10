@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,19 +16,6 @@ import java.util.List;
 public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     GenreDaoImpl() {
         super(Genre.class);
-    }
-
-    @Override
-    public Genre getByName(String name) {
-        TypedQuery<Genre> query = entityManager.createQuery("SELECT u FROM Genre u WHERE u.name = :name", Genre.class);
-        query.setParameter("name", name);
-        Genre genre;
-        try {
-            genre = query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-        return genre;
     }
 
     @Override
@@ -56,10 +44,31 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     }
 
     @Override
+    public Genre getByName(String name) {
+        TypedQuery<Genre> query = entityManager.createQuery("SELECT u FROM Genre u WHERE u.name = :name", Genre.class);
+        query.setParameter("name", name);
+        Genre genre;
+        try {
+            genre = query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return genre;
+    }
+
+    @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return entityManager
                 .createQuery("FROM Genre g WHERE g.createdAt >= :dateFrom AND g.createdAt <= :dateTo ORDER BY g.createdAt", Genre.class)
                 .setParameter("dateFrom", dateFrom)
                 .setParameter("dateTo", dateTo).getResultList();
+    }
+
+    public List<Genre> getAllApproved() {
+        String genericClassName = Genre.class.toGenericString();
+        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
+        TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
+        return query.getResultList();
     }
 }
