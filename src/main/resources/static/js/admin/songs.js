@@ -22,7 +22,6 @@ function getSongsTable() {
                 songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
                 songTable += ('<td id="tableSongAuthor">' + listSong[i].authorName + '</td>');
-                songTable += ('<td id="tableSongSearchTags">' + listSong[i].searchTags + '</td>');
                 songTable += ('<td id="tableSongGenre">' + listSong[i].genreName + '</td>');
                 songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');

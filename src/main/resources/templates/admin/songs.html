@@ -54,7 +54,6 @@
                                                 <th>Разрешена</th>
                                                 <th>Название</th>
                                                 <th>Автор</th>
-                                                <th>Поисковые теги</th>
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
@@ -112,11 +111,16 @@
                                                                                        name="name"
                                                                                        required=""/>
 
-                                                                                <label for="updateSongSearchTags">Поисковые теги</label>
-                                                                                <input id="updateSongSearchTags"
-                                                                                       class="form-control" type="text"
-                                                                                       name="searchTags"
-                                                                                       required=""/>
+                                                                                <label for="updateSongSearchTags">
+                                                                                    Поисковые теги
+                                                                                </label>
+                                                                                <textarea
+                                                                                        id="updateSongSearchTags"
+                                                                                        class="form-control"
+                                                                                        name="searchTags"
+                                                                                        rows="5"
+                                                                                        required="">
+                                                                                </textarea>
 
                                                                                 <label for="updateSongGenre">Жанр</label>
                                                                                 <select class="form-control"
@@ -124,12 +128,14 @@
                                                                                         name="updateGenre">
                                                                                     <!--заполняем через js-->
                                                                                 </select>
-                                                                                <label for="updateSongApproved"
-                                                                                       class="checkbox-inline">
-                                                                                    <input id="updateSongApproved"
-                                                                                           name="approved"
-                                                                                           class="form-control"
-                                                                                           type="checkbox"/>Разрешена</label>
+
+                                                                                <label for="updateSongApproved">
+                                                                                    Разрешена
+                                                                                </label>
+                                                                                <input id="updateSongApproved"
+                                                                                       name="approved"
+                                                                                       class="form-control"
+                                                                                       type="checkbox"/>
 
                                                                             </div>
                                                                         </form>
@@ -174,15 +180,18 @@
                                                                    placeholder="Enter author name" name="author"/>
 
                                                             <label for="addSongTags">Поисковые теги</label>
-                                                            <input id="addSongTags" class="form-control" type="text"
-                                                                   placeholder="Enter search tags" name="searchTags"/>
+                                                            <textarea
+                                                                    id="addSongTags" class="form-control"
+                                                                    placeholder="Enter search tags" name="searchTags"
+                                                                    rows="5">
+                                                            </textarea>
 
                                                             <label for="addSongGenre">Жанр</label>
                                                             <select class="form-control" id="addSongGenre"
                                                                     name="addGenre">
                                                                 <!--заполняем через js-->
                                                             </select>
-
+                                                            <br/>
                                                             <button type="button" id="addSongBtn"
                                                                     class="btn btn-success btn-lg">
                                                                 Добавить
