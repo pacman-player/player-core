@@ -1,0 +1,42 @@
+package core.app.service.abstraction;
+
+import core.app.model.Song;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+
+public interface SongService extends GenericService<Song> {
+
+    List<Song> getAllSong();
+
+    Song getByName(String name);
+
+    Song getByAuthorAndName(String author, String name);
+
+    Song getSongById(Long id);
+
+    void updateSong(Song song);
+
+    void deleteSongById(Long id);
+
+    boolean isExist(String name);
+
+    List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
+
+    List<Song> getAllSongInSongCompilation(Long id);
+
+    /**
+     * возвращает все песни, в которых содержиться передаваемое значение
+     *
+     * @return List<Song>
+     */
+    List<Song> findSongsByNameContaining(String name);
+
+    /**
+     * Возвращает песню по id
+     *
+     * @return Song
+     */
+    Song getById(long songId);
+}

@@ -1,0 +1,96 @@
+package core.app.service.impl;
+
+import core.app.model.Song;
+import core.app.model.SongCompilation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import core.app.dao.abstraction.SongDao;
+import core.app.service.abstraction.SongCompilationService;
+import core.app.service.abstraction.SongService;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+
+@Service
+@Transactional
+public class SongServiceImpl implements SongService {
+    private final SongDao songDao;
+    private final SongCompilationService songCompilationService;
+
+    @Autowired
+    public SongServiceImpl(SongDao songDao, SongCompilationService songCompilationService) {
+        this.songDao = songDao;
+        this.songCompilationService = songCompilationService;
+    }
+
+    @Override
+    public List<Song> getAllSong() {
+        return songDao.getAll();
+    }
+
+    @Override
+    public void deleteSongById(Long id) {
+        songDao.deleteById(id);
+    }
+
+    @Override
+    public void save(Song song) {
+        songDao.save(song);
+    }
+
+    @Override
+    public void deleteEntity(Song entity) {
+        songDao.deleteEntity(entity);
+    }
+
+    @Override
+    public Song getByName(String name) {
+        return songDao.getByName(name);
+    }
+
+    @Override
+    public Song getByAuthorAndName(String author, String name) {
+        return songDao.getByAuthorAndName(author, name);
+    }
+
+    @Override
+    public boolean isExist(String name) {
+        return songDao.isExist(name);
+    }
+
+    @Override
+    public List<Song> findSongsByNameContaining(String name) {
+        return songDao.findByNameContaining(name);
+    }
+
+    @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
+
+    @Override
+    public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+        return songDao.getByCreatedDateRange(dateFrom, dateTo);
+    }
+
+    @Override
+    public List<Song> getAllSongInSongCompilation(Long id) {
+        SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
+        Set<Song> allSongSet = songCompilation.getSong();
+        return new ArrayList<>(allSongSet);
+    }
+
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
+    }
+}

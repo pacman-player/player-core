@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>security-boot-thymeleaf</groupId>
-    <artifactId>security-boot-thymeleaf</artifactId>
+    <groupId>pacman-player</groupId>
+    <artifactId>player-core</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <name>player-core</name>
     <!--  For enabling 'spring-test-junit5' for old spring-boot -->
     <repositories>
         <repository>
@@ -201,90 +201,6 @@
             <version>1.0.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-mail</artifactId>-->
-        <!--&lt;!&ndash;            <version>2.2.2.RELEASE</version>&ndash;&gt;-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.thymeleaf</groupId>-->
-        <!--            <artifactId>thymeleaf</artifactId>-->
-        <!--            <version>3.0.9.RELEASE</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--            <artifactId>jackson-annotations</artifactId>-->
-        <!--            <version>2.10.1</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>ch.qos.logback</groupId>-->
-        <!--            <artifactId>logback-classic</artifactId>-->
-        <!--            <version>1.2.3</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>ch.qos.logback</groupId>-->
-        <!--            <artifactId>logback-core</artifactId>-->
-        <!--            <version>1.2.3</version>-->
-        <!--        </dependency>-->
-
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
-        <!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
-        <!--            <version>2.10.2</version>-->
-        <!--        </dependency>-->
-
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.security.oauth</groupId>-->
-        <!--            <artifactId>spring-security-oauth2</artifactId>-->
-        <!--            <version>2.4.0.RELEASE</version>-->
-        <!--        </dependency>-->
-
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.thymeleaf</groupId>-->
-        <!--            <artifactId>thymeleaf</artifactId>-->
-        <!--            <version>3.0.11.RELEASE</version>-->
-        <!--        </dependency>-->
-
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-api &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-api</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.vaadin.external.google</groupId>-->
-        <!--            <artifactId>android-json</artifactId>-->
-        <!--            <version>0.0.20131108.vaadin1</version>-->
-        <!--        </dependency>-->
-
-        <!--        https://mvnrepository.com/artifact/javax.mail/javax.mail-api-->
-        <!--        <dependency>-->
-        <!--            <groupId>javax.mail</groupId>-->
-        <!--            <artifactId>javax.mail-api</artifactId>-->
-        <!--            <version>1.6.2</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--            <artifactId>jackson-databind</artifactId>-->
-        <!--            <version>2.9.7</version>-->
-        <!--        </dependency>-->
-
-        <!--        &lt;!&ndash; org.apache.commons/commons-text &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.commons</groupId>-->
-        <!--            <artifactId>commons-text</artifactId>-->
-        <!--            <version>1.8</version>-->
-        <!--        </dependency>-->
-
         <!--Tests-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -305,25 +221,10 @@
             <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.jupiter</groupId>-->
-        <!--            <artifactId>junit-jupiter-api</artifactId>-->
-        <!--            <version>5.3.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.junit.jupiter</groupId>-->
-        <!--            <artifactId>junit-jupiter-engine</artifactId>-->
-        <!--            <version>5.3.2</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
-        <!--   Tests end-->
     </dependencies>
 
     <build>
-        <finalName>security-boot-thymeleaf</finalName>
+        <finalName>player-core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
