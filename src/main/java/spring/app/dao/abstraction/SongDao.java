@@ -7,9 +7,16 @@ import java.util.List;
 
 public interface SongDao extends GenericDao<Long, Song> {
 
+    void bulkRemoveSongsByAuthorId(Long id);
+
+    boolean isExist(String name);
+
     Song getByName(String name);
 
-    Song getByAuthorAndName(String author, String name);
+    //TODO: кандидат на удаление, не используется
+//    Song getByAuthorAndName(String author, String name);
+
+    Song getBySearchRequests(String author, String name);
 
     List<Song> getAllWithGenreByGenreId(Long id);
 
@@ -20,10 +27,6 @@ public interface SongDao extends GenericDao<Long, Song> {
     List<Song> getApprovedPage(int pageNumber, int pageSize);
 
     int getLastApprovedPageNumber(int pageSize);
-
-    void bulkRemoveSongsByAuthorId(Long id);
-
-    boolean isExist(String name);
 
     Long getSongIdByAuthorAndName(String author, String name);
 

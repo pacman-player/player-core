@@ -11,4 +11,6 @@ public interface MusicService {
      ServletOutputStream fileToStream(String soundName, HttpServletResponse response) throws ServletException, IOException;
      ResponseEntity playMusic(String musicAuthor, String musicTitle);
      ResponseEntity albumsCover(String musicAuthor, String musicTitle);
+
+     byte[] getMusicByteArray(String authorName, String songName);
 }

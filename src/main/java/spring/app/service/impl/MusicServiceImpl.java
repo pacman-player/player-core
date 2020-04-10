@@ -77,7 +77,7 @@ public class MusicServiceImpl implements MusicService {
      */
     @Override
     public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
-        Long id = songDao.getByAuthorAndName(musicAuthor, musicTitle).getId();
+        Long id = songDao.getSongIdByAuthorAndName(musicAuthor, musicTitle);
         File file = new File(musicPath + id + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;
@@ -105,5 +105,11 @@ public class MusicServiceImpl implements MusicService {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    //TODO: найти файл песни в скачанных по автору/названию и преобразовать в byte[]
+    @Override
+    public byte[] getMusicByteArray(String authorName, String songName) {
+        return new byte[0];
     }
 }

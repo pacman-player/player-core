@@ -19,23 +19,14 @@ public interface SongService {
 
     Song getByName(String name);
 
-    Song getByAuthorAndName(String author, String name);
+    //TODO: кандидат на удаление, не используется
+//    Song getByAuthorAndName(String author, String name);
 
-    /**
-     * Возвращает песню по id
-     *
-     * @return Song
-     */
-    Song getById(long songId);
-
-    /**
-     * возвращает все песни, в которых содержиться передаваемое значение
-     *
-     * @return List<Song>
-     */
-    List<Song> findSongsByNameContaining(String name);
+    Song getBySearchRequests(String author, String name);
 
     List<Song> getAllSongs();
+
+    List<Song> findSongsByNameContaining(String name);
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
