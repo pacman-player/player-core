@@ -46,4 +46,8 @@ public interface SongService {
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 
     int getLastApprovedSongsPageNumber(int pageSize);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }

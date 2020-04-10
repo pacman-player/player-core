@@ -24,5 +24,9 @@ public interface SongDao extends GenericDao<Long, Song> {
     void bulkRemoveSongsByAuthorId(Long id);
 
     boolean isExist(String name);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }
 

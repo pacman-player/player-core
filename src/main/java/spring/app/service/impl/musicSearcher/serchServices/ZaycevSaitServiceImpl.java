@@ -11,12 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.entity.Track;
-import spring.app.util.PlayerPaths;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Path;
 
 @Service("zaycevSaitServiceImpl")
 @Transactional
@@ -24,13 +21,19 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(ZaycevSaitServiceImpl.class);
     private RestTemplate restTemplate = new RestTemplate();
 
-    /** Имя исполнителя, полученное от сервиса. */
+    /**
+     * Имя исполнителя, полученное от сервиса.
+     */
     private String authorName;
 
-    /** Название трека, полученное от сервиса. */
+    /**
+     * Название трека, полученное от сервиса.
+     */
     private String songName;
 
-    /** Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}. */
+    /**
+     * Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}.
+     */
     private String trackName;
 
     /**
@@ -86,7 +89,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
      * @return возвращение нового экземпляра класса Track.
      */
     @Override
-    public Track getSong(String author, String song) throws IOException {
+    public Track getSong(String author, String song) {
         try {
             String link = searchSong(author, song);
             LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net via {}...", author, song, link);
@@ -97,13 +100,10 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 byte[] track = restTemplate.getForObject(link, byte[].class);
-                Path path = null;
-                if (track.length > 1024 * 10) {    //проверка что песня полноценная
-                    path = PlayerPaths.getSongsDir(trackName + ".mp3");
-                } else {
-                    return null;  //если песня меньше 2мб возвращаем 0
+                if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
+                    return null;    //если песня меньше заданного размера, возвращаем null
                 }
-                return new Track(authorName, songName, trackName, track, path);
+                return new Track(authorName, songName, trackName, track);
             }
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net неуспешно! :(", author, song);

@@ -61,6 +61,21 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     }
 
     @Override
+    public Long getSongIdByAuthorAndName(String author, String name) {
+        return entityManager.createQuery("SELECT s.id FROM Song s WHERE s.author.name = :author AND s.name = :name", Long.class)
+                .setParameter("author", author)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    @Override
+    public Long getAuthorIdBySongId(Long songId) {
+        return entityManager.createQuery("SELECT s.author.id FROM Song s WHERE s.id = :id", Long.class)
+                .setParameter("id", songId)
+                .getSingleResult();
+    }
+
+    @Override
     public List<Song> findByNameContaining(String param) {
         try {
             String hql = "FROM Song s WHERE s.name LIKE :param";
