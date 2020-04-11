@@ -10,6 +10,7 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.AuthorSongGenreListDto;
 import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
+import spring.app.dto.mapping.GenreDtoMapping;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -30,12 +31,14 @@ public class AdminSongRestController {
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final GenreDtoMapping genreDtoMapping;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
+    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService, GenreDtoMapping genreDtoMapping) {
         this.songService = songService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.genreDtoMapping = genreDtoMapping;
     }
 
     /*
@@ -111,11 +114,8 @@ public class AdminSongRestController {
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<Genre> getAllGenre() {
-        LOGGER.info("GET request '/all_genre'");
-        List<Genre> list = genreService.getAllGenre();
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+    public List<GenreDto> getAllGenre() {
+        return genreDtoMapping.getAll();
     }
 
     @GetMapping("/authors_songs_genres_for_today")

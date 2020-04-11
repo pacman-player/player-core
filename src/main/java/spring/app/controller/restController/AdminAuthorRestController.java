@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
+import spring.app.dto.GenreDto;
+import spring.app.dto.mapping.GenreDtoMapping;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -20,10 +22,13 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final GenreDtoMapping genreDtoMapping;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
+
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoMapping genreDtoMapping) {
         this.authorService = authorService;
         this.genreService = genreService;
+        this.genreDtoMapping = genreDtoMapping;
     }
 
     /*
@@ -81,13 +86,18 @@ public class AdminAuthorRestController {
         authorService.deleteAuthorById(id);
     }
 
+//    @GetMapping(value = "/all_genre")
+//    @ResponseBody
+//    public List<Genre> getAllGenre() {
+//        LOGGER.debug("GET request '/all_genres' for 'select' tag");
+//        List<Genre> list = genreService.getAllGenre();
+//        LOGGER.debug("Result has {} lines", list.size());
+//        return list;
+//    }
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<Genre> getAllGenre() {
-        LOGGER.debug("GET request '/all_genres' for 'select' tag");
-        List<Genre> list = genreService.getAllGenre();
-        LOGGER.debug("Result has {} lines", list.size());
-        return list;
+    public List<GenreDto> getAllGenre() {
+        return genreDtoMapping.getAll();
     }
 
     private Set<Genre> getGenres(String[] genresArr) {
