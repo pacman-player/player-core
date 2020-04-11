@@ -185,6 +185,63 @@ function deleteButton(id, name) {
 }
 
 
+// function getTable() {
+//     $.ajax({
+//         method: "GET",
+//         url: "/api/admin/author/all_authors",
+//         contentType: "application/json",
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json",
+//         },
+//         dataType: "JSON",
+//         success: (authors) => {
+//             let tableBody = $("#AuthorTable tbody");
+//             tableBody.empty();
+//
+//             for (let i = 0; i < authors.length; i++) {
+//                 let id = authors[i].id;
+//                 let approved = authors[i].approved;
+//                 let checked = authors[i].approved ? "checked" : "";
+//                 let name = authors[i].name;
+//                 // list of genres ()
+//                 let genres = authors[i].genres;
+//                 let htmlGenres = "";
+//                 for (let gi = 0; gi < genres.length; gi++) {
+//                     htmlGenres += genres[gi];
+//                     if (gi < genres.length - 1) {
+//                         htmlGenres += ", "; // Несколько жанров обязательно должны формироваться в строку
+//                         // по разделителю ", " иначе отображение жанров в модальном окне будет некорректным
+//                     }
+//                 }
+//
+//                 let tr = $("<tr/>");
+//                 tr.append(`
+//                             <td>${id}</td>
+//                             <td><input class="checkbox" type="checkbox" disabled ${checked}/></td>
+//                             <td>${name}</td>
+//                             <td>${htmlGenres}</td>
+//                             <td>
+//                                 <button type="submit"
+//                                         class="btn btn-sm btn-info"
+//                                         id="editAuthorBtn"
+//                                         onclick="editButton(${id}, '${name}', ${approved})">
+//                                     Изменить
+//                                 </button>
+//                             </td>
+//                             <td>
+//                                 <button type="button"
+//                                         class="btn btn-sm btn-info"
+//                                         id="deleteAuthorBtn"
+//                                         onclick="deleteButton(${id}, '${name}')">
+//                                     Удалить
+//                                 </button>
+//                             </td>`);
+//                 tableBody.append(tr);
+//             }
+//         }
+//     });
+
 function getTable() {
     $.ajax({
         method: "GET",

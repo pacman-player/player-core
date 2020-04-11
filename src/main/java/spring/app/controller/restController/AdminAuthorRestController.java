@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
+import spring.app.dto.mapping.AuthorDtoMapping;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -20,10 +21,12 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final AuthorDtoMapping authorDtoMapping;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, AuthorDtoMapping authorDtoMapping) {
         this.authorService = authorService;
         this.genreService = genreService;
+        this.authorDtoMapping = authorDtoMapping;
     }
 
     /*
@@ -32,12 +35,15 @@ public class AdminAuthorRestController {
     */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-        LOGGER.info("GET request '/all_authors'");
-        List<Author> authorList = authorService.getAllAuthor();
-        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
-        LOGGER.info("Result has {} lines", authorDtoList.size());
-        return authorDtoList;
+//        LOGGER.info("GET request '/all_authors'");
+//        List<Author> authorList = authorService.getAllAuthor();
+//        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
+//        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+
+        List<AuthorDto> authors = authorDtoMapping.getAll();
+        authors.forEach(authorDto -> LOGGER.info("authorDto {} Approved", authorDto.getApproved()));
+        LOGGER.info("!!!Result has {} lines", authors.size());
+        return authors;
     }
 
     @GetMapping(value = "/{id}")
