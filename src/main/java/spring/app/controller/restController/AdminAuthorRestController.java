@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
 import spring.app.dto.GenreDto;
+import spring.app.dto.mapping.AuthorDtoMapping;
 import spring.app.dto.mapping.GenreDtoMapping;
 import spring.app.model.Author;
 import spring.app.model.Genre;
@@ -23,24 +24,35 @@ public class AdminAuthorRestController {
     private final AuthorService authorService;
     private final GenreService genreService;
     private final GenreDtoMapping genreDtoMapping;
+    private final AuthorDtoMapping authorDtoMapping;
 
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoMapping genreDtoMapping) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoMapping genreDtoMapping, AuthorDtoMapping authorDtoMapping) {
         this.authorService = authorService;
         this.genreService = genreService;
         this.genreDtoMapping = genreDtoMapping;
+        this.authorDtoMapping = authorDtoMapping;
     }
 
     /*
     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
     * Необходимо сделать так, чтобы DAO возвращал список DTO
     */
+//    @GetMapping(value = "/all_authors")
+//    public List<AuthorDto> getAllAuthor(){
+//        LOGGER.info("GET request '/all_authors'");
+//        List<Author> authorList = authorService.getAllAuthors();
+//        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
+//        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+//        LOGGER.info("Result has {} lines", authorDtoList.size());
+//        return authorDtoList;
+//    }
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-        LOGGER.info("GET request '/all_authors'");
-        List<Author> authorList = authorService.getAllAuthors();
-        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+//        LOGGER.info("GET request '/all_authors'");
+//        List<Author> authorList = authorService.getAllAuthors();
+//        Проходимся по листу авторов и делаем AuthorDto из каждого Author
+        List<AuthorDto> authorDtoList = authorDtoMapping.getAll();
         LOGGER.info("Result has {} lines", authorDtoList.size());
         return authorDtoList;
     }
