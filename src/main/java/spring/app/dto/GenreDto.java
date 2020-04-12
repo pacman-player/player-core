@@ -21,6 +21,10 @@ public class GenreDto {
         this.name = name;
     }
 
+    public GenreDto(String name) {
+        this.name = name;
+    }
+
     public GenreDto(String name, Boolean isApproved) {
         this.name = name;
         this.isApproved = isApproved;

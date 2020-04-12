@@ -7,6 +7,7 @@ import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Transactional
@@ -26,6 +27,19 @@ public class GenreDtoMapping {
         )
                 .getResultList();
     }
-
+    public boolean isExistByName(String name) {
+        Query query = entityManager.createQuery(
+                "SELECT new spring.app.dto.GenreDto(" +
+                        "a.name" +
+                        ") FROM " + Genre.class.getName() + " a WHERE a.name = :name",
+                GenreDto.class
+        );
+        query.setParameter("name", name);
+        if ((query).getResultList().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 }

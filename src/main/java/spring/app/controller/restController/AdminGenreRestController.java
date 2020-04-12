@@ -97,16 +97,9 @@ public class AdminGenreRestController {
         }
     }
 
-/**
- * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого жанра (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
- * */
-
-
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
-
-        Genre genre = genreService.getByName(name);
-        return (genre == null || genre == genreService.getById(id));
+        return !genreDtoMapping.isExistByName(name);
     }
 }
