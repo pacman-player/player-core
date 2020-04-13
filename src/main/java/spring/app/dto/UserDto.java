@@ -12,12 +12,11 @@ public class UserDto {
 	private String password;
 	private Set<String> roles;
 
-	public UserDto(Long id, String login, String email, String password, Set<String> roles) {
+	public UserDto(Long id, String login, String email, String password) {
 		this.id = id;
 		this.login = login;
 		this.email = email;
 		this.password = password;
-		this.roles = roles;
 	}
 
 	public UserDto(String login, String email, String password, Set<String> roles) {

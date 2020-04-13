@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
+import spring.app.dto.GenreDto;
 import spring.app.dto.mapping.AuthorDtoMapping;
+import spring.app.dto.mapping.GenreDtoMapping;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -22,11 +24,13 @@ public class AdminAuthorRestController {
     private final AuthorService authorService;
     private final GenreService genreService;
     private final AuthorDtoMapping authorDtoMapping;
+    private final GenreDtoMapping genreDtoMapping;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, AuthorDtoMapping authorDtoMapping) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, AuthorDtoMapping authorDtoMapping, GenreDtoMapping genreDtoMapping) {
         this.authorService = authorService;
         this.genreService = genreService;
         this.authorDtoMapping = authorDtoMapping;
+        this.genreDtoMapping = genreDtoMapping;
     }
 
     /*
@@ -35,15 +39,15 @@ public class AdminAuthorRestController {
     */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-//        LOGGER.info("GET request '/all_authors'");
-//        List<Author> authorList = authorService.getAllAuthor();
-//        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-//        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
-
-        List<AuthorDto> authors = authorDtoMapping.getAll();
-        authors.forEach(authorDto -> LOGGER.info("authorDto {} Approved", authorDto.getApproved()));
-        LOGGER.info("!!!Result has {} lines", authors.size());
-        return authors;
+        LOGGER.info("GET request '/all_authors'");
+        List<Author> authorList = authorService.getAllAuthor();
+        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
+        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+//
+//        List<AuthorDto> authors = authorDtoMapping.getAll();
+//        authors.forEach(authorDto -> LOGGER.info("authorDto {} Approved", authorDto.getApproved()));
+//        LOGGER.info("!!!Result has {} lines", authors.size());
+        return authorDtoList;
     }
 
     @GetMapping(value = "/{id}")
@@ -89,11 +93,8 @@ public class AdminAuthorRestController {
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<Genre> getAllGenre() {
-        LOGGER.debug("GET request '/all_genres' for 'select' tag");
-        List<Genre> list = genreService.getAllGenre();
-        LOGGER.debug("Result has {} lines", list.size());
-        return list;
+    public List<GenreDto> getAllGenre() {
+        return genreDtoMapping.getAll();
     }
 
     private Set<Genre> getGenres(String[] genresArr) {

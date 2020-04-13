@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
+import spring.app.dto.mapping.UserDtoMapping;
 import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
@@ -31,14 +32,16 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final UserDtoMapping userDtoMapping;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService, UserDtoMapping userDtoMapping) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.userDtoMapping = userDtoMapping;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -61,13 +64,24 @@ public class AdminRestController {
         LOGGER.info("Unbanned User = {}", user);
     }
 
+    //    @GetMapping(value = "/all_users")
+//    public @ResponseBody
+//    List<User> getAllUsers() {
+//        LOGGER.info("GET request '/all_users'");
+//        List<User> list = userService.getAllUsers();
+//        LOGGER.info("Result has {} lines", list.size());
+//        return list;
+//    }
     @GetMapping(value = "/all_users")
     public @ResponseBody
-    List<User> getAllUsers() {
-        LOGGER.info("GET request '/all_users'");
-        List<User> list = userService.getAllUsers();
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+    List<UserDto> getAllUsers() {
+        List<UserDto> userDto = userDtoMapping.getAllUsers();
+        LOGGER.info("!UserDTO! has {} lines", userDto.size());
+        for (UserDto userDtos : userDto
+        ){
+            LOGGER.info("!UserDTO! has {} !roles!", userDtos.getRoles());
+        }
+        return userDto;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
@@ -205,7 +219,7 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/email")
-    public String checkEmail(@RequestParam String email, @RequestParam long id){
+    public String checkEmail(@RequestParam String email, @RequestParam long id) {
         LOGGER.info("GET request '/check/email' with email = {}, id = {}", email, id);
         String result = Boolean.toString(userService.isExistUserByEmail(email, id));
         LOGGER.info("Result is = {}", result);
@@ -213,7 +227,7 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/login")
-    public String checkLogin(@RequestParam String login, @RequestParam long id){
+    public String checkLogin(@RequestParam String login, @RequestParam long id) {
         LOGGER.info("GET request '/check/login' with login = {}, id = {}", login, id);
         String result = Boolean.toString(userService.isExistUserByLogin(login, id));
         LOGGER.info("Result is = {}", result);
