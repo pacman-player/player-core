@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.Song;
 import spring.app.service.abstraction.DownloadMusicService;
-import spring.app.service.abstraction.MusicService;
 import spring.app.service.abstraction.SongService;
 import spring.app.service.entity.Track;
 
@@ -36,7 +35,9 @@ public class BDSearchServiceImpl implements DownloadMusicService {
     @Override
     public Track getSong(String author, String song) throws IOException {
         Song tmpSong = songService.getBySearchRequests(author, song);
-        if(tmpSong == null){
+        LOGGER.debug("Скачивание трека: {} - {} c локального хранилища", author, song);
+        if (tmpSong == null) {
+            LOGGER.debug("Скачивание трека: {} - {} c c локального хранилища неуспешно! :(", author, song);
             return null;
         }
         String authorName = tmpSong.getAuthor().getName();
