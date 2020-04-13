@@ -77,6 +77,7 @@ public class AdminSongRestController {
         if (genre != null) {
             song.setGenre(genre);
         }
+        song.setSearchTags(songDto.getSearchTags());
         songService.addSong(song);
         LOGGER.info("Added Song = {}", song);
     }
@@ -95,6 +96,7 @@ public class AdminSongRestController {
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
+        song.setSearchTags(songDto.getSearchTags());
         song.setGenre(genre);
         songService.updateSong(song);
         LOGGER.info("Updated Song as = {}", song);

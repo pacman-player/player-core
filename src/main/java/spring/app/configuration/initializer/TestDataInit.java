@@ -204,6 +204,48 @@ public class TestDataInit {
         dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
         dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
 
+        Song song_1 = songService.getByName("Lovely");
+        Song song_2 = songService.getByName("Really");
+        Song song_3 = songService.getByName("The Killing Moon");
+        Song song_4 = songService.getByName("Small Bump (Live From Wembley Stadium)");
+        Song song_5 = songService.getByName("Into Me You See");
+        Song song_6 = songService.getByName("Love Vigilantes");
+        Song song_7 = songService.getByName("Start Again");
+        Song song_8 = songService.getByName("Tangled Up");
+        Song song_9 = songService.getByName("Falling (In Dreams)");
+        Song song_10 = songService.getByName("Strength");
+        Song song_11 = songService.getByName("My Way");
+        Song song_12 = songService.getByName("Falling Skies");
+        Song song_13 = songService.getByName("Tin Pan Boy");
+
+        song_1.setSearchTags("Billie Eilish Khalid Lovely");
+        song_2.setSearchTags("BLACKPINK Really");
+        song_3.setSearchTags("Echo Bunnymen Killing Moon");
+        song_4.setSearchTags("Ed Sheeran Small Bump");
+        song_5.setSearchTags("Katy Perry Into Me You See");
+        song_6.setSearchTags("New Order Love Vigilantes");
+        song_7.setSearchTags("OneRepublic Logic Start Again");
+        song_8.setSearchTags("Parade of Lights Tangled Up");
+        song_9.setSearchTags("Telekinesis Falling In Dreams");
+        song_10.setSearchTags("The Alarm Strength");
+        song_11.setSearchTags("Tom Walker My Way");
+        song_12.setSearchTags("Yungblud Charlottle Lawrer Falling Skies");
+        song_13.setSearchTags("Yungblud Tin Pan Boy");
+
+        songService.updateSong(song_1);
+        songService.updateSong(song_2);
+        songService.updateSong(song_3);
+        songService.updateSong(song_4);
+        songService.updateSong(song_5);
+        songService.updateSong(song_6);
+        songService.updateSong(song_7);
+        songService.updateSong(song_8);
+        songService.updateSong(song_9);
+        songService.updateSong(song_10);
+        songService.updateSong(song_11);
+        songService.updateSong(song_12);
+        songService.updateSong(song_13);
+
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
