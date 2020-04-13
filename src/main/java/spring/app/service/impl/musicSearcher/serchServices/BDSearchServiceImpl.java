@@ -21,11 +21,9 @@ public class BDSearchServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(BDSearchServiceImpl.class);
 
     private final SongService songService;
-    private final MusicService musicService;
 
-    public BDSearchServiceImpl(SongService songService, MusicService musicService) {
+    public BDSearchServiceImpl(SongService songService) {
         this.songService = songService;
-        this.musicService = musicService;
     }
 
     /**
@@ -38,6 +36,9 @@ public class BDSearchServiceImpl implements DownloadMusicService {
     @Override
     public Track getSong(String author, String song) throws IOException {
         Song tmpSong = songService.getBySearchRequests(author, song);
+        if(tmpSong == null){
+            return null;
+        }
         String authorName = tmpSong.getAuthor().getName();
         String songName = tmpSong.getName();
         String fullTrackName = authorName + "-" + songName;

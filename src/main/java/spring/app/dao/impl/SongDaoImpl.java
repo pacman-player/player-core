@@ -65,9 +65,20 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     @Override
     public Song getBySearchRequests(String author, String name) {
-        String ql = String.format("SELECT * FROM songs WHERE to_tsvector(songs.search_tags) @@ plainto_tsquery('%s %s')", author, name);
-        Query query = entityManager.createNativeQuery(ql, Song.class);
+//        entityManager.createNativeQuery("CREATE EXTENSION pg_trgm");
+//        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS trgm_index_songs ON songs USING gist (songs.search_tags gist_trgm_ops)");
+//        String ftsQuery = "SELECT * FROM songs WHERE songs.search_tags % '" + author + " " + name + "'";
+//        Query query = entityManager.createNativeQuery(ftsQuery, Song.class);
+
+        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS fts_index_songs ON songs USING gist (to_tsvector(songs.search_tags))");
+        String ftsQuery = String.format("SELECT * FROM songs, plainto_tsquery('%s %s') AS q " +
+                "WHERE to_tsvector(songs.search_tags) @@ q " +
+                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
+        Query query = entityManager.createNativeQuery(ftsQuery, Song.class);
         List<Song> songs = query.getResultList();
+        if(songs.isEmpty()){
+            return null;
+        }
         return songs.get(0);
     }
 
