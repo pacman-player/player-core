@@ -11,6 +11,8 @@ import spring.app.service.abstraction.SongService;
 import spring.app.service.entity.Track;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service("bdSearchServiceImpl")
 @Transactional
@@ -39,9 +41,9 @@ public class BDSearchServiceImpl implements DownloadMusicService {
         String authorName = tmpSong.getAuthor().getName();
         String songName = tmpSong.getName();
         String fullTrackName = authorName + "-" + songName;
-
-        byte[] musicByteArray = musicService.getMusicByteArray(authorName, songName);
-
+        long authorId = tmpSong.getAuthor().getId();
+        long songId = tmpSong.getId();
+        byte[] musicByteArray = Files.readAllBytes(Paths.get(String.format("music/%d/%d.mp3", authorId, songId)));
         return new Track(authorName, songName, fullTrackName, musicByteArray);
     }
 }

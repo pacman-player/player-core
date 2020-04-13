@@ -63,10 +63,12 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //        return song;
 //    }
 
-
     @Override
     public Song getBySearchRequests(String author, String name) {
-        return null;
+        String ql = String.format("SELECT * FROM songs WHERE to_tsvector(songs.search_tags) @@ plainto_tsquery('%s %s')", author, name);
+        Query query = entityManager.createNativeQuery(ql, Song.class);
+        List<Song> songs = query.getResultList();
+        return songs.get(0);
     }
 
     @Override

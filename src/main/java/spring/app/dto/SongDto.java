@@ -66,13 +66,7 @@ public class SongDto {
         } else {
             this.genreName = song.getGenre().getName();
         }
-        if (song.getSearchTags() == null) {
-            this.searchTags = "";
-        } else {
-            StringBuilder stringBuilder = new StringBuilder();
-            song.getSearchTags().forEach(s -> stringBuilder.append(s).append(" "));
-            this.searchTags = stringBuilder.toString();
-        }
+        this.searchTags = song.getSearchTags();
         this.createdAt = song.getCreatedAt();
         this.isApproved = song.getApproved();
     }

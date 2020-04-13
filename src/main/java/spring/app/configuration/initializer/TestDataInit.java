@@ -1,6 +1,5 @@
 package spring.app.configuration.initializer;
 
-import com.google.common.collect.Sets;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,19 +218,19 @@ public class TestDataInit {
         Song song_12 = songService.getByName("Falling Skies");
         Song song_13 = songService.getByName("Tin Pan Boy");
 
-        song_1.setSearchTags(Sets.newHashSet("Billie", "Eilish", "Khalid", "Lovely"));
-        song_2.setSearchTags(Sets.newHashSet("BLACKPINK", "Really"));
-        song_3.setSearchTags(Sets.newHashSet("Echo", "Bunnymen", "Killing Moon"));
-        song_4.setSearchTags(Sets.newHashSet("Ed Sheeran", "Small Bump"));
-        song_5.setSearchTags(Sets.newHashSet("Katy Perry", "Into Me You See"));
-        song_6.setSearchTags(Sets.newHashSet("New Order", "Love Vigilantes"));
-        song_7.setSearchTags(Sets.newHashSet("OneRepublic", "Logic", "Start Again"));
-        song_8.setSearchTags(Sets.newHashSet("Parade of Lights", "Tangled Up"));
-        song_9.setSearchTags(Sets.newHashSet("Telekinesis", "Falling In Dreams"));
-        song_10.setSearchTags(Sets.newHashSet("The Alarm", "Strength"));
-        song_11.setSearchTags(Sets.newHashSet("Tom Walker", "My Way"));
-        song_12.setSearchTags(Sets.newHashSet("Yungblud", "Charlottle Lawrer", "Falling Skies"));
-        song_13.setSearchTags(Sets.newHashSet("Yungblud", "Tin Pan Boy"));
+        song_1.setSearchTags("Billie Eilish Khalid Lovely");
+        song_2.setSearchTags("BLACKPINK Really");
+        song_3.setSearchTags("Echo Bunnymen Killing Moon");
+        song_4.setSearchTags("Ed Sheeran Small Bump");
+        song_5.setSearchTags("Katy Perry Into Me You See");
+        song_6.setSearchTags("New Order Love Vigilantes");
+        song_7.setSearchTags("OneRepublic Logic Start Again");
+        song_8.setSearchTags("Parade of Lights Tangled Up");
+        song_9.setSearchTags("Telekinesis Falling In Dreams");
+        song_10.setSearchTags("The Alarm Strength");
+        song_11.setSearchTags("Tom Walker My Way");
+        song_12.setSearchTags("Yungblud Charlottle Lawrer Falling Skies");
+        song_13.setSearchTags("Yungblud Tin Pan Boy");
 
         songService.updateSong(song_1);
         songService.updateSong(song_2);

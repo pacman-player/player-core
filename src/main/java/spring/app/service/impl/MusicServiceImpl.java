@@ -106,10 +106,4 @@ public class MusicServiceImpl implements MusicService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    //TODO: найти файл песни в скачанных по автору/названию и преобразовать в byte[]
-    @Override
-    public byte[] getMusicByteArray(String authorName, String songName) {
-        return new byte[0];
-    }
 }
