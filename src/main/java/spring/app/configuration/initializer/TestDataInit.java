@@ -204,7 +204,7 @@ public class TestDataInit {
         dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
         dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
 
-        // adding MP3 files  from /music1/ to /music
+        // adding MP3 files  from /init_song/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
             File musicDirectory = new File(musicPath);
