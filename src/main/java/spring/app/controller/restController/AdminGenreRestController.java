@@ -34,9 +34,7 @@ public class AdminGenreRestController {
 
     @GetMapping(value = "/all_genres")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request '/all_genres'");
         List<Genre> genres = genreService.getAllGenre();
-        LOGGER.info("Result has {} lines", genres.size());
         return genres;
     }
 
@@ -103,7 +101,6 @@ public class AdminGenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
-          LOGGER.info("GET request '/is_free/{}' with Genre name = {}", id, name);
           Genre genre = genreService.getByName(name);
           return (genre == null || genre == genreService.getById(id));
     }
