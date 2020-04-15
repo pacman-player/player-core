@@ -29,7 +29,6 @@ public class UserGenreRestController {
 
     @GetMapping(value = "/get/all-genre")
     public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request '/get/all-genre' for User = {}", user);
         List<Genre> allGenre = genreService.getAllApprovedGenre();
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
@@ -37,7 +36,6 @@ public class UserGenreRestController {
         companyService.checkAndMarkAllBlockedByTheCompany(
                 usersCompany,
                 allGenre);
-        LOGGER.info("Result has {} lines", allGenre.size());
         return allGenre;
     }
 

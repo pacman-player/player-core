@@ -53,21 +53,18 @@ public class UserPlayListRestController {
 
     @GetMapping(value = "/morning-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInMorningPlaylist(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request '/morning-playlist/get/all-song-compilation' for User = {}", user);
         Company company = userService.getUserById(user.getId()).getCompany();
         return company == null ? null : songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(company.getId());
     }
 
     @GetMapping(value = "/midday-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInMiddayPlaylist(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request '/midday-playlist/get/all-song-compilation' for User = {}", user);
         Company company = userService.getUserById(user.getId()).getCompany();
         return company == null ? null : songCompilationService.getAllCompilationsInMiddayPlaylistByCompanyId(company.getId());
     }
 
     @GetMapping(value = "/evening-playlist/get/all-song-compilation")
     public List<SongCompilation> getAllCompilationsInEveningPlaylist(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request '/evening-playlist/get/all-song-compilation' for User = {}", user);
         Company company = userService.getUserById(user.getId()).getCompany();
         return company == null ? null : songCompilationService.getAllCompilationsInEveningPlaylistByCompanyId(company.getId());
     }
