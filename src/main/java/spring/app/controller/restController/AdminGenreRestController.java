@@ -36,8 +36,10 @@ public class AdminGenreRestController {
     }
 
     @GetMapping(value = "/all_genres")
+
     public List<GenreDto> getAllGenre(@AuthenticationPrincipal User user) {
         return genreDtoMapping.getAll();
+
     }
 
     @PostMapping(value = "/add_genre")

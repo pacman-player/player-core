@@ -40,19 +40,15 @@ public class AdminAuthorRestController {
     */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-        LOGGER.info("GET request '/all_authors'");
         List<Author> authorList = authorService.getAllAuthors();
         //Проходимся по листу авторов и делаем AuthorDto из каждого Author
         List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
-        LOGGER.info("Result has {} lines", authorDtoList.size());
         return authorDtoList;
     }
 
     @GetMapping(value = "/{id}")
     public Author getByIdAuthor(@PathVariable(value = "id") Long authorId){
-        LOGGER.info("GET request '/{}'", authorId);
         Author author = authorService.getById(authorId);
-        LOGGER.info("Found Author = {}", author);
         return author;
     }
 
@@ -92,9 +88,7 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        LOGGER.debug("GET request '/all_genres' for 'select' tag");
         List<Genre> list = genreService.getAllGenre();
-        LOGGER.debug("Result has {} lines", list.size());
         return list;
     }
 
@@ -110,6 +104,7 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/is_free")
     public boolean isLoginFree(@RequestParam String name,
                                @RequestParam("id") Long id) {
+
         return !authorDtoMapping.isExistByName(name);
     }
 }

@@ -27,6 +27,7 @@ public class MessageRestController {
     @GetMapping(value = "/all_messages")
     public List<MessageDto> getAllMessage() {
         return messageDtoMapping.getAllMessageDto();
+
     }
 
     @PostMapping(value = "/add_message")

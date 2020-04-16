@@ -74,17 +74,13 @@ public class AdminRestController {
     @GetMapping(value = "/all_users")
     public @ResponseBody
     List<User> getAllUsers() {
-        LOGGER.info("GET request '/all_users'");
         List<User> list = userService.getAllUsers();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-        LOGGER.info("GET request '/get_user_by_id/{}'", id);
         User user = userService.getUserById(id);
-        LOGGER.info("Found User = {}", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -96,18 +92,14 @@ public class AdminRestController {
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
-        LOGGER.info("GET request '/all_companies'");
         List<Company> list = companyService.getAllCompanies();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
-        LOGGER.info("GET request '/all_establishments'");
         List<OrgType> list = orgTypeService.getAllOrgTypes();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -149,17 +141,13 @@ public class AdminRestController {
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        LOGGER.info("GET request '/company/{}'", userId);
         Company company = userService.getUserById(userId).getCompany();
-        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
-        LOGGER.info("GET request '/companyById/{}'", companyId);
         Company company = companyService.getById(companyId);
-        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
@@ -190,9 +178,7 @@ public class AdminRestController {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/establishment/est_type_name_is_free")
     public boolean isLoginFree(@RequestParam("name") String name) {
-        LOGGER.info("GET request '/establishment/est_type_name_is_free' for name = {}", name);
         boolean isLoginFree = (orgTypeService.getByName(name) == null);
-        LOGGER.info("Returned = {}", isLoginFree);
         return isLoginFree;
     }
 

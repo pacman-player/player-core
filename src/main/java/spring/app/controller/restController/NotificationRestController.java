@@ -30,9 +30,7 @@ public class NotificationRestController {
     @GetMapping
     public List<Notification> getNotificationByUserId() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/notification' for User = {}", user.getLogin());
         List<Notification> list = notificationService.getByUserId(user.getId());
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -43,7 +41,6 @@ public class NotificationRestController {
 
     @GetMapping("/{id}")
     public Notification getNotificationById(@PathVariable String id) {
-        LOGGER.info("GET request '/notification/{}", id);
         return notificationService.getNotificationById(Long.parseLong(id));
     }
 
