@@ -38,21 +38,12 @@ public class AdminAuthorRestController {
     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
     * Необходимо сделать так, чтобы DAO возвращал список DTO
     */
-//    @GetMapping(value = "/all_authors")
-//    public List<AuthorDto> getAllAuthor(){
-//        LOGGER.info("GET request '/all_authors'");
-//        List<Author> authorList = authorService.getAllAuthors();
-//        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-//        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
-//        LOGGER.info("Result has {} lines", authorDtoList.size());
-//        return authorDtoList;
-//    }
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-//        LOGGER.info("GET request '/all_authors'");
-//        List<Author> authorList = authorService.getAllAuthors();
-//        Проходимся по листу авторов и делаем AuthorDto из каждого Author
-        List<AuthorDto> authorDtoList = authorDtoMapping.getAll();
+        LOGGER.info("GET request '/all_authors'");
+        List<Author> authorList = authorService.getAllAuthors();
+        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
+        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
         LOGGER.info("Result has {} lines", authorDtoList.size());
         return authorDtoList;
     }
@@ -98,18 +89,13 @@ public class AdminAuthorRestController {
         authorService.deleteAuthorById(id);
     }
 
-//    @GetMapping(value = "/all_genre")
-//    @ResponseBody
-//    public List<Genre> getAllGenre() {
-//        LOGGER.debug("GET request '/all_genres' for 'select' tag");
-//        List<Genre> list = genreService.getAllGenre();
-//        LOGGER.debug("Result has {} lines", list.size());
-//        return list;
-//    }
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<GenreDto> getAllGenre() {
-        return genreDtoMapping.getAll();
+    public List<Genre> getAllGenre() {
+        LOGGER.debug("GET request '/all_genres' for 'select' tag");
+        List<Genre> list = genreService.getAllGenre();
+        LOGGER.debug("Result has {} lines", list.size());
+        return list;
     }
 
     private Set<Genre> getGenres(String[] genresArr) {
@@ -124,8 +110,6 @@ public class AdminAuthorRestController {
     @GetMapping(value = "/is_free")
     public boolean isLoginFree(@RequestParam String name,
                                @RequestParam("id") Long id) {
-        LOGGER.info("GET request '/is_free/{}' with Author name = {}", id, name);
-        Author author = authorService.getByName(name);
-        return (author == null || author == authorService.getById(id));
+        return !authorDtoMapping.isExistByName(name);
     }
 }

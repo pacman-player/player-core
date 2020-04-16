@@ -4,10 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.NotificationDto;
+import spring.app.dto.mapping.NotificationDtoMapping;
 import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
-import spring.app.service.abstraction.UserService;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class NotificationRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(NotificationRestController.class);
     private NotificationService notificationService;
+    private final NotificationDtoMapping notificationDtoMapping;
 
     @Autowired
-    public NotificationRestController(NotificationService notificationService) {
+    public NotificationRestController(NotificationService notificationService, NotificationDtoMapping notificationDtoMapping) {
         this.notificationService = notificationService;
+        this.notificationDtoMapping = notificationDtoMapping;
     }
 
     @GetMapping
@@ -34,9 +37,8 @@ public class NotificationRestController {
     }
 
     @GetMapping("/all")
-    public List<Notification> getAllNotifications() {
-        LOGGER.info("GET request '/notification/all'");
-        return notificationService.getAllNotification();
+    public List<NotificationDto> getAllNotifications() {
+        return notificationDtoMapping.getAll();
     }
 
     @GetMapping("/{id}")

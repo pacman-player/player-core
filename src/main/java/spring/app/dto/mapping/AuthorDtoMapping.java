@@ -1,12 +1,16 @@
 package spring.app.dto.mapping;
 
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.AuthorDto;
+import spring.app.dto.GenreDto;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Transactional
@@ -19,24 +23,39 @@ public class AuthorDtoMapping {
         List<AuthorDto> authorDtos = entityManager.createQuery(
                 "SELECT new spring.app.dto.AuthorDto(" +
                         "t.id, " +
-                        "t.name " +
+                        "t.name, " +
+                        "t.isApproved, "+
+                        "t.genres "+
                         ") FROM "+ Author.class.getName()+" t",
                 AuthorDto.class
         )
                 .getResultList();
 
-        List<Long> ids = taskDtoWithAnswers.stream().mapToLong(TaskDtoWithAnswersDto::getId).boxed().collect(Collectors.toList());
+    return authorDtos;
+    }
 
-        List<AnswerDto> answers = entityManager.createQuery(
-                "SELECT new com.javahelps.jpa.test.dto_mapping.dto.AnswerDto(a.id, a.answer, a.task.id)" +
-                        " FROM Answer a WHERE a.task.id IN (:ids)",
-                AnswerDto.class
-        )
-                .setParameter("ids", ids)
-                .getResultList();
+//    public List<AuthorDto> getAll() {
+//        List<AuthorDto> authorDtos = entityManager.createNativeQuery(
+//                "SELECT t.id AS authorId t.name t.isApproved a.id AS genreId, a.genre"+
+//                        " FROM author t JOIN genre a on t.id = a.author_id)
+//                .unwrap(SQLQuery.class)
+//                .setResultTransformer(new AuthorDto())
+//
+//        return authorDtos;
+//    }
 
-        taskDtoWithAnswers.forEach(tdwa -> tdwa.setAnswerDtos(
-                answers.stream().filter(a -> a.getTaskId() == tdwa.getId()).collect(Collectors.toList())
-        ));
+    public boolean isExistByName(String name) {
+        Query query = entityManager.createQuery(
+                "SELECT new spring.app.dto.AuthorDto(" +
+                        "a.name" +
+                        ") FROM " + Author.class.getName() + " a WHERE a.name = :name",
+                AuthorDto.class
+        );
+        query.setParameter("name", name);
+        if ((query).getResultList().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

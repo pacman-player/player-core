@@ -8,7 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
+import spring.app.dto.mapping.RoleDtoMapping;
+import spring.app.dto.mapping.UserDtoMapping;
 import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
@@ -31,14 +34,18 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final UserDtoMapping userDtoMapping;
+    private final RoleDtoMapping roleDtoMapping;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService, UserDtoMapping userDtoMapping, RoleDtoMapping roleDtoMapping) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.userDtoMapping = userDtoMapping;
+        this.roleDtoMapping = roleDtoMapping;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -79,11 +86,8 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/get_all_roles")
-    public List<Role> getAllRoles() {
-        LOGGER.info("GET request '/all_roles'");
-        List<Role> list = roleService.getAllRoles();
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+    public List<RoleDto> getAllRoles() {
+        return roleDtoMapping.getAllRoles();
     }
 
     @GetMapping(value = "/all_companies")
@@ -206,17 +210,11 @@ public class AdminRestController {
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
-        LOGGER.info("GET request '/check/email' with email = {}, id = {}", email, id);
-        String result = Boolean.toString(userService.isExistUserByEmail(email, id));
-        LOGGER.info("Result is = {}", result);
-        return result;
+        return Boolean.toString(userDtoMapping.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-        LOGGER.info("GET request '/check/login' with login = {}, id = {}", login, id);
-        String result = Boolean.toString(userService.isExistUserByLogin(login, id));
-        LOGGER.info("Result is = {}", result);
-        return result;
+        return Boolean.toString(userDtoMapping.isExistUserBylogin(login));
     }
 }
