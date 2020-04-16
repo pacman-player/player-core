@@ -18,7 +18,6 @@ public class DownloadMusicServiceConfigurer implements DownloadMusicServiceConfi
         this.factory = factory;
     }
 
-
     public String getOne() {
         return factory.getOne();
     }
@@ -51,4 +50,11 @@ public class DownloadMusicServiceConfigurer implements DownloadMusicServiceConfi
         this.factory.setFour(four);
     }
 
+    public String getFive() {
+        return factory.getFive();
+    }
+
+    public void setFive(String five) {
+        this.factory.setFive(five);
+    }
 }

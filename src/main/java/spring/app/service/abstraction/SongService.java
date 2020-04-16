@@ -5,14 +5,7 @@ import spring.app.model.Song;
 import java.sql.Timestamp;
 import java.util.List;
 
-
 public interface SongService {
-
-    Song getByName(String name);
-
-    Song getByAuthorAndName(String author, String name);
-
-    Song getSongById(Long id);
 
     void addSong(Song song);
 
@@ -22,31 +15,28 @@ public interface SongService {
 
     boolean isExist(String name);
 
+    Song getSongById(Long id);
+
+    Song getByName(String name);
+
+    //TODO: кандидат на удаление, не используется
+//    Song getByAuthorAndName(String author, String name);
+
+    Song getBySearchRequests(String author, String name);
+
+    List<Song> getAllSongs();
+
+    List<Song> findSongsByNameContaining(String name);
+
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     List<Song> getAllSongInSongCompilation(Long id);
-
-    List<Song> getAllSongs();
 
     List<Song> getAllApprovedSongs();
 
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 
     int getLastApprovedSongsPageNumber(int pageSize);
-
-    /**
-     * возвращает все песни, в которых содержиться передаваемое значение
-     *
-     * @return List<Song>
-     */
-    List<Song> findSongsByNameContaining(String name);
-
-    /**
-     * Возвращает песню по id
-     *
-     * @return Song
-     */
-    Song getById(long songId);
 
     Long getSongIdByAuthorAndName(String author, String name);
 

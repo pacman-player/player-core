@@ -11,6 +11,7 @@ public class SongDto {
     private Long id;
     private String name;
     private String authorName;
+    private String searchTags;
     private String genreName;
     private Timestamp createdAt;
     private Boolean isApproved;
@@ -102,6 +103,7 @@ public class SongDto {
         } else {
             this.genreName = song.getGenre().getName();
         }
+        this.searchTags = song.getSearchTags();
         this.createdAt = song.getCreatedAt();
         this.isApproved = song.getApproved();
     }
@@ -128,6 +130,14 @@ public class SongDto {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public String getSearchTags() {
+        return searchTags;
+    }
+
+    public void setSearchTags(String searchTags) {
+        this.searchTags = searchTags;
     }
 
     public String getGenreName() {
@@ -158,10 +168,12 @@ public class SongDto {
     public String toString() {
         return "SongDto{" +
                 "id=" + id +
-                ", isApproved=" + isApproved +
                 ", name='" + name + '\'' +
                 ", authorName='" + authorName + '\'' +
+                ", searchTags='" + searchTags + '\'' +
                 ", genreName='" + genreName + '\'' +
+                ", createdAt=" + createdAt +
+                ", isApproved=" + isApproved +
                 '}';
     }
 }
