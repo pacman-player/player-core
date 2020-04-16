@@ -74,12 +74,78 @@ function getGenres() {
 const errMessages = {
     required: "Укажите название",
     pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
-    rangelength: "Количество символов должно быть в диапазоне [3-30]",
+    rangelength: "Количество символов должно быть в диапазоне [2-40]",
     remote: "Имя занято"
 };
 
 
 const authorNameRegEx = /[\wА-Яа-я\-]/;
+
+function addButton() {
+    // prepareForm(dropDownListSelector = $("#addAuthorGenre"))
+    let fieldGenre = $("#addAuthorGenre");
+    let fieldName = $("#addAuthorName");
+    let form = $("#add-form");
+
+    prepareGenreFieldForAuthor(fieldGenre, null);
+    let theModal = $('#addAuthor');
+    theModal.modal("show");
+
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+                pattern: authorNameRegEx,
+                rangelength: [2, 40],
+                // remote: {
+                //     method: "GET",
+                //     url: "/api/admin/author/is_free",
+                //     id: () => {
+                //         return id
+                //     }
+                // },
+            },
+            updateGenre: {
+                required: true
+            }
+        },
+        messages: {
+            name: errMessages,
+            updateGenre: {
+                required: "Выберите жанр"
+            }
+        },
+        submitHandler: () => {
+        $.ajax({
+            method: "POST",
+            url: "/api/admin/author/add_author",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: fieldName.val(),
+                genres: fieldGenre.val(),
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            cache: false,
+            complete: () => {
+                $('#addAuthor').modal("hide");
+                getTable();
+            },
+            success: () => {
+                notification(
+                    "edit-author" + null,
+                    ` Исполнитель ${fieldName.val()} сохранен`,
+                    "authors-panel");
+            },
+            error: (xhr, status, error) => {
+                alert(xhr.responseText + "|\n" + status + "|\n" + error);
+            }
+        })
+
+}})}
+
 
 
 function editButton(id, name, approved) {

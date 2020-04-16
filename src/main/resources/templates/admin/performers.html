@@ -60,7 +60,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <button onclick='addButton()' type="button" class="btn btn-primary"  > Добавить исполнителя
+                            </button>
+
+<!--                            <button type="button" class="btn btn-primary" data-toggle="modal"-->
+<!--                                    data-target="#addAuthor" > Добавить исполнителя-->
+<!--                            </button>-->
                         </div>
+
+
+
 
                         <!--модальное окно обновления автора-->
                         <div id="editAuthor" class="modal fade">
@@ -121,6 +130,67 @@
                                                                         class="btn btn-primary"
                                                                         type="submit">
                                                                     Изменить
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--модальное окно добавления автора-->
+                        <div id="addAuthor" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        <h4 class="modal-title">Добавить исполнителя</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+
+                                                    <form id="add-form">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addAuthorName">Имя</label>
+                                                                <input id="addAuthorName"
+                                                                       class="form-control"
+                                                                       name="name"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addAuthorGenre">Жанр</label>
+                                                                <select class="form-control"
+                                                                        id="addAuthorGenre"
+                                                                        name="updateGenre">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-default"
+                                                                        data-dismiss="modal"
+                                                                        type="button">
+                                                                    Закрыть
+                                                                </button>
+<!--                                                                <button  onclick="sendAddAuthor()" type="button"-->
+<!--                                                                        class="btn btn-primary">-->
+<!--                                                                    Добавить-->
+<!--                                                                </button>-->
+                                                                <button  id="addAuthorBtn"
+                                                                        class="btn btn-primary"
+                                                                        type="submit">
+                                                                    Добавить
                                                                 </button>
 
                                                             </div>
