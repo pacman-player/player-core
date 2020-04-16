@@ -16,6 +16,7 @@ music/
 
 ## Directory-based project format:
 .idea/
+.gradle/
 src/main/resources/hibernate.properties
 # if you remove the above rule, at least ignore the following:
 
