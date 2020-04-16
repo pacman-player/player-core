@@ -41,7 +41,6 @@ public class OrderSongRestController {
     @GetMapping(value = "/getOrders")
     public List<String> getOrders() {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/getOrders' by User = {}", user);
         user = userService.getUserByLogin(user.getUsername());
         Long companyId = user.getCompany().getId();
         List<String> ordersClassified = new ArrayList<>();
@@ -50,18 +49,15 @@ public class OrderSongRestController {
         ordersClassified.add("orders-week-total:" + orderSongService.getSongOrdersByCompanyIdAndPeriod(companyId, 7L));
         ordersClassified.add("orders-month-total:" + orderSongService.getSongOrdersByCompanyIdAndPeriod(companyId, 30L));
         ordersClassified.add("orders-total-total:" + orderSongService.countAll(companyId));
-        LOGGER.info("Result has {} lines", ordersClassified.size());
         return ordersClassified;
     }
 
     @GetMapping(value = "/getSongsInQueue")
     public List<String> getSongsInQueue() {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/getSongsInQueue' by User = {}", user);
         user = userService.getUserByLogin(user.getUsername());
         Long companyId = user.getCompany().getId();
         List<String> queueList = companyService.getAllSongsInQueueByCompanyId(companyId);
-        LOGGER.info("Result has {} lines", queueList.size());
         return queueList;
     }
 }

@@ -10,12 +10,9 @@ import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
 
 @Service
 @Transactional
@@ -30,8 +27,13 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public List<Song> getAllSong() {
-        return songDao.getAll();
+    public void addSong(Song song) {
+        songDao.save(song);
+    }
+
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
     }
 
     @Override
@@ -40,8 +42,13 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void addSong(Song song) {
-        songDao.save(song);
+    public boolean isExist(String name) {
+        return songDao.isExist(name);
+    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
     }
 
     @Override
@@ -49,14 +56,20 @@ public class SongServiceImpl implements SongService {
         return songDao.getByName(name);
     }
 
+    //TODO: кандидат на удаление, не используется
+//    @Override
+//    public Song getByAuthorAndName(String author, String name) {
+//        return songDao.getByAuthorAndName(author, name);
+//    }
+
     @Override
-    public Song getByAuthorAndName(String author, String name) {
-        return songDao.getByAuthorAndName(author, name);
+    public Song getBySearchRequests(String author, String name) {
+        return songDao.getBySearchRequests(author, name);
     }
 
     @Override
-    public boolean isExist(String name) {
-        return songDao.isExist(name);
+    public List<Song> getAllSongs() {
+        return songDao.getAll();
     }
 
     @Override
@@ -75,6 +88,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return songDao.getByCreatedDateRange(dateFrom, dateTo);
     }
@@ -87,12 +101,27 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void updateSong(Song song) {
-        songDao.update(song);
+    public List<Song> getAllApprovedSongs() {
+        return songDao.getAllApproved();
     }
 
     @Override
-    public Song getSongById(Long id) {
-        return songDao.getById(id);
+    public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {
+        return songDao.getApprovedPage(pageNumber, pageSize);
+    }
+
+    @Override
+    public int getLastApprovedSongsPageNumber(int pageSize) {
+        return songDao.getLastApprovedPageNumber(pageSize);
+    }
+
+    @Override
+    public Long getSongIdByAuthorAndName(String author, String name) {
+        return songDao.getSongIdByAuthorAndName(author, name);
+    }
+
+    @Override
+    public Long getAuthorIdBySongId(Long songId) {
+        return songDao.getAuthorIdBySongId(songId);
     }
 }

@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Панель админа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -10,9 +12,7 @@
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
-
 </head>
-
 <body>
 <div class="container-fluid">
 
@@ -111,17 +111,31 @@
                                                                                        name="name"
                                                                                        required=""/>
 
+                                                                                <label for="updateSongSearchTags">
+                                                                                    Поисковые теги
+                                                                                </label>
+                                                                                <textarea
+                                                                                        id="updateSongSearchTags"
+                                                                                        class="form-control"
+                                                                                        name="searchTags"
+                                                                                        rows="5"
+                                                                                        required="">
+                                                                                </textarea>
+
                                                                                 <label for="updateSongGenre">Жанр</label>
                                                                                 <select class="form-control"
                                                                                         id="updateSongGenre"
                                                                                         name="updateGenre">
                                                                                     <!--заполняем через js-->
                                                                                 </select>
-                                                                                <label for="updateSongApproved" class="checkbox-inline">
-                                                                                    <input id="updateSongApproved"
-                                                                                           name="approved"
-                                                                                           class="form-control"
-                                                                                           type="checkbox"/>Разрешена</label>
+
+                                                                                <label for="updateSongApproved">
+                                                                                    Разрешена
+                                                                                </label>
+                                                                                <input id="updateSongApproved"
+                                                                                       name="approved"
+                                                                                       class="form-control"
+                                                                                       type="checkbox"/>
 
                                                                             </div>
                                                                         </form>
@@ -165,11 +179,19 @@
                                                             <input id="addSongAuthor" class="form-control" type="text"
                                                                    placeholder="Enter author name" name="author"/>
 
+                                                            <label for="addSongTags">Поисковые теги</label>
+                                                            <textarea
+                                                                    id="addSongTags" class="form-control"
+                                                                    placeholder="Enter search tags" name="searchTags"
+                                                                    rows="5">
+                                                            </textarea>
+
                                                             <label for="addSongGenre">Жанр</label>
                                                             <select class="form-control" id="addSongGenre"
                                                                     name="addGenre">
                                                                 <!--заполняем через js-->
                                                             </select>
+                                                            <br/>
                                                             <button type="button" id="addSongBtn"
                                                                     class="btn btn-success btn-lg">
                                                                 Добавить
@@ -193,12 +215,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/security.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/songs.js" rel="script"></script>
 <script type="text/javascript" src="/js/notificationsHandler.js" rel="script"></script>
-
 </body>
 </html>

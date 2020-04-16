@@ -103,6 +103,9 @@ public class TestDataInit {
         Role roleAnonymous = new Role("ANONYMOUS");
         roleService.addRole(roleAnonymous);
 
+        Role roleBot = new Role("BOT");
+        roleService.addRole(roleBot);
+
         // содаем и добавляем в БД регистрационные шаги для пользователей
         RegistrationStep rs1 = new RegistrationStep();
         rs1.setName("registration-step-user");
@@ -159,6 +162,15 @@ public class TestDataInit {
         user2.setRoles(user2Roles);
         userService.addUser(user2);
 
+        // тестовые аккаунты: Bot
+        User bot = new User();
+        bot.setLogin("bot");
+        bot.setPassword("bot");
+        Set<Role> botRoles = new HashSet<>();
+        botRoles.add(roleBot);
+        bot.setRoles(botRoles);
+        userService.addUser(bot);
+
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
         user2 = userService.getUserByLoginWithRegStepsCompany("user2");
@@ -192,6 +204,48 @@ public class TestDataInit {
         dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
         dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
 
+        Song song_1 = songService.getByName("Lovely");
+        Song song_2 = songService.getByName("Really");
+        Song song_3 = songService.getByName("The Killing Moon");
+        Song song_4 = songService.getByName("Small Bump (Live From Wembley Stadium)");
+        Song song_5 = songService.getByName("Into Me You See");
+        Song song_6 = songService.getByName("Love Vigilantes");
+        Song song_7 = songService.getByName("Start Again");
+        Song song_8 = songService.getByName("Tangled Up");
+        Song song_9 = songService.getByName("Falling (In Dreams)");
+        Song song_10 = songService.getByName("Strength");
+        Song song_11 = songService.getByName("My Way");
+        Song song_12 = songService.getByName("Falling Skies");
+        Song song_13 = songService.getByName("Tin Pan Boy");
+
+        song_1.setSearchTags("Billie Eilish Khalid Lovely");
+        song_2.setSearchTags("BLACKPINK Really");
+        song_3.setSearchTags("Echo Bunnymen Killing Moon");
+        song_4.setSearchTags("Ed Sheeran Small Bump");
+        song_5.setSearchTags("Katy Perry Into Me You See");
+        song_6.setSearchTags("New Order Love Vigilantes");
+        song_7.setSearchTags("OneRepublic Logic Start Again");
+        song_8.setSearchTags("Parade of Lights Tangled Up");
+        song_9.setSearchTags("Telekinesis Falling In Dreams");
+        song_10.setSearchTags("The Alarm Strength");
+        song_11.setSearchTags("Tom Walker My Way");
+        song_12.setSearchTags("Yungblud Charlottle Lawrer Falling Skies");
+        song_13.setSearchTags("Yungblud Tin Pan Boy");
+
+        songService.updateSong(song_1);
+        songService.updateSong(song_2);
+        songService.updateSong(song_3);
+        songService.updateSong(song_4);
+        songService.updateSong(song_5);
+        songService.updateSong(song_6);
+        songService.updateSong(song_7);
+        songService.updateSong(song_8);
+        songService.updateSong(song_9);
+        songService.updateSong(song_10);
+        songService.updateSong(song_11);
+        songService.updateSong(song_12);
+        songService.updateSong(song_13);
+
         // adding MP3 files  from /music1/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
@@ -212,7 +266,7 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
-        songService.getAllSong().forEach(song -> {
+        songService.getAllSongs().forEach(song -> {
             song.setApproved(true);
             songService.updateSong(song);
         });
@@ -224,17 +278,29 @@ public class TestDataInit {
         songService.updateSong(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");
         Author author3 = authorService.getByName("BLACKPINK");
+        Author author2 = authorService.getByName("Yungblud");
+        Author author4 = authorService.getByName("Yungblud, Charlottle Lawrer");
+        Author author5 = authorService.getByName("Tom Walker");
+        Author author6 = authorService.getByName("The Alarm");
         author1.setApproved(true);
         author3.setApproved(true);
+        author2.setApproved(true);
+        author4.setApproved(true);
+        author5.setApproved(true);
+        author6.setApproved(true);
         authorService.updateAuthor(author1);
         authorService.updateAuthor(author3);
+        authorService.updateAuthor(author2);
+        authorService.updateAuthor(author4);
+        authorService.updateAuthor(author5);
+        authorService.updateAuthor(author6);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
         Set<Song> songList2 = new HashSet<>();
         Set<Song> songList3 = new HashSet<>();
         Set<Song> songList4 = new HashSet<>();
-        List<Song> allSongs = songService.getAllSong();
+        List<Song> allSongs = songService.getAllSongs();
         // записываем треки по сетам
         for (int i = 0; i < allSongs.size(); i++) {
             Song s = allSongs.get(i);

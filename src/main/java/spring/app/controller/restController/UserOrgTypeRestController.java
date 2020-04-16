@@ -18,8 +18,8 @@ public class UserOrgTypeRestController {
         this.orgTypeService = orgTypeService;
     }
 
-    @GetMapping(value = "/get_all_orgType")
-    public List<OrgType> getAllOrgType() {
-        return orgTypeService.getAllOrgType();
+    @GetMapping(value = "/get_all_orgTypes")
+    public List<OrgType> getAllOrgTypes() {
+        return orgTypeService.getAllOrgTypes();
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Genre;
-import spring.app.model.Song;
 import spring.app.service.abstraction.GenreService;
 
 import java.sql.Timestamp;
@@ -28,21 +27,6 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getByName(String name) {
-        return genreDao.getByName(name);
-    }
-
-    @Override
-    public List<Genre> getAllGenre() {
-        return genreDao.getAll();
-    }
-
-    @Override
-    public List<Genre> getAllApprovedGenre() {
-        return genreDao.getAllApproved();
-    }
-
-    @Override
     public void updateGenre(Genre genre) {
         genreDao.update(genre);
     }
@@ -53,12 +37,27 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public Genre getById(Long id) {
+        return genreDao.getById(id);
+    }
+
+    @Override
+    public Genre getByName(String name) {
+        return genreDao.getByName(name);
+    }
+
+    @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return genreDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override
-    public Genre getById(Long id) {
-        return genreDao.getById(id);
+    public List<Genre> getAllGenre() {
+        return genreDao.getAll();
+    }
+
+    @Override
+    public List<Genre> getAllApprovedGenre() {
+        return genreDao.getAllApproved();
     }
 }

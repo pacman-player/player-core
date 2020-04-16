@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
@@ -22,6 +23,8 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -64,43 +67,33 @@ public class AdminRestController {
     @GetMapping(value = "/all_users")
     public @ResponseBody
     List<User> getAllUsers() {
-        LOGGER.info("GET request '/all_users'");
         List<User> list = userService.getAllUsers();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-        LOGGER.info("GET request '/get_user_by_id/{}'", id);
         User user = userService.getUserById(id);
-        LOGGER.info("Found User = {}", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")
     public List<Role> getAllRoles() {
-        LOGGER.info("GET request '/all_roles'");
         List<Role> list = roleService.getAllRoles();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
-        LOGGER.info("GET request '/all_companies'");
         List<Company> list = companyService.getAllCompanies();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
-        LOGGER.info("GET request '/all_establishments'");
-        List<OrgType> list = orgTypeService.getAllOrgType();
-        LOGGER.info("Result has {} lines", list.size());
+        List<OrgType> list = orgTypeService.getAllOrgTypes();
         return list;
     }
 
@@ -118,6 +111,18 @@ public class AdminRestController {
         LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
+        // If admin is editing himself, then we need put his renewed account
+        // in SecurityContext
+        User userAuth = (User) getContext().getAuthentication().getPrincipal();
+        if (userAuth.getId().equals(user.getId())) {
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            user.getPassword(),
+                            user.getAuthorities()
+                    );
+            getContext().setAuthentication(token);
+        }
         userService.updateUser(user);
         LOGGER.info("Updated User = {}", user);
     }
@@ -130,17 +135,13 @@ public class AdminRestController {
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        LOGGER.info("GET request '/company/{}'", userId);
         Company company = userService.getUserById(userId).getCompany();
-        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
-        LOGGER.info("GET request '/companyById/{}'", companyId);
         Company company = companyService.getById(companyId);
-        LOGGER.info("Found Company named = {}", company.getName());
         return ResponseEntity.ok(company);
     }
 
@@ -171,9 +172,7 @@ public class AdminRestController {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/establishment/est_type_name_is_free")
     public boolean isLoginFree(@RequestParam("name") String name) {
-        LOGGER.info("GET request '/establishment/est_type_name_is_free' for name = {}", name);
         boolean isLoginFree = (orgTypeService.getByName(name) == null);
-        LOGGER.info("Returned = {}", isLoginFree);
         return isLoginFree;
     }
 
@@ -206,17 +205,13 @@ public class AdminRestController {
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
-        LOGGER.info("GET request '/check/email' with email = {}, id = {}", email, id);
         String result = Boolean.toString(userService.isExistUserByEmail(email, id));
-        LOGGER.info("Result is = {}", result);
         return result;
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-        LOGGER.info("GET request '/check/login' with login = {}, id = {}", login, id);
         String result = Boolean.toString(userService.isExistUserByLogin(login, id));
-        LOGGER.info("Result is = {}", result);
         return result;
     }
 }

@@ -178,6 +178,8 @@ public class TelegramRestController {
         TelegramUser telegramUser = visitDto.getTelegramUser();
         Company company = companyService.getById(visitDto.getCompanyId());
         telegramUserService.addTelegramUser(telegramUser);
+        LOGGER.info(
+                "New Telegram user with id = {} was added", telegramUser.getId());
         visitService.addVisit(telegramUser, company);
         LOGGER.info(
                 "New visit of Telegram user with id = {} to Company \"{}\" was added",

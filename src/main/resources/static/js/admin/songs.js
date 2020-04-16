@@ -48,6 +48,7 @@ function editSong(id) {
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
             $("#updateSongAuthor").val(editData.authorName);
+            $("#updateSongSearchTags").val(editData.searchTags);
             $("#updateSongGenre").val(editData.genreName);
             //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genreName);
@@ -108,6 +109,7 @@ function updateSongForm() {
     editSong.approved = $("#updateSongApproved").prop('checked');
     editSong.name = $("#updateSongName").val();
     editSong.authorName = $("#updateSongAuthor").val();
+    editSong.searchTags = $("#updateSongSearchTags").val();
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
@@ -167,6 +169,7 @@ function addSongForm() {
     var addSong = {};
     addSong.name = $('#addSongName').val();
     addSong.authorName = $('#addSongAuthor').val();
+    addSong.searchTags = $('#addSongTags').val();
     addSong.genreName = $('#addSongGenre').val();
     $.ajax({
         method: 'POST',
@@ -176,6 +179,7 @@ function addSongForm() {
         success: function () {
             $('#addSongName').val('');
             $('#addSongAuthor').val('');
+            $('#addSongTags').val('');
             $('#tab-song-panel').tab('show');
             getSongsTable();
         },
