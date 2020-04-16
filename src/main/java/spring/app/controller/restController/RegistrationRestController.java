@@ -60,25 +60,19 @@ public class RegistrationRestController {
 
     @GetMapping("/check/email")
     public String checkEmail(@RequestParam String email) {
-        LOGGER.info("GET request '/check/email' for email = {}", email);
         boolean isRegistered = userService.isExistUserByEmail(email);
-        LOGGER.info("This email is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 
     @GetMapping("/check/login")
     public String checkLogin(@RequestParam String login) {
-        LOGGER.info("GET request '/check/login' for login = {}", login);
         boolean isRegistered = userService.isExistUserByLogin(login);
-        LOGGER.info("This login is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 
     @GetMapping("/check/company")
     public String checkCompany(@RequestParam String name) {
-        LOGGER.info("GET request '/check/company' for company name = {}", name);
         boolean isRegistered = companyService.isExistCompanyByName(name);
-        LOGGER.info("This company is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 

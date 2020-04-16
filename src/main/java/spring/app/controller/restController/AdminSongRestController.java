@@ -44,12 +44,10 @@ public class AdminSongRestController {
      */
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
-        LOGGER.info("GET request '/all_songs'");
         List<SongDto> list = songService.getAllSongs()
                 .stream()
                 .map(SongDto::new)
                 .collect(Collectors.toList());
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -105,18 +103,14 @@ public class AdminSongRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-        LOGGER.info("GET request '/{}'", id);
         SongDto songDto = new SongDto(songService.getSongById(id));
-        LOGGER.info("Found Sing = {}", songDto);
         return ResponseEntity.ok(songDto);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        LOGGER.info("GET request '/all_genre'");
         List<Genre> list = genreService.getAllGenre();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
