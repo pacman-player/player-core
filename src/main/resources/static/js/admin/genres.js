@@ -267,8 +267,8 @@ function editGenreOfSongs(id, name) {
         $('#updateSongGenre').append(genreForEdit);
     });
 
-    $('.btnClose').click(function () {
-        $('.' + id + '').hide();
+    $('#btnClose, #btnCloseModal').click(function () {
+        $('.' + id).hide();
     });
 }
 
