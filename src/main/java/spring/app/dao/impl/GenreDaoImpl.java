@@ -32,7 +32,7 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         queryOrgType.setParameter("id", id);
         queryOrgType.executeUpdate();
 
-        TypedQuery<Author> queryAuthor = (TypedQuery<Author>) entityManager.createNativeQuery("UPDATE author_on_genre SET genre_id = :genreId WHERE genre_id = :id AND genre.size = 1");
+        TypedQuery<Author> queryAuthor = (TypedQuery<Author>) entityManager.createNativeQuery("UPDATE author_on_genre SET genre_id = :genreId WHERE genre_id = :id");
         queryAuthor.setParameter("genreId", notDefinedGenreId);
         queryAuthor.setParameter("id", id);
         queryAuthor.executeUpdate();
