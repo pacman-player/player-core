@@ -461,7 +461,7 @@ public class TestDataInit {
         long startDate = cal.getTime().getTime();
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
-//        long totalOrders = random.nextInt(3000);
+        //long totalOrders = random.nextInt(3000);
         long totalOrders = random.nextInt(30);
         for (int i = 0; i < totalOrders; i++) {
             orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
@@ -473,5 +473,9 @@ public class TestDataInit {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
         mBeanServer.registerMBean(serviceConfigurer, name);
+
+        //adding genre not defined
+        Genre notDefinedGenre = new Genre("not defined", true);
+        genreService.addGenre(notDefinedGenre);
     }
 }

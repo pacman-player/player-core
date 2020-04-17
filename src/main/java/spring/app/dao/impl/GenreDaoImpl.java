@@ -6,7 +6,6 @@ import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.*;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,9 +19,10 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
 
     @Override
     public void deleteById(Long id) {
-        TypedQuery<SongCompilation> query = (TypedQuery<SongCompilation>) entityManager.createQuery("UPDATE SongCompilation SET genre_id = null WHERE genre_id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        Long notDefinedGenreId = entityManager
+                .createQuery("SELECT g.id FROM Genre g WHERE g.name = :name", Long.class)
+                .setParameter("name", "not defined")
+                .getSingleResult();
 
         TypedQuery<Company> queryCompany = (TypedQuery<Company>) entityManager.createNativeQuery("DELETE FROM company_on_banned_genre WHERE genre_id = :id");
         queryCompany.setParameter("id", id);
@@ -32,13 +32,20 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         queryOrgType.setParameter("id", id);
         queryOrgType.executeUpdate();
 
-        TypedQuery<Author> queryAuthor = (TypedQuery<Author>) entityManager.createNativeQuery("DELETE FROM author_on_genre WHERE genre_id = :id");
+        TypedQuery<Author> queryAuthor = (TypedQuery<Author>) entityManager.createNativeQuery("UPDATE author_on_genre SET genre_id = :genreId WHERE genre_id = :id AND genre.size = 1");
+        queryAuthor.setParameter("genreId", notDefinedGenreId);
         queryAuthor.setParameter("id", id);
         queryAuthor.executeUpdate();
 
-        TypedQuery<Song> querySong = (TypedQuery<Song>) entityManager.createQuery("UPDATE Song SET genre_id = null WHERE genre_id = :id");
+        TypedQuery<Song> querySong = (TypedQuery<Song>) entityManager.createQuery("UPDATE Song SET genre_id = :genreId WHERE genre_id = :id");
+        querySong.setParameter("genreId", notDefinedGenreId);
         querySong.setParameter("id", id);
         querySong.executeUpdate();
+
+        TypedQuery<SongCompilation> querySongCompilation = (TypedQuery<SongCompilation>) entityManager.createQuery("UPDATE SongCompilation SET genre_id = :genreId WHERE genre_id = :id");
+        querySongCompilation.setParameter("genreId", notDefinedGenreId);
+        querySongCompilation.setParameter("id", id);
+        querySongCompilation.executeUpdate();
 
         super.deleteById(id);
     }
@@ -61,7 +68,8 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         return entityManager
                 .createQuery("FROM Genre g WHERE g.createdAt >= :dateFrom AND g.createdAt <= :dateTo ORDER BY g.createdAt", Genre.class)
                 .setParameter("dateFrom", dateFrom)
-                .setParameter("dateTo", dateTo).getResultList();
+                .setParameter("dateTo", dateTo)
+                .getResultList();
     }
 
     public List<Genre> getAllApproved() {
