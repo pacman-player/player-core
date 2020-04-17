@@ -132,6 +132,7 @@ $(document).ready(function () {
         getAllGenre();
     });
 
+
     function getAllGenre() {
         $.ajax({
             type: 'get',
