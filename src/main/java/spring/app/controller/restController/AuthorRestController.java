@@ -26,24 +26,54 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthors")
-    public List<Author> getAllAuthor() {
-        LOGGER.info("GET request 'allAuthors'");
-        List<Author> list = authorService.getAllAuthor();
-        LOGGER.info("Result has {} lines", list.size());
+    public List<Author> getAllAuthors() {
+        List<Author> list = authorService.getAllAuthors();
         return list;
+    }
+
+    @GetMapping("allApprovedAuthors")
+    public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
+        List<Author> list = authorService.getAllApprovedAuthors();
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                list);
+
+        return list;
+    }
+
+    @GetMapping("approvedAuthorsPage")
+    public List<Author> getApprovedAuthorsPage(@AuthenticationPrincipal User user,
+                                               @RequestParam(defaultValue = "1") Integer pageNumber,
+                                               @RequestParam(defaultValue = "5") Integer pageSize) {
+        LOGGER.info("GET request 'approvedAuthorsPage'");
+        List<Author> authorsPage = authorService.getApprovedAuthorsPage(pageNumber, pageSize);
+
+        Company company = user.getCompany();
+        company = companyService.setBannedEntity(company);
+        companyService.checkAndMarkAllBlockedByTheCompany(
+                company,
+                authorsPage);
+
+        return authorsPage;
+    }
+
+    @GetMapping("lastApprovedAuthorsPageNumber")
+    public Integer getLastApprovedAuthorsPageNumber(@RequestParam(defaultValue = "5") Integer pageSize) {
+        return authorService.getLastApprovedAuthorsPageNumber(pageSize);
     }
 
     @GetMapping("allAuthorsByName/{name}")
     public List<Author> searchByNameInAuthors(@PathVariable String name,
                                               @AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allAuthorsByName/{}'", name);
         List<Author> authors = authorService.findAuthorsByNameContaining(name);
 
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
         companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, authors);
-        LOGGER.info("Result has {} lines", authors.size());
         return authors;
     }
 

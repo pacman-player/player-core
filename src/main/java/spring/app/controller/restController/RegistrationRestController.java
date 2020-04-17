@@ -29,24 +29,23 @@ public class RegistrationRestController {
     private CompanyService companyService;
     private OrgTypeService orgTypeService;
     private PlayListService playListService;
-    private RoleService roleService;
     private RegistrationStepService registrationStepService;
     private AddressService addressService;
 
     @Autowired
-    public RegistrationRestController(
-            UserService userService, CompanyService companyService, OrgTypeService orgTypeService,
-            PlayListService playListService, RoleService roleService,
-            RegistrationStepService registrationStepService, AddressService addressService) {
+    public RegistrationRestController(UserService userService,
+                                      CompanyService companyService,
+                                      OrgTypeService orgTypeService,
+                                      PlayListService playListService,
+                                      RegistrationStepService registrationStepService,
+                                      AddressService addressService) {
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.playListService = playListService;
-        this.roleService = roleService;
         this.registrationStepService = registrationStepService;
         this.addressService = addressService;
     }
-
 
     @PostMapping("/user")
     public void saveUser(UserRegistrationDto userDto) {
@@ -61,25 +60,19 @@ public class RegistrationRestController {
 
     @GetMapping("/check/email")
     public String checkEmail(@RequestParam String email) {
-        LOGGER.info("GET request '/check/email' for email = {}", email);
         boolean isRegistered = userService.isExistUserByEmail(email);
-        LOGGER.info("This email is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 
     @GetMapping("/check/login")
     public String checkLogin(@RequestParam String login) {
-        LOGGER.info("GET request '/check/login' for login = {}", login);
         boolean isRegistered = userService.isExistUserByLogin(login);
-        LOGGER.info("This login is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 
     @GetMapping("/check/company")
     public String checkCompany(@RequestParam String name) {
-        LOGGER.info("GET request '/check/company' for company name = {}", name);
         boolean isRegistered = companyService.isExistCompanyByName(name);
-        LOGGER.info("This company is registered = {}", isRegistered);
         return Boolean.toString(!isRegistered);
     }
 
@@ -201,8 +194,7 @@ public class RegistrationRestController {
     public List<String> getMissedRegStepsNames(HttpServletRequest request) {
         List<Long> stepsIds = getMissedRegStepsIds(request);
         List<String> stepsNames = new ArrayList<>();
-        for (Long id : stepsIds
-             ) {
+        for (Long id : stepsIds) {
             stepsNames.add(registrationStepService.getRegStepById(id).getName());
         }
         return stepsNames;
@@ -215,5 +207,8 @@ public class RegistrationRestController {
         return ResponseEntity.ok(registrationStep);
     }
 
-
+    @GetMapping(value = "/get_all_orgTypes")
+    public List<OrgType> getAllOrgTypes() {
+        return orgTypeService.getAllOrgTypes();
+    }
 }

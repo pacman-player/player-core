@@ -23,9 +23,8 @@ $(document).ready(function () {
                         code += '<div class="container">';
                         code += '<div class="row">';
                         code += '<div class="col-md-6 col-md-offset-3">';
-                        code += '<h1>Регистрация: 2/2</h1>';
+                        code += '<h1>Регистрация: 2/3</h1>';
                         code += '<form class="text-center" id="registrationCompanyForm">';
-                        code += '<input type="hidden" id="login" name="login" th:value="${login}"/>';
 
                         code += '<div class="form-group">';
                         code += '<label for="name" class="control-label">Имя компании</label>';
@@ -66,7 +65,6 @@ $(document).ready(function () {
                         code += '<div class="col-md-6 col-md-offset-3">';
                         code += '<h1>Регистрация: 3/3</h1>';
                         code += '<form class="text-center" id="registrationAddressForm">';
-                        code += '<input type="hidden" id="login" name="login" th:value="${login}"/>';
 
                         code += '<div class="form-group">';
                         code += '<label for="country" class="control-label">Страна</label>';
@@ -105,14 +103,11 @@ $(document).ready(function () {
         });
     }
 
-    //получаем все типы заведений песни из БД на выбор
-    getAllOrgTypeForAdd();
-
     function getAllOrgTypeForAdd() {
         //очищаю option
         $('#orgType').empty();
         var genreForAdd = '';
-        $.getJSON("/api/user/orgType/get_all_orgType", function (data) {
+        $.getJSON("/api/registration/get_all_orgTypes", function (data) {
             $.each(data, function (key, value) {
                 /*<option th:value="${orgType.id}" th:text="${orgType.name}"></option>*/
                 genreForAdd += '<option ';

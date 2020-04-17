@@ -3,20 +3,9 @@ package spring.app.service.abstraction;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-
 public interface SongService {
-
-    List<Song> getAllSong();
-
-    Song getByName(String name);
-
-    Song getByAuthorAndName(String author, String name);
-
-    Song getSongById(Long id);
 
     void addSong(Song song);
 
@@ -26,16 +15,26 @@ public interface SongService {
 
     boolean isExist(String name);
 
+    Song getSongById(Long id);
+
+    Song getByName(String name);
+
+    //TODO: кандидат на удаление, не используется
+//    Song getByAuthorAndName(String author, String name);
+
+    Song getBySearchRequests(String author, String name);
+
+    List<Song> getAllSongs();
+
+    List<Song> findSongsByNameContaining(String name);
+
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     List<Song> getAllSongInSongCompilation(Long id);
 
-    /**
-     * возвращает все песни, в которых содержиться передаваемое значение
-     *
-     * @return List<Song>
-     */
-    List<Song> findSongsByNameContaining(String name);
+    List<Song> getAllApprovedSongs();
+
+    List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 
     /**
      * Возвращает песню по id
@@ -51,4 +50,9 @@ public interface SongService {
      */
     List<Song> findSongsByGenreId(Long id);
 
+    int getLastApprovedSongsPageNumber(int pageSize);
+
+    Long getSongIdByAuthorAndName(String author, String name);
+
+    Long getAuthorIdBySongId(Long songId);
 }

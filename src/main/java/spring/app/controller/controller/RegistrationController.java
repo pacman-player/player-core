@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring.app.model.User;
-import spring.app.service.abstraction.OrgTypeService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,15 +17,12 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 @RequestMapping("/registration")
 public class RegistrationController {
 
-    private OrgTypeService orgTypeService;
-
     @Autowired
-    public RegistrationController(OrgTypeService orgTypeService) {
-        this.orgTypeService = orgTypeService;
+    public RegistrationController() {
     }
 
     @GetMapping("/user")
-    public String getFirstRegistrationPage(HttpServletRequest request) {
+    public String getFirstRegistrationPage() {
         return "registration/registration-first";
     }
 

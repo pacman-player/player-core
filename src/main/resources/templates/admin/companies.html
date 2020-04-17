@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Панель админа</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -15,7 +17,6 @@
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
 </head>
-
 <body>
 <div class="container-fluid">
 
@@ -127,7 +128,8 @@
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">Закрыть
                                                         </button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary" type="submit"
+                                                        <button id="editCompanyBtn" class="btn btn-primary"
+                                                                type="submit"
                                                                 data-dismiss="modal">
                                                             Изменить
                                                         </button>
@@ -147,16 +149,15 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/js/jquery/jquery.mask.min.js"></script>
+<script type="text/javascript" src="/js/security.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/companies.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/notificationsHandler.js" rel="script"></script>
-
 </body>
 </html>
