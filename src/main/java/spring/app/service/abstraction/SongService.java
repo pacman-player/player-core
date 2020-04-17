@@ -53,4 +53,6 @@ public interface SongService {
      * @return List<Song>
      */
     List<Song> findSongsByGenreId(Long id);
+
+    Long getAuthorIdBySongId(Long songId);
 }
