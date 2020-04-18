@@ -59,8 +59,9 @@ let Music = {
         '</div>\n' +
         '</div>\n' +
         '<!--подборка по жанрам-->\n' +
-        '<div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">\n' +
-            '<button class="btn" id="linkBack">Подборки по жанрам</button>\n' +
+        '<div id="Genres" class="col-fhd-8 col-xl-7 col-lg-6 row">\n' +
+            '<button class="btn button bullet" id="allGenBtn" aria-pressed="false">Подборки по жанрам</button>\n' +
+            '<div id="getGenres">\n' +
         '</div>\n' +
 
 

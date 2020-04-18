@@ -129,9 +129,18 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '#allGenBtn', function () {
+        if($('#allGenBtn').attr("aria-pressed")=="false"){
+        getAllGenre();
+            $('#allGenBtn').attr("aria-pressed", "true")
+        }
+
+
+    });
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
+        // $('#Genres').remove();
         getAllGenre();
     });
 
