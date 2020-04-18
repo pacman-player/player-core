@@ -129,6 +129,7 @@ $(document).ready(function () {
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
         $("#getGenres #songCompilation").remove();
+       alert("1");
         getAllGenre();
     });
 
