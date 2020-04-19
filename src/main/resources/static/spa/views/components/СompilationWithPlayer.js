@@ -139,10 +139,16 @@ $(document).ready(function () {
     });
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
+        // getAllGenre();
         $("#getGenres #songCompilation").remove();
+        $('#allGenBtn').attr("aria-pressed", "false");
+        getGenres.value = getGenres.value.replace(/\r?\n/g, "")
+
         // $('#Genres').remove();
-        getAllGenre();
+
     });
+
+
 
     function getAllGenre() {
         $.ajax({
