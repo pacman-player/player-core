@@ -32,7 +32,7 @@ function prepareGenreFieldForAuthor(fieldGenre, id) {
 
     // Ищем нужный столбец с жанрами исполнителя с указанным id:
     let authorGenres = $("tr").find('td:nth-child(1)') // У каждого ряда достаем первый(1) столбец с айдишником
-        .filter(function(){ // Фильтруем каждый столбец
+        .filter(function () { // Фильтруем каждый столбец
             return $(this).text() === `${id}`; // Оставляем только тот столбец, содержимое которого равно id ->
         }) // -> так мы находим нужную строку
         .parent() // Обращаемся к этой строке
@@ -81,15 +81,14 @@ const errMessages = {
 
 const authorNameRegEx = /[\wА-Яа-я\-]/;
 
-function addButton() {
-    // prepareForm(dropDownListSelector = $("#addAuthorGenre"))
+
+$('#add-authors-nav').click(function () {
     let fieldGenre = $("#addAuthorGenre");
+    prepareGenreFieldForAuthor(fieldGenre, null);
     let fieldName = $("#addAuthorName");
     let form = $("#add-form");
+    let fieldApproved = $("#addAuthorApproved");
 
-    prepareGenreFieldForAuthor(fieldGenre, null);
-    let theModal = $('#addAuthor');
-    theModal.modal("show");
 
     form.validate({
         rules: {
@@ -97,13 +96,13 @@ function addButton() {
                 required: true,
                 pattern: authorNameRegEx,
                 rangelength: [2, 40],
-                // remote: {
-                //     method: "GET",
-                //     url: "/api/admin/author/is_free",
-                //     id: () => {
-                //         return id
-                //     }
-                // },
+                remote: {
+                    method: "GET",
+                    url: "/api/admin/author/is_free",
+                    name: () => {
+                        return fieldName.val();
+                    }
+                },
             },
             updateGenre: {
                 required: true
@@ -116,37 +115,44 @@ function addButton() {
             }
         },
         submitHandler: () => {
-        $.ajax({
-            method: "POST",
-            url: "/api/admin/author/add_author",
-            contentType: "application/json",
-            data: JSON.stringify({
-                name: fieldName.val(),
-                genres: fieldGenre.val(),
-            }),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            cache: false,
-            complete: () => {
-                $('#addAuthor').modal("hide");
-                getTable();
-            },
-            success: () => {
-                notification(
-                    "edit-author" + null,
-                    ` Исполнитель ${fieldName.val()} сохранен`,
-                    "authors-panel");
-            },
-            error: (xhr, status, error) => {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
-            }
-        })
+            $.ajax({
+                method: "POST",
+                url: "/api/admin/author/add_author",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    name: fieldName.val(),
+                    genres: fieldGenre.val(),
+                    approved: fieldApproved.prop('checked')
+                }),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                cache: false,
+                complete: () => {
+                    $('#addAuthor').modal("hide");
+                    $('#tab-author-panel').tab('show');
+                    fieldName.val("");
+                    fieldApproved.empty();
+                    getTable();
 
-}})}
+                },
+                success: () => {
+                    notification(
+                        "edit-author" + null,
+                        ` Исполнитель ${fieldName.val()} сохранен`,
+                        "authors-panel");
+                },
+                error: (xhr, status, error) => {
+                    alert(xhr.responseText + "|\n" + status + "|\n" + error);
+                }
+            })
+
+        }
+    })
 
 
+});
 
 function editButton(id, name, approved) {
     let fieldGenre = $("#editAuthorGenre");

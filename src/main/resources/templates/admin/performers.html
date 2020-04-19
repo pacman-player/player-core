@@ -36,6 +36,10 @@
                             <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab"
                                data-toggle="tab">Все исполнители</a>
                         </li>
+                        <li id="add-authors-nav">
+                            <a href="#add-author-panel" aria-controls="add-author-panel" role="tab" data-toggle="tab">
+                                Новый исполнитель</a>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -60,16 +64,59 @@
                                     </div>
                                 </div>
                             </div>
-                            <button onclick='addButton()' type="button" class="btn btn-primary"  > Добавить исполнителя
-                            </button>
 
-<!--                            <button type="button" class="btn btn-primary" data-toggle="modal"-->
-<!--                                    data-target="#addAuthor" > Добавить исполнителя-->
-<!--                            </button>-->
                         </div>
 
+                        <!--добавление Исполнителя-->
+                        <div role="tabpanel" class="tab-pane" id="add-author-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="add-form">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addAuthorName">Автор</label>
+                                                                <input id="addAuthorName"
+                                                                       placeholder="Enter author name"
+                                                                       class="form-control"
+                                                                       name="name"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addAuthorGenre">Жанр</label>
+                                                                <select class="form-control"
+                                                                        id="addAuthorGenre"
+                                                                        name="updateGenre">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
 
+                                                            <div class="form-check form-check-inline">
+                                                                <label for="addAuthorApproved"
+                                                                        class="form-check-label">
+                                                                <input id="addAuthorApproved"
+                                                                       name="approved"
+                                                                       class="form-check-input"
+                                                                       type="checkbox"/>Разрешен</label>
+                                                            </div>
+                                                            <button id="addAuthorBtn"
+                                                                    class="btn btn-success btn-lg margin: 15px 30px"
+                                                                    type="submit">Добавить
+                                                            </button>
 
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!--модальное окно обновления автора-->
                         <div id="editAuthor" class="modal fade">
@@ -112,12 +159,14 @@
                                                                     <!--заполняем через js-->
                                                                 </select>
                                                             </div>
-                                                            <div><label for="editAuthorApproved"
-                                                                        class="checkbox-inline">
-                                                                <input id="editAuthorApproved"
-                                                                       name="approved"
-                                                                       class="form-control"
-                                                                       type="checkbox"/>Разрешен</label>
+
+                                                            <div class="form-check form-check-inline">
+                                                                <label for="editAuthorApproved"
+                                                                       class="form-check-label">
+                                                                    <input id="editAuthorApproved"
+                                                                           name="approved"
+                                                                           class="form-check-input"
+                                                                           type="checkbox"/>Разрешен</label>
                                                             </div>
 
                                                             <div class="modal-footer">
@@ -142,73 +191,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!--модальное окно добавления автора-->
-                        <div id="addAuthor" class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true"></button>
-                                        <h4 class="modal-title">Добавить исполнителя</h4>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                                    <form id="add-form">
-                                                        <div class="form-group text-center edit-form">
-                                                            <div>
-                                                                <label for="addAuthorName">Имя</label>
-                                                                <input id="addAuthorName"
-                                                                       class="form-control"
-                                                                       name="name"
-                                                                       type="text"/>
-                                                            </div>
-                                                            <div>
-                                                                <label for="addAuthorGenre">Жанр</label>
-                                                                <select class="form-control"
-                                                                        id="addAuthorGenre"
-                                                                        name="updateGenre">
-                                                                    <!--заполняем через js-->
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button class="btn btn-default"
-                                                                        data-dismiss="modal"
-                                                                        type="button">
-                                                                    Закрыть
-                                                                </button>
-<!--                                                                <button  onclick="sendAddAuthor()" type="button"-->
-<!--                                                                        class="btn btn-primary">-->
-<!--                                                                    Добавить-->
-<!--                                                                </button>-->
-                                                                <button  id="addAuthorBtn"
-                                                                        class="btn btn-primary"
-                                                                        type="submit">
-                                                                    Добавить
-                                                                </button>
-
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Jquery validate-->
