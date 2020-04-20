@@ -37,6 +37,11 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         entityManager.remove(entity);
     }
 
+    public boolean isExistById(PK id){
+        T entity = entityManager.find(persistentClass, id);
+        return entity!=null;
+    }
+
     /**
      * возвращает List объектов, в имени которых содержиться передаваемый парраметр
      * Если у обекта нет поля 'name', возвращает null

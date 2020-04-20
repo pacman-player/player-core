@@ -22,4 +22,5 @@ public interface GenericDao<PK extends Serializable, T> {
      */
     List<T> findByNameContaining(String param);
 
+    boolean isExistById(PK id);
 }

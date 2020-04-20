@@ -1,11 +1,12 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.Author;
 import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface GenreService {
+public interface GenreService extends GenericService<Genre>{
 
     void addGenre(Genre genre);
 

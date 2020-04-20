@@ -1,11 +1,12 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.OrderSong;
 import spring.app.model.OrgType;
 
 import java.util.List;
 
 
-public interface OrgTypeService {
+public interface OrgTypeService  extends GenericService<OrgType>{
 
     void addOrgType(OrgType orgType);
 

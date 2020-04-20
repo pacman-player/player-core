@@ -1,10 +1,11 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.Author;
 import spring.app.model.OrderSong;
 
 import java.sql.Timestamp;
 
-public interface OrderSongService {
+public interface OrderSongService extends GenericService<OrderSong>{
 
     void addSongOrder(OrderSong songOrder);
     long getSongOrdersByCompanyIdAndPeriod(Long id, Long period);

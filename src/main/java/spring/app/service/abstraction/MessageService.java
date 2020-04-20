@@ -1,11 +1,12 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Message;
 
 import java.util.List;
 
-public interface MessageService {
+public interface MessageService extends GenericService<Message>{
 
     void addMessage(Message message);
 

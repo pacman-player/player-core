@@ -1,13 +1,10 @@
 package spring.app.service.abstraction;
 
-import spring.app.model.Bannable;
-import spring.app.model.Company;
-import spring.app.model.Genre;
-import spring.app.model.Song;
+import spring.app.model.*;
 
 import java.util.List;
 
-public interface CompanyService {
+public interface CompanyService extends GenericService<Company>{
     void addCompany(Company company);
 
     void updateCompany(Company company);

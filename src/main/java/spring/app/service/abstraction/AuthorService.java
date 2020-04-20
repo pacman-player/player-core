@@ -5,7 +5,7 @@ import spring.app.model.Author;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface AuthorService {
+public interface AuthorService extends GenericService<Author>{
 
     void addAuthor(Author author);
 
