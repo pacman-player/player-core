@@ -118,9 +118,7 @@ public class AdminSongRestController {
 
     @GetMapping(value = "/genre/{id}")
     public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
-        LOGGER.info("GET request '/genre/{id}'"+id);
         List<Song> list = songService.findSongsByGenreId(id);
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -137,7 +135,6 @@ public class AdminSongRestController {
                   songService.updateSong(editSong);
               }
           });
-        LOGGER.info("PUT request '/update_genre'");
     }
 
 
