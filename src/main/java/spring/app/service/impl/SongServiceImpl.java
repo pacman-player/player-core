@@ -78,6 +78,17 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
+
+    @Override
+    public List<Song> findSongsByGenreId(Long id) {
+        return songDao.getAllWithGenreByGenreId(id);
+    }
+
+    @Override
+
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return songDao.getByCreatedDateRange(dateFrom, dateTo);
     }

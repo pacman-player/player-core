@@ -40,5 +40,19 @@ public interface SongService {
 
     Long getSongIdByAuthorAndName(String author, String name);
 
+    /**
+     * Возвращает песню по id
+     *
+     * @return Song
+     */
+    Song getById(long songId);
+
+    /**
+     * Возвращает песню по id жанра
+     *
+     * @return List<Song>
+     */
+    List<Song> findSongsByGenreId(Long id);
+
     Long getAuthorIdBySongId(Long songId);
 }
