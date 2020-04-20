@@ -44,12 +44,10 @@ public class AdminSongRestController {
      */
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
-        LOGGER.info("GET request '/all_songs'");
         List<SongDto> list = songService.getAllSongs()
                 .stream()
                 .map(SongDto::new)
                 .collect(Collectors.toList());
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -77,6 +75,7 @@ public class AdminSongRestController {
         if (genre != null) {
             song.setGenre(genre);
         }
+        song.setSearchTags(songDto.getSearchTags());
         songService.addSong(song);
         LOGGER.info("Added Song = {}", song);
     }
@@ -95,6 +94,7 @@ public class AdminSongRestController {
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
+        song.setSearchTags(songDto.getSearchTags());
         song.setGenre(genre);
         songService.updateSong(song);
         LOGGER.info("Updated Song as = {}", song);
@@ -103,18 +103,14 @@ public class AdminSongRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-        LOGGER.info("GET request '/{}'", id);
         SongDto songDto = new SongDto(songService.getSongById(id));
-        LOGGER.info("Found Sing = {}", songDto);
         return ResponseEntity.ok(songDto);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        LOGGER.info("GET request '/all_genre'");
         List<Genre> list = genreService.getAllGenre();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 

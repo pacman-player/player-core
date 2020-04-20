@@ -27,15 +27,12 @@ public class AuthorRestController {
 
     @GetMapping("allAuthors")
     public List<Author> getAllAuthors() {
-        LOGGER.info("GET request 'allAuthors'");
         List<Author> list = authorService.getAllAuthors();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("allApprovedAuthors")
     public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allApprovedAuthors'");
         List<Author> list = authorService.getAllApprovedAuthors();
 
         Company company = user.getCompany();
@@ -44,7 +41,6 @@ public class AuthorRestController {
                 company,
                 list);
 
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -61,7 +57,6 @@ public class AuthorRestController {
                 company,
                 authorsPage);
 
-        LOGGER.info("Result has {} lines", authorsPage.size());
         return authorsPage;
     }
 
@@ -73,14 +68,12 @@ public class AuthorRestController {
     @GetMapping("allAuthorsByName/{name}")
     public List<Author> searchByNameInAuthors(@PathVariable String name,
                                               @AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allAuthorsByName/{}'", name);
         List<Author> authors = authorService.findAuthorsByNameContaining(name);
 
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
         companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, authors);
-        LOGGER.info("Result has {} lines", authors.size());
         return authors;
     }
 

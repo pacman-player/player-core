@@ -35,41 +35,30 @@ public class AdminSongCompilationRestController {
 
     @GetMapping
     public List<SongCompilation> getAllCompilation() {
-        LOGGER.info("GET request '/'");
         List<SongCompilation> compilations = songCompilationService.getAllSongCompilations();
-        LOGGER.info("Result has {} lines", compilations.size());
         return compilations;
     }
 
     @GetMapping("/content/{compilationId}")
     public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
-        LOGGER.info("GET request '/content/{}'", compilationId);
         List<Song> songs = songCompilationService.getSongCompilationContentById(compilationId);
-        LOGGER.info("Result has {} lines", songs.size());
         return songs;
     }
 
     @GetMapping("/content/available/{compilationId}")
     public List<Song> getAvailableWithGenreByGenreId(@PathVariable Long compilationId) {
-        LOGGER.info("GET request '/content/available/{}'", compilationId);
         List<Song> songs = songCompilationService.getAvailableSongsForCompilationById(compilationId);
-        LOGGER.info("Result has {} lines", songs.size());
         return songs;
     }
 
     @PostMapping("/content/add/{compilationId}/{songId}")
     public void addSongToSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
-        LOGGER.info("POST request '/content/add/{}/{}'", compilationId, songId);
         songCompilationService.addSongToSongCompilation(compilationId, songId);
-        LOGGER.info("SongCompilation ID = {} now contains Song ID = {}", compilationId, songId);
     }
 
     @PostMapping("/update")
     public void updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
-        LOGGER.info("POST request '/update' songCompilationDto ID = {}", songCompilationDto.getId());
         SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
-        LOGGER.info("Song compilation with ID = {} exists", compilation.getId());
-
         String coverName = uploadCover(songCompilationDto.getCover());
         if (coverName != null) {
             // Удалить текущую обложку, если была

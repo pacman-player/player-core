@@ -83,13 +83,17 @@ public class TelegramServiceImpl implements TelegramService {
             byte[] trackBytes = track.getTrack();
             // создаем 30-секундный отрезок для превью
             byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
-            // получаем id песни после занесения в БД
-            songId = musicSearchService.updateData(track);
-            Path path = playerPaths.getSongDir(songId);
-            try {
-                Files.write(path, track.getTrack());  //записываем песню в директорию
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!songService.isExist(track.getSong())) {
+                // получаем id песни после занесения в БД
+                songId = musicSearchService.updateData(track);
+                Path path = playerPaths.getSongDir(songId);
+                try {
+                    Files.write(path, track.getTrack());  //записываем песню в директорию
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());
             }
 
             // По position определяем позицию песни в очереди song_queue.

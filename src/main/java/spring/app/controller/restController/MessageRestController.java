@@ -23,9 +23,7 @@ public class MessageRestController {
 
     @GetMapping(value = "/all_messages")
     public List<Message> getAllMessage() {
-        LOGGER.info("GET request '/all_messages'");
         List <Message> list = messageService.getAllMessage();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 

@@ -91,7 +91,7 @@ public class SongRestController {
         LOGGER.info("POST request 'songsBan' by User = {} with SongId = {}", user, songId);
 
         Company company = companyService.getById(user.getCompany().getId());
-        company.addBannedSong(songService.getById(songId));
+        company.addBannedSong(songService.getSongById(songId));
 
         companyService.updateCompany(company);
         user.setCompany(company);

@@ -41,6 +41,9 @@ public class Song extends Bannable {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @Column(name = "search_tags")
+    private String searchTags;
+
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
@@ -105,6 +108,13 @@ public class Song extends Bannable {
         this.name = name;
         this.author = author;
         this.genre = genre;
+    }
+
+    public Song(String name, Author author, Genre genre, String searchTags) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.searchTags = searchTags;
     }
 
     public Song(String name) {
@@ -204,6 +214,14 @@ public class Song extends Bannable {
     @Override
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    public String getSearchTags() {
+        return searchTags;
+    }
+
+    public void setSearchTags(String searchTags) {
+        this.searchTags = searchTags;
     }
 
     @Override
