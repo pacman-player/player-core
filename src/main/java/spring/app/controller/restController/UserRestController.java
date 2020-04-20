@@ -78,7 +78,6 @@ public class UserRestController {
     @GetMapping(value = "/get_user")
     public User getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/get_user' from authenticated User = {}", user);
         return (userService.getUserById(user.getId()));
     }
 
@@ -147,7 +146,6 @@ public class UserRestController {
     @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/company' from User = {}", user);
         User userLazy = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
         long id = userLazy.getCompany().getId();
         return ResponseEntity.ok(companyService.getById(id));
@@ -156,7 +154,6 @@ public class UserRestController {
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompanyAddress() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
         User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
         Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
 //        Address address = addressService.getById(company.getAddress().getId()); // строчка не нужна, т.к. в js address получаем  из объекта company

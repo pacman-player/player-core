@@ -27,15 +27,12 @@ public class SongRestController {
 
     @GetMapping("allSongs")
     public List<Song> getAllSongs() {
-        LOGGER.info("GET request 'allSongs'");
         List<Song> list = songService.getAllSongs();
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
     @GetMapping("allApprovedSongs")
     public List<Song> getAllApprovedSongs(@AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allApprovedSongs'");
         List<Song> list = songService.getAllApprovedSongs();
 
         Company company = user.getCompany();
@@ -44,7 +41,6 @@ public class SongRestController {
                 company,
                 list);
 
-        LOGGER.info("Result has {} lines", list.size());
         return list;
     }
 
@@ -52,7 +48,6 @@ public class SongRestController {
     public List<Song> getApprovedSongsPage(@AuthenticationPrincipal User user,
                                                @RequestParam(defaultValue = "1") Integer pageNumber,
                                                @RequestParam(defaultValue = "5") Integer pageSize) {
-        LOGGER.info("GET request 'approvedSongsPage'");
         List<Song> songsPage = songService.getApprovedSongsPage(pageNumber, pageSize);
 
         Company company = user.getCompany();
@@ -61,7 +56,6 @@ public class SongRestController {
                 company,
                 songsPage);
 
-        LOGGER.info("Result has {} lines", songsPage.size());
         return songsPage;
     }
 
@@ -73,15 +67,12 @@ public class SongRestController {
     @GetMapping("allSongsByName/{name}")
     public List<Song> searchByNameInSongs(@PathVariable String name,
                                           @AuthenticationPrincipal User user) {
-        LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
         List<Song> songs = songService.findSongsByNameContaining(name);
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
         companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
-        LOGGER.info("Song list ({} song(s)) was added to ban for the Company = {}",
-                songs.size(),
-                usersCompany.getName());
+
         return songs;
     }
 

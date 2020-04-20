@@ -45,9 +45,7 @@ public class UserCompilationRestController {
 
     @GetMapping(value = "/get/song-compilation/{id}")
     public SongCompilation getSongCompilationById(@PathVariable("id") Long id) {
-        LOGGER.info("GET request '/get/all-song-compilation/{}'", id);
         SongCompilation songCompilationById = songCompilationService.getSongCompilationById(id);
-        LOGGER.info("Found compilation = {}", songCompilationById.getName());
         return songCompilationById;
     }
 
@@ -57,12 +55,10 @@ public class UserCompilationRestController {
      */
     @GetMapping("/songsBySongCompilation")
     public List<SongDto> getSongsBySongCompilation(String compilationName) {
-        LOGGER.info("GET request '/songsBySongCompilation' with compilationName = {}", compilationName);
         SongCompilation songCompilation = songCompilationService.getSongCompilationByCompilationName(compilationName);
         List<SongDto> songDtoList = songCompilation.getSong().stream()
                 .map(SongDto::new)
                 .collect(Collectors.toList());
-        LOGGER.info("Found {} songs", songDtoList.size());
         return songDtoList;
     }
 }
