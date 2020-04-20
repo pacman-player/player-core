@@ -12,56 +12,55 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl extends AbstractService<Company, CompanyDao> implements spring.app.service.abstraction.CompanyService {
 
-    private final CompanyDao companyDao;
     private final OrderSongDao orderSongDao;
 
     @Autowired
-    public CompanyServiceImpl(CompanyDao companyDao, OrderSongDao orderSongDao) {
-        this.companyDao = companyDao;
+    public CompanyServiceImpl(CompanyDao dao, OrderSongDao orderSongDao) {
+        super(dao);
         this.orderSongDao = orderSongDao;
     }
 
     @Override
     public void addCompany(Company company) {
-        companyDao.save(company);
+        dao.save(company);
     }
 
     @Override
     public void updateCompany(Company company) {
-        companyDao.update(company);
+        dao.update(company);
     }
 
     @Override
     public Company getById(Long id) {
-        return companyDao.getById(id);
+        return dao.getById(id);
     }
 
     @Override
     public Company getByIdWithAddress(Long id) {
-        return companyDao.getByIdWithAddress(id);
+        return dao.getByIdWithAddress(id);
     }
 
     @Override
     public Company getByCompanyName(String companyName) {
-        return companyDao.getCompanyByCompanyName(companyName);
+        return dao.getCompanyByCompanyName(companyName);
     }
 
     @Override
     public void removeById(Long id) {
         orderSongDao.bulkRemoveOrderSongByCompany(id);
-        companyDao.deleteById(id);
+        dao.deleteById(id);
     }
 
     @Override
     public List<Company> getAllCompanies() {
-        return companyDao.getAll();
+        return dao.getAll();
     }
 
     @Override
     public boolean isExistCompanyByName(String name) {
-        return companyDao.isExistCompanyByName(name);
+        return dao.isExistCompanyByName(name);
     }
 
     @Override
@@ -76,16 +75,16 @@ public class CompanyServiceImpl implements spring.app.service.abstraction.Compan
 
     @Override
     public Company setBannedEntity(Company company) {
-        return companyDao.getCompanyWithEntityBanned(company.getId());
+        return dao.getCompanyWithEntityBanned(company.getId());
     }
 
     @Override
     public Company getCompanyByAddressId(long id) {
-        return companyDao.getCompanyByAddressId(id);
+        return dao.getCompanyByAddressId(id);
     }
 
     @Override
     public List<String> getAllSongsInQueueByCompanyId(long id) {
-        return companyDao.getAllSongsInQueueByCompanyId(id);
+        return dao.getAllSongsInQueueByCompanyId(id);
     }
 }

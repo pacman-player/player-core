@@ -6,7 +6,8 @@ import spring.app.model.NotificationTemplate;
 
 import java.util.List;
 
-public interface NotificationService extends GenericService<Notification>{
+//public interface NotificationService extends GenericService<Notification>{
+public interface NotificationService{
 
     void addNotification(Notification notification);
 

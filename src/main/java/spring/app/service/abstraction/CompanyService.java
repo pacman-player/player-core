@@ -4,7 +4,8 @@ import spring.app.model.*;
 
 import java.util.List;
 
-public interface CompanyService extends GenericService<Company>{
+//public interface CompanyService extends GenericService<Company>{
+public interface CompanyService{
     void addCompany(Company company);
 
     void updateCompany(Company company);

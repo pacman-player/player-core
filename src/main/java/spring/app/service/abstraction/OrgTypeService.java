@@ -6,7 +6,8 @@ import spring.app.model.OrgType;
 import java.util.List;
 
 
-public interface OrgTypeService  extends GenericService<OrgType>{
+//public interface OrgTypeService  extends GenericService<OrgType>{
+public interface OrgTypeService{
 
     void addOrgType(OrgType orgType);
 

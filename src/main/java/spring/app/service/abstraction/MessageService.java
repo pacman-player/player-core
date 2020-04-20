@@ -6,7 +6,8 @@ import spring.app.model.Message;
 
 import java.util.List;
 
-public interface MessageService extends GenericService<Message>{
+//public interface MessageService extends GenericService<Message>{
+public interface MessageService{
 
     void addMessage(Message message);
 

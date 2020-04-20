@@ -1,13 +1,11 @@
 package spring.app.service.impl;
 
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenericDao;
 import spring.app.service.abstraction.GenericService;
 
 import java.util.List;
 
 
-@Transactional
 public abstract class AbstractService<T, R extends GenericDao<Long, T>> implements GenericService<T> {
 
     protected final R dao;

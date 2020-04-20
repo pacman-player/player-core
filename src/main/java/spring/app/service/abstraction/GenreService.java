@@ -6,7 +6,8 @@ import spring.app.model.Genre;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface GenreService extends GenericService<Genre>{
+//public interface GenreService extends GenericService<Genre>{
+public interface GenreService {
 
     void addGenre(Genre genre);
 

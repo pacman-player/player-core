@@ -5,7 +5,8 @@ import spring.app.model.OrderSong;
 
 import java.sql.Timestamp;
 
-public interface OrderSongService extends GenericService<OrderSong>{
+//public interface OrderSongService extends GenericService<OrderSong>{
+public interface OrderSongService{
 
     void addSongOrder(OrderSong songOrder);
     long getSongOrdersByCompanyIdAndPeriod(Long id, Long period);

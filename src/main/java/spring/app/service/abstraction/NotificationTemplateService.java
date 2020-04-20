@@ -5,7 +5,7 @@ import spring.app.model.NotificationTemplate;
 
 import java.util.List;
 
-public interface NotificationTemplateService{ // конфликт методов
+public interface NotificationTemplateService {
     List<NotificationTemplate> getAll();
 
     NotificationTemplate getById(Long id);
@@ -13,7 +13,7 @@ public interface NotificationTemplateService{ // конфликт методов
     NotificationTemplate create(NotificationTemplate notificationTemplate);
 
 
-    NotificationTemplate update(NotificationTemplate notificationTemplate);
+    NotificationTemplate updateAndGet(NotificationTemplate notificationTemplate);
 
     void deleteById(Long id);
 

@@ -4,7 +4,8 @@ import spring.app.model.Address;
 
 import java.util.List;
 
-public interface AddressService extends GenericService<Address>{
+//public interface AddressService extends GenericService<Address>{
+public interface AddressService {
     void addAddress(Address address);
 
     void updateAddress(Address address);
