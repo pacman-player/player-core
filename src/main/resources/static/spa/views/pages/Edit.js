@@ -1,4 +1,3 @@
-
 let Edit = {
 
     render: async () => {
@@ -49,7 +48,7 @@ let Edit = {
             '                                                           name="code" required=""/>\n' +
             '                                                    <div class="modal-footer">\n' +
             '                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>\n' +
-            '                                                        <button id="checkUserCodeBtn" class="btn btn-primary" type="submit">Проверить</button>\n' +
+            '                                                    <button id="checkUserCodeBtn" class="btn btn-primary" type="submit" data-dismiss="modal" aria-hidden="true">Проверить</button>\n' +
             '                                                    </div>\n' +
             '                                                </div>\n' +
             '                                            </form>\n' +
@@ -75,15 +74,15 @@ let Edit = {
             '                                            <form id="update-form">\n' +
             '                                                <div class="form-group text-center edit-form">\n' +
             '                                                    <label for="oldUserPass">Текущий пароль</label>\n' +
-            '                                                    <input id="oldUserPass" class="form-control" type="password" name="password"\n' +
-            '                                                           required=""/>\n' +
+            '                                                    <input id="oldUserPass" class="form-control"  type="password" name="password"\n' +
+            '                                                           required />\n' +
             '                                                    <label for="newUserPass">Новый пароль</label>\n' +
             '                                                    <input id="newUserPass" class="form-control" type="password" name="password"\n' +
-            '                                                           required=""/>\n' +
+            '                                                           required/>\n' +
             '                                                    <label for="updateUserPass">Подтвердите пароль</label>\n' +
             '                                                    <input id="updateUserPass" class="form-control" type="password" name="password"\n' +
-            '                                                           required=""/>\n' +
-            '                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit">Сохранить</button>\n' +
+            '                                                           required>\n' +
+            '                                                    <button id="updateUserPasswordBtn" class="btn btn-primary" type="submit" data-dismiss="modal" aria-hidden="true">Сохранить</button>\n' +
             '                                                </div>\n' +
             '                                            </form>\n' +
             '                                        </div>\n' +
@@ -115,20 +114,22 @@ let Edit = {
                         $('#login').val(data.login);
                         $('#email').val(data.email);
                         password = data.password;
-                    }
+                    },
+                    async: false
                 });
             }
+
             function updateUserData() {
                 var newUser = {
-                    "login":$('#login').val(),
-                    "email":$('#email').val()
+                    "login": $('#login').val(),
+                    "email": $('#email').val()
                 };
 
-                if(newUser.login === "") {
+                if (newUser.login === "") {
                     alert("Введите логин");
                     return;
                 }
-                if(newUser.email === ""){
+                if (newUser.email === "") {
                     alert("Введите почту");
                     return;
                 }
@@ -154,30 +155,38 @@ let Edit = {
             function updateUserPassword() {
 
                 getUserData();
-
                 var oldPass = $("#oldUserPass").val();
+                var ans = true;
                 $.ajax({
                     url: "/api/user/get_encrypted_pass",
                     type: "POST",
-                    contentType: "application/json",
-                    data: {"oldPass": oldPass, "newPass": password},
+                    //               context: document.getElementById('#ajax'),
+                    data: {"nextPass": oldPass, "prevPass": password},
                     success: function (isSame) {
-                        alert(isSame);
-                        oldPass = isSame;
-                    }
+                        if (isSame === true) {
+                            passEquels();
+                        }
+                        if (isSame === false) {
+                            alert("Неверно введен текущий пароль");
+                            $("#updateUserPass").modal('hide');
+                            setTimeout(function () {
+                                $('.modal-backdrop').remove();
+                            }, 2000);
+                            return;
+                        }
+                    },
+                    error: function () {
+                        alert("Не удалось изменить пароль");
+                    },
                 });
-                if(oldPass === false){
-                    alert("Неверно введен текущий пароль");
-                    return;
-                }
-
+            }
+            function passEquels() {
                 var newPass = $("#newUserPass").val();
                 var checkPass = $("#updateUserPass").val();
-                if (newPass !== checkPass){
+                if (newPass !== checkPass) {
                     alert("Новый пароль не совпадает с подтвержденным");
                     return;
                 }
-
                 var pass1 = newPass.replace(/"/g, '##@##');
                 var pass2 = pass1.replace(/\\/g, '##@@##');
 
@@ -195,13 +204,13 @@ let Edit = {
                     success: function () {
                         alert("Пароль изменен");
                         $("#editUserPass").modal('hide');
-                        $("#checkUserCode").modal('hide');
-                        // location.reload();
                     },
                     error: function () {
                         alert("Не удалось изменить пароль");
                     }
                 });
+
+
             }
 
             // function showLinkAdmin() {
@@ -228,14 +237,18 @@ let Edit = {
                     url: "/api/user/code_check",
                     contentType: 'application/json;',
                     data: JSON.stringify(code),
-                    async: true,
+                    // async: true,
                     cache: false,
                     success: function () {
                         alert("Код верен");
-                        $("#editUserPass").modal('show');
+                        $("#checkUserCode").modal('hide');
+                        setTimeout(function () {
+                            $('#editUserPass').modal('show');
+                        }, 2000);
                     },
                     error: function () {
                         alert("Проверочный код не верен");
+                        return;
                     }
                 });
 
@@ -271,6 +284,7 @@ let Edit = {
             $("#checkUserPasswordBtn").click(function (event) {
                 event.preventDefault();
                 sendMail();
+                alert("Mail seded")
             });
 
             $("#checkUserCodeBtn").click(function (event) {
@@ -278,9 +292,12 @@ let Edit = {
                 checkForm();
             });
 
+
         });
+        //функции
     }
 }
 
 
 export default Edit;
+
