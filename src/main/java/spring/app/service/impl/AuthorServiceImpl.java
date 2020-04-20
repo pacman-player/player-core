@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AuthorServiceImpl extends AbstractService<Author, AuthorDao> implements AuthorService {
+public class AuthorServiceImpl extends AbstractServiceImpl<Author, AuthorDao> implements AuthorService {
 
     private SongDao songDao;
     private NotificationService notificationService;
@@ -31,7 +31,7 @@ public class AuthorServiceImpl extends AbstractService<Author, AuthorDao> implem
     }
 
     @Override
-    public void addAuthor(Author author) {
+    public void save(Author author) {
         dao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
@@ -42,16 +42,11 @@ public class AuthorServiceImpl extends AbstractService<Author, AuthorDao> implem
         }
     }
 
-    @Override
-    public void updateAuthor(Author author) {
-        dao.update(author);
-    }
-
     /**
      * Когда удаляется Автор, удаляются все его песни
      */
     @Override
-    public void deleteAuthorById(Long id) {
+    public void deleteById(Long id) {
         // удаляем песни с данным автором
         songDao.bulkRemoveSongsByAuthorId(id);
         // теперь удаляем автора
@@ -59,28 +54,14 @@ public class AuthorServiceImpl extends AbstractService<Author, AuthorDao> implem
     }
 
     @Override
-    public Author getById(long authorsId) {
-        return dao.getById(authorsId);
-    }
-
-    @Override
     public Author getByName(String name) {
         return dao.getByName(name);
     }
 
-    @Override
-    public List<Author> findAuthorsByNameContaining(String name) {
-        return dao.findByNameContaining(name);
-    }
 
     @Override
     public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return dao.getByCreatedDateRange(dateFrom, dateTo);
-    }
-
-    @Override
-    public List<Author> getAllAuthors() {
-        return dao.getAll();
     }
 
     @Override

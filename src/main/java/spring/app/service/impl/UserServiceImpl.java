@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl  extends AbstractService<User, UserDao> implements UserService{
+public class UserServiceImpl  extends AbstractServiceImpl<User, UserDao> implements UserService{
 
     private PasswordEncoder passwordEncoder;
     private RoleDao roleDao;
@@ -71,13 +71,9 @@ public class UserServiceImpl  extends AbstractService<User, UserDao> implements 
         dao.save(user);
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return dao.getById(id);
-    }
 
     @Override
-    public void addUser(User user) {
+    public void save(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -85,22 +81,18 @@ public class UserServiceImpl  extends AbstractService<User, UserDao> implements 
         dao.save(user);
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        return dao.getAll();
-    }
 
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteById(Long id) {
         notificationDao.bulkRemoveNotificationsByUserId(id);
         if (dao.getById(id).getCompany() != null) {
-            companyService.removeById(dao.getById(id).getCompany().getId());
+            companyService.deleteById(dao.getById(id).getCompany().getId());
         }
         dao.deleteById(id);
     }
 
     @Override
-    public void updateUser(User user) {
+    public void update(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

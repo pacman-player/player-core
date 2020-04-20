@@ -25,7 +25,7 @@ public class SendEmailAboutAddNewCompilationImpl implements SendEmailAboutAddNew
     @Override
     public void send(String nameCompilation) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        List<User> users = userService.getAllUsers();
+        List<User> users = userService.getAll();
 
         if (users != null) {
             for (User user : users) {

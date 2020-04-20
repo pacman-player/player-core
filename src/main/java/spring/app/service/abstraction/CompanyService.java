@@ -4,21 +4,12 @@ import spring.app.model.*;
 
 import java.util.List;
 
-//public interface CompanyService extends GenericService<Company>{
-public interface CompanyService{
-    void addCompany(Company company);
-
-    void updateCompany(Company company);
-
-    Company getById(Long id);
+public interface CompanyService extends GenericService<Company>{
+//public interface CompanyService{
 
     Company getByIdWithAddress(Long id);
 
     Company getByCompanyName(String companyName);
-
-    void removeById(Long id);
-
-    List<Company> getAllCompanies();
 
     boolean isExistCompanyByName(String name);
 
@@ -35,7 +26,7 @@ public interface CompanyService{
      */
     Company setBannedEntity(Company company);
 
-    Company getCompanyByAddressId(long id);
+    Company getCompanyByAddressId(Long id);
 
     List<String> getAllSongsInQueueByCompanyId(long id);
 }

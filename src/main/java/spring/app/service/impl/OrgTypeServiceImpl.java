@@ -1,11 +1,8 @@
 package spring.app.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.dao.abstraction.OrgTypeDao;
-import spring.app.model.OrderSong;
 import spring.app.model.OrgType;
 import spring.app.service.abstraction.OrgTypeService;
 
@@ -13,7 +10,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class OrgTypeServiceImpl extends AbstractService<OrgType, OrgTypeDao> implements OrgTypeService {
+public class OrgTypeServiceImpl extends AbstractServiceImpl<OrgType, OrgTypeDao> implements OrgTypeService {
 
 
     protected OrgTypeServiceImpl(OrgTypeDao dao) {

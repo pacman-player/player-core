@@ -6,7 +6,7 @@ import spring.app.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends GenericService<User>{
     User getUserByLoginWithRegStepsCompany(String login);
 
     User getUserByLogin(String login);
@@ -15,21 +15,11 @@ public interface UserService {
 
     User getUserByVkId(int vkId);
 
-    User getUserById(Long id);
-
-    void addUser(User user);
-
     void addUserWithEncodePassword(User user);
 
     User getUserByEmail(String email);
 
     void save(UserRegistrationDto registration);
-
-    List<User> getAllUsers();
-
-    void deleteUserById(Long id);
-
-    void updateUser(User user);
 
     void updateUserWithEncodePassword(User user);
 

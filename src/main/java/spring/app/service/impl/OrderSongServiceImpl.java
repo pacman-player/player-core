@@ -1,11 +1,8 @@
 package spring.app.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.NotificationTemplateDao;
 import spring.app.dao.abstraction.OrderSongDao;
-import spring.app.model.NotificationTemplate;
 import spring.app.model.OrderSong;
 import spring.app.service.abstraction.OrderSongService;
 
@@ -15,7 +12,7 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class OrderSongServiceImpl extends AbstractService<OrderSong, OrderSongDao> implements OrderSongService {
+public class OrderSongServiceImpl extends AbstractServiceImpl<OrderSong, OrderSongDao> implements OrderSongService {
 
     protected OrderSongServiceImpl(OrderSongDao dao) {
         super(dao);

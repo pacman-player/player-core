@@ -68,7 +68,7 @@ public class AdminSongRestController {
         if (author != null) {
             song.setAuthor(author);
         } else {
-            authorService.addAuthor(new Author(songDto.getAuthorName()));
+            authorService.save(new Author(songDto.getAuthorName()));
             song.setAuthor(authorService.getByName(songDto.getAuthorName()));
         }
         Genre genre = genreService.getByName(songDto.getGenreName());

@@ -198,7 +198,7 @@ public class MainController {
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             user = new User(googleId, email, roleSet, true);
-            userService.addUser(user);
+            userService.save(user);
 
             //здесь сетим дефолтную компанию
             Company company = new Company();
@@ -211,7 +211,7 @@ public class MainController {
 
             //cетим дефолтный адрес компании
             Address defaultAddress = new Address("Country", "City", "Street", "House", 0.0, 0.0);
-            addressService.addAddress(defaultAddress);
+            addressService.save(defaultAddress);
             company.setAddress(defaultAddress);
 
             //сетим утренний плейлист
@@ -238,7 +238,7 @@ public class MainController {
             eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);
 
-            companyService.addCompany(company);
+            companyService.save(company);
 //            user.setCompany(companyService.getByCompanyName(companyName));
             user.setCompany(company);
 
@@ -292,7 +292,7 @@ public class MainController {
                     companyService.getByCompanyName("Pacman"),
                     true);
             user.setLogin("vkAuth");
-            userService.addUser(user);
+            userService.save(user);
 
             //здесь сетим дефолтную компанию
             Company company = new Company();
@@ -305,7 +305,7 @@ public class MainController {
 
             //cетим дефолтный адрес компании
             Address defaultAddress = new Address("Country", "City", "Street", "House", 0.0, 0.0);
-            addressService.addAddress(defaultAddress);
+            addressService.save(defaultAddress);
             company.setAddress(defaultAddress);
 
             //сетим утренний плейлист
@@ -332,7 +332,7 @@ public class MainController {
             eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);
 
-            companyService.addCompany(company);
+            companyService.save(company);
             user.setCompany(companyService.getByCompanyName(companyName));
 
             user = userService.getUserByVkId(actor.getId());

@@ -54,7 +54,7 @@ public class RegistrationRestController {
         User newUser = userService.getUserByLoginWithRegStepsCompany(userDto.getLogin());
         newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-user"));
         /*userService.updateUser(newUser);*/
-        userService.addUser(newUser);
+        userService.save(newUser);
         LOGGER.info("User registered");
     }
 
@@ -97,7 +97,7 @@ public class RegistrationRestController {
                 LocalTime.parse(companyDto.getStartTime()), LocalTime.parse(companyDto.getCloseTime()),
                 user, orgType);
 
-        companyService.addCompany(company);
+        companyService.save(company);
         company = companyService.getByCompanyName(companyDto.getName());
         company.setOrgType(orgType);
         company.setUser(user);
@@ -128,7 +128,7 @@ public class RegistrationRestController {
         eveningPlaylistSet.add(eveningPlayList);
         company.setEveningPlayList(eveningPlaylistSet);
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         company = companyService.getByCompanyName(company.getName());
 
         LOGGER.info("Adding Company to User...");
@@ -140,7 +140,7 @@ public class RegistrationRestController {
 
         User newUser = userService.getUserByLogin(user.getLogin());
         newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-company"));
-        userService.updateUser(newUser);
+        userService.update(newUser);
     }
 
     //ИСПРАВИТЬ ШИРОТУ И ДОЛГОТУ
@@ -162,17 +162,17 @@ public class RegistrationRestController {
         address.setCity(addressDto.getCity());
         address.setStreet(addressDto.getStreet());
         address.setHouse(addressDto.getHouse());
-        addressService.addAddress(address);
+        addressService.save(address);
 
 
         Company company = companyService.getByCompanyName(companyName);
         LOGGER.info("Adding Address to User...");
         company.setAddress(address);
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         User newUser = userService.getUserByLogin(user.getLogin());
         newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-address"));
-        userService.updateUser(newUser);
+        userService.update(newUser);
     }
 
     @GetMapping(value = "/getMissedStepsIds")

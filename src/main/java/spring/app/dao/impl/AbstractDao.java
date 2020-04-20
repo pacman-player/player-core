@@ -8,7 +8,8 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true) // вываливаеться ошибка при запуске
+@Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
 
     @PersistenceContext

@@ -79,7 +79,7 @@ public class UserRestController {
     public User getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("GET request '/get_user' from authenticated User = {}", user);
-        return (userService.getUserById(user.getId()));
+        return (userService.getById(user.getId()));
     }
 
     @PostMapping(value = "/get_encrypted_pass")
@@ -110,7 +110,7 @@ public class UserRestController {
                 return ResponseEntity.badRequest().body(user);
             }
         }
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Updated user data for User = {}", user);
         return ResponseEntity.ok(user);
     }
@@ -124,7 +124,7 @@ public class UserRestController {
         newPassword = newPassword.replaceAll("##@@##"  ,"\\\\");
 
         user.setPassword(newPassword);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Password has been changed successfully!");
     }
 
@@ -173,7 +173,7 @@ public class UserRestController {
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyForUpdate.setTariff(company.getTariff());
-        companyService.updateCompany(companyForUpdate);
+        companyService.update(companyForUpdate);
         LOGGER.info("Updated Company = {}", companyForUpdate);
     }
 
@@ -188,7 +188,7 @@ public class UserRestController {
         LOGGER.info("Updating address for Company named = {}", companyForUpdate.getName());
         if (addressForUpdate == null) {
             LOGGER.debug("Creating new address...");
-            addressService.updateAddress(new Address(
+            addressService.update(new Address(
                     addressDto.getCountry(),
                     addressDto.getCity(),
                     addressDto.getStreet(),
@@ -207,14 +207,14 @@ public class UserRestController {
             addressForUpdate.setLongitude(addressDto.getLongitude());
 
             companyForUpdate.setAddress(addressForUpdate);
-            companyService.updateCompany(companyForUpdate);
+            companyService.update(companyForUpdate);
 
             LOGGER.debug("Success!");
             return;
         }
 
         companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
-        companyService.updateCompany(companyForUpdate);
+        companyService.update(companyForUpdate);
         LOGGER.info("Successfully updated address for the Company");
     }
 

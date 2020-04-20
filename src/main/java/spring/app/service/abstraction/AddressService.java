@@ -4,17 +4,8 @@ import spring.app.model.Address;
 
 import java.util.List;
 
-//public interface AddressService extends GenericService<Address>{
-public interface AddressService {
-    void addAddress(Address address);
-
-    void updateAddress(Address address);
-
-    Address getById(Long id);
-
-    void removeById(Long id);
-
-    List<Address> getAllAddresses();
+public interface AddressService extends GenericService<Address>{
+//public interface AddressService {
 
     Long getId(String latitude, String longitude);
 

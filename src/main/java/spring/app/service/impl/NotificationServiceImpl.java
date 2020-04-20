@@ -5,11 +5,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.MessageDao;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.Author;
-import spring.app.model.Message;
 import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
@@ -20,7 +18,7 @@ import java.util.List;
 @Transactional
 @EnableAsync(proxyTargetClass = true)
 @EnableCaching(proxyTargetClass = true)
-public class NotificationServiceImpl extends AbstractService<Notification, NotificationDao> implements NotificationService {
+public class NotificationServiceImpl extends AbstractServiceImpl<Notification, NotificationDao> implements NotificationService {
 
     private UserDao userDao;
 

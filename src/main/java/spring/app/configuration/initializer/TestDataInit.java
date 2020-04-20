@@ -132,7 +132,7 @@ public class TestDataInit {
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
         admin.setRoles(adminRoles);
-        userService.addUser(admin);
+        userService.save(admin);
 
         // тестовые аккаунты: админ 2
         User admin1 = new User();
@@ -140,7 +140,7 @@ public class TestDataInit {
         admin1.setPassword("admin");
         admin1.setEmail("admin1@gmail.com");
         admin1.setRoles(adminRoles);
-        userService.addUser(admin1);
+        userService.save(admin1);
 
         // тестовые аккаунты: юзер 1
         User user = new User();
@@ -150,7 +150,7 @@ public class TestDataInit {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleUser);
         user.setRoles(userRoles);
-        userService.addUser(user);
+        userService.save(user);
 
         // тестовые аккаунты: юзер 2
         User user2 = new User();
@@ -160,7 +160,7 @@ public class TestDataInit {
         Set<Role> user2Roles = new HashSet<>();
         user2Roles.add(roleUser);
         user2.setRoles(user2Roles);
-        userService.addUser(user2);
+        userService.save(user2);
 
         // тестовые аккаунты: Bot
         User bot = new User();
@@ -169,7 +169,7 @@ public class TestDataInit {
         Set<Role> botRoles = new HashSet<>();
         botRoles.add(roleBot);
         bot.setRoles(botRoles);
-        userService.addUser(bot);
+        userService.save(bot);
 
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
@@ -180,8 +180,8 @@ public class TestDataInit {
         user2.addRegStep(rs2);
         user.addRegStep(rs3);
         user2.addRegStep(rs3);
-        userService.updateUser(user);
-        userService.updateUser(user2);
+        userService.update(user);
+        userService.update(user2);
 
         //создаем дефолтный шаблон для уведомлений
         NotificationTemplate notificationTemplate = new NotificationTemplate();
@@ -289,12 +289,12 @@ public class TestDataInit {
         author4.setApproved(true);
         author5.setApproved(true);
         author6.setApproved(true);
-        authorService.updateAuthor(author1);
-        authorService.updateAuthor(author3);
-        authorService.updateAuthor(author2);
-        authorService.updateAuthor(author4);
-        authorService.updateAuthor(author5);
-        authorService.updateAuthor(author6);
+        authorService.update(author1);
+        authorService.update(author3);
+        authorService.update(author2);
+        authorService.update(author4);
+        authorService.update(author5);
+        authorService.update(author6);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
@@ -443,17 +443,17 @@ public class TestDataInit {
         company1.setBannedGenres(bannedGenres);
         company2.setBannedGenres(bannedGenres);
         // добавляем компании в БД
-        companyService.addCompany(company1);
-        companyService.addCompany(company2);
+        companyService.save(company1);
+        companyService.save(company2);
         // сохраняем адреса и записываем их в компании
         Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39", 59.923527, 30.307792);
         Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5", 55.732388, 37.628235);
-        addressService.addAddress(address1);
-        addressService.addAddress(address2);
+        addressService.save(address1);
+        addressService.save(address2);
         company1.setAddress(address1);
         company2.setAddress(address2);
-        companyService.updateCompany(company1);
-        companyService.updateCompany(company2);
+        companyService.update(company1);
+        companyService.update(company2);
 
 
         //adding mock statistics

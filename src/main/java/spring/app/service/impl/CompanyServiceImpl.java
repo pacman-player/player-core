@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl extends AbstractService<Company, CompanyDao> implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl extends AbstractServiceImpl<Company, CompanyDao> implements spring.app.service.abstraction.CompanyService {
 
     private final OrderSongDao orderSongDao;
 
@@ -22,20 +22,6 @@ public class CompanyServiceImpl extends AbstractService<Company, CompanyDao> imp
         this.orderSongDao = orderSongDao;
     }
 
-    @Override
-    public void addCompany(Company company) {
-        dao.save(company);
-    }
-
-    @Override
-    public void updateCompany(Company company) {
-        dao.update(company);
-    }
-
-    @Override
-    public Company getById(Long id) {
-        return dao.getById(id);
-    }
 
     @Override
     public Company getByIdWithAddress(Long id) {
@@ -48,14 +34,9 @@ public class CompanyServiceImpl extends AbstractService<Company, CompanyDao> imp
     }
 
     @Override
-    public void removeById(Long id) {
+    public void deleteById(Long id) {
         orderSongDao.bulkRemoveOrderSongByCompany(id);
         dao.deleteById(id);
-    }
-
-    @Override
-    public List<Company> getAllCompanies() {
-        return dao.getAll();
     }
 
     @Override
@@ -65,21 +46,19 @@ public class CompanyServiceImpl extends AbstractService<Company, CompanyDao> imp
 
     @Override
     public void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannables) {
-
         bannables.forEach(
                 bannable -> bannable.setBanned(
                         bannable.isBannedBy(company)
                 )
         );
     }
-
     @Override
     public Company setBannedEntity(Company company) {
         return dao.getCompanyWithEntityBanned(company.getId());
     }
 
     @Override
-    public Company getCompanyByAddressId(long id) {
+    public Company getCompanyByAddressId(Long id) {
         return dao.getCompanyByAddressId(id);
     }
 

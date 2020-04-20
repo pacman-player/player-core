@@ -93,7 +93,7 @@ public class SongRestController {
         Company company = companyService.getById(user.getCompany().getId());
         company.addBannedSong(songService.getSongById(songId));
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         user.setCompany(company);
         LOGGER.info("Song was added to ban for the Company = {}", company.getName());
     }
@@ -104,7 +104,7 @@ public class SongRestController {
         LOGGER.info("POST request 'songsUnBan' by User = {} with SongId = {}", user, songId);
         Company company = user.getCompany();
         company.getBannedSong().removeIf(song -> song.getId().equals(songId));
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         user.setCompany(company);
         LOGGER.info("Song was removed from ban for the Company = {}", company.getName());

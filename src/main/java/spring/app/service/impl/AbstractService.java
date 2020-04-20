@@ -6,42 +6,21 @@ import spring.app.service.abstraction.GenericService;
 import java.util.List;
 
 
-public abstract class AbstractService<T, R extends GenericDao<Long, T>> implements GenericService<T> {
+public abstract class AbstractService<T> implements GenericService<T> {
 
-    protected final R dao;
+    public abstract void save(T entity);
 
+    public abstract T getById(Long id);
 
-    protected AbstractService(R dao) {
-        this.dao = dao;
-    }
+    public abstract void update(T entity);
 
-    public void save(T entity) {
-        dao.save(entity);
-    }
+    public abstract void deleteById(Long id);
 
-    public T getById(Long id) {
-        return dao.getById(id);
-    }
+    public abstract boolean isExistById(Long id);
 
-    public void update(T entity) {
-        dao.update(entity);
-    }
+    public abstract List<T> findByNameContaining(String param);
 
-    public void deleteById(Long id) {
-        dao.deleteById(id);
-    }
-
-    public boolean isExistById(Long id) {
-        return dao.isExistById(id);
-    }
-
-    public List<T> findByNameContaining(String param) {
-        return dao.findByNameContaining(param);
-    }
-
-    public List<T> getAll() {
-        return dao.getAll();
-    }
+    public abstract List<T> getAll();
 
 }
 

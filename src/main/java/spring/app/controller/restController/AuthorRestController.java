@@ -27,7 +27,7 @@ public class AuthorRestController {
 
     @GetMapping("allAuthors")
     public List<Author> getAllAuthors() {
-        List<Author> list = authorService.getAllAuthors();
+        List<Author> list = authorService.getAll();
         return list;
     }
 
@@ -68,7 +68,7 @@ public class AuthorRestController {
     @GetMapping("allAuthorsByName/{name}")
     public List<Author> searchByNameInAuthors(@PathVariable String name,
                                               @AuthenticationPrincipal User user) {
-        List<Author> authors = authorService.findAuthorsByNameContaining(name);
+        List<Author> authors = authorService.findByNameContaining(name);
 
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
@@ -86,7 +86,7 @@ public class AuthorRestController {
         Author author = authorService.getById(authorsId);
         company.addBannedAuthor(author);
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         user.setCompany(company);
         LOGGER.info("Added to ban Author = {}", author);
     }
@@ -97,7 +97,7 @@ public class AuthorRestController {
         LOGGER.info("POST request 'authorsUnBan' with authorsId = {}", authorsId);
         Company company = user.getCompany();
         company.getBannedAuthor().removeIf(author -> author.getId().equals(authorsId));
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         user.setCompany(company);
         LOGGER.info("Removed from ban Author = {}", authorService.getById(authorsId));

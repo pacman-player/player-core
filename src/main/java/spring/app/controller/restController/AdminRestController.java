@@ -48,9 +48,9 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/ban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(false);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Banned User = {}", user);
     }
 
@@ -58,22 +58,22 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/unban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(true);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Unbanned User = {}", user);
     }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
     List<User> getAllUsers() {
-        List<User> list = userService.getAllUsers();
+        List<User> list = userService.getAll();
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -86,7 +86,7 @@ public class AdminRestController {
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<Company> getAllCompanies() {
-        List<Company> list = companyService.getAllCompanies();
+        List<Company> list = companyService.getAll();
         return list;
     }
 
@@ -102,7 +102,7 @@ public class AdminRestController {
         LOGGER.info("POST request '/add_user'");
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
-        userService.addUser(user);
+        userService.save(user);
         LOGGER.info("Added User = {}", user);
     }
 
@@ -123,19 +123,19 @@ public class AdminRestController {
                     );
             getContext().setAuthentication(token);
         }
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Updated User = {}", user);
     }
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
-        userService.deleteUserById(id);
+        userService.deleteById(id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        Company company = userService.getUserById(userId).getCompany();
+        Company company = userService.getById(userId).getCompany();
         return ResponseEntity.ok(company);
     }
 
@@ -153,7 +153,7 @@ public class AdminRestController {
         Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         company.setTariff(companyDto.getTariff());
-        companyService.updateCompany(company);
+        companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
     }
 
@@ -199,7 +199,7 @@ public class AdminRestController {
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.addCompany(company);
+        companyService.save(company);
         LOGGER.info("Added Company = {}", company);
     }
 

@@ -122,7 +122,7 @@ public class TelegramRestController {
     @PostMapping(value = "/all_company")
     public List allCompanies() {
         LOGGER.info("POST request '/all_company'");
-        List<Company> list = companyService.getAllCompanies();
+        List<Company> list = companyService.getAll();
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }
@@ -159,7 +159,7 @@ public class TelegramRestController {
             orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
-            companyService.updateCompany(companyById);
+            companyService.update(companyById);
             LOGGER.info("Success!");
         } else {
             LOGGER.info("Adding song to existing queue...");
