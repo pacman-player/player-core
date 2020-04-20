@@ -194,7 +194,7 @@ public class MainController {
         String googleId = payload.getSubject();
         User user = userService.getUserByGoogleId(googleId);
         if (user == null) {
-            Role role = roleService.getRoleById((long) 2);
+            Role role = roleService.getRoleByName("USER");
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             user = new User(googleId, email, roleSet, true);
@@ -280,7 +280,7 @@ public class MainController {
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
         User user = userService.getUserByVkId(actor.getId());
         if (user == null) {
-            Role role = roleService.getRoleById((long) 2);
+            Role role = roleService.getRoleByName("USER");
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             List<UserXtrCounters> list = vk.users().get(actor).execute();

@@ -247,6 +247,7 @@ public class TestDataInit {
         songService.updateSong(song_13);
 
         // adding MP3 files  from /music1/ to /music
+        // adding MP3 files  from /init_song/ to /music
         LOGGER.info("===== Ready to load music files! =====");
         try {
             File musicDirectory = new File(musicPath);
