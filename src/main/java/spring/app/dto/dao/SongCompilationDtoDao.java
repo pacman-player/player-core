@@ -1,11 +1,8 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.AuthorDto;
 import spring.app.dto.SongCompilationDto;
-import spring.app.dto.SongDto;
-import spring.app.model.Author;
 import spring.app.model.SongCompilation;
 
 import javax.persistence.EntityManager;
@@ -13,11 +10,10 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Transactional
 @Repository
-public class SongCompilationDtoMapping {
+public class SongCompilationDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<SongCompilationDto> getAll() {
         List<SongCompilationDto> songCompilationDto = entityManager.createQuery(

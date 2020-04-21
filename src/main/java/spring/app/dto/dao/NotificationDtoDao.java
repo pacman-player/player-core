@@ -1,22 +1,18 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.AuthorDto;
 import spring.app.dto.NotificationDto;
-import spring.app.model.Author;
 import spring.app.model.Notification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
-@Transactional
 @Repository
-public class NotificationDtoMapping {
+public class NotificationDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<NotificationDto> getAll() {
         return entityManager.createQuery(
@@ -25,7 +21,7 @@ public class NotificationDtoMapping {
                         "a.message, " +
                         "a.flag," +
                         "a.user.login" +
-                        ") FROM " + Notification.class.getName() + " a",
+                        ") FROM Notification a",
                 NotificationDto.class
         )
                 .getResultList();

@@ -1,21 +1,18 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.MessageDto;
 import spring.app.dto.RoleDto;
-import spring.app.model.Message;
 import spring.app.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Transactional
 @Repository
-public class RoleDtoMapping {
+public class RoleDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<RoleDto> getAllRoles() {
         return entityManager.createQuery(

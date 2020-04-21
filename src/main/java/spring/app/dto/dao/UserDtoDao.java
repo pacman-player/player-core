@@ -1,21 +1,18 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.GenreDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Genre;
 import spring.app.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-@Transactional
 @Repository
-public class UserDtoMapping {
+public class UserDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public boolean isExistUserByEmail(String email) {
         Query query = entityManager.createQuery(

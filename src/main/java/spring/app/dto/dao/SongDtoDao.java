@@ -1,21 +1,17 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dto.AuthorDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Author;
-import spring.app.model.Song;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Transactional
 @Repository
-public class SongDtoMapping {
+public class SongDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<SongDto> getAll() {
         List<SongDto> songDtos = entityManager.createQuery(
@@ -25,7 +21,7 @@ public class SongDtoMapping {
                         "t.isApproved, "+
                         "t.author.name, "+
                         "t.genre.name "+
-                        ") FROM "+ Song.class.getName()+" t",
+                        ") FROM Song t",
                 SongDto.class
         )
                 .getResultList();

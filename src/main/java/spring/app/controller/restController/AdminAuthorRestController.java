@@ -4,9 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
-import spring.app.dto.GenreDto;
-import spring.app.dto.mapping.AuthorDtoMapping;
-import spring.app.dto.mapping.GenreDtoMapping;
+import spring.app.dto.dao.AuthorDtoDao;
+import spring.app.dto.dao.GenreDtoDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -23,15 +22,15 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
-    private final GenreDtoMapping genreDtoMapping;
-    private final AuthorDtoMapping authorDtoMapping;
+    private final GenreDtoDao genreDtoDao;
+    private final AuthorDtoDao authorDtoDao;
 
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoMapping genreDtoMapping, AuthorDtoMapping authorDtoMapping) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoDao genreDtoDao, AuthorDtoDao authorDtoDao) {
         this.authorService = authorService;
         this.genreService = genreService;
-        this.genreDtoMapping = genreDtoMapping;
-        this.authorDtoMapping = authorDtoMapping;
+        this.genreDtoDao = genreDtoDao;
+        this.authorDtoDao = authorDtoDao;
     }
 
     /*
@@ -105,6 +104,6 @@ public class AdminAuthorRestController {
     public boolean isLoginFree(@RequestParam String name,
                                @RequestParam("id") Long id) {
 
-        return !authorDtoMapping.isExistByName(name);
+        return !authorDtoDao.isExistByName(name);
     }
 }

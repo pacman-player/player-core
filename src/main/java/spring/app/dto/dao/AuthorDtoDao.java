@@ -1,23 +1,20 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
-import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.AuthorDto;
-import spring.app.dto.GenreDto;
 import spring.app.model.Author;
-import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-@Transactional
+
 @Repository
-public class AuthorDtoMapping {
+public class AuthorDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<AuthorDto> getAll() {
         List<AuthorDto> authorDtos = entityManager.createQuery(

@@ -16,8 +16,8 @@ public class SongDto {
     private Timestamp createdAt;
     private Boolean isApproved;
 
-    private Author author;
-    private Genre genre;
+    private AuthorDto authorDto;
+    private GenreDto genreDto;
 
     public SongDto(Long id, String name, Boolean isApproved, String authorName, String genreName) {
         this.id = id;
@@ -27,28 +27,28 @@ public class SongDto {
         this.isApproved = isApproved;
     }
 
-    public SongDto(Long id, String name, Boolean isApproved, Author author, Genre genre) {
+    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto, GenreDto genreDto) {
         this.id = id;
         this.name = name;
         this.isApproved = isApproved;
-        this.author = author;
-        this.genre = genre;
+        this.authorDto = authorDto;
+        this.genreDto = genreDto;
     }
 
-    public Author getAuthor() {
-        return author;
+    public AuthorDto getAuthorDto() {
+        return authorDto;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorDto(AuthorDto authorDto) {
+        this.authorDto = authorDto;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public GenreDto getGenreDto() {
+        return genreDto;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreDto(GenreDto genreDto) {
+        this.genreDto = genreDto;
     }
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {

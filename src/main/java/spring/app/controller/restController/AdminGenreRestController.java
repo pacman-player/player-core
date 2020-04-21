@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
-import spring.app.dto.mapping.GenreDtoMapping;
+import spring.app.dto.dao.GenreDtoDao;
 import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
@@ -24,21 +24,21 @@ public class AdminGenreRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminGenreRestController.class);
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
-    private final GenreDtoMapping genreDtoMapping;
+    private final GenreDtoDao genreDtoDao;
 
     @Autowired
     public AdminGenreRestController(GenreService genreService,
                                     NotificationServiceImpl notificationService,
-                                    CompanyService companyService, GenreDtoMapping genreDtoMapping) {
+                                    CompanyService companyService, GenreDtoDao genreDtoDao) {
         this.genreService = genreService;
         this.notificationService = notificationService;
-        this.genreDtoMapping = genreDtoMapping;
+        this.genreDtoDao = genreDtoDao;
     }
 
     @GetMapping(value = "/all_genres")
 
     public List<GenreDto> getAllGenre(@AuthenticationPrincipal User user) {
-        return genreDtoMapping.getAll();
+        return genreDtoDao.getAll();
 
     }
 
@@ -102,6 +102,6 @@ public class AdminGenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
-        return !genreDtoMapping.isExistByName(name);
+        return !genreDtoDao.isExistByName(name);
     }
 }

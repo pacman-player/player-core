@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.MessageDto;
-import spring.app.dto.mapping.MessageDtoMapping;
+import spring.app.dto.dao.MessageDtoDao;
 import spring.app.model.Message;
 import spring.app.service.abstraction.MessageService;
 
@@ -16,17 +16,17 @@ import java.util.List;
 public class MessageRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageRestController.class);
     private final MessageService messageService;
-    private final MessageDtoMapping messageDtoMapping;
+    private final MessageDtoDao messageDtoDao;
 
     @Autowired
-    public MessageRestController(MessageService messageService, MessageDtoMapping messageDtoMapping) {
+    public MessageRestController(MessageService messageService, MessageDtoDao messageDtoDao) {
         this.messageService = messageService;
-        this.messageDtoMapping = messageDtoMapping;
+        this.messageDtoDao = messageDtoDao;
     }
 
     @GetMapping(value = "/all_messages")
     public List<MessageDto> getAllMessage() {
-        return messageDtoMapping.getAllMessageDto();
+        return messageDtoDao.getAllMessageDto();
 
     }
 

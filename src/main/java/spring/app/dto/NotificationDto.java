@@ -1,17 +1,22 @@
 package spring.app.dto;
 
 import spring.app.model.Notification;
-import spring.app.model.Song;
-import spring.app.model.User;
 
 public class NotificationDto {
     private Long id;
     private String message;
     private Boolean flag;
     private String userName;
-    private User user;
+    private UserDto userDto;
 
     public NotificationDto() {
+    }
+
+    public NotificationDto(Long id, String message, Boolean flag, UserDto userDto) {
+        this.id = id;
+        this.message = message;
+        this.flag = flag;
+        this.userDto = userDto;
     }
 
     public NotificationDto(Long id, String message, Boolean flag, String userName) {
@@ -35,12 +40,13 @@ public class NotificationDto {
         this.userName = userName;
     }
 
-    public User getUser() {
-        return user;
+
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     public Long getId() {

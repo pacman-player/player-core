@@ -1,4 +1,4 @@
-package spring.app.dto.mapping;
+package spring.app.dto.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,11 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Transactional
 @Repository
-public class MessageDtoMapping {
+public class MessageDtoDao {
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<MessageDto> getAllMessageDto(){
         return entityManager.createQuery(
