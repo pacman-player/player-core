@@ -68,7 +68,7 @@ $(document).ready(function () {
                     htmlTable += ('<tr id="list">');
                     htmlTable += ('<td id="notificationsId">' + listNotifications[i].id + '</td>');
                     htmlTable += ('<td id="notificationsMessage" class="notificationElement">' + listNotifications[i].message + '</td>');
-                    htmlTable += ('<td id="notificationsUser">' + listNotifications[i].user.login + '</td>');
+                    htmlTable += ('<td id="notificationsUser">' + listNotifications[i].userName + '</td>');
                     htmlTable += ('<td><button id="editNotificationsBtn"  class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editNotifications">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteNotifications" class="btn btn-sm btn-info" type="button">удалить</button></td>');

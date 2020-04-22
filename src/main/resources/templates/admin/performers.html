@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
@@ -36,6 +36,10 @@
                             <a id="tab-author-panel" href="#authors-panel" aria-controls="add-authors-panel" role="tab"
                                data-toggle="tab">Все исполнители</a>
                         </li>
+                        <li id="add-authors-nav">
+                            <a href="#add-author-panel" aria-controls="add-author-panel" role="tab" data-toggle="tab">
+                                Новый исполнитель</a>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -57,6 +61,58 @@
                                             </thead>
                                             <tbody></tbody>
                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--добавление Исполнителя-->
+                        <div role="tabpanel" class="tab-pane" id="add-author-panel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="add-form">
+                                                        <div class="form-group text-center edit-form">
+                                                            <div>
+                                                                <label for="addAuthorName">Автор</label>
+                                                                <input id="addAuthorName"
+                                                                       placeholder="Enter author name"
+                                                                       class="form-control"
+                                                                       name="name"
+                                                                       type="text"/>
+                                                            </div>
+                                                            <div>
+                                                                <label for="addAuthorGenre">Жанр</label>
+                                                                <select class="form-control"
+                                                                        id="addAuthorGenre"
+                                                                        name="updateGenre">
+                                                                    <!--заполняем через js-->
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-check form-check-inline">
+                                                                <label for="addAuthorApproved"
+                                                                        class="form-check-label">
+                                                                <input id="addAuthorApproved"
+                                                                       name="approved"
+                                                                       class="form-check-input"
+                                                                       type="checkbox"/>Разрешен</label>
+                                                            </div>
+                                                            <button id="addAuthorBtn"
+                                                                    class="btn btn-success btn-lg margin: 15px 30px"
+                                                                    type="submit">Добавить
+                                                            </button>
+
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,12 +159,14 @@
                                                                     <!--заполняем через js-->
                                                                 </select>
                                                             </div>
-                                                            <div><label for="editAuthorApproved"
-                                                                        class="checkbox-inline">
-                                                                <input id="editAuthorApproved"
-                                                                       name="approved"
-                                                                       class="form-control"
-                                                                       type="checkbox"/>Разрешен</label>
+
+                                                            <div class="form-check form-check-inline">
+                                                                <label for="editAuthorApproved"
+                                                                       class="form-check-label">
+                                                                    <input id="editAuthorApproved"
+                                                                           name="approved"
+                                                                           class="form-check-input"
+                                                                           type="checkbox"/>Разрешен</label>
                                                             </div>
 
                                                             <div class="modal-footer">
@@ -139,6 +197,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Jquery validate-->

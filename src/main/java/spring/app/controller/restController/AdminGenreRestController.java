@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
+import spring.app.dto.dao.GenreDtoDao;
 import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
@@ -23,19 +24,22 @@ public class AdminGenreRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminGenreRestController.class);
     private GenreService genreService;
     private NotificationServiceImpl notificationService;
+    private final GenreDtoDao genreDtoDao;
 
     @Autowired
     public AdminGenreRestController(GenreService genreService,
                                     NotificationServiceImpl notificationService,
-                                    CompanyService companyService) {
+                                    CompanyService companyService, GenreDtoDao genreDtoDao) {
         this.genreService = genreService;
         this.notificationService = notificationService;
+        this.genreDtoDao = genreDtoDao;
     }
 
     @GetMapping(value = "/all_genres")
-    public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-        List<Genre> genres = genreService.getAllGenre();
-        return genres;
+
+    public List<GenreDto> getAllGenre(@AuthenticationPrincipal User user) {
+        return genreDtoDao.getAll();
+
     }
 
     @PostMapping(value = "/add_genre")
@@ -95,13 +99,9 @@ public class AdminGenreRestController {
         }
     }
 
-/**
- * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого жанра (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
- * */
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
-          Genre genre = genreService.getByName(name);
-          return (genre == null || genre == genreService.getById(id));
+        return !genreDtoDao.isExistByName(name);
     }
 }

@@ -10,6 +10,7 @@ import Filter       from "./views/pages/Filter.js";
 import Company      from "./views/pages/Company.js";
 import Promo        from "./views/pages/Promo.js";
 import Edit         from "./views/pages/Edit.js";
+import Music        from "./views/pages/Music.js";
 
 import NavBar       from './views/components/NavBar.js'
 import LeftSideBar  from './views/components/LeftSideBar.js'
@@ -29,6 +30,7 @@ const routes = {
     , '/company'    : Company
     , '/promo'      : Promo
     , '/edit'       : Edit
+    , '/music'       : Music
 };
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.

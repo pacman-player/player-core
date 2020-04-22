@@ -27,6 +27,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
         this.songCompilationService = songCompilationService;
     }
 
+
     @Override
     public void addSong(Song song) {
         dao.save(song);
@@ -34,13 +35,15 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
 
     @Override
     public void updateSong(Song song) {
-        dao.update(song);
+        songDao.update(song);
     }
 
     @Override
     public void deleteSongById(Long id) {
         dao.deleteById(id);
     }
+
+
 
     @Override
     public boolean isExist(String name) {
@@ -49,7 +52,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
 
     @Override
     public Song getSongById(Long id) {
-        return dao.getById(id);
+        return songDao.getById(id);
     }
 
     @Override
@@ -79,6 +82,16 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
     }
 
     @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
+
+    @Override
+    public List<Song> findSongsByGenreId(Long id) {
+        return songDao.getAllWithGenreByGenreId(id);
+    }
+
+    @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
@@ -93,6 +106,15 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
     @Override
     public List<Song> getAllApprovedSongs() {
         return dao.getAllApproved();
+    }
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
     }
 
     @Override
