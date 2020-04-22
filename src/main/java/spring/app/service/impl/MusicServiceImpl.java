@@ -71,14 +71,15 @@ public class MusicServiceImpl implements MusicService {
      * Метод для воспроизведения mp3 файла на плеер на фронте.
      * Получаем id песни, по нему создаем InputStreamResource из файла.
      *
-     * @param musicAuthor
-     * @param musicTitle
+     * @param musicTitleId
+     * @param musicAuthorId
      * @return InputStreamResource из файла, обернутый в ResponseEntity
      */
+
     @Override
-    public ResponseEntity playMusic(String musicAuthor, String musicTitle) {
-        Long id = songDao.getSongIdByAuthorAndName(musicAuthor, musicTitle);
-        File file = new File(musicPath + id + ".mp3");
+    public ResponseEntity playMusic(String musicAuthorId, String musicTitleId) {
+
+        File file = new File(musicPath + musicAuthorId +"/" + musicTitleId + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;
         try {
@@ -94,8 +95,8 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public ResponseEntity<byte[]> albumsCover(String musicAuthor, String musicTitle) {
-        File file = new File(musicPath + musicAuthor + "-" + musicTitle + ".mp3");
+    public ResponseEntity<byte[]> albumsCover(String musicAuthorId, String musicTitleId) {
+        File file = new File(musicPath + musicAuthorId + "/" + musicTitleId + ".mp3");
         try {
             byte[] media = IOUtils.toByteArray(MP3TagReader.readAlbumsCover(file));
             HttpHeaders headers = new HttpHeaders();

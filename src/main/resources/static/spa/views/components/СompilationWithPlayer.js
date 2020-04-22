@@ -130,14 +130,10 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#allGenBtn', function () {
-        // alert("10");
+        if($('#allGenBtn').attr("aria-pressed")=="false"){
         getAllGenre();
-        // if($('#allGenBtn').attr("aria-pressed")=="false"){
-        // getAllGenre();
-        //     $('#allGenBtn').attr("aria-pressed", "true")
-        // }
-
-
+            $('#allGenBtn').attr("aria-pressed", "true")
+        }
     });
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
@@ -609,7 +605,7 @@ $(function () {
         playPrevious();
     });
     // при нажатии на кнопку "играть \ пауза"
-    $("#playOrPauseAudioButton").on("click", function () {
+    $("#playOrPauseAudioButton, #closePlayerBtn").on("click", function () {
         playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex);
     });
     // при нажатии на кнопку "следующий"
@@ -862,8 +858,8 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
         lastPlayedCompilationIndex = compilationIndex;
         lastPlayedMusicIndex = musicIndex;
         let music = allSongsInCurrentPlaylist[musicIndex];
-        player.attr('src', musicUrl + music.author.name + "/" + music.name);
-        $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
+        player.attr('src', musicUrl + music.author.id + "/" + music.id);
+        $('#albums-cover').attr('src', albumsCoverUrl + music.author.id + "/" + music.id);
         let songName = document.getElementById('song-name');
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
