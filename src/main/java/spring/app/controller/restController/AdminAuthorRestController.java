@@ -34,11 +34,11 @@ public class AdminAuthorRestController {
     }
 
     /*
-    * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
-    * Необходимо сделать так, чтобы DAO возвращал список DTO
-    */
+     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
+     * Необходимо сделать так, чтобы DAO возвращал список DTO
+     */
     @GetMapping(value = "/all_authors")
-    public List<AuthorDto> getAllAuthor(){
+    public List<AuthorDto> getAllAuthor() {
         List<Author> authorList = authorService.getAllAuthors();
         //Проходимся по листу авторов и делаем AuthorDto из каждого Author
         List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class AdminAuthorRestController {
     }
 
     @GetMapping(value = "/{id}")
-    public Author getByIdAuthor(@PathVariable(value = "id") Long authorId){
+    public Author getByIdAuthor(@PathVariable(value = "id") Long authorId) {
         Author author = authorService.getById(authorId);
         return author;
     }
@@ -59,6 +59,7 @@ public class AdminAuthorRestController {
             Author author = new Author();
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
+            author.setApproved(newAuthor.getApproved());
             authorService.addAuthor(author);
             LOGGER.info("Added new Author = {}", author);
         } else {
@@ -79,7 +80,7 @@ public class AdminAuthorRestController {
     }
 
     @DeleteMapping(value = "/delete_author")
-    public void deleteAuthor(@RequestBody Long id){
+    public void deleteAuthor(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_author' with id = {}", id);
         authorService.deleteAuthorById(id);
     }
@@ -99,11 +100,13 @@ public class AdminAuthorRestController {
 
     /**
      * В метод передается значение поля 'name' с формы редактирования и 'id' редактируемого элемента. Метод должен вернуть false только в случае, когда имя совпадает с именем другого исполнителя (т.е. предотвратить ConstraintViolationException, т.к. поле name - unique)
-     * */
+     */
     @GetMapping(value = "/is_free")
     public boolean isLoginFree(@RequestParam String name,
-                               @RequestParam("id") Long id) {
-
-        return !authorDtoDao.isExistByName(name);
+                               @RequestParam(name = "id", required = false) Long id) {
+        Author author = authorService.getByName(name);
+        if (id == null) {
+            return (author == null);
+        } else return (author == null || author == authorService.getById(id));
     }
 }
