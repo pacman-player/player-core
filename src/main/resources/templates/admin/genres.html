@@ -60,6 +60,7 @@
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
+                                                <th>Управление песнями</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -164,6 +165,79 @@
                             </div>
                         </div>
 
+                        <!-- Изменение жанра песен относящихся к выбранному жанру (модальное окно) -->
+                        <div id="songGenreManagement" class="modal fade">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModal">×
+                                        </button>
+                                        <h4 class="modal-title">Изменить жанр песен</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
+                                                    <form id="editFormGenreSong">
+
+                                                        <div class="row" >
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <table id="listOfSongsByGenre" class="table">
+                                                                            <tr>
+                                                                                <td><input class="chcheckAll" type="checkbox" name="" id="select-all" th:marginheight="auto"/> Выбрать все</td>
+                                                                                <!-- select all boxes -->
+
+                                                                            </tr>
+                                                                        </table>
+
+                                                                    </div>
+                                                                    <div class="col-md-6" >
+
+                                                                        <label for="updateSongGenre">Назначить жанр</label>
+                                                                        <select class="form-control"
+                                                                                id="updateSongGenre"
+                                                                                name="updateGenre">
+                                                                            <!--заполняем через js-->
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+
+
+
+                                                        <div class="form-group text-center edit-form">
+
+
+                                                           <div class="modal-footer">
+                                                               <button id="changeGenresBtn"
+                                                                       class="btn btn-success"
+                                                                       type="submit">
+                                                                   Изменить
+                                                               </button>
+                                                                <button type="button"
+                                                                        id="btnClose"
+                                                                        class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Закрыть
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -183,5 +257,6 @@
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/notificationsHandler.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/songs.js" rel="script"></script>
 </body>
 </html>

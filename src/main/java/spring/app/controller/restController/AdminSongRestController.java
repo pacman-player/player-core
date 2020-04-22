@@ -10,6 +10,8 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.AuthorSongGenreListDto;
 import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
+import spring.app.dto.dao.GenreDtoDao;
+import spring.app.dto.dao.SongDtoDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -17,9 +19,11 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
+import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -30,25 +34,21 @@ public class AdminSongRestController {
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final GenreDtoDao genreDtoDao;
+    private final SongDtoDao songDtoDao;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
+    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService, GenreDtoDao genreDtoDao, SongDtoDao songDtoDao) {
         this.songService = songService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.genreDtoDao = genreDtoDao;
+        this.songDtoDao = songDtoDao;
     }
 
-    /*
-     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
-     * Необходимо сделать так, чтобы DAO возвращал список DTO
-     */
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
-        List<SongDto> list = songService.getAllSongs()
-                .stream()
-                .map(SongDto::new)
-                .collect(Collectors.toList());
-        return list;
+        return songDtoDao.getAll();
     }
 
     @DeleteMapping(value = "/delete_song/{id}")
@@ -100,19 +100,41 @@ public class AdminSongRestController {
         LOGGER.info("Updated Song as = {}", song);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-        SongDto songDto = new SongDto(songService.getSongById(id));
-        return ResponseEntity.ok(songDto);
-    }
+
+@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@ResponseBody
+public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+    SongDto songDto = new SongDto(songService.getSongById(id));
+    return ResponseEntity.ok(songDto);
+}
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<Genre> getAllGenre() {
-        List<Genre> list = genreService.getAllGenre();
+    public List<GenreDto> getAllGenre() {
+        return genreDtoDao.getAll();
+    }
+
+    @GetMapping(value = "/genre/{id}")
+    public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
+        List<Song> list = songService.findSongsByGenreId(id);
         return list;
     }
+
+    /*
+        Изменение жанра у нескольких песен
+    */
+    @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
+        Genre newGenre = genreService.getByName(updateObject.get(-1));
+        updateObject.forEach((key, value)->{
+              if(key!=-1){
+                  Song editSong = songService.getSongById(Long.parseLong(value));
+                  editSong.setGenre(newGenre);
+                  songService.updateSong(editSong);
+              }
+          });
+    }
+
 
     @GetMapping("/authors_songs_genres_for_today")
     public AuthorSongGenreListDto getAuthorSongGenreListForToday() {

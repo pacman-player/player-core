@@ -50,7 +50,7 @@ public class Mp3Parser {
     }
 
     /**
-     * Метод для простого копирования файлов из /music1/ в /music/
+     * Метод для простого копирования файлов из /init_song/ в /music/
      */
     public void copyInitFile(File file, int fileId) throws IOException {
         Path fileO = Paths.get(musicPath + fileId + ".mp3");
