@@ -1,18 +1,12 @@
 package spring.app.dto;
 
-public class MessageDto {
-
+public class RoleDto {
     private Long id;
     private String name;
-    private String template;
 
-    public MessageDto() {
-    }
-
-    public MessageDto(Long id, String name, String template) {
+    public RoleDto(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.template = template;
     }
 
     public Long getId() {
@@ -29,13 +23,5 @@ public class MessageDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template;
     }
 }
