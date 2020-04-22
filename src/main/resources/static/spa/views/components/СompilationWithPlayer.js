@@ -129,11 +129,26 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '#allGenBtn', function () {
+        if($('#allGenBtn').attr("aria-pressed")=="false"){
+        getAllGenre();
+            $('#allGenBtn').attr("aria-pressed", "true")
+        }
+
+
+    });
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
+        // getAllGenre();
         $("#getGenres #songCompilation").remove();
-        getAllGenre();
+        $('#allGenBtn').attr("aria-pressed", "false");
+        getGenres.value = getGenres.value.replace(/\r?\n/g, "")
+
+        // $('#Genres').remove();
+
     });
+
+
 
     function getAllGenre() {
         $.ajax({
