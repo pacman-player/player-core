@@ -33,8 +33,8 @@ public class AuthorRestController {
     }
 
     @GetMapping("allApprovedAuthors")
-    public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
-        List<Author> list = authorService.getAllApprovedAuthors();
+    public List<AuthorDto> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
+        List<AuthorDto> list = authorService.getAllApprovedAuthors();
 
         Company company = user.getCompany();
         company = companyService.setBannedEntity(company);
@@ -67,9 +67,9 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthorsByName/{name}")
-    public List<Author> searchByNameInAuthors(@PathVariable String name,
+    public List<AuthorDto> searchByNameInAuthors(@PathVariable String name,
                                               @AuthenticationPrincipal User user) {
-        List<Author> authors = authorService.findAuthorsByNameContaining(name);
+        List<AuthorDto> authors = authorService.findAuthorsByNameContaining(name);
 
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);

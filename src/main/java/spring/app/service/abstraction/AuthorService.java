@@ -28,13 +28,13 @@ public interface AuthorService {
      *
      * @return list<Author>
      */
-    List<Author> findAuthorsByNameContaining(String name);
+    List<AuthorDto> findAuthorsByNameContaining(String name);
 
     List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
     List<AuthorDto> getAllAuthors();
 
-    List<Author> getAllApprovedAuthors();
+    List<AuthorDto> getAllApprovedAuthors();
 
     List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize);
 

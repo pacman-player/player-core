@@ -74,8 +74,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> findAuthorsByNameContaining(String name) {
-        return authorDao.findByNameContaining(name);
+    public List<AuthorDto> findAuthorsByNameContaining(String name) {
+        return authorDtoDao.findByNameContaining(name);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAllApprovedAuthors() {
-        return authorDao.getAllApproved();
+    public List<AuthorDto> getAllApprovedAuthors() {
+        return authorDtoDao.getAllApproved();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
     EntityManager entityManager;
 
     public List<AuthorDto> getAllAuthors() {
-        List<AuthorDto> authorDto = entityManager.createQuery(
+        List<AuthorDto> allAuthorDtos = entityManager.createQuery(
                 "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name " +
                         "FROM Author a LEFT JOIN a.genres g"
         )
@@ -31,7 +31,32 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
                 .setResultTransformer(new AuthorDtoTransformer())
                 .list();
 
-        return authorDto;
+        return allAuthorDtos;
+    }
+
+    public List<AuthorDto> getAllApproved() {
+        List<AuthorDto> approvedAuthorDtos = entityManager.createQuery(
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name " +
+                        "FROM Author a LEFT JOIN a.genres g WHERE a.isApproved = true"
+        )
+                .unwrap(Query.class)
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
+
+        return approvedAuthorDtos;
+    }
+
+    public List<AuthorDto> findByNameContaining(String name) {
+        List<AuthorDto> approvedAuthorDtos = entityManager.createQuery(
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name " +
+                        "FROM Author a LEFT JOIN a.genres g WHERE a.name LIKE :pattern"
+        )
+                .unwrap(Query.class)
+                .setParameter("pattern", '%' + name + '%')
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
+
+        return approvedAuthorDtos;
     }
 
     private static class AuthorDtoTransformer implements ResultTransformer {
