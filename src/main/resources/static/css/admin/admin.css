@@ -139,3 +139,15 @@ input[type="checkbox"]:disabled+label
 {
     color:#02cf32;
 }
+
+#check{
+    transform:scale(1.5);
+    opacity:0.9;
+    cursor:pointer;
+
+}
+#select-all{
+    transform:scale(1.5);
+    opacity:0.9;
+    cursor:pointer;
+}

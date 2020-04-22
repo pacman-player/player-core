@@ -36,6 +36,20 @@ public interface SongService {
 
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 
+    /**
+     * Возвращает песню по id
+     *
+     * @return Song
+     */
+    Song getById(long songId);
+
+    /**
+     * Возвращает песню по id жанра
+     *
+     * @return List<Song>
+     */
+    List<Song> findSongsByGenreId(Long id);
+
     int getLastApprovedSongsPageNumber(int pageSize);
 
     Long getSongIdByAuthorAndName(String author, String name);
