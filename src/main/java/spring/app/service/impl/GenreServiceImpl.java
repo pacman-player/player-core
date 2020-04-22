@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.dao.abstraction.SongDao;
-import spring.app.dao.impl.GenreDaoImpl;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -19,7 +18,7 @@ import java.util.List;
 
 
 @Service
-@Transactional
+//@Transactional
 public class GenreServiceImpl implements GenreService {
     private final GenreDao genreDao;
     private final SongDao songDao;
@@ -33,16 +32,19 @@ public class GenreServiceImpl implements GenreService {
         this.songCompilationService = songCompilationService;
     }
 
+    @Transactional
     @Override
     public void addGenre(Genre genre) {
         genreDao.save(genre);
     }
 
+    @Transactional
     @Override
     public void updateGenre(Genre genre) {
         genreDao.update(genre);
     }
 
+    @Transactional
     @Override
     public void deleteGenreById(Long id) {
         Genre notDefinedGenre = getByName("not defined");
@@ -72,26 +74,31 @@ public class GenreServiceImpl implements GenreService {
         genreDao.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Genre getById(Long id) {
         return genreDao.getById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Genre getByName(String name) {
         return genreDao.getByName(name);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return genreDao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Genre> getAllGenre() {
         return genreDao.getAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Genre> getAllApprovedGenre() {
         return genreDao.getAllApproved();

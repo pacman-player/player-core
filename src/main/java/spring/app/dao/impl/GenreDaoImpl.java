@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.util.List;
+
 @Repository
 @Transactional(readOnly = true)
 public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
@@ -23,7 +24,6 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         Query query = entityManager.createQuery("DELETE FROM Genre WHERE id = " + id);
         query.executeUpdate();
     }
-
 
 
     //  @Transactional(readOnly = true)
@@ -63,25 +63,24 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     public List<Song> getSongsByGenre(Genre genre) {
         TypedQuery<Song> query = entityManager.createQuery("SELECT u FROM Song u WHERE u.genre = :genre", Song.class);
         query.setParameter("genre", genre);
-        List<Song> songs=query.getResultList();
+        List<Song> songs = query.getResultList();
         return songs;
     }
 
     @Override
     public void deleteReferenceFromOrgTypeByGenre(Genre genre) {
-        Long id=genre.getId();
+        Long id = genre.getId();
         TypedQuery<OrgType> queryOrgType = (TypedQuery<OrgType>) entityManager.createNativeQuery("DELETE FROM org_type_on_related_genre WHERE genre_id = :id");
         queryOrgType.setParameter("id", id);
         queryOrgType.executeUpdate();
     }
+
     @Override
     public void deleteReferenceFromCompanyByGenre(Genre genre) {
-        TypedQuery<Company> queryOrgType = (TypedQuery<Company>) entityManager.createNativeQuery("DELETE FROM company_on_banned_genre WHERE genre_id ="+genre.getId());
+        TypedQuery<Company> queryOrgType = (TypedQuery<Company>) entityManager.createNativeQuery("DELETE FROM company_on_banned_genre WHERE genre_id =" + genre.getId());
         queryOrgType.executeUpdate();
     }
-    public boolean contains(SongCompilation songCompilation) {
-        return entityManager.contains(songCompilation);
-    }
+
     @Override
     public void flush() {
         entityManager.flush();
