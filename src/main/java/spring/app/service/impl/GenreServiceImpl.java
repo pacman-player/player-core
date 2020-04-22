@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
-import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -18,17 +17,14 @@ import java.util.List;
 
 
 @Service
-//@Transactional
 public class GenreServiceImpl implements GenreService {
     private final GenreDao genreDao;
-    private final SongDao songDao;
     private final SongCompilationService songCompilationService;
 
 
     @Autowired
-    public GenreServiceImpl(GenreDao genreDao, SongDao songDao, SongCompilationService songCompilationService) {
+    public GenreServiceImpl(GenreDao genreDao, SongCompilationService songCompilationService) {
         this.genreDao = genreDao;
-        this.songDao = songDao;
         this.songCompilationService = songCompilationService;
     }
 
