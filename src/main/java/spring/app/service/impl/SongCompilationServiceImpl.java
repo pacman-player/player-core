@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilation, SongCompilationDao> implements SongCompilationService {
+public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilation, SongCompilationDao, Long> implements SongCompilationService {
     private UserService userService;
     private CompanyService companyService;
     private FileUploadService fileUploadService;
@@ -35,16 +35,6 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilat
         this.songService = songService;
     }
 
-    @Override
-    public void addSongCompilation(SongCompilation songCompilation) {
-        dao.save(songCompilation);
-//        sendEmail.send(songCompilation.getName());
-    }
-
-    @Override
-    public List<SongCompilation> getAllSongCompilations() {
-        return dao.getAll();
-    }
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
@@ -65,14 +55,14 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilat
     public void addSongToSongCompilation(Long compilationId, Long songId) {
         dao.addSongToSongCompilation(
                 getSongCompilationById(compilationId),
-                songService.getSongById(songId));
+                songService.getById(songId));
     }
 
     @Override
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
         dao.removeSongFromSongCompilation(
                 getSongCompilationById(compilationId),
-                songService.getSongById(songId));
+                songService.getById(songId));
     }
 
     @Override
@@ -236,10 +226,6 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilat
         pl.getSongCompilation().remove(newSongCompilation);
     }
 
-    @Override
-    public void updateCompilation(SongCompilation songCompilation) {
-        dao.update(songCompilation);
-    }
 
     @Override
     public void deleteSongCompilation(SongCompilation songCompilation) throws IOException {

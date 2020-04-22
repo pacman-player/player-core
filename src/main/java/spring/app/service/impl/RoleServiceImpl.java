@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl extends AbstractServiceImpl<Role, RoleDao> implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Role, RoleDao, Long> implements RoleService {
 
     @Autowired
     public RoleServiceImpl(RoleDao dao) {
@@ -21,32 +21,8 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, RoleDao> implemen
     }
 
     @Override
-    public void addRole(Role role) {
-        dao.save(role);
-    }
-
-    @Override
-    public Role getRoleByName(String roleName) {
+    public Role geByName(String roleName) {
         return dao.getRoleByName(roleName);
     }
 
-    @Override
-    public Role getRoleById(Long id) {
-        return dao.getById(id);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return dao.getAll();
-    }
-
-    @Override
-    public void updateRole(Role role) {
-        dao.update(role);
-    }
-
-    @Override
-    public void deleteRoleById(Long id) {
-        dao.deleteById(id);
-    }
 }

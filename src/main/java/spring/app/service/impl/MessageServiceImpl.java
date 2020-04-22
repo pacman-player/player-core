@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MessageServiceImpl extends AbstractServiceImpl<Message, MessageDao> implements MessageService {
+public class MessageServiceImpl extends AbstractServiceImpl<Message, MessageDao, Long> implements MessageService {
 
     @Autowired
     public MessageServiceImpl(MessageDao dao) {
@@ -19,32 +19,8 @@ public class MessageServiceImpl extends AbstractServiceImpl<Message, MessageDao>
     }
 
     @Override
-    public void addMessage(Message message) {
-        dao.save(message);
-    }
-
-    @Override
-    public List<Message> getAllMessage() {
-        return dao.getAll();
-    }
-
-    @Override
     public Message getByName(String name) {
         return dao.getByName(name);
     }
 
-    @Override
-    public Message getById(Long id) {
-        return dao.getById(id);
-    }
-
-    @Override
-    public void updateMessage(Message message) {
-        dao.update(message);
-    }
-
-    @Override
-    public void deleteMessageById(Long id) {
-        dao.deleteById(id);
-    }
 }

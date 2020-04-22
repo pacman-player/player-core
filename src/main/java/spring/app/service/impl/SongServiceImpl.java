@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implements SongService {
+public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao, Long> implements SongService {
     private final SongCompilationService songCompilationService;
 
     @Autowired
@@ -27,33 +27,12 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
         this.songCompilationService = songCompilationService;
     }
 
-
-    @Override
-    public void addSong(Song song) {
-        dao.save(song);
-    }
-
-    @Override
-    public void updateSong(Song song) {
-        songDao.update(song);
-    }
-
-    @Override
-    public void deleteSongById(Long id) {
-        dao.deleteById(id);
-    }
-
-
-
     @Override
     public boolean isExist(String name) {
         return dao.isExist(name);
     }
 
-    @Override
-    public Song getSongById(Long id) {
-        return songDao.getById(id);
-    }
+
 
     @Override
     public Song getByName(String name) {
@@ -71,24 +50,10 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
         return dao.getBySearchRequests(author, name);
     }
 
-    @Override
-    public List<Song> getAllSongs() {
-        return dao.getAll();
-    }
-
-    @Override
-    public List<Song> findSongsByNameContaining(String name) {
-        return dao.findByNameContaining(name);
-    }
-
-    @Override
-    public Song getById(long songId) {
-        return songDao.getById(songId);
-    }
 
     @Override
     public List<Song> findSongsByGenreId(Long id) {
-        return songDao.getAllWithGenreByGenreId(id);
+        return dao.getAllWithGenreByGenreId(id);
     }
 
     @Override
@@ -107,15 +72,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, SongDao> implemen
     public List<Song> getAllApprovedSongs() {
         return dao.getAllApproved();
     }
-    @Override
-    public void updateSong(Song song) {
-        songDao.update(song);
-    }
 
-    @Override
-    public Song getSongById(Long id) {
-        return songDao.getById(id);
-    }
 
     @Override
     public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {

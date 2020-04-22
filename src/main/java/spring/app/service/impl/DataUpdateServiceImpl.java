@@ -54,7 +54,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
             if (genre == null) {
                 // добавляем новые жанры если мы о них не знаем
                 genre = new Genre(genreName);
-                genreService.addGenre(genre);
+                genreService.save(genre);
             }
             // записываем жанр в сет жанров
             authorGenres.add(genre);
@@ -67,7 +67,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
             song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
-            songService.addSong(song);
+            songService.save(song);
         }
         // возвращаем id песни
         return song.getId();

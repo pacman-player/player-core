@@ -66,7 +66,7 @@ public class UserRestController {
 
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");
-            return songCompilation.getAllSongCompilations();
+            return songCompilation.getAll();
         } else {
             Genre genres = genreService.getByName(genre);
             List<SongCompilation> compilations = songCompilation.getListSongCompilationsByGenreId(genres.getId());

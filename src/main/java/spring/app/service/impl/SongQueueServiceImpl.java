@@ -16,21 +16,11 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongQueueServiceImpl extends AbstractServiceImpl<SongQueue, SongQueueDao> implements SongQueueService {
+public class SongQueueServiceImpl extends AbstractServiceImpl<SongQueue, SongQueueDao, Long> implements SongQueueService {
 
     @Autowired
     public SongQueueServiceImpl(SongQueueDao dao) {
         super(dao);
-    }
-
-    @Override
-    public void addSongQueue(SongQueue songQueue) {
-        dao.save(songQueue);
-    }
-
-    @Override
-    public void updateSongQueue(SongQueue songQueue) {
-        dao.update(songQueue);
     }
 
     @Override
@@ -51,11 +41,6 @@ public class SongQueueServiceImpl extends AbstractServiceImpl<SongQueue, SongQue
     @Override
     public void deletePlayedSong(Set<SongQueue> songQueues) {
         dao.deletePlayedSong(songQueues);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        dao.deleteById(id);
     }
 
     @Override

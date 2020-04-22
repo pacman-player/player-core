@@ -78,7 +78,7 @@ public class Mp3Parser {
         String fullTrackName = author + " " + name;
 
         Long id = musicSearchService.updateData(fullTrackName, author, name);
-        Song song = songService.getSongById(id);
+        Song song = songService.getById(id);
        /*
        // Занесение init-треков в базу с упрощенной логикой, без определения жанров через MusicSearchService
        Author auth = new Author(author);

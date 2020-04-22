@@ -19,7 +19,6 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
-import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,7 +53,7 @@ public class AdminSongRestController {
     @DeleteMapping(value = "/delete_song/{id}")
     public void deleteSong(@PathVariable("id") Long id) {
         LOGGER.info("DELETE request '/delete_song/{}'", id);
-        songService.deleteSongById(id);
+        songService.deleteById(id);
     }
 
     /*
@@ -76,7 +75,7 @@ public class AdminSongRestController {
             song.setGenre(genre);
         }
         song.setSearchTags(songDto.getSearchTags());
-        songService.addSong(song);
+        songService.save(song);
         LOGGER.info("Added Song = {}", song);
     }
 
@@ -86,7 +85,7 @@ public class AdminSongRestController {
     @PutMapping(value = "/update_song")
     public void updateSong(@RequestBody SongDto songDto) {
         LOGGER.info("PUT request '/update_song'");
-        Song oldSong = songService.getSongById(songDto.getId());
+        Song oldSong = songService.getById(songDto.getId());
         LOGGER.info("Changing Song = {}", oldSong);
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
@@ -96,7 +95,7 @@ public class AdminSongRestController {
         song.setAuthor(author);
         song.setSearchTags(songDto.getSearchTags());
         song.setGenre(genre);
-        songService.updateSong(song);
+        songService.update(song);
         LOGGER.info("Updated Song as = {}", song);
     }
 
@@ -104,7 +103,7 @@ public class AdminSongRestController {
 @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @ResponseBody
 public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getSongById(id));
+    SongDto songDto = new SongDto(songService.getById(id));
     return ResponseEntity.ok(songDto);
 }
 
@@ -128,9 +127,9 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
         Genre newGenre = genreService.getByName(updateObject.get(-1));
         updateObject.forEach((key, value)->{
               if(key!=-1){
-                  Song editSong = songService.getSongById(Long.parseLong(value));
+                  Song editSong = songService.getById(Long.parseLong(value));
                   editSong.setGenre(newGenre);
-                  songService.updateSong(editSong);
+                  songService.update(editSong);
               }
           });
     }

@@ -64,7 +64,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         Genre genre = genreService.getByName(songGenre);
         if (genre == null) {
-            genreService.addGenre(new Genre(songGenre));
+            genreService.save(new Genre(songGenre));
             genre = genreService.getByName(songGenre);
         }
 
@@ -81,7 +81,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         Song song = new Song(songName);
         song.setAuthor(author);
         song.setGenre(genre);
-        songService.addSong(song);
+        songService.save(song);
         song = songService.getByName(songName);
 
         try {

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RegistrationStepServiceImpl extends AbstractServiceImpl<RegistrationStep, RegistrationStepDao> implements RegistrationStepService {
+public class RegistrationStepServiceImpl extends AbstractServiceImpl<RegistrationStep, RegistrationStepDao, Long> implements RegistrationStepService {
 
     @Autowired
     public RegistrationStepServiceImpl(RegistrationStepDao dao) {
@@ -19,33 +19,8 @@ public class RegistrationStepServiceImpl extends AbstractServiceImpl<Registratio
     }
 
     @Override
-    public RegistrationStep getRegStepByName(String name) {
+    public RegistrationStep getByName(String name) {
         return dao.getRegStepByName(name);
-    }
-
-    @Override
-    public RegistrationStep getRegStepById(Long id) {
-        return dao.getById(id);
-    }
-
-    @Override
-    public void save(RegistrationStep registrationStep) {
-        dao.save(registrationStep);
-    }
-
-    @Override
-    public List<RegistrationStep> getAllRegSteps() {
-        return dao.getAll();
-    }
-
-    @Override
-    public void deleteRegStepById(Long id) {
-        dao.deleteById(id);
-    }
-
-    @Override
-    public void updateRegStep(RegistrationStep registrationStep) {
-        dao.update(registrationStep);
     }
 
     @Override

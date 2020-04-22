@@ -194,7 +194,7 @@ public class MainController {
         String googleId = payload.getSubject();
         User user = userService.getUserByGoogleId(googleId);
         if (user == null) {
-            Role role = roleService.getRoleByName("USER");
+            Role role = roleService.geByName("USER");
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             user = new User(googleId, email, roleSet, true);
@@ -217,7 +217,7 @@ public class MainController {
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
             morningPlayList.setName("Morning playlist");
-            playListService.addPlayList(morningPlayList);
+            playListService.save(morningPlayList);
             Set<PlayList> morningPlaylistSet = new HashSet<>();
             morningPlaylistSet.add(morningPlayList);
             company.setMorningPlayList(morningPlaylistSet);
@@ -225,7 +225,7 @@ public class MainController {
             //сетим дневной плейлист
             PlayList middayPlayList = new PlayList();
             middayPlayList.setName("Midday playlist");
-            playListService.addPlayList(middayPlayList);
+            playListService.save(middayPlayList);
             Set<PlayList> middayPlaylistSet = new HashSet<>();
             middayPlaylistSet.add(middayPlayList);
             company.setMiddayPlayList(middayPlaylistSet);
@@ -233,7 +233,7 @@ public class MainController {
             //сетим вечерний плейлист
             PlayList eveningPlayList = new PlayList();
             eveningPlayList.setName("Evening playlist");
-            playListService.addPlayList(eveningPlayList);
+            playListService.save(eveningPlayList);
             Set<PlayList> eveningPlaylistSet = new HashSet<>();
             eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);
@@ -280,7 +280,7 @@ public class MainController {
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
         User user = userService.getUserByVkId(actor.getId());
         if (user == null) {
-            Role role = roleService.getRoleByName("USER");
+            Role role = roleService.geByName("USER");
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(role);
             List<UserXtrCounters> list = vk.users().get(actor).execute();
@@ -311,7 +311,7 @@ public class MainController {
             //сетим утренний плейлист
             PlayList morningPlayList = new PlayList();
             morningPlayList.setName("Morning playlist");
-            playListService.addPlayList(morningPlayList);
+            playListService.save(morningPlayList);
             Set<PlayList> morningPlaylistSet = new HashSet<>();
             morningPlaylistSet.add(morningPlayList);
             company.setMorningPlayList(morningPlaylistSet);
@@ -319,7 +319,7 @@ public class MainController {
             //сетим дневной плейлист
             PlayList middayPlayList = new PlayList();
             middayPlayList.setName("Midday playlist");
-            playListService.addPlayList(middayPlayList);
+            playListService.save(middayPlayList);
             Set<PlayList> middayPlaylistSet = new HashSet<>();
             middayPlaylistSet.add(middayPlayList);
             company.setMiddayPlayList(middayPlaylistSet);
@@ -327,7 +327,7 @@ public class MainController {
             //сетим вечерний плейлист
             PlayList eveningPlayList = new PlayList();
             eveningPlayList.setName("Evening playlist");
-            playListService.addPlayList(eveningPlayList);
+            playListService.save(eveningPlayList);
             Set<PlayList> eveningPlaylistSet = new HashSet<>();
             eveningPlaylistSet.add(eveningPlayList);
             company.setEveningPlayList(eveningPlaylistSet);

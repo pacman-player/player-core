@@ -12,15 +12,10 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class OrderSongServiceImpl extends AbstractServiceImpl<OrderSong, OrderSongDao> implements OrderSongService {
+public class OrderSongServiceImpl extends AbstractServiceImpl<OrderSong, OrderSongDao, Long> implements OrderSongService {
 
     protected OrderSongServiceImpl(OrderSongDao dao) {
         super(dao);
-    }
-
-    @Override
-    public void addSongOrder(OrderSong songOrder) {
-        dao.save(songOrder);
     }
 
 

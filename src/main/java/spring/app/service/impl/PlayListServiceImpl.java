@@ -8,24 +8,14 @@ import spring.app.service.abstraction.PlayListService;
 
 @Service
 @Transactional
-public class PlayListServiceImpl extends AbstractServiceImpl<PlayList, PlayListDao> implements PlayListService {
+public class PlayListServiceImpl extends AbstractServiceImpl<PlayList, PlayListDao, Long> implements PlayListService {
 
     protected PlayListServiceImpl(PlayListDao dao) {
         super(dao);
     }
 
     @Override
-    public void addPlayList(PlayList playList) {
-        dao.save(playList);
-    }
-
-    @Override
-    public PlayList getPlayList(Long id) {
-        return dao.getById(id);
-    }
-
-    @Override
-    public PlayList getPlayListByName(String name) {
+    public PlayList getByName(String name) {
         return dao.getByName(name);
     }
 }

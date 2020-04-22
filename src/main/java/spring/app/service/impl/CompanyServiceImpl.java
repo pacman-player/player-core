@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl extends AbstractServiceImpl<Company, CompanyDao> implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl extends AbstractServiceImpl<Company, CompanyDao, Long> implements spring.app.service.abstraction.CompanyService {
 
     private final OrderSongDao orderSongDao;
 

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl  extends AbstractServiceImpl<User, UserDao> implements UserService{
+public class UserServiceImpl  extends AbstractServiceImpl<User, UserDao, Long> implements UserService{
 
     private PasswordEncoder passwordEncoder;
     private RoleDao roleDao;

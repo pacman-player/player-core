@@ -5,17 +5,17 @@ import spring.app.dao.abstraction.GenericDao;
 import java.io.Serializable;
 import java.util.List;
 
-public interface GenericService<T> {
+public interface GenericService<PK extends Serializable, T> {
 
     void save(T entity);
 
-    T getById(Long id);
+    T getById(PK id);
 
     void update(T entity);
 
-    void deleteById(Long id);
+    void deleteById(PK id);
 
-    boolean isExistById(Long id);
+    boolean isExistById(PK id);
 
     List<T> findByNameContaining(String param);
 

@@ -1,12 +1,11 @@
 package spring.app.service.impl;
 
 import spring.app.dao.abstraction.GenericDao;
-import spring.app.service.abstraction.GenericService;
-
+import java.io.Serializable;
 import java.util.List;
 
 
-public abstract class AbstractServiceImpl<T, R extends GenericDao<Long, T>> extends AbstractService<T> {
+public abstract class AbstractServiceImpl<T, R extends GenericDao<PK , T>, PK extends Serializable> extends AbstractService<PK, T> {
 
     protected final R dao;
 
@@ -18,7 +17,7 @@ public abstract class AbstractServiceImpl<T, R extends GenericDao<Long, T>> exte
         dao.save(entity);
     }
 
-    public T getById(Long id) {
+    public T getById(PK id) {
         return dao.getById(id);
     }
 
@@ -26,11 +25,11 @@ public abstract class AbstractServiceImpl<T, R extends GenericDao<Long, T>> exte
         dao.update(entity);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(PK id) {
         dao.deleteById(id);
     }
 
-    public boolean isExistById(Long id) {
+    public boolean isExistById(PK id) {
         return dao.isExistById(id);
     }
 

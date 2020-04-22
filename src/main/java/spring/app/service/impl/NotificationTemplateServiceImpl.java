@@ -10,7 +10,7 @@ import spring.app.service.abstraction.NotificationTemplateService;
 import java.util.List;
 
 @Service
-public class NotificationTemplateServiceImpl extends AbstractServiceImpl<NotificationTemplate, NotificationTemplateDao> implements NotificationTemplateService {
+public class NotificationTemplateServiceImpl extends AbstractServiceImpl<NotificationTemplate, NotificationTemplateDao, Long> implements NotificationTemplateService {
 
     @Autowired
     public NotificationTemplateServiceImpl(NotificationTemplateDao dao) {

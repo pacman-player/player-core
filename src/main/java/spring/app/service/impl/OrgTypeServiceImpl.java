@@ -6,11 +6,9 @@ import spring.app.dao.abstraction.OrgTypeDao;
 import spring.app.model.OrgType;
 import spring.app.service.abstraction.OrgTypeService;
 
-import java.util.List;
-
 @Service
 @Transactional
-public class OrgTypeServiceImpl extends AbstractServiceImpl<OrgType, OrgTypeDao> implements OrgTypeService {
+public class OrgTypeServiceImpl extends AbstractServiceImpl<OrgType, OrgTypeDao, Long> implements OrgTypeService {
 
 
     protected OrgTypeServiceImpl(OrgTypeDao dao) {
@@ -18,32 +16,7 @@ public class OrgTypeServiceImpl extends AbstractServiceImpl<OrgType, OrgTypeDao>
     }
 
     @Override
-    public void addOrgType(OrgType orgType) {
-        dao.save(orgType);
-    }
-
-    @Override
-    public List<OrgType> getAllOrgTypes() {
-        return dao.getAll();
-    }
-
-    @Override
-    public OrgType getOrgTypeById(long id) {
-        return dao.getById(id);
-    }
-
-    @Override
     public OrgType getByName(String name) {
         return dao.getByName(name);
-    }
-
-    @Override
-    public void deleteOrgTypeById(Long id) {
-        dao.deleteById(id);
-    }
-
-    @Override
-    public void updateOrgType(OrgType orgType) {
-        dao.update(orgType);
     }
 }

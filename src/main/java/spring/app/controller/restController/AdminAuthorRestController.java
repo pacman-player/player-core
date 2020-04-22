@@ -39,7 +39,7 @@ public class AdminAuthorRestController {
      */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor() {
-        List<Author> authorList = authorService.getAllAuthors();
+        List<Author> authorList = authorService.getAll();
         //Проходимся по листу авторов и делаем AuthorDto из каждого Author
         List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
         return authorDtoList;
@@ -60,7 +60,7 @@ public class AdminAuthorRestController {
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             author.setApproved(newAuthor.getApproved());
-            authorService.addAuthor(author);
+            authorService.save(author);
             LOGGER.info("Added new Author = {}", author);
         } else {
             LOGGER.info("New Author was not added!");
@@ -75,20 +75,20 @@ public class AdminAuthorRestController {
                 newAuthor.getName(),
                 getGenres(newAuthor.getGenres()),
                 newAuthor.getApproved());
-        authorService.updateAuthor(author);
+        authorService.update(author);
         LOGGER.info("Updated Author = {}", author);
     }
 
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_author' with id = {}", id);
-        authorService.deleteAuthorById(id);
+        authorService.deleteById(id);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        List<Genre> list = genreService.getAllGenre();
+        List<Genre> list = genreService.getAll();
         return list;
     }
 

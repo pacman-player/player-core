@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AuthorServiceImpl extends AbstractServiceImpl<Author, AuthorDao> implements AuthorService {
+public class AuthorServiceImpl extends AbstractServiceImpl<Author, AuthorDao, Long> implements AuthorService {
 
     private SongDao songDao;
     private NotificationService notificationService;
@@ -36,7 +36,7 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Author, AuthorDao> im
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
         try {
-            notificationService.addNotification(author);
+            notificationService.save(author);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,7 @@ import spring.app.model.User;
 
 import java.util.List;
 
-public interface UserService extends GenericService<User>{
+public interface UserService extends GenericService<Long, User>{
     User getUserByLoginWithRegStepsCompany(String login);
 
     User getUserByLogin(String login);

@@ -99,7 +99,7 @@ public class AdminRestController {
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
-        List<OrgType> list = orgTypeService.getAllOrgTypes();
+        List<OrgType> list = orgTypeService.getAll();
         return list;
     }
 
@@ -166,13 +166,13 @@ public class AdminRestController {
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("POST request '/add_establishment' with orgType = {}", orgType);
-        orgTypeService.addOrgType(orgType);
+        orgTypeService.save(orgType);
     }
 
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("PUT request '/update_establishment' with orgType = {}", orgType);
-        orgTypeService.updateOrgType(orgType);
+        orgTypeService.update(orgType);
     }
 
     // Returns false if author with requested name already exists else true
@@ -185,7 +185,7 @@ public class AdminRestController {
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
-        orgTypeService.deleteOrgTypeById(id);
+        orgTypeService.deleteById(id);
     }
 
 
@@ -194,7 +194,7 @@ public class AdminRestController {
 
         for (String rl : role) {
             System.out.println(rl);
-            roles.add(roleService.getRoleByName(rl));
+            roles.add(roleService.geByName(rl));
         }
         return roles;
     }
