@@ -26,30 +26,26 @@ public class SongServiceImpl implements SongService {
         this.songCompilationService = songCompilationService;
     }
 
+
     @Override
     public void addSong(Song song) {
         songDao.save(song);
     }
 
-    @Override
-    public void updateSong(Song song) {
-        songDao.update(song);
-    }
+
 
     @Override
     public void deleteSongById(Long id) {
         songDao.deleteById(id);
     }
 
+
+
     @Override
     public boolean isExist(String name) {
         return songDao.isExist(name);
     }
 
-    @Override
-    public Song getSongById(Long id) {
-        return songDao.getById(id);
-    }
 
     @Override
     public Song getByName(String name) {
@@ -78,6 +74,16 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Song getById(long songId) {
+        return songDao.getById(songId);
+    }
+
+    @Override
+    public List<Song> findSongsByGenreId(Long id) {
+        return songDao.getAllWithGenreByGenreId(id);
+    }
+
+    @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return songDao.getByCreatedDateRange(dateFrom, dateTo);
     }
@@ -92,6 +98,15 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> getAllApprovedSongs() {
         return songDao.getAllApproved();
+    }
+    @Override
+    public void updateSong(Song song) {
+        songDao.update(song);
+    }
+
+    @Override
+    public Song getSongById(Long id) {
+        return songDao.getById(id);
     }
 
     @Override
