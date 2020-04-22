@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Company;
 import spring.app.model.User;
@@ -26,8 +27,8 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthors")
-    public List<Author> getAllAuthors() {
-        List<Author> list = authorService.getAllAuthors();
+    public List<AuthorDto> getAllAuthors() {
+        List<AuthorDto> list = authorService.getAllAuthors();
         return list;
     }
 

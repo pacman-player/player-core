@@ -16,21 +16,10 @@ public class AuthorDto {
     public AuthorDto() {
     }
 
-    public AuthorDto(String name, String[] genres) {
-        this.name = name;
-        this.genres = genres;
-    }
-
-    public AuthorDto(Long id, String name, String[] genres) {
+    public AuthorDto(Long id, String name, Timestamp createdAt, Boolean isApproved) {
         this.id = id;
         this.name = name;
-        this.genres = genres;
-    }
-
-    public AuthorDto(Long id, String name, String[] genres, Boolean isApproved) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
+        this.createdAt = createdAt;
         this.isApproved = isApproved;
     }
 

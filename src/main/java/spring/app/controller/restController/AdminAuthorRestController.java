@@ -32,9 +32,7 @@ public class AdminAuthorRestController {
     */
     @GetMapping(value = "/all_authors")
     public List<AuthorDto> getAllAuthor(){
-        List<Author> authorList = authorService.getAllAuthors();
-        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+        List<AuthorDto> authorDtoList = authorService.getAllAuthors();
         return authorDtoList;
     }
 
