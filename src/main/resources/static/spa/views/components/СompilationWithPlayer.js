@@ -110,8 +110,8 @@ $(document).ready(function () {
                         }
                         let playButton = `<button class="playBtn" data-playlist_id="getGenres_${listCompilation[i].compilationIndex}" onclick="playOrPausePlaylist(\'getGenres\', ${listCompilation[i].compilationIndex})"></button>`;
                         let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="getGenres_${listCompilation[i].compilationIndex}" onclick="playOrPausePlaylist(\'getGenres\', ${listCompilation[i].compilationIndex})"></button>`;
-                        htmlCompilation += playButton;
-                        htmlCompilation += pauseButton;
+                        // htmlCompilation += playButton;
+                        // htmlCompilation += pauseButton;
                         htmlCompilation += '&nbsp;' + '&nbsp;'
                             + '<button class="' + mon + '" id="btnAddMorningPlaylist1-' + listCompilation[i].id + '" onclick="addMorningPlaylist(' + listCompilation[i].id + ')">Утро</button>'
                             + '&nbsp;'
@@ -134,20 +134,18 @@ $(document).ready(function () {
         getAllGenre();
             $('#allGenBtn').attr("aria-pressed", "true")
         }
-
-
     });
     //назад к жанрам
     $(document).on('click', '#linkBack', function () {
-        // getAllGenre();
         $("#getGenres #songCompilation").remove();
         $('#allGenBtn').attr("aria-pressed", "false");
         getGenres.value = getGenres.value.replace(/\r?\n/g, "")
-
-        // $('#Genres').remove();
-
     });
 
+// отображаем плеер по нажатию кнопки .playBtn
+    $(document).on('click', '.playBtn', function () {
+        PopUpShow();
+    });
 
 
     function getAllGenre() {
@@ -606,6 +604,11 @@ $(function () {
     $("#previousAudioButton").on("click", function () {
         playPrevious();
     });
+
+    $("#closePlayerBtn").on("click", function () {
+        playerElement.pause();
+    });
+
     // при нажатии на кнопку "играть \ пауза"
     $("#playOrPauseAudioButton").on("click", function () {
         playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex);
@@ -804,6 +807,7 @@ function setButtonOnStop(button) {
     button.dataset.playing_state = 'on_stop';
 }
 
+
 /**
  * функция для проигрывания / паузы
  * сперва находится кнопка нажатия и определяется его состояние
@@ -860,8 +864,8 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
         lastPlayedCompilationIndex = compilationIndex;
         lastPlayedMusicIndex = musicIndex;
         let music = allSongsInCurrentPlaylist[musicIndex];
-        player.attr('src', musicUrl + music.author.name + "/" + music.name);
-        $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
+        player.attr('src', musicUrl + music.author.id + "/" + music.id);
+        $('#albums-cover').attr('src', albumsCoverUrl + music.author.id + "/" + music.id);
         let songName = document.getElementById('song-name');
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
