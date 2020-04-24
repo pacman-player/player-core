@@ -474,5 +474,9 @@ public class TestDataInit {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
         mBeanServer.registerMBean(serviceConfigurer, name);
+
+        //adding genre not defined
+        Genre notDefinedGenre = new Genre("not defined", true);
+        genreService.addGenre(notDefinedGenre);
     }
 }

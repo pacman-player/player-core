@@ -83,9 +83,12 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/get_encrypted_pass")
-    public ResponseEntity<Boolean> getEncPass(@RequestBody Map<String, String> json) {
+    public ResponseEntity<Boolean> getEncPass(@RequestParam Map<String, String> json) {
         LOGGER.info("POST request '/get_encrypted_pass'");
-        return ResponseEntity.ok(passwordEncoder.matches(json.get("oldPass"), json.get("newPass")));
+        if (json.get("prevPass").isEmpty()) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(passwordEncoder.matches(json.get("nextPass"), json.get("prevPass")));
     }
 
     @PutMapping(value = "/edit_data")

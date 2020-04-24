@@ -23,8 +23,7 @@ $(document).ready(function () {
                 let listCompilation = getCurrentPlaylist('getGenres').currentCumpilationsList
                 var htmlCompilation = "Need to add Compilation";
                 if (0 < listCompilation.length) {
-                    htmlCompilation = ("<div id=\"songCompilation\"><a href=\"#\" style=\"margin-right: 10px\" id=\"linkBack\"><img src=\"/img/back.svg\" width=\"30\" height=\"30\" alt=\"Назад\" ></a>" +
-                        '<h3 style="display:inline">Подборки песен</h3></div>');
+                    htmlCompilation = ("<div id=\"songCompilation\"><a href=\"#\" style=\"margin-right: 10px\" id=\"linkBack\"><img src=\"/img/back.svg\" width=\"30\" height=\"30\" alt=\"Назад\" ></a><h3 style=\"display:inline\">Подборки песен</h3></div>");
                     for (var i = 0; i < listCompilation.length; i++) {
                         let morningIds = [];
                         let middayIds = [];
