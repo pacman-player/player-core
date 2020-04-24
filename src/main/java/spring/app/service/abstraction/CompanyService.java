@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.CompanyDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.model.Genre;
@@ -14,13 +15,15 @@ public interface CompanyService {
 
     Company getById(Long id);
 
+    CompanyDto getCompanyDtoById(Long id);
+
     Company getByIdWithAddress(Long id);
 
     Company getByCompanyName(String companyName);
 
     void removeById(Long id);
 
-    List<Company> getAllCompanies();
+    List<CompanyDto> getAllCompanies();
 
     boolean isExistCompanyByName(String name);
 

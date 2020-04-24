@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 
+import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
 
@@ -17,6 +18,8 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    UserDto getUserDtoById(Long id);
+
     void addUser(User user);
 
     void addUserWithEncodePassword(User user);
@@ -25,7 +28,7 @@ public interface UserService {
 
     void save(UserRegistrationDto registration);
 
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
     void deleteUserById(Long id);
 

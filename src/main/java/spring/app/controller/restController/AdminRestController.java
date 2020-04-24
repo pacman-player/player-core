@@ -66,8 +66,8 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-    List<User> getAllUsers() {
-        List<User> list = userService.getAllUsers();
+    List<UserDto> getAllUsers() {
+        List<UserDto> list = userService.getAllUsers();
         return list;
     }
 
@@ -85,8 +85,8 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-    List<Company> getAllCompanies() {
-        List<Company> list = companyService.getAllCompanies();
+    List<CompanyDto> getAllCompanies() {
+        List<CompanyDto> list = companyService.getAllCompanies();
         return list;
     }
 
