@@ -110,8 +110,8 @@ $(document).ready(function () {
                         }
                         let playButton = `<button class="playBtn" data-playlist_id="getGenres_${listCompilation[i].compilationIndex}" onclick="playOrPausePlaylist(\'getGenres\', ${listCompilation[i].compilationIndex})"></button>`;
                         let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="getGenres_${listCompilation[i].compilationIndex}" onclick="playOrPausePlaylist(\'getGenres\', ${listCompilation[i].compilationIndex})"></button>`;
-                        htmlCompilation += playButton;
-                        htmlCompilation += pauseButton;
+                        // htmlCompilation += playButton;
+                        // htmlCompilation += pauseButton;
                         htmlCompilation += '&nbsp;' + '&nbsp;'
                             + '<button class="' + mon + '" id="btnAddMorningPlaylist1-' + listCompilation[i].id + '" onclick="addMorningPlaylist(' + listCompilation[i].id + ')">Утро</button>'
                             + '&nbsp;'
@@ -604,8 +604,13 @@ $(function () {
     $("#previousAudioButton").on("click", function () {
         playPrevious();
     });
+
+    $("#closePlayerBtn").on("click", function () {
+        playerElement.pause();
+    });
+
     // при нажатии на кнопку "играть \ пауза"
-    $("#playOrPauseAudioButton, #closePlayerBtn").on("click", function () {
+    $("#playOrPauseAudioButton").on("click", function () {
         playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex, lastPlayedMusicIndex);
     });
     // при нажатии на кнопку "следующий"
@@ -801,6 +806,7 @@ function setButtonOnPause(button) {
 function setButtonOnStop(button) {
     button.dataset.playing_state = 'on_stop';
 }
+
 
 /**
  * функция для проигрывания / паузы
