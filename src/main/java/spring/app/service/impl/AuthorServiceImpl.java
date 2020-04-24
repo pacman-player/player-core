@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AuthorServiceImpl extends AbstractServiceImpl<Author, AuthorDao, Long> implements AuthorService {
+public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
 
     private SongDao songDao;
     private NotificationService notificationService;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AddressServiceImpl extends AbstractServiceImpl<Address, AddressDao, Long> implements AddressService {
+public class AddressServiceImpl extends AbstractServiceImpl<Long, Address, AddressDao> implements AddressService {
 
     @Autowired
     public AddressServiceImpl(AddressDao addressDao) {

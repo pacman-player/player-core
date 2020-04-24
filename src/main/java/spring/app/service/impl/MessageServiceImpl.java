@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MessageServiceImpl extends AbstractServiceImpl<Message, MessageDao, Long> implements MessageService {
+public class MessageServiceImpl extends AbstractServiceImpl<Long, Message, MessageDao> implements MessageService {
 
     @Autowired
     public MessageServiceImpl(MessageDao dao) {

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RegistrationStepServiceImpl extends AbstractServiceImpl<RegistrationStep, RegistrationStepDao, Long> implements RegistrationStepService {
+public class RegistrationStepServiceImpl extends AbstractServiceImpl<Long, RegistrationStep, RegistrationStepDao> implements RegistrationStepService {
 
     @Autowired
     public RegistrationStepServiceImpl(RegistrationStepDao dao) {

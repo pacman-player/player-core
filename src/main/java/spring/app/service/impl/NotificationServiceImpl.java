@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional
 @EnableAsync(proxyTargetClass = true)
 @EnableCaching(proxyTargetClass = true)
-public class NotificationServiceImpl extends AbstractServiceImpl<Notification, NotificationDao, Long> implements NotificationService {
+public class NotificationServiceImpl extends AbstractServiceImpl<Long, Notification, NotificationDao> implements NotificationService {
 
     private UserDao userDao;
 

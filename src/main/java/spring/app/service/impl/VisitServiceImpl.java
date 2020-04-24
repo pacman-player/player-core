@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class VisitServiceImpl extends AbstractServiceImpl<Visit, VisitDao, Visit.VisitPK> implements VisitService {
+public class VisitServiceImpl extends AbstractServiceImpl<Visit.VisitPK, Visit, VisitDao> implements VisitService {
 
 
     public VisitServiceImpl(VisitDao dao) {

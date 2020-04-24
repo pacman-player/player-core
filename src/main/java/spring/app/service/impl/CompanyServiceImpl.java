@@ -7,12 +7,13 @@ import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
+import spring.app.service.abstraction.CompanyService;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl extends AbstractServiceImpl<Company, CompanyDao, Long> implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, CompanyDao> implements CompanyService {
 
     private final OrderSongDao orderSongDao;
 

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class TelegramUserServiceImpl extends AbstractServiceImpl<TelegramUser, TelegramUserDao, Long> implements TelegramUserService {
+public class TelegramUserServiceImpl extends AbstractServiceImpl<Long, TelegramUser, TelegramUserDao> implements TelegramUserService {
 
     public TelegramUserServiceImpl(TelegramUserDao dao) {
         super(dao);

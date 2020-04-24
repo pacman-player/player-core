@@ -8,7 +8,7 @@ import spring.app.service.abstraction.OrgTypeService;
 
 @Service
 @Transactional
-public class OrgTypeServiceImpl extends AbstractServiceImpl<OrgType, OrgTypeDao, Long> implements OrgTypeService {
+public class OrgTypeServiceImpl extends AbstractServiceImpl<Long, OrgType, OrgTypeDao> implements OrgTypeService {
 
 
     protected OrgTypeServiceImpl(OrgTypeDao dao) {

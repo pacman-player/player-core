@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class OrderSongServiceImpl extends AbstractServiceImpl<OrderSong, OrderSongDao, Long> implements OrderSongService {
+public class OrderSongServiceImpl extends AbstractServiceImpl<Long, OrderSong, OrderSongDao> implements OrderSongService {
 
     protected OrderSongServiceImpl(OrderSongDao dao) {
         super(dao);

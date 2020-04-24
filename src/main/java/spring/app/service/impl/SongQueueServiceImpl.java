@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongQueueServiceImpl extends AbstractServiceImpl<SongQueue, SongQueueDao, Long> implements SongQueueService {
+public class SongQueueServiceImpl extends AbstractServiceImpl<Long, SongQueue, SongQueueDao> implements SongQueueService {
 
     @Autowired
     public SongQueueServiceImpl(SongQueueDao dao) {

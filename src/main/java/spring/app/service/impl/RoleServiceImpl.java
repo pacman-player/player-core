@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl extends AbstractServiceImpl<Role, RoleDao, Long> implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> implements RoleService {
 
     @Autowired
     public RoleServiceImpl(RoleDao dao) {

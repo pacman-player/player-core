@@ -8,7 +8,7 @@ import spring.app.service.abstraction.PlayListService;
 
 @Service
 @Transactional
-public class PlayListServiceImpl extends AbstractServiceImpl<PlayList, PlayListDao, Long> implements PlayListService {
+public class PlayListServiceImpl extends AbstractServiceImpl<Long, PlayList, PlayListDao> implements PlayListService {
 
     protected PlayListServiceImpl(PlayListDao dao) {
         super(dao);

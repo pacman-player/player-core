@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class GenreServiceImpl extends AbstractServiceImpl<Genre, GenreDao, Long> implements GenreService {
+public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
 
     private final SongCompilationService songCompilationService;
   
@@ -42,20 +42,20 @@ public class GenreServiceImpl extends AbstractServiceImpl<Genre, GenreDao, Long>
             }
         }
 
-        List<Song> songs = genreDao.getSongsByGenre(genreForDelete);
+        List<Song> songs = dao.getSongsByGenre(genreForDelete);
         for (Song song : songs) {
             song.setGenre(notDefinedGenre);
         }
-        genreDao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
-        genreDao.deleteReferenceFromCompanyByGenre(genreForDelete);
+        dao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
+        dao.deleteReferenceFromCompanyByGenre(genreForDelete);
 
         List<SongCompilation> songCompilationList = new ArrayList<>(genreForDelete.getSongCompilation());
         for (SongCompilation songCompilation : songCompilationList) {
             songCompilation.setGenre(notDefinedGenre);
             genreForDelete.getSongCompilation().remove(songCompilation);
         }
-        genreDao.flush();
-        genreDao.deleteById(id);
+        dao.flush();
+        dao.deleteById(id);
     }
  
     @Transactional(readOnly = true)

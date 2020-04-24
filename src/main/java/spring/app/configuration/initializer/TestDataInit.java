@@ -477,6 +477,6 @@ public class TestDataInit {
 
         //adding genre not defined
         Genre notDefinedGenre = new Genre("not defined", true);
-        genreService.addGenre(notDefinedGenre);
+        genreService.save(notDefinedGenre);
     }
 }

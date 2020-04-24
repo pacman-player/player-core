@@ -5,12 +5,10 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public abstract class AbstractServiceImpl<T, R extends GenericDao<PK , T>, PK extends Serializable> extends AbstractService<PK, T> {
-
-    protected final R dao;
+public abstract class AbstractServiceImpl<PK extends Serializable, T, R extends GenericDao<PK, T>> extends AbstractService<PK, T, R> {
 
     protected AbstractServiceImpl(R dao) {
-        this.dao = dao;
+        super(dao);
     }
 
     public void save(T entity) {

@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongCompilationServiceImpl extends AbstractServiceImpl<SongCompilation, SongCompilationDao, Long> implements SongCompilationService {
+public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCompilation, SongCompilationDao> implements SongCompilationService {
     private UserService userService;
     private CompanyService companyService;
     private FileUploadService fileUploadService;
