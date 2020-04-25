@@ -11,6 +11,7 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
 import spring.app.service.abstraction.NotificationTemplateService;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -53,10 +54,21 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public void deleteAuthorById(Long id) {
+        Author author = authorDao.getById(id);
         // удаляем песни с данным автором
         songDao.bulkRemoveSongsByAuthorId(id);
         // теперь удаляем автора
         authorDao.deleteById(id);
+        // удаляем папку с автором и всеми песнями физически
+        String pathDirectory = "music/" + author.getId();
+        File fileDirectory = new File(pathDirectory);
+        File[] contents = fileDirectory.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete();
+            }
+        }
+        fileDirectory.delete();
     }
 
     @Override

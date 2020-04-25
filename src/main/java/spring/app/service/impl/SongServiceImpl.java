@@ -9,6 +9,7 @@ import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,14 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public void deleteSongById(Long id) {
+        Song song = songDao.getById(id);
         songDao.deleteById(id);
+        String pathSong = "music/" + song.getAuthor().getId() + "/" + song.getId() + ".mp3";
+        String pathDirectory = "music/" + song.getAuthor().getId();
+        File fileSong = new File(pathSong);
+        File fileDirectory = new File(pathDirectory);
+        fileSong.delete();
+//        fileDirectory.delete();  // метод удалит папку с автором если в ней не осталось песен
     }
 
 
