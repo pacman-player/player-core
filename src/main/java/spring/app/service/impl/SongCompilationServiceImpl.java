@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -45,21 +44,12 @@ public class SongCompilationServiceImpl implements SongCompilationService {
 
     @Override
     public List<SongCompilation> getAllSongCompilations() {
-        List<SongCompilation> songCompilationList = songCompilationDao.getAll();
-        deleteSongsFromListWithoutIsApproved(songCompilationList);
-        return songCompilationList;
-    }
-
-    private void deleteSongsFromListWithoutIsApproved(List<SongCompilation> songCompilationList) {
-        songCompilationList.forEach(songCompilation -> songCompilation.setSong(songCompilation.getSong().stream()
-                .filter(song -> song.getApproved()).collect(Collectors.toSet())));
+        return songCompilationDao.getAllWhereSongIsAprove();
     }
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
-        List<SongCompilation> songCompilationList = songCompilationDao.getListSongCompilationsByGenreId(id);
-        deleteSongsFromListWithoutIsApproved(songCompilationList);
-        return songCompilationList;
+        return songCompilationDao.getListSongCompilationsByGenreId(id);
     }
 
     @Override
