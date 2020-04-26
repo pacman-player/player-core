@@ -1,5 +1,7 @@
 package spring.app.dto;
 
+import spring.app.model.Author;
+import spring.app.model.Genre;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
@@ -13,6 +15,41 @@ public class SongDto {
     private String genreName;
     private Timestamp createdAt;
     private Boolean isApproved;
+
+    private AuthorDto authorDto;
+    private GenreDto genreDto;
+
+    public SongDto(Long id, String name, Boolean isApproved, String authorName, String genreName) {
+        this.id = id;
+        this.name = name;
+        this.authorName = authorName;
+        this.genreName = genreName;
+        this.isApproved = isApproved;
+    }
+
+    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto, GenreDto genreDto) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+        this.authorDto = authorDto;
+        this.genreDto = genreDto;
+    }
+
+    public AuthorDto getAuthorDto() {
+        return authorDto;
+    }
+
+    public void setAuthorDto(AuthorDto authorDto) {
+        this.authorDto = authorDto;
+    }
+
+    public GenreDto getGenreDto() {
+        return genreDto;
+    }
+
+    public void setGenreDto(GenreDto genreDto) {
+        this.genreDto = genreDto;
+    }
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
         this.isApproved = isApproved;

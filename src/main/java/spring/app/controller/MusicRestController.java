@@ -16,15 +16,15 @@ public class MusicRestController {
         this.musicService = musicService;
     }
 
-    @GetMapping("/play/{musicAuthor}/{musicTitle}")
-    public ResponseEntity playMusic(@PathVariable String musicAuthor,
-                                    @PathVariable String musicTitle) {
-        return musicService.playMusic(musicAuthor, musicTitle);
+    @GetMapping("/play/{musicAuthorId}/{musicTitleId}")
+    public ResponseEntity playMusic(@PathVariable String musicAuthorId,
+                                    @PathVariable String musicTitleId) {
+        return musicService.playMusic(musicAuthorId, musicTitleId);
     }
 
-    @GetMapping("/albums-cover/{musicAuthor}/{musicTitle}")
-    public ResponseEntity getAlbumsCover(@PathVariable String musicAuthor,
-                                         @PathVariable String musicTitle){
-        return musicService.albumsCover(musicAuthor, musicTitle);
+    @GetMapping("/albums-cover/{musicAuthorId}/{musicTitleId}")
+    public ResponseEntity getAlbumsCover(@PathVariable String musicAuthorId,
+                                         @PathVariable String musicTitleId){
+        return musicService.albumsCover(musicAuthorId, musicTitleId);
     }
 }

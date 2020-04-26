@@ -18,8 +18,11 @@ let LeftSideBar = {
             '                    <a href="/user/spa#/edit">Редактирование профиля</a>\n' +
             '                </li>\n' +
             '                <li>\n' +
-            '                    <a href="javascript:PopUpShow()">Показать плеер</a>\n' +
+            '                    <a href="/user/spa#/music">Музыка</a>\n' +
             '                </li>\n' +
+            // '                <li>\n' +
+            // '                    <a href="javascript:PopUpShow()">Показать плеер</a>\n' +
+            // '                </li>\n' +
             '            </ul>\n'
     }
 };

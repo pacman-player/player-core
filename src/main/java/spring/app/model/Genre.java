@@ -11,8 +11,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "genres")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //без этой аннотации LAZY не работало (по-моему не отображались песни)
-public class Genre extends Bannable{
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//без этой аннотации LAZY не работало (по-моему не отображались песни)
+public class Genre extends Bannable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -49,7 +50,13 @@ public class Genre extends Bannable{
     @Transient
     private Boolean banned;
 
-    public Genre(){}
+    public Genre() {
+    }
+
+    public Genre(String name, Boolean isApproved) {
+        this.name = name;
+        this.isApproved = isApproved;
+    }
 
     public Set<Author> getAuthors() {
         return authors;
