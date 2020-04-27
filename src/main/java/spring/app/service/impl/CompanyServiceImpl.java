@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.OrderSongDao;
+import spring.app.dao.abstraction.dto.CompanyDtoDao;
+import spring.app.dto.CompanyDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 
@@ -15,11 +17,13 @@ import java.util.List;
 public class CompanyServiceImpl implements spring.app.service.abstraction.CompanyService {
 
     private final CompanyDao companyDao;
+    private final CompanyDtoDao companyDtoDao;
     private final OrderSongDao orderSongDao;
 
     @Autowired
-    public CompanyServiceImpl(CompanyDao companyDao, OrderSongDao orderSongDao) {
+    public CompanyServiceImpl(CompanyDao companyDao, CompanyDtoDao companyDtoDao, OrderSongDao orderSongDao) {
         this.companyDao = companyDao;
+        this.companyDtoDao = companyDtoDao;
         this.orderSongDao = orderSongDao;
     }
 
@@ -39,6 +43,11 @@ public class CompanyServiceImpl implements spring.app.service.abstraction.Compan
     }
 
     @Override
+    public CompanyDto getCompanyDtoById(Long id) {
+        return companyDtoDao.getById(id);
+    }
+
+    @Override
     public Company getByIdWithAddress(Long id) {
         return companyDao.getByIdWithAddress(id);
     }
@@ -55,8 +64,8 @@ public class CompanyServiceImpl implements spring.app.service.abstraction.Compan
     }
 
     @Override
-    public List<Company> getAllCompanies() {
-        return companyDao.getAll();
+    public List<CompanyDto> getAllCompanies() {
+        return companyDtoDao.getAllCompanies();
     }
 
     @Override

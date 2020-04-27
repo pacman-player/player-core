@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
@@ -25,6 +26,8 @@ public interface SongService {
     Song getBySearchRequests(String author, String name);
 
     List<Song> getAllSongs();
+
+    List<SongDto> getAllSongsDto();
 
     List<Song> findSongsByNameContaining(String name);
 

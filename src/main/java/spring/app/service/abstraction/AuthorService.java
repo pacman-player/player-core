@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 
 import java.sql.Timestamp;
@@ -27,13 +28,13 @@ public interface AuthorService {
      *
      * @return list<Author>
      */
-    List<Author> findAuthorsByNameContaining(String name);
+    List<AuthorDto> findAuthorsByNameContaining(String name);
 
     List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    List<Author> getAllAuthors();
+    List<AuthorDto> getAllAuthors();
 
-    List<Author> getAllApprovedAuthors();
+    List<AuthorDto> getAllApprovedAuthors();
 
     List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize);
 

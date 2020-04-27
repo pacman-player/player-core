@@ -9,6 +9,8 @@ import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.UserDtoDao;
+import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -25,14 +27,16 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     private UserDao userDao;
+    private UserDtoDao userDtoDao;
     private RoleDao roleDao;
     private NotificationDao notificationDao;
     private Role userRole;
     private CompanyService companyService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
+    public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
         this.userDao = userDao;
+        this.userDtoDao = userDtoDao;
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
         this.companyService = companyService;
@@ -80,6 +84,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getUserDtoById(Long id) {
+        return userDtoDao.getById(id);
+    }
+
+    @Override
     public void addUser(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
@@ -89,8 +98,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDao.getAll();
+    public List<UserDto> getAllUsers() {
+        return userDtoDao.getAllUsers();
     }
 
     @Override

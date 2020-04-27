@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.NotificationDtoDao;
+import spring.app.dto.NotificationDto;
 import spring.app.model.Author;
 import spring.app.model.Notification;
 import spring.app.model.NotificationTemplate;
@@ -21,13 +23,15 @@ import java.util.List;
 @EnableCaching(proxyTargetClass = true)
 public class NotificationServiceImpl implements NotificationService {
 
-    private NotificationDao notificationDao;
-    private UserDao userDao;
+    private final NotificationDao notificationDao;
+    private final NotificationDtoDao notificationDtoDao;
+    private final UserDao userDao;
 
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao notificationDao, UserDao userDao) {
+    public NotificationServiceImpl(NotificationDao notificationDao, NotificationDtoDao notificationDtoDao, UserDao userDao) {
         this.notificationDao = notificationDao;
+        this.notificationDtoDao = notificationDtoDao;
         this.userDao = userDao;
     }
 
@@ -79,6 +83,11 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<Notification> getAllNotification() {
         return notificationDao.getAll();
+    }
+
+    @Override
+    public List<NotificationDto> getAllNotificationDto() {
+        return notificationDtoDao.getAll();
     }
 
     @Override

@@ -28,8 +28,8 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
                     htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
-                    htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
-                    htmlTable += ('<td id="tableUser">' + listCompanies[i].user.login + '</td>');
+                    htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
+                    htmlTable += ('<td id="tableUser">' + listCompanies[i].userLogin + '</td>');
                     htmlTable += ('<td id="tableTariff">' + tariff + '₽' +  '</td>');
                     htmlTable += ('<td><button id="showEditModalCompaniesBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
