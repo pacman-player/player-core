@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
+import spring.app.dao.abstraction.dto.GenreDtoDao;
+import spring.app.dto.GenreDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -19,12 +21,14 @@ import java.util.List;
 @Service
 public class GenreServiceImpl implements GenreService {
     private final GenreDao genreDao;
+    private final GenreDtoDao genreDtoDao;
     private final SongCompilationService songCompilationService;
 
 
     @Autowired
-    public GenreServiceImpl(GenreDao genreDao, SongCompilationService songCompilationService) {
+    public GenreServiceImpl(GenreDao genreDao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService) {
         this.genreDao = genreDao;
+        this.genreDtoDao = genreDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
@@ -96,7 +100,19 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<GenreDto> getAllGenreDto() {
+        return genreDtoDao.getAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Genre> getAllApprovedGenre() {
         return genreDao.getAllApproved();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isExistByName(String name) {
+        return genreDtoDao.isExistByName(name);
     }
 }

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-@Transactional(readOnly = true)
 public class AuthorDtoDaoImpl implements AuthorDtoDao {
 
     @PersistenceContext

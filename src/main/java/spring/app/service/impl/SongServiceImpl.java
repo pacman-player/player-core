@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
+import spring.app.dao.abstraction.dto.SongDtoDao;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.SongCompilationService;
@@ -18,11 +20,13 @@ import java.util.Set;
 @Transactional
 public class SongServiceImpl implements SongService {
     private final SongDao songDao;
+    private final SongDtoDao songDtoDao;
     private final SongCompilationService songCompilationService;
 
     @Autowired
-    public SongServiceImpl(SongDao songDao, SongCompilationService songCompilationService) {
+    public SongServiceImpl(SongDao songDao, SongDtoDao songDtoDao, SongCompilationService songCompilationService) {
         this.songDao = songDao;
+        this.songDtoDao = songDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
@@ -66,6 +70,11 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> getAllSongs() {
         return songDao.getAll();
+    }
+
+    @Override
+    public List<SongDto> getAllSongsDto() {
+        return songDtoDao.getAll();
     }
 
     @Override

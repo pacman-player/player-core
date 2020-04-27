@@ -10,11 +10,10 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class CompanyDtoDaoImpl implements CompanyDtoDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public List<CompanyDto> getAllCompanies() {

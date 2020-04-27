@@ -3,20 +3,41 @@ package spring.app.dao.impl.dto;
 import org.hibernate.Query;
 import org.hibernate.transform.ResultTransformer;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.dto.UserDtoDao;
 import spring.app.dto.UserDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.*;
 
 @Repository
-@Transactional(readOnly = true)
 public class UserDtoDaoImpl implements UserDtoDao {
 
     @PersistenceContext
     EntityManager entityManager;
+
+    //TODO: replace from DtoDao to EntityDao
+    @Override
+    public boolean isExistUserByEmail(String email) {
+        TypedQuery<Boolean> booleanQuery = entityManager.createQuery(
+                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM USER u WHERE u.email = :email",
+                Boolean.class);
+        booleanQuery.setParameter("email", email);
+        boolean exists = booleanQuery.getSingleResult();
+        return exists;
+    }
+
+    //TODO: replace from DtoDao to EntityDao
+    @Override
+    public boolean isExistUserByLogin(String login) {
+        TypedQuery<Boolean> booleanQuery = entityManager.createQuery(
+                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM USER u WHERE u.login = :login",
+                Boolean.class);
+        booleanQuery.setParameter("login", login);
+        boolean exists = booleanQuery.getSingleResult();
+        return exists;
+    }
 
     @Override
     public List<UserDto> getAllUsers() {

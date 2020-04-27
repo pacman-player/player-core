@@ -3,8 +3,9 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.GenreDao;
 import spring.app.dao.abstraction.MessageDao;
+import spring.app.dao.abstraction.dto.MessageDtoDao;
+import spring.app.dto.MessageDto;
 import spring.app.model.Message;
 import spring.app.service.abstraction.MessageService;
 
@@ -15,10 +16,12 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageDao messageDao;
+    private final MessageDtoDao messageDtoDao;
 
     @Autowired
-    public MessageServiceImpl(MessageDao messageDao) {
+    public MessageServiceImpl(MessageDao messageDao, MessageDtoDao messageDtoDao) {
         this.messageDao = messageDao;
+        this.messageDtoDao = messageDtoDao;
     }
 
     @Override
@@ -29,6 +32,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> getAllMessage() {
         return messageDao.getAll();
+    }
+
+    @Override
+    public List<MessageDto> getAllMessageDto() {
+        return messageDtoDao.getAllMessageDto();
     }
 
     @Override

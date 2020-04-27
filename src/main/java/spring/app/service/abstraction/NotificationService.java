@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.NotificationDto;
 import spring.app.model.Author;
 import spring.app.model.Notification;
 import spring.app.model.NotificationTemplate;
@@ -19,6 +20,8 @@ public interface NotificationService {
     void addNotification(Author author) throws InterruptedException;
 
     List<Notification> getAllNotification();
+
+    List<NotificationDto> getAllNotificationDto();
 
     List<Notification> getByUserId(Long id);
 

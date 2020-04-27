@@ -10,8 +10,6 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.AuthorSongGenreListDto;
 import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
-import spring.app.dto.dao.GenreDtoDao;
-import spring.app.dto.dao.SongDtoDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -19,7 +17,6 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
 
-import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,21 +31,17 @@ public class AdminSongRestController {
     private final SongService songService;
     private final AuthorService authorService;
     private final GenreService genreService;
-    private final GenreDtoDao genreDtoDao;
-    private final SongDtoDao songDtoDao;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService, GenreDtoDao genreDtoDao, SongDtoDao songDtoDao) {
+    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
         this.songService = songService;
         this.authorService = authorService;
         this.genreService = genreService;
-        this.genreDtoDao = genreDtoDao;
-        this.songDtoDao = songDtoDao;
     }
 
     @GetMapping(value = "/all_songs")
     public List<SongDto> getAllSongs() {
-        return songDtoDao.getAll();
+        return songService.getAllSongsDto();
     }
 
     @DeleteMapping(value = "/delete_song/{id}")
@@ -111,7 +104,7 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<GenreDto> getAllGenre() {
-        return genreDtoDao.getAll();
+        return genreService.getAllGenreDto();
     }
 
     @GetMapping(value = "/genre/{id}")
