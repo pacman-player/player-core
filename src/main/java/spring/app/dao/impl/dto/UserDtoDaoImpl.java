@@ -21,7 +21,7 @@ public class UserDtoDaoImpl implements UserDtoDao {
     @Override
     public boolean isExistUserByEmail(String email) {
         TypedQuery<Boolean> booleanQuery = entityManager.createQuery(
-                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM USER u WHERE u.email = :email",
+                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM User u WHERE u.email = :email",
                 Boolean.class);
         booleanQuery.setParameter("email", email);
         boolean exists = booleanQuery.getSingleResult();
@@ -32,7 +32,7 @@ public class UserDtoDaoImpl implements UserDtoDao {
     @Override
     public boolean isExistUserByLogin(String login) {
         TypedQuery<Boolean> booleanQuery = entityManager.createQuery(
-                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM USER u WHERE u.login = :login",
+                "SELECT CASE WHEN (count(*) > 0)  THEN true ELSE false END FROM User u WHERE u.login = :login",
                 Boolean.class);
         booleanQuery.setParameter("login", login);
         boolean exists = booleanQuery.getSingleResult();

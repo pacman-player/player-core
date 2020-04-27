@@ -14,6 +14,9 @@ public class CompanyDto {
     private Long userId;
     private String userLogin;
 
+    public CompanyDto() {
+    }
+
     public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
                       Long tariff, Long userId, String userLogin) {
         this.id = id;
