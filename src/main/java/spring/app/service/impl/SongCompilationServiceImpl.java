@@ -44,7 +44,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
 
     @Override
     public List<SongCompilation> getAllSongCompilations() {
-        return songCompilationDao.getAll();
+        return songCompilationDao.getAllWhereSongIsAprove();
     }
 
     @Override
@@ -68,6 +68,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
                 getSongCompilationById(compilationId),
                 songService.getSongById(songId));
     }
+
 
     @Override
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
