@@ -40,14 +40,6 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
                 .setParameter("dateTo", dateTo).getResultList();
     }
 
-    public List<Author> getAllApproved() {
-        String genericClassName = Author.class.toGenericString();
-        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<Author> query = entityManager.createQuery(hql, Author.class);
-        return query.getResultList();
-    }
-
     public List<Author> getApprovedPage(int pageNumber, int pageSize) {
         String genericClassName = Author.class.toGenericString();
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);

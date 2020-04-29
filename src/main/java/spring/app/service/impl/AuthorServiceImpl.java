@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.dao.abstraction.SongDao;
+import spring.app.dao.abstraction.dto.AuthorDtoDao;
+import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
@@ -18,13 +20,16 @@ import java.util.List;
 @Transactional
 public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
 
+
+    private final AuthorDtoDao authorDtoDao;
     private SongDao songDao;
     private NotificationService notificationService;
     private NotificationTemplateService notificationTemplateService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, SongDao songDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
+    public AuthorServiceImpl(AuthorDao authorDao, AuthorDtoDao authorDtoDao, SongDao songDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
         super(authorDao);
+        this.authorDtoDao = authorDtoDao;
         this.songDao = songDao;
         this.notificationService = notificationService;
         this.notificationTemplateService = notificationTemplateService;
@@ -58,29 +63,39 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return dao.getByName(name);
     }
 
+    @Override
+    public List<AuthorDto> findAuthorsByNameContaining (String name){
+        return authorDtoDao.findByNameContaining(name);
+    }
 
     @Override
-    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+    public List<Author> getByCreatedDateRange (Timestamp dateFrom, Timestamp dateTo){
         return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override
-    public List<Author> getAllApprovedAuthors() {
-        return dao.getAllApproved();
+    public List<AuthorDto> getAllAuthors () {
+        return authorDtoDao.getAllAuthors();
     }
 
     @Override
-    public List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize) {
+    public List<AuthorDto> getAllApprovedAuthors () {
+        return authorDtoDao.getAllApproved();
+
+    }
+
+    @Override
+    public List<Author> getApprovedAuthorsPage ( int pageNumber, int pageSize){
         return dao.getApprovedPage(pageNumber, pageSize);
     }
 
     @Override
-    public int getLastApprovedAuthorsPageNumber(int pageSize) {
+    public int getLastApprovedAuthorsPageNumber ( int pageSize){
         return dao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override
-    public boolean isExist(String name) {
+    public boolean isExist (String name){
         return dao.isExist(name);
     }
 

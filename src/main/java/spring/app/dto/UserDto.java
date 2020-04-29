@@ -10,9 +10,10 @@ public class UserDto {
 	private String login;
 	private String email;
 	private String password;
-	private Set<String> roles;
+    private Boolean enabled = true;
+    private Set<String> roles;
 
-	public UserDto(Long id, String login, String email, String password, Set<String> roles) {
+    public UserDto(Long id, String login, String email, String password, Set<String> roles) {
 		this.id = id;
 		this.login = login;
 		this.email = email;
@@ -30,6 +31,14 @@ public class UserDto {
 
 	public UserDto() {
 
+	}
+
+	public UserDto(long id, String login, String email, String password, Boolean enabled) {
+		this.id = id;
+		this.login = login;
+		this.email = email;
+		this.password = password;
+		this.enabled = enabled;
 	}
 
 	public Long getId() {
@@ -72,6 +81,14 @@ public class UserDto {
 		this.roles = roles;
 	}
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -83,6 +100,7 @@ public class UserDto {
 		if (login != null ? !login.equals(userDto.login) : userDto.login != null) return false;
 		if (email != null ? !email.equals(userDto.email) : userDto.email != null) return false;
 		if (password != null ? !password.equals(userDto.password) : userDto.password != null) return false;
+		if (enabled != null ? !enabled.equals(userDto.enabled) : userDto.enabled != null) return false;
 		return roles != null ? roles.equals(userDto.roles) : userDto.roles == null;
 	}
 
@@ -92,6 +110,7 @@ public class UserDto {
 		result = 31 * result + (login != null ? login.hashCode() : 0);
 		result = 31 * result + (email != null ? email.hashCode() : 0);
 		result = 31 * result + (password != null ? password.hashCode() : 0);
+		result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
 		result = 31 * result + (roles != null ? roles.hashCode() : 0);
 		return result;
 	}

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.NotificationDtoDao;
+import spring.app.dto.NotificationDto;
 import spring.app.model.Author;
 import spring.app.model.Notification;
 import spring.app.model.User;
@@ -21,10 +23,12 @@ import java.util.List;
 public class NotificationServiceImpl extends AbstractServiceImpl<Long, Notification, NotificationDao> implements NotificationService {
 
     private UserDao userDao;
+    private final NotificationDtoDao notificationDtoDao;
 
     @Autowired
-    public NotificationServiceImpl(NotificationDao dao, UserDao userDao) {
+    public NotificationServiceImpl(NotificationDao dao, NotificationDtoDao notificationDtoDao, UserDao userDao) {
         super(dao);
+        this.notificationDtoDao = notificationDtoDao;
         this.userDao = userDao;
     }
 
@@ -55,6 +59,11 @@ public class NotificationServiceImpl extends AbstractServiceImpl<Long, Notificat
             Notification notification = new Notification("{patterned}" + author.getName(), true, user);
             dao.save(notification);
         }
+    }
+
+    @Override
+    public List<NotificationDto> getAllNotificationDto() {
+        return notificationDtoDao.getAll();
     }
 
     @Override

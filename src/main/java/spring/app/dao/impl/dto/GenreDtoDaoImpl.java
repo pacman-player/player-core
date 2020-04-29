@@ -1,39 +1,34 @@
-package spring.app.dto.dao;
+package spring.app.dao.impl.dto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import spring.app.controller.restController.SongRestController;
+import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
-import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class GenreDtoDao {
+public class GenreDtoDaoImpl implements GenreDtoDao {
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GenreDtoDao.class);
+    @Override
     public List<GenreDto> getAll() {
         return entityManager.createQuery(
-                "SELECT new spring.app.dto.GenreDto(" +
-                        "a.id, " +
-                        "a.name, " +
-                        "a.isApproved" +
-                        ") FROM Genre a",
+                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g",
                 GenreDto.class
         )
                 .getResultList();
     }
+
+    //TODO: replace from DtoDao to EntityDao
+    @Override
     public boolean isExistByName(String name) {
         Query query = entityManager.createQuery(
-                "SELECT  count (*)  FROM " + Genre.class.getName() + " a WHERE a.name = :name"
+                "SELECT  count (*)  FROM Genre g WHERE g.name = :name"
         );
         query.setParameter("name", name);
 

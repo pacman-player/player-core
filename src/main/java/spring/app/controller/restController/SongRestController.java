@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
-import spring.app.dto.dao.SongDtoDao;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.User;
@@ -20,7 +19,6 @@ public class SongRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(SongRestController.class);
     private CompanyService companyService;
     private SongService songService;
-    private SongDtoDao songDtoDao;
 
     public SongRestController(CompanyService companyService,
                               SongService songService) {
@@ -30,7 +28,7 @@ public class SongRestController {
 
     @GetMapping("allSongs")
     public List<SongDto> getAllSongs() {
-        return songDtoDao.getAll();
+        return songService.getAllSongsDto();
     }
 
     @GetMapping("allApprovedSongs")

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenreDao;
+import spring.app.dao.abstraction.dto.GenreDtoDao;
+import spring.app.dto.GenreDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
@@ -15,16 +17,17 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 @Transactional
 public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
 
+    private final GenreDtoDao genreDtoDao;
     private final SongCompilationService songCompilationService;
-  
+
     @Autowired
-    public GenreServiceImpl(GenreDao dao, SongCompilationService songCompilationService) {
+    public GenreServiceImpl(GenreDao dao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService) {
         super(dao);
+        this.genreDtoDao = genreDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
@@ -57,7 +60,7 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
         dao.flush();
         dao.deleteById(id);
     }
- 
+
     @Transactional(readOnly = true)
     @Override
     public Genre getByName(String name) {
@@ -72,7 +75,19 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 
     @Transactional(readOnly = true)
     @Override
+    public List<GenreDto> getAllGenreDto() {
+        return genreDtoDao.getAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Genre> getAllApprovedGenre() {
         return dao.getAllApproved();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isExistByName(String name) {
+        return genreDtoDao.isExistByName(name);
     }
 }

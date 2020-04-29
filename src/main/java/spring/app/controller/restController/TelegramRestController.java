@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.dto.VisitDto;
@@ -122,7 +123,9 @@ public class TelegramRestController {
     @PostMapping(value = "/all_company")
     public List allCompanies() {
         LOGGER.info("POST request '/all_company'");
-        List<Company> list = companyService.getAll();
+
+        List<CompanyDto> list = companyService.getAllCompanies();
+
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.UserDto;
 import spring.app.model.*;
 import spring.app.service.EmailPasswordGeneration;
 import spring.app.service.EmailSender;
@@ -26,12 +27,12 @@ public class UserRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
-	private final UserService userService;
+    private final UserService userService;
 
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
-	private final AddressService addressService;
+    private final AddressService addressService;
 
     private String PASSWORD = "";
 
@@ -50,12 +51,12 @@ public class UserRestController {
                               SongService songService,
                               SongCompilationService songCompilation,
                               AddressService addressService) {
-		this.roleService = roleService;
+        this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
-		this.addressService = addressService;
+        this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -76,10 +77,10 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/get_user")
-    public User getUserData(){
+    public UserDto getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/get_user' from authenticated User = {}", user);
-        return (userService.getById(user.getId()));
+        return (userService.getUserDtoById(user.getId()));
+
     }
 
     @PostMapping(value = "/get_encrypted_pass")
@@ -148,12 +149,11 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/company", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Company> getUserCompany() {
+    public ResponseEntity<CompanyDto> getUserCompany() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/company' from User = {}", user);
         User userLazy = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
         long id = userLazy.getCompany().getId();
-        return ResponseEntity.ok(companyService.getById(id));
+        return ResponseEntity.ok(companyService.getCompanyDtoById(id));
     }
 
     @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -180,7 +180,7 @@ public class UserRestController {
         LOGGER.info("Updated Company = {}", companyForUpdate);
     }
 
-	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("PUT request '/company/address' from User = {}", user);
