@@ -35,6 +35,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         this.songService = songService;
     }
 
+    @Override
+    public void save(SongCompilation songCompilation) {
+        dao.save(songCompilation);
+//        sendEmail.send(songCompilation.getName());
+    }
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
@@ -57,6 +62,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
                 getSongCompilationById(compilationId),
                 songService.getById(songId));
     }
+
 
     @Override
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {

@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
-import spring.app.dto.dao.AuthorDtoDao;
-import spring.app.dto.dao.GenreDtoDao;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -22,26 +20,17 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
-    private final GenreDtoDao genreDtoDao;
-    private final AuthorDtoDao authorDtoDao;
 
-
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, GenreDtoDao genreDtoDao, AuthorDtoDao authorDtoDao) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
         this.authorService = authorService;
         this.genreService = genreService;
-        this.genreDtoDao = genreDtoDao;
-        this.authorDtoDao = authorDtoDao;
     }
 
-    /*
-     * Необходимо переработать "в глубь" неверно, что мы сперва тянем сущности из БД, а затем парсим их в DTO
-     * Необходимо сделать так, чтобы DAO возвращал список DTO
-     */
     @GetMapping(value = "/all_authors")
-    public List<AuthorDto> getAllAuthor() {
-        List<Author> authorList = authorService.getAll();
-        //Проходимся по листу авторов и делаем AuthorDto из каждого Author
-        List<AuthorDto> authorDtoList = authorList.stream().map(AuthorDto::new).collect(Collectors.toList());
+
+    public List<AuthorDto> getAllAuthor(){
+        List<AuthorDto> authorDtoList = authorService.getAllAuthors();
+
         return authorDtoList;
     }
 
@@ -110,3 +99,4 @@ public class AdminAuthorRestController {
         } else return (author == null || author == authorService.getById(id));
     }
 }
+

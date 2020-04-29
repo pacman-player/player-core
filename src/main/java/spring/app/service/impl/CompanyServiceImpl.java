@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.OrderSongDao;
+import spring.app.dao.abstraction.dto.CompanyDtoDao;
+import spring.app.dto.CompanyDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.service.abstraction.CompanyService;
@@ -15,14 +17,23 @@ import java.util.List;
 @Transactional
 public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, CompanyDao> implements CompanyService {
 
+
     private final OrderSongDao orderSongDao;
+    private final CompanyDtoDao companyDtoDao;
+
 
     @Autowired
-    public CompanyServiceImpl(CompanyDao dao, OrderSongDao orderSongDao) {
+    public CompanyServiceImpl(CompanyDao dao, CompanyDtoDao companyDtoDao, OrderSongDao orderSongDao) {
         super(dao);
+        this.companyDtoDao = companyDtoDao;
         this.orderSongDao = orderSongDao;
     }
 
+
+    @Override
+    public CompanyDto getCompanyDtoById(Long id) {
+        return companyDtoDao.getById(id);
+    }
 
     @Override
     public Company getByIdWithAddress(Long id) {
@@ -38,6 +49,13 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     public void deleteById(Long id) {
         orderSongDao.bulkRemoveOrderSongByCompany(id);
         dao.deleteById(id);
+
+    }
+
+    @Override
+    public List<CompanyDto> getAllCompanies() {
+        return companyDtoDao.getAllCompanies();
+
     }
 
     @Override

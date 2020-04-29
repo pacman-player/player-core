@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
-import spring.app.dto.dao.RoleDtoDao;
-import spring.app.dto.dao.UserDtoDao;
 import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
@@ -37,18 +35,14 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
-    private final UserDtoDao userDtoDao;
-    private final RoleDtoDao roleDtoDao;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService, UserDtoDao userDtoDao, RoleDtoDao roleDtoDao) {
+                               OrgTypeService orgTypeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
-        this.userDtoDao = userDtoDao;
-        this.roleDtoDao = roleDtoDao;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -73,8 +67,10 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-    List<User> getAllUsers() {
-        List<User> list = userService.getAll();
+
+    List<UserDto> getAllUsers() {
+        List<UserDto> list = userService.getAllUsers();
+
         return list;
     }
 
@@ -86,13 +82,15 @@ public class AdminRestController {
 
     @GetMapping(value = "/get_all_roles")
     public List<RoleDto> getAllRoles() {
-        return roleDtoDao.getAllRoles();
+        return roleService.getAllRolesDto();
     }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-    List<Company> getAllCompanies() {
-        List<Company> list = companyService.getAll();
+
+    List<CompanyDto> getAllCompanies() {
+        List<CompanyDto> list = companyService.getAllCompanies();
+
         return list;
     }
 
@@ -194,7 +192,7 @@ public class AdminRestController {
 
         for (String rl : role) {
             System.out.println(rl);
-            roles.add(roleService.geByName(rl));
+            roles.add(roleService.getByName(rl));
         }
         return roles;
     }
@@ -211,11 +209,11 @@ public class AdminRestController {
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
-        return Boolean.toString(userDtoDao.isExistUserByEmail(email));
+        return Boolean.toString(userService.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-        return Boolean.toString(userDtoDao.isExistUserBylogin(login));
+        return Boolean.toString(userService.isExistUserByLogin(login));
     }
 }

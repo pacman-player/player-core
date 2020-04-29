@@ -41,7 +41,7 @@ function checkForUserRole() {
         success:
             function (user) {
                 for(let i = 0; i < user.roles.length; i ++) {
-                    if (user.roles[i].name === "USER") {
+                    if (user.roles[i] === "USER") {
                         $("#headerUserBtn").attr("style", "display: inline");
                     } else {
                         $("#headerUserBtn").attr("style", "display: none");

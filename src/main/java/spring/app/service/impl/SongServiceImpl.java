@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
-import spring.app.dao.abstraction.SongQueueDao;
+import spring.app.dao.abstraction.dto.SongDtoDao;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
-import spring.app.model.SongQueue;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongService;
 
@@ -18,12 +18,16 @@ import java.util.Set;
 
 @Service
 @Transactional
+
 public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> implements SongService {
+
+    private final SongDtoDao songDtoDao;
     private final SongCompilationService songCompilationService;
 
     @Autowired
-    public SongServiceImpl(SongDao dao, SongCompilationService songCompilationService) {
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService) {
         super(dao);
+        this.songDtoDao = songDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
@@ -31,7 +35,6 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     public boolean isExist(String name) {
         return dao.isExist(name);
     }
-
 
 
     @Override
@@ -48,6 +51,12 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     @Override
     public Song getBySearchRequests(String author, String name) {
         return dao.getBySearchRequests(author, name);
+    }
+
+
+    @Override
+    public List<SongDto> getAllSongsDto() {
+        return songDtoDao.getAll();
     }
 
 

@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
@@ -15,6 +16,8 @@ public interface SongService extends GenericService<Long, Song>{
 //    Song getByAuthorAndName(String author, String name);
 
     Song getBySearchRequests(String author, String name);
+
+    List<SongDto> getAllSongsDto();
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 

@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
 
 import java.sql.Timestamp;
@@ -11,5 +12,9 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
+    List<GenreDto> getAllGenreDto();
+
     List<Genre> getAllApprovedGenre();
+
+    boolean isExistByName(String name);
 }

@@ -1,14 +1,20 @@
 package spring.app.service.abstraction;
 
-import spring.app.model.*;
+import spring.app.dto.CompanyDto;
+import spring.app.model.Bannable;
+import spring.app.model.Company;
 
 import java.util.List;
 
-public interface CompanyService extends GenericService<Long, Company>{
+public interface CompanyService extends GenericService<Long, Company> {
+
+    CompanyDto getCompanyDtoById(Long id);
 
     Company getByIdWithAddress(Long id);
 
     Company getByCompanyName(String companyName);
+
+    List<CompanyDto> getAllCompanies();
 
     boolean isExistCompanyByName(String name);
 

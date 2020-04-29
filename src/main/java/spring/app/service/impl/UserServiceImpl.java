@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.UserDtoDao;
+import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -19,17 +21,21 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl  extends AbstractServiceImpl<Long, User, UserDao> implements UserService{
+public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> implements UserService {
 
     private PasswordEncoder passwordEncoder;
+
+    private UserDtoDao userDtoDao;
     private RoleDao roleDao;
     private NotificationDao notificationDao;
     private Role userRole;
     private CompanyService companyService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
+    public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
         super(userDao);
+        this.userDtoDao = userDtoDao;
+
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
         this.companyService = companyService;
@@ -73,12 +79,21 @@ public class UserServiceImpl  extends AbstractServiceImpl<Long, User, UserDao> i
 
 
     @Override
-    public void save(User user) {
+    public UserDto getUserDtoById(Long id) {
+        return userDtoDao.getById(id);
+    }
 
+    @Override
+    public void save(User user) {
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         dao.save(user);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userDtoDao.getAllUsers();
     }
 
 
@@ -112,9 +127,9 @@ public class UserServiceImpl  extends AbstractServiceImpl<Long, User, UserDao> i
     }
 
     @Override
-	public User getUserByVkId(int vkId) {
-		return dao.getUserByVkId(vkId);
-	}
+    public User getUserByVkId(int vkId) {
+        return dao.getUserByVkId(vkId);
+    }
 
     @Override
     public Long getIdAuthUser() {
@@ -125,7 +140,7 @@ public class UserServiceImpl  extends AbstractServiceImpl<Long, User, UserDao> i
     }
 
     @Override
-    public boolean isExistUserByEmail(String email){
+    public boolean isExistUserByEmail(String email) {
         return dao.isExistUserByEmail(email);
     }
 
@@ -135,7 +150,7 @@ public class UserServiceImpl  extends AbstractServiceImpl<Long, User, UserDao> i
     }
 
     @Override
-    public boolean isExistUserByLogin(String login){
+    public boolean isExistUserByLogin(String login) {
         return dao.isExistUserByLogin(login);
     }
 

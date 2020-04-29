@@ -2,52 +2,27 @@ package spring.app.dto;
 
 
 import spring.app.model.Author;
+import spring.app.model.Bannable;
+import spring.app.model.Company;
 import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 
-public class AuthorDto {
+public class AuthorDto extends Bannable {
     private Long id;
     private String name;
     private String[] genres;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private Boolean banned;
 
     public AuthorDto() {
-    }
-
-    public AuthorDto(String name) {
-        this.name = name;
-    }
-
-    public AuthorDto(Long id, String name, Boolean isApproved) {
-        this.id = id;
-        this.name = name;
-        this.isApproved = isApproved;
     }
 
     public AuthorDto(Long id, String name, Timestamp createdAt, Boolean isApproved) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
-        this.isApproved = isApproved;
-    }
-
-    public AuthorDto(String name, String[] genres) {
-        this.name = name;
-        this.genres = genres;
-    }
-
-    public AuthorDto(Long id, String name, String[] genres) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
-    }
-
-    public AuthorDto(Long id, String name, String[] genres, Boolean isApproved) {
-        this.id = id;
-        this.name = name;
-        this.genres = genres;
         this.isApproved = isApproved;
     }
 
@@ -103,5 +78,15 @@ public class AuthorDto {
 
     public void setApproved(Boolean approved) {
         isApproved = approved;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedAuthor().contains(new Author(this.getId(), this.getName()));
     }
 }

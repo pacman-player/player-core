@@ -46,7 +46,7 @@ $(document).ready(function () {
                 for (var i = 0; i < listUsers.length; i++) {
                     var htmlRole = "";
                     for (var j = 0; j < listUsers[i].roles.length; j++) {
-                        htmlRole += listUsers[i].roles[j].name + ", ";
+                        htmlRole += listUsers[i].roles[j] + ", ";
                     }
                     htmlRole = htmlRole.substr(0, htmlRole.length - 2);
                     htmlTable += ('<tr id="list">');
@@ -114,8 +114,8 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
                     htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
-                    htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgType.name + '</td>');
-                    htmlTable += ('<td id="tableId">' + listCompanies[i].user.id + '</td>');
+                    htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
+                    htmlTable += ('<td id="tableId">' + listCompanies[i].userId + '</td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
