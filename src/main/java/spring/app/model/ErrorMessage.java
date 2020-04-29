@@ -1,14 +1,16 @@
 package spring.app.model;
 
+import org.springframework.http.HttpStatus;
+
 public class ErrorMessage {
-    private Integer codeMessage;
+    private HttpStatus codeMessage;
     private String textMessage;
 
-    public Integer getCodeMessage() {
+    public HttpStatus getCodeMessage() {
         return codeMessage;
     }
 
-    public void setCodeMessage(Integer codeMessage) {
+    public void setCodeMessage(HttpStatus codeMessage) {
         this.codeMessage = codeMessage;
     }
 

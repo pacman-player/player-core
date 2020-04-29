@@ -1,6 +1,8 @@
 package spring.app.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import spring.app.util.BilderAnswerForms.Bilders.ErrorMessageBilder;
 import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class Response extends ResponseEntityExceptionHandler {
 
@@ -23,7 +26,6 @@ public class Response extends ResponseEntityExceptionHandler {
     }
 
 
-
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 
@@ -32,7 +34,8 @@ public class Response extends ResponseEntityExceptionHandler {
         directorAnswerBilder.setDebugMessage(ex);
 
         ErrorMessageBilder errorBilder = new ErrorMessageBilder();
-        directorAnswerBilder.constructErorMessage(errorBilder);
-
-        return new ResponseEntity<>(errorBilder, HttpStatus.INTERNAL_SERVER_ERROR);
-    }}
+        directorAnswerBilder.constructErrorMessage(errorBilder);
+        ResponseEntity responseEntity = new ResponseEntity<>(errorBilder, HttpStatus.INTERNAL_SERVER_ERROR);
+        return responseEntity;
+    }
+}

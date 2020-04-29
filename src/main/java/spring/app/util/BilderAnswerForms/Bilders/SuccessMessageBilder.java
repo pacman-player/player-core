@@ -1,6 +1,7 @@
 package spring.app.util.BilderAnswerForms.Bilders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import spring.app.model.ErrorMessage;
 
@@ -8,8 +9,7 @@ import spring.app.model.ErrorMessage;
 public class SuccessMessageBilder implements BilderAnswer {
     private boolean successFlag;
     private ErrorMessage errorMessage;
-    private Integer codeMassage;
-    private String TextMassage;
+
     private String MetaMessage;
     private String DataMessage;
 
@@ -19,14 +19,10 @@ public class SuccessMessageBilder implements BilderAnswer {
     }
 
     @Override
-    public void setCodeMessage(int messageCode) {
+    public void setErrorMessage(HttpStatus status, String textMessage) {
 
     }
 
-    @Override
-    public void setTextMessage(String TextMassage) {
-
-    }
 
     @Override
     public void setMetaMessage(String MetaMessage) {
@@ -38,8 +34,4 @@ public class SuccessMessageBilder implements BilderAnswer {
 
     }
 
-    @Override
-    public ResponseEntity<Object> getResultmessage() {
-        return null;
-    }
 }

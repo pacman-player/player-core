@@ -19,14 +19,13 @@ public class DirectorAnswerBilder {
     }
 
     public void setDebugMessage(Throwable ex) {
-        this.debugMessage = ex.getLocalizedMessage();
+        this.debugMessage = ex.toString();
     }
 
 
-    public void constructErorMessage(BilderAnswer bilderAnswer){
+    public void constructErrorMessage(BilderAnswer bilderAnswer){
         bilderAnswer.setSuccessFlag(false);
-        bilderAnswer.setCodeMessage(status.value());
-        bilderAnswer.setTextMessage(message);
+        bilderAnswer.setErrorMessage(status,message);
         bilderAnswer.setDataMessage(debugMessage);
     }
 
