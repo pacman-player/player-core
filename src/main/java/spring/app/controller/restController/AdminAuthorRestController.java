@@ -99,3 +99,4 @@ public class AdminAuthorRestController {
         } else return (author == null || author == authorService.getById(id));
     }
 }
+
