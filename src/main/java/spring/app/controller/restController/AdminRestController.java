@@ -148,10 +148,14 @@ public class AdminRestController {
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
         LOGGER.info("POST request '/company'");
-        User userId = new User(companyDto.getUserId());
-        OrgType orgType = new OrgType(companyDto.getOrgType());
-        Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
-                LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+        User userId = userService.getUserById(companyDto.getUserId());
+        OrgType orgType = orgTypeService.getOrgTypeById(companyDto.getOrgType());
+        Company company = companyService.getById(companyDto.getId());
+        company.setName(companyDto.getName());
+        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+        company.setUser(userId);
+        company.setOrgType(orgType);
         company.setTariff(companyDto.getTariff());
         companyService.updateCompany(company);
         LOGGER.info("Updated Company = {}", company);
