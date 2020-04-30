@@ -1043,12 +1043,12 @@ function playNext() {
 
                 //очищаем список песен текущего плейлиста от заказанных песен
                 let playListFree = []; // в этот массив добавляются песни isFormSongQueue = false, т.е. которые не были в очереди заказов
-                for (let i = 0; i < allSongsInCurrentPlaylist.length; i++) {
-                    if (!allSongsInCurrentPlaylist[i].isFromSongQueue) {
-                        playListFree.push(allSongsInCurrentPlaylist[i]);
+                allSongsInCurrentPlaylist.forEach(function (item) {
+                        if (!item.isFromSongQueue) {
+                            playListFree.push(item);
+                        }
                     }
-                }
-                allSongsInCurrentPlaylist =[];
+                );
                 allSongsInCurrentPlaylist = playListFree;
 
                 //следующий плейлист является последним воспроизведенным плейлистом
