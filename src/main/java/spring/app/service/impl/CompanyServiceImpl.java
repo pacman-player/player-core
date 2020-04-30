@@ -9,38 +9,26 @@ import spring.app.dao.abstraction.dto.CompanyDtoDao;
 import spring.app.dto.CompanyDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
+import spring.app.service.abstraction.CompanyService;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class CompanyServiceImpl implements spring.app.service.abstraction.CompanyService {
+public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, CompanyDao> implements CompanyService {
 
-    private final CompanyDao companyDao;
-    private final CompanyDtoDao companyDtoDao;
+
     private final OrderSongDao orderSongDao;
+    private final CompanyDtoDao companyDtoDao;
+
 
     @Autowired
-    public CompanyServiceImpl(CompanyDao companyDao, CompanyDtoDao companyDtoDao, OrderSongDao orderSongDao) {
-        this.companyDao = companyDao;
+    public CompanyServiceImpl(CompanyDao dao, CompanyDtoDao companyDtoDao, OrderSongDao orderSongDao) {
+        super(dao);
         this.companyDtoDao = companyDtoDao;
         this.orderSongDao = orderSongDao;
     }
 
-    @Override
-    public void addCompany(Company company) {
-        companyDao.save(company);
-    }
-
-    @Override
-    public void updateCompany(Company company) {
-        companyDao.update(company);
-    }
-
-    @Override
-    public Company getById(Long id) {
-        return companyDao.getById(id);
-    }
 
     @Override
     public CompanyDto getCompanyDtoById(Long id) {
@@ -49,52 +37,52 @@ public class CompanyServiceImpl implements spring.app.service.abstraction.Compan
 
     @Override
     public Company getByIdWithAddress(Long id) {
-        return companyDao.getByIdWithAddress(id);
+        return dao.getByIdWithAddress(id);
     }
 
     @Override
     public Company getByCompanyName(String companyName) {
-        return companyDao.getCompanyByCompanyName(companyName);
+        return dao.getCompanyByCompanyName(companyName);
     }
 
     @Override
-    public void removeById(Long id) {
+    public void deleteById(Long id) {
         orderSongDao.bulkRemoveOrderSongByCompany(id);
-        companyDao.deleteById(id);
+        dao.deleteById(id);
+
     }
 
     @Override
     public List<CompanyDto> getAllCompanies() {
         return companyDtoDao.getAllCompanies();
+
     }
 
     @Override
     public boolean isExistCompanyByName(String name) {
-        return companyDao.isExistCompanyByName(name);
+        return dao.isExistCompanyByName(name);
     }
 
     @Override
     public void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannables) {
-
         bannables.forEach(
                 bannable -> bannable.setBanned(
                         bannable.isBannedBy(company)
                 )
         );
     }
-
     @Override
     public Company setBannedEntity(Company company) {
-        return companyDao.getCompanyWithEntityBanned(company.getId());
+        return dao.getCompanyWithEntityBanned(company.getId());
     }
 
     @Override
-    public Company getCompanyByAddressId(long id) {
-        return companyDao.getCompanyByAddressId(id);
+    public Company getCompanyByAddressId(Long id) {
+        return dao.getCompanyByAddressId(id);
     }
 
     @Override
     public List<String> getAllSongsInQueueByCompanyId(long id) {
-        return companyDao.getAllSongsInQueueByCompanyId(id);
+        return dao.getAllSongsInQueueByCompanyId(id);
     }
 }

@@ -44,7 +44,7 @@ public class UserSongRestController {
     @GetMapping("/songsInQueue")
     public List<Song> getSongsInSongQueueOfCompany() {
         LOGGER.info("GET request '/songsInQueue'");
-        User authUser = userService.getUserById(userService.getIdAuthUser());
+        User authUser = userService.getById(userService.getIdAuthUser());
         Long companyId = authUser.getCompany().getId();
         List<SongQueue> songQueues = songQueueService.getByCompanyId(companyId);
         LOGGER.info("Logged-in User has {} lines in SongQueue list", songQueues.size());

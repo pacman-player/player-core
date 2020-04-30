@@ -52,9 +52,9 @@ public class RegistrationRestController {
         LOGGER.info("POST request '/first' with new User = {}", userDto.getLogin());
         userService.save(userDto);
         User newUser = userService.getUserByLoginWithRegStepsCompany(userDto.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-user"));
+        newUser.addRegStep(registrationStepService.getByName("registration-step-user"));
         /*userService.updateUser(newUser);*/
-        userService.addUser(newUser);
+        userService.save(newUser);
         LOGGER.info("User registered");
     }
 
@@ -84,7 +84,7 @@ public class RegistrationRestController {
 
         LOGGER.info("POST request '/second' with Company name = {} and User login = {}", companyDto.getName(), login);
         long orgTypeId = companyDto.getOrgType();
-        OrgType orgType = orgTypeService.getOrgTypeById(orgTypeId);
+        OrgType orgType = orgTypeService.getById(orgTypeId);
 
         User user;
         if (getContext().getAuthentication().getPrincipal() == "anonymousUser") {
@@ -97,7 +97,7 @@ public class RegistrationRestController {
                 LocalTime.parse(companyDto.getStartTime()), LocalTime.parse(companyDto.getCloseTime()),
                 user, orgType);
 
-        companyService.addCompany(company);
+        companyService.save(company);
         company = companyService.getByCompanyName(companyDto.getName());
         company.setOrgType(orgType);
         company.setUser(user);
@@ -107,7 +107,7 @@ public class RegistrationRestController {
         //сетим утренний плейлист
         PlayList morningPlayList = new PlayList();
         morningPlayList.setName("Morning playlist");
-        playListService.addPlayList(morningPlayList);
+        playListService.save(morningPlayList);
         Set<PlayList> morningPlaylistSet = new HashSet<>();
         morningPlaylistSet.add(morningPlayList);
         company.setMorningPlayList(morningPlaylistSet);
@@ -115,7 +115,7 @@ public class RegistrationRestController {
         //сетим дневной плейлист
         PlayList middayPlayList = new PlayList();
         middayPlayList.setName("Midday playlist");
-        playListService.addPlayList(middayPlayList);
+        playListService.save(middayPlayList);
         Set<PlayList> middayPlaylistSet = new HashSet<>();
         middayPlaylistSet.add(middayPlayList);
         company.setMiddayPlayList(middayPlaylistSet);
@@ -123,12 +123,12 @@ public class RegistrationRestController {
         //сетим вечерний плейлист
         PlayList eveningPlayList = new PlayList();
         eveningPlayList.setName("Evening playlist");
-        playListService.addPlayList(eveningPlayList);
+        playListService.save(eveningPlayList);
         Set<PlayList> eveningPlaylistSet = new HashSet<>();
         eveningPlaylistSet.add(eveningPlayList);
         company.setEveningPlayList(eveningPlaylistSet);
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         company = companyService.getByCompanyName(company.getName());
 
         LOGGER.info("Adding Company to User...");
@@ -139,8 +139,8 @@ public class RegistrationRestController {
         LOGGER.info("Success!");
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-company"));
-        userService.updateUser(newUser);
+        newUser.addRegStep(registrationStepService.getByName("registration-step-company"));
+        userService.update(newUser);
     }
 
     //ИСПРАВИТЬ ШИРОТУ И ДОЛГОТУ
@@ -162,17 +162,17 @@ public class RegistrationRestController {
         address.setCity(addressDto.getCity());
         address.setStreet(addressDto.getStreet());
         address.setHouse(addressDto.getHouse());
-        addressService.addAddress(address);
+        addressService.save(address);
 
 
         Company company = companyService.getByCompanyName(companyName);
         LOGGER.info("Adding Address to User...");
         company.setAddress(address);
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         User newUser = userService.getUserByLogin(user.getLogin());
-        newUser.addRegStep(registrationStepService.getRegStepByName("registration-step-address"));
-        userService.updateUser(newUser);
+        newUser.addRegStep(registrationStepService.getByName("registration-step-address"));
+        userService.update(newUser);
     }
 
     @GetMapping(value = "/getMissedStepsIds")
@@ -195,7 +195,7 @@ public class RegistrationRestController {
         List<Long> stepsIds = getMissedRegStepsIds(request);
         List<String> stepsNames = new ArrayList<>();
         for (Long id : stepsIds) {
-            stepsNames.add(registrationStepService.getRegStepById(id).getName());
+            stepsNames.add(registrationStepService.getById(id).getName());
         }
         return stepsNames;
     }
@@ -203,12 +203,12 @@ public class RegistrationRestController {
 
     @PostMapping("/getOneStep")
     public ResponseEntity<RegistrationStep> getRegStepToPassNow(@RequestParam Long stepId) {
-        RegistrationStep registrationStep = registrationStepService.getRegStepById(stepId);
+        RegistrationStep registrationStep = registrationStepService.getById(stepId);
         return ResponseEntity.ok(registrationStep);
     }
 
     @GetMapping(value = "/get_all_orgTypes")
     public List<OrgType> getAllOrgTypes() {
-        return orgTypeService.getAllOrgTypes();
+        return orgTypeService.getAll();
     }
 }

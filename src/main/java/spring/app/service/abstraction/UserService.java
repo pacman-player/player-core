@@ -7,7 +7,7 @@ import spring.app.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends GenericService<Long, User>{
     User getUserByLoginWithRegStepsCompany(String login);
 
     User getUserByLogin(String login);
@@ -16,11 +16,7 @@ public interface UserService {
 
     User getUserByVkId(int vkId);
 
-    User getUserById(Long id);
-
     UserDto getUserDtoById(Long id);
-
-    void addUser(User user);
 
     void addUserWithEncodePassword(User user);
 
@@ -29,10 +25,6 @@ public interface UserService {
     void save(UserRegistrationDto registration);
 
     List<UserDto> getAllUsers();
-
-    void deleteUserById(Long id);
-
-    void updateUser(User user);
 
     void updateUserWithEncodePassword(User user);
 
@@ -46,5 +38,5 @@ public interface UserService {
 
     boolean isExistUserByLogin(String login, long userId);
 
-	List<User> getUserByRole(String role);
+    List<User> getUserByRole(String role);
 }

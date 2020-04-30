@@ -18,42 +18,28 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SongServiceImpl implements SongService {
-    private final SongDao songDao;
+
+public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> implements SongService {
+
     private final SongDtoDao songDtoDao;
     private final SongCompilationService songCompilationService;
 
     @Autowired
-    public SongServiceImpl(SongDao songDao, SongDtoDao songDtoDao, SongCompilationService songCompilationService) {
-        this.songDao = songDao;
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService) {
+        super(dao);
         this.songDtoDao = songDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
-
-    @Override
-    public void addSong(Song song) {
-        songDao.save(song);
-    }
-
-
-
-    @Override
-    public void deleteSongById(Long id) {
-        songDao.deleteById(id);
-    }
-
-
-
     @Override
     public boolean isExist(String name) {
-        return songDao.isExist(name);
+        return dao.isExist(name);
     }
 
 
     @Override
     public Song getByName(String name) {
-        return songDao.getByName(name);
+        return dao.getByName(name);
     }
 
     //TODO: кандидат на удаление, не используется
@@ -64,37 +50,24 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song getBySearchRequests(String author, String name) {
-        return songDao.getBySearchRequests(author, name);
+        return dao.getBySearchRequests(author, name);
     }
 
-    @Override
-    public List<Song> getAllSongs() {
-        return songDao.getAll();
-    }
 
     @Override
     public List<SongDto> getAllSongsDto() {
         return songDtoDao.getAll();
     }
 
-    @Override
-    public List<Song> findSongsByNameContaining(String name) {
-        return songDao.findByNameContaining(name);
-    }
-
-    @Override
-    public Song getById(long songId) {
-        return songDao.getById(songId);
-    }
 
     @Override
     public List<Song> findSongsByGenreId(Long id) {
-        return songDao.getAllWithGenreByGenreId(id);
+        return dao.getAllWithGenreByGenreId(id);
     }
 
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return songDao.getByCreatedDateRange(dateFrom, dateTo);
+        return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override
@@ -106,35 +79,27 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public List<Song> getAllApprovedSongs() {
-        return songDao.getAllApproved();
-    }
-    @Override
-    public void updateSong(Song song) {
-        songDao.update(song);
+        return dao.getAllApproved();
     }
 
-    @Override
-    public Song getSongById(Long id) {
-        return songDao.getById(id);
-    }
 
     @Override
     public List<Song> getApprovedSongsPage(int pageNumber, int pageSize) {
-        return songDao.getApprovedPage(pageNumber, pageSize);
+        return dao.getApprovedPage(pageNumber, pageSize);
     }
 
     @Override
     public int getLastApprovedSongsPageNumber(int pageSize) {
-        return songDao.getLastApprovedPageNumber(pageSize);
+        return dao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override
     public Long getSongIdByAuthorAndName(String author, String name) {
-        return songDao.getSongIdByAuthorAndName(author, name);
+        return dao.getSongIdByAuthorAndName(author, name);
     }
 
     @Override
     public Long getAuthorIdBySongId(Long songId) {
-        return songDao.getAuthorIdBySongId(songId);
+        return dao.getAuthorIdBySongId(songId);
     }
 }

@@ -6,23 +6,9 @@ import spring.app.model.Author;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface AuthorService {
-
-    void addAuthor(Author author);
-
-    void updateAuthor(Author author);
-
-    void deleteAuthorById(Long id);
+public interface AuthorService extends GenericService<Long, Author> {
 
     Author getByName(String name);
-
-    /**
-     * Возвращает автора по id
-     *
-     * @return Author
-     */
-    Author getById(long authorsId);
-
     /**
      * Возвращает всех авторов, у которых совпадает передаваемое значение
      *
@@ -35,6 +21,7 @@ public interface AuthorService {
     List<AuthorDto> getAllAuthors();
 
     List<AuthorDto> getAllApprovedAuthors();
+
 
     List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize);
 

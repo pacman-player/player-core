@@ -18,9 +18,9 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AuthorServiceImpl implements AuthorService {
+public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
 
-    private final AuthorDao authorDao;
+
     private final AuthorDtoDao authorDtoDao;
     private SongDao songDao;
     private NotificationService notificationService;
@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Autowired
     public AuthorServiceImpl(AuthorDao authorDao, AuthorDtoDao authorDtoDao, SongDao songDao, NotificationService notificationService, NotificationTemplateService notificationTemplateService) {
-        this.authorDao = authorDao;
+        super(authorDao);
         this.authorDtoDao = authorDtoDao;
         this.songDao = songDao;
         this.notificationService = notificationService;
@@ -36,76 +36,67 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void addAuthor(Author author) {
-        authorDao.save(author);
+    public void save(Author author) {
+        dao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
 
         try {
-            notificationService.addNotification(author);
+            notificationService.save(author);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void updateAuthor(Author author) {
-        authorDao.update(author);
     }
 
     /**
      * Когда удаляется Автор, удаляются все его песни
      */
     @Override
-    public void deleteAuthorById(Long id) {
+    public void deleteById(Long id) {
         // удаляем песни с данным автором
         songDao.bulkRemoveSongsByAuthorId(id);
         // теперь удаляем автора
-        authorDao.deleteById(id);
-    }
-
-    @Override
-    public Author getById(long authorsId) {
-        return authorDao.getById(authorsId);
+        dao.deleteById(id);
     }
 
     @Override
     public Author getByName(String name) {
-        return authorDao.getByName(name);
+        return dao.getByName(name);
     }
 
     @Override
-    public List<AuthorDto> findAuthorsByNameContaining(String name) {
+    public List<AuthorDto> findAuthorsByNameContaining (String name){
         return authorDtoDao.findByNameContaining(name);
     }
 
     @Override
-    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return authorDao.getByCreatedDateRange(dateFrom, dateTo);
+    public List<Author> getByCreatedDateRange (Timestamp dateFrom, Timestamp dateTo){
+        return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
+    public List<AuthorDto> getAllAuthors () {
         return authorDtoDao.getAllAuthors();
     }
 
     @Override
-    public List<AuthorDto> getAllApprovedAuthors() {
+    public List<AuthorDto> getAllApprovedAuthors () {
         return authorDtoDao.getAllApproved();
+
     }
 
     @Override
-    public List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize) {
-        return authorDao.getApprovedPage(pageNumber, pageSize);
+    public List<Author> getApprovedAuthorsPage ( int pageNumber, int pageSize){
+        return dao.getApprovedPage(pageNumber, pageSize);
     }
 
     @Override
-    public int getLastApprovedAuthorsPageNumber(int pageSize) {
-        return authorDao.getLastApprovedPageNumber(pageSize);
+    public int getLastApprovedAuthorsPageNumber ( int pageSize){
+        return dao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override
-    public boolean isExist(String name) {
-        return authorDao.isExist(name);
+    public boolean isExist (String name){
+        return dao.isExist(name);
     }
 
 }

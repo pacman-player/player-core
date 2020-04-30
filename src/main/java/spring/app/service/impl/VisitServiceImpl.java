@@ -12,31 +12,30 @@ import java.util.List;
 
 @Service
 @Transactional
-public class VisitServiceImpl implements VisitService {
+public class VisitServiceImpl extends AbstractServiceImpl<Visit.VisitPK, Visit, VisitDao> implements VisitService {
 
-    private VisitDao visitDao;
 
-    public VisitServiceImpl(VisitDao visitDao) {
-        this.visitDao = visitDao;
+    public VisitServiceImpl(VisitDao dao) {
+        super(dao);
     }
 
     @Override
     public void addVisit(TelegramUser telegramUser, Company company) {
-        visitDao.save(new Visit(telegramUser, company));
+        dao.save(new Visit(telegramUser, company));
     }
 
     @Override
     public List<Visit> getAllByCompanyId(Long id) {
-        return visitDao.getAllByCompanyId(id);
+        return dao.getAllByCompanyId(id);
     }
 
     @Override
     public List<Visit> getAllByTelegramUserId(Long id) {
-        return visitDao.getAllByTelegramUserId(id);
+        return dao.getAllByTelegramUserId(id);
     }
 
     @Override
     public List<Visit> getAllByTelegramUserIdAndCompanyId(Long telegramUserId, Long companyId) {
-        return visitDao.getAllByTelegramUserIdAndCompanyId(telegramUserId, companyId);
+        return dao.getAllByTelegramUserIdAndCompanyId(telegramUserId, companyId);
     }
 }

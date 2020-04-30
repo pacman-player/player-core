@@ -123,7 +123,9 @@ public class TelegramRestController {
     @PostMapping(value = "/all_company")
     public List allCompanies() {
         LOGGER.info("POST request '/all_company'");
+
         List<CompanyDto> list = companyService.getAllCompanies();
+
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }
@@ -142,7 +144,7 @@ public class TelegramRestController {
         long companyId = Long.parseLong(headers.get("companyId").get(0));
         LOGGER.info("Provided songId = {} and companyId = {}", songId, companyId);
         // получаем песню, компанию и очередь компании из базы
-        Song songById = songService.getSongById(songId);
+        Song songById = songService.getById(songId);
         Company companyById = companyService.getById(companyId);
         SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
         // получаем текущую позицию в очереди
@@ -155,20 +157,20 @@ public class TelegramRestController {
             songQueue.setSong(songById);
             songQueue.setCompany(companyById);
             songQueue.setPosition(lastSongQueuesPosition + 1L);
-            songQueueService.addSongQueue(songQueue);
+            songQueueService.save(songQueue);
             // вносим новый заказ для статистики
-            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            orderSongService.save(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
-            companyService.updateCompany(companyById);
+            companyService.update(companyById);
             LOGGER.info("Success!");
         } else {
             LOGGER.info("Adding song to existing queue...");
             // если очередь уже существует, добавляем песню в ее конец
             songQueue.setPosition(lastSongQueuesPosition + 1L);
-            songQueueService.updateSongQueue(songQueue);
+            songQueueService.update(songQueue);
             // вносим новый заказ для статистики
-            orderSongService.addSongOrder(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            orderSongService.save(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             LOGGER.info("Success!");
         }
     }
@@ -178,7 +180,7 @@ public class TelegramRestController {
         LOGGER.info("POST request '/registerTelegramUserAndVisit'");
         TelegramUser telegramUser = visitDto.getTelegramUser();
         Company company = companyService.getById(visitDto.getCompanyId());
-        telegramUserService.addTelegramUser(telegramUser);
+        telegramUserService.save(telegramUser);
         LOGGER.info(
                 "New Telegram user with id = {} was added", telegramUser.getId());
         visitService.addVisit(telegramUser, company);

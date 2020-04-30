@@ -17,36 +17,23 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
-public class GenreServiceImpl implements GenreService {
-    private final GenreDao genreDao;
+@Transactional
+public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
+
     private final GenreDtoDao genreDtoDao;
     private final SongCompilationService songCompilationService;
 
-
     @Autowired
-    public GenreServiceImpl(GenreDao genreDao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService) {
-        this.genreDao = genreDao;
+    public GenreServiceImpl(GenreDao dao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService) {
+        super(dao);
         this.genreDtoDao = genreDtoDao;
         this.songCompilationService = songCompilationService;
     }
 
     @Transactional
     @Override
-    public void addGenre(Genre genre) {
-        genreDao.save(genre);
-    }
-
-    @Transactional
-    @Override
-    public void updateGenre(Genre genre) {
-        genreDao.update(genre);
-    }
-
-    @Transactional
-    @Override
-    public void deleteGenreById(Long id) {
+    public void deleteById(Long id) {
         Genre notDefinedGenre = getByName("not defined");
         Genre genreForDelete = getById(id);
         // в сервисе только таким образом можно пробежать по всем авторам , удалить у них наш жанр и в случае если жанров у них больше нет добавить "не определенный"
@@ -58,44 +45,32 @@ public class GenreServiceImpl implements GenreService {
             }
         }
 
-        List<Song> songs = genreDao.getSongsByGenre(genreForDelete);
+        List<Song> songs = dao.getSongsByGenre(genreForDelete);
         for (Song song : songs) {
             song.setGenre(notDefinedGenre);
         }
-        genreDao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
-        genreDao.deleteReferenceFromCompanyByGenre(genreForDelete);
+        dao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
+        dao.deleteReferenceFromCompanyByGenre(genreForDelete);
 
         List<SongCompilation> songCompilationList = new ArrayList<>(genreForDelete.getSongCompilation());
         for (SongCompilation songCompilation : songCompilationList) {
             songCompilation.setGenre(notDefinedGenre);
             genreForDelete.getSongCompilation().remove(songCompilation);
         }
-        genreDao.flush();
-        genreDao.deleteById(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Genre getById(Long id) {
-        return genreDao.getById(id);
+        dao.flush();
+        dao.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Genre getByName(String name) {
-        return genreDao.getByName(name);
+        return dao.getByName(name);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return genreDao.getByCreatedDateRange(dateFrom, dateTo);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Genre> getAllGenre() {
-        return genreDao.getAll();
+        return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Transactional(readOnly = true)
@@ -107,7 +82,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     @Override
     public List<Genre> getAllApprovedGenre() {
-        return genreDao.getAllApproved();
+        return dao.getAllApproved();
     }
 
     @Transactional(readOnly = true)

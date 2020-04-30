@@ -102,7 +102,7 @@ public class TelegramServiceImpl implements TelegramService {
 
             //Достаем очередь по песне и компании
             SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(
-                    songService.getSongById(songId),
+                    songService.getById(songId),
                     companyService.getById(songRequest.getCompanyId())
             );
             if (songQueue == null) {

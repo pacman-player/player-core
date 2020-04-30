@@ -33,7 +33,7 @@ public class UserCompilationRestController {
 
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");
-            return songCompilationService.getAllSongCompilations();
+            return songCompilationService.getAll();
         } else {
             LOGGER.info("Returning compilations by provided genre...");
             Genre genres = genreService.getByName(genre);
