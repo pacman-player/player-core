@@ -31,7 +31,7 @@ public class MessageRestController {
     public void addMessage(@RequestBody MessageDto messageDto) {
         LOGGER.info("POST request '/add_message'");
         Message message = new Message(messageDto.getName(), messageDto.getTemplate());
-        messageService.addMessage(message);
+        messageService.save(message);
         LOGGER.info("Added Message with name = {}", messageDto.getName());
     }
 
@@ -42,7 +42,7 @@ public class MessageRestController {
         Message message = messageService.getById(messageDto.getId());
         message.setName(messageDto.getName());
         message.setTemplate(messageDto.getTemplate());
-        messageService.updateMessage(message);
+        messageService.update(message);
         LOGGER.info("Updated Message with name = {}", messageDto.getName());
     }
 
@@ -51,7 +51,7 @@ public class MessageRestController {
         // метод действительно выбрасывает это исключение?
         LOGGER.info("DELETE request '/delete_message/{}'", id);
         Message message = messageService.getById(id);
-        messageService.deleteMessageById(id);
+        messageService.deleteById(id);
         LOGGER.info("Deleted Message with name = {}", message.getName());
     }
 }

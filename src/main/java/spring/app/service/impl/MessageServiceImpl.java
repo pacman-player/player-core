@@ -13,25 +13,14 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MessageServiceImpl implements MessageService {
+public class MessageServiceImpl extends AbstractServiceImpl<Long, Message, MessageDao> implements MessageService {
 
-    private final MessageDao messageDao;
     private final MessageDtoDao messageDtoDao;
 
     @Autowired
-    public MessageServiceImpl(MessageDao messageDao, MessageDtoDao messageDtoDao) {
-        this.messageDao = messageDao;
+    public MessageServiceImpl(MessageDao dao, MessageDtoDao messageDtoDao) {
+        super(dao);
         this.messageDtoDao = messageDtoDao;
-    }
-
-    @Override
-    public void addMessage(Message message) {
-        messageDao.save(message);
-    }
-
-    @Override
-    public List<Message> getAllMessage() {
-        return messageDao.getAll();
     }
 
     @Override
@@ -41,21 +30,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message getByName(String name) {
-        return messageDao.getByName(name);
+        return dao.getByName(name);
     }
 
-    @Override
-    public Message getById(Long id) {
-        return messageDao.getById(id);
-    }
-
-    @Override
-    public void updateMessage(Message message) {
-        messageDao.update(message);
-    }
-
-    @Override
-    public void deleteMessageById(Long id) {
-        messageDao.deleteById(id);
-    }
 }

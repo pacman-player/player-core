@@ -27,8 +27,10 @@ public class AdminAuthorRestController {
     }
 
     @GetMapping(value = "/all_authors")
+
     public List<AuthorDto> getAllAuthor(){
         List<AuthorDto> authorDtoList = authorService.getAllAuthors();
+
         return authorDtoList;
     }
 
@@ -47,7 +49,7 @@ public class AdminAuthorRestController {
             author.setName(editName);
             author.setAuthorGenres(getGenres(newAuthor.getGenres()));
             author.setApproved(newAuthor.getApproved());
-            authorService.addAuthor(author);
+            authorService.save(author);
             LOGGER.info("Added new Author = {}", author);
         } else {
             LOGGER.info("New Author was not added!");
@@ -62,20 +64,20 @@ public class AdminAuthorRestController {
                 newAuthor.getName(),
                 getGenres(newAuthor.getGenres()),
                 newAuthor.getApproved());
-        authorService.updateAuthor(author);
+        authorService.update(author);
         LOGGER.info("Updated Author = {}", author);
     }
 
     @DeleteMapping(value = "/delete_author")
     public void deleteAuthor(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_author' with id = {}", id);
-        authorService.deleteAuthorById(id);
+        authorService.deleteById(id);
     }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
     public List<Genre> getAllGenre() {
-        List<Genre> list = genreService.getAllGenre();
+        List<Genre> list = genreService.getAll();
         return list;
     }
 
@@ -97,3 +99,4 @@ public class AdminAuthorRestController {
         } else return (author == null || author == authorService.getById(id));
     }
 }
+

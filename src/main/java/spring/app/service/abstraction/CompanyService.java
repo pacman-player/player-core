@@ -3,25 +3,16 @@ package spring.app.service.abstraction;
 import spring.app.dto.CompanyDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
-import spring.app.model.Genre;
-import spring.app.model.Song;
 
 import java.util.List;
 
-public interface CompanyService {
-    void addCompany(Company company);
-
-    void updateCompany(Company company);
-
-    Company getById(Long id);
+public interface CompanyService extends GenericService<Long, Company> {
 
     CompanyDto getCompanyDtoById(Long id);
 
     Company getByIdWithAddress(Long id);
 
     Company getByCompanyName(String companyName);
-
-    void removeById(Long id);
 
     List<CompanyDto> getAllCompanies();
 
@@ -40,7 +31,7 @@ public interface CompanyService {
      */
     Company setBannedEntity(Company company);
 
-    Company getCompanyByAddressId(long id);
+    Company getCompanyByAddressId(Long id);
 
     List<String> getAllSongsInQueueByCompanyId(long id);
 }

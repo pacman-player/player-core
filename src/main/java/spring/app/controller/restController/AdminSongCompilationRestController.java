@@ -35,7 +35,7 @@ public class AdminSongCompilationRestController {
 
     @GetMapping
     public List<SongCompilation> getAllCompilation() {
-        List<SongCompilation> compilations = songCompilationService.getAllSongCompilations();
+        List<SongCompilation> compilations = songCompilationService.getAll();
         return compilations;
     }
 
@@ -76,7 +76,7 @@ public class AdminSongCompilationRestController {
                 genreService.getByName(songCompilationDto.getGenre()));
         LOGGER.info("Compilation Editing: genre set -> {}", songCompilationDto.getGenre());
 
-        songCompilationService.updateCompilation(compilation);
+        songCompilationService.update(compilation);
         LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
     }
 
@@ -93,7 +93,7 @@ public class AdminSongCompilationRestController {
             songCompilation.setCover(coverName);
         }
 
-        songCompilationService.addSongCompilation(songCompilation);
+        songCompilationService.save(songCompilation);
         LOGGER.info("SongCompilation name = {} added", songCompilation.getName());
     }
 

@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public interface SongCompilationService {
-    void addSongCompilation(SongCompilation songCompilation);
-
-    List<SongCompilation> getAllSongCompilations();
+public interface SongCompilationService extends GenericService<Long, SongCompilation> {
 
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
 
@@ -41,8 +38,6 @@ public interface SongCompilationService {
     SongCompilation getSongCompilationByCompilationName(String compilationName);
 
     void deleteSongCompilationFromPlayList(Long id, String dayTime);
-
-    void updateCompilation(SongCompilation songCompilation);
 
     void deleteSongCompilation(SongCompilation songCompilation) throws IOException;
 }

@@ -20,6 +20,6 @@ public class UserOrgTypeRestController {
 
     @GetMapping(value = "/get_all_orgTypes")
     public List<OrgType> getAllOrgTypes() {
-        return orgTypeService.getAllOrgTypes();
+        return orgTypeService.getAll();
     }
 }

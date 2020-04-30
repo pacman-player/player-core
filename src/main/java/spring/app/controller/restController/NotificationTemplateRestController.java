@@ -47,7 +47,7 @@ public class NotificationTemplateRestController {
     public NotificationTemplate update(@RequestBody NotificationTemplate notificationTemplate) {
         LOGGER.info("PUT request '/template' with template {}", notificationTemplate);
         notificationTemplate.setId(notificationTemplateService.getByName(notificationTemplate.getName()).getId());
-        return notificationTemplateService.update(notificationTemplate);
+        return notificationTemplateService.updateAndGet(notificationTemplate);
     }
 
     @DeleteMapping("{id}")

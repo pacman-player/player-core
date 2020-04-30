@@ -27,12 +27,12 @@ public class UserRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
     //эти два поля для дальнейшего раширенияфункционала,если непонадобятся-удалить!!!
     private final RoleService roleService;
-	private final UserService userService;
+    private final UserService userService;
 
     private final GenreService genreService;
     private final CompanyService companyService;
     private final SongCompilationService songCompilation;
-	private final AddressService addressService;
+    private final AddressService addressService;
 
     private String PASSWORD = "";
 
@@ -51,12 +51,12 @@ public class UserRestController {
                               SongService songService,
                               SongCompilationService songCompilation,
                               AddressService addressService) {
-		this.roleService = roleService;
+        this.roleService = roleService;
         this.userService = userService;
         this.genreService = genreService;
         this.companyService = companyService;
         this.songCompilation = songCompilation;
-		this.addressService = addressService;
+        this.addressService = addressService;
     }
 
     @PostMapping(value = "/song_compilation")
@@ -67,7 +67,7 @@ public class UserRestController {
 
         if (genre.equals("Все подборки")) {
             LOGGER.info("Returning all compilations");
-            return songCompilation.getAllSongCompilations();
+            return songCompilation.getAll();
         } else {
             Genre genres = genreService.getByName(genre);
             List<SongCompilation> compilations = songCompilation.getListSongCompilationsByGenreId(genres.getId());
@@ -80,6 +80,7 @@ public class UserRestController {
     public UserDto getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
         return (userService.getUserDtoById(user.getId()));
+
     }
 
     @PostMapping(value = "/get_encrypted_pass")
@@ -113,7 +114,7 @@ public class UserRestController {
                 return ResponseEntity.badRequest().body(user);
             }
         }
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Updated user data for User = {}", user);
         return ResponseEntity.ok(user);
     }
@@ -127,7 +128,7 @@ public class UserRestController {
         newPassword = newPassword.replaceAll("##@@##"  ,"\\\\");
 
         user.setPassword(newPassword);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Password has been changed successfully!");
     }
 
@@ -175,11 +176,11 @@ public class UserRestController {
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyForUpdate.setTariff(company.getTariff());
-        companyService.updateCompany(companyForUpdate);
+        companyService.update(companyForUpdate);
         LOGGER.info("Updated Company = {}", companyForUpdate);
     }
 
-	@PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/company/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateAddress(@RequestBody AddressDto addressDto) {
         User user = (User) getContext().getAuthentication().getPrincipal();
         LOGGER.info("PUT request '/company/address' from User = {}", user);
@@ -190,7 +191,7 @@ public class UserRestController {
         LOGGER.info("Updating address for Company named = {}", companyForUpdate.getName());
         if (addressForUpdate == null) {
             LOGGER.debug("Creating new address...");
-            addressService.updateAddress(new Address(
+            addressService.update(new Address(
                     addressDto.getCountry(),
                     addressDto.getCity(),
                     addressDto.getStreet(),
@@ -209,14 +210,14 @@ public class UserRestController {
             addressForUpdate.setLongitude(addressDto.getLongitude());
 
             companyForUpdate.setAddress(addressForUpdate);
-            companyService.updateCompany(companyForUpdate);
+            companyService.update(companyForUpdate);
 
             LOGGER.debug("Success!");
             return;
         }
 
         companyForUpdate.setAddress(addressService.getById(addressService.getLastId()));
-        companyService.updateCompany(companyForUpdate);
+        companyService.update(companyForUpdate);
         LOGGER.info("Successfully updated address for the Company");
     }
 

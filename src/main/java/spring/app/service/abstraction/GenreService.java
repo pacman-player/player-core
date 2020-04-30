@@ -6,21 +6,11 @@ import spring.app.model.Genre;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface GenreService {
-
-    void addGenre(Genre genre);
-
-    void updateGenre(Genre genre);
-
-    void deleteGenreById(Long id);
-
-    Genre getById(Long id);
+public interface GenreService extends GenericService<Long, Genre> {
 
     Genre getByName(String name);
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
-
-    List<Genre> getAllGenre();
 
     List<GenreDto> getAllGenreDto();
 
@@ -28,3 +18,4 @@ public interface GenreService {
 
     boolean isExistByName(String name);
 }
+
