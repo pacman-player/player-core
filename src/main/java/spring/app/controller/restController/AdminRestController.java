@@ -149,7 +149,6 @@ public class AdminRestController {
         return ResponseEntity.ok(company);
     }
 
-    
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
         LOGGER.info("POST request '/company'");
@@ -164,7 +163,6 @@ public class AdminRestController {
         company.setTariff(companyDto.getTariff());
         companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
-
     }
 
     @PostMapping(value = "/add_establishment")
