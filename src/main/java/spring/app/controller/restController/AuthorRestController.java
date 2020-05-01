@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Company;
 import spring.app.model.User;
@@ -26,14 +27,16 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthors")
-    public List<Author> getAllAuthors() {
-        List<Author> list = authorService.getAllAuthors();
+
+    public List<AuthorDto> getAllAuthors() {
+        List<AuthorDto> list = authorService.getAllAuthors();
+
         return list;
     }
 
     @GetMapping("allApprovedAuthors")
-    public List<Author> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
-        List<Author> list = authorService.getAllApprovedAuthors();
+    public List<AuthorDto> getAllApprovedAuthors(@AuthenticationPrincipal User user) {
+        List<AuthorDto> list = authorService.getAllApprovedAuthors();
 
         Company company = user.getCompany();
         company = companyService.setBannedEntity(company);
@@ -66,9 +69,11 @@ public class AuthorRestController {
     }
 
     @GetMapping("allAuthorsByName/{name}")
-    public List<Author> searchByNameInAuthors(@PathVariable String name,
-                                              @AuthenticationPrincipal User user) {
-        List<Author> authors = authorService.findAuthorsByNameContaining(name);
+    public List<AuthorDto> searchByNameInAuthors(@PathVariable String name,
+                                                 @AuthenticationPrincipal User user) {
+
+        List<AuthorDto> authors = authorService.findAuthorsByNameContaining(name);
+
 
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
@@ -86,7 +91,7 @@ public class AuthorRestController {
         Author author = authorService.getById(authorsId);
         company.addBannedAuthor(author);
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         user.setCompany(company);
         LOGGER.info("Added to ban Author = {}", author);
     }
@@ -97,7 +102,7 @@ public class AuthorRestController {
         LOGGER.info("POST request 'authorsUnBan' with authorsId = {}", authorsId);
         Company company = user.getCompany();
         company.getBannedAuthor().removeIf(author -> author.getId().equals(authorsId));
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         user.setCompany(company);
         LOGGER.info("Removed from ban Author = {}", authorService.getById(authorsId));

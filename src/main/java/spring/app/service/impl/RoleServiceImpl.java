@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
+import spring.app.dao.abstraction.dto.RoleDtoDao;
+import spring.app.dto.RoleDto;
 import spring.app.model.Role;
 import spring.app.service.abstraction.RoleService;
 
@@ -11,42 +13,24 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> implements RoleService {
 
-	private final RoleDao roleDao;
+	private final RoleDtoDao roleDtoDao;
 
 	@Autowired
-	public RoleServiceImpl(RoleDao roleDao) {
-		this.roleDao = roleDao;
+	public RoleServiceImpl(RoleDao dao, RoleDtoDao roleDtoDao) {
+		super(dao);
+		this.roleDtoDao = roleDtoDao;
 	}
 
 	@Override
-	public void addRole(Role role) {
-		roleDao.save(role);
+	public Role getByName(String roleName) {
+		return dao.getRoleByName(roleName);
 	}
 
 	@Override
-	public Role getRoleByName(String roleName) {
-		return roleDao.getRoleByName(roleName);
+	public List<RoleDto> getAllRolesDto() {
+		return roleDtoDao.getAllRoles();
 	}
 
-	@Override
-	public Role getRoleById(Long id) {
-		return roleDao.getById(id);
-	}
-
-	@Override
-	public List<Role> getAllRoles() {
-		return roleDao.getAll();
-	}
-
-	@Override
-	public void updateRole(Role role) {
-		roleDao.update(role);
-	}
-
-	@Override
-	public void deleteRoleById(Long id) {
-		roleDao.deleteById(id);
-	}
 }

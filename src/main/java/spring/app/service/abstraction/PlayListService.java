@@ -2,8 +2,7 @@ package spring.app.service.abstraction;
 
 import spring.app.model.PlayList;
 
-public interface PlayListService {
-    void addPlayList(PlayList playList);
-    PlayList getPlayList(Long id);
-    PlayList getPlayListByName(String name);
+public interface PlayListService extends GenericService<Long, PlayList> {
+
+    PlayList getByName(String name);
 }

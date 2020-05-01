@@ -8,7 +8,8 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true) // вываливаеться ошибка при запуске
+@Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
 
     @PersistenceContext
@@ -35,6 +36,11 @@ public abstract class AbstractDao<PK extends Serializable, T> {
     public void deleteById(PK id) {
         T entity = entityManager.find(persistentClass, id);
         entityManager.remove(entity);
+    }
+
+    public boolean isExistById(PK id){
+        T entity = entityManager.find(persistentClass, id);
+        return entity!=null;
     }
 
     /**

@@ -95,16 +95,16 @@ public class TestDataInit {
 
         // Создаем роли
         Role roleAdmin = new Role("ADMIN");
-        roleService.addRole(roleAdmin);
+        roleService.save(roleAdmin);
 
         Role roleUser = new Role("USER");
-        roleService.addRole(roleUser);
+        roleService.save(roleUser);
 
         Role roleAnonymous = new Role("ANONYMOUS");
-        roleService.addRole(roleAnonymous);
+        roleService.save(roleAnonymous);
 
         Role roleBot = new Role("BOT");
-        roleService.addRole(roleBot);
+        roleService.save(roleBot);
 
         // содаем и добавляем в БД регистрационные шаги для пользователей
         RegistrationStep rs1 = new RegistrationStep();
@@ -132,7 +132,7 @@ public class TestDataInit {
         adminRoles.add(roleAdmin);
         adminRoles.add(roleUser);
         admin.setRoles(adminRoles);
-        userService.addUser(admin);
+        userService.save(admin);
 
         // тестовые аккаунты: админ 2
         User admin1 = new User();
@@ -140,7 +140,7 @@ public class TestDataInit {
         admin1.setPassword("admin");
         admin1.setEmail("admin1@gmail.com");
         admin1.setRoles(adminRoles);
-        userService.addUser(admin1);
+        userService.save(admin1);
 
         // тестовые аккаунты: юзер 1
         User user = new User();
@@ -150,7 +150,7 @@ public class TestDataInit {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleUser);
         user.setRoles(userRoles);
-        userService.addUser(user);
+        userService.save(user);
 
         // тестовые аккаунты: юзер 2
         User user2 = new User();
@@ -160,7 +160,7 @@ public class TestDataInit {
         Set<Role> user2Roles = new HashSet<>();
         user2Roles.add(roleUser);
         user2.setRoles(user2Roles);
-        userService.addUser(user2);
+        userService.save(user2);
 
         // тестовые аккаунты: Bot
         User bot = new User();
@@ -169,7 +169,7 @@ public class TestDataInit {
         Set<Role> botRoles = new HashSet<>();
         botRoles.add(roleBot);
         bot.setRoles(botRoles);
-        userService.addUser(bot);
+        userService.save(bot);
 
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
         user = userService.getUserByLoginWithRegStepsCompany("user");
@@ -180,8 +180,8 @@ public class TestDataInit {
         user2.addRegStep(rs2);
         user.addRegStep(rs3);
         user2.addRegStep(rs3);
-        userService.updateUser(user);
-        userService.updateUser(user2);
+        userService.update(user);
+        userService.update(user2);
 
         //создаем дефолтный шаблон для уведомлений
         NotificationTemplate notificationTemplate = new NotificationTemplate();
@@ -232,19 +232,19 @@ public class TestDataInit {
         song_12.setSearchTags("Yungblud Charlottle Lawrer Falling Skies");
         song_13.setSearchTags("Yungblud Tin Pan Boy");
 
-        songService.updateSong(song_1);
-        songService.updateSong(song_2);
-        songService.updateSong(song_3);
-        songService.updateSong(song_4);
-        songService.updateSong(song_5);
-        songService.updateSong(song_6);
-        songService.updateSong(song_7);
-        songService.updateSong(song_8);
-        songService.updateSong(song_9);
-        songService.updateSong(song_10);
-        songService.updateSong(song_11);
-        songService.updateSong(song_12);
-        songService.updateSong(song_13);
+        songService.update(song_1);
+        songService.update(song_2);
+        songService.update(song_3);
+        songService.update(song_4);
+        songService.update(song_5);
+        songService.update(song_6);
+        songService.update(song_7);
+        songService.update(song_8);
+        songService.update(song_9);
+        songService.update(song_10);
+        songService.update(song_11);
+        songService.update(song_12);
+        songService.update(song_13);
 
         // adding MP3 files  from /music1/ to /music
         // adding MP3 files  from /init_song/ to /music
@@ -267,16 +267,16 @@ public class TestDataInit {
         }
 
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
-        songService.getAllSongs().forEach(song -> {
+        songService.getAll().forEach(song -> {
             song.setApproved(true);
-            songService.updateSong(song);
+            songService.update(song);
         });
         Song song1 = songService.getByName("Start Again");
         Song song3 = songService.getByName("Really");
         song1.setApproved(false);
         song3.setApproved(false);
-        songService.updateSong(song1);
-        songService.updateSong(song3);
+        songService.update(song1);
+        songService.update(song3);
         Author author1 = authorService.getByName("OneRepublic, Logic");
         Author author3 = authorService.getByName("BLACKPINK");
         Author author2 = authorService.getByName("Yungblud");
@@ -289,19 +289,19 @@ public class TestDataInit {
         author4.setApproved(true);
         author5.setApproved(true);
         author6.setApproved(true);
-        authorService.updateAuthor(author1);
-        authorService.updateAuthor(author3);
-        authorService.updateAuthor(author2);
-        authorService.updateAuthor(author4);
-        authorService.updateAuthor(author5);
-        authorService.updateAuthor(author6);
+        authorService.update(author1);
+        authorService.update(author3);
+        authorService.update(author2);
+        authorService.update(author4);
+        authorService.update(author5);
+        authorService.update(author6);
 
         // создаем ноборы для вставки в mock-компиляции
         Set<Song> songList1 = new HashSet<>();
         Set<Song> songList2 = new HashSet<>();
         Set<Song> songList3 = new HashSet<>();
         Set<Song> songList4 = new HashSet<>();
-        List<Song> allSongs = songService.getAllSongs();
+        List<Song> allSongs = songService.getAll();
         // записываем треки по сетам
         for (int i = 0; i < allSongs.size(); i++) {
             Song s = allSongs.get(i);
@@ -327,16 +327,16 @@ public class TestDataInit {
         // присваиваем подборкам жанры
         songCompilation1.setSong(songList1);
         songCompilation1.setGenre(genreService.getByName("рок"));
-        songCompilationService.addSongCompilation(songCompilation1);
+        songCompilationService.save(songCompilation1);
         songCompilation2.setSong(songList2);
         songCompilation2.setGenre(genreService.getByName("r&b"));
-        songCompilationService.addSongCompilation(songCompilation2);
+        songCompilationService.save(songCompilation2);
         songCompilation3.setSong(songList3);
         songCompilation3.setGenre(genreService.getByName("соул"));
-        songCompilationService.addSongCompilation(songCompilation3);
+        songCompilationService.save(songCompilation3);
         songCompilation4.setSong(songList4);
         songCompilation4.setGenre(genreService.getByName("поп"));
-        songCompilationService.addSongCompilation(songCompilation4);
+        songCompilationService.save(songCompilation4);
 
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
@@ -351,10 +351,10 @@ public class TestDataInit {
         pop.setApproved(true);
         postPunk.setApproved(true);
         soul.setApproved(true);
-        genreService.updateGenre(rock);
-        genreService.updateGenre(pop);
-        genreService.updateGenre(postPunk);
-        genreService.updateGenre(soul);
+        genreService.update(rock);
+        genreService.update(pop);
+        genreService.update(postPunk);
+        genreService.update(soul);
         genres1.add(rock);
         genres1.add(postPunk);
         genres2.add(pop);
@@ -365,8 +365,8 @@ public class TestDataInit {
         // необходимо уточнить логику этого функционала. Дополнительный фильтр по жанрам на основе огранизаций?
         orgType1.setGenres(genres1);
         orgType2.setGenres(genres2);
-        orgTypeService.addOrgType(orgType1);
-        orgTypeService.addOrgType(orgType2);
+        orgTypeService.save(orgType1);
+        orgTypeService.save(orgType2);
 
         // создаем компании для наших пользователей
         Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, orgType1);
@@ -376,35 +376,35 @@ public class TestDataInit {
         // и воспроизводить в них музыку (подборки)
         PlayList playList = new PlayList();
         playList.setName("All day playlist");
-        playListService.addPlayList(playList);
+        playListService.save(playList);
 
         PlayList playList1 = new PlayList();
         playList1.setName("Morning playlist");
-        playListService.addPlayList(playList1);
+        playListService.save(playList1);
 
         PlayList playList2 = new PlayList();
         playList2.setName("Midday playlist");
-        playListService.addPlayList(playList2);
+        playListService.save(playList2);
 
         PlayList playList3 = new PlayList();
         playList3.setName("Evening playlist");
-        playListService.addPlayList(playList3);
+        playListService.save(playList3);
 
         PlayList playList4 = new PlayList();
         playList4.setName("All day playlist");
-        playListService.addPlayList(playList4);
+        playListService.save(playList4);
 
         PlayList playList5 = new PlayList();
         playList5.setName("Morning playlist");
-        playListService.addPlayList(playList5);
+        playListService.save(playList5);
 
         PlayList playList6 = new PlayList();
         playList6.setName("Midday playlist");
-        playListService.addPlayList(playList6);
+        playListService.save(playList6);
 
         PlayList playList7 = new PlayList();
         playList7.setName("Evening playlist");
-        playListService.addPlayList(playList7);
+        playListService.save(playList7);
         // доьбавляем пустые плейлисты в утренние, дневные и вечерние плейлисты
         Set<PlayList> allDayPlayLists = new HashSet<>();
         allDayPlayLists.add(playList);
@@ -443,17 +443,17 @@ public class TestDataInit {
         company1.setBannedGenres(bannedGenres);
         company2.setBannedGenres(bannedGenres);
         // добавляем компании в БД
-        companyService.addCompany(company1);
-        companyService.addCompany(company2);
+        companyService.save(company1);
+        companyService.save(company2);
         // сохраняем адреса и записываем их в компании
         Address address1 = new Address("Россия", "Санкт-Петербург", "Вознесенский пр.", "39", 59.923527, 30.307792);
         Address address2 = new Address("Россия", "Москва", "1-й Монетчиковский пер.", "5", 55.732388, 37.628235);
-        addressService.addAddress(address1);
-        addressService.addAddress(address2);
+        addressService.save(address1);
+        addressService.save(address2);
         company1.setAddress(address1);
         company2.setAddress(address2);
-        companyService.updateCompany(company1);
-        companyService.updateCompany(company2);
+        companyService.update(company1);
+        companyService.update(company2);
 
 
         //adding mock statistics
@@ -465,7 +465,7 @@ public class TestDataInit {
 //        long totalOrders = random.nextInt(3000);
         long totalOrders = random.nextInt(30);
         for (int i = 0; i < totalOrders; i++) {
-            orderSongService.addSongOrder(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
+            orderSongService.save(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
                     .nextLong(startDate, endDate))));
         }
 
@@ -477,6 +477,6 @@ public class TestDataInit {
 
         //adding genre not defined
         Genre notDefinedGenre = new Genre("not defined", true);
-        genreService.addGenre(notDefinedGenre);
+        genreService.save(notDefinedGenre);
     }
 }

@@ -1042,11 +1042,14 @@ function playNext() {
             } else {
 
                 //очищаем список песен текущего плейлиста от заказанных песен
-                for (let i = 0; i < allSongsInCurrentPlaylist.length; i++) {
-                    if (allSongsInCurrentPlaylist[i].isFromSongQueue) {
-                        allSongsInCurrentPlaylist.splice(i, 1)
+                let playListFree = []; // в этот массив добавляются песни isFormSongQueue = false, т.е. которые не были в очереди заказов
+                allSongsInCurrentPlaylist.forEach(function (item) {
+                        if (!item.isFromSongQueue) {
+                            playListFree.push(item);
+                        }
                     }
-                }
+                );
+                allSongsInCurrentPlaylist = playListFree;
 
                 //следующий плейлист является последним воспроизведенным плейлистом
                 let nextPlaylistName = lastPlayedPlaylistName;

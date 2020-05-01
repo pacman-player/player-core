@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
-import spring.app.dto.dao.RoleDtoDao;
-import spring.app.dto.dao.UserDtoDao;
 import spring.app.model.Company;
 import spring.app.model.OrgType;
 import spring.app.model.Role;
@@ -37,27 +35,23 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
-    private final UserDtoDao userDtoDao;
-    private final RoleDtoDao roleDtoDao;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService, UserDtoDao userDtoDao, RoleDtoDao roleDtoDao) {
+                               OrgTypeService orgTypeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
-        this.userDtoDao = userDtoDao;
-        this.roleDtoDao = roleDtoDao;
     }
 
     @PutMapping(value = "/ban_user/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/ban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(false);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Banned User = {}", user);
     }
 
@@ -65,41 +59,45 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/unban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(true);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Unbanned User = {}", user);
     }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-    List<User> getAllUsers() {
-        List<User> list = userService.getAllUsers();
+
+    List<UserDto> getAllUsers() {
+        List<UserDto> list = userService.getAllUsers();
+
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping(value = "/get_all_roles")
     public List<RoleDto> getAllRoles() {
-        return roleDtoDao.getAllRoles();
+        return roleService.getAllRolesDto();
     }
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-    List<Company> getAllCompanies() {
-        List<Company> list = companyService.getAllCompanies();
+
+    List<CompanyDto> getAllCompanies() {
+        List<CompanyDto> list = companyService.getAllCompanies();
+
         return list;
     }
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
     List<OrgType> getAllEstablishments() {
-        List<OrgType> list = orgTypeService.getAllOrgTypes();
+        List<OrgType> list = orgTypeService.getAll();
         return list;
     }
 
@@ -108,7 +106,7 @@ public class AdminRestController {
         LOGGER.info("POST request '/add_user'");
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
-        userService.addUser(user);
+        userService.save(user);
         LOGGER.info("Added User = {}", user);
     }
 
@@ -129,19 +127,19 @@ public class AdminRestController {
                     );
             getContext().setAuthentication(token);
         }
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Updated User = {}", user);
     }
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
-        userService.deleteUserById(id);
+        userService.deleteById(id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        Company company = userService.getUserById(userId).getCompany();
+        Company company = userService.getById(userId).getCompany();
         return ResponseEntity.ok(company);
     }
 
@@ -159,20 +157,20 @@ public class AdminRestController {
         Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
         company.setTariff(companyDto.getTariff());
-        companyService.updateCompany(company);
+        companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
     }
 
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("POST request '/add_establishment' with orgType = {}", orgType);
-        orgTypeService.addOrgType(orgType);
+        orgTypeService.save(orgType);
     }
 
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("PUT request '/update_establishment' with orgType = {}", orgType);
-        orgTypeService.updateOrgType(orgType);
+        orgTypeService.update(orgType);
     }
 
     // Returns false if author with requested name already exists else true
@@ -185,7 +183,7 @@ public class AdminRestController {
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
-        orgTypeService.deleteOrgTypeById(id);
+        orgTypeService.deleteById(id);
     }
 
 
@@ -194,7 +192,7 @@ public class AdminRestController {
 
         for (String rl : role) {
             System.out.println(rl);
-            roles.add(roleService.getRoleByName(rl));
+            roles.add(roleService.getByName(rl));
         }
         return roles;
     }
@@ -205,17 +203,17 @@ public class AdminRestController {
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.addCompany(company);
+        companyService.save(company);
         LOGGER.info("Added Company = {}", company);
     }
 
     @GetMapping(value = "/check/email")
     public String checkEmail(@RequestParam String email, @RequestParam long id){
-        return Boolean.toString(userDtoDao.isExistUserByEmail(email));
+        return Boolean.toString(userService.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id){
-        return Boolean.toString(userDtoDao.isExistUserBylogin(login));
+        return Boolean.toString(userService.isExistUserByLogin(login));
     }
 }

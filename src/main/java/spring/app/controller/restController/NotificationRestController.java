@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.NotificationDto;
-import spring.app.dto.dao.NotificationDtoDao;
 import spring.app.model.Notification;
 import spring.app.model.User;
 import spring.app.service.abstraction.NotificationService;
@@ -19,12 +18,10 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class NotificationRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(NotificationRestController.class);
     private NotificationService notificationService;
-    private final NotificationDtoDao notificationDtoDao;
 
     @Autowired
-    public NotificationRestController(NotificationService notificationService, NotificationDtoDao notificationDtoDao) {
+    public NotificationRestController(NotificationService notificationService) {
         this.notificationService = notificationService;
-        this.notificationDtoDao = notificationDtoDao;
     }
 
     @GetMapping
@@ -36,12 +33,12 @@ public class NotificationRestController {
 
     @GetMapping("/all")
     public List<NotificationDto> getAllNotifications() {
-        return notificationDtoDao.getAll();
+        return notificationService.getAllNotificationDto();
     }
 
     @GetMapping("/{id}")
     public Notification getNotificationById(@PathVariable String id) {
-        return notificationService.getNotificationById(Long.parseLong(id));
+        return notificationService.getById(Long.parseLong(id));
     }
 
     @PostMapping(value = "/read")
@@ -49,9 +46,9 @@ public class NotificationRestController {
         LOGGER.info("POST request '/notification/read' with id = {}", stringId);
         stringId = stringId.replaceAll("[^A-Za-zА-Яа-я0-9 ]", "");
         Long id = Long.parseLong(stringId);
-        Notification notification = notificationService.getNotificationById(id);
+        Notification notification = notificationService.getById(id);
         notification.setFlag(false);
-        notificationService.updateNotification(notification);
+        notificationService.update(notification);
     }
 
     @PostMapping
@@ -59,7 +56,7 @@ public class NotificationRestController {
         LOGGER.info("POST request '/notification' with id = {}", notification.getId());
         notification.setFlag(true);
         notification.setId(null);
-        notificationService.addNotification(notification);
+        notificationService.save(notification);
         LOGGER.info("Created Notification {}", notification);
     }
 
@@ -67,7 +64,7 @@ public class NotificationRestController {
     public void createAdminNotification(@RequestBody Notification notification) {
         LOGGER.info("POST request '/notification/global' with notification = {}", notification);
         try {
-            notificationService.addNotification(notification.getMessage());
+            notificationService.save(notification.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -76,21 +73,21 @@ public class NotificationRestController {
     @PutMapping
     public void updateNotification(@RequestBody Notification notification) {
         LOGGER.info("PUT request '/notification' with notification = {}", notification);
-        notification.setUser(notificationService.getNotificationById(notification.getId()).getUser());
+        notification.setUser(notificationService.getById(notification.getId()).getUser());
         notification.setFlag(true);
-        notificationService.updateNotification(notification);
+        notificationService.update(notification);
     }
 
     @DeleteMapping
     public void deleteNotificationById(@RequestBody Notification notification) {
         LOGGER.info("DELETE request '/notification' with id = {}", notification.getId());
-        notificationService.deleteNotificationById(notification.getId());
+        notificationService.deleteById(notification.getId());
     }
 
     @DeleteMapping("/user/{id}")
     public void deleteAllUserNotifications(@PathVariable String id) {
         LOGGER.info("DELETE request '/notification/user/{}'", id);
-        notificationService.removeAllNotificationsFromUser(Long.parseLong(id));
+        notificationService.deleteAllNotificationsFromUser(Long.parseLong(id));
     }
 
 }

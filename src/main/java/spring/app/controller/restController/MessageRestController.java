@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.MessageDto;
-import spring.app.dto.dao.MessageDtoDao;
 import spring.app.model.Message;
 import spring.app.service.abstraction.MessageService;
 
@@ -16,17 +15,15 @@ import java.util.List;
 public class MessageRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageRestController.class);
     private final MessageService messageService;
-    private final MessageDtoDao messageDtoDao;
 
     @Autowired
-    public MessageRestController(MessageService messageService, MessageDtoDao messageDtoDao) {
+    public MessageRestController(MessageService messageService) {
         this.messageService = messageService;
-        this.messageDtoDao = messageDtoDao;
     }
 
     @GetMapping(value = "/all_messages")
     public List<MessageDto> getAllMessage() {
-        return messageDtoDao.getAllMessageDto();
+        return messageService.getAllMessageDto();
 
     }
 
@@ -34,7 +31,7 @@ public class MessageRestController {
     public void addMessage(@RequestBody MessageDto messageDto) {
         LOGGER.info("POST request '/add_message'");
         Message message = new Message(messageDto.getName(), messageDto.getTemplate());
-        messageService.addMessage(message);
+        messageService.save(message);
         LOGGER.info("Added Message with name = {}", messageDto.getName());
     }
 
@@ -45,7 +42,7 @@ public class MessageRestController {
         Message message = messageService.getById(messageDto.getId());
         message.setName(messageDto.getName());
         message.setTemplate(messageDto.getTemplate());
-        messageService.updateMessage(message);
+        messageService.update(message);
         LOGGER.info("Updated Message with name = {}", messageDto.getName());
     }
 
@@ -54,7 +51,7 @@ public class MessageRestController {
         // метод действительно выбрасывает это исключение?
         LOGGER.info("DELETE request '/delete_message/{}'", id);
         Message message = messageService.getById(id);
-        messageService.deleteMessageById(id);
+        messageService.deleteById(id);
         LOGGER.info("Deleted Message with name = {}", message.getName());
     }
 }

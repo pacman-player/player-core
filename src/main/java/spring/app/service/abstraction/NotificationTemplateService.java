@@ -2,18 +2,11 @@ package spring.app.service.abstraction;
 
 import spring.app.model.NotificationTemplate;
 
-import java.util.List;
-
-public interface NotificationTemplateService {
-    List<NotificationTemplate> getAll();
-
-    NotificationTemplate getById(Long id);
+public interface NotificationTemplateService extends GenericService<Long, NotificationTemplate> {
 
     NotificationTemplate create(NotificationTemplate notificationTemplate);
 
-    NotificationTemplate update(NotificationTemplate notificationTemplate);
-
-    void deleteById(Long id);
+    NotificationTemplate updateAndGet(NotificationTemplate notificationTemplate);
 
     NotificationTemplate getByName(String name);
 }

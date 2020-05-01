@@ -48,7 +48,7 @@ public class UserGenreRestController {
         Company company = companyService.getById(user.getCompany().getId());
         company.addBannedGenre(genreService.getById(genreId));
 
-        companyService.updateCompany(company);
+        companyService.update(company);
         user.setCompany(company);
     }
 
@@ -58,7 +58,7 @@ public class UserGenreRestController {
         LOGGER.info("POST request '/genreUnBan' for User = {} with genreId = {}", user, genreId);
         Company company = user.getCompany();
         company.getBannedGenres().removeIf(genre -> genre.getId().equals(genreId));
-        companyService.updateCompany(company);
+        companyService.update(company);
 
         user.setCompany(company);
     }

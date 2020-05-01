@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import spring.app.model.User;
+import spring.app.dto.UserDto;
 import spring.app.service.abstraction.SendEmailAboutAddNewCompilation;
 import spring.app.service.abstraction.UserService;
 
@@ -25,18 +25,19 @@ public class SendEmailAboutAddNewCompilationImpl implements SendEmailAboutAddNew
     @Override
     public void send(String nameCompilation) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        List<User> users = userService.getAllUsers();
+        List<UserDto> users = userService.getAllUsers();
+
 
         if (users != null) {
-            for (User user : users) {
+            for (UserDto userDto : users) {
                 String message = String.format(
                         "Привет, %s! \n" +
                                 "У нас появилась новая подборка %s",
-                        user.getLogin(),
+                        userDto.getLogin(),
                         nameCompilation
                 );
-                mailMessage.setFrom(user.getLogin());
-                mailMessage.setTo(user.getEmail());
+                mailMessage.setFrom(userDto.getLogin());
+                mailMessage.setTo(userDto.getEmail());
                 mailMessage.setSubject("Новая подборка");
                 mailMessage.setText(message);
 //                TODO раскомментировать строку для включения отправки писем (нужна своя почта (для тестов))

@@ -5,10 +5,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.UserDtoDao;
+import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
 import spring.app.model.User;
@@ -20,19 +21,21 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> implements UserService {
 
     private PasswordEncoder passwordEncoder;
 
-    private UserDao userDao;
+    private UserDtoDao userDtoDao;
     private RoleDao roleDao;
     private NotificationDao notificationDao;
     private Role userRole;
     private CompanyService companyService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
+        super(userDao);
+        this.userDtoDao = userDtoDao;
+
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
         this.companyService = companyService;
@@ -45,22 +48,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLoginWithRegStepsCompany(String login) {
-        return userDao.getUserByLoginWithRegStepsCompany(login);
+        return dao.getUserByLoginWithRegStepsCompany(login);
     }
 
     @Override
     public User getUserByLogin(String login) {
-        return userDao.getUserByLogin(login);
+        return dao.getUserByLogin(login);
     }
 
     @Override
     public User getUserByGoogleId(String googleId) {
-        return userDao.getUserByGoogleId(googleId);
+        return dao.getUserByGoogleId(googleId);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userDao.getByEmail(email);
+        return dao.getByEmail(email);
     }
 
     @Override
@@ -71,61 +74,62 @@ public class UserServiceImpl implements UserService {
             userRole = roleDao.getRoleByName("USER");
         }
         user.setRoles(Collections.singleton(userRole));
-        userDao.save(user);
+        dao.save(user);
+    }
+
+
+    @Override
+    public UserDto getUserDtoById(Long id) {
+        return userDtoDao.getById(id);
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userDao.getById(id);
-    }
-
-    @Override
-    public void addUser(User user) {
-
+    public void save(User user) {
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userDao.save(user);
+        dao.save(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDao.getAll();
+    public List<UserDto> getAllUsers() {
+        return userDtoDao.getAllUsers();
     }
 
+
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteById(Long id) {
         notificationDao.bulkRemoveNotificationsByUserId(id);
-        if (userDao.getById(id).getCompany() != null) {
-            companyService.removeById(userDao.getById(id).getCompany().getId());
+        if (dao.getById(id).getCompany() != null) {
+            companyService.deleteById(dao.getById(id).getCompany().getId());
         }
-        userDao.deleteById(id);
+        dao.deleteById(id);
     }
 
     @Override
-    public void updateUser(User user) {
+    public void update(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userDao.update(user);
+        dao.update(user);
     }
 
     @Override
     public void updateUserWithEncodePassword(User user) {
-        userDao.update(user);
+        dao.update(user);
     }
 
     //метод для обновления недорегенного юзера с зашифрованным паролем
     @Override
     public void addUserWithEncodePassword(User user) {
-        userDao.save(user);
+        dao.save(user);
     }
 
     @Override
-	public User getUserByVkId(int vkId) {
-		return userDao.getUserByVkId(vkId);
-	}
+    public User getUserByVkId(int vkId) {
+        return dao.getUserByVkId(vkId);
+    }
 
     @Override
     public Long getIdAuthUser() {
@@ -136,28 +140,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isExistUserByEmail(String email){
-        return userDao.isExistUserByEmail(email);
+    public boolean isExistUserByEmail(String email) {
+        return dao.isExistUserByEmail(email);
     }
 
     @Override
     public boolean isExistUserByEmail(String email, long userId) {
-        return userDao.isExistUserByEmail(email, userId);
+        return dao.isExistUserByEmail(email, userId);
     }
 
     @Override
-    public boolean isExistUserByLogin(String login){
-        return userDao.isExistUserByLogin(login);
+    public boolean isExistUserByLogin(String login) {
+        return dao.isExistUserByLogin(login);
     }
 
     @Override
     public boolean isExistUserByLogin(String login, long userId) {
-        return userDao.isExistUserByLogin(login, userId);
+        return dao.isExistUserByLogin(login, userId);
     }
 
     @Override
     public List<User> getUserByRole(String role) {
-        return userDao.getUserByRole(role);
+        return dao.getUserByRole(role);
     }
 
 

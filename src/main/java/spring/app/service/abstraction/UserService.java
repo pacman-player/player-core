@@ -1,12 +1,13 @@
 package spring.app.service.abstraction;
 
 
+import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends GenericService<Long, User>{
     User getUserByLoginWithRegStepsCompany(String login);
 
     User getUserByLogin(String login);
@@ -15,9 +16,7 @@ public interface UserService {
 
     User getUserByVkId(int vkId);
 
-    User getUserById(Long id);
-
-    void addUser(User user);
+    UserDto getUserDtoById(Long id);
 
     void addUserWithEncodePassword(User user);
 
@@ -25,11 +24,7 @@ public interface UserService {
 
     void save(UserRegistrationDto registration);
 
-    List<User> getAllUsers();
-
-    void deleteUserById(Long id);
-
-    void updateUser(User user);
+    List<UserDto> getAllUsers();
 
     void updateUserWithEncodePassword(User user);
 
@@ -43,5 +38,5 @@ public interface UserService {
 
     boolean isExistUserByLogin(String login, long userId);
 
-	List<User> getUserByRole(String role);
+    List<User> getUserByRole(String role);
 }
