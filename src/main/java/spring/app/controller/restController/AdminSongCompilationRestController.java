@@ -35,8 +35,8 @@ public class AdminSongCompilationRestController {
     }
 
     @GetMapping
-    public List<SongCompilation> getAllCompilation() {
-        List<SongCompilation> compilations = songCompilationService.getAll();
+    public List<SongCompilationDto> getAllCompilation() {
+        List<SongCompilationDto> compilations = songCompilationService.getAllSongCompilationDto();
         return compilations;
     }
 

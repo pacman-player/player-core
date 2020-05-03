@@ -71,9 +71,9 @@ function getTable() {
             for (let i = 0; i < compilations.length; i++) {
                 let id = compilations[i].id;
                 let name = compilations[i].name;
-                let genre = compilations[i].genre.name;
+                let genre = compilations[i].genre;
                 let genreId = compilations[i].genre.id;
-                let cover = compilations[i].cover;
+                let cover = compilations[i].coverView;
                 // если файлу не имеет обложки, то ему будет назначена стандартная (/covers/na.jpg)
                 if (cover == null) {
                     cover = "na.jpg"

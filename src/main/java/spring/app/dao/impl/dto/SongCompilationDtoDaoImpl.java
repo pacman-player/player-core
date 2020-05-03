@@ -2,6 +2,7 @@ package spring.app.dao.impl.dto;
 
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
+import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,13 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
                 "s.genre.name) FROM Song s JOIN s.songCompilations sc WHERE sc.id = :id", SongDto.class)
                 .setParameter("id", compilationID)
                 .getResultList();
+        return list;
+    }
+
+    @Override
+    public List<SongCompilationDto> getAllForAdmin() {
+        List<SongCompilationDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongCompilationDto(s.id, s.name, s.genre.name, s.cover)" +
+                "FROM SongCompilation s", SongCompilationDto.class).getResultList();
         return list;
     }
 

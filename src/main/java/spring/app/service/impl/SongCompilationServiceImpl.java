@@ -46,6 +46,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    public List<SongCompilationDto> getAllSongCompilationDto() {
+        return songCompilationDtoDao.getAllForAdmin();
+    }
+
+    @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
         return dao.getListSongCompilationsByGenreId(id);
     }
