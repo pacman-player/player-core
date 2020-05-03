@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
+import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
+import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -16,6 +19,7 @@ import java.util.Set;
 @Service
 @Transactional
 public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCompilation, SongCompilationDao> implements SongCompilationService {
+    private SongCompilationDtoDao songCompilationDtoDao;
     private UserService userService;
     private CompanyService companyService;
     private FileUploadService fileUploadService;
@@ -23,10 +27,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     private SongService songService;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao dao, UserService userService,
+    public SongCompilationServiceImpl(SongCompilationDao dao, SongCompilationDtoDao songCompilationDtoDao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
                                       @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
         super(dao);
+        this.songCompilationDtoDao = songCompilationDtoDao;
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
@@ -51,8 +56,8 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
-    public List<Song> getSongCompilationContentById(Long compilationId) {
-        return dao.getSongCompilationContentById(compilationId);
+    public List<SongDto> getSongCompilationContentById(Long compilationId) {
+        return songCompilationDtoDao.getAllSongsWithCompId(compilationId);
     }
 
     @Override

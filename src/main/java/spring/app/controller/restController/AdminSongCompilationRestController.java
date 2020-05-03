@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
@@ -40,8 +41,8 @@ public class AdminSongCompilationRestController {
     }
 
     @GetMapping("/content/{compilationId}")
-    public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
-        List<Song> songs = songCompilationService.getSongCompilationContentById(compilationId);
+    public List<SongDto> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
+        List<SongDto> songs = songCompilationService.getSongCompilationContentById(compilationId);
         return songs;
     }
 

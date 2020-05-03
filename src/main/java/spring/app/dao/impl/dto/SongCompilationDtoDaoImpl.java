@@ -2,19 +2,26 @@ package spring.app.dao.impl.dto;
 
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
-import spring.app.dto.SongCompilationDto;
-import spring.app.model.SongCompilation;
+import spring.app.dto.SongDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Override
+    public List<SongDto> getAllSongsWithCompId(long compilationID) {
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s JOIN s.songCompilations sc WHERE sc.id = :id", SongDto.class)
+                .setParameter("id", compilationID)
+                .getResultList();
+        return list;
+    }
 
     //TODO: implement
 //    @Override
