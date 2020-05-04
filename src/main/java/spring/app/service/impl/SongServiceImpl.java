@@ -9,6 +9,7 @@ import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.SongCompilationService;
+import spring.app.service.abstraction.SongFileService;
 import spring.app.service.abstraction.SongService;
 
 import java.sql.Timestamp;
@@ -18,17 +19,18 @@ import java.util.Set;
 
 @Service
 @Transactional
-
 public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> implements SongService {
 
     private final SongDtoDao songDtoDao;
     private final SongCompilationService songCompilationService;
+    private final SongFileService songFileService;
 
     @Autowired
-    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService) {
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService, SongFileService songFileService) {
         super(dao);
         this.songDtoDao = songDtoDao;
         this.songCompilationService = songCompilationService;
+        this.songFileService = songFileService;
     }
 
     @Override
@@ -101,5 +103,13 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     @Override
     public Long getAuthorIdBySongId(Long songId) {
         return dao.getAuthorIdBySongId(songId);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Song song = dao.getById(id);
+        dao.deleteById(id);
+        // удаление песни физически
+        songFileService.deleteSongFile(song);
     }
 }
