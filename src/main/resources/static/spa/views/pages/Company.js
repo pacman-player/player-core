@@ -38,7 +38,7 @@ let Company = {
             // //доступ к  ссылки админа
             // showLinkAdmin();
             getCompanyData();
-            getCompanyAddress();
+            // getCompanyAddress();
 
             function updateCompany() {
                 let formData = {
@@ -100,20 +100,21 @@ let Company = {
                         $('#est-start-time').val(data.startTime);
                         $('#est-close-time').val(data.closeTime);
                         $('#est-tariff').val(data.tariff);
+                        $('#est-address').val(data.addressCountry + ', ' + data.addressCity + ', ' + data.addressStreet + ', ' + data.addressHouse);
                     }
                 })
             }
 
-            function getCompanyAddress() {
-                $.ajax({
-                    url: '/api/user/company/address',
-                    method: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
-                    }
-                })
-            }
+            // function getCompanyAddress() {
+            //     $.ajax({
+            //         url: '/api/user/company/address',
+            //         method: "GET",
+            //         dataType: "json",
+            //         success: function (data) {
+            //             $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
+            //         }
+            //     })
+            // }
 
             $('#est-save-data').click(function () {
                 updateCompany();
