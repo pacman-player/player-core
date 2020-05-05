@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
+import spring.app.dto.SongCompilationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;

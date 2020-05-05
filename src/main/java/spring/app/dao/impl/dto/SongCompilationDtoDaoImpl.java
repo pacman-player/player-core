@@ -18,13 +18,12 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
     @Override
-    public List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id) {
+    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id,  String namePlayList) {
         List<SongCompilationDto> songCompilationList = entityManager.createQuery(
                 "SELECT s.id, s.name, s.cover " +
                         ",g.name" +
-                        ", son.name from Company c left join c.eveningPlayList m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
+                        ", son.name from Company c left join c."+namePlayList+" m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
 
         ).setParameter("id", id)
                 .unwrap(Query.class)
@@ -34,35 +33,6 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
         return songCompilationList;
     }
 
-    @Override
-    public List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id) {
-        List<SongCompilationDto> songCompilationList = entityManager.createQuery(
-                "SELECT s.id, s.name, s.cover " +
-                        ",g.name" +
-                        ", son.name from Company c left join c.middayPlayList m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
-
-        ).setParameter("id", id)
-                .unwrap(Query.class)
-                .setResultTransformer(new SongCompilationDtoTransformer())
-                .list();
-
-        return songCompilationList;
-    }
-
-    @Override
-    public List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id) {
-        List<SongCompilationDto> songCompilationList = entityManager.createQuery(
-                "SELECT s.id, s.name, s.cover " +
-                        ",g.name" +
-                        ", son.name from Company c left join c.morningPlayList m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
-
-        ).setParameter("id", id)
-                .unwrap(Query.class)
-                .setResultTransformer(new SongCompilationDtoTransformer())
-                .list();
-
-        return songCompilationList;
-    }
 
     @Override
     public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
@@ -88,7 +58,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
                 .setResultTransformer(new SongCompilationDtoTransformer())
                 .list();
         if (songCompilationDtoList.size() == 0) {
-            songCompilationDtoList.add(null);
+            return null;
         }
         return songCompilationDtoList.get(0);
     }
@@ -153,7 +123,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
         public List transformList(List list) {
             for (SongCompilationDto songCompilationDto : root) {
                 songCompilationDto.setGenres(genreMap.get(songCompilationDto.getId()));
-                songCompilationDto.setSongs(genreMap.get(songCompilationDto.getId()));
+                songCompilationDto.setSongs(songMap.get(songCompilationDto.getId()));
             }
             return root;
         }

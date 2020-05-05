@@ -51,9 +51,5 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
 
     List<SongDto> getSongsDtoBySongCompilation(String compilationName);
 
-    List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id);
-
-    List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id);
-
-    List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id);
+    List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList);
 }

@@ -268,18 +268,9 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         return songCompilationDto.getSongsDtoBySongCompilation(compilationName);
     }
 
-    @Override
-    public List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id) {
-        return songCompilationDto.getAllCompilationsInMorningPlaylistByCompanyIdDto(id);
-    }
 
     @Override
-    public List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id) {
-        return songCompilationDto.getAllCompilationsInMiddayPlaylistByCompanyIdDto(id);
-    }
-
-    @Override
-    public List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id) {
-        return songCompilationDto.getAllCompilationsInEveningPlaylistByCompanyIdDto(id);
+    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
+        return songCompilationDto.getAllCompilationsPlaylistByCompanyIdDto(id, namePlayList);
     }
 }
