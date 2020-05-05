@@ -13,6 +13,24 @@ public class SongCompilationDto {
     private List<PlayListDto> listPlayListDto;
     private MultipartFile cover;
 
+    private Set<String> songs;
+    private Set<String> genres;
+
+
+    public Set<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<String> genres) {
+        this.genres = genres;
+    }
+
+    public SongCompilationDto(Long id, String name, MultipartFile cover) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+    }
+
     public SongCompilationDto() {
     }
 
@@ -29,6 +47,14 @@ public class SongCompilationDto {
         this.genre = genre;
         this.setSongDto = setSongDto;
         this.listPlayListDto = listPlayListDto;
+    }
+
+    public Set<String> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<String> songs) {
+        this.songs = songs;
     }
 
     public Long getId() {

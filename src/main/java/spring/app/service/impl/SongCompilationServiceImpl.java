@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
+import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
+import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -21,17 +24,19 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     private FileUploadService fileUploadService;
     private SendEmailAboutAddNewCompilationImpl sendEmail;
     private SongService songService;
+    final private SongCompilationDtoDao songCompilationDto;
 
     @Autowired
     public SongCompilationServiceImpl(SongCompilationDao dao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
-                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
+                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService, SongCompilationDtoDao songCompilationDto) {
         super(dao);
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
         this.fileUploadService = fileUploadService;
         this.songService = songService;
+        this.songCompilationDto = songCompilationDto;
     }
 
     @Override
@@ -239,5 +244,42 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         }
 
         dao.deleteById(songCompilation.getId());
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getAllDto() {
+        return songCompilationDto.getAllDto();
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id) {
+        return songCompilationDto.getListSongCompilationsByGenreIdDto(id);
+    }
+
+    @Override
+    public SongCompilationDto getSongCompilationByIdDto(Long id) {
+        return songCompilationDto.getSongCompilationByIdDto(id);
+    }
+
+    @Override
+    public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
+        return songCompilationDto.getSongsDtoBySongCompilation(compilationName);
+    }
+
+    @Override
+    public List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id) {
+        return songCompilationDto.getAllCompilationsInMorningPlaylistByCompanyIdDto(id);
+    }
+
+    @Override
+    public List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id) {
+        return songCompilationDto.getAllCompilationsInMiddayPlaylistByCompanyIdDto(id);
+    }
+
+    @Override
+    public List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id) {
+        return songCompilationDto.getAllCompilationsInEveningPlaylistByCompanyIdDto(id);
     }
 }

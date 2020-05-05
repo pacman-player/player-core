@@ -1,5 +1,7 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 
@@ -40,4 +42,18 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
     void deleteSongCompilationFromPlayList(Long id, String dayTime);
 
     void deleteSongCompilation(SongCompilation songCompilation) throws IOException;
+
+    List<SongCompilationDto> getAllDto();
+
+    List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id);
+
+    SongCompilationDto getSongCompilationByIdDto(Long id);
+
+    List<SongDto> getSongsDtoBySongCompilation(String compilationName);
+
+    List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id);
+
+    List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id);
+
+    List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id);
 }

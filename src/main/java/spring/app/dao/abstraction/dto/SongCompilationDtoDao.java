@@ -1,10 +1,25 @@
 package spring.app.dao.abstraction.dto;
 
 import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 
 import java.util.List;
 
 public interface SongCompilationDtoDao {
+
+    List<SongCompilationDto> getAllDto();
+
+    List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id);
+
+    SongCompilationDto getSongCompilationByIdDto(Long id);
+
+    List<SongDto> getSongsDtoBySongCompilation(String compilationName);
+
+    List<SongCompilationDto> getAllCompilationsInMorningPlaylistByCompanyIdDto(Long id);
+
+    List<SongCompilationDto> getAllCompilationsInMiddayPlaylistByCompanyIdDto(Long id);
+
+    List<SongCompilationDto> getAllCompilationsInEveningPlaylistByCompanyIdDto(Long id);
 
     //TODO: implement
 //    List<SongCompilationDto> getAll();
