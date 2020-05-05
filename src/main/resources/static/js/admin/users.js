@@ -114,8 +114,10 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
                     htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
+                    htmlTable += ('<td id="tableTariff">' + listCompanies[i].tariff + '₽' +  '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].userId + '</td>');
+                    htmlTable += ('<td id="tableTariff">' + tariff + '₽' +  '</td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
@@ -248,6 +250,7 @@ $(document).ready(function () {
             startTime: $("#updateStartTime").val(),
             closeTime: $("#updateCloseTime").val(),
             orgType: $("#updateOrgType").val(),
+            tariff: $("#updateTariff").val().replace(/[^0-9]/g, ''),
             userId: $("#updateIdUser").val()
         };
         $.ajax({
@@ -358,7 +361,7 @@ $(document).ready(function () {
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
-
+        $('#updateTariff').val('');
         let companyList;
         $.ajax({
             url: "/api/admin/all_establishments",
@@ -407,7 +410,12 @@ $(document).ready(function () {
                     '\n' +
                     '<label for="updateOrgType">Тип компании</label>\n' +
                     '<select id="updateOrgType" class="form-control" name="role">\n' +
-                    '</select>\n';
+                    '</select>\n'+
+                    '\n' +
+                    '<label for="updateTariff">Тариф компании</label>\n' +
+                    '<input id="updateTariff" class="form-control" type="text" name="tariff"\n' +
+                    'required=""/>\n' +
+                    '\n';
 
                 $('#company-modal-body').append(modalInnerText);
 
@@ -417,6 +425,7 @@ $(document).ready(function () {
                 $('#updateCloseTime').val(data.closeTime);
                 $('#updateIdUser').val(data.user.id);
                 $('#updateOrgType').append(companyList);
+                $('#updateTariff').val(data.tariff);
 
                 $("#updateOrgType option[value='" + data.orgType.id + "'] ").prop("selected", true);
 
