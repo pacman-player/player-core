@@ -117,7 +117,6 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableTariff">' + listCompanies[i].tariff + '₽' +  '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].userId + '</td>');
-                    htmlTable += ('<td id="tableTariff">' + tariff + '₽' +  '</td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
