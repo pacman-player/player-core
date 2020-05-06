@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> implements UserService {
 
     private PasswordEncoder passwordEncoder;
@@ -67,6 +66,7 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     }
 
     @Override
+    @Transactional
     public void save(UserRegistrationDto userRegistrationDto) {
         User user = new User(userRegistrationDto.getEmail(), userRegistrationDto.getLogin(), passwordEncoder.encode(userRegistrationDto.getPassword()), true);
 
@@ -84,6 +84,7 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     }
 
     @Override
+    @Transactional
     public void save(User user) {
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -98,6 +99,7 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
 
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         notificationDao.bulkRemoveNotificationsByUserId(id);
         if (dao.getById(id).getCompany() != null) {
@@ -107,6 +109,7 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     }
 
     @Override
+    @Transactional
     public void update(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
@@ -116,12 +119,14 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     }
 
     @Override
+    @Transactional
     public void updateUserWithEncodePassword(User user) {
         dao.update(user);
     }
 
     //метод для обновления недорегенного юзера с зашифрованным паролем
     @Override
+    @Transactional
     public void addUserWithEncodePassword(User user) {
         dao.save(user);
     }

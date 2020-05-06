@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-@Transactional(readOnly = true)
 public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements SongQueueDao {
     @PersistenceContext
     EntityManager entityManager;

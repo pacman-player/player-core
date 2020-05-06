@@ -9,7 +9,6 @@ import spring.app.service.abstraction.TelegramUserService;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class TelegramUserServiceImpl extends AbstractServiceImpl<Long, TelegramUser, TelegramUserDao> implements TelegramUserService {
 
     public TelegramUserServiceImpl(TelegramUserDao dao) {
@@ -27,6 +26,7 @@ public class TelegramUserServiceImpl extends AbstractServiceImpl<Long, TelegramU
     }
 
     @Override
+    @Transactional
     public void save(TelegramUser telegramUser) {
         if (!this.isExistById(telegramUser.getId())) {
             dao.save(telegramUser);

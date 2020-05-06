@@ -12,7 +12,6 @@ import spring.app.service.abstraction.RoleService;
 import java.util.List;
 
 @Service
-@Transactional
 public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> implements RoleService {
 
 	private final RoleDtoDao roleDtoDao;

@@ -10,7 +10,6 @@ import javax.persistence.TypedQuery;
 
 
 @Repository
-@Transactional(readOnly = true)
 public class OrgTypeDaoImpl extends AbstractDao<Long, OrgType> implements OrgTypeDao {
 
     OrgTypeDaoImpl() {

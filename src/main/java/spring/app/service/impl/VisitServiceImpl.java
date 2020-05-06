@@ -1,17 +1,16 @@
 package spring.app.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.VisitDao;
 import spring.app.model.Company;
 import spring.app.model.TelegramUser;
 import spring.app.model.Visit;
 import spring.app.service.abstraction.VisitService;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class VisitServiceImpl extends AbstractServiceImpl<Visit.VisitPK, Visit, VisitDao> implements VisitService {
 
 
@@ -20,6 +19,7 @@ public class VisitServiceImpl extends AbstractServiceImpl<Visit.VisitPK, Visit, 
     }
 
     @Override
+    @Transactional
     public void addVisit(TelegramUser telegramUser, Company company) {
         dao.save(new Visit(telegramUser, company));
     }

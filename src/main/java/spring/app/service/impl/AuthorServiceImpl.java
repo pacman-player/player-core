@@ -19,10 +19,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Service
-@Transactional
 public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
-
-
     private final AuthorDtoDao authorDtoDao;
     private SongDao songDao;
     private NotificationService notificationService;
@@ -39,7 +36,9 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         this.songFileService = songFileService;
     }
 
+
     @Override
+    @Transactional
     public void save(Author author) {
         dao.save(author);
         NotificationTemplate notificationTemplate = notificationTemplateService.getByName("default");
@@ -55,6 +54,7 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
      * Когда удаляется Автор, удаляются все его песни
      */
     @Override
+    @Transactional
     public void deleteById(Long id) {
         Author author = dao.getById(id);
         // удаляем песни с данным автором

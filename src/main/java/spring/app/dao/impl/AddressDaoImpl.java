@@ -10,7 +10,6 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class AddressDaoImpl extends AbstractDao<Long, Address> implements AddressDao {
     @Value("${accuracy}")
     private String accuracy;

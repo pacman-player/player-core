@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
 
     private final GenreDtoDao genreDtoDao;
@@ -61,31 +60,26 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
         dao.deleteById(id);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Genre getByName(String name) {
         return dao.getByName(name);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
         return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<GenreDto> getAllGenreDto() {
         return genreDtoDao.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Genre> getAllApprovedGenre() {
         return dao.getAllApproved();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public boolean isExistByName(String name) {
         return genreDtoDao.isExistByName(name);

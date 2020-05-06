@@ -14,7 +14,6 @@ import spring.app.service.abstraction.CompanyService;
 import java.util.List;
 
 @Service
-@Transactional
 public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, CompanyDao> implements CompanyService {
 
 
@@ -46,6 +45,7 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         orderSongDao.bulkRemoveOrderSongByCompany(id);
         dao.deleteById(id);

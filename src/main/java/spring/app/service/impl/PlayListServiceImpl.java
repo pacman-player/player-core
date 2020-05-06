@@ -7,7 +7,6 @@ import spring.app.model.PlayList;
 import spring.app.service.abstraction.PlayListService;
 
 @Service
-@Transactional
 public class PlayListServiceImpl extends AbstractServiceImpl<Long, PlayList, PlayListDao> implements PlayListService {
 
     protected PlayListServiceImpl(PlayListDao dao) {

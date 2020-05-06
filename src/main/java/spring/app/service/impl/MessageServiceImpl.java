@@ -12,7 +12,6 @@ import spring.app.service.abstraction.MessageService;
 import java.util.List;
 
 @Service
-@Transactional
 public class MessageServiceImpl extends AbstractServiceImpl<Long, Message, MessageDao> implements MessageService {
 
     private final MessageDtoDao messageDtoDao;
