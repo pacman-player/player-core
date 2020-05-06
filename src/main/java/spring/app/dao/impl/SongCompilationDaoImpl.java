@@ -84,4 +84,10 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
                 .getResultList();
         return songCompilationList;
     }
+
+
+
+
+
+
 }

@@ -17,11 +17,9 @@ public interface SongCompilationDtoDao {
 
     List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList);
 
-
-    //TODO: implement
-//    List<SongCompilationDto> getAll();
-
     List<SongDto> getAllSongsWithCompId(long compilationID);
 
     List<SongCompilationDto> getAllForAdmin();
+
+
 }
