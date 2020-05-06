@@ -1,18 +1,17 @@
 package spring.app.dto;
 
+import java.util.List;
+
 public class OrgTypeDto {
+
     private Long id;
     private String name;
-
-    public OrgTypeDto() {
-
-    }
+    private List<String> genres;
 
     public OrgTypeDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
-
 
     public Long getId() {
         return id;
@@ -30,21 +29,12 @@ public class OrgTypeDto {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrgTypeDto that = (OrgTypeDto) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        return name != null ? name.equals(that.name) : that.name == null;
+    public List<String> getGenres() {
+        return genres;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
     }
 }
+
