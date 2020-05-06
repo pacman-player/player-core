@@ -21,4 +21,7 @@ public interface SongCompilationDtoDao {
     //TODO: implement
 //    List<SongCompilationDto> getAll();
 
+    List<SongDto> getAllSongsWithCompId(long compilationID);
+
+    List<SongCompilationDto> getAllForAdmin();
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
 import spring.app.model.Company;
@@ -96,8 +97,8 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
-    List<OrgType> getAllEstablishments() {
-        List<OrgType> list = orgTypeService.getAll();
+    List<OrgTypeDto> getAllEstablishments() {
+        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
         return list;
     }
 

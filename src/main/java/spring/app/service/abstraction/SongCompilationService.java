@@ -11,9 +11,11 @@ import java.util.List;
 
 public interface SongCompilationService extends GenericService<Long, SongCompilation> {
 
+    List<SongCompilationDto> getAllSongCompilationDto();
+
     List<SongCompilation> getListSongCompilationsByGenreId(Long id);
 
-    List<Song> getSongCompilationContentById(Long compilationId);
+    List<SongDto> getSongCompilationContentById(Long compilationId);
 
     void deleteValByGenreId(Long id);
 

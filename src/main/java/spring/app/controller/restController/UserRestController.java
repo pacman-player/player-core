@@ -156,15 +156,16 @@ public class UserRestController {
         return ResponseEntity.ok(companyService.getCompanyDtoById(id));
     }
 
-    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Company> getUserCompanyAddress() {
-        User user = (User) getContext().getAuthentication().getPrincipal();
-        LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
-        User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
-        Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
-//        Address address = addressService.getById(company.getAddress().getId()); // строчка не нужна, т.к. в js address получаем  из объекта company
-        return ResponseEntity.ok(company);
-    }
+    // Кандидат на удаление
+//    @GetMapping(value = "/company/address", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<Company> getUserCompanyAddress() {
+//        User user = (User) getContext().getAuthentication().getPrincipal();
+//        LOGGER.info("GET request '/company/address' from User = {}", user.getLogin());
+//        User lazyUser = userService.getUserByLoginWithRegStepsCompany(user.getLogin());
+//        Company company = companyService.getByIdWithAddress(lazyUser.getCompany().getId());
+////        Address address = addressService.getById(company.getAddress().getId()); // строчка не нужна, т.к. в js address получаем  из объекта company
+//        return ResponseEntity.ok(company);
+//    }
 
     @PutMapping(value = "/company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void updateCompany(@RequestBody CompanyDto company) {

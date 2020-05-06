@@ -12,6 +12,7 @@ public class SongCompilationDto {
     private Set<SongDto> setSongDto;
     private List<PlayListDto> listPlayListDto;
     private MultipartFile cover;
+    private String coverView;
 
     private Set<String> songs;
     private Set<String> genres;
@@ -32,6 +33,13 @@ public class SongCompilationDto {
     }
 
     public SongCompilationDto() {
+    }
+
+    public SongCompilationDto(Long id, String name, String genre, String coverView) {
+        this.id = id;
+        this.name = name;
+        this.genre = genre;
+        this.coverView = coverView;
     }
 
     public SongCompilationDto(Long id, String name, String genre, Set<SongDto> setSongDto, List<PlayListDto> listPlayListDto) {
@@ -103,5 +111,13 @@ public class SongCompilationDto {
 
     public void setCover(MultipartFile cover) {
         this.cover = cover;
+    }
+
+    public String getCoverView() {
+        return coverView;
+    }
+
+    public void setCoverView(String coverView) {
+        this.coverView = coverView;
     }
 }

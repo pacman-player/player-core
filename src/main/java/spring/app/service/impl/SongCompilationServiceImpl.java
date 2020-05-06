@@ -19,6 +19,7 @@ import java.util.Set;
 @Service
 @Transactional
 public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCompilation, SongCompilationDao> implements SongCompilationService {
+    private SongCompilationDtoDao songCompilationDtoDao;
     private UserService userService;
     private CompanyService companyService;
     private FileUploadService fileUploadService;
@@ -27,10 +28,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     final private SongCompilationDtoDao songCompilationDto;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao dao, UserService userService,
+    public SongCompilationServiceImpl(SongCompilationDao dao, SongCompilationDtoDao songCompilationDtoDao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
                                       @Lazy FileUploadService fileUploadService, @Lazy SongService songService, SongCompilationDtoDao songCompilationDto) {
         super(dao);
+        this.songCompilationDtoDao = songCompilationDtoDao;
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
@@ -46,6 +48,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    public List<SongCompilationDto> getAllSongCompilationDto() {
+        return songCompilationDtoDao.getAllForAdmin();
+    }
+
+    @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
         return dao.getListSongCompilationsByGenreId(id);
     }
@@ -56,8 +63,8 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
-    public List<Song> getSongCompilationContentById(Long compilationId) {
-        return dao.getSongCompilationContentById(compilationId);
+    public List<SongDto> getSongCompilationContentById(Long compilationId) {
+        return songCompilationDtoDao.getAllSongsWithCompId(compilationId);
     }
 
     @Override
