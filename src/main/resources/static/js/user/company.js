@@ -3,7 +3,7 @@ $(document).ready(function () {
     //доступ к  ссылки админа
     showLinkAdmin();
     getCompanyData();
-    getCompanyAddress();
+    // getCompanyAddress();
 
     function updateCompany() {
         var formData = {
@@ -64,23 +64,24 @@ $(document).ready(function () {
                 $('#est-name').val(data.name);
                 $('#est-start-time').val(data.startTime);
                 $('#est-close-time').val(data.closeTime);
+                $('#est-address').val(data.addressCountry + ', ' + data.addressCity + ', ' + data.addressStreet + ', ' + data.addressHouse);
             }
         })
     }
 
-    function getCompanyAddress() {
-        $.ajax({
-            url: '/api/user/company/address',
-            method: 'GET',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
-            },
-            error: function (data) {
-            }
-        })
-    }
+    // function getCompanyAddress() {
+    //     $.ajax({
+    //         url: '/api/user/company/address',
+    //         method: 'GET',
+    //         dataType: 'json',
+    //         async: false,
+    //         success: function (data) {
+    //             $('#est-address').val(data.address.country + ', ' + data.address.city + ', ' + data.address.street + ', ' + data.address.house);
+    //         },
+    //         error: function (data) {
+    //         }
+    //     })
+    // }
 
     $('#est-save-data').click(function () {
         updateCompany();
