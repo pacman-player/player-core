@@ -17,14 +17,7 @@ import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 @ControllerAdvice
 public class Response extends ResponseEntityExceptionHandler {
 
-    DirectorAnswerBilder directorAnswerBilder;
-
-
-    @Autowired
-    public void setDirectorAnswerBilder(DirectorAnswerBilder directorAnswerBilder) {
-        this.directorAnswerBilder = directorAnswerBilder;
-    }
-
+    DirectorAnswerBilder directorAnswerBilder = new  DirectorAnswerBilder();
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {

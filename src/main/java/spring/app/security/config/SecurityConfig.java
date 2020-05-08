@@ -36,10 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+       http
                 // Отключим проверку CSRF для подключений нашего бота к серверу.
-                .csrf().ignoringAntMatchers("/api/tlg/**")
-                .and()
+                //.csrf().ignoringAntMatchers("/api/tlg/**")
+                .csrf().disable()
+               // .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
@@ -62,13 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/fragment",
                         "/topic",
                         "/app")
-                .authenticated()
-               /* .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").hasAuthority("USER")
-                .antMatchers("/api/tlg/**").hasAuthority("BOT")
-                .antMatchers("/api/**").authenticated()*/
-                .antMatchers("/**").anonymous()
-                .anyRequest().authenticated()
+                  .authenticated()
+//                .antMatchers("/admin/**").hasAuthority("ADMIN")
+//                .antMatchers("/user/**").hasAuthority("USER")
+//                .antMatchers("/api/tlg/**").hasAuthority("BOT")
+//                .antMatchers("/api/**").authenticated()
+//                .anyRequest().authenticated()
+               .antMatchers("/api/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
