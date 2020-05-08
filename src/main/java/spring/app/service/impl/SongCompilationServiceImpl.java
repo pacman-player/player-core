@@ -25,11 +25,12 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     private FileUploadService fileUploadService;
     private SendEmailAboutAddNewCompilationImpl sendEmail;
     private SongService songService;
+    final private SongCompilationDtoDao songCompilationDto;
 
     @Autowired
     public SongCompilationServiceImpl(SongCompilationDao dao, SongCompilationDtoDao songCompilationDtoDao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
-                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
+                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService, SongCompilationDtoDao songCompilationDto) {
         super(dao);
         this.songCompilationDtoDao = songCompilationDtoDao;
         this.userService = userService;
@@ -37,6 +38,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         this.sendEmail = sendEmail;
         this.fileUploadService = fileUploadService;
         this.songService = songService;
+        this.songCompilationDto = songCompilationDto;
     }
 
     @Override
@@ -210,10 +212,6 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         return dao.getById(id);
     }
 
-    @Override
-    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
-        return dao.getSongCompilationByCompilationName(compilationName);
-    }
 
     @Override
     public void deleteSongCompilationFromPlayList(Long id, String dayTime) {
@@ -250,4 +248,39 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
         dao.deleteById(songCompilation.getId());
     }
+
+
+    @Override
+    public List<SongCompilationDto> getAllDto() {
+        return songCompilationDto.getAllDto();
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id) {
+        return songCompilationDto.getListSongCompilationsByGenreIdDto(id);
+    }
+
+    @Override
+    public SongCompilationDto getSongCompilationByIdDto(Long id) {
+        return songCompilationDto.getSongCompilationByIdDto(id);
+    }
+
+    @Override
+    public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
+        return songCompilationDto.getSongsDtoBySongCompilation(compilationName);
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
+        return songCompilationDto.getAllCompilationsPlaylistByCompanyIdDto(id, namePlayList);
+    }
+    @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        return dao.getSongCompilationByCompilationName(compilationName);
+    }
+
+
+
 }

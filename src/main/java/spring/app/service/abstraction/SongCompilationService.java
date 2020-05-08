@@ -44,4 +44,14 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
     void deleteSongCompilationFromPlayList(Long id, String dayTime);
 
     void deleteSongCompilation(SongCompilation songCompilation) throws IOException;
+
+    List<SongCompilationDto> getAllDto();
+
+    List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id);
+
+    SongCompilationDto getSongCompilationByIdDto(Long id);
+
+    List<SongDto> getSongsDtoBySongCompilation(String compilationName);
+
+    List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList);
 }
