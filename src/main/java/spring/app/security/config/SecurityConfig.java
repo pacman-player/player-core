@@ -63,10 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/topic",
                         "/app")
                 .authenticated()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
+               /* .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
                 .antMatchers("/api/tlg/**").hasAuthority("BOT")
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/**").authenticated()*/
+                .antMatchers("/**").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

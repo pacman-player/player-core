@@ -21,6 +21,7 @@ import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -196,6 +197,11 @@ public class AdminRestController {
             roles.add(roleService.getByName(rl));
         }
         return roles;
+    }
+    @PostMapping(value = "/getRoleRequest")
+    private String getRoleRequest (HttpServletRequest request) {
+        String  answer = request.getRequestURI();
+        return answer;
     }
 
     @PostMapping(value = "/add_company")
