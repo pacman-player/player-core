@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -8,8 +9,6 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
 
-//@Transactional(readOnly = true) // вываливаеться ошибка при запуске
-@Transactional
 public abstract class AbstractDao<PK extends Serializable, T> {
 
     @PersistenceContext
@@ -21,6 +20,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         this.persistentClass = persistentClass;
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     public void save(T entity) {
         entityManager.persist(entity);
     }
@@ -29,10 +29,12 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         return entityManager.find(persistentClass, id);
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     public void update(T entity) {
         entityManager.merge(entity);
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     public void deleteById(PK id) {
         T entity = entityManager.find(persistentClass, id);
         entityManager.remove(entity);

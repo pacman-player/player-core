@@ -10,7 +10,6 @@ import spring.app.service.abstraction.AddressService;
 import java.util.List;
 
 @Service
-@Transactional
 public class AddressServiceImpl extends AbstractServiceImpl<Long, Address, AddressDao> implements AddressService {
 
     @Autowired

@@ -19,7 +19,6 @@ import java.util.Set;
  * Возвращает id песни
  */
 @Service
-@Transactional
 public class DataUpdateServiceImpl implements DataUpdateService {
 
     private AuthorService authorService;
@@ -35,6 +34,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
     }
 
     @Override
+    @Transactional
     public Long updateData(String authorName, String songName, String[] genreNames) {
         Set<Genre> authorGenres;
 

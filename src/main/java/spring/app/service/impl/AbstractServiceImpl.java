@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenericDao;
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +12,7 @@ public abstract class AbstractServiceImpl<PK extends Serializable, T, R extends 
         super(dao);
     }
 
+    @Transactional
     public void save(T entity) {
         dao.save(entity);
     }
@@ -19,10 +21,12 @@ public abstract class AbstractServiceImpl<PK extends Serializable, T, R extends 
         return dao.getById(id);
     }
 
+    @Transactional
     public void update(T entity) {
         dao.update(entity);
     }
 
+    @Transactional
     public void deleteById(PK id) {
         dao.deleteById(id);
     }

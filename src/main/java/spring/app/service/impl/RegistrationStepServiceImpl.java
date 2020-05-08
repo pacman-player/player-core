@@ -10,7 +10,6 @@ import spring.app.service.abstraction.RegistrationStepService;
 import java.util.List;
 
 @Service
-@Transactional
 public class RegistrationStepServiceImpl extends AbstractServiceImpl<Long, RegistrationStep, RegistrationStepDao> implements RegistrationStepService {
 
     @Autowired

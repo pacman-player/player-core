@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> implements SongService {
 
     private final SongDtoDao songDtoDao;
@@ -106,6 +105,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         Song song = dao.getById(id);
         dao.deleteById(id);

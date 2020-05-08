@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
 public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCompilation, SongCompilationDao> implements SongCompilationService {
     private SongCompilationDtoDao songCompilationDtoDao;
     private UserService userService;
@@ -42,6 +41,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void save(SongCompilation songCompilation) {
         dao.save(songCompilation);
 //        sendEmail.send(songCompilation.getName());
@@ -88,6 +88,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToMorningPlaylist(Long id) {
         SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
@@ -115,6 +116,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToMiddayPlaylist(Long id) {
         SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
@@ -141,6 +143,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToEveningPlaylist(Long id) {
         SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
@@ -214,6 +217,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
 
     @Override
+    @Transactional
     public void deleteSongCompilationFromPlayList(Long id, String dayTime) {
         SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
