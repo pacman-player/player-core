@@ -7,6 +7,8 @@ public interface GenericDao<PK extends Serializable, T> {
 
     void save(T entity);
 
+    void saveBatch(List<T> entities);
+
     T getById(PK id);
 
     List<T> getAll();

@@ -32,6 +32,11 @@ public class AdminController {
         return "admin/genres";
     }
 
+    @GetMapping("/tags")
+    public String getTags() {
+        return "admin/tags";
+    }
+
     @GetMapping("/performers")
     public String getPerformers() {
         return "admin/performers";

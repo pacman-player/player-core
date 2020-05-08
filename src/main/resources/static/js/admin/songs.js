@@ -1,11 +1,42 @@
 //отрисовываем таблицу с песнями
 getSongsTable();
 
+
+$.ajax({
+    method: "GET",
+    url: "/api/admin/tag/all_tags",
+    contentType: "application/json",
+    headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    },
+    dataType: "JSON",
+    success: autocompleteCallBack
+})
+
+
+function autocompleteCallBack(tags) {
+    $("#updateSongSearchTags").tagsInput({
+        validationPattern: new RegExp('[A-Za-zА-Яа-я0-9]+'),
+        autocomplete: {
+            source: tags.map(t => t.name)
+        }
+    });
+    $("#addSongTags").tagsInput({
+        validationPattern: new RegExp('[A-Za-zА-Яа-я0-9]+'),
+        autocomplete: {
+            source: tags.map(t => t.name)
+        }
+    });
+
+}
+
 function getSongsTable() {
     $.ajax({
         method: 'GET',
         url: "/api/admin/song/all_songs",
         success: (listSong) => {
+            listSong.sort((a, b) => a.id - b.id);
             console.log(listSong) // для дебага
             $('#all-songs').empty();
             var songTable = "";
@@ -48,7 +79,10 @@ function editSong(id) {
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
             $("#updateSongAuthor").val(editData.authorName);
-            $("#updateSongSearchTags").val(editData.searchTags);
+            $('#updateSongSearchTags').importTags(editData.searchTags.join(", "));
+            // $("#updateSongSearchTags").val('newTag1,newTag2,newTag3');
+            // $("#updateSongSearchTags").val(editData.searchTags.map(t => t.name).join(", "));
+            // $("#updateSongSearchTags").val(editData.searchTags.map(t => t.name));
             $("#updateSongGenre").val(editData.genreName);
             //получаем жанр песни и список жанров из БД для edit song
             getAllGenreForEdit(editData.genreName);
@@ -109,7 +143,7 @@ function updateSongForm() {
     editSong.approved = $("#updateSongApproved").prop('checked');
     editSong.name = $("#updateSongName").val();
     editSong.authorName = $("#updateSongAuthor").val();
-    editSong.searchTags = $("#updateSongSearchTags").val();
+    editSong.searchTags = $("#updateSongSearchTags").val().split(",");
     editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
@@ -169,7 +203,7 @@ function addSongForm() {
     var addSong = {};
     addSong.name = $('#addSongName').val();
     addSong.authorName = $('#addSongAuthor').val();
-    addSong.searchTags = $('#addSongTags').val();
+    addSong.searchTags = $('#addSongTags').val().split(',');
     addSong.genreName = $('#addSongGenre').val();
     $.ajax({
         method: 'POST',
@@ -179,7 +213,7 @@ function addSongForm() {
         success: function () {
             $('#addSongName').val('');
             $('#addSongAuthor').val('');
-            $('#addSongTags').val('');
+            $('#addSongTags').importTags('');
             $('#tab-song-panel').tab('show');
             getSongsTable();
         },
@@ -206,3 +240,6 @@ function getAllGenreForAdd() {
         $('#addSongGenre').append(genreForAdd);
     });
 }
+
+
+

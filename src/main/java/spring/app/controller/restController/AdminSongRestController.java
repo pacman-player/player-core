@@ -68,7 +68,7 @@ public class AdminSongRestController {
         if (genre != null) {
             song.setGenre(genre);
         }
-        song.setSearchTags(songDto.getSearchTags());
+        songService.setTags(song, songDto.getSearchTags());
         songService.addSong(song);
         LOGGER.info("Added Song = {}", song);
     }
@@ -87,8 +87,8 @@ public class AdminSongRestController {
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
-        song.setSearchTags(songDto.getSearchTags());
         song.setGenre(genre);
+        songService.setTags(song, songDto.getSearchTags());
         songService.updateSong(song);
         LOGGER.info("Updated Song as = {}", song);
     }
@@ -128,6 +128,15 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
           });
     }
 
+    @DeleteMapping(value = "/delete_tag_for_songs")
+    public void deleteTagForSongs(@RequestBody Map<Integer, String> deleteObject) {
+        Long tagId = Long.valueOf(deleteObject.remove(-1));
+        List<Long> songIds = deleteObject.values().stream().map(s -> Long.valueOf(s)).collect(Collectors.toList());
+        if (tagId == null || songIds == null || songIds.isEmpty()) {
+            return;
+        }
+        songService.deleteTagForSongs(songIds, tagId);
+    }
 
     @GetMapping("/authors_songs_genres_for_today")
     public AuthorSongGenreListDto getAuthorSongGenreListForToday() {
@@ -138,5 +147,10 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
         authorSongGenreListDto.setAuthors(authorService.getByCreatedDateRange(dateFrom, dateTo).stream().map(AuthorDto::new).collect(Collectors.toList()));
         authorSongGenreListDto.setGenres(genreService.getByCreatedDateRange(dateFrom, dateTo).stream().map(GenreDto::new).collect(Collectors.toList()));
         return authorSongGenreListDto;
+    }
+
+    @GetMapping("/songs_by_tag")
+    public List<SongDto> listOfSongsByTag(@RequestParam("tag") String tag) {
+        return songService.listOfSongsByTag(tag);
     }
 }

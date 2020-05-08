@@ -164,4 +164,14 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
             return null;
         }
     }
+
+    @Override
+    public int deleteTagForSongs(List<Long> songIds, Long tagId) {
+        return entityManager.createNativeQuery("DELETE FROM tag_on_song WHERE tag_id = :tag_id AND song_id IN :song_ids")
+                .setParameter("tag_id", tagId)
+                .setParameter("song_ids", songIds)
+                .executeUpdate();
+    }
+
+
 }

@@ -1,17 +1,17 @@
 package spring.app.dto;
 
-import spring.app.model.Author;
-import spring.app.model.Genre;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SongDto {
 
     private Long id;
     private String name;
     private String authorName;
-    private String searchTags;
+    private Set<String> searchTags;
     private String genreName;
     private Timestamp createdAt;
     private Boolean isApproved;
@@ -103,7 +103,7 @@ public class SongDto {
         } else {
             this.genreName = song.getGenre().getName();
         }
-        this.searchTags = song.getSearchTags();
+        this.searchTags = song.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toSet());
         this.createdAt = song.getCreatedAt();
         this.isApproved = song.getApproved();
     }
@@ -132,11 +132,11 @@ public class SongDto {
         this.authorName = authorName;
     }
 
-    public String getSearchTags() {
+    public Set<String> getSearchTags() {
         return searchTags;
     }
 
-    public void setSearchTags(String searchTags) {
+    public void setSearchTags(Set<String> searchTags) {
         this.searchTags = searchTags;
     }
 
