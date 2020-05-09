@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * если не находит то обращается music.yandex.com
  */
 @Service
-@Transactional
 public class GenreDefinerServiceImpl implements GenreDefinerService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GenreDefinerServiceImpl.class);
 

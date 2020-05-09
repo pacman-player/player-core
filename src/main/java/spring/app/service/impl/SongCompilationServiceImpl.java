@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
+import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
+import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -13,79 +16,83 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
 @Service
-@Transactional
-public class SongCompilationServiceImpl implements SongCompilationService {
-    private SongCompilationDao songCompilationDao;
+public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCompilation, SongCompilationDao> implements SongCompilationService {
+    private SongCompilationDtoDao songCompilationDtoDao;
     private UserService userService;
     private CompanyService companyService;
     private FileUploadService fileUploadService;
     private SendEmailAboutAddNewCompilationImpl sendEmail;
     private SongService songService;
+    final private SongCompilationDtoDao songCompilationDto;
 
     @Autowired
-    public SongCompilationServiceImpl(SongCompilationDao songCompilationDao, UserService userService,
+    public SongCompilationServiceImpl(SongCompilationDao dao, SongCompilationDtoDao songCompilationDtoDao, UserService userService,
                                       CompanyService companyService, SendEmailAboutAddNewCompilationImpl sendEmail,
-                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService) {
-        this.songCompilationDao = songCompilationDao;
+                                      @Lazy FileUploadService fileUploadService, @Lazy SongService songService, SongCompilationDtoDao songCompilationDto) {
+        super(dao);
+        this.songCompilationDtoDao = songCompilationDtoDao;
         this.userService = userService;
         this.companyService = companyService;
         this.sendEmail = sendEmail;
         this.fileUploadService = fileUploadService;
         this.songService = songService;
+        this.songCompilationDto = songCompilationDto;
     }
 
     @Override
-    public void addSongCompilation(SongCompilation songCompilation) {
-        songCompilationDao.save(songCompilation);
+    @Transactional
+    public void save(SongCompilation songCompilation) {
+        dao.save(songCompilation);
 //        sendEmail.send(songCompilation.getName());
     }
 
     @Override
-    public List<SongCompilation> getAllSongCompilations() {
-        return songCompilationDao.getAll();
+    public List<SongCompilationDto> getAllSongCompilationDto() {
+        return songCompilationDtoDao.getAllForAdmin();
     }
 
     @Override
     public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
-        return songCompilationDao.getListSongCompilationsByGenreId(id);
+        return dao.getListSongCompilationsByGenreId(id);
     }
 
     @Override
     public List<Song> getAvailableSongsForCompilationById(Long compilationId) {
-        return songCompilationDao.getAvailableContentForCompilation(songCompilationDao.getById(compilationId));
+        return dao.getAvailableContentForCompilation(dao.getById(compilationId));
     }
 
     @Override
-    public List<Song> getSongCompilationContentById(Long compilationId) {
-        return songCompilationDao.getSongCompilationContentById(compilationId);
+    public List<SongDto> getSongCompilationContentById(Long compilationId) {
+        return songCompilationDtoDao.getAllSongsWithCompId(compilationId);
     }
 
     @Override
     public void addSongToSongCompilation(Long compilationId, Long songId) {
-        songCompilationDao.addSongToSongCompilation(
+        dao.addSongToSongCompilation(
                 getSongCompilationById(compilationId),
-                songService.getSongById(songId));
+                songService.getById(songId));
     }
+
 
     @Override
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
-        songCompilationDao.removeSongFromSongCompilation(
+        dao.removeSongFromSongCompilation(
                 getSongCompilationById(compilationId),
-                songService.getSongById(songId));
+                songService.getById(songId));
     }
 
     @Override
     public void deleteValByGenreId(Long id) {
-        songCompilationDao.deleteValByGenreId(id);
+        dao.deleteValByGenreId(id);
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToMorningPlaylist(Long id) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
+        SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
+        User authUser = userService.getById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMorningPlayList = oldCompany.getMorningPlayList();
@@ -104,15 +111,16 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userService.updateUser(authUser);
+        userService.update(authUser);
 
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToMiddayPlaylist(Long id) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
+        SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
+        User authUser = userService.getById(userService.getIdAuthUser());
         //достаем множество дневных плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldMiddayPlayList = oldCompany.getMiddayPlayList();
@@ -131,14 +139,15 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userService.updateUser(authUser);
+        userService.update(authUser);
     }
 
     @Override
+    @Transactional
     public void addSongCompilationToEveningPlaylist(Long id) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
+        SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
+        User authUser = userService.getById(userService.getIdAuthUser());
         //достаем множество вечерних плейлистов
         Company oldCompany = authUser.getCompany();
         Set<PlayList> setOldEveningPlayList = oldCompany.getEveningPlayList();
@@ -157,7 +166,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         //добавляем юзеру обновленную компанию
         authUser.setCompany(oldCompany);
         //обновляем юзера
-        userService.updateUser(authUser);
+        userService.update(authUser);
     }
 
     @Override
@@ -203,19 +212,16 @@ public class SongCompilationServiceImpl implements SongCompilationService {
 
     @Override
     public SongCompilation getSongCompilationById(Long id) {
-        return songCompilationDao.getById(id);
+        return dao.getById(id);
     }
 
-    @Override
-    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
-        return songCompilationDao.getSongCompilationByCompilationName(compilationName);
-    }
 
     @Override
+    @Transactional
     public void deleteSongCompilationFromPlayList(Long id, String dayTime) {
-        SongCompilation newSongCompilation = songCompilationDao.getById(id);
+        SongCompilation newSongCompilation = dao.getById(id);
         //достаем юзера по id авторизованного юзера
-        User authUser = userService.getUserById(userService.getIdAuthUser());
+        User authUser = userService.getById(userService.getIdAuthUser());
         //достаем множество утренних плейлистов
         Company oldCompany = authUser.getCompany();
         switch (dayTime) {
@@ -229,7 +235,7 @@ public class SongCompilationServiceImpl implements SongCompilationService {
                 changeCompanyPlaylist(oldCompany.getEveningPlayList(), newSongCompilation);
                 break;
         }
-        userService.updateUser(authUser);
+        userService.update(authUser);
     }
 
     private void changeCompanyPlaylist(Set<PlayList> playList, SongCompilation newSongCompilation) {
@@ -237,10 +243,6 @@ public class SongCompilationServiceImpl implements SongCompilationService {
         pl.getSongCompilation().remove(newSongCompilation);
     }
 
-    @Override
-    public void updateCompilation(SongCompilation songCompilation) {
-        songCompilationDao.update(songCompilation);
-    }
 
     @Override
     public void deleteSongCompilation(SongCompilation songCompilation) throws IOException {
@@ -248,6 +250,41 @@ public class SongCompilationServiceImpl implements SongCompilationService {
             fileUploadService.eraseCurrentFile(songCompilation.getCover());
         }
 
-        songCompilationDao.deleteById(songCompilation.getId());
+        dao.deleteById(songCompilation.getId());
     }
+
+
+    @Override
+    public List<SongCompilationDto> getAllDto() {
+        return songCompilationDto.getAllDto();
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getListSongCompilationsByGenreIdDto(Long id) {
+        return songCompilationDto.getListSongCompilationsByGenreIdDto(id);
+    }
+
+    @Override
+    public SongCompilationDto getSongCompilationByIdDto(Long id) {
+        return songCompilationDto.getSongCompilationByIdDto(id);
+    }
+
+    @Override
+    public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
+        return songCompilationDto.getSongsDtoBySongCompilation(compilationName);
+    }
+
+
+    @Override
+    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
+        return songCompilationDto.getAllCompilationsPlaylistByCompanyIdDto(id, namePlayList);
+    }
+    @Override
+    public SongCompilation getSongCompilationByCompilationName(String compilationName) {
+        return dao.getSongCompilationByCompilationName(compilationName);
+    }
+
+
+
 }

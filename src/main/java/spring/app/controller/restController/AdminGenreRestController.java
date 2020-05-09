@@ -44,12 +44,12 @@ public class AdminGenreRestController {
         if (genreService.getByName(name) == null) {
             Genre genre = new Genre();
             genre.setName(name);
-            genreService.addGenre(genre);
+            genreService.save(genre);
             LOGGER.info("Added Genre with name = {}", name);
             try {
                 String message = "Was added genre " + name;
                 User user = (User) getContext().getAuthentication().getPrincipal();
-                notificationService.addNotification(message, user.getId());
+                notificationService.save(message, user.getId());
             } catch (InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
@@ -64,12 +64,12 @@ public class AdminGenreRestController {
         String genreDtoName = genreDto.getName();
         genre.setName(genreDtoName);
         genre.setApproved(genreDto.getApproved());
-        genreService.updateGenre(genre);
+        genreService.update(genre);
         LOGGER.info("Updated Genre with name = {}", genreDtoName);
         try {
             String message = "Genre name " + genre.getName() + " has been changed to " + genreDtoName;
             User user = (User) getContext().getAuthentication().getPrincipal();
-            notificationService.addNotification(message, user.getId());
+            notificationService.save(message, user.getId());
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
@@ -80,12 +80,12 @@ public class AdminGenreRestController {
     public void deleteGenre(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
-        genreService.deleteGenreById(id);
+        genreService.deleteById(id);
         LOGGER.info("Deleted Genre = {}", genre.getName());
         try {
             String message = "Was deleted genre " + genre.getName();
             User user = (User) getContext().getAuthentication().getPrincipal();
-            notificationService.addNotification(message, user.getId());
+            notificationService.save(message, user.getId());
             LOGGER.info("Sent Notification '{}'", message);
         } catch (InterruptedException e) {
             LOGGER.error(e.getMessage(), e);

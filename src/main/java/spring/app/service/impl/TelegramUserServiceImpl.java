@@ -9,34 +9,27 @@ import spring.app.service.abstraction.TelegramUserService;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class TelegramUserServiceImpl implements TelegramUserService {
+public class TelegramUserServiceImpl extends AbstractServiceImpl<Long, TelegramUser, TelegramUserDao> implements TelegramUserService {
 
-    private final TelegramUserDao telegramUserDao;
-
-    public TelegramUserServiceImpl(TelegramUserDao telegramUserDao) {
-        this.telegramUserDao = telegramUserDao;
+    public TelegramUserServiceImpl(TelegramUserDao dao) {
+        super(dao);
     }
 
     @Override
-    public boolean isTelegramUserExists(Long telegramUserId) {
-        return telegramUserDao.isTelegramUserExists(telegramUserId);
+    public boolean isExistById(Long telegramUserId) {
+        return dao.isTelegramUserExists(telegramUserId);
     }
 
     @Override
     public Optional<TelegramUser> getTelegramUserById(Long id) {
-        return Optional.ofNullable(telegramUserDao.getById(id));
+        return Optional.ofNullable(dao.getById(id));
     }
 
     @Override
-    public void addTelegramUser(TelegramUser telegramUser) {
-        if (!isTelegramUserExists(telegramUser.getId())) {
-            telegramUserDao.save(telegramUser);
+    @Transactional
+    public void save(TelegramUser telegramUser) {
+        if (!this.isExistById(telegramUser.getId())) {
+            dao.save(telegramUser);
         }
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        telegramUserDao.deleteById(id);
     }
 }

@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.SongCompilationDto;
 import spring.app.model.Company;
-import spring.app.model.SongCompilation;
 import spring.app.model.User;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.UserService;
@@ -52,23 +52,23 @@ public class UserPlayListRestController {
     }
 
     @GetMapping(value = "/morning-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInMorningPlaylist(@AuthenticationPrincipal User user) {
+    public List<SongCompilationDto> getAllCompilationsInMorningPlaylist(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/morning-playlist/get/all-song-compilation' for User = {}", user);
-        Company company = userService.getUserById(user.getId()).getCompany();
-        return company == null ? null : songCompilationService.getAllCompilationsInMorningPlaylistByCompanyId(company.getId());
+        Company company = userService.getById(user.getId()).getCompany();
+        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(), "morningPlayList");
     }
 
     @GetMapping(value = "/midday-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInMiddayPlaylist(@AuthenticationPrincipal User user) {
+    public List<SongCompilationDto> getAllCompilationsInMiddayPlaylist(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/midday-playlist/get/all-song-compilation' for User = {}", user);
-        Company company = userService.getUserById(user.getId()).getCompany();
-        return company == null ? null : songCompilationService.getAllCompilationsInMiddayPlaylistByCompanyId(company.getId());
+        Company company = userService.getById(user.getId()).getCompany();
+        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(),"middayPlayList");
     }
 
     @GetMapping(value = "/evening-playlist/get/all-song-compilation")
-    public List<SongCompilation> getAllCompilationsInEveningPlaylist(@AuthenticationPrincipal User user) {
+    public List<SongCompilationDto> getAllCompilationsInEveningPlaylist(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/evening-playlist/get/all-song-compilation' for User = {}", user);
-        Company company = userService.getUserById(user.getId()).getCompany();
-        return company == null ? null : songCompilationService.getAllCompilationsInEveningPlaylistByCompanyId(company.getId());
+        Company company = userService.getById(user.getId()).getCompany();
+        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(),"eveningPlayList");
     }
 }

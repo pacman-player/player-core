@@ -5,7 +5,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import spring.app.dto.UserDto;
-import spring.app.model.User;
 import spring.app.service.abstraction.SendEmailAboutAddNewCompilation;
 import spring.app.service.abstraction.UserService;
 
@@ -27,6 +26,7 @@ public class SendEmailAboutAddNewCompilationImpl implements SendEmailAboutAddNew
     public void send(String nameCompilation) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         List<UserDto> users = userService.getAllUsers();
+
 
         if (users != null) {
             for (UserDto userDto : users) {

@@ -5,18 +5,9 @@ import spring.app.model.Role;
 
 import java.util.List;
 
-public interface RoleService {
-	void addRole(Role role);
+public interface RoleService extends GenericService<Long, Role> {
 
-	Role getRoleByName(String roleName);
+    Role getByName(String roleName);
 
-	Role getRoleById(Long id);
-
-	List<Role> getAllRoles();
-
-	List<RoleDto> getAllRolesDto();
-
-	void updateRole(Role role);
-
-	void deleteRoleById(Long id);
+    List<RoleDto> getAllRolesDto();
 }

@@ -11,21 +11,12 @@ import java.util.List;
 
 
 @Repository
-@Transactional(readOnly = true)
 public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> implements SongCompilationDao {
 
     SongCompilationDaoImpl() {
         super(SongCompilation.class);
     }
 
-    @Override
-    public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
-        TypedQuery<SongCompilation> query = entityManager.createQuery(
-                "SELECT sc FROM SongCompilation sc WHERE sc.genre.id = :id", SongCompilation.class);
-        query.setParameter("id", id);
-        List<SongCompilation> list = query.getResultList();
-        return list;
-    }
 
     @Override
     public List<Song> getSongCompilationContentById(Long compilationId) {
@@ -71,4 +62,31 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
                 .getResultList();
         return songCompilationList.isEmpty() ? null : songCompilationList.get(0);
     }
+
+    @Override
+    public List<SongCompilation> getAllWhereSongIsAprove() {
+        List<SongCompilation> songCompilationList
+                = entityManager.createQuery(
+                "SELECT DISTINCT sc FROM SongCompilation sc    JOIN FETCH  sc.song as s where s.isApproved=true ", SongCompilation.class)
+                .getResultList();
+        return songCompilationList;
+
+    }
+
+    @Override
+    public List<SongCompilation> getListSongCompilationsByGenreId(Long id) {
+        List<SongCompilation> songCompilationList
+                = entityManager.createQuery(
+                "SELECT DISTINCT sc FROM SongCompilation sc join sc.song song WHERE sc.genre.id = :id AND song.isApproved = true"
+                , SongCompilation.class)
+                .setParameter("id", id)
+                .getResultList();
+        return songCompilationList;
+    }
+
+
+
+
+
+
 }

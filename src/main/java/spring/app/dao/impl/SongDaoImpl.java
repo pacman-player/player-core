@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     SongDaoImpl() {

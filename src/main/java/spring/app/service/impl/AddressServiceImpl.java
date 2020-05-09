@@ -10,52 +10,25 @@ import spring.app.service.abstraction.AddressService;
 import java.util.List;
 
 @Service
-@Transactional
-public class AddressServiceImpl implements AddressService {
-    private final AddressDao addressDao;
+public class AddressServiceImpl extends AbstractServiceImpl<Long, Address, AddressDao> implements AddressService {
 
     @Autowired
     public AddressServiceImpl(AddressDao addressDao) {
-        this.addressDao = addressDao;
-    }
-
-    @Override
-    public void addAddress(Address address) {
-        addressDao.save(address);
-    }
-
-    @Override
-    public void updateAddress(Address address) {
-        addressDao.update(address);
-    }
-
-    @Override
-    public Address getById(Long id) {
-        return addressDao.getById(id);
-    }
-
-    @Override
-    public void removeById(Long id) {
-        addressDao.deleteById(id);
-    }
-
-    @Override
-    public List<Address> getAllAddresses() {
-        return addressDao.getAll();
+        super(addressDao);
     }
 
     @Override
     public Long getId(String latitude, String longitude) {
-        return addressDao.getIdByLatitudeAndLongitude(latitude, longitude);
+        return dao.getIdByLatitudeAndLongitude(latitude, longitude);
     }
 
     @Override
     public List checkAddress(Address address) {
-        return addressDao.checkAddressInDB(address);
+        return dao.checkAddressInDB(address);
     }
 
     @Override
     public Long getLastId() {
-        return addressDao.getLastInsertId();
+        return dao.getLastInsertId();
     }
 }

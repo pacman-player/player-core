@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
 import spring.app.model.Company;
@@ -49,9 +50,9 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/ban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(false);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Banned User = {}", user);
     }
 
@@ -59,22 +60,24 @@ public class AdminRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbunUser(@PathVariable("id") Long id) {
         LOGGER.info("PUT request '/unban_user/{}'", id);
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         user.setEnabled(true);
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Unbanned User = {}", user);
     }
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
+
     List<UserDto> getAllUsers() {
         List<UserDto> list = userService.getAllUsers();
+
         return list;
     }
 
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
-        User user = userService.getUserById(id);
+        User user = userService.getById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -85,15 +88,17 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
+
     List<CompanyDto> getAllCompanies() {
         List<CompanyDto> list = companyService.getAllCompanies();
+
         return list;
     }
 
     @GetMapping(value = "/all_establishments")
     public @ResponseBody
-    List<OrgType> getAllEstablishments() {
-        List<OrgType> list = orgTypeService.getAllOrgTypes();
+    List<OrgTypeDto> getAllEstablishments() {
+        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
         return list;
     }
 
@@ -102,7 +107,7 @@ public class AdminRestController {
         LOGGER.info("POST request '/add_user'");
         User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
-        userService.addUser(user);
+        userService.save(user);
         LOGGER.info("Added User = {}", user);
     }
 
@@ -123,19 +128,19 @@ public class AdminRestController {
                     );
             getContext().setAuthentication(token);
         }
-        userService.updateUser(user);
+        userService.update(user);
         LOGGER.info("Updated User = {}", user);
     }
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
-        userService.deleteUserById(id);
+        userService.deleteById(id);
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        Company company = userService.getUserById(userId).getCompany();
+        Company company = userService.getById(userId).getCompany();
         return ResponseEntity.ok(company);
     }
 
@@ -148,25 +153,29 @@ public class AdminRestController {
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
         LOGGER.info("POST request '/company'");
-        User userId = new User(companyDto.getUserId());
-        OrgType orgType = new OrgType(companyDto.getOrgType());
-        Company company = new Company(companyDto.getId(), companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
-                LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+        User userId = userService.getById(companyDto.getUserId());
+        OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
+        Company company = companyService.getById(companyDto.getId());
+        company.setName(companyDto.getName());
+        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+        company.setUser(userId);
+        company.setOrgType(orgType);
         company.setTariff(companyDto.getTariff());
-        companyService.updateCompany(company);
+        companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
     }
 
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("POST request '/add_establishment' with orgType = {}", orgType);
-        orgTypeService.addOrgType(orgType);
+        orgTypeService.save(orgType);
     }
 
     @PutMapping(value = "/update_establishment")
     public void updateEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("PUT request '/update_establishment' with orgType = {}", orgType);
-        orgTypeService.updateOrgType(orgType);
+        orgTypeService.update(orgType);
     }
 
     // Returns false if author with requested name already exists else true
@@ -179,7 +188,7 @@ public class AdminRestController {
     @DeleteMapping(value = "/delete_establishment")
     public void deleteEstablishment(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
-        orgTypeService.deleteOrgTypeById(id);
+        orgTypeService.deleteById(id);
     }
 
 
@@ -188,7 +197,7 @@ public class AdminRestController {
 
         for (String rl : role) {
             System.out.println(rl);
-            roles.add(roleService.getRoleByName(rl));
+            roles.add(roleService.getByName(rl));
         }
         return roles;
     }
@@ -199,7 +208,7 @@ public class AdminRestController {
         OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.addCompany(company);
+        companyService.save(company);
         LOGGER.info("Added Company = {}", company);
     }
 

@@ -10,52 +10,25 @@ import spring.app.service.abstraction.RegistrationStepService;
 import java.util.List;
 
 @Service
-@Transactional
-public class RegistrationStepServiceImpl implements RegistrationStepService {
-    RegistrationStepDao registrationStepDao;
+public class RegistrationStepServiceImpl extends AbstractServiceImpl<Long, RegistrationStep, RegistrationStepDao> implements RegistrationStepService {
 
     @Autowired
-    public RegistrationStepServiceImpl(RegistrationStepDao registrationStepDao) {
-        this.registrationStepDao = registrationStepDao;
+    public RegistrationStepServiceImpl(RegistrationStepDao dao) {
+        super(dao);
     }
 
     @Override
-    public RegistrationStep getRegStepByName(String name) {
-        return registrationStepDao.getRegStepByName(name);
-    }
-
-    @Override
-    public RegistrationStep getRegStepById(Long id) {
-        return registrationStepDao.getById(id);
-    }
-
-    @Override
-    public void save(RegistrationStep registrationStep) {
-        registrationStepDao.save(registrationStep);
-    }
-
-    @Override
-    public List<RegistrationStep> getAllRegSteps() {
-        return registrationStepDao.getAll();
-    }
-
-    @Override
-    public void deleteRegStepById(Long id) {
-        registrationStepDao.deleteById(id);
-    }
-
-    @Override
-    public void updateRegStep(RegistrationStep registrationStep) {
-        registrationStepDao.update(registrationStep);
+    public RegistrationStep getByName(String name) {
+        return dao.getRegStepByName(name);
     }
 
     @Override
     public List<Long> getPassedRegStepsByUserId(Long userId) {
-        return registrationStepDao.getPassedRegStepsByUserId(userId);
+        return dao.getPassedRegStepsByUserId(userId);
     }
 
     @Override
     public List<Long> getMissedRegStepsByUserId(Long userId) {
-        return registrationStepDao.getMissedRegStepsByUserId(userId);
+        return dao.getMissedRegStepsByUserId(userId);
     }
 }

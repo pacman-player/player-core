@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-@Transactional(readOnly = true)
 public class CompanyDaoImpl extends AbstractDao<Long, Company> implements CompanyDao {
 
     @PersistenceContext

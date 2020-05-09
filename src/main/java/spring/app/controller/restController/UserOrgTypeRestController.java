@@ -3,6 +3,7 @@ package spring.app.controller.restController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.OrgTypeDto;
 import spring.app.model.OrgType;
 import spring.app.service.abstraction.OrgTypeService;
 
@@ -19,7 +20,7 @@ public class UserOrgTypeRestController {
     }
 
     @GetMapping(value = "/get_all_orgTypes")
-    public List<OrgType> getAllOrgTypes() {
-        return orgTypeService.getAllOrgTypes();
+    public List<OrgTypeDto> getAllOrgTypes() {
+        return orgTypeService.getAllOrgTypeDto();
     }
 }

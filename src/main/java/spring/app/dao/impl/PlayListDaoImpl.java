@@ -11,7 +11,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements PlayListDao {
 
     PlayListDaoImpl() {

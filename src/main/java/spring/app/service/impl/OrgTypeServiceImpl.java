@@ -4,49 +4,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.OrgTypeDao;
+import spring.app.dao.abstraction.dto.OrgTypeDtoDao;
+import spring.app.dto.OrgTypeDto;
 import spring.app.model.OrgType;
 import spring.app.service.abstraction.OrgTypeService;
 
 import java.util.List;
 
 @Service
-@Transactional
-public class OrgTypeServiceImpl implements OrgTypeService {
+public class OrgTypeServiceImpl extends AbstractServiceImpl<Long, OrgType, OrgTypeDao> implements OrgTypeService {
 
-    private final OrgTypeDao orgTypeDao;
+    private final OrgTypeDtoDao orgTypeDtoDao;
 
     @Autowired
-    public OrgTypeServiceImpl(OrgTypeDao orgTypeDao) {
-        this.orgTypeDao = orgTypeDao;
-    }
-
-    @Override
-    public void addOrgType(OrgType orgType) {
-        orgTypeDao.save(orgType);
-    }
-
-    @Override
-    public List<OrgType> getAllOrgTypes() {
-        return orgTypeDao.getAll();
-    }
-
-    @Override
-    public OrgType getOrgTypeById(long id) {
-        return orgTypeDao.getById(id);
+    protected OrgTypeServiceImpl(OrgTypeDao dao, OrgTypeDtoDao orgTypeDtoDao) {
+        super(dao);
+        this.orgTypeDtoDao = orgTypeDtoDao;
     }
 
     @Override
     public OrgType getByName(String name) {
-        return orgTypeDao.getByName(name);
+        return dao.getByName(name);
     }
 
     @Override
-    public void deleteOrgTypeById(Long id) {
-        orgTypeDao.deleteById(id);
-    }
-
-    @Override
-    public void updateOrgType(OrgType orgType) {
-        orgTypeDao.update(orgType);
+    public List<OrgTypeDto> getAllOrgTypeDto() {
+        return orgTypeDtoDao.getAll();
     }
 }

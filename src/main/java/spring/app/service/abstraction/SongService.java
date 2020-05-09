@@ -7,17 +7,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
-public interface SongService {
-
-    void addSong(Song song);
-
-    void updateSong(Song song);
-
-    void deleteSongById(Long id);
+public interface SongService extends GenericService<Long, Song>{
 
     boolean isExist(String name);
-
-    Song getSongById(Long id);
 
     Song getByName(String name);
 
@@ -26,11 +18,7 @@ public interface SongService {
 
     Song getBySearchRequests(String author, String name);
 
-    List<Song> getAllSongs();
-
     List<SongDto> getAllSongsDto();
-
-    List<Song> findSongsByNameContaining(String name);
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
@@ -39,13 +27,6 @@ public interface SongService {
     List<Song> getAllApprovedSongs();
 
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
-
-    /**
-     * Возвращает песню по id
-     *
-     * @return Song
-     */
-    Song getById(long songId);
 
     /**
      * Возвращает песню по id жанра

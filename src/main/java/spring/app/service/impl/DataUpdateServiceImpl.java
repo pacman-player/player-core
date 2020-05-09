@@ -19,7 +19,6 @@ import java.util.Set;
  * Возвращает id песни
  */
 @Service
-@Transactional
 public class DataUpdateServiceImpl implements DataUpdateService {
 
     private AuthorService authorService;
@@ -35,6 +34,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
     }
 
     @Override
+    @Transactional
     public Long updateData(String authorName, String songName, String[] genreNames) {
         Set<Genre> authorGenres;
 
@@ -42,7 +42,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         if (author == null) { // если автора нет в БД, тогда сохраняем нового
             // и присваиваем переменной authorGenres пустой сет жанров
             author = new Author(authorName);
-            authorService.addAuthor(author);
+            authorService.save(author);
             authorGenres = new HashSet<>();
         } else {
             // если автор есть, записываем его жанры в переменную
@@ -54,20 +54,20 @@ public class DataUpdateServiceImpl implements DataUpdateService {
             if (genre == null) {
                 // добавляем новые жанры если мы о них не знаем
                 genre = new Genre(genreName);
-                genreService.addGenre(genre);
+                genreService.save(genre);
             }
             // записываем жанр в сет жанров
             authorGenres.add(genre);
         }
         // сохраняем жанры у автора в БД
         author.setAuthorGenres(authorGenres);
-        authorService.updateAuthor(author);
+        authorService.update(author);
 
         Song song = songService.getByName(songName);
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
             song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
-            songService.addSong(song);
+            songService.save(song);
         }
         // возвращаем id песни
         return song.getId();

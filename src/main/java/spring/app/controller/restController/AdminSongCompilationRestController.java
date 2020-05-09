@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
@@ -34,14 +35,14 @@ public class AdminSongCompilationRestController {
     }
 
     @GetMapping
-    public List<SongCompilation> getAllCompilation() {
-        List<SongCompilation> compilations = songCompilationService.getAllSongCompilations();
+    public List<SongCompilationDto> getAllCompilation() {
+        List<SongCompilationDto> compilations = songCompilationService.getAllSongCompilationDto();
         return compilations;
     }
 
     @GetMapping("/content/{compilationId}")
-    public List<Song> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
-        List<Song> songs = songCompilationService.getSongCompilationContentById(compilationId);
+    public List<SongDto> getAllWithGenreByGenreId(@PathVariable Long compilationId) {
+        List<SongDto> songs = songCompilationService.getSongCompilationContentById(compilationId);
         return songs;
     }
 
@@ -76,7 +77,7 @@ public class AdminSongCompilationRestController {
                 genreService.getByName(songCompilationDto.getGenre()));
         LOGGER.info("Compilation Editing: genre set -> {}", songCompilationDto.getGenre());
 
-        songCompilationService.updateCompilation(compilation);
+        songCompilationService.update(compilation);
         LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
     }
 
@@ -93,7 +94,7 @@ public class AdminSongCompilationRestController {
             songCompilation.setCover(coverName);
         }
 
-        songCompilationService.addSongCompilation(songCompilation);
+        songCompilationService.save(songCompilation);
         LOGGER.info("SongCompilation name = {} added", songCompilation.getName());
     }
 

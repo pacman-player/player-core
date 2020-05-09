@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class RegistrationStepDaoImpl extends AbstractDao<Long, RegistrationStep> implements RegistrationStepDao {
     private final Logger LOGGER = LoggerFactory.getLogger(RegistrationStepDaoImpl.class);
 
