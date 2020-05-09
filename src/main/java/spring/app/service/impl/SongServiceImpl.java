@@ -149,7 +149,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     @Override
     @Transactional
     public void deleteTagForSongs(List<Long> songIds, Long tagId) {
-        int count = songDao.deleteTagForSongs(songIds, tagId);
+        int count = dao.deleteTagForSongs(songIds, tagId);
         if (count != songIds.size()) {
             throw new IllegalArgumentException("Incorrect song ids: can't delete tag (id = " + tagId + ") for all songs (ids = {"
                                             + songIds + "]).");
