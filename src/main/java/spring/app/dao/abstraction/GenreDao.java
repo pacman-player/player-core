@@ -1,5 +1,6 @@
 package spring.app.dao.abstraction;
 
+import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
 import spring.app.model.Song;
 
@@ -11,7 +12,8 @@ public interface GenreDao extends GenericDao<Long, Genre> {
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    List<Genre> getAllApproved();
+    List<GenreDto> getAllApproved();
+    //List<Genre> getAllApproved();
 
     List<Song> getSongsByGenre(Genre genreForDelete);
 

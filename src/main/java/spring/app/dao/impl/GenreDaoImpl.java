@@ -2,6 +2,7 @@ package spring.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.GenreDao;
+import spring.app.dto.GenreDto;
 import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.OrgType;
@@ -50,13 +51,21 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
                 .getResultList();
     }
 
-    public List<Genre> getAllApproved() {
+    public List<GenreDto> getAllApproved() {
         String genericClassName = Genre.class.toGenericString();
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
+        TypedQuery<GenreDto> query = entityManager.createQuery(hql, GenreDto.class);
         return query.getResultList();
     }
+
+//    public List<Genre> getAllApproved() {
+//        String genericClassName = Genre.class.toGenericString();
+//        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
+//        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
+//        TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
+//        return query.getResultList();
+//    }
 
     @Override
     public List<Song> getSongsByGenre(Genre genre) {

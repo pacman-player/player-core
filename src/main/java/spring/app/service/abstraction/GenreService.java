@@ -14,7 +14,8 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<GenreDto> getAllGenreDto();
 
-    List<Genre> getAllApprovedGenre();
+    List<GenreDto> getAllApprovedGenre();
+    //List<Genre> getAllApprovedGenre();
 
     boolean isExistByName(String name);
 }

@@ -3,6 +3,7 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 
@@ -28,10 +29,10 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
     }
 
     @Override
-    public List<Song> getAvailableContentForCompilation(SongCompilation songCompilation) {
-        TypedQuery<Song> query = entityManager.createQuery(
-                "SELECT s FROM Song s WHERE s.genre.id = :genreId AND s.isApproved = true AND s NOT IN " +
-                        "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", Song.class);
+    public List<SongDto> getAvailableContentForCompilation(SongCompilation songCompilation) {
+        TypedQuery<SongDto> query = entityManager.createQuery(
+                "SELECT s FROM SongDto s WHERE s.genre.id = :genreId AND s.isApproved = true AND s NOT IN " +
+                        "(SELECT s FROM SongDto s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", SongDto.class);
         query.setParameter("genreId", songCompilation.getGenre().getId());
         query.setParameter("compilationId", songCompilation.getId());
 

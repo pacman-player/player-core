@@ -1,5 +1,6 @@
 package spring.app.dao.abstraction;
 
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 
@@ -12,7 +13,7 @@ public interface SongCompilationDao extends GenericDao<Long, SongCompilation> {
     List<Song> getSongCompilationContentById(Long compilationId);
 
     // Получить доступные для подборки песни (исключая уже добавленные)
-    List<Song> getAvailableContentForCompilation(SongCompilation songCompilation);
+    List<SongDto> getAvailableContentForCompilation(SongCompilation songCompilation);
 
     void removeSongFromSongCompilation(SongCompilation songCompilation, Song song);
 

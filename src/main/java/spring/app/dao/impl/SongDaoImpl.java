@@ -3,6 +3,7 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
@@ -81,12 +82,26 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         return songs.get(0);
     }
 
+//    @Override
+//    public List<Song> getAllWithGenreByGenreId(Long id) {
+//        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
+//        query.setParameter("id", id);
+//
+//        List<Song> songs;
+//        try {
+//            songs = query.getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//        return songs;
+//    }
+
     @Override
-    public List<Song> getAllWithGenreByGenreId(Long id) {
-        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
+    public List<SongDto> getAllWithGenreByGenreId(Long id) {
+        TypedQuery<SongDto> query =  entityManager.createQuery("FROM SongDto WHERE genre_id = :id", SongDto.class);
         query.setParameter("id", id);
 
-        List<Song> songs;
+        List<SongDto> songs;
         try {
             songs = query.getResultList();
         } catch (NoResultException e) {
@@ -104,11 +119,11 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     }
 
     @Override
-    public List<Song> getAllApproved() {
+    public List<SongDto> getAllApproved() {
         String genericClassName = Song.class.toGenericString();
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
+        TypedQuery<SongDto> query = entityManager.createQuery(hql, SongDto.class);
         return query.getResultList();
     }
 

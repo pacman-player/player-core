@@ -94,12 +94,12 @@ public class AdminSongRestController {
     }
 
 
-@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getById(id));
-    return ResponseEntity.ok(songDto);
-}
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+        SongDto songDto = new SongDto(songService.getById(id));
+        return ResponseEntity.ok(songDto);
+    }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
@@ -107,9 +107,15 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
         return genreService.getAllGenreDto();
     }
 
+//    @GetMapping(value = "/genre/{id}")
+//    public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
+//        List<Song> list = songService.findSongsByGenreId(id);
+//        return list;
+//    }
+
     @GetMapping(value = "/genre/{id}")
-    public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
-        List<Song> list = songService.findSongsByGenreId(id);
+    public List<SongDto> getAllSongs(@PathVariable(value = "id") Long id) {
+        List<SongDto> list = songService.findSongsByGenreId(id);
         return list;
     }
 

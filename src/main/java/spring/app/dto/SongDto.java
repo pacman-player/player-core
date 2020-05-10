@@ -1,10 +1,12 @@
 package spring.app.dto;
 
+import spring.app.model.Bannable;
+import spring.app.model.Company;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
 
-public class SongDto {
+public class SongDto extends Bannable {
 
     private Long id;
     private String name;
@@ -184,5 +186,15 @@ public class SongDto {
                 ", createdAt=" + createdAt +
                 ", isApproved=" + isApproved +
                 '}';
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return false;
     }
 }
