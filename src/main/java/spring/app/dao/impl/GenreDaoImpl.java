@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-//  @Transactional(readOnly = true) это наверное надо удалить, тк транзакции в сервисе прописаны
 public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     GenreDaoImpl() {
         super(Genre.class);

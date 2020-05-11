@@ -11,7 +11,6 @@ import java.util.List;
 
 
 @Repository
-@Transactional(readOnly = true)
 public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> implements SongCompilationDao {
 
     SongCompilationDaoImpl() {
@@ -84,4 +83,10 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
                 .getResultList();
         return songCompilationList;
     }
+
+
+
+
+
+
 }

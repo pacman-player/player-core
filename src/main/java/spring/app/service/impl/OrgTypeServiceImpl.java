@@ -12,7 +12,6 @@ import spring.app.service.abstraction.OrgTypeService;
 import java.util.List;
 
 @Service
-@Transactional
 public class OrgTypeServiceImpl extends AbstractServiceImpl<Long, OrgType, OrgTypeDao> implements OrgTypeService {
 
     private final OrgTypeDtoDao orgTypeDtoDao;

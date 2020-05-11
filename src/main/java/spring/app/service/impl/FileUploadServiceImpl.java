@@ -27,7 +27,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
-@Transactional
 public class FileUploadServiceImpl implements FileUploadService {
 
     private final GenreService genreService;
@@ -48,6 +47,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> upload(String songAuthor, String songGenre, String songName, MultipartFile file)
             throws UnsupportedEncodingException {
         if (songAuthor.isEmpty() || songGenre.isEmpty() || songName.isEmpty()) {

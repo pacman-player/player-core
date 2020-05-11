@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {
 
     public AuthorDaoImpl() {

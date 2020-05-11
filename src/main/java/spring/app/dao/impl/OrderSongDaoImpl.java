@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional
 public class OrderSongDaoImpl extends AbstractDao<Long, OrderSong> implements OrderSongDao {
 
     OrderSongDaoImpl() {
