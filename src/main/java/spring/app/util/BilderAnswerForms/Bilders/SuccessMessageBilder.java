@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import spring.app.model.ErrorMessage;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SuccessMessageBilder implements BilderAnswer {
+public class SuccessMessageBilder<T> implements BilderAnswer {
     private boolean successFlag;
     private ErrorMessage errorMessage;
-
+    private T data;
     private String MetaMessage;
     private String DataMessage;
 
@@ -26,6 +26,11 @@ public class SuccessMessageBilder implements BilderAnswer {
 
     @Override
     public void setMetaMessage(String MetaMessage) {
+
+    }
+
+    @Override
+    public void setData(Object data) {
 
     }
 

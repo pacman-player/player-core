@@ -13,14 +13,29 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import spring.app.util.BilderAnswerForms.Bilders.ErrorMessageBilder;
 import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 
+import java.util.List;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-public class Response extends ResponseEntityExceptionHandler {
+public class Response<T> extends ResponseEntityExceptionHandler {
+    T data = null;
+    HttpStatus httpStatus;
+
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 
     DirectorAnswerBilder directorAnswerBilder = new  DirectorAnswerBilder();
 
+
+
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> Eror(Exception ex, WebRequest request) {
 
         directorAnswerBilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         directorAnswerBilder.setMessage("prosto exception");

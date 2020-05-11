@@ -3,7 +3,7 @@ package spring.app.util.BilderAnswerForms.Bilders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public interface BilderAnswer {
+public interface BilderAnswer<T> {
     void setSuccessFlag(Boolean successFlag);
 
     void setErrorMessage(HttpStatus status, String textMessage);
@@ -12,5 +12,6 @@ public interface BilderAnswer {
 
     void setMetaMessage(String MetaMessage);
 
+    void setData(T data);
 
 }

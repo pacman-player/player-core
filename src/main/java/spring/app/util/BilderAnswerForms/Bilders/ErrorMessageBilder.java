@@ -29,6 +29,11 @@ public class ErrorMessageBilder implements BilderAnswer {
 
     }
 
+    @Override
+    public void setData(Object data) {
+
+    }
+
     public boolean isSuccessFlag() {
         return successFlag;
     }

@@ -1,5 +1,6 @@
 package spring.app.controller.restController;
 
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
+import spring.app.util.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
@@ -199,9 +201,10 @@ public class AdminRestController {
         return roles;
     }
     @PostMapping(value = "/getRoleRequest")
-    private String getRoleRequest (HttpServletRequest request) {
-        String  answer = request.getRequestURI();
-        return answer;
+    private Response getRoleRequest (HttpServletRequest request) {
+       Response resp = new Response();
+
+        return resp;
     }
 
     @PostMapping(value = "/add_company")

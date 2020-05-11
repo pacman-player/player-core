@@ -4,11 +4,18 @@ package spring.app.util.BilderAnswerForms;
 import org.springframework.http.HttpStatus;
 import spring.app.util.BilderAnswerForms.Bilders.BilderAnswer;
 
-public class DirectorAnswerBilder {
+public class DirectorAnswerBilder<T> {
 
     private HttpStatus status;
     private String message;
     private String debugMessage;
+    private T data;
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+
 
     public void setStatus(HttpStatus status) {
         this.status = status;
@@ -27,6 +34,11 @@ public class DirectorAnswerBilder {
         bilderAnswer.setSuccessFlag(false);
         bilderAnswer.setErrorMessage(status,message);
         bilderAnswer.setDataMessage(debugMessage);
+    }
+
+    public void constructSuccessMessage(BilderAnswer<T> bilderAnswer){
+        bilderAnswer.setSuccessFlag(true);
+        bilderAnswer.setData(data);
     }
 
     /**
