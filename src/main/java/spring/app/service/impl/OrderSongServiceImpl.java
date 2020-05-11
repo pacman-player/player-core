@@ -60,4 +60,6 @@ public class OrderSongServiceImpl extends AbstractServiceImpl<Long, OrderSong, O
     public void bulkRemoveByCompany(Long companyId) {
         dao.bulkRemoveOrderSongByCompany(companyId);
     }
+
+
 }

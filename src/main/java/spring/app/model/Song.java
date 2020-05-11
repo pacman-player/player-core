@@ -7,6 +7,7 @@ import spring.app.dto.SongDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -68,6 +69,7 @@ public class Song extends Bannable {
 
     @Column(name = "approved")
     private Boolean isApproved = false;
+
 
     /**
      * Вспомогательное поле, которое используеться фронтом для корректного отображения данных.

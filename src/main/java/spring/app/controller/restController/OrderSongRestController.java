@@ -4,9 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import spring.app.dto.SongDto;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrderSongService;
@@ -20,6 +19,7 @@ import java.util.List;
 public class OrderSongRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(OrderSongRestController.class);
     private OrderSongService orderSongService;
+
 
     private UserService userService;
 
@@ -60,4 +60,6 @@ public class OrderSongRestController {
         List<String> queueList = companyService.getAllSongsInQueueByCompanyId(companyId);
         return queueList;
     }
+
+
 }
