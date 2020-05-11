@@ -1,6 +1,5 @@
 package spring.app.controller.restController;
 
-import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +8,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
-import spring.app.util.Response;
+import spring.app.util.ResponseBilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -71,7 +67,6 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-
     List<UserDto> getAllUsers() {
         List<UserDto> list = userService.getAllUsers();
 
@@ -91,7 +86,6 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-
     List<CompanyDto> getAllCompanies() {
         List<CompanyDto> list = companyService.getAllCompanies();
 
@@ -200,11 +194,13 @@ public class AdminRestController {
         }
         return roles;
     }
-    @PostMapping(value = "/getRoleRequest")
-    private Response getRoleRequest (HttpServletRequest request) {
-       Response resp = new Response();
 
-        return resp;
+    @PostMapping(value = "/getRoleRequest")
+    private Response getRoleRequest(WebRequest request) {
+        ResponseBilder responseBilder = new ResponseBilder();
+        List<RoleDto> roles = roleService.getAllRolesDto();
+        Response response = responseBilder.success(roles, request);
+        return response;
     }
 
     @PostMapping(value = "/add_company")
@@ -218,12 +214,12 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/email")
-    public String checkEmail(@RequestParam String email, @RequestParam long id){
+    public String checkEmail(@RequestParam String email, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
-    public String checkLogin(@RequestParam String login, @RequestParam long id){
+    public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
 }

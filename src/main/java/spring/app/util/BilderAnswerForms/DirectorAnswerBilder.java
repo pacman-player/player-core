@@ -33,7 +33,7 @@ public class DirectorAnswerBilder<T> {
     public void constructErrorMessage(BilderAnswer bilderAnswer){
         bilderAnswer.setSuccessFlag(false);
         bilderAnswer.setErrorMessage(status,message);
-        bilderAnswer.setDataMessage(debugMessage);
+
     }
 
     public void constructSuccessMessage(BilderAnswer<T> bilderAnswer){
