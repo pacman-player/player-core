@@ -1,14 +1,18 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.OrderSongDao;
+import spring.app.dto.SongDto;
+import spring.app.model.Company;
 import spring.app.model.OrderSong;
 import spring.app.service.abstraction.OrderSongService;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderSongServiceImpl extends AbstractServiceImpl<Long, OrderSong, OrderSongDao> implements OrderSongService {
@@ -17,6 +21,8 @@ public class OrderSongServiceImpl extends AbstractServiceImpl<Long, OrderSong, O
         super(dao);
     }
 
+    @Autowired
+    private CompanyServiceImpl companyService;
 
     @Override
     public long getSongOrdersByCompanyIdAndPeriod(Long id, Long period) {

@@ -2,6 +2,9 @@ package spring.app.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="order_song")
@@ -10,6 +13,10 @@ public class OrderSong {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+
+
+
 
     private Timestamp timestamp;
 
@@ -20,10 +27,21 @@ public class OrderSong {
     public OrderSong() {
     }
 
+
+
     public OrderSong(Company company, Timestamp timestamp) {
         this.company = company;
         this.timestamp = timestamp;
     }
+    public OrderSong(Company company, Timestamp timestamp, Song song) {
+        this.company = company;
+        this.timestamp = timestamp;
+        this.song = song;
+    }
+    @ManyToOne
+    @JoinColumn(name = "song_id")
+    private Song song;
+
 
 
     public Long getId() {

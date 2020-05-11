@@ -9,6 +9,7 @@ import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.dto.SongCompilationDto;
+import spring.app.dto.SongDtoTop;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
@@ -250,28 +251,28 @@ public class TestDataInit {
         // adding MP3 files  from /music1/ to /music
         // adding MP3 files  from /init_song/ to /music
         LOGGER.info("===== Ready to load music files! =====");
-        try {
-            File musicDirectory = new File(musicPath);
-            //если каталог присутствует - удаляем каталог
-            if (musicDirectory.exists()) {
-                FileUtils.deleteDirectory(musicDirectory);
-            }
-            if (!musicDirectory.exists()) {
-                LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
-                musicDirectory.mkdir();
-
-                mp3Parser.apply(musicInitPath);
-            }
-        } catch (Exception e) {
-            LOGGER.error("We have issues reading or writing music files during init. Please check if init data is accessible and '/music' directory is writable", e);
-            throw e;
-        }
-
-        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
-        songService.getAll().forEach(song -> {
-            song.setApproved(true);
-            songService.update(song);
-        });
+//        try {
+//            File musicDirectory = new File(musicPath);
+//            //если каталог присутствует - удаляем каталог
+//            if (musicDirectory.exists()) {
+//                FileUtils.deleteDirectory(musicDirectory);
+//            }
+//            if (!musicDirectory.exists()) {
+//                LOGGER.info("Looks like '{}' doesn't exist or is altered, gonna parse some MP3 files from '{}'", musicPath, musicInitPath);
+//                musicDirectory.mkdir();
+//
+//                mp3Parser.apply(musicInitPath);
+//            }
+//        } catch (Exception e) {
+//            LOGGER.error("We have issues reading or writing music files during init. Please check if init data is accessible and '/music' directory is writable", e);
+//            throw e;
+//        }
+//
+//        // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
+//        songService.getAll().forEach(song -> {
+//            song.setApproved(true);
+//            songService.update(song);
+//        });
         Song song1 = songService.getByName("Start Again");
         Song song3 = songService.getByName("Really");
         song1.setApproved(false);
@@ -464,11 +465,55 @@ public class TestDataInit {
         long endDate = new Date().getTime();
         Random random = new Random(System.currentTimeMillis());
 //        long totalOrders = random.nextInt(3000);
-        long totalOrders = random.nextInt(30);
-        for (int i = 0; i < totalOrders; i++) {
-            orderSongService.save(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
-                    .nextLong(startDate, endDate))));
-        }
+        long totalOrders = random.nextInt(300);
+
+        Timestamp today = getTimestamp(1);
+        Timestamp week = getTimestamp(2);
+        Timestamp month = getTimestamp(3);
+        Timestamp year = getTimestamp(4);
+        Timestamp[] arr={today,week,month,year};
+        // пока это дни недели
+        Company company3=new Company("company3");
+        companyService.save(company3);
+        Company company4=new Company("company4");
+        companyService.save(company4);
+
+        orderSongService.save(new OrderSong(company1,getTimestamp(200),song_5));
+
+        orderSongService.save(new OrderSong(company1,today,song_1));
+
+        orderSongService.save(new OrderSong(company2,today,song_1));
+        orderSongService.save(new OrderSong(company2,week,song_2));
+
+        orderSongService.save(new OrderSong(company3,today,song_1));
+        orderSongService.save(new OrderSong(company3,week,song_2));
+        orderSongService.save(new OrderSong(company3,month,song_3));
+
+        orderSongService.save(new OrderSong(company4,today,song_1));
+        orderSongService.save(new OrderSong(company4,week,song_2));
+        orderSongService.save(new OrderSong(company4,month,song_3));
+        orderSongService.save(new OrderSong(company4,year,song_4));
+
+//        for (int i=0;i<4;i++){
+//            orderSongService.save(new OrderSong(company1,arr[i],song_1));
+//            orderSongService.save(new OrderSong(company1,arr[i],song_2));
+//            orderSongService.save(new OrderSong(company1,arr[i],song_3));
+//            orderSongService.save(new OrderSong(company1,arr[i],song_4));
+//        }
+//        for (int i=1;i<4;i++){
+//            orderSongService.save(new OrderSong(company2,arr[i],song_2));
+//            orderSongService.save(new OrderSong(company2,arr[i],song_3));
+//            orderSongService.save(new OrderSong(company2,arr[i],song_4));
+//        }
+//        for (int i=2;i<4;i++){
+//            orderSongService.save(new OrderSong(company4,arr[i],song_5));
+//            orderSongService.save(new OrderSong(company4,arr[i],song_4));
+//        }
+
+//        for (int i = 0; i < totalOrders; i++) {
+//            orderSongService.save(new OrderSong(company1, new Timestamp(ThreadLocalRandom.current()
+//                    .nextLong(startDate, endDate))));
+//        }
 
         //Mbean setup here
         DownloadMusicServiceConfigurerMBean serviceConfigurer = new DownloadMusicServiceConfigurer(downloadMusicServiceFactory);
@@ -480,5 +525,37 @@ public class TestDataInit {
         Genre notDefinedGenre = new Genre("not defined", true);
         genreService.save(notDefinedGenre);
 
+//        List<SongDtoTop> songDtoTopsAll = songService.getTopSongsByNumberOfList(4);
+//        List<SongDtoTop> songDtoTops = songService.getTopSongsByNumberOfList(2);
+
+ //       SongDtoTop songDtoTop=songService.getSongDtoTopWithPoint(4,80L);
+    }
+
+    private Timestamp getTimestamp(int numbOfList) {
+        int begin = 0;
+        switch (numbOfList) {
+            case 1:
+                begin = 1;
+                break;
+            case 2:
+                begin = 7;
+                break;
+            case 3:
+                begin = 30;
+                break;
+            case 4:
+                begin = 365;
+                break;
+            default:
+            //    throw new IllegalArgumentException(); //выборка может быть за день, неделю, месяц или год
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -numbOfList);
+        cal.set(Calendar.HOUR_OF_DAY,0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        Date beginDay = cal.getTime();
+        Timestamp beginTimestamp = new Timestamp(beginDay.getTime());
+        return beginTimestamp;
     }
 }

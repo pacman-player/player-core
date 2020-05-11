@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 import spring.app.dto.SongDto;
+import spring.app.dto.SongDtoTop;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
@@ -39,4 +40,8 @@ public interface SongService extends GenericService<Long, Song>{
     Long getSongIdByAuthorAndName(String author, String name);
 
     Long getAuthorIdBySongId(Long songId);
+
+    List<SongDtoTop> getTopSongsByNumberOfList(int numbOfList);
+
+    SongDtoTop getSongDtoTopWithPoint(int numbOfList, Long idSong);
 }

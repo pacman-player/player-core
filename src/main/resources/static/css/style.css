@@ -16,6 +16,15 @@
     object-position: 0 0;
 }
 
+.layer {
+    overflow: auto; /* Добавляем полосы прокрутки */
+    /*width: 330px; !* Ширина блока *!*/
+    height: 400px; /* Высота блока */
+    padding: 5px; /* Поля вокруг текста */
+
+    /*border: solid 1px black; !* Параметры рамки *!*/
+}
+
 
 
 

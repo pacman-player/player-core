@@ -119,7 +119,9 @@ public class Company {
 
     public Company() {
     }
-
+    public Company(String name) {
+        this.name = name;
+    }
     public Long getId() {
         return id;
     }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.SongDto;
+import spring.app.dto.SongDtoTop;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.User;
@@ -19,6 +20,7 @@ public class SongRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(SongRestController.class);
     private CompanyService companyService;
     private SongService songService;
+
 
     public SongRestController(CompanyService companyService,
                               SongService songService) {
@@ -106,6 +108,19 @@ public class SongRestController {
 
         user.setCompany(company);
         LOGGER.info("Song was removed from ban for the Company = {}", company.getName());
+    }
+    @PostMapping("getTopSongs/{numbOfList}")
+    public List<SongDtoTop> getTopSongs(@PathVariable int numbOfList) {
+        LOGGER.info("POST request 'getTopSongs'  numbOfList = {}", numbOfList);
+        List<SongDtoTop> songDtos=songService.getTopSongsByNumberOfList(numbOfList);
+        return songDtos;
+    }
+    @PostMapping("getGragicSongs/{numbOfList}/{idSong}")
+    public int [][] getGragicSongs(@PathVariable int numbOfList,@PathVariable Long idSong) {
+        LOGGER.info("POST request 'getGragicSongs'  numbOfList = {},  idSong = {}  ", numbOfList,idSong);
+      //  List<SongDtoTop> songDtos=songService.getTopSongsByNumberOfList(numbOfList);
+        SongDtoTop songDtoTop=songService.getSongDtoTopWithPoint(numbOfList,idSong);
+        return songDtoTop.getPoint();
     }
 
 }
