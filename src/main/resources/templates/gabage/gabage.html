@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Gabage</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet"/>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="/css/admin/notification.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/user/user.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 ">
+            <div class="layer">
+                <div id="js-textSongDelete" class="js-textSongDelete">
+                    <div>
+                        <h5>'+getListSong()+'</h5>
+                    </div>
+                </div>
+            </div>
+        </div>    <!--     текст   песни-->
+        <div class="col-md-2">
+            <div class="layer">
+                <div class="btn-group-vertical">
+                    <div aria-label="Vertical button group" class="btn-group-vertical" role="group">
+                        <button class="btn btn-light js-byDay js-numberOfList" value="1" type="button">топ за день</button>
+                        <button class="btn btn-light js-byWeek js-numberOfList" value="2" type="button">топ за неделю </button>
+                        <button class="btn btn-light js-byMonth js-numberOfList" value="3" type="button">топ за месяц </button>
+                        <button class="btn btn-light js-byYear js-numberOfList" value="4" type="button">топ за год</button>
+                    </div><!--        кнопки для выбора периода-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--        top songs-->
+
+
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="myModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">График</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="js-modal-body" id="js-modal-body">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--   modal window -->
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/jquery/jquery.mask.min.js"></script>
+
+</body>
+</html>

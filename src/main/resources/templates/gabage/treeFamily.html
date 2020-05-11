@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <title>Family Tree</title>
+
+    <style>
+        .layer {
+            overflow: auto; /* Добавляем полосы прокрутки */
+            width: 300px; /* Ширина блока */
+            height: 270px; /* Высота блока */
+            padding: 5px; /* Поля вокруг текста */
+
+            /*border: solid 1px black; !* Параметры рамки *!*/
+        }
+
+        .layerforHistory {
+            overflow: auto; /* Добавляем полосы прокрутки */
+            width: 100%; /* Ширина блока */
+            height: 270px; /* Высота блока */
+            padding: 5px; /* Поля вокруг текста */
+
+            /*border: solid 1px black; !* Параметры рамки *!*/
+        }
+
+        .textSmoll {
+            color: darkgrey;
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg  navbar-red bg-dark shadow">
+    <a class="navbar-brand" href="#">Федоровы</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-4">
+            <li class=nav-item text-nowrap>
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div id="idDataMeanDB" th:data-children="${htmlMean.getJsChildren()}" th:data-father="${htmlMean.getJsFother()}"
+     th:data-image="${htmlMean.getJsImage()}" th:data-mainFoto="${mainFoto}"
+     th:data-mother="${htmlMean.getJsMoher()}" th:data-person="${htmlMean.getJsPerson()}"
+     th:data-sibilings="${htmlMean.getJsSibilings()}" th:data-spouse="${htmlMean.getJsSpouse()}"
+     th:data-urlSpring="${puthFoString}"
+></div>
+<div id="idPerson" th:data-person="${person.id}"></div>
+<div id="idPersonAut" th:data-person="${personAut.id}"></div>
+<div class="container-fluid" id="js-dinamic">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center  ">
+        <h2 class="h2" th:text="${person.getLastName()+' '+person.getFirstName()+' '+person.getThirdName()}"></h2>
+    </div>
+    <div class="row">
+        <div class="col-md-4 unNeedClass">
+            <p></p>
+            <div class="js-mainFoto js-personjs-person">
+                <img class="js-mainFoto-img" width="5%"/>
+            </div>
+        </div>     <!--  Main Foto-->
+
+        <div class="col-md-8">
+            <div class="js-right">
+                <ul class="nav nav-tabs" id="someTabs">
+                    <li class="nav-item" id="nus0">
+                        <a class="nav-link active" data-toggle="tab" href="#home">Наш человек </a>
+                    </li>
+                    <li class="nav-item  " id="nus1">
+                        <a class="nav-link nusFather" data-toggle="tab" href="#menu1">Отец</a>
+                    </li>
+                    <li class="nav-item  " id="nus2">
+                        <a class="nav-link nus2" data-toggle="tab" href="#menu2">Мама</a>
+                    </li>
+                    <li class="nav-item " id="nus3">
+                        <a class="nav-link nus3" data-toggle="tab" href="#menu3">Братья и сестры</a>
+                    </li>
+                    <li class="nav-item " id="nus4">
+                        <a class="nav-link nus4" data-toggle="tab" href="#menu4">Дети</a>
+                    </li>
+                    <li class="nav-item " id="nus5">
+                        <a class="nav-link nus4" data-toggle="tab" href="#menu5">Cупруг/а</a>
+                    </li>
+                    <li class="nav-item " id="nus6">
+                        <a class="nav-link nus4" data-toggle="tab" href="#menu6">Фото</a>
+                    </li>
+                    <li class="nav-item " id="nus7">
+                        <a class="nav-link nus4" data-toggle="tab" href="#menu7">Добавить фото</a>
+                    </li>
+                    <li class="nav-item " id="nus8">
+                        <a class="nav-link nus4" data-toggle="tab" href="#menu8">Поиск</a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active js-person" id="home">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Краткая история</h5>
+                            </div>
+                            <div class="js -person"></div>
+
+                        </div>
+                        <!-- вкладка наш человек-->
+
+                        <div class="tab-pane fade js-father" id="menu1">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Отец</h5>
+                            </div>
+                            <div class="js-father"></div>
+                        </div>
+                        <!-- вкладка отец-->
+
+                        <div class="tab-pane fade js-mother" id="menu2">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Мама</h5>
+                            </div>
+                            <div class="js-mother"></div>
+                        </div>
+                        <!-- вкладка Мама-->
+
+                        <div class="tab-pane fade js-sibilings" id="menu3">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Братья и сестры</h5>
+                            </div>
+                            <div class="js-sibilings"></div>
+                        </div>
+                        <!-- вкладка Братья и сестры-->
+
+                        <div class="tab-pane fade js-children" id="menu4">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Дети</h5>
+                            </div>
+                            <div class="js-children"></div>
+                        </div>
+                        <!-- Дети-->
+
+                        <div class="tab-pane fade js-spouse" id="menu5">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Супруг/а</h5>
+                            </div>
+                            <div class="js-spouse"></div>
+                        </div>
+                        <!-- вкладка Spouse-->
+
+                        <div class="tab-pane fade js-foto" id="menu6">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Фото</h5>
+                            </div>
+                            <div class="js-foto"></div>
+                        </div>
+                        <!-- вкладка Foto-->
+
+                        <div class="tab-pane fade " id="menu7">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Добавить фото</h5>
+                            </div>
+                            <div>
+                                <form action="#" class="js-AddfotoForm" enctype="multipart/form-data" method="POST"
+                                      th:action="@{/person/foto/addFoto88}">
+                                    <input aria-describedby="inputGroup-sizing-sm" aria-label="Sizing example input"
+                                           class="form-control"
+                                           id="id"
+                                           name="id" th:value="${person.id}" type="hidden">
+
+                                    <input id="fileFromForm" name="imageFile" type="file">
+                                    <!--                                    <input id="js-addFotoBtn" class="js-addFotoBtn"  type="submit"  value="Upload"/>-->
+                                    <button class="btn btn-primary js-addFotoBtnAjax " id="js-addFotoBtnAjax" name="Add"
+                                            type="submit">Send
+                                    </button>
+
+
+                                    <p></p>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-primary  ">
+                                            <input name="mainFoto" type="radio" value="true"> Главное фото
+                                        </label>
+
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- вкладка Добавить Foto-->
+
+                        <div class="tab-pane fade " id="menu8">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h5 class="h5">Поиск</h5>
+                            </div>
+                            <div>
+                                <form action="#" class="js-findByName" enctype="multipart/form-data" method="POST"
+                                      th:action="@{/person/foto/addFoto88}">
+                                    <!--                                    <input aria-describedby="inputGroup-sizing-sm" aria-label="Sizing example input"-->
+                                    <!--                                           class="form-control"-->
+                                    <!--                                           id="id"-->
+                                    <!--                                           name="id" th:value="${person.id}" type="hidden">-->
+
+                                    <input id="nameForFind" name="nameForFind" pattern="[A-Za-zА-Яа-яЁё]" type="text">
+                                    <button class="btn btn-primary js-findByNameAjax " id="js-findByNameAjax"
+                                            name="name"
+                                            type="submit">Search
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="js-addFindByFoto">
+                            </div>
+                        </div>
+                        <!-- вкладка Добавить Foto-->
+
+
+                    </div>
+                </div>    <!-- правая часть-->
+            </div>
+        </div>  <!--  Right part-->
+    </div>
+</div>
+</div>
+<div>
+    <!-- Modal #addCommentModal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="addCommentModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add comment</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="http://google.com" class="js-formAddComment" method="post">
+                        <div class="form-label-group">
+                            <label class="col-form-label" for="idPersonAC">idPerson</label>
+                            <input class="form-control" id="idPersonAC" name="idPersonAC" readonly type="text"></br>
+
+                            <label class="col-form-label" for="idFotoAC">idFoto</label>
+                            <input class="form-control" id="idFotoAC" name="idFotoAC" readonly required
+                                   type="text"></br>
+
+
+                            <label class="col-form-label" for="addComment">Comment</label>
+                            <input class="form-control" id="addComment" maxlength="210" name="addComment" required
+                                   th:cols="4" type="text"></br>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-primary js-addCommentBtnAjax " id="btnAddComent" name="Add"
+                                    type="submit">Send
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal #addCommentModal -->
+
+    <!-- Modal #deleteFotoModal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteFotoModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete foto</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="http://google.com" class="js-formDeleteFoto" method="post">
+                        <div class="form-label-group">
+                            <label class="col-form-label" for="idPersonDF">idPerson</label>
+                            <input class="form-control" id="idPersonDF" name="idPersonDF" readonly type="text"></br>
+                            <label class="col-form-label" for="idFotoDF">idFoto</label>
+                            <input class="form-control" id="idFotoDF" name="idFotoDF" readonly required
+                                   type="text"></br>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-danger js-deleteFotoBtnAjax" name="deleteFoto">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal #deleteFotoModal -->
+
+    <!-- Modal #deleteCommentModal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="deleteCommentModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete foto</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="http://google.com" class="js-deleteCommentFormAjax" method="post">
+                        <div class="form-label-group">
+
+                            <label class="col-form-label" for="idFotoDC">idFoto</label>
+                            <input class="form-control" id="idFotoDC" name="idFotoDC" readonly required
+                                   type="text"></br>
+
+                            <label class="col-form-label" for="idPersonDC">idPerson</label>
+                            <input class="form-control" id="idPersonDC" name="idPersonDC" readonly type="text"></br>
+
+                            <label class="col-form-label" for="idCommentDC">idComment</label>
+                            <input class="form-control" id="idCommentDC" name="idCommentDC" readonly type="text"></br>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                            <button class="btn btn-danger js-deleteCommentBtnAjax " name="deleteFoto">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal #deleteCommentModal -->
+</div>
+
+
+<!--<script src="https://fedorovtree.herokuapp.com/js/popper.min.js"></script>-->
+<!--<script src="./js/jquery-3.4.1.min.js"></script>-->
+<!--<script src="https://fedorovtree.herokuapp.com/bootstrap/js/jquery-3.4.1.min.js"></script>-->
+<!--<script src="C:/js/jquery-3.4.1.min.js"></script>-->
+<!--<script src="https://fedorovtree.herokuapp.com/js/standart/jquery-3.4.1.min.js"></script>-->
+<!--<link href="https://fedorovtree.herokuapp.com/css/bootstrap.min.css" rel="stylesheet">-->
+<!--<script src="https://fedorovtree.herokuapp.com/js/standart/bundle.js"></script>-->
+
+<script src="https://fedorovtree.herokuapp.com/bootstrap/js/popper.min.js"></script>
+<script src="https://fedorovtree.herokuapp.com/bootstrap/js/jquery-3.4.1.min.js"></script>
+<link href="https://fedorovtree.herokuapp.com/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://fedorovtree.herokuapp.com/bootstrap/js/bootstrap.bundle.js"></script>
+
+
+<script src="http://localhost:8080/bootstrap/js/popper.min.js"></script>
+<script src="http://localhost:8080/bootstrap/js/jquery-3.4.1.min.js"></script>
+<link href="http://localhost:8080/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://localhost:8080/bootstrap/js/bootstrap.bundle.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        var idPerson2 = idPerson.getAttribute('data-person');
+        var idPersonAuth2 = idPersonAut.getAttribute('data-person');
+        var person = idDataMeanDB.getAttribute('data-person');
+        var father = idDataMeanDB.getAttribute('data-father');
+        var mother = idDataMeanDB.getAttribute('data-mother');
+        var image = idDataMeanDB.getAttribute('data-image');
+        var children = idDataMeanDB.getAttribute('data-children');
+        var sibilings = idDataMeanDB.getAttribute('data-sibilings');
+        var spouse = idDataMeanDB.getAttribute('data-spouse');
+        var mainFoto = idDataMeanDB.getAttribute('data-mainFoto');
+        var urlSpring = idDataMeanDB.getAttribute('data-urlSpring');
+
+        newFirstMethod(person, father, mother, image, children, sibilings, spouse, mainFoto, urlSpring);
+        //   $('#idDataMeanDB').remove();
+    });
+</script>
+
+<script src="http://localhost:8080/slick/slick.min.js" type="text/javascript"></script>
+
+<script src="https://fedorovtree.herokuapp.com/js/newJS/MainJS.js"></script>
+<script src="https://fedorovtree.herokuapp.com/js/newJS/FindByName.js"></script>
+<script src="https://fedorovtree.herokuapp.com/js/newJS/DeleteFoto.js"></script>
+<script src="https://fedorovtree.herokuapp.com/js/newJS/DeleteComment.js"></script>
+<script src="https://fedorovtree.herokuapp.com/js/newJS/AddFoto.js"></script>
+<script src="https://fedorovtree.herokuapp.com/js/newJS/AddComment.js"></script>
+
+<script src="http://localhost:8080/js/newJS/FindByName.js"></script>
+<script src="http://localhost:8080/js/newJS/DeleteFoto.js"></script>
+<script src="http://localhost:8080/js/newJS/MainJS.js"></script>
+<script src="http://localhost:8080/js/newJS/DeleteComment.js"></script>
+<script src="http://localhost:8080/js/newJS/AddFoto.js"></script>
+<script src="http://localhost:8080/js/newJS/AddComment.js"></script>
+<!--<script>-->
+<!--    alert(1);-->
+<!--    setTimeout(function () {-->
+<!--        alert(2);-->
+<!--        $('.your-class').slick();-->
+<!--    }, 10000);-->
+<!--</script>-->
+</body>
+</html>
