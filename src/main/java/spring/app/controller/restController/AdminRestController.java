@@ -79,10 +79,7 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get_all_roles")
-    public List<RoleDto> getAllRoles() {
-        return roleService.getAllRolesDto();
-    }
+
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
@@ -184,6 +181,38 @@ public class AdminRestController {
         orgTypeService.deleteById(id);
     }
 
+    @GetMapping(value = "/all_roles")
+    public Response getAllRoles() {
+        ResponseBilder responseBilder = new ResponseBilder();
+       Response response = responseBilder.success(roleService.getAllRolesDto());
+        return response;
+    }
+
+    @DeleteMapping(value = "/delete_role")
+    public void deleteRole(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_role' with id = {}", id);
+        orgTypeService.deleteById(id);
+    }
+
+    @PostMapping(value = "/add_role")
+    public void addRole(@RequestBody Role role) {
+        LOGGER.info("POST request '/add_role' with role = {}", role);
+        roleService.save(role);
+    }
+
+    @PutMapping(value = "/update_role")
+    public void updateRole(@RequestBody Role role) {
+        LOGGER.info("PUT request '/update_role' with role = {}", role);
+        roleService.update(role);
+    }
+
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/role/est_type_name_is_free")
+    public boolean isLoginFreeRole(@RequestParam("name") String name) {
+        boolean isLoginFree = (roleService.getByName(name)== null);
+        return isLoginFree;
+    }
+
 
     private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
@@ -196,10 +225,10 @@ public class AdminRestController {
     }
 
     @PostMapping(value = "/getRoleRequest")
-    private Response getRoleRequest(WebRequest request) {
+    private Response getRoleRequest() {
         ResponseBilder responseBilder = new ResponseBilder();
         List<RoleDto> roles = roleService.getAllRolesDto();
-        Response response = responseBilder.success(roles, request);
+        Response response = responseBilder.success(roles);
         return response;
     }
 

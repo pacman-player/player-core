@@ -3,6 +3,7 @@ package spring.app.util;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -30,8 +31,8 @@ public class ResponseBilder<T> extends ResponseEntityExceptionHandler {
     DirectorAnswerBilder directorAnswerBilder = new DirectorAnswerBilder();
 
 
-    @ExceptionHandler(Exception.class)
-    public Response Error(Exception ex, WebRequest request) {
+  //  @ExceptionHandler(Exception.class)
+    public ResponseEntity Error(Exception ex, WebRequest request) {
 
         directorAnswerBilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         directorAnswerBilder.setMessage("prosto exception");
@@ -39,11 +40,12 @@ public class ResponseBilder<T> extends ResponseEntityExceptionHandler {
 
         ErrorMessageBilder errorBilder = new ErrorMessageBilder();
         directorAnswerBilder.constructErrorMessage(errorBilder);
+        ResponseEntity responseEntity = new ResponseEntity<>(errorBilder.getResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return errorBilder.getResponse();
+        return responseEntity;
     }
 
-    public Response success(T data, WebRequest request) {
+    public Response success(T data) {
 
         directorAnswerBilder.setStatus(HttpStatus.OK);
         directorAnswerBilder.setData(data);
