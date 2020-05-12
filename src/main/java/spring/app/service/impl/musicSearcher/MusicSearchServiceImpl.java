@@ -87,19 +87,19 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     }
 
     //определяет жанр песни
-    public String[] getGenre(String trackName) throws IOException {
-        return genreDefiner.defineGenre(trackName);
+    private String[] getGenre(String author, String trackSong) throws IOException {
+        return genreDefiner.defineGenre(author, trackSong);
     }
 
     //заносит данные скачаной песни в бд и возвращает id песни
     public Long updateData(Track track) throws IOException {
-        String[] genreNames = getGenre(track.getFullTrackName());
+        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
 
     //заносит данные песни из папки при инициализации в бд и возвращает id песни
     public Long updateData(String fullTrackName, String author, String songName) throws IOException {
-        String[] genreNames = getGenre(fullTrackName);
+        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
         return dataUpdater.updateData(author, songName, genreNames);
     }
 }
