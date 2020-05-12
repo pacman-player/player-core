@@ -39,4 +39,6 @@ public interface SongService extends GenericService<Long, Song>{
     Long getSongIdByAuthorAndName(String author, String name);
 
     Long getAuthorIdBySongId(Long songId);
+
+    void resetSongCounter(long songId);
 }

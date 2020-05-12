@@ -30,12 +30,12 @@ public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
     private final OrderSongService orderSongService;
     private final TelegramService telegramService;
-    private SongService songService;
-    private CompanyService companyService;
-    private SongQueueService songQueueService;
-    private AddressService addressService;
-    private TelegramUserService telegramUserService;
-    private VisitService visitService;
+    private final SongService songService;
+    private final CompanyService companyService;
+    private final SongQueueService songQueueService;
+    private final AddressService addressService;
+    private final TelegramUserService telegramUserService;
+    private final VisitService visitService;
 
     @Autowired
     public TelegramRestController(TelegramService telegramService,
@@ -143,7 +143,8 @@ public class TelegramRestController {
         long songId = Long.parseLong(headers.get("songId").get(0));
         long companyId = Long.parseLong(headers.get("companyId").get(0));
         LOGGER.info("Provided songId = {} and companyId = {}", songId, companyId);
-        // получаем песню, компанию и очередь компании из базы
+        // получаем песню, компанию и очередь компании из базы и обнуляем счетчик сервиса для песни
+        songService.resetSongCounter(songId);
         Song songById = songService.getById(songId);
         Company companyById = companyService.getById(companyId);
         SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);

@@ -3,9 +3,11 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.app.dao.abstraction.CounterDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.dto.SongDtoDao;
 import spring.app.dto.SongDto;
+import spring.app.model.Counter;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.SongCompilationService;
@@ -23,13 +25,16 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     private final SongDtoDao songDtoDao;
     private final SongCompilationService songCompilationService;
     private final SongFileService songFileService;
+    private final CounterDao counterDao;
 
     @Autowired
-    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService, SongFileService songFileService) {
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, SongCompilationService songCompilationService,
+                           SongFileService songFileService, CounterDao counterDao) {
         super(dao);
         this.songDtoDao = songDtoDao;
         this.songCompilationService = songCompilationService;
         this.songFileService = songFileService;
+        this.counterDao = counterDao;
     }
 
     @Override
@@ -102,6 +107,13 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     @Override
     public Long getAuthorIdBySongId(Long songId) {
         return dao.getAuthorIdBySongId(songId);
+    }
+
+    @Override
+    public void resetSongCounter(long songId) {
+        SongDto dto = songDtoDao.getById(songId);
+        String trackName = dto.getAuthorName().toUpperCase() + " - " + dto.getName().toUpperCase();
+        counterDao.restart(trackName);
     }
 
     @Override

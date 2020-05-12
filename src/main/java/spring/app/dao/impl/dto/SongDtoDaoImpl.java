@@ -24,4 +24,14 @@ public class SongDtoDaoImpl implements SongDtoDao {
 
         return songDtos;
     }
+
+    @Override
+    public SongDto getById(long songId) {
+        return entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +
+                "FROM Song s where s.id = :id", SongDto.class)
+                .setParameter("id", songId)
+                .setMaxResults(1)
+                .getResultList()
+                .get(0);
+    }
 }

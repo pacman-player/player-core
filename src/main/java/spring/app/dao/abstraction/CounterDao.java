@@ -1,15 +1,12 @@
 package spring.app.dao.abstraction;
 
-import spring.app.model.Counter;
-import spring.app.model.CounterType;
-
 public interface CounterDao {
 
-    void start(CounterType counterType);
+    void start(String counterType);
 
-    Counter restart(CounterType counterType);
+    int restart(String counterType);
 
-    void setTo(CounterType counterType, int value);
+    void setTo(String counterType, int value);
 
-    int getValue(CounterType counterType);
+    int getValue(String counterType);
 }

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.dao.abstraction.CounterDao;
-import spring.app.model.CounterType;
 import spring.app.service.abstraction.DataUpdateService;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.abstraction.GenreDefinerService;
@@ -58,9 +57,11 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     @Override
     public Track getSong(String author, String song) throws IOException {
         // складываем сервисы поиска в лист
-        // проходим в цикле по каждому сервису,
-        // пытаемся найти песню и при положительном исходе брейкаем цикл
-        int serviceCount = counterDao.getValue(CounterType.DOWNLOAD_MUSIC_SERVICE);
+        // проходим в цикле по каждому сервису, начиная с позиции счетчика сервисов
+        // пытаемся найти песню и при положительном исходе брейкаем цикл,
+        // предварительно записав в счетчик в БД позицию следующего сервиса
+        String trackName = author.toUpperCase() + " - " + song.toUpperCase();
+        int serviceCount = counterDao.getValue(trackName);
         List<DownloadMusicService> downloadMusicServices = downloadMusicServiceFactory.getDownloadServices();
         for (int i = serviceCount; i < downloadMusicServices.size(); ) {
             try {
@@ -77,11 +78,7 @@ public class MusicSearchServiceImpl implements MusicSearchService {
                         downloadMusicServices.get(i).getClass().getSimpleName().replaceAll("\\$.+", ""));
             }
             if (track != null) {
-                if (i == downloadMusicServices.size() - 1) {
-                    counterDao.restart(CounterType.DOWNLOAD_MUSIC_SERVICE);
-                } else {
-                    counterDao.setTo(CounterType.DOWNLOAD_MUSIC_SERVICE, i);
-                }
+                counterDao.setTo(trackName, i + 1);
                 break;
             }
             i++;

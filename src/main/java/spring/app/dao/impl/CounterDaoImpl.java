@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CounterDao;
 import spring.app.model.Counter;
-import spring.app.model.CounterType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -20,7 +19,7 @@ public class CounterDaoImpl implements CounterDao {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void start(CounterType counterType) {
+    public void start(String counterType) {
         Counter temp = new Counter(counterType, 0);
         entityManager.persist(temp);
     }
@@ -28,15 +27,15 @@ public class CounterDaoImpl implements CounterDao {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             isolation = Isolation.READ_COMMITTED)
-    public Counter restart(CounterType counterType) {
+    public int restart(String counterType) {
         Counter temp = new Counter(counterType, 0);
-        return entityManager.merge(temp);
+        return entityManager.merge(temp).getValue();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             isolation = Isolation.READ_COMMITTED)
-    public void setTo(CounterType counterType, int value) {
+    public void setTo(String counterType, int value) {
         Counter temp = new Counter(counterType, value);
         entityManager.merge(temp);
     }
@@ -44,8 +43,12 @@ public class CounterDaoImpl implements CounterDao {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             isolation = Isolation.READ_COMMITTED)
-    public int getValue(CounterType counterType) {
-        Counter temp = entityManager.find(Counter.class, counterType, LockModeType.PESSIMISTIC_READ);
+    public int getValue(String counterType) {
+        Counter temp = entityManager.find(Counter.class, counterType, LockModeType.PESSIMISTIC_WRITE);
+        if (temp == null) {
+            temp = new Counter(counterType, 0);
+            entityManager.persist(temp);
+        }
         return temp.getValue();
     }
 }

@@ -8,4 +8,5 @@ public interface SongDtoDao {
 
     List<SongDto> getAll();
 
+    SongDto getById(long songId);
 }

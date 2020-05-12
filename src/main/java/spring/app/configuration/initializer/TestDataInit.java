@@ -85,9 +85,6 @@ public class TestDataInit {
     private NotificationTemplateService notificationTemplateService;
 
     @Autowired
-    private CounterDao counterDao;
-
-    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -97,9 +94,6 @@ public class TestDataInit {
     private String musicInitPath;
 
     private void init() throws Exception {
-
-        //создаем и запускаем счетчик для музыкальных сервисов
-        counterDao.start(CounterType.DOWNLOAD_MUSIC_SERVICE);
 
         // Создаем роли
         Role roleAdmin = new Role("ADMIN");
