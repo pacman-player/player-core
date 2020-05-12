@@ -34,6 +34,9 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
     @Value("${lastfm.url.getToptags}")
     private String getTopTags;
 
+    @Value("${google.search.genre.en}")
+    private String googleEn;
+
     @Autowired
     public GenreDefinerServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -43,9 +46,8 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
     @Override
     public String[] defineGenre(String trackAuthor, String trackSong) throws IOException {
         String trackName = trackAuthor + " - " + trackSong;
-        String query2 = " жанр";
-        String url = "https://www.google.ru/search?q=" + trackName + query2;
-        String genre = "неизвестно";
+        String url = String.format(googleEn, trackName);
+        String genre = "unidentified";
         Document doc;
 
         try {
@@ -65,28 +67,7 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         }
         LOGGER.debug("Genre result found so far = {}", genre);
 
-        if (genre.equals("неизвестно")) {      //для поиска жанра исполнителей иностранных песен меняется стиль зап
-            query2 = " genre";
-            url = "https://www.google.ru/search?q=" + trackName + query2 + "&num=10";
-
-            try {
-                LOGGER.debug("Finding genre for '{}'. Google searching for '{}'", trackName, url);
-                doc = Jsoup
-                        .connect(url)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
-                        .header("Accept-Language", "ru")
-                        .header("Accept-Encoding", "gzip,deflate,br")
-                        .timeout(5000).get();
-
-                genre = doc.getElementsByClass("Z0LcW").first().text();
-            } catch (HttpStatusException se) {
-                LOGGER.info("Google has banned us for suspicious activity, moving on to other searches...");
-            } catch (NullPointerException e) {
-                LOGGER.debug("Didn't find anything, caught NullPointerException!");
-            }
-            LOGGER.debug("Genre result found so far = {}", genre);
-        }
-        if (genre.equals("неизвестно")) {
+        if (genre.equals("unidentified")) {
             return getGenreLastFm(trackAuthor, trackSong); //если поиск жанра не удался через google.ru, берем два топовых тега из ласт.фм
         }
         LOGGER.debug("Final search result is = {}", genre);
@@ -151,7 +132,7 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
                 // у малопопулярных треков может быть меньше двух тегов
             }
         } else {
-            genreTags.add("неизвестный жанр");
+            genreTags.add("unidentified");
         }
         LOGGER.debug("Resulting Genres[] are = {}", genreTags);
         return genreTags.toArray(new String[0]);
