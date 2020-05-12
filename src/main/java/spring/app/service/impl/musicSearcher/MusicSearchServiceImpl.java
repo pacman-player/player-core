@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.configuration.DownloadMusicServiceFactory;
+import spring.app.dao.abstraction.CounterDao;
+import spring.app.model.CounterType;
 import spring.app.service.abstraction.DataUpdateService;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.abstraction.GenreDefinerService;
@@ -15,6 +17,7 @@ import spring.app.service.entity.Track;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -30,20 +33,19 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MusicSearchServiceImpl.class);
     private Track track;
 
-    @Autowired
-    private GenreDefinerService genreDefiner;
+    private final GenreDefinerService genreDefiner;
+    private final DataUpdateService dataUpdater;
+    private final DownloadMusicServiceFactory downloadMusicServiceFactory;
+    private final CounterDao counterDao;
 
     @Autowired
-    private DataUpdateService dataUpdater;
-
-    @Autowired
-    private DownloadMusicServiceFactory downloadMusicServiceFactory;
-
-
-    public MusicSearchServiceImpl(DataUpdateService dataUpdater) throws IOException {
+    public MusicSearchServiceImpl(GenreDefinerService genreDefiner, DataUpdateService dataUpdater,
+                                  DownloadMusicServiceFactory downloadMusicServiceFactory, CounterDao counterDao) {
+        this.genreDefiner = genreDefiner;
         this.dataUpdater = dataUpdater;
+        this.downloadMusicServiceFactory = downloadMusicServiceFactory;
+        this.counterDao = counterDao;
     }
-
 
     /**
      * Метод который ищет трек в списке добавленных сервисов поиска музыки {@link DownloadMusicService}
@@ -58,22 +60,31 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         // складываем сервисы поиска в лист
         // проходим в цикле по каждому сервису,
         // пытаемся найти песню и при положительном исходе брейкаем цикл
-        for (DownloadMusicService service : downloadMusicServiceFactory.getDownloadServices()) {
+        int serviceCount = counterDao.getValue(CounterType.DOWNLOAD_MUSIC_SERVICE);
+        List<DownloadMusicService> downloadMusicServices = downloadMusicServiceFactory.getDownloadServices();
+        for (int i = serviceCount; i < downloadMusicServices.size(); ) {
             try {
                 //noinspection UnstableApiUsage
+                int finalI = i;
                 track = SimpleTimeLimiter
                         .create(newCachedThreadPool())
                         .callWithTimeout(
-                                () -> service.getSong(author, song),
+                                () -> downloadMusicServices.get(finalI).getSong(author, song),
                                 120,
                                 TimeUnit.SECONDS);
             } catch (TimeoutException | InterruptedException | ExecutionException e) {
                 LOGGER.error(">>>>> Searching with {} service exceeded given timeout! :(",
-                        service.getClass().getSimpleName().replaceAll("\\$.+", ""));
+                        downloadMusicServices.get(i).getClass().getSimpleName().replaceAll("\\$.+", ""));
             }
             if (track != null) {
+                if (i == downloadMusicServices.size() - 1) {
+                    counterDao.restart(CounterType.DOWNLOAD_MUSIC_SERVICE);
+                } else {
+                    counterDao.setTo(CounterType.DOWNLOAD_MUSIC_SERVICE, i);
+                }
                 break;
             }
+            i++;
         }
         return track;
     }

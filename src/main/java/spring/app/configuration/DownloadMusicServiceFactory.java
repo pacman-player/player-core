@@ -9,7 +9,9 @@ import org.springframework.context.annotation.PropertySource;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -73,7 +75,7 @@ public class DownloadMusicServiceFactory {
     private DownloadMusicService downloadMusicVkRuServiceImpl;
 
     // поле изменил на LinkedHashSet, чтобы исключить дублирование сервисов в коллекции
-    private Set<DownloadMusicService> services = new LinkedHashSet<>();
+    private List<DownloadMusicService> services = new ArrayList<>();
 
 
     public DownloadMusicServiceFactory() {
@@ -154,7 +156,7 @@ public class DownloadMusicServiceFactory {
      * Метод, формирующий список сервисов, которые поочередно используются в поиске трека
      * в классе {@link MusicSearchServiceImpl}
      */
-    public Set<DownloadMusicService> getDownloadServices() {
+    public List<DownloadMusicService> getDownloadServices() {
         try {
             services.clear();
             services.add(getService(one));

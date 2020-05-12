@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
+import spring.app.dao.abstraction.CounterDao;
 import spring.app.dto.SongCompilationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
@@ -84,6 +85,9 @@ public class TestDataInit {
     private NotificationTemplateService notificationTemplateService;
 
     @Autowired
+    private CounterDao counterDao;
+
+    @Autowired
     private Mp3Parser mp3Parser;
 
     @Value("${music.path}")
@@ -93,6 +97,9 @@ public class TestDataInit {
     private String musicInitPath;
 
     private void init() throws Exception {
+
+        //создаем и запускаем счетчик для музыкальных сервисов
+        counterDao.start(CounterType.DOWNLOAD_MUSIC_SERVICE);
 
         // Создаем роли
         Role roleAdmin = new Role("ADMIN");
