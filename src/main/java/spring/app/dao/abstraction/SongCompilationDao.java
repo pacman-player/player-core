@@ -13,7 +13,7 @@ public interface SongCompilationDao extends GenericDao<Long, SongCompilation> {
     List<Song> getSongCompilationContentById(Long compilationId);
 
     // Получить доступные для подборки песни (исключая уже добавленные)
-    List<SongDto> getAvailableContentForCompilation(SongCompilation songCompilation);
+    List<Song> getAvailableContentForCompilation(SongCompilation songCompilation);
 
     void removeSongFromSongCompilation(SongCompilation songCompilation, Song song);
 

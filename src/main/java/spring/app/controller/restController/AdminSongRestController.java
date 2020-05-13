@@ -107,14 +107,8 @@ public class AdminSongRestController {
         return genreService.getAllGenreDto();
     }
 
-//    @GetMapping(value = "/genre/{id}")
-//    public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
-//        List<Song> list = songService.findSongsByGenreId(id);
-//        return list;
-//    }
-
     @GetMapping(value = "/genre/{id}")
-    public List<SongDto> getAllSongs(@PathVariable(value = "id") Long id) {
+    public List<SongDto> getAllSongsDto(@PathVariable(value = "id") Long id) {
         List<SongDto> list = songService.findSongsByGenreId(id);
         return list;
     }

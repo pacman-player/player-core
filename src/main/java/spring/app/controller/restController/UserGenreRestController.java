@@ -29,9 +29,9 @@ public class UserGenreRestController {
     }
 
     @GetMapping(value = "/get/all-genre")
-    public List<GenreDto> getAllGenre(@AuthenticationPrincipal User user) {
+    public List<GenreDto> getAllGenreDto(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/get/all-genre' for User = {}", user);
-        List<GenreDto> allGenre = genreService.getAllApprovedGenre();
+        List<GenreDto> allGenre = genreService.getAllApprovedGenreDto();
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
@@ -41,22 +41,6 @@ public class UserGenreRestController {
         LOGGER.info("Result has {} lines", allGenre.size());
         return allGenre;
     }
-
-//    @GetMapping(value = "/get/all-genre")
-//    public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
-//        LOGGER.info("GET request '/get/all-genre' for User = {}", user);
-//        List<Genre> allGenre = genreService.getAllApprovedGenre();
-//        Company usersCompany = user.getCompany();
-//        usersCompany = companyService.setBannedEntity(usersCompany);
-//
-//        companyService.checkAndMarkAllBlockedByTheCompany(
-//                usersCompany,
-//                allGenre);
-//        LOGGER.info("Result has {} lines", allGenre.size());
-//        return allGenre;
-//    }
-
-
 
 
     @PostMapping("/genreBan")

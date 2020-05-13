@@ -23,7 +23,7 @@ public interface SongService extends GenericService<Long, Song>{
 
     List<Song> getAllSongInSongCompilation(Long id);
 
-    List<SongDto> getAllApprovedSongs();
+    List<SongDto> getAllApprovedSongsDto();
 
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 

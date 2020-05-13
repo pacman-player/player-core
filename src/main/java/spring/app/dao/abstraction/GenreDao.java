@@ -12,8 +12,7 @@ public interface GenreDao extends GenericDao<Long, Genre> {
 
     List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    List<GenreDto> getAllApproved();
-    //List<Genre> getAllApproved();
+    //List<GenreDto> getAllApprovedDto();
 
     List<Song> getSongsByGenre(Genre genreForDelete);
 

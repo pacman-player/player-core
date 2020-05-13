@@ -188,6 +188,7 @@ public class SongDto extends Bannable {
                 '}';
     }
 
+
     @Override
     public void setBanned(boolean banned) {
 

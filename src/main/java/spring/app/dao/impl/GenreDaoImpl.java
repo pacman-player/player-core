@@ -51,21 +51,13 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
                 .getResultList();
     }
 
-    public List<GenreDto> getAllApproved() {
+    public List<Genre> getAllApproved() {
         String genericClassName = Genre.class.toGenericString();
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<GenreDto> query = entityManager.createQuery(hql, GenreDto.class);
+        TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
         return query.getResultList();
     }
-
-//    public List<Genre> getAllApproved() {
-//        String genericClassName = Genre.class.toGenericString();
-//        genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
-//        String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-//        TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
-//        return query.getResultList();
-//    }
 
     @Override
     public List<Song> getSongsByGenre(Genre genre) {

@@ -47,8 +47,8 @@ public class AdminSongCompilationRestController {
     }
 
     @GetMapping("/content/available/{compilationId}")
-    public List<SongDto> getAvailableWithGenreByGenreId(@PathVariable Long compilationId) {
-        List<SongDto> songs = songCompilationService.getAvailableSongsForCompilationById(compilationId);
+    public List<SongDto> getAvailableWithGenreByGenreIdDto(@PathVariable Long compilationId) {
+        List<SongDto> songs = songCompilationService.getAvailableSongsForCompilationByIdDto(compilationId);
         return songs;
     }
 

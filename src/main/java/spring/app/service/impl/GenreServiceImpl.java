@@ -81,8 +81,8 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 //    }
 
     @Override
-    public List<GenreDto> getAllApprovedGenre() {
-        return dao.getAllApproved();
+    public List<GenreDto> getAllApprovedGenreDto() {
+        return genreDtoDao.getAllApprovedDto();
     }
 
     @Override

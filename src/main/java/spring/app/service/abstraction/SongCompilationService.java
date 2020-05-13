@@ -23,7 +23,7 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
 
     void addSongToSongCompilation(Long compilationId, Long songId);
 
-    List<SongDto> getAvailableSongsForCompilationById(Long compilationId);
+    List<SongDto> getAvailableSongsForCompilationByIdDto(Long compilationId);
 
     void addSongCompilationToMorningPlaylist(Long id);
 

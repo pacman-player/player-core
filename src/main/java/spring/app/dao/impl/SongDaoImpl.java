@@ -82,6 +82,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         return songs.get(0);
     }
 
+//удалить т.к создала такой метод в SongDtoDaoImpl
 //    @Override
 //    public List<Song> getAllWithGenreByGenreId(Long id) {
 //        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
@@ -96,19 +97,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //        return songs;
 //    }
 
-    @Override
-    public List<SongDto> getAllWithGenreByGenreId(Long id) {
-        TypedQuery<SongDto> query =  entityManager.createQuery("FROM SongDto WHERE genre_id = :id", SongDto.class);
-        query.setParameter("id", id);
 
-        List<SongDto> songs;
-        try {
-            songs = query.getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
-        return songs;
-    }
 
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
@@ -119,11 +108,11 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
     }
 
     @Override
-    public List<SongDto> getAllApproved() {
+    public List<Song> getAllApproved() {
         String genericClassName = Song.class.toGenericString();
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
-        TypedQuery<SongDto> query = entityManager.createQuery(hql, SongDto.class);
+        TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
         return query.getResultList();
     }
 
