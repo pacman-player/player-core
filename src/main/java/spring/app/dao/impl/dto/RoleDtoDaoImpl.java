@@ -25,4 +25,9 @@ public class RoleDtoDaoImpl implements RoleDtoDao {
                 .getResultList();
     }
 
+    @Override
+    public Role getRoleByName(String roleName) {
+        return null;
+    }
+
 }

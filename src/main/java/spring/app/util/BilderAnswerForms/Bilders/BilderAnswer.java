@@ -11,6 +11,6 @@ public interface BilderAnswer<T> {
 
     void setData(T data);
 
-    Response getResponse();
+    Response<T> getResponse();
 
 }

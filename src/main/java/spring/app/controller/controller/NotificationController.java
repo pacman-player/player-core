@@ -1,10 +1,23 @@
 package spring.app.controller.controller;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import spring.app.model.Response;
+import spring.app.util.ResponseBilder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice
 public class NotificationController {
 
     @MessageMapping("/notification")
@@ -13,5 +26,13 @@ public class NotificationController {
         System.out.println(str + "!!!!!!!!!!!!!");
         //    Thread.sleep(1000);
         return "!!!!!!!!!!!!!";
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(Exception.class)
+    @ResponseBody Response
+    handleBadRequest(HttpServletRequest req, Exception ex) {
+        ResponseBilder responseBilder = new ResponseBilder();
+        Response response = responseBilder.Error(ex);
+        return response;
     }
 }

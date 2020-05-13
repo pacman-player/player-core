@@ -208,9 +208,10 @@ public class AdminRestController {
 
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/role/est_type_name_is_free")
-    public boolean isLoginFreeRole(@RequestParam("name") String name) {
-        boolean isLoginFree = (roleService.getByName(name)== null);
-        return isLoginFree;
+    public Response isLoginFreeRole(@RequestParam("name") String name) {
+        ResponseBilder responseBilder = new ResponseBilder();
+        Response response = responseBilder.success(roleService.getByName(name)== null);
+        return response;
     }
 
 

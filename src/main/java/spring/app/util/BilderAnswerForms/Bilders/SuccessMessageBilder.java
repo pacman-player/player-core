@@ -6,7 +6,7 @@ import spring.app.model.ErrorMessage;
 import spring.app.model.Response;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SuccessMessageBilder<T> implements BilderAnswer {
+public class SuccessMessageBilder<T> implements BilderAnswer<T> {
     private boolean successFlag;
     private ErrorMessage errorMessage;
     private T data;
@@ -23,13 +23,13 @@ public class SuccessMessageBilder<T> implements BilderAnswer {
     }
 
     @Override
-    public void setData(Object data) {
-    this.data = (T)data;
+    public void setData(T data) {
+    this.data = data;
     }
 
     @Override
-    public Response getResponse() {
-        Response response = new Response();
+    public Response<T> getResponse() {
+        Response<T> response = new Response<T>();
         response.setSuccess(successFlag);
         response.setData(data);
         return response;

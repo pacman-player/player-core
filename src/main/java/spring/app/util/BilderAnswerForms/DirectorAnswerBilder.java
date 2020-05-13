@@ -4,7 +4,7 @@ package spring.app.util.BilderAnswerForms;
 import org.springframework.http.HttpStatus;
 import spring.app.util.BilderAnswerForms.Bilders.BilderAnswer;
 
-public class DirectorAnswerBilder<T> {
+public class DirectorAnswerBilder<T>{
 
     private HttpStatus status;
     private String message;
@@ -30,7 +30,7 @@ public class DirectorAnswerBilder<T> {
     }
 
 
-    public void constructErrorMessage(BilderAnswer bilderAnswer){
+    public void constructErrorMessage(BilderAnswer<T> bilderAnswer){
         bilderAnswer.setSuccessFlag(false);
         bilderAnswer.setErrorMessage(status,message);
 

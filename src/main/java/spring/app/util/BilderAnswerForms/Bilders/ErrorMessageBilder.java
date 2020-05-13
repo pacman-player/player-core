@@ -6,9 +6,10 @@ import spring.app.model.ErrorMessage;
 import spring.app.model.Response;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorMessageBilder implements BilderAnswer {
+public class ErrorMessageBilder<T> implements BilderAnswer<T> {
     private boolean successFlag;
     private ErrorMessage errorMessage = new ErrorMessage();
+
 
     @Override
     public void setSuccessFlag(Boolean successFlag) {
@@ -17,13 +18,12 @@ public class ErrorMessageBilder implements BilderAnswer {
 
     @Override
     public void setErrorMessage(HttpStatus status, String textMassage) {
-        this.errorMessage.setCodeMessage(status);
+        this.errorMessage.setCodeMessage(status.value());
         this.errorMessage.setTextMessage(textMassage);
     }
 
     @Override
-    public void setData(Object data) {
-
+    public void setData(T data) {
     }
 
     public boolean isSuccessFlag() {
@@ -35,8 +35,8 @@ public class ErrorMessageBilder implements BilderAnswer {
     }
 
 
-    public Response getResponse(){
-        Response response = new Response();
+    public Response<T> getResponse(){
+        Response<T> response = new Response<>();
         response.setSuccess(successFlag);
         response.setErrorMessage(errorMessage);
         return response;

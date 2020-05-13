@@ -25,7 +25,8 @@ public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> im
 
 	@Override
 	public Role getByName(String roleName) {
-		return dao.getRoleByName(roleName);
+		throw new NullPointerException();
+
 	}
 
 	@Override
