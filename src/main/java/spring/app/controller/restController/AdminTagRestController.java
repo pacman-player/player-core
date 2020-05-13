@@ -43,7 +43,7 @@ public class AdminTagRestController {
         if (!tagService.isExistByName(name)) {
             Tag tag = new Tag();
             tag.setName(name);
-            tagService.addTag(tag);
+            tagService.save(tag);
             LOGGER.info("Added tag with name = {}", name);
         }
     }
@@ -56,7 +56,7 @@ public class AdminTagRestController {
         String tagDtoName = tagDto.getName();
         tag.setName(tagDtoName.toLowerCase());
 
-        tagService.updateTag(tag);
+        tagService.update(tag);
     }
 
     @DeleteMapping(value = "/delete_tag")

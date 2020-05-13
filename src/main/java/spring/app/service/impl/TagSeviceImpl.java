@@ -11,20 +11,13 @@ import spring.app.service.abstraction.TagService;
 import java.util.List;
 
 @Service
-public class TagSeviceImpl implements TagService {
+public class TagSeviceImpl extends AbstractServiceImpl<Long, Tag, TagDao> implements TagService {
 
-    private final TagDao tagDao;
     private final TagDtoDao tagDtoDao;
 
-    public TagSeviceImpl(TagDao tagDao, TagDtoDao tagDtoDao) {
-        this.tagDao = tagDao;
+    public TagSeviceImpl(TagDao dao, TagDtoDao tagDtoDao) {
+        super(dao);
         this.tagDtoDao = tagDtoDao;
-    }
-
-    @Override
-    @Transactional
-    public void addTag(Tag tag) {
-        tagDao.save(tag);
     }
 
     @Override
@@ -36,25 +29,7 @@ public class TagSeviceImpl implements TagService {
     @Override
     @Transactional(readOnly = true)
     public boolean isExistByName(String name) {
-        return tagDao.isExistByName(name);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Tag getById(Long id) {
-        return tagDao.getById(id);
-    }
-
-    @Override
-    @Transactional
-    public void updateTag(Tag tag) {
-        tagDao.update(tag);
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(Long id) {
-        tagDao.deleteById(id);
+        return dao.isExistByName(name);
     }
 
 }

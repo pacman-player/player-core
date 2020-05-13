@@ -5,17 +5,10 @@ import spring.app.model.Tag;
 
 import java.util.List;
 
-public interface TagService {
-
-    void addTag(Tag tag);
+public interface TagService extends GenericService<Long, Tag> {
 
     List<TagDto> getAllTagDto();
 
     boolean isExistByName(String name);
 
-    Tag getById(Long id);
-
-    void updateTag(Tag tag);
-
-    void deleteById(Long id);
 }
