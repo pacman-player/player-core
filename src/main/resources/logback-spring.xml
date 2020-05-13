@@ -34,6 +34,26 @@
         </encoder>
     </appender>
 
+    <!--    appender Tcp -->
+
+    <!--    <appender name="ELC" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+    <!--        <destination>localhost:5044</destination>-->
+    <!--        &lt;!&ndash; encoder is required &ndash;&gt;-->
+    <!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+    <!--            <includeCallerInfo>true</includeCallerInfo>-->
+    <!--            <customFields>{"appname":"player-core"}</customFields>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
+
+    <appender name="ELC" class="net.logstash.logback.appender.LogstashSocketAppender">
+        <host>localhost</host>
+        <!-- port is optional (default value shown) -->
+        <port>5044</port>
+        <!-- кто вызывал действие лога -->
+        <!--        <includeCallerInfo>true</includeCallerInfo>-->
+        <customFields>{"appname":"player-core"}</customFields>
+    </appender>
+
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE_ROLLING" />
     </appender>
@@ -43,16 +63,19 @@
         <logger name="spring.app.controller" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <logger name="spring.app" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <logger name="org.hibernate.SQL" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <root level="info">
@@ -64,11 +87,13 @@
         <logger name="spring.app.controller" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <logger name="spring.app" level="debug" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <root level="info">
@@ -80,11 +105,13 @@
         <logger name="spring.app.controller" level="info" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <logger name="spring.app" level="info" additivity="false">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="ASYNC" />
+            <appender-ref ref="ELC" />
         </logger>
 
         <root level="info">
