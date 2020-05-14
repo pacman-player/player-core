@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import spring.app.dto.GenreDto;
 import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.User;
@@ -28,9 +29,9 @@ public class UserGenreRestController {
     }
 
     @GetMapping(value = "/get/all-genre")
-    public List<Genre> getAllGenre(@AuthenticationPrincipal User user) {
+    public List<GenreDto> getAllGenreDto(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/get/all-genre' for User = {}", user);
-        List<Genre> allGenre = genreService.getAllApprovedGenre();
+        List<GenreDto> allGenre = genreService.getAllApprovedGenreDto();
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
 
@@ -40,6 +41,7 @@ public class UserGenreRestController {
         LOGGER.info("Result has {} lines", allGenre.size());
         return allGenre;
     }
+
 
     @PostMapping("/genreBan")
     public void addGenreInBan(@AuthenticationPrincipal User user,

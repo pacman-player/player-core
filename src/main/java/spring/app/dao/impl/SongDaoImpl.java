@@ -3,6 +3,7 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
@@ -87,19 +88,22 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         return songs.get(0);
     }
 
-    @Override
-    public List<Song> getAllWithGenreByGenreId(Long id) {
-        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
-        query.setParameter("id", id);
+//удалить т.к создала такой метод в SongDtoDaoImpl
+//    @Override
+//    public List<Song> getAllWithGenreByGenreId(Long id) {
+//        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
+//        query.setParameter("id", id);
+//
+//        List<Song> songs;
+//        try {
+//            songs = query.getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//        return songs;
+//    }
 
-        List<Song> songs;
-        try {
-            songs = query.getResultList();
-        } catch (NoResultException e) {
-            return null;
-        }
-        return songs;
-    }
+
 
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {

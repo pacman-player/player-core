@@ -1,5 +1,6 @@
 package spring.app.dao.abstraction;
 
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 

@@ -65,9 +65,14 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
 
+//    @Override
+//    public List<Song> findSongsByGenreId(Long id) {
+//        return dao.getAllWithGenreByGenreId(id);
+//    }
+
     @Override
-    public List<Song> findSongsByGenreId(Long id) {
-        return dao.getAllWithGenreByGenreId(id);
+    public List<SongDto> findSongsByGenreId(Long id) {
+        return songDtoDao.getAllWithGenreByGenreIdDto(id);
     }
 
     @Override
@@ -83,8 +88,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
-    public List<Song> getAllApprovedSongs() {
-        return dao.getAllApproved();
+    public List<SongDto> getAllApprovedSongsDto() {
+        return songDtoDao.getAllApprovedDto();
     }
 
 

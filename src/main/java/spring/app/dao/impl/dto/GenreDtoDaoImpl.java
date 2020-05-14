@@ -3,10 +3,12 @@ package spring.app.dao.impl.dto;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
+import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -37,6 +39,13 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public List<GenreDto> getAllApprovedDto() {
+        return entityManager.createQuery("SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g WHERE g.isApproved = true ",
+                GenreDto.class)
+                .getResultList();
     }
 
 }

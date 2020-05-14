@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
 import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
+import spring.app.model.SongCompilation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,6 +43,17 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
         List<SongCompilationDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongCompilationDto(s.id, s.name, s.genre.name, s.cover)" +
                 "FROM SongCompilation s", SongCompilationDto.class).getResultList();
         return list;
+    }
+
+    @Override
+    public List<SongDto> getAvailableContentForCompilationDto(SongCompilation songCompilation) {
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s  WHERE s.genre.id = :genreId AND s.isApproved = true AND s NOT IN " +
+                "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", SongDto.class)
+                .setParameter("genreId", songCompilation.getGenre().getId())
+                .setParameter("compilationId", songCompilation.getId())
+                .getResultList();
+          return list;
     }
 
     @Override

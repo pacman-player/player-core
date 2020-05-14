@@ -97,7 +97,12 @@ public class TelegramRestController {
                     songRequest.getAuthorName());
             SongResponse songResponse = telegramService.approveSong(songRequest);
 
-            if (songResponse != null) {
+            Song song = songService.getBySearchRequests(songRequest.getSongName(),songRequest.getAuthorName());
+            if(song.isBannedBy(companyService.getById(songRequest.getCompanyId())) ) {
+                LOGGER.error("This Song can't be played as it was banned");
+            }else if (songResponse != null
+//                    && !song.isBannedBy(companyService.getById(songRequest.getCompanyId()
+            ) {
                 LOGGER.info("Approved Song successfully!");
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
@@ -149,6 +154,9 @@ public class TelegramRestController {
         SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
         // получаем текущую позицию в очереди
         long lastSongQueuesPosition = songQueueService.getLastSongQueuesNumberFromCompany(companyById);
+
+
+
 
         if (songQueue == null) {
             LOGGER.info("Song queue is empty. Adding song to queue...");
