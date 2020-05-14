@@ -41,9 +41,6 @@ public class Song extends Bannable {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @Column(name = "search_tags")
-    private String searchTags;
-
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
@@ -55,6 +52,12 @@ public class Song extends Bannable {
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
     private Set<SongCompilation> songCompilations;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Tag.class)
+    @JoinTable(name = "tag_on_song",
+            joinColumns = {@JoinColumn(name = "song_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    private Set<Tag> tags;
 
     private String albumsCover;
 
@@ -108,13 +111,6 @@ public class Song extends Bannable {
         this.name = name;
         this.author = author;
         this.genre = genre;
-    }
-
-    public Song(String name, Author author, Genre genre, String searchTags) {
-        this.name = name;
-        this.author = author;
-        this.genre = genre;
-        this.searchTags = searchTags;
     }
 
     public Song(String name) {
@@ -216,14 +212,6 @@ public class Song extends Bannable {
         this.banned = banned;
     }
 
-    public String getSearchTags() {
-        return searchTags;
-    }
-
-    public void setSearchTags(String searchTags) {
-        this.searchTags = searchTags;
-    }
-
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
@@ -238,5 +226,13 @@ public class Song extends Bannable {
         Song song1 = (Song) o;
         return id.equals(song1.id) &&
                 name.equals(song1.name);
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

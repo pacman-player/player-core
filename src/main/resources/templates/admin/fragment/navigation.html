@@ -27,6 +27,10 @@
         <a href="/admin/genres">Жанры</a>
     </li>
 
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/tags' ? 'active' : ''}">
+        <a href="/admin/tags">Тэги</a>
+    </li>
+
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/performers' ? 'active' : ''}">
         <a href="/admin/performers">Исполнители</a>
     </li>
