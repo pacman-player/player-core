@@ -31,7 +31,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     private final CounterDao counterDao;
 
     @Autowired
-    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, TagDao tagDao, CounterDao counterDao
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, TagDao tagDao, CounterDao counterDao,
                            SongCompilationService songCompilationService, SongFileService songFileService) {
         super(dao);
         this.songDtoDao = songDtoDao;
