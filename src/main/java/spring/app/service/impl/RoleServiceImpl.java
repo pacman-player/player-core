@@ -21,7 +21,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> im
 		super(dao);
 		this.roleDtoDao = roleDtoDao;
 	}
-
+// для проверки кастомного ответа на выбрасывание ошибки приложением.
 	@Override
 	public Role getByName(String roleName) {
 		throw new NullPointerException();
