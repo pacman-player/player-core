@@ -8,18 +8,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
+import spring.app.util.ResponseBilder;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -68,7 +67,6 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-
     List<UserDto> getAllUsers() {
         List<UserDto> list = userService.getAllUsers();
 
@@ -81,14 +79,10 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get_all_roles")
-    public List<RoleDto> getAllRoles() {
-        return roleService.getAllRolesDto();
-    }
+
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-
     List<CompanyDto> getAllCompanies() {
         List<CompanyDto> list = companyService.getAllCompanies();
 
@@ -191,6 +185,39 @@ public class AdminRestController {
         orgTypeService.deleteById(id);
     }
 
+    @GetMapping(value = "/all_roles")
+    public Response getAllRoles() {
+        ResponseBilder responseBilder = new ResponseBilder();
+       Response response = responseBilder.success(roleService.getAllRolesDto());
+        return response;
+    }
+
+    @DeleteMapping(value = "/delete_role")
+    public void deleteRole(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_role' with id = {}", id);
+        orgTypeService.deleteById(id);
+    }
+
+    @PostMapping(value = "/add_role")
+    public void addRole(@RequestBody Role role) {
+        LOGGER.info("POST request '/add_role' with role = {}", role);
+        roleService.save(role);
+    }
+
+    @PutMapping(value = "/update_role")
+    public void updateRole(@RequestBody Role role) {
+        LOGGER.info("PUT request '/update_role' with role = {}", role);
+        roleService.update(role);
+    }
+
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/role/est_type_name_is_free")
+    public Response isLoginFreeRole(@RequestParam("name") String name) {
+        ResponseBilder responseBilder = new ResponseBilder();
+        Response response = responseBilder.success(roleService.getByName(name)== null);
+        return response;
+    }
+
 
     private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
@@ -200,6 +227,14 @@ public class AdminRestController {
             roles.add(roleService.getByName(rl));
         }
         return roles;
+    }
+
+    @PostMapping(value = "/getRoleRequest")
+    private Response getRoleRequest() {
+        ResponseBilder responseBilder = new ResponseBilder();
+        List<RoleDto> roles = roleService.getAllRolesDto();
+        Response response = responseBilder.success(roles);
+        return response;
     }
 
     @PostMapping(value = "/add_company")
@@ -213,12 +248,12 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/email")
-    public String checkEmail(@RequestParam String email, @RequestParam long id){
+    public String checkEmail(@RequestParam String email, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
-    public String checkLogin(@RequestParam String login, @RequestParam long id){
+    public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
 }
