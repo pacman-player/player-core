@@ -12,4 +12,6 @@ public interface SongDtoDao {
 
     List<SongDto> getAllApprovedDto();
 
+    List<SongDto> listOfSongsByTag(String tag);
+
 }

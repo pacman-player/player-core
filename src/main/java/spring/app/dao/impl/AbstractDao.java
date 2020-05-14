@@ -25,6 +25,12 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         entityManager.persist(entity);
     }
 
+    public void saveBatch(List<T> entities) {
+        for (T entity : entities) {
+            entityManager.persist(entity);
+        }
+    }
+
     public T getById(PK id) {
         return entityManager.find(persistentClass, id);
     }

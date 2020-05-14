@@ -5,6 +5,7 @@ import spring.app.model.Song;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 public interface SongService extends GenericService<Long, Song>{
 
@@ -42,4 +43,12 @@ public interface SongService extends GenericService<Long, Song>{
     Long getSongIdByAuthorAndName(String author, String name);
 
     Long getAuthorIdBySongId(Long songId);
+
+    void setTags(Song song, String tagString);
+
+    void setTags(Song song, Set<String> stringTags);
+
+    List<SongDto> listOfSongsByTag(String tag);
+
+    void deleteTagForSongs(List<Long> songIds, Long tagId);
 }

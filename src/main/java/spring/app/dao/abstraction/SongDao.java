@@ -32,5 +32,7 @@ public interface SongDao extends GenericDao<Long, Song> {
     Long getSongIdByAuthorAndName(String author, String name);
 
     Long getAuthorIdBySongId(Long songId);
+
+    int deleteTagForSongs(List<Long> songIds, Long tagId);
 }
 

@@ -219,19 +219,19 @@ public class TestDataInit {
         Song song_12 = songService.getByName("Falling Skies");
         Song song_13 = songService.getByName("Tin Pan Boy");
 
-        song_1.setSearchTags("Billie Eilish Khalid Lovely");
-        song_2.setSearchTags("BLACKPINK Really");
-        song_3.setSearchTags("Echo Bunnymen Killing Moon");
-        song_4.setSearchTags("Ed Sheeran Small Bump");
-        song_5.setSearchTags("Katy Perry Into Me You See");
-        song_6.setSearchTags("New Order Love Vigilantes");
-        song_7.setSearchTags("OneRepublic Logic Start Again");
-        song_8.setSearchTags("Parade of Lights Tangled Up");
-        song_9.setSearchTags("Telekinesis Falling In Dreams");
-        song_10.setSearchTags("The Alarm Strength");
-        song_11.setSearchTags("Tom Walker My Way");
-        song_12.setSearchTags("Yungblud Charlottle Lawrer Falling Skies");
-        song_13.setSearchTags("Yungblud Tin Pan Boy");
+        songService.setTags(song_1, "Billie Eilish Khalid Lovely");
+        songService.setTags(song_2, "BLACKPINK Really");
+        songService.setTags(song_3, "Echo Bunnymen Killing Moon");
+        songService.setTags(song_4, "Ed Sheeran Small Bump");
+        songService.setTags(song_5, "Katy Perry Into Me You See");
+        songService.setTags(song_6, "New Order Love Vigilantes");
+        songService.setTags(song_7, "OneRepublic Logic Start Again");
+        songService.setTags(song_8, "Parade of Lights Tangled Up");
+        songService.setTags(song_9, "Telekinesis Falling In Dreams");
+        songService.setTags(song_10, "The Alarm Strength");
+        songService.setTags(song_11, "Tom Walker My Way");
+        songService.setTags(song_12, "Yungblud Charlottle Lawrer Falling Skies");
+        songService.setTags(song_13, "Yungblud Tin Pan Boy");
 
         songService.update(song_1);
         songService.update(song_2);
