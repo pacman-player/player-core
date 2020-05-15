@@ -1,10 +1,9 @@
-package spring.app.util.BilderAnswerForms.Bilders;
+package spring.app.util.BuilderAnswerForms.Builders;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import spring.app.model.Response;
 
-public interface BilderAnswer<T> {
+public interface BuilderAnswer<T> {
     void setSuccessFlag(Boolean successFlag);
 
     void setErrorMessage(HttpStatus status, String textMessage);

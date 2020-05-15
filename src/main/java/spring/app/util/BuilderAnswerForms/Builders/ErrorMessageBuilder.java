@@ -1,4 +1,4 @@
-package spring.app.util.BilderAnswerForms.Bilders;
+package spring.app.util.BuilderAnswerForms.Builders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
@@ -6,7 +6,7 @@ import spring.app.model.ErrorMessage;
 import spring.app.model.Response;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorMessageBilder<T> implements BilderAnswer<T> {
+public class ErrorMessageBuilder<T> implements BuilderAnswer<T> {
     private boolean successFlag;
     private ErrorMessage errorMessage = new ErrorMessage();
 

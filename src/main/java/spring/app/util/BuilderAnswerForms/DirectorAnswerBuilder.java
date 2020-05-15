@@ -1,10 +1,10 @@
-package spring.app.util.BilderAnswerForms;
+package spring.app.util.BuilderAnswerForms;
 
 
 import org.springframework.http.HttpStatus;
-import spring.app.util.BilderAnswerForms.Bilders.BilderAnswer;
+import spring.app.util.BuilderAnswerForms.Builders.BuilderAnswer;
 
-public class DirectorAnswerBilder<T>{
+public class DirectorAnswerBuilder<T>{
 
     private HttpStatus status;
     private String message;
@@ -30,15 +30,15 @@ public class DirectorAnswerBilder<T>{
     }
 
 
-    public void constructErrorMessage(BilderAnswer<T> bilderAnswer){
-        bilderAnswer.setSuccessFlag(false);
-        bilderAnswer.setErrorMessage(status,message);
+    public void constructErrorMessage(BuilderAnswer<T> builderAnswer){
+        builderAnswer.setSuccessFlag(false);
+        builderAnswer.setErrorMessage(status,message);
 
     }
 
-    public void constructSuccessMessage(BilderAnswer<T> bilderAnswer){
-        bilderAnswer.setSuccessFlag(true);
-        bilderAnswer.setData(data);
+    public void constructSuccessMessage(BuilderAnswer<T> builderAnswer){
+        builderAnswer.setSuccessFlag(true);
+        builderAnswer.setData(data);
     }
 
     /**
