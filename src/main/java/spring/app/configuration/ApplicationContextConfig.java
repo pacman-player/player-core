@@ -11,6 +11,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
+import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 
 @Configuration
 @ComponentScan("spring.app")
@@ -38,5 +39,10 @@ public class ApplicationContextConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public DirectorAnswerBilder directorAnswerBilder(){
+        return new DirectorAnswerBilder();
     }
 }
