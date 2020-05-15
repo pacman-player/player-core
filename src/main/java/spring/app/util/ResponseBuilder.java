@@ -9,7 +9,7 @@ import spring.app.util.BilderAnswerForms.Bilders.SuccessMessageBilder;
 import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 
 @Component
-public class ResponseBilder<T> extends ResponseEntityExceptionHandler {
+public class ResponseBuilder<T> extends ResponseEntityExceptionHandler {
     T data = null;
 
     public T getData() {

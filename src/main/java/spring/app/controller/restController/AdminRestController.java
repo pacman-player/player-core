@@ -17,7 +17,7 @@ import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
-import spring.app.util.ResponseBilder;
+import spring.app.util.ResponseBuilder;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -34,16 +34,16 @@ public class AdminRestController<T> {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
-    private final ResponseBilder responseBilder;
+    private final ResponseBuilder responseBuilder;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService, ResponseBilder responseBilder) {
+                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
-        this.responseBilder = responseBilder;
+        this.responseBuilder = responseBuilder;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -188,7 +188,7 @@ public class AdminRestController<T> {
 
     @GetMapping(value = "/all_roles")
     public Response getAllRoles() {
-       Response response = responseBilder.success(roleService.getAllRolesDto());
+       Response response = responseBuilder.success(roleService.getAllRolesDto());
         return response;
     }
 
@@ -213,7 +213,7 @@ public class AdminRestController<T> {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/role/est_type_name_is_free")
     public Response<T> isLoginFreeRole(@RequestParam("name") String name) {
-        return responseBilder.success(roleService.getByName(name)== null);
+        return responseBuilder.success(roleService.getByName(name)== null);
     }
 
 
@@ -230,7 +230,7 @@ public class AdminRestController<T> {
     @PostMapping(value = "/getRoleRequest")
     private Response<T> getRoleRequest() {
         List<RoleDto> roles = roleService.getAllRolesDto();
-        return responseBilder.success(roles);
+        return responseBuilder.success(roles);
     }
 
     @PostMapping(value = "/add_company")

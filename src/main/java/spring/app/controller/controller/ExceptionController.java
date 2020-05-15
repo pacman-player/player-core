@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import spring.app.model.Response;
-import spring.app.util.ResponseBilder;
+import spring.app.util.ResponseBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class ExceptionController<T> {
-    ResponseBilder<T> responseBilder;
+    ResponseBuilder<T> responseBuilder;
     @Autowired
-    public void setResponseBilder(ResponseBilder<T> responseBilder) {
-        this.responseBilder = responseBilder;
+    public void setResponseBuilder(ResponseBuilder<T> responseBuilder) {
+        this.responseBuilder = responseBuilder;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -27,7 +27,7 @@ public class ExceptionController<T> {
     @ResponseBody
     Response<T>
     handleBadRequest(HttpServletRequest req, Exception ex) {
-        ResponseBilder<T> responseBilder = new ResponseBilder<T>();
-        return responseBilder.Error(ex);
+        ResponseBuilder<T> responseBuilder = new ResponseBuilder<T>();
+        return responseBuilder.Error(ex);
     }
 }
