@@ -28,7 +28,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminRestController {
+public class AdminRestController<T> {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminRestController.class);
     private final RoleService roleService;
     private final UserService userService;
@@ -212,9 +212,8 @@ public class AdminRestController {
 
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/role/est_type_name_is_free")
-    public Response isLoginFreeRole(@RequestParam("name") String name) {
-        Response response = responseBilder.success(roleService.getByName(name)== null);
-        return response;
+    public Response<T> isLoginFreeRole(@RequestParam("name") String name) {
+        return responseBilder.success(roleService.getByName(name)== null);
     }
 
 
@@ -229,11 +228,9 @@ public class AdminRestController {
     }
 
     @PostMapping(value = "/getRoleRequest")
-    private Response getRoleRequest() {
-        ResponseBilder responseBilder = new ResponseBilder();
+    private Response<T> getRoleRequest() {
         List<RoleDto> roles = roleService.getAllRolesDto();
-        Response response = responseBilder.success(roles);
-        return response;
+        return responseBilder.success(roles);
     }
 
     @PostMapping(value = "/add_company")

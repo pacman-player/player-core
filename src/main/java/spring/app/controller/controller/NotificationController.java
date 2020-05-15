@@ -16,8 +16,7 @@ import spring.app.util.ResponseBilder;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@Order(Ordered.HIGHEST_PRECEDENCE)
-@ControllerAdvice
+
 public class NotificationController {
 
     @MessageMapping("/notification")
@@ -27,12 +26,5 @@ public class NotificationController {
         //    Thread.sleep(1000);
         return "!!!!!!!!!!!!!";
     }
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(Exception.class)
-    @ResponseBody Response
-    handleBadRequest(HttpServletRequest req, Exception ex) {
-        ResponseBilder responseBilder = new ResponseBilder();
-        Response response = responseBilder.Error(ex);
-        return response;
-    }
+
 }
