@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
@@ -35,14 +34,16 @@ public class AdminRestController {
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final ResponseBilder responseBilder;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService, ResponseBilder responseBilder) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.responseBilder = responseBilder;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -187,7 +188,6 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_roles")
     public Response getAllRoles() {
-        ResponseBilder responseBilder = new ResponseBilder();
        Response response = responseBilder.success(roleService.getAllRolesDto());
         return response;
     }
@@ -213,7 +213,6 @@ public class AdminRestController {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/role/est_type_name_is_free")
     public Response isLoginFreeRole(@RequestParam("name") String name) {
-        ResponseBilder responseBilder = new ResponseBilder();
         Response response = responseBilder.success(roleService.getByName(name)== null);
         return response;
     }

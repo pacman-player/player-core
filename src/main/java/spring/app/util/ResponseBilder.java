@@ -1,13 +1,14 @@
 package spring.app.util;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import spring.app.model.Response;
 import spring.app.util.BilderAnswerForms.Bilders.ErrorMessageBilder;
 import spring.app.util.BilderAnswerForms.Bilders.SuccessMessageBilder;
 import spring.app.util.BilderAnswerForms.DirectorAnswerBilder;
 
-
+@Component
 public class ResponseBilder<T> extends ResponseEntityExceptionHandler {
     T data = null;
 
