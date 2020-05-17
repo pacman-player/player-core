@@ -75,10 +75,10 @@ function addroles(form, field) {
 
 
 function editButton(id, name) {
-    let theModal = $("#editrole");
+    let theModal = $("#editRole");
     let form = $("#updateEstForm");
-    let fieldId = $("#updateroleId");
-    let fieldName = $("#updateroleName");
+    let fieldId = $("#updateRoleId");
+    let fieldName = $("#updateRoleName");
 
     fieldId.val(id);
     fieldName.val(name);
@@ -93,7 +93,8 @@ function editButton(id, name) {
                 remote: {
                     method: "GET",
                     url: "/api/admin/role/est_type_name_is_free",
-                }
+
+                }.data
             }
         },
         messages: {
