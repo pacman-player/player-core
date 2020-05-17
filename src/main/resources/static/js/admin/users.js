@@ -27,6 +27,7 @@ $(document).ready(function () {
 
     getTable();
     getCompaniesTable();
+    getRoleTable();
 
     function getTable() {
         $.ajax({
@@ -125,6 +126,7 @@ $(document).ready(function () {
 
                 $("#companiesTable #list").remove();
                 $("#getCompaniesTable").after(htmlTable);
+
             }
         });
     };
@@ -139,7 +141,7 @@ $(document).ready(function () {
 
     function addUser() {
         var roleListArr = [];
-        var rls = document.getElementsByClassName("roleA");
+        var rls = document.getElementsByClassName("rls");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
                 roleListArr.push(rls[t].getAttribute("value"));
@@ -447,3 +449,30 @@ $(document).ready(function () {
     //     $("#tab-user-panel").click();
     // }
 });
+function getRoleTable() {
+    $.ajax({
+        method: "GET",
+        url: "/api/admin/all_roles",
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        dataType: "JSON",
+        success: function (list) {
+            let listRolesBody = $("#addListRoles");
+            listRolesBody.empty();
+            let listRoles = $("<div/>");
+            for (let i = 0; i < list.data.length; i++) {
+                let name = list.data[i].name;
+                listRoles.append(`
+                <li><input type="checkbox" class="rls" value="${name}">${name}</input></li>
+                <li role="separator" class="divider"></li>
+                `
+            );
+                listRolesBody.append(listRoles);
+
+            }
+        }
+    });
+}
