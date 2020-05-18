@@ -328,7 +328,7 @@ $(document).ready(function () {
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
 
-        var curCells = document.getElementsByClassName("roleB");
+        var curCells = document.getElementsByClassName("updRls");
 
         var curRolesLIst = $(this).closest("tr").find("#tableRole").text().split(", ");
 
