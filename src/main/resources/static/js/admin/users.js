@@ -27,7 +27,10 @@ $(document).ready(function () {
 
     getTable();
     getCompaniesTable();
-    getRoleTable();
+    var addRolesBody = $("#addListRoles");
+    getRoleTable(addRolesBody,"addRls");
+    var updateRolesBody = $("#updateListRole")
+    getRoleTable(updateRolesBody,"updRls");
 
     function getTable() {
         $.ajax({
@@ -115,7 +118,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableNameCompanies">' + listCompanies[i].name + '</td>');
                     htmlTable += ('<td id="tableStartTime">' + listCompanies[i].startTime + '</td>');
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
-                    htmlTable += ('<td id="tableTariff">' + listCompanies[i].tariff + '₽' +  '</td>');
+                    htmlTable += ('<td id="tableTariff">' + listCompanies[i].tariff + '₽' + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
                     htmlTable += ('<td id="tableId">' + listCompanies[i].userId + '</td>');
                     htmlTable += ('<td><button id="editCompanyBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
@@ -141,7 +144,7 @@ $(document).ready(function () {
 
     function addUser() {
         var roleListArr = [];
-        var rls = document.getElementsByClassName("rls");
+        var rls = document.getElementsByClassName("addRls");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
                 roleListArr.push(rls[t].getAttribute("value"));
@@ -195,7 +198,7 @@ $(document).ready(function () {
     function updateUser() {
 
         var roleListArr = [];
-        var rls = document.getElementsByClassName("roleB");
+        var rls = document.getElementsByClassName("updRls");
         for (var t = 0; t < rls.length; t++) {
             if (rls[t].checked) {
                 roleListArr.push(rls[t].getAttribute("value"));
@@ -236,7 +239,6 @@ $(document).ready(function () {
                 }
         });
     }
-
 
 
     $(document).on('click', '#editCompanyBtn', function (e) {
@@ -411,7 +413,7 @@ $(document).ready(function () {
                     '\n' +
                     '<label for="updateOrgType">Тип компании</label>\n' +
                     '<select id="updateOrgType" class="form-control" name="role">\n' +
-                    '</select>\n'+
+                    '</select>\n' +
                     '\n' +
                     '<label for="updateTariff">Тариф компании</label>\n' +
                     '<input id="updateTariff" class="form-control" type="text" name="tariff"\n' +
@@ -449,7 +451,8 @@ $(document).ready(function () {
     //     $("#tab-user-panel").click();
     // }
 });
-function getRoleTable() {
+
+function getRoleTable(listRolesBody,rls) {
     $.ajax({
         method: "GET",
         url: "/api/admin/all_roles",
@@ -460,16 +463,16 @@ function getRoleTable() {
         },
         dataType: "JSON",
         success: function (list) {
-            let listRolesBody = $("#addListRoles");
+
             listRolesBody.empty();
             let listRoles = $("<div/>");
             for (let i = 0; i < list.data.length; i++) {
                 let name = list.data[i].name;
                 listRoles.append(`
-                <li><input type="checkbox" class="rls" value="${name}">${name}</input></li>
+                <li><input type="checkbox" class="${rls}" value="${name}">${name}</input></li>
                 <li role="separator" class="divider"></li>
                 `
-            );
+                );
                 listRolesBody.append(listRoles);
 
             }

@@ -224,7 +224,6 @@ public class AdminRestController<T> {
     private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
         for (String rl : role) {
-            System.out.println(rl);
             roles.add(roleService.getRoleByName(rl));
         }
         return roles;
