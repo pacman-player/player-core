@@ -87,16 +87,12 @@ public class TelegramServiceImpl implements TelegramService {
             // создаем 30-секундный отрезок для превью
             byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
 
-//            if(!songService.getByName(track.getSong()).isBannedBy(companyService.getById(songRequest.getCompanyId()))){
-//                //тут отдавать боту сообщение что пенся забанена
-//                SongResponse sg = new SongResponse(songRequest.getChatId(),songId, cutSong, trackName);
-//                sg.setBanned(true);
-//            }
             Song song = songService.getByName(track.getSong());
-            Company company = companyService.getById(songRequest.getCompanyId());
-            Set<Song> songs = company.getBannedSong();
 
-            if (!songService.isExist(track.getSong())) {//сразу выполняется эта строка занчит сначла надо и пишется апрув сонг
+            Company company = companyService.getById(songRequest.getCompanyId());
+            Set<Song> songs = company.getBannedSong();//получаю сет песен которые забанены из переменной bannedSong в Company из таблицы company_on_banned_song
+
+            if (!songService.isExist(track.getSong())) {
                 // получаем id песни после занесения в БД
                 songId = musicSearchService.updateData(track);
                 Path path = playerPaths.getSongDir(songId);
@@ -106,14 +102,9 @@ public class TelegramServiceImpl implements TelegramService {
                     e.printStackTrace();
                 }
             } else if(
-                    songs.contains(song)
-                    //Set<Song> setbanedsongs = companyService.getById(songRequest.getCompanyId()).getBannedSong().contains(song)
-                    //если эта сонг айди тсь в этом сете
-                    //song.getBanned()
-                //!songService.getByName(track.getSong()).isBannedBy(companyService.getById(songRequest.getCompanyId()))
+                    songs.contains(song)//если песня есть в таблице company_on_banned_song значит песня забанена
             ) {
-
-                songResponse = new SongResponse(songRequest.getChatId(), true);
+                songResponse = new SongResponse(songRequest.getChatId(), true); //создаю songResponse ч.з новый конструктор из двух полей chatId и isBanned. проставляю isBanned =true и отдаю в контроллер
                 return songResponse;
             }
             else {

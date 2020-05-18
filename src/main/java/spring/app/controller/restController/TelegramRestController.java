@@ -97,16 +97,12 @@ public class TelegramRestController {
                     songRequest.getAuthorName());
             SongResponse songResponse = telegramService.approveSong(songRequest);
 
-//            Song song = songService.getByName(songRequest.getSongName());
-//            Company company = companyService.getById(songRequest.getCompanyId());
-
             if (songResponse.isBanned()) {
                 LOGGER.error("Requested song was banned !");
                 return songResponse;
             }
             if (songResponse != null) {
                 LOGGER.info("Approved Song successfully!");
-                //роеверку на исбанед доабвить сюда а не в другйо класс
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
