@@ -446,10 +446,7 @@ $(document).ready(function () {
             }
         })
     });
-    // function clicKTable() {//для обновления таблицы юзеров
-    //     getTable();
-    //     $("#tab-user-panel").click();
-    // }
+
 });
 
 function getRoleTable(listRolesBody,rls) {
