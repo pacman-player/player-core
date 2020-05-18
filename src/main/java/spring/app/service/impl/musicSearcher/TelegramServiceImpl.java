@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
+import spring.app.model.Company;
+import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.CutSongService;
 import spring.app.service.abstraction.*;
@@ -15,6 +17,7 @@ import spring.app.util.PlayerPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -83,7 +86,17 @@ public class TelegramServiceImpl implements TelegramService {
             byte[] trackBytes = track.getTrack();
             // создаем 30-секундный отрезок для превью
             byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
-            if (!songService.isExist(track.getSong())) {
+
+//            if(!songService.getByName(track.getSong()).isBannedBy(companyService.getById(songRequest.getCompanyId()))){
+//                //тут отдавать боту сообщение что пенся забанена
+//                SongResponse sg = new SongResponse(songRequest.getChatId(),songId, cutSong, trackName);
+//                sg.setBanned(true);
+//            }
+            Song song = songService.getByName(track.getSong());
+            Company company = companyService.getById(songRequest.getCompanyId());
+            Set<Song> songs = company.getBannedSong();
+
+            if (!songService.isExist(track.getSong())) {//сразу выполняется эта строка занчит сначла надо и пишется апрув сонг
                 // получаем id песни после занесения в БД
                 songId = musicSearchService.updateData(track);
                 Path path = playerPaths.getSongDir(songId);
@@ -92,8 +105,19 @@ public class TelegramServiceImpl implements TelegramService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());
+            } else if(
+                    songs.contains(song)
+                    //Set<Song> setbanedsongs = companyService.getById(songRequest.getCompanyId()).getBannedSong().contains(song)
+                    //если эта сонг айди тсь в этом сете
+                    //song.getBanned()
+                //!songService.getByName(track.getSong()).isBannedBy(companyService.getById(songRequest.getCompanyId()))
+            ) {
+
+                songResponse = new SongResponse(songRequest.getChatId(), true);
+                return songResponse;
+            }
+            else {
+                songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong()); //берем из базы сонг айди если она сущетсвет
             }
 
             // По position определяем позицию песни в очереди song_queue.
@@ -110,6 +134,8 @@ public class TelegramServiceImpl implements TelegramService {
             } else {
                 position = songQueue.getPosition(); //сетим позицию песни в song_queue которую ищем через бота
             }
+
+
 
             songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
         }
