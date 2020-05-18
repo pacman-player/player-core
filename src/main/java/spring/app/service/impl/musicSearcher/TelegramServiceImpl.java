@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
+import spring.app.model.Company;
+import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.CutSongService;
 import spring.app.service.abstraction.*;
@@ -15,6 +17,7 @@ import spring.app.util.PlayerPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -83,6 +86,12 @@ public class TelegramServiceImpl implements TelegramService {
             byte[] trackBytes = track.getTrack();
             // создаем 30-секундный отрезок для превью
             byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
+
+            Song song = songService.getByName(track.getSong());
+
+            Company company = companyService.getById(songRequest.getCompanyId());
+            Set<Song> songs = company.getBannedSong();//получаю сет песен которые забанены из переменной bannedSong в Company из таблицы company_on_banned_song
+
             if (!songService.isExist(track.getSong())) {
                 // получаем id песни после занесения в БД
                 songId = musicSearchService.updateData(track);
@@ -92,8 +101,14 @@ public class TelegramServiceImpl implements TelegramService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());
+            } else if(
+                    songs.contains(song)//если песня есть в таблице company_on_banned_song значит песня забанена
+            ) {
+                songResponse = new SongResponse(songRequest.getChatId(), true); //создаю songResponse ч.з новый конструктор из двух полей chatId и isBanned. проставляю isBanned =true и отдаю в контроллер
+                return songResponse;
+            }
+            else {
+                songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong()); //берем из базы сонг айди если она сущетсвет
             }
 
             // По position определяем позицию песни в очереди song_queue.
@@ -110,6 +125,8 @@ public class TelegramServiceImpl implements TelegramService {
             } else {
                 position = songQueue.getPosition(); //сетим позицию песни в song_queue которую ищем через бота
             }
+
+
 
             songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
         }

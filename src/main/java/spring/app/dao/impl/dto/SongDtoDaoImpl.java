@@ -34,4 +34,26 @@ public class SongDtoDaoImpl implements SongDtoDao {
                 .getResultList();
         return songDtos;
     }
+
+    @Override
+    public List<SongDto> getAllWithGenreByGenreIdDto(Long id) {
+
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s JOIN s.genre g WHERE g.genre_id = :id", SongDto.class)
+                .setParameter("id", id)
+                .getResultList();
+        return list;
+    }
+
+    @Override
+    public List<SongDto> getAllApprovedDto() {
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s  WHERE s.isApproved = true", SongDto.class)
+                .getResultList();
+        return list;
+
+
+    }
+
+
 }

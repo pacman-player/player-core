@@ -97,6 +97,10 @@ public class TelegramRestController {
                     songRequest.getAuthorName());
             SongResponse songResponse = telegramService.approveSong(songRequest);
 
+            if (songResponse.isBanned()) {
+                LOGGER.error("Requested song was banned !");
+                return songResponse;
+            }
             if (songResponse != null) {
                 LOGGER.info("Approved Song successfully!");
             } else {

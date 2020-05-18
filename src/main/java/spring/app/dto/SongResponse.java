@@ -7,8 +7,29 @@ public class SongResponse {
     private byte[] track;
     private String trackName;
     private Long position;
+    private boolean isBanned;
+
+    public SongResponse(Long chatId, Long songId, byte[] track, String trackName, Long position, boolean isBanned) {
+        this.chatId = chatId;
+        this.songId = songId;
+        this.track = track;
+        this.trackName = trackName;
+        this.position = position;
+        this.isBanned = isBanned;
+    }
 
     public SongResponse() {
+    }
+
+    public SongResponse(Long chatId, boolean isBanned) {
+        this.chatId = chatId;
+        this.isBanned = isBanned;
+    }
+
+    public SongResponse(Long chatId, Long songId, boolean isBanned) {
+        this.chatId = chatId;
+        this.songId = songId;
+        this.isBanned = isBanned;
     }
 
     public SongResponse(Long chatId, Long songId, byte[] track, String trackName) {
@@ -25,6 +46,8 @@ public class SongResponse {
         this.trackName = trackName;
         this.position = position;
     }
+
+
 
     public Long getChatId() {
         return chatId;
@@ -64,5 +87,13 @@ public class SongResponse {
 
     public void setPosition(Long position) {
         this.position = position;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 }

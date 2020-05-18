@@ -10,4 +10,8 @@ public interface SongDtoDao {
 
     List<SongDto> listOfSongsByTag(String tag);
 
+    List<SongDto> getAllWithGenreByGenreIdDto(Long id);
+
+    List<SongDto> getAllApprovedDto();
+
 }
