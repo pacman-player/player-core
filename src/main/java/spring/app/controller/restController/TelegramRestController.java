@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
@@ -88,7 +89,7 @@ public class TelegramRestController {
      * @throws DecoderException
      */
     @PostMapping(value = "/approve")
-    public SongResponse approve(@RequestBody SongRequest songRequest)
+    public Callable<SongResponse> approve(@RequestBody SongRequest songRequest)
             throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/approve'");
         try {
@@ -98,11 +99,11 @@ public class TelegramRestController {
             SongResponse songResponse = telegramService.approveSong(songRequest);
 
             if (songResponse != null) {
-                LOGGER.info("Approved Song successfully!");
+                LOGGER.info("Approved Song successfully! {}", songResponse.getTrackName());
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
-            return songResponse;
+            return () -> songResponse;
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;

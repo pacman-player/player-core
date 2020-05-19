@@ -5,6 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.GenreDefinerService;
 
@@ -19,6 +21,7 @@ import java.util.regex.Pattern;
  * если не находит то обращается music.yandex.com
  */
 @Service
+@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class GenreDefinerServiceImpl implements GenreDefinerService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GenreDefinerServiceImpl.class);
 

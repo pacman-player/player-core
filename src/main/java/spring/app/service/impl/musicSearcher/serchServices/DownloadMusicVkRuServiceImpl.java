@@ -5,6 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.service.abstraction.DownloadMusicService;
@@ -18,7 +20,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 
 @Service("downloadMusicVkRuServiceImpl")
-@Transactional
+@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
     private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
 

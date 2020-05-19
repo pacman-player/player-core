@@ -5,6 +5,8 @@ import com.google.common.util.concurrent.SimpleTimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.service.abstraction.DataUpdateService;
@@ -26,6 +28,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
  */
 @Service
 @Transactional
+@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class MusicSearchServiceImpl implements MusicSearchService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MusicSearchServiceImpl.class);
     private Track track;

@@ -3,9 +3,7 @@ package spring.app.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
@@ -24,6 +22,7 @@ import java.util.Set;
 @Configuration
 @ComponentScan("spring.app")
 @PropertySource("classpath:application.properties")
+@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class DownloadMusicServiceFactory {
     /**
      * Имя первого сервиса для поиска
