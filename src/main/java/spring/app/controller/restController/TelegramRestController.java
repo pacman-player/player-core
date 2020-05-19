@@ -89,7 +89,7 @@ public class TelegramRestController {
      * @throws DecoderException
      */
     @PostMapping(value = "/approve")
-    public Callable<SongResponse> approve(@RequestBody SongRequest songRequest)
+    public SongResponse approve(@RequestBody SongRequest songRequest)
             throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/approve'");
         try {
@@ -103,7 +103,7 @@ public class TelegramRestController {
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
-            return () -> songResponse;
+            return songResponse;
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
@@ -174,6 +174,7 @@ public class TelegramRestController {
             orderSongService.save(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             LOGGER.info("Success!");
         }
+        LOGGER.debug("THREAD = {}", Thread.currentThread().getName());
     }
 
     @PostMapping("/registerTelegramUserAndVisit")
