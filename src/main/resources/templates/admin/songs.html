@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
@@ -9,9 +9,11 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/tags/tagsinput.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container-fluid">
@@ -114,13 +116,9 @@
                                                                                 <label for="updateSongSearchTags">
                                                                                     Поисковые теги
                                                                                 </label>
-                                                                                <textarea
-                                                                                        id="updateSongSearchTags"
-                                                                                        class="form-control"
-                                                                                        name="searchTags"
-                                                                                        rows="5"
-                                                                                        required="">
-                                                                                </textarea>
+                                                                                <input id="updateSongSearchTags"
+                                                                                       class="form-control"
+                                                                                       type="text"/>
 
                                                                                 <label for="updateSongGenre">Жанр</label>
                                                                                 <select class="form-control"
@@ -180,11 +178,9 @@
                                                                    placeholder="Enter author name" name="author"/>
 
                                                             <label for="addSongTags">Поисковые теги</label>
-                                                            <textarea
-                                                                    id="addSongTags" class="form-control"
-                                                                    placeholder="Enter search tags" name="searchTags"
-                                                                    rows="5">
-                                                            </textarea>
+                                                            <input id="addSongTags"
+                                                                   class="form-control"
+                                                                   type="text"/>
 
                                                             <label for="addSongGenre">Жанр</label>
                                                             <select class="form-control" id="addSongGenre"
@@ -215,6 +211,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+                                                    crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/tags/tagsinput.js" rel="script"></script>
 <script type="text/javascript" src="/js/security.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/users.js" rel="script"></script>
