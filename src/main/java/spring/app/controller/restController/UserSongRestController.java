@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.model.User;
@@ -17,6 +18,7 @@ import spring.app.service.abstraction.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user/song")
@@ -34,11 +36,11 @@ public class UserSongRestController {
     }
 
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
-    public List<Song> getAllSongInSongCompilation(@PathVariable("id") Long id) {
+    public List<SongDto> getAllSongInSongCompilation(@PathVariable("id") Long id) {
         LOGGER.info("GET request '/get/all-song/song-compilation/{}'", id);
-        List<Song> list = songService.getAllSongInSongCompilation(id);
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+        List<SongDto> dtoSongs = songService.getAllSongsInSongCompilation(id);
+        LOGGER.info("Result has {} lines", dtoSongs.size());
+        return dtoSongs;
     }
 
     @GetMapping("/songsInQueue")

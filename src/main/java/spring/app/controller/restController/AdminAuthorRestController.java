@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
+import spring.app.dto.GenreDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.service.abstraction.AuthorService;
@@ -76,9 +77,8 @@ public class AdminAuthorRestController {
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
-    public List<Genre> getAllGenre() {
-        List<Genre> list = genreService.getAll();
-        return list;
+    public List<GenreDto> getAllGenre() {
+        return genreService.getAllGenreDto();
     }
 
     private Set<Genre> getGenres(String[] genresArr) {

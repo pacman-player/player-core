@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.dto.SongDtoDao;
+import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
@@ -72,10 +73,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
-    public List<Song> getAllSongInSongCompilation(Long id) {
-        SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
-        Set<Song> allSongSet = songCompilation.getSong();
-        return new ArrayList<>(allSongSet);
+    public List<SongDto> getAllSongsInSongCompilation(Long id) {
+        return songCompilationService.getSongCompilationContentById(id);
     }
 
     @Override
