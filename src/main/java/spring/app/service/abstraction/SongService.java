@@ -45,6 +45,8 @@ public interface SongService extends GenericService<Long, Song>{
 
     void setTags(Song song, Set<String> stringTags);
 
+    List<SongDto> listOfSongsByName(String name);
+
     List<SongDto> listOfSongsByTag(String tag);
 
     void deleteTagForSongs(List<Long> songIds, Long tagId);

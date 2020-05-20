@@ -17,6 +17,7 @@ public class SongDto {
     private Set<String> searchTags;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private boolean banned;
 
     private AuthorDto authorDto;
     private GenreDto genreDto;
@@ -174,6 +175,14 @@ public class SongDto {
 
     public void setApproved(Boolean approved) {
         isApproved = approved;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     @Override

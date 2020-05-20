@@ -26,6 +26,16 @@ public class SongDtoDaoImpl implements SongDtoDao {
     }
 
     @Override
+    public List<SongDto> listOfSongsByName(String name) {
+        List<SongDto> songDtos = entityManager.createQuery(
+                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) FROM Song s",
+                SongDto.class
+        ).getResultList();
+
+        return songDtos;
+    }
+
+    @Override
     public List<SongDto> listOfSongsByTag(String tag) {
         List<SongDto> songDtos =  entityManager.createQuery(
                 "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +

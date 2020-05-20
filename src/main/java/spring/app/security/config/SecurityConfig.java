@@ -66,8 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
                 .antMatchers("/api/tlg/**").hasAuthority("BOT")
-                //.antMatchers("/api/**").authenticated() !!!!!!!!!!!!!!!!!!!
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
