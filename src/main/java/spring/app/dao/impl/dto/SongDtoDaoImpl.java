@@ -67,7 +67,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
                                                 "INNER JOIN tags t ON ts.tag_id = t.id " +
                                                 "INNER JOIN authors a ON s.author_id = a.id " +
                                                 "WHERE to_tsvector('%s %s') @@ plainto_tsquery(t.name) " +
-                                                "GROUP BY s.id, a.id ORDER BY count(*) DESC", author, name);
+                                                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3", author, name);
         return entityManager.createNativeQuery(ftsQuery)
                                         .unwrap(SQLQuery.class)
                                         .setResultTransformer(new BotSongDtoTransformer())
