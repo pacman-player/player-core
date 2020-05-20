@@ -17,7 +17,6 @@ public interface DownloadMusicService {
      * @see spring.app.service.impl.musicSearcher.serchServices.ZaycevSaitServiceImpl
      * @see spring.app.service.impl.musicSearcher.serchServices.DownloadMusicVkRuServiceImpl
      * @see spring.app.service.impl.musicSearcher.serchServices.KrolikSaitServiceImpl
-     * @see spring.app.service.impl.musicSearcher.serchServices.BDSearchServiceImpl
      */
     Track getSong(String author, String song) throws IOException;
 

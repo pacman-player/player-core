@@ -48,16 +48,6 @@ public class DownloadMusicServiceFactory {
     @Value("${music.searchService.four}")
     String four;
 
-    /**
-     * Имя пятого сервиса для поиска
-     */
-    @Value("${music.searchService.five}")
-    String five;
-
-    @Autowired
-    @Qualifier("bdSearchServiceImpl")
-    private DownloadMusicService bdSearchServiceImpl;
-
     @Autowired
     @Qualifier("zaycevSaitServiceImpl")
     private DownloadMusicService zaycevSaitServiceImpl;
@@ -113,14 +103,6 @@ public class DownloadMusicServiceFactory {
         this.four = four;
     }
 
-    public String getFive() {
-        return five;
-    }
-
-    public void setFive(String five) {
-        this.five = five;
-    }
-
     /**
      * Метод для получения нужной имплементации музыкального сервиса.
      *
@@ -130,9 +112,6 @@ public class DownloadMusicServiceFactory {
         DownloadMusicService dms;
 
         switch (implName) {
-            case "bdSearchServiceImpl":
-                dms = bdSearchServiceImpl;
-                break;
             case "zaycevSaitServiceImpl":
                 dms = zaycevSaitServiceImpl;
                 break;
@@ -163,11 +142,9 @@ public class DownloadMusicServiceFactory {
             services.add(getService(two));
             services.add(getService(three));
             services.add(getService(four));
-            services.add(getService(five));
         } catch (NullPointerException | ClassNotFoundException e) {
             // На случай ошибок в файле конфигурации, возвращаем очередность по-умолчанию
             services.clear();
-            services.add(bdSearchServiceImpl);
             services.add(zaycevSaitServiceImpl);
             services.add(muzofondfmMusicSearchImpl);
             services.add(krolikSaitServiceImpl);

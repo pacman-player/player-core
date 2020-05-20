@@ -57,51 +57,52 @@ public class Mp3Parser {
         Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    /**
-     * Метод для чтения тегов и поиска информации через музыкальные сервисы на старте программы. Использовать только один из методов.
-     */
-    public Song readTags(File file) throws InvalidDataException, IOException, UnsupportedTagException {
-        String name = null;
-        String author = null;
-        String genre = null;
-        byte[] image = null;
-
-        Mp3File mp3File = new Mp3File(file);
-        if (mp3File.hasId3v2Tag()) {
-            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
-            name = id3v2Tag.getTitle();
-            author = id3v2Tag.getArtist();
-            genre = id3v2Tag.getGenreDescription();
-            image = id3v2Tag.getAlbumImage();
-        }
-
-        String fullTrackName = author + " " + name;
-
-        Long id = musicSearchService.updateData(fullTrackName, author, name);
-        Song song = songService.getById(id);
-       /*
-       // Занесение init-треков в базу с упрощенной логикой, без определения жанров через MusicSearchService
-       Author auth = new Author(author);
-        Genre gen = genreService.getByName(genre);
-        if(gen == null){
-            gen = new Genre(genre);
-            genreService.addGenre(gen);
-        }
-        authorService.addAuthor(auth);
-        Song song = new Song(name, auth, gen);
-        song.setName(name);
-        song.setAuthor(auth);
-        song.setGenre(gen);
-        songService.addSong(song);
-        Path fileO = Paths.get("music/" + songService.getByName(song.getName()).getId() + ".mp3");
-        */
-
-
-        Path fileO = Paths.get(musicPath + id + ".mp3");
-
-        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
-        return song;
-    }
+    //TODO: remove
+//    /**
+//     * Метод для чтения тегов и поиска информации через музыкальные сервисы на старте программы. Использовать только один из методов.
+//     */
+//    public Song readTags(File file) throws InvalidDataException, IOException, UnsupportedTagException {
+//        String name = null;
+//        String author = null;
+//        String genre = null;
+//        byte[] image = null;
+//
+//        Mp3File mp3File = new Mp3File(file);
+//        if (mp3File.hasId3v2Tag()) {
+//            ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+//            name = id3v2Tag.getTitle();
+//            author = id3v2Tag.getArtist();
+//            genre = id3v2Tag.getGenreDescription();
+//            image = id3v2Tag.getAlbumImage();
+//        }
+//
+//        String fullTrackName = author + " " + name;
+//
+//        Long id = musicSearchService.updateData(fullTrackName, author, name);
+//        Song song = songService.getById(id);
+//       /*
+//       // Занесение init-треков в базу с упрощенной логикой, без определения жанров через MusicSearchService
+//       Author auth = new Author(author);
+//        Genre gen = genreService.getByName(genre);
+//        if(gen == null){
+//            gen = new Genre(genre);
+//            genreService.addGenre(gen);
+//        }
+//        authorService.addAuthor(auth);
+//        Song song = new Song(name, auth, gen);
+//        song.setName(name);
+//        song.setAuthor(auth);
+//        song.setGenre(gen);
+//        songService.addSong(song);
+//        Path fileO = Paths.get("music/" + songService.getByName(song.getName()).getId() + ".mp3");
+//        */
+//
+//
+//        Path fileO = Paths.get(musicPath + id + ".mp3");
+//
+//        Files.copy(new FileInputStream(file), fileO, StandardCopyOption.REPLACE_EXISTING);
+//        return song;
+//    }
 
     public void copyInitSongs(File file) throws InvalidDataException, IOException, UnsupportedTagException {
         String name = null;

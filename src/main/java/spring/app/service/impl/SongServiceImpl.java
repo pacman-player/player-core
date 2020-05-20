@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CounterDao;
-import spring.app.dao.abstraction.CounterDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.TagDao;
 import spring.app.dao.abstraction.dto.SongDtoDao;
+import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Counter;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.model.Tag;
@@ -59,8 +58,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 //    }
 
     @Override
-    public Song getBySearchRequests(String author, String name) {
-        return dao.getBySearchRequests(author, name);
+    public List<BotSongDto> getBySearchRequests(String author, String name) {
+        return songDtoDao.getBySearchRequests(author, name);
     }
 
 

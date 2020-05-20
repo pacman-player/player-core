@@ -30,7 +30,6 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 @Transactional
 public class MusicSearchServiceImpl implements MusicSearchService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MusicSearchServiceImpl.class);
-    private Track track;
 
     private final GenreDefinerService genreDefiner;
     private final DataUpdateService dataUpdater;
@@ -56,6 +55,8 @@ public class MusicSearchServiceImpl implements MusicSearchService {
      */
     @Override
     public Track getSong(String author, String song) throws IOException {
+        Track track = null;
+
         // складываем сервисы поиска в лист
         // проходим в цикле по каждому сервису, начиная с позиции счетчика сервисов
         // пытаемся найти песню и при положительном исходе брейкаем цикл,
@@ -97,9 +98,10 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
 
-    //заносит данные песни из папки при инициализации в бд и возвращает id песни
-    public Long updateData(String fullTrackName, String author, String songName) throws IOException {
-        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
-        return dataUpdater.updateData(author, songName, genreNames);
-    }
+    //TODO: remove
+//    //заносит данные песни из папки при инициализации в бд и возвращает id песни
+//    public Long updateData(String fullTrackName, String author, String songName) throws IOException {
+//        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
+//        return dataUpdater.updateData(author, songName, genreNames);
+//    }
 }
