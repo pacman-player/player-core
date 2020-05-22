@@ -22,8 +22,4 @@ public interface DownloadMusicServiceConfigurerMBean {
     String getFour();
 
     void setFour(String four);
-
-    String getFive();
-
-    void setFive(String five);
 }
