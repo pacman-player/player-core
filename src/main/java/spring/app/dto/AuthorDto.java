@@ -26,6 +26,15 @@ public class AuthorDto extends Bannable {
         this.isApproved = isApproved;
     }
 
+    public AuthorDto(Long id, String name, String[] genres, Timestamp createdAt, Boolean isApproved, Boolean banned) {
+        this.id = id;
+        this.name = name;
+        this.genres = genres;
+        this.createdAt = createdAt;
+        this.isApproved = isApproved;
+        this.banned = banned;
+    }
+
     //Для легкого и быстрого создания объекта AuthorDto из Author
     public AuthorDto(Author author) {
         this.id = author.getId();

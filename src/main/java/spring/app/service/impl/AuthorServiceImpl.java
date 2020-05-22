@@ -106,4 +106,8 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return dao.isExist(name);
     }
 
+    @Override
+    public AuthorDto getAuthorDtoById(Long id) {
+        return authorDtoDao.getById(id);
+    }
 }

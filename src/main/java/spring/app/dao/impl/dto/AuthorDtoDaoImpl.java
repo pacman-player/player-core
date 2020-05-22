@@ -58,6 +58,18 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         return approvedAuthorDtos;
     }
 
+    @Override
+    public AuthorDto getById(Long id) {
+        AuthorDto authorDto = entityManager.createQuery(
+                "SELECT new spring.app.dto.AuthorDto(a.id, a.name. a.genres, a.createdAt, a.isApproved, a.banned) " +
+                        "FROM Author a WHERE a.id = :authorId",
+                AuthorDto.class
+        )
+                .setParameter("authorId", id)
+                .getSingleResult();
+        return authorDto;
+    }
+
     private static class AuthorDtoTransformer implements ResultTransformer {
 
         private List<AuthorDto> roots = new ArrayList<>();

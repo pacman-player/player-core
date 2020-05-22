@@ -12,4 +12,6 @@ public interface AuthorDtoDao {
 
     List<AuthorDto> findByNameContaining(String name);
 
+    AuthorDto getById(Long id);
+
 }

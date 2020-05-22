@@ -28,4 +28,6 @@ public interface AuthorService extends GenericService<Long, Author> {
     int getLastApprovedAuthorsPageNumber(int pageSize);
 
     boolean isExist(String name);
+
+    AuthorDto getAuthorDtoById(Long id);
 }

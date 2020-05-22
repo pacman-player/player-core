@@ -35,9 +35,8 @@ public class AdminAuthorRestController {
     }
 
     @GetMapping(value = "/{id}")
-    public Author getByIdAuthor(@PathVariable(value = "id") Long authorId) {
-        Author author = authorService.getById(authorId);
-        return author;
+    public AuthorDto getByIdAuthor(@PathVariable(value = "id") Long authorId) {
+        return authorService.getAuthorDtoById(authorId);
     }
 
     @PostMapping(value = "/add_author")
