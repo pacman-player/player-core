@@ -1,14 +1,13 @@
 $(document).ready(function () {
     getTable();
 
-    let formAddEst = $("#rolesAddForm");
-    let fieldNameAddEstName = $("#addName");
-    $("#addroleBtn").on("click", function (event) {
+    let formAddRol = $("#rolesAddForm");
+    let fieldNameAddRolName = $("#addName");
+    $("#addRoleBtn").on("click", function (event) {
         event.preventDefault();
-
-        if (formAddEst.valid()) {
-            addroles(formAddEst, fieldNameAddEstName);
-            formAddEst.trigger("reset");
+        if (formAddRol.valid()) {
+            addroles(formAddRol, fieldNameAddRolName);
+            formAddRol.trigger("reset");
         }
     })
 });
@@ -16,12 +15,12 @@ $(document).ready(function () {
 
 const errMessages = {
     required: "Укажите название",
-    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
-    rangelength: "Количество символов должно быть в диапазоне [3-30]",
+    pattern: "Разрешенные символы:  латиница в верхнем регистре",
+    rangelength: "Количество символов должно быть в диапазоне [3-10]",
     remote: "Имя занято"
 };
 
-const rolesNameRegEx = /[\wА-Яа-я\-]/;
+const rolesNameRegEx = /^[A-Z]+$/;
 
 
 $("#rolesAddForm").validate({
@@ -29,16 +28,16 @@ $("#rolesAddForm").validate({
         name: {
             required: true,
             pattern: rolesNameRegEx,
-            rangelength: [3, 30],
+            rangelength: [3, 10],
             remote: {
                 method: "GET",
                 url: "/api/admin/role/est_type_name_is_free",
                 data: {
-                    name: function () {
+                    data: function () {
                         return $("#addName").val()
                     },
                 }
-            }
+            }.data
         }
     },
     messages: {
@@ -48,6 +47,7 @@ $("#rolesAddForm").validate({
 
 
 function addroles(form, field) {
+    let roleMessage = field.val();
     $.ajax({
         method: "POST",
         url: "/api/admin/add_role",
@@ -63,8 +63,8 @@ function addroles(form, field) {
         },
         success: () => {
             notification(
-                "add-role" + field.val(),
-                ` Роль ${field.val()} добавлено`,
+                "add-role" + roleMessage,
+                " Роль "+ roleMessage + " добавлена",
                 "roles-panel");
         },
         error: (xhr, status, error) => {
@@ -75,10 +75,10 @@ function addroles(form, field) {
 
 
 function editButton(id, name) {
-    let theModal = $("#editrole");
+    let theModal = $("#editRole");
     let form = $("#updateEstForm");
-    let fieldId = $("#updateroleId");
-    let fieldName = $("#updateroleName");
+    let fieldId = $("#updateRoleId");
+    let fieldName = $("#updateRoleName");
 
     fieldId.val(id);
     fieldName.val(name);
@@ -89,11 +89,12 @@ function editButton(id, name) {
             name: {
                 required: true,
                 pattern: rolesNameRegEx,
-                rangelength: [3, 30],
+                rangelength: [3, 10],
                 remote: {
                     method: "GET",
                     url: "/api/admin/role/est_type_name_is_free",
-                }
+
+                }.data
             }
         },
         messages: {

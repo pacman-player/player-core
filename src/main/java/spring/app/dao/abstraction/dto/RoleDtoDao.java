@@ -1,13 +1,14 @@
 package spring.app.dao.abstraction.dto;
 
 import spring.app.dto.RoleDto;
-import spring.app.model.Role;
 
 import java.util.List;
 
 public interface RoleDtoDao {
 
-    List<RoleDto> getAllRoles();
+    List<RoleDto> getAllRolesDto();
 
-    Role getRoleByName(String roleName);
+    RoleDto getRoleDtoByName(String roleName);
+
+    RoleDto getRoleDtoById(Long id);
 }

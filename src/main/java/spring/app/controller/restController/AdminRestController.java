@@ -195,7 +195,7 @@ public class AdminRestController<T> {
     @DeleteMapping(value = "/delete_role")
     public void deleteRole(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_role' with id = {}", id);
-        orgTypeService.deleteById(id);
+        roleService.deleteById(id);
     }
 
     @PostMapping(value = "/add_role")
@@ -213,16 +213,18 @@ public class AdminRestController<T> {
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/role/est_type_name_is_free")
     public Response<T> isLoginFreeRole(@RequestParam("name") String name) {
-        return responseBuilder.success(roleService.getByName(name)== null);
+        Boolean isRoleDto;
+        if (roleService.getRoleDtoByName(name) == null) {
+            isRoleDto = true;
+        } else isRoleDto = false;
+        return responseBuilder.success(isRoleDto);
     }
 
 
     private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
-
         for (String rl : role) {
-            System.out.println(rl);
-            roles.add(roleService.getByName(rl));
+            roles.add(roleService.getRoleByName(rl));
         }
         return roles;
     }

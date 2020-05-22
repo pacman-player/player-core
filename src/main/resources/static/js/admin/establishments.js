@@ -21,7 +21,7 @@ const errMessages = {
     remote: "Имя занято"
 };
 
-const establishmentsNameRegEx = /[\wА-Яа-я\-]/;
+const establishmentsNameRegEx = /^[\wА-Яа-я\-]+$/;
 
 
 $("#establishmentsAddForm").validate({
@@ -48,6 +48,7 @@ $("#establishmentsAddForm").validate({
 
 
 function addEstablishments(form, field) {
+    let estMessage = field.val();
     $.ajax({
         method: "POST",
         url: "/api/admin/add_establishment",
@@ -63,8 +64,8 @@ function addEstablishments(form, field) {
         },
         success: () => {
             notification(
-                "add-establishment" + field.val(),
-                ` Заведение ${field.val()} добавлено`,
+                "add-establishment" + estMessage,
+                ` Заведение ${estMessage} добавлено`,
                 "establishments-panel");
         },
         error: (xhr, status, error) => {

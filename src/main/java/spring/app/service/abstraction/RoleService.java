@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface RoleService extends GenericService<Long, Role> {
 
-    Role getByName(String roleName);
+    Role getRoleByName(String roleName);
 
     List<RoleDto> getAllRolesDto();
+
+    RoleDto getRoleDtoByName(String roleName);
+
+    RoleDto getRoleDtoById(Long id);
 }
