@@ -22,6 +22,11 @@ public class AdminController {
         return "admin/establishments";
     }
 
+    @GetMapping("/roles")
+    public String getRoles() {
+        return "admin/roles";
+    }
+
     @GetMapping("/compilations")
     public String getCollections() {
         return "admin/compilations";

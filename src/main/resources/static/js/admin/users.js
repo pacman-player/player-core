@@ -71,7 +71,7 @@ $(document).ready(function () {
                 $("#rlist").empty();
                 $("#rlistA").empty();
                 $.get({
-                    url: "/api/admin/get_all_roles",
+                    url: "/api/admin/all_roles",
                     contentType: "application/json",
                     success: function (roleList) {
                         var rolesHtmlA = "";

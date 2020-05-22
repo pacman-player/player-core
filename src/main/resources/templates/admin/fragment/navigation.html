@@ -23,6 +23,10 @@
         <a href="/admin/establishments">Типы заведений</a>
     </li>
 
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/roles' ? 'active' : ''}">
+        <a href="/admin/roles">Роли</a>
+    </li>
+
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/genres' ? 'active' : ''}">
         <a href="/admin/genres">Жанры</a>
     </li>
