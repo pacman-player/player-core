@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.NotificationDao;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.UserDao;
+import spring.app.dao.abstraction.dto.CompanyDtoDao;
 import spring.app.dao.abstraction.dto.UserDtoDao;
+import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.Role;
@@ -29,16 +31,19 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     private NotificationDao notificationDao;
     private Role userRole;
     private CompanyService companyService;
+    private CompanyDtoDao companyDtoDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
+    public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService, CompanyDtoDao companyDtoDao) {
         super(userDao);
         this.userDtoDao = userDtoDao;
 
         this.roleDao = roleDao;
         this.notificationDao = notificationDao;
         this.companyService = companyService;
+        this.companyDtoDao = companyDtoDao;
     }
+
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -170,4 +175,8 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     }
 
 
+    @Override
+    public CompanyDto getUserCompanyDto(Long userId) {
+        return companyDtoDao.getById(getById(userId).getCompany().getId());
+    }
 }

@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 
+import spring.app.dto.CompanyDto;
 import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
@@ -39,4 +40,7 @@ public interface UserService extends GenericService<Long, User>{
     boolean isExistUserByLogin(String login, long userId);
 
     List<User> getUserByRole(String role);
+
+    CompanyDto getUserCompanyDto(Long userId);
+
 }

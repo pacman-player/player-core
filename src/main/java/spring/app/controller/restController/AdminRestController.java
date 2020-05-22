@@ -139,9 +139,9 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        Company company = userService.getById(userId).getCompany();
-        return ResponseEntity.ok(company);
+    public ResponseEntity<CompanyDto> getUserCompany(@PathVariable(value = "id") Long userId) {
+        CompanyDto companyDto = userService.getUserCompanyDto(userId);
+        return ResponseEntity.ok(companyDto);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
