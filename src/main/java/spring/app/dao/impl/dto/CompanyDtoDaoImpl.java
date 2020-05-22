@@ -30,7 +30,7 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
     public CompanyDto getById(Long id) {
         CompanyDto companyDto = entityManager.createQuery(
                 "SELECT new spring.app.dto.CompanyDto(c.id, c.name, c.startTime, c.closeTime, c.orgType.id, " +
-                        "c.orgType.name, c.tariff, c.user.id, c.user.login, c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c WHERE c.id = :companyId",
+                        "c.tariff, c.user.id) FROM Company c WHERE c.id = :companyId",
                 CompanyDto.class
         )
                 .setParameter("companyId", id)

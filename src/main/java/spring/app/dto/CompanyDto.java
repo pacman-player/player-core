@@ -22,6 +22,16 @@ public class CompanyDto {
     public CompanyDto() {
     }
 
+    public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, Long tariff, Long userId) {
+        this.id = id;
+        this.name = name;
+        this.startTime = startTime.toString();
+        this.closeTime = closeTime.toString();
+        this.orgType = orgType;
+        this.tariff = tariff;
+        this.userId = userId;
+    }
+
     public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
                       Long tariff, Long userId, String userLogin, String addressCountry, String addressCity, String addressStreet, String addressHouse) {
         this.id = id;
