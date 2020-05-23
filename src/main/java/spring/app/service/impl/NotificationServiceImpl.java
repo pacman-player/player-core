@@ -66,6 +66,12 @@ public class NotificationServiceImpl extends AbstractServiceImpl<Long, Notificat
         return notificationDtoDao.getAll();
     }
 
+
+    @Override
+    public NotificationDto getNotificationByIdDto(Long id) {
+        return notificationDtoDao.getNotificationById(id);
+    }
+
     @Override
     public List<Notification> getByUserId(Long id) {
         return dao.getByUserId(id);

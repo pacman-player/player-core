@@ -16,6 +16,8 @@ public interface NotificationService extends GenericService<Long, Notification>{
 
     List<NotificationDto> getAllNotificationDto();
 
+    NotificationDto getNotificationByIdDto(Long id);
+
     List<Notification> getByUserId(Long id);
 
     void deleteAllNotificationsFromUser(Long userId);

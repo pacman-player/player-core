@@ -270,7 +270,7 @@ $(document).ready(function () {
             async: true,
             cache: false,
             success: function(notification) {
-                $("#updateNotificationsUser").val(notification.user.login);
+                $("#updateNotificationsUser").val(notification.userName);
                 $("#updateNotificationsMessage").val(notification.message);
                 getTemplateProcessNotify("default");
             },
