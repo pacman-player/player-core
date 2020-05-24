@@ -9,13 +9,14 @@ import spring.app.model.Tag;
 import spring.app.service.abstraction.TagService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class TagSeviceImpl extends AbstractServiceImpl<Long, Tag, TagDao> implements TagService {
+public class TagServiceImpl extends AbstractServiceImpl<Long, Tag, TagDao> implements TagService {
 
     private final TagDtoDao tagDtoDao;
 
-    public TagSeviceImpl(TagDao dao, TagDtoDao tagDtoDao) {
+    public TagServiceImpl(TagDao dao, TagDtoDao tagDtoDao) {
         super(dao);
         this.tagDtoDao = tagDtoDao;
     }
@@ -30,6 +31,11 @@ public class TagSeviceImpl extends AbstractServiceImpl<Long, Tag, TagDao> implem
     @Transactional(readOnly = true)
     public boolean isExistByName(String name) {
         return dao.isExistByName(name);
+    }
+
+    @Override
+    public Set<Tag> findTags(String searchRequest) {
+        return dao.findTags(searchRequest);
     }
 
 }
