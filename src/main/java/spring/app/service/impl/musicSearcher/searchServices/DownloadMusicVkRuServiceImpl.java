@@ -1,6 +1,5 @@
-package spring.app.service.impl.musicSearcher.serchServices;
+package spring.app.service.impl.musicSearcher.searchServices;
 
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,18 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.entity.Track;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 
-@Service("zaycevSaitServiceImpl")
-@Transactional
-public class ZaycevSaitServiceImpl implements DownloadMusicService {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZaycevSaitServiceImpl.class);
-    private RestTemplate restTemplate = new RestTemplate();
+@Service("downloadMusicVkRuServiceImpl")
+public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
+    private final static Logger LOGGER = LoggerFactory.getLogger(DownloadMusicVkRuServiceImpl.class);
 
     /**
      * Имя исполнителя, полученное от сервиса.
@@ -36,6 +36,7 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
      */
     private String trackName;
 
+
     /**
      * Метод для создания поискового запроса на данный музыкальный сервис и
      * получения ссылки на скачивания трека.
@@ -44,38 +45,37 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
      * @param song   - название песни
      * @return ссылка на скачивание .mp3 файла.
      */
-    public String searchSong(String author, String song) {
-        LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net...", author, song);
-        String baseUrl = "https://zaycev.net";
-        String searchUrl = "https://zaycev.net/search.html?query_search=";
+    public String searchSong(String author, String song) throws IOException {
+        LOGGER.debug("Поиск трека: {} - {} c DownloadMusicVK.ru...", author, song);
+        String searchUrl = "https://downloadmusicvk.ru/audio/search?q=";
         String link = "";
 
         try {
             Document document = Jsoup.connect(searchUrl + author + " " + song).get();
 
-            Element div = document.getElementsByClass("musicset-track clearfix ").get(0);
-            String jsonUrl = div.attr("data-url");   // url на json в котором хранится ссылка для скачивания
-            Element div2 = div.getElementsByClass("musicset-track__fullname").get(0);
+            Element div = document.getElementsByClass("btn btn-primary btn-xs download").get(0);
+            String songUrl = div.attr("href");   // url  в котором хранится ссылка для скачивания
 
-            trackName = div2.attr("title");  // вытаскиваем исполнителя и название песни
-            if (trackName.contains(" – ")) {
-                String[] perfomerAndSong = trackName.split(" – ");
-                authorName = perfomerAndSong[0];
-                songName = perfomerAndSong[1];
-                trackName = trackName.replaceAll(" – ", "-");
-            } else {
-                authorName = author;
-                songName = song;
-                trackName = authorName + "-" + songName;
+            String[] fragments = songUrl.substring(19).split("&");
+
+            for (String path : fragments) {
+                if (path.contains("artist")) {
+                    authorName = URLDecoder.decode(path.split("=")[1], "UTF-8");
+                    authorName = URLDecoder.decode(author, "UTF-8");
+                }
+                if (path.contains("title")) {
+                    songName = URLDecoder.decode(path.split("=")[1], "UTF-8");
+                    songName = URLDecoder.decode(song, "UTF-8");
+                }
             }
+            trackName = author + "-" + song;
 
-            String json = Jsoup.connect(baseUrl + jsonUrl).ignoreContentType(true).execute().body();
-            JSONObject jsonObj = new JSONObject(json);
-            link = jsonObj.getString("url");
+            link = "https://downloadmusicvk.ru/audio/download?" +
+                    fragments[1] + "&" + fragments[2] + "&" + fragments[5] + "&" + fragments[0];
         } catch (Exception e) {
-            LOGGER.debug("Поиск трека: {} - {} c Zaytsev.net неуспешен! :(", author, song);
+            LOGGER.debug("Поиск трека: {} - {} c DownloadMusicVK.ru неуспешен! :(", author, song);
         }
-        return link;  // ссылка на скачивание
+        return link;
     }
 
     /**
@@ -92,21 +92,32 @@ public class ZaycevSaitServiceImpl implements DownloadMusicService {
     public Track getSong(String author, String song) {
         try {
             String link = searchSong(author, song);
-            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net via {}...", author, song, link);
+            LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru via {}...", author, song, link);
             URL obj = new URL(link);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             int responseCode = con.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                byte[] track = restTemplate.getForObject(link, byte[].class);
+
+                InputStream in = con.getInputStream();
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024 * 10];
+                while ((nRead = in.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+                in.close();
+
+                byte[] track = buffer.toByteArray();
                 if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
                     return null;    //если песня меньше заданного размера, возвращаем null
                 }
                 return new Track(authorName, songName, trackName, track);
             }
         } catch (Exception e) {
-            LOGGER.debug("Скачивание трека: {} - {} c Zaytsev.net неуспешно! :(", author, song);
+            LOGGER.debug("Скачивание трека: {} - {} c DownloadMusicVK.ru неуспешно! :(", author, song);
         }
         return null;
     }

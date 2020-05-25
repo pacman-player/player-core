@@ -7,11 +7,12 @@ import spring.app.dto.SongResponse;
 import spring.app.dto.SongsListResponse;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 public interface TelegramService {
     SongResponse getSong(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
 
     SongsListResponse databaseSearch(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
 
-    SongResponse servicesSearch(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
+    CompletableFuture<SongResponse> servicesSearch(SongRequest songRequest) throws IOException, BitstreamException, DecoderException;
 }

@@ -13,10 +13,10 @@ public interface DownloadMusicService {
      * @param song   - название песни
      * @return возвращение нового экземпляра класса Track.
      *
-     * @see spring.app.service.impl.musicSearcher.serchServices.MuzofondfmMusicSearchImpl
-     * @see spring.app.service.impl.musicSearcher.serchServices.ZaycevSaitServiceImpl
-     * @see spring.app.service.impl.musicSearcher.serchServices.DownloadMusicVkRuServiceImpl
-     * @see spring.app.service.impl.musicSearcher.serchServices.KrolikSaitServiceImpl
+     * @see spring.app.service.impl.musicSearcher.searchServices.MuzofondfmMusicSearchImpl
+     * @see spring.app.service.impl.musicSearcher.searchServices.ZaycevSaitServiceImpl
+     * @see spring.app.service.impl.musicSearcher.searchServices.DownloadMusicVkRuServiceImpl
+     * @see spring.app.service.impl.musicSearcher.searchServices.KrolikSaitServiceImpl
      */
     Track getSong(String author, String song) throws IOException;
 
