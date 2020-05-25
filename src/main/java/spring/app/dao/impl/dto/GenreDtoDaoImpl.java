@@ -3,6 +3,7 @@ package spring.app.dao.impl.dto;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
+import spring.app.model.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,26 +18,20 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
 
     @Override
     public List<GenreDto> getAll() {
-        return entityManager.createQuery(
-                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g",
-                GenreDto.class
-        )
-                .getResultList();
+        String hqlFormat = "SELECT %s(genre.id, genre.name, genre.isApproved) FROM %s genre";
+        String hql = String.format(hqlFormat, GenreDto.class.getName(), Genre.class.getSimpleName());
+
+        return entityManager.createQuery(hql, GenreDto.class)
+                            .getResultList();
     }
 
     //TODO: replace from DtoDao to EntityDao
     @Override
     public boolean isExistByName(String name) {
-        Query query = entityManager.createQuery(
-                "SELECT  count (*)  FROM Genre g WHERE g.name = :name"
-        );
-        query.setParameter("name", name);
+        Query query = entityManager.createQuery("SELECT  count (*)  FROM Genre g WHERE g.name = :name")
+                                   .setParameter("name", name);
 
-        if (query.getResultList().get(0).equals(0L)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !query.getResultList().get(0).equals(0L);
     }
 
 }

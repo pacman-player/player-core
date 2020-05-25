@@ -80,10 +80,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
-    public List<Song> getAllSongInSongCompilation(Long id) {
-        SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
-        Set<Song> allSongSet = songCompilation.getSong();
-        return new ArrayList<>(allSongSet);
+    public List<SongDto> getAllSongsByCompilationId(Long id) {
+        return songCompilationService.getSongCompilationContentById(id);
     }
 
     @Override
@@ -150,6 +148,11 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
         }
         foundTags.addAll(newTags);
         song.setTags(foundTags);
+    }
+
+    @Override
+    public List<SongDto> listOfSongsByName(String name) {
+        return songDtoDao.listOfSongsByName(name);
     }
 
     @Override

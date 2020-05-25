@@ -18,7 +18,6 @@ import spring.app.service.abstraction.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user/song")
@@ -38,7 +37,7 @@ public class UserSongRestController {
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
     public List<SongDto> getAllSongInSongCompilation(@PathVariable("id") Long id) {
         LOGGER.info("GET request '/get/all-song/song-compilation/{}'", id);
-        List<SongDto> dtoSongs = songService.getAllSongsInSongCompilation(id);
+        List<SongDto> dtoSongs = songService.getAllSongsByCompilationId(id);
         LOGGER.info("Result has {} lines", dtoSongs.size());
         return dtoSongs;
     }

@@ -23,7 +23,7 @@ public interface SongService extends GenericService<Long, Song>{
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    List<SongDto> getAllSongsInSongCompilation(Long id);
+    List<SongDto> getAllSongsByCompilationId(Long id);
 
     List<Song> getAllApprovedSongs();
 

@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.SongDtoDao;
 import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
+import spring.app.model.Song;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -27,6 +29,17 @@ public class SongDtoDaoImpl implements SongDtoDao {
                 .getResultList();
 
         return songDtos;
+    }
+
+    @Override
+    public List<SongDto> listOfSongsByName(String name) {
+        String hqlFormat = "SELECT new %s(song.id, song.name, song.isApproved, song.author.name, song.genre.name) FROM %s song " +
+                           "WHERE song.name LIKE :name";
+        String hql = String.format(hqlFormat, SongDto.class.getName(), Song.class.getSimpleName());
+
+        return entityManager.createQuery(hql, SongDto.class)
+                            .setParameter("name", '%' + name + '%')
+                            .getResultList();
     }
 
     @Override

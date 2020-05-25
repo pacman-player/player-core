@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import spring.app.dao.abstraction.dto.SongCompilationDtoDao;
 import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
+import spring.app.model.Song;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,11 +31,13 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @Override
     public List<SongDto> getAllSongsWithCompId(long compilationID) {
-        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "s.genre.name) FROM Song s JOIN s.songCompilations sc WHERE sc.id = :id", SongDto.class)
-                .setParameter("id", compilationID)
-                .getResultList();
-        return list;
+        String hqlFormat = "SELECT new %s(song.id, song.name, song.isApproved, song.author.name, song.genre.name) FROM %s song " +
+                            "JOIN song.songCompilations sc WHERE sc.id = :id";
+        String hql = String.format(hqlFormat, SongDto.class.getName(), Song.class.getSimpleName());
+
+        return entityManager.createQuery(hql, SongDto.class)
+                            .setParameter("id", compilationID)
+                            .getResultList();
     }
 
     @Override
