@@ -186,9 +186,7 @@ public class SongDto extends Bannable {
 
     @Override
     public boolean isBannedBy(Company company) {
-        return company.getBannedSong()
-                      .stream()
-                      .anyMatch(bannedSong -> bannedSong.getId().equals(id));
+        return company.getBannedSong().contains(new Song(id, name));
     }
 
     @Override
