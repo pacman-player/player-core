@@ -15,7 +15,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import spring.app.dto.GenreDto;
 import spring.app.service.abstraction.GenreDefinerService;
+import spring.app.service.abstraction.GenreService;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,6 +32,7 @@ import java.util.regex.Pattern;
 public class GenreDefinerServiceImpl implements GenreDefinerService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GenreDefinerServiceImpl.class);
     private final RestTemplate restTemplate;
+    private final GenreService genreService;
 
     @Value("${lastfm.url.getToptags}")
     private String getTopTags;
@@ -38,8 +41,9 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
     private String googleEn;
 
     @Autowired
-    public GenreDefinerServiceImpl(RestTemplate restTemplate) {
+    public GenreDefinerServiceImpl(RestTemplate restTemplate, GenreService genreService) {
         this.restTemplate = restTemplate;
+        this.genreService = genreService;
     }
 
 
