@@ -1,14 +1,12 @@
 package spring.app.dto;
 
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.Song;
+import spring.app.model.*;
 
 import java.sql.Timestamp;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SongDto {
+public class SongDto extends Bannable {
 
     private Long id;
     private String name;
@@ -181,8 +179,19 @@ public class SongDto {
         return banned;
     }
 
+    @Override
     public void setBanned(boolean banned) {
         this.banned = banned;
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        for (Song bannedSong : company.getBannedSong()) {
+            if (bannedSong.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

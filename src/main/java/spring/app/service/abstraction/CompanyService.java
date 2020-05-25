@@ -27,8 +27,6 @@ public interface CompanyService extends GenericService<Long, Company> {
      */
     void checkAndMarkAllBlockedByTheCompany(Company company, List<? extends Bannable> bannable);
 
-    void checkAndMarkAllBlockedByTheCompany(List<SongDto> songs, Company company);
-
     /**
      * заполняет поля с заблокированными сущностями песен/жанров/авторов у компании
      */

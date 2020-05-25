@@ -75,17 +75,6 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
-    public void checkAndMarkAllBlockedByTheCompany(List<SongDto> songs, Company company) {
-        for (SongDto song : songs) {
-            for (Song bannedSong : company.getBannedSong()) {
-                if (bannedSong.getId().equals(song.getId())) {
-                    song.setBanned(true);
-                }
-            }
-        }
-    }
-
-    @Override
     public Company setBannedEntity(Company company) {
         return dao.getCompanyWithEntityBanned(company.getId());
     }

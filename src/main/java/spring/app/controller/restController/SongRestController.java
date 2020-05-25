@@ -70,17 +70,15 @@ public class SongRestController {
 
     @GetMapping("allSongsByName/{name}")
     public List<SongDto> searchByNameInSongs(@PathVariable String name,
-                                          @AuthenticationPrincipal User user) {
+                                             @AuthenticationPrincipal User user) {
         LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
 
         List<SongDto> songs = songService.listOfSongsByName(name);
         Company usersCompany = user.getCompany();
         usersCompany = companyService.setBannedEntity(usersCompany);
-        companyService.checkAndMarkAllBlockedByTheCompany(songs, usersCompany);
+        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
 
-        LOGGER.info("Song list ({} song(s)) was added to ban for the Company = {}",
-                songs.size(),
-                usersCompany.getName());
+        LOGGER.info("Song list ({} song(s)) found by name like '{}'", songs.size(), name);
         return songs;
     }
 
