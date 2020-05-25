@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface RoleDtoDao {
 
-    List<RoleDto> getAllRoles();
+    List<RoleDto> getAllRolesDto();
 
+    RoleDto getRoleDtoByName(String roleName);
+
+    RoleDto getRoleDtoById(Long id);
 }

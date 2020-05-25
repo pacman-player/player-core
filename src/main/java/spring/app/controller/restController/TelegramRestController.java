@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spring.app.dto.CompanyDto;
-import spring.app.dto.SongRequest;
-import spring.app.dto.SongResponse;
-import spring.app.dto.VisitDto;
+import spring.app.dto.*;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
@@ -30,12 +27,12 @@ public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
     private final OrderSongService orderSongService;
     private final TelegramService telegramService;
-    private SongService songService;
-    private CompanyService companyService;
-    private SongQueueService songQueueService;
-    private AddressService addressService;
-    private TelegramUserService telegramUserService;
-    private VisitService visitService;
+    private final SongService songService;
+    private final CompanyService companyService;
+    private final SongQueueService songQueueService;
+    private final AddressService addressService;
+    private final TelegramUserService telegramUserService;
+    private final VisitService visitService;
 
     @Autowired
     public TelegramRestController(TelegramService telegramService,
@@ -56,18 +53,26 @@ public class TelegramRestController {
         this.orderSongService = orderSongService;
     }
 
+    /**
+     * Получаем 30-секундный отрывок песни по её id. В методе getSong {@link #telegramService} формируем SongResponse.
+     *
+     * @param songRequest содержит id песни в БД - songId
+     * @return SongResponse, содержащий отрезок трека для предпрослушивания и SongId
+     * @throws IOException
+     * @throws BitstreamException
+     * @throws DecoderException
+     */
     @PostMapping(value = "/song")
-    public SongResponse searchRequestedSong(@RequestBody SongRequest songRequest) throws IOException,
-            BitstreamException, DecoderException {
+    public SongResponse getRequestedSong(@RequestBody SongRequest songRequest)
+            throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/song'");
         try {
-            LOGGER.info("Requested song Name = {} and Author = {}",
-                    songRequest.getSongName(),
-                    songRequest.getAuthorName());
+            LOGGER.info("Requested song Id = {}",
+                    songRequest.getSongId());
             SongResponse songResponse = telegramService.getSong(songRequest);
 
             if (songResponse != null) {
-                LOGGER.info("Got Song response successfully");
+                LOGGER.info("Song snippet was created!");
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
@@ -79,7 +84,7 @@ public class TelegramRestController {
     }
 
     /**
-     * Утверждаем песню для проигрывания. В методе approveSong {@link #telegramService} формируем SongResponse.
+     * Ищем песню на музыкальных сервисах. В методе servicesSearch {@link #telegramService} формируем SongResponse.
      *
      * @param songRequest содержит имя исполнителя, название трека и companyId
      * @return SongResponse, содержащий отрезок трека для предпрослушивания и SongId
@@ -87,22 +92,53 @@ public class TelegramRestController {
      * @throws BitstreamException
      * @throws DecoderException
      */
-    @PostMapping(value = "/approve")
-    public SongResponse approve(@RequestBody SongRequest songRequest)
+    @PostMapping(value = "/services_search")
+    public SongResponse servicesSearch(@RequestBody SongRequest songRequest)
             throws IOException, BitstreamException, DecoderException {
-        LOGGER.info("POST request '/approve'");
+        LOGGER.info("POST request '/services_search'");
         try {
             LOGGER.info("Requested song Name = {} and Author = {}",
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
-            SongResponse songResponse = telegramService.approveSong(songRequest);
+            SongResponse songResponse = telegramService.servicesSearch(songRequest);
 
             if (songResponse != null) {
-                LOGGER.info("Approved Song successfully!");
+                LOGGER.info("Song candidate was found by services!");
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
             return songResponse;
+        } catch (BitstreamException | DecoderException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * Ищем песню в базе данных. В методе databaseSearch {@link #telegramService} формируем SongsListResponse.
+     *
+     * @param songRequest содержит имя исполнителя, название трека и companyId
+     * @return SongsListResponse, содержащий список треков для выбора
+     * @throws IOException
+     * @throws BitstreamException
+     * @throws DecoderException
+     */
+    @PostMapping(value = "/database_search")
+    public SongsListResponse databaseSearch(@RequestBody SongRequest songRequest)
+            throws IOException, BitstreamException, DecoderException {
+        LOGGER.info("POST request '/database_search'");
+        try {
+            LOGGER.info("Requested song Name = {} and Author = {}",
+                    songRequest.getSongName(),
+                    songRequest.getAuthorName());
+            SongsListResponse songsListResponse = telegramService.databaseSearch(songRequest);
+
+            if (!songsListResponse.getSongs().isEmpty() ) {
+                LOGGER.info("Song candidate was found in database!");
+            } else {
+                LOGGER.error("Requested song was NOT found! :(");
+            }
+            return songsListResponse;
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
@@ -143,7 +179,8 @@ public class TelegramRestController {
         long songId = Long.parseLong(headers.get("songId").get(0));
         long companyId = Long.parseLong(headers.get("companyId").get(0));
         LOGGER.info("Provided songId = {} and companyId = {}", songId, companyId);
-        // получаем песню, компанию и очередь компании из базы
+        // получаем песню, компанию и очередь компании из базы и обнуляем счетчик сервиса для песни
+        songService.resetSongCounter(songId);
         Song songById = songService.getById(songId);
         Company companyById = companyService.getById(companyId);
         SongQueue songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);

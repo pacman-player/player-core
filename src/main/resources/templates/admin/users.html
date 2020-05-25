@@ -131,21 +131,13 @@
                                                                                 </div>
                                                                                 <div>
                                                                                     <label for="updateUserRole">Роль</label>
-                                                                                    <div class="form-control"
-                                                                                         id="updateUserRole"
-                                                                                         name="role">
-                                                                                        <div id="rlist">
-                                                                                            <input type="checkbox"
-                                                                                                   value="user">USER
-                                                                                            </input>
-                                                                                            <input type="checkbox"
-                                                                                                   value="admin">ADMIN
-                                                                                            </input>
-                                                                                            <input type="checkbox"
-                                                                                                   value="manager">
-                                                                                            MANAGER
-                                                                                            </input>
-                                                                                        </div>
+                                                                                    <div class="dropdown " id="updateUserRole">
+                                                                                        <button class="btn btn-default dropdown-toggle form-control" type="button" id="dropdownRoleEditMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                                            <span class="caret"></span>
+                                                                                        </button>
+                                                                                        <ul id="updateListRole" class="dropdown-menu width-auto "  aria-labelledby="dropdownRoleEditMenu">
+
+                                                                                        </ul>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
@@ -203,21 +195,17 @@
                                                                        required="required" name="password"/>
                                                             </div>
                                                             <div>
-                                                                <label for="updateUserRoleA">Роли</label>
-                                                                <div class="form-control"
-                                                                     id="updateUserRoleA"
-                                                                     name="role">
-                                                                    <div id="rlistA">
-                                                                        <input type="checkbox" value="user">USER
-                                                                        </input>
-                                                                        <input type="checkbox" value="admin">ADMIN
-                                                                        </input>
-                                                                        <input type="checkbox" value="manager">
-                                                                        MANAGER
-                                                                        </input>
-                                                                    </div>
+                                                                <label for="createUserRole">Роль</label>
+                                                                <div class="dropdown " id="createUserRole">
+                                                                    <button class="btn btn-default dropdown-toggle form-control" type="button" id="dropdownRoleCreateMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                        <span class="caret"></span>
+                                                                    </button>
+                                                                    <ul id="addListRoles"  class="dropdown-menu width-auto "  aria-labelledby="dropdownRoleCreateMenu">
+                                                                        
+                                                                    </ul>
                                                                 </div>
                                                             </div>
+                                                            <br/>
                                                             <button type="submit" id="addUserBtn"
                                                                     class="btn btn-success btn-lg">
                                                                 Добавить

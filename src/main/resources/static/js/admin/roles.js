@@ -1,14 +1,13 @@
 $(document).ready(function () {
     getTable();
 
-    let formAddEst = $("#establishmentsAddForm");
-    let fieldNameAddEstName = $("#addName");
-    $("#addEstablishmentBtn").on("click", function (event) {
+    let formAddRol = $("#rolesAddForm");
+    let fieldNameAddRolName = $("#addName");
+    $("#addRoleBtn").on("click", function (event) {
         event.preventDefault();
-
-        if (formAddEst.valid()) {
-            addEstablishments(formAddEst, fieldNameAddEstName);
-            formAddEst.trigger("reset");
+        if (formAddRol.valid()) {
+            addroles(formAddRol, fieldNameAddRolName);
+            formAddRol.trigger("reset");
         }
     })
 });
@@ -16,29 +15,29 @@ $(document).ready(function () {
 
 const errMessages = {
     required: "Укажите название",
-    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
-    rangelength: "Количество символов должно быть в диапазоне [3-30]",
+    pattern: "Разрешенные символы:  латиница в верхнем регистре",
+    rangelength: "Количество символов должно быть в диапазоне [3-10]",
     remote: "Имя занято"
 };
 
-const establishmentsNameRegEx = /^[\wА-Яа-я\-]+$/;
+const rolesNameRegEx = /^[A-Z]+$/;
 
 
-$("#establishmentsAddForm").validate({
+$("#rolesAddForm").validate({
     rules: {
         name: {
             required: true,
-            pattern: establishmentsNameRegEx,
-            rangelength: [3, 30],
+            pattern: rolesNameRegEx,
+            rangelength: [3, 10],
             remote: {
                 method: "GET",
-                url: "/api/admin/establishment/est_type_name_is_free",
+                url: "/api/admin/role/est_type_name_is_free",
                 data: {
-                    name: function () {
+                    data: function () {
                         return $("#addName").val()
                     },
                 }
-            }
+            }.data
         }
     },
     messages: {
@@ -47,11 +46,11 @@ $("#establishmentsAddForm").validate({
 });
 
 
-function addEstablishments(form, field) {
-    let estMessage = field.val();
+function addroles(form, field) {
+    let roleMessage = field.val();
     $.ajax({
         method: "POST",
-        url: "/api/admin/add_establishment",
+        url: "/api/admin/add_role",
         contentType: "application/json",
         data: JSON.stringify(field.val()),
         headers: {
@@ -59,14 +58,14 @@ function addEstablishments(form, field) {
             "Content-Type": "application/json",
         },
         complete: () => {
-            $("#tab-establishments-panel").tab("show");
+            $("#tab-roles-panel").tab("show");
             getTable();
         },
         success: () => {
             notification(
-                "add-establishment" + estMessage,
-                ` Заведение ${estMessage} добавлено`,
-                "establishments-panel");
+                "add-role" + roleMessage,
+                " Роль "+ roleMessage + " добавлена",
+                "roles-panel");
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -76,10 +75,10 @@ function addEstablishments(form, field) {
 
 
 function editButton(id, name) {
-    let theModal = $("#editEstablishment");
+    let theModal = $("#editRole");
     let form = $("#updateEstForm");
-    let fieldId = $("#updateEstablishmentId");
-    let fieldName = $("#updateEstablishmentName");
+    let fieldId = $("#updateRoleId");
+    let fieldName = $("#updateRoleName");
 
     fieldId.val(id);
     fieldName.val(name);
@@ -89,12 +88,13 @@ function editButton(id, name) {
         rules: {
             name: {
                 required: true,
-                pattern: establishmentsNameRegEx,
-                rangelength: [3, 30],
+                pattern: rolesNameRegEx,
+                rangelength: [3, 10],
                 remote: {
                     method: "GET",
-                    url: "/api/admin/establishment/est_type_name_is_free",
-                }
+                    url: "/api/admin/role/est_type_name_is_free",
+
+                }.data
             }
         },
         messages: {
@@ -103,7 +103,7 @@ function editButton(id, name) {
         submitHandler: () => {
             $.ajax({
                 method: "PUT",
-                url: "/api/admin/update_establishment",
+                url: "/api/admin/update_role",
                 contentType: "application/json",
                 data: JSON.stringify({
                     id: fieldId.val(),
@@ -119,9 +119,9 @@ function editButton(id, name) {
                 },
                 success: () => {
                     notification(
-                        "edit-establishment" + fieldName.val(),
-                        `  Изменения типа организации с id  ${fieldId.val()} сохранены`,
-                        "establishments-panel");
+                        "edit-role" + fieldName.val(),
+                        `  Изменения типа роли с id  ${fieldId.val()} сохранены`,
+                        "roles-panel");
                 },
                 error: (xhr, status, error) => {
                     alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -135,7 +135,7 @@ function editButton(id, name) {
 function deleteButton(id) {
     $.ajax({
         method: "DELETE",
-        url: "/api/admin/delete_establishment",
+        url: "/api/admin/delete_role",
         contentType: "application/json",
         data: JSON.stringify(id),
         headers: {
@@ -147,13 +147,13 @@ function deleteButton(id) {
         },
         success: () => {
             notification(
-                "delete-establishment" + id,
-                ` Заведение c id ${id} удалено`,
-                "establishments-panel");
+                "delete-role" + id,
+                ` Роль c id ${id} удалена`,
+                "roles-panel");
         },
         error: (xhr, status, error) => {
             if (xhr.responseText.includes("DataIntegrityViolationException")) {
-                let caution = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
+                let caution = "Вы не можете удалить данный тип роли, т.к. к нему относятся один или несколько пользователей";
                 alert(caution);
             } else {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -167,7 +167,7 @@ function deleteButton(id) {
 function getTable() {
     $.ajax({
         method: "GET",
-        url: "/api/admin/all_establishments",
+        url: "/api/admin/all_roles",
         contentType: "application/json",
         headers: {
             "Accept": "application/json",
@@ -175,13 +175,13 @@ function getTable() {
         },
         dataType: "JSON",
         success: function (list) {
-            let tableBody = $("#establishmentsTable tbody");
+            let tableBody = $("#rolesTable tbody");
 
             tableBody.empty();
-            for (let i = 0; i < list.length; i++) {
+            for (let i = 0; i < list.data.length; i++) {
                 // vars that contains object's fields
-                let id = list[i].id;
-                let name = list[i].name;
+                let id = list.data[i].id;
+                let name = list.data[i].name;
 
                 let tr = $("<tr/>");
                 tr.append(`

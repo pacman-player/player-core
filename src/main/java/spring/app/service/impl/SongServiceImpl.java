@@ -3,10 +3,11 @@ package spring.app.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.app.dao.abstraction.CounterDao;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.TagDao;
 import spring.app.dao.abstraction.dto.SongDtoDao;
-import spring.app.dto.SongCompilationDto;
+import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
@@ -26,15 +27,17 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     private final TagDao tagDao;
     private final SongCompilationService songCompilationService;
     private final SongFileService songFileService;
+    private final CounterDao counterDao;
 
     @Autowired
-    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, TagDao tagDao,
+    public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, TagDao tagDao, CounterDao counterDao,
                            SongCompilationService songCompilationService, SongFileService songFileService) {
         super(dao);
         this.songDtoDao = songDtoDao;
         this.tagDao = tagDao;
         this.songCompilationService = songCompilationService;
         this.songFileService = songFileService;
+        this.counterDao = counterDao;
     }
 
     @Override
@@ -55,8 +58,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 //    }
 
     @Override
-    public Song getBySearchRequests(String author, String name) {
-        return dao.getBySearchRequests(author, name);
+    public List<BotSongDto> getBySearchRequests(String author, String name) {
+        return songDtoDao.getBySearchRequests(author, name);
     }
 
 
@@ -77,8 +80,10 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
-    public List<SongDto> getAllSongsInSongCompilation(Long id) {
-        return songCompilationService.getSongCompilationContentById(id);
+    public List<Song> getAllSongInSongCompilation(Long id) {
+        SongCompilation songCompilation = songCompilationService.getSongCompilationById(id);
+        Set<Song> allSongSet = songCompilation.getSong();
+        return new ArrayList<>(allSongSet);
     }
 
     @Override
@@ -105,6 +110,13 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     @Override
     public Long getAuthorIdBySongId(Long songId) {
         return dao.getAuthorIdBySongId(songId);
+    }
+
+    @Override
+    public void resetSongCounter(long songId) {
+        SongDto dto = songDtoDao.getById(songId);
+        String trackName = dto.getAuthorName().toUpperCase() + " - " + dto.getName().toUpperCase();
+        counterDao.restart(trackName);
     }
 
     @Override
@@ -138,11 +150,6 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
         }
         foundTags.addAll(newTags);
         song.setTags(foundTags);
-    }
-
-    @Override
-    public List<SongDto> listOfSongsByName(String name) {
-        return songDtoDao.listOfSongsByName(name);
     }
 
     @Override
