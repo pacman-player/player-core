@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import spring.app.service.abstraction.DownloadMusicService;
@@ -37,6 +38,11 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
      */
     private String trackName;
 
+    /**
+     * Минимальный размер файла для скачивания. Указан в application.properties.
+     */
+    @Value("${mp3.min.filesize}")
+    private int minFileSize;
 
     /**
      * Метод для создания поискового запроса на данный музыкальный сервис и
@@ -113,7 +119,7 @@ public class DownloadMusicVkRuServiceImpl implements DownloadMusicService {
                 in.close();
 
                 byte[] track = buffer.toByteArray();
-                if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
+                if (track.length < minFileSize) {
                     return CompletableFuture.completedFuture(null);    //если песня меньше заданного размера, возвращаем null
                 }
                 return CompletableFuture.completedFuture(new Track(authorName, songName, trackName, track));

@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +34,12 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
      * Составное полное имя трека, состоящее из {@link #songName} и  {@link #authorName}.
      */
     private String trackName;
+
+    /**
+     * Минимальный размер файла для скачивания. Указан в application.properties.
+     */
+    @Value("${mp3.min.filesize}")
+    private int minFileSize;
 
     /**
      * Метод для создания поискового запроса на данный музыкальный сервис и
@@ -79,7 +86,7 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
             LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz via {}...", author, song, link);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
-            if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
+            if (track.length < minFileSize) {
                 return CompletableFuture.completedFuture(null);    //если песня меньше заданного размера, возвращаем null
             }
             return CompletableFuture.completedFuture(new Track(authorName, songName, trackName, track));

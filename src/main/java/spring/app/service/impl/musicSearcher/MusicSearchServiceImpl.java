@@ -55,19 +55,6 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         String trackName = author.toUpperCase() + " - " + song.toUpperCase();
         int serviceCount = counterDao.getValue(trackName);
         for (int i = serviceCount; i < getDownloadServices.size(); ) {
-//            try {
-//                //noinspection UnstableApiUsage
-//                int finalI = i;
-//                track = SimpleTimeLimiter
-//                        .create(newCachedThreadPool())
-//                        .callWithTimeout(
-//                                () -> getDownloadServices.get(finalI).getSong(author, song),
-//                                120,
-//                                TimeUnit.SECONDS);
-//            } catch (TimeoutException | InterruptedException | ExecutionException e) {
-//                LOGGER.error(">>>>> Searching with {} service exceeded given timeout! :(",
-//                        getDownloadServices.get(i).getClass().getSimpleName().replaceAll("\\$.+", ""));
-//            }
             //получение списка сервисов сделано в PrototypeScope
             //поиск по сервисам происходит асинхронно
             track = getDownloadServices.get(i).getSong(author, song).join();
@@ -86,17 +73,10 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return genreDefiner.defineGenre(author, trackSong);
     }
 
-    //заносит данные скачаной песни в бд и возвращает id песни
+    //заносит данные скачанной песни в бд и возвращает id песни
     @Transactional
     public Long updateData(Track track) throws IOException {
         String[] genreNames = getGenre(track.getAuthor(), track.getSong());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
-
-    //TODO: remove
-//    //заносит данные песни из папки при инициализации в бд и возвращает id песни
-//    public Long updateData(String fullTrackName, String author, String songName) throws IOException {
-//        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
-//        return dataUpdater.updateData(author, songName, genreNames);
-//    }
 }
