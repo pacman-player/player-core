@@ -5,13 +5,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.entity.Track;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 @Service("krolikSaitServiceImpl")
 public class KrolikSaitServiceImpl implements DownloadMusicService {
@@ -71,19 +72,20 @@ public class KrolikSaitServiceImpl implements DownloadMusicService {
      * @return возвращение нового экземпляра класса Track.
      */
     @Override
-    public Track getSong(String author, String song) {
+    @Async
+    public CompletableFuture<Track> getSong(String author, String song) {
         try {
             String link = searchSong(author, song);
             LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz via {}...", author, song, link);
 
             byte[] track = restTemplate.getForObject(link, byte[].class);
             if (track.length < 2 * 1024 * 1024) {   //проверяем, что песня более 2 Мб
-                return null;    //если песня меньше заданного размера, возвращаем null
+                return CompletableFuture.completedFuture(null);    //если песня меньше заданного размера, возвращаем null
             }
-            return new Track(authorName, songName, trackName, track);
+            return CompletableFuture.completedFuture(new Track(authorName, songName, trackName, track));
         } catch (Exception e) {
             LOGGER.debug("Скачивание трека: {} - {} c Krolik.biz неуспешно! :(", author, song);
         }
-        return null;
+        return CompletableFuture.completedFuture(null);
     }
 }

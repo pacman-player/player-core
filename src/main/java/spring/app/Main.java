@@ -39,7 +39,8 @@ public class Main extends WebMvcConfigurerAdapter {
     public TestDataInit initTestData() {
         return new TestDataInit();
     }
-
+    // текущие настройки для моей машины, которые выдают
+    // наименьшее количество ошибок
     @Bean
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

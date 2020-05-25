@@ -1,7 +1,6 @@
 package spring.app.service.impl.musicSearcher;
 
 
-import com.google.common.util.concurrent.SimpleTimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,6 @@ import spring.app.service.entity.Track;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import static java.util.concurrent.Executors.newCachedThreadPool;
 
 /**
  * Класс для поиска песен по разным сервисам, в зависимости от результата
@@ -74,7 +68,9 @@ public class MusicSearchServiceImpl implements MusicSearchService {
 //                LOGGER.error(">>>>> Searching with {} service exceeded given timeout! :(",
 //                        getDownloadServices.get(i).getClass().getSimpleName().replaceAll("\\$.+", ""));
 //            }
-            track = getDownloadServices.get(i).getSong(author, song);
+            //получение списка сервисов сделано в PrototypeScope
+            //поиск по сервисам происходит асинхронно
+            track = getDownloadServices.get(i).getSong(author, song).join();
             if (track != null && track.getSong().equals(song) && track.getAuthor().equals(author)) {
                 counterDao.setTo(trackName, i + 1);
                 LOGGER.debug("BREAK WITH {}", track.getFullTrackName());

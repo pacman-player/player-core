@@ -1,8 +1,10 @@
 package spring.app.service.abstraction;
 
+import org.springframework.scheduling.annotation.Async;
 import spring.app.service.entity.Track;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 public interface DownloadMusicService {
 
@@ -18,6 +20,6 @@ public interface DownloadMusicService {
      * @see spring.app.service.impl.musicSearcher.searchServices.DownloadMusicVkRuServiceImpl
      * @see spring.app.service.impl.musicSearcher.searchServices.KrolikSaitServiceImpl
      */
-    Track getSong(String author, String song) throws IOException;
+    CompletableFuture<Track> getSong(String author, String song) throws IOException;
 
 }
