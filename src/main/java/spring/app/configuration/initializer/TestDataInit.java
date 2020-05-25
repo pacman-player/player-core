@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
-import spring.app.dao.abstraction.CounterDao;
-import spring.app.dto.SongCompilationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
@@ -347,7 +345,7 @@ public class TestDataInit {
         Genre rock = genreService.getByName("Рок");
         rock.setKeywords("рок метал альтернатива панк");
         Genre pop = genreService.getByName("Поп");
-        pop.setKeywords("поп популярная хип-хоп");
+        pop.setKeywords("поп популярная хип хоп");
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
         rock.setApproved(true);
         pop.setApproved(true);
@@ -366,9 +364,10 @@ public class TestDataInit {
         Genre dance = new Genre("Танцевальная", true, "электронная танцевальная хаус техно транс чип " +
                 "рэйв индастриал эмбиент дабстеп хардстайл дип-хаус даунтемпо нью-эйдж олдскул-джангл");
         Genre lounge = new Genre("Лаунж", true, "");
+        Genre classic = new Genre("Классика", true, "классическая классика эпохи барокко романтизма");
         Genre undefined = new Genre("Неизвестный жанр", false);
         List<Genre> list = Arrays.asList(jazz, rap, soul, blues, reggie, folk,
-                country, romance, dance, lounge, undefined);
+                country, romance, dance, lounge, classic, undefined);
         genreService.saveBatch(list);
         genres1.add(rock);
         genres1.add(jazz);
