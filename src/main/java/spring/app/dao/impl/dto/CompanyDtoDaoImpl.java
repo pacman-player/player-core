@@ -39,4 +39,10 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
         return companyDto;
     }
 
+    @Override
+    public long getTimerById(long companyId) {
+        return entityManager.createQuery("SELECT c.timer FROM Company c WHERE c.id = :id", Long.class)
+                .setParameter("id", companyId)
+                .getSingleResult();
+    }
 }

@@ -20,11 +20,13 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
+    private final static ConcurrentHashMap<Long, Long> reqTimer = new ConcurrentHashMap<>();
     private final OrderSongService orderSongService;
     private final TelegramService telegramService;
     private final SongService songService;
@@ -97,6 +99,18 @@ public class TelegramRestController {
             throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/services_search'");
         try {
+            long companyTimer = companyService.getCompanyTimerById(songRequest.getCompanyId());
+            long currentTime = System.currentTimeMillis();
+            Long prevTime = reqTimer.get(songRequest.getChatId());
+            if (prevTime != null) {
+                long difference = companyTimer - ((currentTime - prevTime) / 1000);
+                if (difference > 0) {
+                    LOGGER.info("Время с прошлого реквеста для чата {} = {}", songRequest.getChatId(), difference);
+                    reqTimer.put(songRequest.getChatId(), currentTime);
+                    return new SongResponse();
+                }
+            }
+            reqTimer.put(songRequest.getChatId(), currentTime);
             LOGGER.info("Requested song Name = {} and Author = {}",
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
@@ -133,7 +147,7 @@ public class TelegramRestController {
                     songRequest.getAuthorName());
             SongsListResponse songsListResponse = telegramService.databaseSearch(songRequest);
 
-            if (!songsListResponse.getSongs().isEmpty() ) {
+            if (!songsListResponse.getSongs().isEmpty()) {
                 LOGGER.info("Song candidate was found in database!");
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
