@@ -95,19 +95,20 @@ public class TelegramRestController {
      * @throws DecoderException
      */
     @PostMapping(value = "/services_search")
-    public SongResponse servicesSearch(@RequestBody SongRequest songRequest)
+    public ResponseEntity<SongResponse> servicesSearch(@RequestBody SongRequest songRequest)
             throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/services_search'");
         try {
             long companyTimer = companyService.getCompanyTimerById(songRequest.getCompanyId());
             long currentTime = System.currentTimeMillis();
             Long prevTime = reqTimer.get(songRequest.getChatId());
-            if (prevTime != null) {
+            if (prevTime != null && !songRequest.isRepeat()) {
                 long difference = companyTimer - ((currentTime - prevTime) / 1000);
                 if (difference > 0) {
-                    LOGGER.info("Время с прошлого реквеста для чата {} = {}", songRequest.getChatId(), difference);
-                    reqTimer.put(songRequest.getChatId(), currentTime);
-                    return new SongResponse();
+                    LOGGER.debug("Следующий заказ для чата {} возможен через {} сек", songRequest.getChatId(), difference);
+                    return ResponseEntity.status(228)
+                            .header("Timer", String.valueOf(difference))
+                            .body(null);
                 }
             }
             reqTimer.put(songRequest.getChatId(), currentTime);
@@ -121,7 +122,7 @@ public class TelegramRestController {
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
-            return songResponse;
+            return ResponseEntity.ok(songResponse);
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;

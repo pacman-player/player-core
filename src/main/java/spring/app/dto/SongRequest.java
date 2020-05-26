@@ -6,6 +6,7 @@ public class SongRequest {
     private String songName;
     private Long songId;
     private Long companyId;
+    private boolean isRepeat;
 
     public SongRequest() {
     }
@@ -56,5 +57,13 @@ public class SongRequest {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public boolean isRepeat() {
+        return isRepeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        isRepeat = repeat;
     }
 }
