@@ -33,6 +33,10 @@ public class Company {
     @Column(name = "tariff")
     private Long tariff;
 
+    @Basic
+    @Column(name = "timer")
+    private Long timer;
+
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
     @JoinColumn(name = "org_type_id")
     private OrgType orgType;
@@ -89,12 +93,13 @@ public class Company {
         this.orgType = orgType;
     }
 
-    public Company(String name, LocalTime startTime, LocalTime closeTime, User user, Long tariff, OrgType orgType) {
+    public Company(String name, LocalTime startTime, LocalTime closeTime, User user, Long tariff, Long timer, OrgType orgType) {
         this.name = name;
         this.startTime = startTime;
         this.closeTime = closeTime;
         this.user = user;
         this.tariff = tariff;
+        this.timer = timer;
         this.orgType = orgType;
     }
 
@@ -146,6 +151,14 @@ public class Company {
 
     public void setTariff(Long tariff) {
         this.tariff = tariff;
+    }
+
+    public Long getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Long timer) {
+        this.timer = timer;
     }
 
     public OrgType getOrgType() {
