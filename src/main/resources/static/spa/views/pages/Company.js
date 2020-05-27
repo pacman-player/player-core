@@ -47,7 +47,7 @@ let Company = {
                     name: $('#est-name').val(),
                     startTime: $('#est-start-time').val(),
                     tariff: $('#est-tariff').val().replace(/[^0-9]/g, ''),
-                    timer: $('#est-timer').val(),
+                    requestSpamCounter: $('#est-timer').val(),
                     closeTime: $('#est-close-time').val()
                 };
                 console.log(formData.tariff);
@@ -103,7 +103,7 @@ let Company = {
                         $('#est-start-time').val(data.startTime);
                         $('#est-close-time').val(data.closeTime);
                         $('#est-tariff').val(data.tariff);
-                        $('#est-timer').val(data.timer)
+                        $('#est-timer').val(data.requestSpamCounter)
                         $('#est-address').val(data.addressCountry + ', ' + data.addressCity + ', ' + data.addressStreet + ', ' + data.addressHouse);
                     }
                 })

@@ -34,8 +34,8 @@ public class Company {
     private Long tariff;
 
     @Basic
-    @Column(name = "timer")
-    private Long timer;
+    @Column(name = "spam_timer") //позволяет владельцу компании выставить период
+    private Long requestSpamCounter; // между заказами посетителей в секундах
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
     @JoinColumn(name = "org_type_id")
@@ -93,13 +93,13 @@ public class Company {
         this.orgType = orgType;
     }
 
-    public Company(String name, LocalTime startTime, LocalTime closeTime, User user, Long tariff, Long timer, OrgType orgType) {
+    public Company(String name, LocalTime startTime, LocalTime closeTime, User user, Long tariff, Long requestSpamCounter, OrgType orgType) {
         this.name = name;
         this.startTime = startTime;
         this.closeTime = closeTime;
         this.user = user;
         this.tariff = tariff;
-        this.timer = timer;
+        this.requestSpamCounter = requestSpamCounter;
         this.orgType = orgType;
     }
 
@@ -153,12 +153,12 @@ public class Company {
         this.tariff = tariff;
     }
 
-    public Long getTimer() {
-        return timer;
+    public Long getRequestSpamCounter() {
+        return requestSpamCounter;
     }
 
-    public void setTimer(Long timer) {
-        this.timer = timer;
+    public void setRequestSpamCounter(Long timer) {
+        this.requestSpamCounter = timer;
     }
 
     public OrgType getOrgType() {

@@ -18,7 +18,7 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
     public List<CompanyDto> getAllCompanies() {
         List<CompanyDto> companyDtos = entityManager.createQuery(
                 "SELECT new spring.app.dto.CompanyDto(c.id, c.name, c.startTime, c.closeTime, c.orgType.id, " +
-                        "c.orgType.name, c.tariff, c.timer, c.user.id, c.user.login, c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c",
+                        "c.orgType.name, c.tariff, c.requestSpamCounter, c.user.id, c.user.login, c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c",
                 CompanyDto.class
         )
                 .getResultList();
@@ -30,7 +30,7 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
     public CompanyDto getById(Long id) {
         CompanyDto companyDto = entityManager.createQuery(
                 "SELECT new spring.app.dto.CompanyDto(c.id, c.name, c.startTime, c.closeTime, c.orgType.id, " +
-                        "c.orgType.name, c.tariff, c.timer, c.user.id, c.user.login, c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c WHERE c.id = :companyId",
+                        "c.orgType.name, c.tariff, c.requestSpamCounter, c.user.id, c.user.login, c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c WHERE c.id = :companyId",
                 CompanyDto.class
         )
                 .setParameter("companyId", id)
@@ -41,7 +41,7 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
 
     @Override
     public long getTimerById(long companyId) {
-        return entityManager.createQuery("SELECT c.timer FROM Company c WHERE c.id = :id", Long.class)
+        return entityManager.createQuery("SELECT c.requestSpamCounter FROM Company c WHERE c.id = :id", Long.class)
                 .setParameter("id", companyId)
                 .getSingleResult();
     }
