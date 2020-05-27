@@ -5,10 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
-import spring.app.service.abstraction.AuthorService;
-import spring.app.service.abstraction.DataUpdateService;
-import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.SongService;
+import spring.app.model.Tag;
+import spring.app.service.abstraction.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,15 +19,18 @@ import java.util.Set;
 @Service
 public class DataUpdateServiceImpl implements DataUpdateService {
 
-    private AuthorService authorService;
-    private SongService songService;
-    private GenreService genreService;
+    private final AuthorService authorService;
+    private final SongService songService;
+    private final TagService tagService;
+    private final GenreService genreService;
 
     public DataUpdateServiceImpl(AuthorService authorService,
                                  SongService songService,
+                                 TagService tagService,
                                  GenreService genreService) {
         this.authorService = authorService;
         this.songService = songService;
+        this.tagService = tagService;
         this.genreService = genreService;
     }
 
@@ -67,6 +68,8 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
             song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
+            Set<Tag> tags = tagService.findTags(authorName + ' ' + songName);
+            song.setTags(tags);
             songService.save(song);
         }
         // возвращаем id песни
