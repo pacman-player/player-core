@@ -15,21 +15,21 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import spring.app.dto.GenreDto;
 import spring.app.service.abstraction.GenreDefinerService;
+import spring.app.service.abstraction.GenreService;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Класс определяет жанр песни посредством запроса в поисковик google.com
- * если не находит то обращается music.yandex.com
  */
 @Service
 public class GenreDefinerServiceImpl implements GenreDefinerService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GenreDefinerServiceImpl.class);
     private final RestTemplate restTemplate;
+    private final GenreService genreService;
 
     @Value("${lastfm.url.getToptags}")
     private String getTopTags;
@@ -38,20 +38,21 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
     private String googleEn;
 
     @Autowired
-    public GenreDefinerServiceImpl(RestTemplate restTemplate) {
+    public GenreDefinerServiceImpl(RestTemplate restTemplate, GenreService genreService) {
         this.restTemplate = restTemplate;
+        this.genreService = genreService;
     }
 
 
     @Override
     public String[] defineGenre(String trackAuthor, String trackSong) throws IOException {
         String trackName = trackAuthor + " - " + trackSong;
-        String url = String.format(googleEn, trackName);
+        String url = String.format(googleEn, trackAuthor);
         String genre = "unidentified";
         Document doc;
 
         try {
-            LOGGER.debug("Finding genre for '{}'. Google searching for '{}'", trackName, url);
+            LOGGER.debug("Finding genre for '{}'. Google searching for '{}'", trackAuthor, url);
             doc = Jsoup
                     .connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 YaBrowser/20.2.0.1043 Yowser/2.5 Safari/537.36")
@@ -67,9 +68,9 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         }
         LOGGER.debug("Genre result found so far = {}", genre);
 
-        if (genre.equals("unidentified")) {
-            return getGenreLastFm(trackAuthor, trackSong); //если поиск жанра не удался через google.ru, берем два топовых тега из ласт.фм
-        }
+//        if (genre.equals("unidentified")) {
+//            return getGenreLastFm(trackAuthor, trackSong); //если поиск жанра не удался через google.ru, берем два топовых тега из ласт.фм
+//        }
         LOGGER.debug("Final search result is = {}", genre);
 
         return filterGenres(genre); // фильтр от "мусора"
@@ -84,25 +85,18 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
      * @return
      */
     private String[] filterGenres(String genre) {
-        LOGGER.debug("Extracting Genres[] out of string = {}", genre);
-        genre = genre.replaceAll("\\s", "");
-        LOGGER.debug("  1) String = {}", genre);
-        Pattern pattern = Pattern.compile("иностранный|русский|иностранная|-музыка|музыка");
-
-        Matcher matcher = pattern.matcher(genre);
-        LOGGER.debug("  2) Matcher is = {}", matcher);
-        StringBuffer buffer = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, "");
+        List<GenreDto> list = genreService.getAllGenreDto();
+        Set<String> temp = new HashSet<>();
+        String[] genres = genre.toLowerCase().split("[\\s-/]");
+        for (GenreDto dto : list) {
+            for (String s : genres) {
+                if (dto.getKeywords().contains(s)) {
+                    temp.add(dto.getName());
+                    break;
+                }
+            }
         }
-        matcher.appendTail(buffer);
-        LOGGER.debug("  3) Matcher is = {}", matcher);
-
-        pattern = Pattern.compile("/|,");
-        String[] genres = pattern.split(buffer);
-        LOGGER.debug("  4) Resulting Genres[] are = {}", Arrays.asList(genres));
-
-        return genres;
+        return temp.toArray(new String[0]);
     }
 
     /**

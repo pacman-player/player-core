@@ -81,6 +81,12 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     }
 
     @Override
+    @Transactional
+    public void saveBatch(List<Genre> genreList) {
+        dao.saveBatch(genreList);
+    }
+
+    @Override
     public boolean isExistByName(String name) {
         return genreDtoDao.isExistByName(name);
     }

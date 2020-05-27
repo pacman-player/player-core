@@ -50,12 +50,21 @@ public class Genre extends Bannable {
     @Transient
     private Boolean banned;
 
+    @Column(name = "keywords")
+    private String keywords;
+
     public Genre() {
     }
 
     public Genre(String name, Boolean isApproved) {
         this.name = name;
         this.isApproved = isApproved;
+    }
+
+    public Genre(String name, Boolean isApproved, String keywords) {
+        this.name = name;
+        this.isApproved = isApproved;
+        this.keywords = keywords;
     }
 
     public Set<Author> getAuthors() {
@@ -130,6 +139,14 @@ public class Genre extends Bannable {
     @Override
     public boolean isBannedBy(Company company) {
         return company.getBannedGenres().contains(this);
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     @Override
