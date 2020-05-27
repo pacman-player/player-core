@@ -51,4 +51,6 @@ public interface SongService extends GenericService<Long, Song>{
     void deleteTagForSongs(List<Long> songIds, Long tagId);
 
     void resetSongCounter(long songId);
+
+    int getSongCounterVal(String trackName);
 }
