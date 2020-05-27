@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.Author;
@@ -21,10 +22,11 @@ import java.util.Set;
 @Service
 public class DataUpdateServiceImpl implements DataUpdateService {
 
-    private AuthorService authorService;
-    private SongService songService;
-    private GenreService genreService;
+    private final AuthorService authorService;
+    private final SongService songService;
+    private final GenreService genreService;
 
+    @Autowired
     public DataUpdateServiceImpl(AuthorService authorService,
                                  SongService songService,
                                  GenreService genreService) {
