@@ -12,7 +12,6 @@ import spring.app.service.abstraction.GenreDefinerService;
 import spring.app.service.abstraction.MusicSearchService;
 import spring.app.service.entity.Track;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -74,7 +73,6 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     }
 
     //заносит данные скачанной песни в бд и возвращает id песни
-    @Transactional
     public Long updateData(Track track) throws IOException {
         String[] genreNames = getGenre(track.getAuthor());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);

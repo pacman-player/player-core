@@ -5,14 +5,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import spring.app.dto.GenreDto;
 import spring.app.service.abstraction.GenreDefinerService;
+import spring.app.service.abstraction.GenreService;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Класс определяет жанр песни посредством поиска ключевых
@@ -22,12 +25,19 @@ import java.util.regex.Pattern;
 @Service
 public class GenreDefinerServiceImpl implements GenreDefinerService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GenreDefinerServiceImpl.class);
+    private final GenreService genreService;
 
     @Value("${google.search.genre}")
     private String googleSearch;
 
     @Value("${yandex.search.genre}")
     private String yandexSearch;
+
+    @Autowired
+    public GenreDefinerServiceImpl(GenreService genreService) {
+        this.genreService = genreService;
+    }
+
 
     @Override
     public String[] defineGenre(String authorName) throws IOException {
@@ -52,12 +62,13 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         }
         LOGGER.debug("Genre result found so far = {}", genre);
         if (genre.equals("Неизвестный жанр")) {
-            genre = defineGenreByAuthor(authorName);
+            genre = defineGenreInYandex(authorName);
         }
-        return getGenres(genre); //присвоение жанров по ключевым словам
+        String[] result = getGenres(genre);
+        return result; //присвоение жанров по ключевым словам
     }
 
-    private String defineGenreByAuthor(String authorName) throws IOException {
+    private String defineGenreInYandex(String authorName) throws IOException {
         String url = String.format(yandexSearch, authorName);
         String genre = "Неизвестный жанр";
         Document doc;
@@ -101,29 +112,26 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
 
     /**
      * Собранные ключевые слова превращаем в имеющиеся жанры
+     *
      * @param genre
      * @return
      */
     private String[] getGenres(String genre) {
-        LOGGER.debug("Extracting Genres[] out of string = {}", genre);
-        genre = genre.replaceAll("\\s", "");
-        LOGGER.debug("  1) String = {}", genre);
-        Pattern pattern = Pattern.compile("иностранный|русский|иностранная|-музыка|музыка");
-
-        Matcher matcher = pattern.matcher(genre);
-        LOGGER.debug("  2) Matcher is = {}", matcher);
-        StringBuffer buffer = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, "");
+        List<GenreDto> list = genreService.getAllGenreDto();
+        Set<String> temp = new HashSet<>();
+        String[] genres = genre.toLowerCase().split("[^A-Za-zА-Яа-я0-9]+");
+        for (GenreDto dto : list) {
+            for (String s : genres) {
+                if (dto.getKeywords().contains(s)) {
+                    temp.add(dto.getName());
+                    break;
+                }
+            }
+            if (temp.size() == 3) {
+                break;
+            }
         }
-        matcher.appendTail(buffer);
-        LOGGER.debug("  3) Matcher is = {}", matcher);
-
-        pattern = Pattern.compile("/|,");
-        String[] genres = pattern.split(buffer);
-        LOGGER.debug("  4) Resulting Genres[] are = {}", Arrays.asList(genres));
-
-        return genres;
+        String[] test = temp.toArray(new String[0]);
+        return test;
     }
-
 }
