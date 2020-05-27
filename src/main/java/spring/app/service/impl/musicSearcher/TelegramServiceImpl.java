@@ -8,6 +8,7 @@ import spring.app.dto.BotSongDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.dto.SongsListResponse;
+import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.CutSongService;
 import spring.app.service.abstraction.*;
@@ -94,29 +95,43 @@ public class TelegramServiceImpl implements TelegramService {
             DecoderException {
         SongResponse songResponse = null;
         // Ищем запрошенный трек в музыкальных сервисах
-        Track track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName());
+        Track track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName());//getSong продолжает рабоатеть искать на5ти сервисах пока не пройедется по всем пяти
+
 
         if (track != null) {
-            String trackName = track.getFullTrackName();
-            byte[] trackBytes = track.getTrack();
-            // создаем 30-секундный отрезок для превью
-            byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
+
+            //Long songId;будем создавать Song,теперь updateData мтеод который заносит новую песню найденную на муз сервисах в бд - возарщает не соонгАйди а сонг у котрого мы берем автора и жанр и проверяем на банед
+            Song song = null;
             Long songId;
-            if (!songService.isExist(track.getSong())) {
+            Long companyId = songRequest.getCompanyId();
+            
+            if (!songService.isExist(track.getSong())) {//если песни нет в бд то заносим ее в бд
                 // получаем id песни после занесения в БД
-                songId = musicSearchService.updateData(track);
+
+                //songId = musicSearchService.updateData(track);
+                song = musicSearchService.updateData(track);
+                //илю сюда добавить проверку на банед и что возращать при условии что банед?
+                songId = song.getId();
                 Path path = playerPaths.getSongDir(songId);
                 try {
                     Files.write(path, track.getTrack());  //записываем песню в директорию
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else if (song.getAuthor().isBannedBy(companyService.getById(companyId)) || song.getGenre().isBannedBy(companyService.getById(companyId))) {
+                return songResponse;
+            }
+            else {
                 songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());
             }
+//сначала нужно занести в базу и проверить на бан а потмо создавать 30секундный отрезок
+            String trackName = track.getFullTrackName();
+            byte[] trackBytes = track.getTrack();
+            // создаем 30-секундный отрезок для превью
+            byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
 
             Long position = getPosition(songId, songRequest.getCompanyId());
-            songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
+            songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);//если песня не найдена на муз сервисах сонгрепос будет налл
         }
         return songResponse;
     }

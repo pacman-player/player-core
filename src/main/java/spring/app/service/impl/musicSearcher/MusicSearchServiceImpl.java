@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.configuration.DownloadMusicServiceFactory;
 import spring.app.dao.abstraction.CounterDao;
+import spring.app.model.Song;
 import spring.app.service.abstraction.DataUpdateService;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.abstraction.GenreDefinerService;
@@ -93,7 +94,7 @@ public class MusicSearchServiceImpl implements MusicSearchService {
     }
 
     //заносит данные скачаной песни в бд и возвращает id песни
-    public Long updateData(Track track) throws IOException {
+    public Song updateData(Track track) throws IOException {
         String[] genreNames = getGenre(track.getAuthor(), track.getSong());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
