@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongCompilationDao;
 import spring.app.dao.abstraction.SongQueueDao;
+import spring.app.dao.abstraction.dto.SongQueueDtoDao;
+import spring.app.dto.SongQueueDto;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
@@ -17,9 +19,12 @@ import java.util.Set;
 @Service
 public class SongQueueServiceImpl extends AbstractServiceImpl<Long, SongQueue, SongQueueDao> implements SongQueueService {
 
+    private final SongQueueDtoDao songQueueDtoDao;
+
     @Autowired
-    public SongQueueServiceImpl(SongQueueDao dao) {
+    public SongQueueServiceImpl(SongQueueDao dao, SongQueueDtoDao songQueueDtoDao) {
         super(dao);
+        this.songQueueDtoDao = songQueueDtoDao;
     }
 
     @Override
@@ -45,5 +50,10 @@ public class SongQueueServiceImpl extends AbstractServiceImpl<Long, SongQueue, S
     @Override
     public List<SongQueue> getByCompanyId(Long id) {
         return dao.getByCompanyId(id);
+    }
+
+    @Override
+    public List<SongQueueDto> getDtoByCompanyId(Company company) {
+        return songQueueDtoDao.getQueuesByCompanyId(company);
     }
 }

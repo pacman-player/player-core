@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.SongQueueDto;
 import spring.app.model.Company;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
@@ -18,4 +19,6 @@ public interface SongQueueService extends GenericService<Long, SongQueue> {
     void deletePlayedSong(Set<SongQueue> songQueues);
 
     List<SongQueue> getByCompanyId(Long id);
+
+    List<SongQueueDto> getDtoByCompanyId(Company company);
 }

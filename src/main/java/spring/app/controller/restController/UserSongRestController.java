@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spring.app.dto.SongQueueDto;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.model.User;
@@ -45,8 +46,7 @@ public class UserSongRestController {
     public List<Song> getSongsInSongQueueOfCompany() {
         LOGGER.info("GET request '/songsInQueue'");
         User authUser = userService.getById(userService.getIdAuthUser());
-        Long companyId = authUser.getCompany().getId();
-        List<SongQueue> songQueues = songQueueService.getByCompanyId(companyId);
+        List<SongQueueDto> songQueues = songQueueService.getDtoByCompanyId(authUser.getCompany());
         LOGGER.info("Logged-in User has {} lines in SongQueue list", songQueues.size());
         if (!songQueues.isEmpty()) {
             songQueueService.deleteById(songQueues.get(0).getId());
