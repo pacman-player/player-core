@@ -49,12 +49,4 @@ public class DownloadMusicServiceConfigurer implements DownloadMusicServiceConfi
     public void setFour(String four) {
         this.factory.setFour(four);
     }
-
-    public String getFive() {
-        return factory.getFive();
-    }
-
-    public void setFive(String five) {
-        this.factory.setFive(five);
-    }
 }

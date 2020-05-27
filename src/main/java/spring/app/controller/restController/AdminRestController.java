@@ -12,14 +12,12 @@ import spring.app.dto.CompanyDto;
 import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
-import spring.app.model.Company;
-import spring.app.model.OrgType;
-import spring.app.model.Role;
-import spring.app.model.User;
+import spring.app.model.*;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.OrgTypeService;
 import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
+import spring.app.util.ResponseBuilder;
 
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -30,20 +28,22 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminRestController {
+public class AdminRestController<T> {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminRestController.class);
     private final RoleService roleService;
     private final UserService userService;
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
+    private final ResponseBuilder responseBuilder;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService) {
+                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
+        this.responseBuilder = responseBuilder;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -68,7 +68,6 @@ public class AdminRestController {
 
     @GetMapping(value = "/all_users")
     public @ResponseBody
-
     List<UserDto> getAllUsers() {
         List<UserDto> list = userService.getAllUsers();
 
@@ -81,14 +80,10 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get_all_roles")
-    public List<RoleDto> getAllRoles() {
-        return roleService.getAllRolesDto();
-    }
+
 
     @GetMapping(value = "/all_companies")
     public @ResponseBody
-
     List<CompanyDto> getAllCompanies() {
         List<CompanyDto> list = companyService.getAllCompanies();
 
@@ -191,15 +186,53 @@ public class AdminRestController {
         orgTypeService.deleteById(id);
     }
 
+    @GetMapping(value = "/all_roles")
+    public Response getAllRoles() {
+       Response response = responseBuilder.success(roleService.getAllRolesDto());
+        return response;
+    }
+
+    @DeleteMapping(value = "/delete_role")
+    public void deleteRole(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_role' with id = {}", id);
+        roleService.deleteById(id);
+    }
+
+    @PostMapping(value = "/add_role")
+    public void addRole(@RequestBody Role role) {
+        LOGGER.info("POST request '/add_role' with role = {}", role);
+        roleService.save(role);
+    }
+
+    @PutMapping(value = "/update_role")
+    public void updateRole(@RequestBody Role role) {
+        LOGGER.info("PUT request '/update_role' with role = {}", role);
+        roleService.update(role);
+    }
+
+    // Returns false if author with requested name already exists else true
+    @GetMapping(value = "/role/est_type_name_is_free")
+    public Response<T> isLoginFreeRole(@RequestParam("name") String name) {
+        Boolean isRoleDto;
+        if (roleService.getRoleDtoByName(name) == null) {
+            isRoleDto = true;
+        } else isRoleDto = false;
+        return responseBuilder.success(isRoleDto);
+    }
+
 
     private Set<Role> getRoles(Set<String> role) {
         Set<Role> roles = new HashSet<>();
-
         for (String rl : role) {
-            System.out.println(rl);
-            roles.add(roleService.getByName(rl));
+            roles.add(roleService.getRoleByName(rl));
         }
         return roles;
+    }
+
+    @PostMapping(value = "/getRoleRequest")
+    private Response<T> getRoleRequest() {
+        List<RoleDto> roles = roleService.getAllRolesDto();
+        return responseBuilder.success(roles);
     }
 
     @PostMapping(value = "/add_company")
@@ -213,12 +246,12 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/check/email")
-    public String checkEmail(@RequestParam String email, @RequestParam long id){
+    public String checkEmail(@RequestParam String email, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByEmail(email));
     }
 
     @GetMapping(value = "/check/login")
-    public String checkLogin(@RequestParam String login, @RequestParam long id){
+    public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
 }

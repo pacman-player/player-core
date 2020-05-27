@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
@@ -16,7 +17,7 @@ public interface SongService extends GenericService<Long, Song>{
     //TODO: кандидат на удаление, не используется
 //    Song getByAuthorAndName(String author, String name);
 
-    Song getBySearchRequests(String author, String name);
+    List<BotSongDto> getBySearchRequests(String author, String name);
 
     List<SongDto> getAllSongsDto();
 
@@ -51,4 +52,6 @@ public interface SongService extends GenericService<Long, Song>{
     List<SongDto> listOfSongsByTag(String tag);
 
     void deleteTagForSongs(List<Long> songIds, Long tagId);
+
+    void resetSongCounter(long songId);
 }

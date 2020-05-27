@@ -3,7 +3,6 @@ package spring.app.dao.impl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
-import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
@@ -64,46 +63,18 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //    }
 
     @Override
-    public Song getBySearchRequests(String author, String name) {
-        // Version 1
-//        entityManager.createNativeQuery("CREATE EXTENSION pg_trgm");
-//        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS trgm_index_songs ON songs USING gist (songs.search_tags gist_trgm_ops)");
-//        String ftsQuery = "SELECT * FROM songs WHERE songs.search_tags % '" + author + " " + name + "'";
-//        Query query = entityManager.createNativeQuery(ftsQuery, Song.class);
+    public List<Song> getAllWithGenreByGenreId(Long id) {
+        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
+        query.setParameter("id", id);
 
-        // Version 2
-//        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS fts_index_songs ON songs USING gist (to_tsvector(songs.search_tags))");
-//        String ftsQuery = String.format("SELECT * FROM songs, plainto_tsquery('%s %s') AS q " +
-//                "WHERE to_tsvector(songs.search_tags) @@ q " +
-//                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
-
-        String ftsQuery = String.format("SELECT s.* FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
-                "INNER JOIN tags t ON ts.tag_id = t.id WHERE to_tsvector('%s %s') @@ plainto_tsquery(t.name) " +
-                "GROUP BY s.id ORDER BY count(*) DESC", author, name);
-        Query query = entityManager.createNativeQuery(ftsQuery, Song.class);
-        List<Song> songs = query.getResultList();
-        if(songs.isEmpty()){
+        List<Song> songs;
+        try {
+            songs = query.getResultList();
+        } catch (NoResultException e) {
             return null;
         }
-        return songs.get(0);
+        return songs;
     }
-
-//удалить т.к создала такой метод в SongDtoDaoImpl
-//    @Override
-//    public List<Song> getAllWithGenreByGenreId(Long id) {
-//        TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
-//        query.setParameter("id", id);
-//
-//        List<Song> songs;
-//        try {
-//            songs = query.getResultList();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-//        return songs;
-//    }
-
-
 
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {

@@ -3,14 +3,12 @@ package spring.app.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс, в котором реализована логика выбора очередности музыкальных сервисов.
@@ -46,16 +44,6 @@ public class DownloadMusicServiceFactory {
     @Value("${music.searchService.four}")
     String four;
 
-    /**
-     * Имя пятого сервиса для поиска
-     */
-    @Value("${music.searchService.five}")
-    String five;
-
-    @Autowired
-    @Qualifier("bdSearchServiceImpl")
-    private DownloadMusicService bdSearchServiceImpl;
-
     @Autowired
     @Qualifier("zaycevSaitServiceImpl")
     private DownloadMusicService zaycevSaitServiceImpl;
@@ -72,8 +60,7 @@ public class DownloadMusicServiceFactory {
     @Qualifier("downloadMusicVkRuServiceImpl")
     private DownloadMusicService downloadMusicVkRuServiceImpl;
 
-    // поле изменил на LinkedHashSet, чтобы исключить дублирование сервисов в коллекции
-    private Set<DownloadMusicService> services = new LinkedHashSet<>();
+    private List<DownloadMusicService> services = new ArrayList<>();
 
 
     public DownloadMusicServiceFactory() {
@@ -111,14 +98,6 @@ public class DownloadMusicServiceFactory {
         this.four = four;
     }
 
-    public String getFive() {
-        return five;
-    }
-
-    public void setFive(String five) {
-        this.five = five;
-    }
-
     /**
      * Метод для получения нужной имплементации музыкального сервиса.
      *
@@ -128,9 +107,6 @@ public class DownloadMusicServiceFactory {
         DownloadMusicService dms;
 
         switch (implName) {
-            case "bdSearchServiceImpl":
-                dms = bdSearchServiceImpl;
-                break;
             case "zaycevSaitServiceImpl":
                 dms = zaycevSaitServiceImpl;
                 break;
@@ -154,18 +130,18 @@ public class DownloadMusicServiceFactory {
      * Метод, формирующий список сервисов, которые поочередно используются в поиске трека
      * в классе {@link MusicSearchServiceImpl}
      */
-    public Set<DownloadMusicService> getDownloadServices() {
+    @Bean
+    @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public List<DownloadMusicService> getDownloadServices() {
         try {
             services.clear();
             services.add(getService(one));
             services.add(getService(two));
             services.add(getService(three));
             services.add(getService(four));
-            services.add(getService(five));
         } catch (NullPointerException | ClassNotFoundException e) {
             // На случай ошибок в файле конфигурации, возвращаем очередность по-умолчанию
             services.clear();
-            services.add(bdSearchServiceImpl);
             services.add(zaycevSaitServiceImpl);
             services.add(muzofondfmMusicSearchImpl);
             services.add(krolikSaitServiceImpl);

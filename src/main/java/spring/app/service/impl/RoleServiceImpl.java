@@ -2,7 +2,6 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.RoleDao;
 import spring.app.dao.abstraction.dto.RoleDtoDao;
 import spring.app.dto.RoleDto;
@@ -15,21 +14,37 @@ import java.util.List;
 public class RoleServiceImpl extends AbstractServiceImpl<Long, Role, RoleDao> implements RoleService {
 
 	private final RoleDtoDao roleDtoDao;
+	private final RoleDao roleDao;
 
 	@Autowired
 	public RoleServiceImpl(RoleDao dao, RoleDtoDao roleDtoDao) {
 		super(dao);
 		this.roleDtoDao = roleDtoDao;
+		this.roleDao = dao;
 	}
 
+
+
+	// для проверки кастомного ответа на выбрасывание ошибки приложением.
 	@Override
-	public Role getByName(String roleName) {
-		return dao.getRoleByName(roleName);
+	public Role getRoleByName(String roleName) {
+		return roleDao.getRoleByName(roleName);
+
 	}
 
 	@Override
 	public List<RoleDto> getAllRolesDto() {
-		return roleDtoDao.getAllRoles();
+		return roleDtoDao.getAllRolesDto();
+	}
+
+	@Override
+	public RoleDto getRoleDtoByName(String roleName) {
+		return roleDtoDao.getRoleDtoByName(roleName);
+	}
+
+	@Override
+	public RoleDto getRoleDtoById(Long id) {
+		return roleDtoDao.getRoleDtoById(id);
 	}
 
 }

@@ -9,6 +9,9 @@ public class RoleDto {
         this.name = name;
     }
 
+    public RoleDto() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,5 @@
 package spring.app.dao.abstraction;
 
-import spring.app.dto.SongDto;
 import spring.app.model.Song;
 
 import java.sql.Timestamp;
@@ -17,13 +16,11 @@ public interface SongDao extends GenericDao<Long, Song> {
     //TODO: кандидат на удаление, не используется
 //    Song getByAuthorAndName(String author, String name);
 
-    Song getBySearchRequests(String author, String name);
-
-    //List<Song> getAllWithGenreByGenreId(Long id);
+    List<Song> getAllWithGenreByGenreId(Long id);
 
     List<Song> getByCreatedDateRange(Timestamp from, Timestamp to);
 
-     List<Song> getAllApproved();
+    List<Song> getAllApproved();
 
     List<Song> getApprovedPage(int pageNumber, int pageSize);
 

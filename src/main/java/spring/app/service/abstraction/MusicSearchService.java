@@ -11,5 +11,6 @@ public interface MusicSearchService {
 
     Long updateData(Track track) throws IOException;
 
-    Long updateData(String fullTrackName, String author, String songName) throws IOException;
+    //TODO: remove
+//    Long updateData(String fullTrackName, String author, String songName) throws IOException;
 }
