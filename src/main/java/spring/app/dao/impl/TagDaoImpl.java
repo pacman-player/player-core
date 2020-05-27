@@ -7,6 +7,7 @@ import spring.app.model.Tag;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -31,4 +32,16 @@ public class TagDaoImpl extends AbstractDao<Long, Tag> implements TagDao {
         long count = (long) query.getSingleResult();
         return count > 0;
     }
+
+    @Override
+    public Set<Tag> findTags(String searchRequest) {
+        String findTagsQuery = String.format(
+                "SELECT * FROM tags t WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name)", searchRequest);
+        List<Tag> list = entityManager.createNativeQuery(findTagsQuery, Tag.class)
+                .setParameter("searchRequest", searchRequest)
+                .getResultList();
+
+        return new HashSet<>(list);
+    }
+
 }
