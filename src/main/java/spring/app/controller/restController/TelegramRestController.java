@@ -187,6 +187,9 @@ public class TelegramRestController {
         // получаем текущую позицию в очереди
         long lastSongQueuesPosition = songQueueService.getLastSongQueuesNumberFromCompany(companyById);
 
+
+
+
         if (songQueue == null) {
             LOGGER.info("Song queue is empty. Adding song to queue...");
             // если платная очередь пуста, создаем новую очередь для данной компании

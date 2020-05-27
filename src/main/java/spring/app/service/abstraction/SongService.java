@@ -25,7 +25,7 @@ public interface SongService extends GenericService<Long, Song>{
 
     List<Song> getAllSongInSongCompilation(Long id);
 
-    List<Song> getAllApprovedSongs();
+    List<SongDto> getAllApprovedSongsDto();
 
     List<Song> getApprovedSongsPage(int pageNumber, int pageSize);
 
@@ -34,7 +34,10 @@ public interface SongService extends GenericService<Long, Song>{
      *
      * @return List<Song>
      */
-    List<Song> findSongsByGenreId(Long id);
+
+    //List<Song> findSongsByGenreId(Long id);
+
+    List<SongDto> findSongsByGenreId(Long id);
 
     int getLastApprovedSongsPageNumber(int pageSize);
 

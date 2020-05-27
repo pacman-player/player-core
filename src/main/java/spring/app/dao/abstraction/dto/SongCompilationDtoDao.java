@@ -2,6 +2,7 @@ package spring.app.dao.abstraction.dto;
 
 import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
+import spring.app.model.SongCompilation;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface SongCompilationDtoDao {
     List<SongDto> getAllSongsWithCompId(long compilationID);
 
     List<SongCompilationDto> getAllForAdmin();
+
+    List<SongDto> getAvailableContentForCompilationDto(SongCompilation songCompilation);
 
 
 }

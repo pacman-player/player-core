@@ -2,6 +2,7 @@ package spring.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.GenreDao;
+import spring.app.dto.GenreDto;
 import spring.app.model.Company;
 import spring.app.model.Genre;
 import spring.app.model.OrgType;
