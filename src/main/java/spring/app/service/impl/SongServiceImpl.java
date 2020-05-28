@@ -120,6 +120,11 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
+    public int getSongCounterVal(String trackName) {
+        return counterDao.getValue(trackName);
+    }
+
+    @Override
     @Transactional
     public void deleteById(Long id) {
         Song song = dao.getById(id);

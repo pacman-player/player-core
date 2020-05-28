@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
-import spring.app.dao.abstraction.CounterDao;
-import spring.app.dto.SongCompilationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
@@ -371,8 +369,8 @@ public class TestDataInit {
         orgTypeService.save(orgType2);
 
         // создаем компании для наших пользователей
-        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, orgType1);
-        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, 10000L, orgType2);
+        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, 60L, orgType1);
+        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, 10000L, 120L, orgType2);
 
         // создаем пустые плейлисты, которые нужны для возможности добавлять
         // и воспроизводить в них музыку (подборки)
