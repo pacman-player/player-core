@@ -1,4 +1,4 @@
-package spring.app.service.impl.musicSearcher.serchServices;
+package spring.app.service.impl.musicSearcher.searchServices;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Service
-@Transactional
 public class LoadSongServiceImpl implements LoadSongService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoadSongServiceImpl.class);

@@ -10,4 +10,6 @@ public interface TagDao extends GenericDao<Long, Tag> {
 
     boolean isExistByName(String name);
 
+    Set<Tag> findTags(String searchRequest);
+    
 }

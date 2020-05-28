@@ -100,7 +100,7 @@ public class TelegramRestController {
             LOGGER.info("Requested song Name = {} and Author = {}",
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
-            SongResponse songResponse = telegramService.servicesSearch(songRequest);
+            SongResponse songResponse = telegramService.servicesSearch(songRequest).join();
 
             if (songResponse != null) {
                 LOGGER.info("Song candidate was found by services!");

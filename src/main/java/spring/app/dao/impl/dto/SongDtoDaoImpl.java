@@ -75,12 +75,13 @@ public class SongDtoDaoImpl implements SongDtoDao {
 //                "WHERE to_tsvector(songs.search_tags) @@ q " +
 //                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
 
-        String ftsQuery = String.format("SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
+        String ftsQuery = "SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
                 "INNER JOIN tags t ON ts.tag_id = t.id " +
                 "INNER JOIN authors a ON s.author_id = a.id " +
-                "WHERE to_tsvector('%s %s') @@ plainto_tsquery(t.name) " +
-                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3", author, name);
+                "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
         return entityManager.createNativeQuery(ftsQuery)
+                .setParameter("searchRequest", author + ' ' + name)
                 .unwrap(SQLQuery.class)
                 .setResultTransformer(new BotSongDtoTransformer())
                 .list();

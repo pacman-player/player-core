@@ -3,16 +3,12 @@ package spring.app.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.impl.musicSearcher.MusicSearchServiceImpl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Класс, в котором реализована логика выбора очередности музыкальных сервисов.
@@ -64,7 +60,6 @@ public class DownloadMusicServiceFactory {
     @Qualifier("downloadMusicVkRuServiceImpl")
     private DownloadMusicService downloadMusicVkRuServiceImpl;
 
-    // поле изменил на LinkedHashSet, чтобы исключить дублирование сервисов в коллекции
     private List<DownloadMusicService> services = new ArrayList<>();
 
 
@@ -135,6 +130,8 @@ public class DownloadMusicServiceFactory {
      * Метод, формирующий список сервисов, которые поочередно используются в поиске трека
      * в классе {@link MusicSearchServiceImpl}
      */
+    @Bean
+    @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public List<DownloadMusicService> getDownloadServices() {
         try {
             services.clear();

@@ -2,6 +2,7 @@ package spring.app.service.impl.musicSearcher;
 
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.BotSongDto;
@@ -19,9 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
-@Transactional
 public class TelegramServiceImpl implements TelegramService {
     private final MusicSearchService musicSearchService;
     private final CutSongService cutSongService;
@@ -90,7 +91,8 @@ public class TelegramServiceImpl implements TelegramService {
      * @throws DecoderException
      */
     @Override
-    public SongResponse servicesSearch(SongRequest songRequest) throws IOException, BitstreamException,
+    @Async
+    public CompletableFuture<SongResponse> servicesSearch(SongRequest songRequest) throws IOException, BitstreamException,
             DecoderException {
         SongResponse songResponse = null;
         // Ищем запрошенный трек в музыкальных сервисах
@@ -118,9 +120,9 @@ public class TelegramServiceImpl implements TelegramService {
             Long position = getPosition(songId, songRequest.getCompanyId());
             songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
         }
-        return songResponse;
+        return CompletableFuture.completedFuture(songResponse);
     }
-
+    //TODO определить, нужна ли здесь транзакция
     private Long getPosition(Long songId, Long companyId) {
         // По позиции песни в очереди song_queue определяем position.
         // Если песни нет в очереди - отдаем боту position = 0L
@@ -134,7 +136,7 @@ public class TelegramServiceImpl implements TelegramService {
         if (songQueue == null) {
             position = 0L;
         } else {
-            position = songQueue.getPosition(); //сетим позицию песни в song_queue
+            position = songQueue.getPosition(); //сеттим позицию песни в song_queue
         }
 
         return position;
