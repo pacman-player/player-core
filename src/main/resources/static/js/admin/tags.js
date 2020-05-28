@@ -264,7 +264,7 @@ function editTagOfSongs(id, name) {
 let tagId = {};
 let tagName = {};
 let deleteObject = {};
-$('#deleteTagForSongsBtn').on('click', function() {
+$('#deleteTagForSongsBtn').on('click', function () {
     tagId = $('#tagId').val();
     tagName = $('#tagName').val();
 
@@ -285,12 +285,11 @@ $('#deleteTagForSongsBtn').on('click', function() {
 
 $('#deleteTagForSongsForm').on('submit', function (event) {
 
-    if(jQuery.isEmptyObject(deleteObject)) {
+    if (jQuery.isEmptyObject(deleteObject)) {
         alert("Выберите хотя бы одну пеню, чтобы удалить тэг \"" + tagName + '\"');
         event.preventDefault();
         // return false;
-    }
-    else {
+    } else {
         $.ajax({
             url: '/api/admin/song/delete_tag_for_songs',
             data: JSON.stringify(deleteObject),

@@ -280,11 +280,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
         return songCompilationDto.getAllCompilationsPlaylistByCompanyIdDto(id, namePlayList);
     }
+
     @Override
     public SongCompilation getSongCompilationByCompilationName(String compilationName) {
         return dao.getSongCompilationByCompilationName(compilationName);
     }
-
 
 
 }

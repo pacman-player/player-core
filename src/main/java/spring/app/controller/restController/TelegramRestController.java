@@ -133,7 +133,7 @@ public class TelegramRestController {
                     songRequest.getAuthorName());
             SongsListResponse songsListResponse = telegramService.databaseSearch(songRequest);
 
-            if (!songsListResponse.getSongs().isEmpty() ) {
+            if (!songsListResponse.getSongs().isEmpty()) {
                 LOGGER.info("Song candidate was found in database!");
             } else {
                 LOGGER.error("Requested song was NOT found! :(");

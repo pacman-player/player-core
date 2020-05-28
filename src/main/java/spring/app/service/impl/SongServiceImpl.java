@@ -157,7 +157,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 
     @Override
     public List<SongDto> listOfSongsByTag(String tag) {
-       return songDtoDao.listOfSongsByTag(tag);
+        return songDtoDao.listOfSongsByTag(tag);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
         int count = dao.deleteTagForSongs(songIds, tagId);
         if (count != songIds.size()) {
             throw new IllegalArgumentException("Incorrect song ids: can't delete tag (id = " + tagId + ") for all songs (ids = {"
-                                            + songIds + "]).");
+                    + songIds + "]).");
         }
     }
 }

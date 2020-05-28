@@ -18,38 +18,39 @@ $(document).ready(function () {
             }
         });
     }
-        function updateUserData() {
-            var newUser = {
-                "login":$('#login').val(),
-                "email":$('#email').val()
-            };
 
-            if(newUser.login === "") {
-                alert("Введите логин");
-                return;
-            }
-            if(newUser.email === ""){
-                alert("Введите почту");
-                return;
-            }
+    function updateUserData() {
+        var newUser = {
+            "login": $('#login').val(),
+            "email": $('#email').val()
+        };
 
-            $.ajax({
-                contentType: "application/json;",
-                url: "/api/user/edit_data",
-                type: "PUT",
-                data: JSON.stringify(newUser),
-                async: true,
-                cache: false,
-                success: function () {
-                    alert("Данные изменены");
-                    getUserData();
-                },
-                error: function () {
-                    alert("Пользователь с такими данными уже существует");
-                    getUserData();
-                }
-            });
+        if (newUser.login === "") {
+            alert("Введите логин");
+            return;
         }
+        if (newUser.email === "") {
+            alert("Введите почту");
+            return;
+        }
+
+        $.ajax({
+            contentType: "application/json;",
+            url: "/api/user/edit_data",
+            type: "PUT",
+            data: JSON.stringify(newUser),
+            async: true,
+            cache: false,
+            success: function () {
+                alert("Данные изменены");
+                getUserData();
+            },
+            error: function () {
+                alert("Пользователь с такими данными уже существует");
+                getUserData();
+            }
+        });
+    }
 
     function updateUserPassword() {
 
@@ -63,17 +64,17 @@ $(document).ready(function () {
             data: {"oldPass": oldPass, "newPass": password},
             success: function (isSame) {
                 alert(isSame);
-            oldPass = isSame;
+                oldPass = isSame;
             }
         });
-        if(oldPass === false){
+        if (oldPass === false) {
             alert("Неверно введен текущий пароль");
             return;
         }
 
         var newPass = $("#newUserPass").val();
         var checkPass = $("#updateUserPass").val();
-        if (newPass !== checkPass){
+        if (newPass !== checkPass) {
             alert("Новый пароль не совпадает с подтвержденным");
             return;
         }
@@ -141,21 +142,21 @@ $(document).ready(function () {
 
     }
 
-        function sendMail() {
-            var mess = "start";
-            $.ajax({
-                type: 'PUT',
-                url: "/api/user/send_mail",
-                contentType: 'application/json;',
-                data: JSON.stringify(mess),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                async: true,
-                cache: false,
-            });
-        }
+    function sendMail() {
+        var mess = "start";
+        $.ajax({
+            type: 'PUT',
+            url: "/api/user/send_mail",
+            contentType: 'application/json;',
+            data: JSON.stringify(mess),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+        });
+    }
 
 
     $('#updateUserDataBtn').click(function (event) {

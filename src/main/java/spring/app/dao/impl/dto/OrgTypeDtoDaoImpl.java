@@ -20,16 +20,14 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @SuppressWarnings("unchecked")
     public List<OrgTypeDto> getAll() {
-        String queryFormat = "SELECT ot.id, ot.name, g.name FROM %s ot LEFT JOIN ot.genres g";
-        String query = String.format(queryFormat, OrgType.class.getSimpleName());
+        String query = "SELECT ot.id, ot.name, g.name FROM OrgType ot LEFT JOIN ot.genres g";
 
-        List<OrgTypeDto> orgTypeDtoList = entityManager.createQuery(query)
-                                                        .unwrap(Query.class)
-                                                        .setResultTransformer(new OrgTypeDtoTransformer())
-                                                        .list();
-
-        return orgTypeDtoList;
+        return entityManager.createQuery(query)
+                            .unwrap(Query.class)
+                            .setResultTransformer(new OrgTypeDtoTransformer())
+                            .list();
     }
 
 

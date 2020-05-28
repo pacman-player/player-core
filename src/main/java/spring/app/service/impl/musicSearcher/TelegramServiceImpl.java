@@ -120,7 +120,7 @@ public class TelegramServiceImpl implements TelegramService {
         }
         return songResponse;
     }
-    
+
     private Long getPosition(Long songId, Long companyId) {
         // По позиции песни в очереди song_queue определяем position.
         // Если песни нет в очереди - отдаем боту position = 0L

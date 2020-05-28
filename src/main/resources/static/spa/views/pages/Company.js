@@ -1,4 +1,3 @@
-
 let Company = {
 
     render: async () => {
@@ -38,6 +37,7 @@ let Company = {
             // //доступ к  ссылки админа
             // showLinkAdmin();
             getCompanyData();
+
             // getCompanyAddress();
 
             function updateCompany() {
@@ -59,7 +59,7 @@ let Company = {
                         },
                     success:
                         function () {
-                        console.log(formData.tariff);
+                            console.log(formData.tariff);
                             notification("edit-company-data" + formData.name.replace(/[^\w]|_/g, ''),
                                 "  Изменения сохранены");
                         },
@@ -147,8 +147,8 @@ let Company = {
             }
 
 
-
             ymaps.ready(init);
+
             function init() {
                 // Подключаем поисковые подсказки к полю ввода.
                 var suggestView = new ymaps.SuggestView('est-address');
@@ -162,12 +162,10 @@ let Company = {
                 });
 
                 // Создаем экземпляр класса ymaps.control.SearchControl
-                let mySearchControl = new ymaps.control.SearchControl({
-                });
+                let mySearchControl = new ymaps.control.SearchControl({});
 
                 // Создаем экземпляр класса ymaps.control.ZoomControl
-                let myZoomControl = new ymaps.control.ZoomControl({
-                });
+                let myZoomControl = new ymaps.control.ZoomControl({});
 
                 //Добавляем в карту зум
                 // map.controls.add(mySearchControl);
@@ -222,13 +220,10 @@ let Company = {
                         });
 
 
-
-
-
                         var alertContent = firstGeoObject.getAddressLine();
 
                         // Сетим адрес и координаты в поля
-                        function putAddressInField () {
+                        function putAddressInField() {
                             $('#est-address').val(alertContent);
                             $('#latitude').val(coords[0]);
                             $('#longitude').val(coords[1]);

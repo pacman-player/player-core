@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
-public interface SongService extends GenericService<Long, Song>{
+public interface SongService extends GenericService<Long, Song> {
 
     boolean isExist(String name);
 

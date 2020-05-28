@@ -56,9 +56,10 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         }
         return company;
     }
+
     @Override
     public boolean isExistCompanyByName(String name) {
-        long count = (long)entityManager.createQuery(
+        long count = (long) entityManager.createQuery(
                 "select count(c) from Company c WHERE c.name=:name")
                 .setParameter("name", name)
                 .getSingleResult();
@@ -102,7 +103,7 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         List<SongQueue> list = new ArrayList<>(company.getSongQueues());
         List<String> result = new ArrayList<>();
         if (!list.isEmpty()) {
-         result = list.stream().map(SongQueue::getSong).map(x -> x.getAuthor().getName() + " - " + x.getName()).collect(Collectors.toList());
+            result = list.stream().map(SongQueue::getSong).map(x -> x.getAuthor().getName() + " - " + x.getName()).collect(Collectors.toList());
         }
         return result;
     }

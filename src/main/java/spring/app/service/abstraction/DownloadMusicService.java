@@ -12,7 +12,6 @@ public interface DownloadMusicService {
      * @param author - имя исполнителя
      * @param song   - название песни
      * @return возвращение нового экземпляра класса Track.
-     *
      * @see spring.app.service.impl.musicSearcher.serchServices.MuzofondfmMusicSearchImpl
      * @see spring.app.service.impl.musicSearcher.serchServices.ZaycevSaitServiceImpl
      * @see spring.app.service.impl.musicSearcher.serchServices.DownloadMusicVkRuServiceImpl

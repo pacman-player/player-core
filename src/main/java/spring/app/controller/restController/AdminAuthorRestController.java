@@ -29,7 +29,7 @@ public class AdminAuthorRestController {
 
     @GetMapping(value = "/all_authors")
 
-    public List<AuthorDto> getAllAuthor(){
+    public List<AuthorDto> getAllAuthor() {
         List<AuthorDto> authorDtoList = authorService.getAllAuthors();
 
         return authorDtoList;

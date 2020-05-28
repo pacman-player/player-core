@@ -94,12 +94,12 @@ public class AdminSongRestController {
     }
 
 
-@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getById(id));
-    return ResponseEntity.ok(songDto);
-}
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+        SongDto songDto = new SongDto(songService.getById(id));
+        return ResponseEntity.ok(songDto);
+    }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
@@ -119,13 +119,13 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
         Genre newGenre = genreService.getByName(updateObject.get(-1));
-        updateObject.forEach((key, value)->{
-              if(key!=-1){
-                  Song editSong = songService.getById(Long.parseLong(value));
-                  editSong.setGenre(newGenre);
-                  songService.update(editSong);
-              }
-          });
+        updateObject.forEach((key, value) -> {
+            if (key != -1) {
+                Song editSong = songService.getById(Long.parseLong(value));
+                editSong.setGenre(newGenre);
+                songService.update(editSong);
+            }
+        });
     }
 
     @DeleteMapping(value = "/delete_tag_for_songs")

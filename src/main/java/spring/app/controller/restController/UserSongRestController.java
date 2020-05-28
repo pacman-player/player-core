@@ -36,10 +36,7 @@ public class UserSongRestController {
 
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
     public List<SongDto> getAllSongInSongCompilation(@PathVariable("id") Long id) {
-        LOGGER.info("GET request '/get/all-song/song-compilation/{}'", id);
-        List<SongDto> dtoSongs = songService.getAllSongsByCompilationId(id);
-        LOGGER.info("Result has {} lines", dtoSongs.size());
-        return dtoSongs;
+        return songService.getAllSongsByCompilationId(id);
     }
 
     @GetMapping("/songsInQueue")

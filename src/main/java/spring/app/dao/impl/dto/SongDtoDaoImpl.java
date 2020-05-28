@@ -33,18 +33,17 @@ public class SongDtoDaoImpl implements SongDtoDao {
 
     @Override
     public List<SongDto> listOfSongsByName(String name) {
-        String hqlFormat = "SELECT new %s(song.id, song.name, song.isApproved, song.author.name, song.genre.name) FROM %s song " +
-                           "WHERE song.name LIKE :name";
-        String hql = String.format(hqlFormat, SongDto.class.getName(), Song.class.getSimpleName());
+        String query = "SELECT new spring.app.dto.SongDto(song.id, song.name, song.isApproved, song.author.name, song.genre.name) " +
+                       "FROM Song song WHERE song.name LIKE :name";
 
-        return entityManager.createQuery(hql, SongDto.class)
+        return entityManager.createQuery(query, SongDto.class)
                             .setParameter("name", '%' + name + '%')
                             .getResultList();
     }
 
     @Override
     public List<SongDto> listOfSongsByTag(String tag) {
-        List<SongDto> songDtos =  entityManager.createQuery(
+        List<SongDto> songDtos = entityManager.createQuery(
                 "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +
                         "FROM Song s INNER JOIN s.tags t WHERE t.name = :name", SongDto.class)
                 .setParameter("name", tag)
@@ -77,14 +76,14 @@ public class SongDtoDaoImpl implements SongDtoDao {
 //                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
 
         String ftsQuery = String.format("SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
-                                                "INNER JOIN tags t ON ts.tag_id = t.id " +
-                                                "INNER JOIN authors a ON s.author_id = a.id " +
-                                                "WHERE to_tsvector('%s %s') @@ plainto_tsquery(t.name) " +
-                                                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3", author, name);
+                "INNER JOIN tags t ON ts.tag_id = t.id " +
+                "INNER JOIN authors a ON s.author_id = a.id " +
+                "WHERE to_tsvector('%s %s') @@ plainto_tsquery(t.name) " +
+                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3", author, name);
         return entityManager.createNativeQuery(ftsQuery)
-                                        .unwrap(SQLQuery.class)
-                                        .setResultTransformer(new BotSongDtoTransformer())
-                                        .list();
+                .unwrap(SQLQuery.class)
+                .setResultTransformer(new BotSongDtoTransformer())
+                .list();
     }
 
     private class BotSongDtoTransformer implements ResultTransformer {
