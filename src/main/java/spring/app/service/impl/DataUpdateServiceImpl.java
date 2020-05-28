@@ -36,7 +36,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
 
     @Override
     @Transactional
-    public Long updateData(String authorName, String songName, String[] genreNames) {
+    public Song updateData(String authorName, String songName, String[] genreNames) {
         Set<Genre> authorGenres;
 
         Author author = authorService.getByName(authorName);
@@ -73,6 +73,8 @@ public class DataUpdateServiceImpl implements DataUpdateService {
             songService.save(song);
         }
         // возвращаем id песни
-        return song.getId();
+        //return song.getId();
+        return song;
+
     }
 }

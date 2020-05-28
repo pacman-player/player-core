@@ -9,6 +9,8 @@ import spring.app.dto.BotSongDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.dto.SongsListResponse;
+import spring.app.model.Company;
+import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.CutSongService;
 import spring.app.service.abstraction.*;
@@ -102,21 +104,30 @@ public class TelegramServiceImpl implements TelegramService {
             String trackName = track.getFullTrackName();
             byte[] trackBytes = track.getTrack();
             // создаем 30-секундный отрезок для превью
-            byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
+
+            Song song = null;
             Long songId;
-            if (!songService.isExist(track.getSong())) {
-                // получаем id песни после занесения в БД
-                songId = musicSearchService.updateData(track);
+            Long companyId = songRequest.getCompanyId();
+
+            if (!songService.isExist(track.getSong())) {//если не было песни в БД ->сохраняем
+                // получаем экземпляр Song после занесения в БД
+                song = musicSearchService.updateData(track);
+                songId = song.getId();
                 Path path = playerPaths.getSongDir(songId);
                 try {
                     Files.write(path, track.getTrack());  //записываем песню в директорию
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Company company = companyService.getById(companyId);
+                if (song.getAuthor().isBannedBy(company) || song.getGenre().isBannedBy(company)) {
+                    return CompletableFuture.completedFuture(songResponse);
+                }
             } else {
                 songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());
             }
 
+            byte[] cutSong = cutSongService.сutSongMy(trackBytes, -1, 31);
             Long position = getPosition(songId, songRequest.getCompanyId());
             songResponse = new SongResponse(songRequest.getChatId(), songId, cutSong, trackName, position);
         }

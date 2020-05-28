@@ -66,7 +66,13 @@ public class SongDtoDaoImpl implements SongDtoDao {
         String ftsQuery = "SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
                                                 "INNER JOIN tags t ON ts.tag_id = t.id " +
                                                 "INNER JOIN authors a ON s.author_id = a.id " +
+                "LEFT JOIN company_on_banned_author coba ON s.author_id = coba.author_id " +
+                "LEFT JOIN company_on_banned_genre cobg ON s.genre_id = cobg.genre_id " +
+                "LEFT JOIN company_on_banned_song cobs ON s.id = cobs.song_id " +
                                                 "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                "AND (coba.company_id IS NULL OR coba.company_id != :companyId) " +
+                "AND (cobg.company_id IS NULL OR cobg.company_id != :companyId) " +
+                "AND (cobs.company_id IS NULL OR cobs.company_id != :companyId) " +
                                                 "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
         return entityManager.createNativeQuery(ftsQuery)
                                         .setParameter("searchRequest", author + ' ' + name)
