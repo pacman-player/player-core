@@ -33,7 +33,7 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Transactional
     @Override
     public void deleteById(Long id) {
-        Genre notDefinedGenre = getByName("not defined");
+        Genre notDefinedGenre = getByName("Неизвестный жанр");
         Genre genreForDelete = getById(id);
         // в сервисе только таким образом можно пробежать по всем авторам , удалить у них наш жанр и в случае если жанров у них больше нет добавить "не определенный"
         List<Author> authors = new ArrayList<>(genreForDelete.getAuthors());
@@ -73,6 +73,11 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Override
     public List<GenreDto> getAllGenreDto() {
         return genreDtoDao.getAll();
+    }
+
+    @Override
+    public List<String> getGenreNames(String keywords) {
+        return genreDtoDao.getGenresByKeywords(keywords);
     }
 
     @Override

@@ -8,14 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import spring.app.dto.GenreDto;
 import spring.app.service.abstraction.GenreDefinerService;
 import spring.app.service.abstraction.GenreService;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Класс определяет жанр песни посредством поиска ключевых
@@ -64,8 +61,7 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
         if (genre.equals("Неизвестный жанр")) {
             genre = defineGenreInYandex(authorName);
         }
-        String[] result = getGenres(genre);
-        return result; //присвоение жанров по ключевым словам
+        return getGenres(genre); //присвоение жанров по ключевым словам
     }
 
     private String defineGenreInYandex(String authorName) throws IOException {
@@ -117,21 +113,11 @@ public class GenreDefinerServiceImpl implements GenreDefinerService {
      * @return
      */
     private String[] getGenres(String genre) {
-        List<GenreDto> list = genreService.getAllGenreDto();
-        Set<String> temp = new HashSet<>();
-        String[] genres = genre.toLowerCase().split("[^A-Za-zА-Яа-я0-9]+");
-        for (GenreDto dto : list) {
-            for (String s : genres) {
-                if (dto.getKeywords().contains(s)) {
-                    temp.add(dto.getName());
-                    break;
-                }
-            }
-            if (temp.size() == 3) {
-                break;
-            }
+        String keywords = genre.toLowerCase().replaceAll("[^A-Za-zА-Яа-яЁё0-9]+", " ");
+        List<String> list = genreService.getGenreNames(keywords);
+        if (list.isEmpty()) {
+            return new String[]{"Неизвестный жанр"};
         }
-        String[] test = temp.toArray(new String[0]);
-        return test;
+        return list.toArray(new String[0]);
     }
 }

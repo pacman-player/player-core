@@ -343,9 +343,9 @@ public class TestDataInit {
         Set<Genre> genres2 = new HashSet<>();
 
         Genre rock = genreService.getByName("Рок");
-        rock.setKeywords("рок метал альтернатива панк");
+        rock.setKeywords("рок | метал | альтернатива | панк | хардкор");
         Genre pop = genreService.getByName("Поп");
-        pop.setKeywords("поп популярная хип хоп");
+        pop.setKeywords("поп | популярная | хип | хоп");
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
         rock.setApproved(true);
         pop.setApproved(true);
@@ -353,18 +353,18 @@ public class TestDataInit {
         genreService.update(pop);
 
         //добавляем остальные жанры и ключевые слова к ним
-        Genre jazz = new Genre("Джаз", true, "джаз свинг диксиленд бибоп авангардный модальный пост-боп");
+        Genre jazz = new Genre("Джаз", true, "джаз | свинг | диксиленд | бибоп | авангардный | модальный | пост-боп");
         Genre rap = new Genre("Рэп", true, "рэп");
-        Genre soul = new Genre("Соул", true, "соул госпел");
+        Genre soul = new Genre("Соул", true, "соул | госпел");
         Genre blues = new Genre("Блюз", true, "блюз");
-        Genre reggie = new Genre("Регги/Ска", true, "регги ска даб рагга дэнсхолл");
-        Genre folk = new Genre("Фолк", true, "фолк народная");
+        Genre reggie = new Genre("Регги/Ска", true, "регги | реггетон | даб | рагга | дэнсхолл");
+        Genre folk = new Genre("Фолк", true, "фолк | народная");
         Genre country = new Genre("Кантри", true, "кантри");
-        Genre romance = new Genre("Шансон", true, "шансон авторская");
-        Genre dance = new Genre("Танцевальная", true, "электронная танцевальная хаус техно транс чип " +
-                "рэйв индастриал эмбиент дабстеп хардстайл дип-хаус даунтемпо нью-эйдж олдскул-джангл");
-        Genre lounge = new Genre("Лаунж", true, "");
-        Genre classic = new Genre("Классика", true, "классическая классика эпохи барокко романтизма");
+        Genre romance = new Genre("Шансон", true, "шансон | авторская");
+        Genre dance = new Genre("Танцевальная", true, "электронная | танцевальная | хаус | техно | транс | чип " +
+                "| рэйв | индастриал | эмбиент | дабстеп | хардстайл | дип-хаус | даунтемпо | нью-эйдж | олдскул-джангл");
+        Genre lounge = new Genre("Лаундж", true, "лаундж | эйдж | медитация");
+        Genre classic = new Genre("Классика", true, "классическая | классика | эпохи");
         Genre undefined = new Genre("Неизвестный жанр", false);
         List<Genre> list = Arrays.asList(jazz, rap, soul, blues, reggie, folk,
                 country, romance, dance, lounge, classic, undefined);
@@ -488,10 +488,5 @@ public class TestDataInit {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
         mBeanServer.registerMBean(serviceConfigurer, name);
-
-        //adding genre not defined
-        Genre notDefinedGenre = new Genre("not defined", true);
-        genreService.save(notDefinedGenre);
-
     }
 }
