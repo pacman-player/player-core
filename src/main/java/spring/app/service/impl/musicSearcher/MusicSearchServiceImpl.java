@@ -13,7 +13,6 @@ import spring.app.service.abstraction.GenreDefinerService;
 import spring.app.service.abstraction.MusicSearchService;
 import spring.app.service.entity.Track;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -69,15 +68,14 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return null;
     }
 
-    //определяет жанр песни
-    private String[] getGenre(String author, String trackSong) throws IOException {
-        return genreDefiner.defineGenre(author, trackSong);
+    //определяет жанр песни по автору
+    private String[] getGenre(String author) throws IOException {
+        return genreDefiner.defineGenre(author);
     }
 
     //заносит данные скачанной песни в бд и возвращает id песни
-    @Transactional
     public Song updateData(Track track) throws IOException {
-        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
+        String[] genreNames = getGenre(track.getAuthor());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
 }

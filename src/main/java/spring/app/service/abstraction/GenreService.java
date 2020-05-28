@@ -16,6 +16,10 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<Genre> getAllApprovedGenre();
 
+    void saveBatch(List<Genre> genreList);
+
     boolean isExistByName(String name);
+
+    List<String> getGenreNames(String keywords);
 }
 
