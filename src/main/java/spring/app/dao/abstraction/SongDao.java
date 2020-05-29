@@ -16,8 +16,6 @@ public interface SongDao extends GenericDao<Long, Song> {
     //TODO: кандидат на удаление, не используется
 //    Song getByAuthorAndName(String author, String name);
 
-    Song getBySearchRequests(String author, String name);
-
     List<Song> getAllWithGenreByGenreId(Long id);
 
     List<Song> getByCreatedDateRange(Timestamp from, Timestamp to);
