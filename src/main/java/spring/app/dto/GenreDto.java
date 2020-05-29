@@ -10,6 +10,7 @@ public class GenreDto {
     private String name;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private String keywords;
 
     public GenreDto() {
     }
@@ -30,10 +31,11 @@ public class GenreDto {
         this.isApproved = isApproved;
     }
 
-    public GenreDto(Long id, String name, Boolean isApproved) {
+    public GenreDto(Long id, String name, Boolean isApproved, String keywords) {
         this.id = id;
         this.name = name;
         this.isApproved = isApproved;
+        this.keywords = keywords;
     }
 
     //Для легкого и быстрого создания объекта GenreDto из Genre
@@ -74,5 +76,13 @@ public class GenreDto {
 
     public void setApproved(Boolean approved) {
         isApproved = approved;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import spring.app.configuration.DownloadMusicServiceConfigurer;
 import spring.app.configuration.DownloadMusicServiceConfigurerMBean;
 import spring.app.configuration.DownloadMusicServiceFactory;
-import spring.app.dao.abstraction.CounterDao;
-import spring.app.dto.SongCompilationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.Mp3Parser;
@@ -192,19 +190,19 @@ public class TestDataInit {
         notificationTemplateService.create(notificationTemplate);
 
         // создаем данные для имеющихся песен в /music
-        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"поп", "соул"});
-        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"поп", "r&b"});
-        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"пост-панк"});
-        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"поп"});
-        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"поп"});
-        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"рок", "пост-панк"});
-        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"поп"});
-        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"поп"});
-        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"поп", "электронная"});
-        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"рок"});
-        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"поп", "соул"});
-        dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"соул", "r&b"});
-        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"рок", "альтернатива"});
+        dataUpdateService.updateData("Billie Eilish, Khalid", "Lovely", new String[]{"Поп"});
+        dataUpdateService.updateData("BLACKPINK", "Really", new String[]{"Поп"});
+        dataUpdateService.updateData("Echo & the Bunnymen", "The Killing Moon", new String[]{"Рок"});
+        dataUpdateService.updateData("Ed Sheeran", "Small Bump (Live From Wembley Stadium)", new String[]{"Поп"});
+        dataUpdateService.updateData("Katy Perry", "Into Me You See", new String[]{"Поп"});
+        dataUpdateService.updateData("New Order", "Love Vigilantes", new String[]{"Рок"});
+        dataUpdateService.updateData("OneRepublic, Logic", "Start Again", new String[]{"Поп"});
+        dataUpdateService.updateData("Parade of Lights", "Tangled Up", new String[]{"Поп"});
+        dataUpdateService.updateData("Telekinesis", "Falling (In Dreams)", new String[]{"Поп"});
+        dataUpdateService.updateData("The Alarm", "Strength", new String[]{"Рок"});
+        dataUpdateService.updateData("Tom Walker", "My Way", new String[]{"Поп"});
+        dataUpdateService.updateData("Yungblud, Charlottle Lawrer", "Falling Skies", new String[]{"Поп"});
+        dataUpdateService.updateData("Yungblud", "Tin Pan Boy", new String[]{"Рок"});
 
         Song song_1 = songService.getByName("Lovely");
         Song song_2 = songService.getByName("Really");
@@ -328,39 +326,53 @@ public class TestDataInit {
         songCompilation4.setName("My compilation4");
         // присваиваем подборкам жанры
         songCompilation1.setSong(songList1);
-        songCompilation1.setGenre(genreService.getByName("рок"));
+        songCompilation1.setGenre(genreService.getByName("Рок"));
         songCompilationService.save(songCompilation1);
         songCompilation2.setSong(songList2);
-        songCompilation2.setGenre(genreService.getByName("r&b"));
+        songCompilation2.setGenre(genreService.getByName("Поп"));
         songCompilationService.save(songCompilation2);
         songCompilation3.setSong(songList3);
-        songCompilation3.setGenre(genreService.getByName("соул"));
+        songCompilation3.setGenre(genreService.getByName("Поп"));
         songCompilationService.save(songCompilation3);
         songCompilation4.setSong(songList4);
-        songCompilation4.setGenre(genreService.getByName("поп"));
+        songCompilation4.setGenre(genreService.getByName("Поп"));
         songCompilationService.save(songCompilation4);
 
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
         Set<Genre> genres2 = new HashSet<>();
 
-        Genre rock = genreService.getByName("рок");
-        Genre pop = genreService.getByName("поп");
-        Genre postPunk = genreService.getByName("пост-панк");
-        Genre soul = genreService.getByName("соул");
+        Genre rock = genreService.getByName("Рок");
+        rock.setKeywords("рок | метал | альтернатива | панк | хардкор");
+        Genre pop = genreService.getByName("Поп");
+        pop.setKeywords("поп | популярная | хип | хоп");
         // здесь ставим флаг approved для проверки что в админке корректно отображается это поле
         rock.setApproved(true);
         pop.setApproved(true);
-        postPunk.setApproved(true);
-        soul.setApproved(true);
         genreService.update(rock);
         genreService.update(pop);
-        genreService.update(postPunk);
-        genreService.update(soul);
+
+        //добавляем остальные жанры и ключевые слова к ним
+        Genre jazz = new Genre("Джаз", true, "джаз | свинг | диксиленд | бибоп | авангардный | модальный | пост-боп");
+        Genre rap = new Genre("Рэп", true, "рэп");
+        Genre soul = new Genre("Соул", true, "соул | госпел");
+        Genre blues = new Genre("Блюз", true, "блюз");
+        Genre reggie = new Genre("Регги/Ска", true, "регги | реггетон | даб | рагга | дэнсхолл");
+        Genre folk = new Genre("Фолк", true, "фолк | народная");
+        Genre country = new Genre("Кантри", true, "кантри");
+        Genre romance = new Genre("Шансон", true, "шансон | авторская");
+        Genre dance = new Genre("Танцевальная", true, "электронная | танцевальная | хаус | техно | транс | чип " +
+                "| рэйв | индастриал | эмбиент | дабстеп | хардстайл | дип-хаус | даунтемпо | нью-эйдж | олдскул-джангл");
+        Genre lounge = new Genre("Лаундж", true, "лаундж | эйдж | медитация");
+        Genre classic = new Genre("Классика", true, "классическая | классика | эпохи");
+        Genre undefined = new Genre("Неизвестный жанр", false);
+        List<Genre> list = Arrays.asList(jazz, rap, soul, blues, reggie, folk,
+                country, romance, dance, lounge, classic, undefined);
+        genreService.saveBatch(list);
         genres1.add(rock);
-        genres1.add(postPunk);
+        genres1.add(jazz);
         genres2.add(pop);
-        genres2.add(soul);
+        genres2.add(rap);
         // создаем типы организаций
         OrgType orgType1 = new OrgType("Кальян-бар");
         OrgType orgType2 = new OrgType("Ресторан");
@@ -371,8 +383,8 @@ public class TestDataInit {
         orgTypeService.save(orgType2);
 
         // создаем компании для наших пользователей
-        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, orgType1);
-        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, 10000L, orgType2);
+        Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, 60L, orgType1);
+        Company company2 = new Company("Обломов", LocalTime.of(10, 0), LocalTime.of(23, 0), user2, 10000L, 120L, orgType2);
 
         // создаем пустые плейлисты, которые нужны для возможности добавлять
         // и воспроизводить в них музыку (подборки)
@@ -441,7 +453,7 @@ public class TestDataInit {
 
         // записываем забаненные жанры для конкретного заведения
         Set<Genre> bannedGenres = new HashSet<>();
-        bannedGenres.add(genreService.getByName("электронная"));
+        bannedGenres.add(genreService.getByName("Поп"));
         company1.setBannedGenres(bannedGenres);
         company2.setBannedGenres(bannedGenres);
         // добавляем компании в БД
@@ -476,10 +488,5 @@ public class TestDataInit {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("MusicServices:type=DownloadMusicServiceConfigurer");
         mBeanServer.registerMBean(serviceConfigurer, name);
-
-        //adding genre not defined
-        Genre notDefinedGenre = new Genre("not defined", true);
-        genreService.save(notDefinedGenre);
-
     }
 }

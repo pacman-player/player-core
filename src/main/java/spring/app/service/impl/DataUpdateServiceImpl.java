@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.Author;
@@ -24,6 +25,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
     private final TagService tagService;
     private final GenreService genreService;
 
+    @Autowired
     public DataUpdateServiceImpl(AuthorService authorService,
                                  SongService songService,
                                  TagService tagService,
