@@ -1,5 +1,7 @@
 package spring.app.service.abstraction;
 
+import spring.app.model.Song;
+
 public interface DataUpdateService {
-    Long updateData(String author, String song, String[] genreNames);
+    Song updateData(String author, String song, String[] genreNames);
 }

@@ -90,4 +90,10 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     public long getCompanyTimerById(long companyId) {
         return companyDtoDao.getTimerById(companyId);
     }
+
+    @Override
+    public Company loadWithBannedList(Long id) {
+        return dao.loadWithBannedList(id);
+    }
+
 }

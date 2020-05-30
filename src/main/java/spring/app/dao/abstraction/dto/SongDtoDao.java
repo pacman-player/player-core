@@ -1,6 +1,5 @@
 package spring.app.dao.abstraction.dto;
 
-import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public interface SongDtoDao {
 
     SongDto getById(long songId);
 
-    List<BotSongDto> getBySearchRequests(String author, String name);
 
     List<SongDto> getAllWithGenreByGenreIdDto(Long id);
 

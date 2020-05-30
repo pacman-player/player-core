@@ -17,7 +17,7 @@ public interface SongService extends GenericService<Long, Song>{
     //TODO: кандидат на удаление, не используется
 //    Song getByAuthorAndName(String author, String name);
 
-    List<BotSongDto> getBySearchRequests(String author, String name);
+    List<BotSongDto> getBySearchRequests(String author, String name, Long companyId);
 
     List<SongDto> getAllSongsDto();
 
