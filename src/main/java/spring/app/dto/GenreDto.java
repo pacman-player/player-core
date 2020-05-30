@@ -17,7 +17,11 @@ public class GenreDto extends Bannable {
     public GenreDto() {
     }
 
-
+    public GenreDto(Long id, String name, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+    }
 
     public GenreDto(Long id, String name) {
         this.id = id;
