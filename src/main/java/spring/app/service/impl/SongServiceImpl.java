@@ -70,8 +70,8 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 
 
     @Override
-    public List<Song> findSongsByGenreId(Long id) {
-        return dao.getAllWithGenreByGenreId(id);
+    public List<SongDto> findSongsDtoByGenreId(Long id) {
+        return songDtoDao.getAllWithGenreByGenreIdDto(id);
     }
 
     @Override
@@ -170,5 +170,10 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
             throw new IllegalArgumentException("Incorrect song ids: can't delete tag (id = " + tagId + ") for all songs (ids = {"
                                             + songIds + "]).");
         }
+    }
+
+    @Override
+    public List<SongDto> getAllApprovedSongsDto() {
+        return songDtoDao.getAllApprovedDto();
     }
 }

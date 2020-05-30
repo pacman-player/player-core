@@ -15,4 +15,8 @@ public interface SongDtoDao {
 
     List<BotSongDto> getBySearchRequests(String author, String name);
 
+    List<SongDto> getAllWithGenreByGenreIdDto(Long id);
+
+    List<SongDto> getAllApprovedDto();
+
 }

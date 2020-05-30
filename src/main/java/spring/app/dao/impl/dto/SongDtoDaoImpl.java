@@ -31,7 +31,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
 
     @Override
     public List<SongDto> listOfSongsByTag(String tag) {
-        List<SongDto> songDtos =  entityManager.createQuery(
+        List<SongDto> songDtos = entityManager.createQuery(
                 "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +
                         "FROM Song s INNER JOIN s.tags t WHERE t.name = :name", SongDto.class)
                 .setParameter("name", tag)
@@ -63,17 +63,35 @@ public class SongDtoDaoImpl implements SongDtoDao {
 //                "WHERE to_tsvector(songs.search_tags) @@ q " +
 //                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
 
-        String ftsQuery = "SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
-                                                "INNER JOIN tags t ON ts.tag_id = t.id " +
-                                                "INNER JOIN authors a ON s.author_id = a.id " +
-                                                "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
-                                                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
+        String ftsQuery = "SELECT s.id id, s.name sname, a.name aname, s.genre_id genre_id, s.author_id author_id " +
+                "FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
+                "INNER JOIN tags t ON ts.tag_id = t.id " +
+                "INNER JOIN authors a ON s.author_id = a.id " +
+                "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
+        ftsQuery = "SELECT s.id id, s.name sname, a.name aname FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
+                "INNER JOIN tags t ON ts.tag_id = t.id " +
+                "INNER JOIN authors a ON s.author_id = a.id " +
+                "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
         return entityManager.createNativeQuery(ftsQuery)
-                                        .setParameter("searchRequest", author + ' ' + name)
-                                        .unwrap(SQLQuery.class)
-                                        .setResultTransformer(new BotSongDtoTransformer())
-                                        .list();
+                .setParameter("searchRequest", author + ' ' + name)
+                .unwrap(SQLQuery.class)
+                .setResultTransformer(new BotSongDtoTransformer())
+                .list();
+
+
     }
+
+    @Override
+    public List<SongDto> getAllWithGenreByGenreIdDto(Long id) {
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s JOIN s.genre g WHERE g.genre_id = :id", SongDto.class)
+                .setParameter("id", id)
+                .getResultList();
+        return list;
+    }
+
 
     private class BotSongDtoTransformer implements ResultTransformer {
 
@@ -89,5 +107,13 @@ public class SongDtoDaoImpl implements SongDtoDao {
         public List transformList(List list) {
             return list;
         }
+    }
+
+    @Override
+    public List<SongDto> getAllApprovedDto() {
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+                "s.genre.name) FROM Song s  WHERE s.isApproved = true", SongDto.class)
+                .getResultList();
+        return list;
     }
 }

@@ -50,4 +50,10 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
                 .unwrap(SQLQuery.class)
                 .list();
     }
+
+    public List<GenreDto> getAllApprovedDto() {
+        return entityManager.createQuery("SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g WHERE g.isApproved = true ",
+                GenreDto.class)
+                .getResultList();
+    }
 }
