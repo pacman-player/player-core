@@ -4,12 +4,12 @@ import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.DecoderException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dto.BotSongDto;
 import spring.app.dto.SongRequest;
 import spring.app.dto.SongResponse;
 import spring.app.dto.SongsListResponse;
 import spring.app.model.Company;
+import spring.app.model.Genre;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.service.CutSongService;
@@ -71,8 +71,9 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
     @Override
-    public SongsListResponse databaseSearch(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
-        List<BotSongDto> songsList = songService.getBySearchRequests(songRequest.getAuthorName(), songRequest.getSongName());
+        public SongsListResponse databaseSearch(SongRequest songRequest) throws IOException, BitstreamException, DecoderException {
+        List<BotSongDto> songsList = songService.getBySearchRequests(songRequest.getAuthorName(),
+                                                            songRequest.getSongName(), songRequest.getCompanyId());
         return new SongsListResponse(songsList == null ? Collections.emptyList() : songsList);
     }
 
@@ -119,9 +120,15 @@ public class TelegramServiceImpl implements TelegramService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Company company = companyService.getById(companyId);
+
+                Company company = companyService.loadWithBannedList(companyId);
                 if (song.getAuthor().isBannedBy(company) || song.getGenre().isBannedBy(company)) {
-                    return CompletableFuture.completedFuture(songResponse);
+                    return CompletableFuture.completedFuture(null);
+                }
+                for (Genre genre : song.getAuthor().getAuthorGenres()) {
+                    if (genre.isBannedBy(company)) {
+                        return CompletableFuture.completedFuture(null);
+                    }
                 }
             } else {
                 songId = songService.getSongIdByAuthorAndName(track.getAuthor(), track.getSong());

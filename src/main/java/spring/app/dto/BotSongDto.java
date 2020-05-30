@@ -13,6 +13,11 @@ public class BotSongDto {
         this.trackName = trackName;
     }
 
+    public BotSongDto(Long songId, String songName, String authorName) {
+        this.songId = songId;
+        this.trackName = songName + " - " + authorName;
+    }
+
     public Long getSongId() {
         return songId;
     }
