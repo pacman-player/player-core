@@ -1,10 +1,12 @@
 package spring.app.dto;
 
+import spring.app.model.Bannable;
+import spring.app.model.Company;
 import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 
-public class GenreDto {
+public class GenreDto extends Bannable {
 
     private Long id;
     private String name;
@@ -15,7 +17,11 @@ public class GenreDto {
     public GenreDto() {
     }
 
-
+    public GenreDto(Long id, String name, Boolean isApproved) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+    }
 
     public GenreDto(Long id, String name) {
         this.id = id;
@@ -84,5 +90,15 @@ public class GenreDto {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return false;
     }
 }

@@ -14,7 +14,7 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<GenreDto> getAllGenreDto();
 
-    List<Genre> getAllApprovedGenre();
+    List<GenreDto> getAllApprovedGenreDto();
 
     void saveBatch(List<Genre> genreList);
 
