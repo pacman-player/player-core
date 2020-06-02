@@ -23,7 +23,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
     @Override
     public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
         List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "s.genre.name) FROM Song s JOIN s.songCompilations sc WHERE sc.name = :name", SongDto.class)
+                "g.name) FROM Song s JOIN s.songCompilations sc left JOIN s.author.genres g WHERE sc.name = :name", SongDto.class)
                 .setParameter("name", compilationName)
                 .getResultList();
         return list;
@@ -32,7 +32,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
     @Override
     public List<SongDto> getAllSongsWithCompId(long compilationID) {
         List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "s.genre.name) FROM Song s JOIN s.songCompilations sc WHERE sc.id = :id", SongDto.class)
+                "g.name) FROM Song s JOIN s.songCompilations sc left JOIN s.author.genres g WHERE sc.id = :id", SongDto.class)
                 .setParameter("id", compilationID)
                 .getResultList();
         return list;
@@ -41,7 +41,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
     @Override
     public List<SongCompilationDto> getAllForAdmin() {
         List<SongCompilationDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongCompilationDto(s.id, s.name, s.genre.name, s.cover)" +
-                "FROM SongCompilation s", SongCompilationDto.class).getResultList();
+                "FROM SongCompilation s" + "", SongCompilationDto.class).getResultList();
         return list;
     }
 
@@ -146,7 +146,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
     @Override
     public List<SongDto> getAvailableContentForCompilationDto(SongCompilation songCompilation) {
         List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "s.genre.name) FROM Song s  WHERE s.genre.id = :genreId AND s.isApproved = true AND s NOT IN " +
+                "g.name) FROM Song s  left JOIN s.author.genres g WHERE g.id = :genreId AND s.isApproved = true AND s NOT IN " +
                 "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", SongDto.class)
                 .setParameter("genreId", songCompilation.getGenre().getId())
                 .setParameter("compilationId", songCompilation.getId())
