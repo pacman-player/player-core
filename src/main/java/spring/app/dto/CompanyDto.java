@@ -11,6 +11,7 @@ public class CompanyDto {
     private Long orgType;
     private String orgTypeName;
     private Long tariff;
+    private Long requestSpamCounter;
     private Long userId;
     private String userLogin;
     private String addressCountry;
@@ -33,7 +34,7 @@ public class CompanyDto {
     }
 
     public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
-                      Long tariff, Long userId, String userLogin, String addressCountry, String addressCity, String addressStreet, String addressHouse) {
+                      Long tariff, Long requestSpamCounter, Long userId, String userLogin, String addressCountry, String addressCity, String addressStreet, String addressHouse) {
         this.id = id;
         this.name = name;
         this.startTime = startTime.toString();
@@ -41,6 +42,7 @@ public class CompanyDto {
         this.orgType = orgType;
         this.orgTypeName = orgTypeName;
         this.tariff = tariff;
+        this.requestSpamCounter = requestSpamCounter;
         this.userId = userId;
         this.userLogin = userLogin;
         this.addressCountry = addressCountry;
@@ -95,6 +97,14 @@ public class CompanyDto {
 
     public void setTariff(Long tariff) {
         this.tariff = tariff;
+    }
+
+    public Long getRequestSpamCounter() {
+        return requestSpamCounter;
+    }
+
+    public void setRequestSpamCounter(Long requestSpamCounter) {
+        this.requestSpamCounter = requestSpamCounter;
     }
 
     public Long getUserId() {

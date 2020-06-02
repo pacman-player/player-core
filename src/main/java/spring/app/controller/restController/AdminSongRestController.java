@@ -40,7 +40,7 @@ public class AdminSongRestController {
     }
 
     @GetMapping(value = "/all_songs")
-    public List<SongDto> getAllSongs() {
+    public List<SongDto> getAllSongsDto() {
         return songService.getAllSongsDto();
     }
 
@@ -108,8 +108,8 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
     }
 
     @GetMapping(value = "/genre/{id}")
-    public List<Song> getAllSongs(@PathVariable(value = "id") Long id) {
-        List<Song> list = songService.findSongsByGenreId(id);
+    public List<SongDto> getAllSongsDto(@PathVariable(value = "id") Long id) {
+        List<SongDto> list = songService.findSongsDtoByGenreId(id);
         return list;
     }
 

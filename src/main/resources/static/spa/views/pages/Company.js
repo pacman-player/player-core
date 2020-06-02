@@ -1,4 +1,3 @@
-
 let Company = {
 
     render: async () => {
@@ -15,6 +14,8 @@ let Company = {
             '                    <input id="est-close-time" required="required" type="time"/><br/>\n' +
             '                    <label for="est-tariff">Тариф за песню&nbsp;</label>\n' +
             '                    <input id="est-tariff" class="money" required="required" type="text"/><br/>\n' +
+            '                    <label for="est-timer">Таймер заказов&nbsp;</label>\n' +
+            '                    <input id="est-timer" class="number" required="required" type="number"/><br/>\n' +
             '                    <label for="est-address">Адрес&nbsp;</label>\n' +
             '                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>\n' +
             '                    <button type="submit" id="button">Поиск</button>\n' +
@@ -38,6 +39,7 @@ let Company = {
             // //доступ к  ссылки админа
             // showLinkAdmin();
             getCompanyData();
+
             // getCompanyAddress();
 
             function updateCompany() {
@@ -45,6 +47,7 @@ let Company = {
                     name: $('#est-name').val(),
                     startTime: $('#est-start-time').val(),
                     tariff: $('#est-tariff').val().replace(/[^0-9]/g, ''),
+                    requestSpamCounter: $('#est-timer').val(),
                     closeTime: $('#est-close-time').val()
                 };
                 console.log(formData.tariff);
@@ -59,7 +62,7 @@ let Company = {
                         },
                     success:
                         function () {
-                        console.log(formData.tariff);
+                            console.log(formData.tariff);
                             notification("edit-company-data" + formData.name.replace(/[^\w]|_/g, ''),
                                 "  Изменения сохранены");
                         },
@@ -100,6 +103,7 @@ let Company = {
                         $('#est-start-time').val(data.startTime);
                         $('#est-close-time').val(data.closeTime);
                         $('#est-tariff').val(data.tariff);
+                        $('#est-timer').val(data.requestSpamCounter)
                         $('#est-address').val(data.addressCountry + ', ' + data.addressCity + ', ' + data.addressStreet + ', ' + data.addressHouse);
                     }
                 })
@@ -147,8 +151,8 @@ let Company = {
             }
 
 
-
             ymaps.ready(init);
+
             function init() {
                 // Подключаем поисковые подсказки к полю ввода.
                 var suggestView = new ymaps.SuggestView('est-address');
@@ -162,12 +166,10 @@ let Company = {
                 });
 
                 // Создаем экземпляр класса ymaps.control.SearchControl
-                let mySearchControl = new ymaps.control.SearchControl({
-                });
+                let mySearchControl = new ymaps.control.SearchControl({});
 
                 // Создаем экземпляр класса ymaps.control.ZoomControl
-                let myZoomControl = new ymaps.control.ZoomControl({
-                });
+                let myZoomControl = new ymaps.control.ZoomControl({});
 
                 //Добавляем в карту зум
                 // map.controls.add(mySearchControl);
@@ -222,13 +224,10 @@ let Company = {
                         });
 
 
-
-
-
                         var alertContent = firstGeoObject.getAddressLine();
 
                         // Сетим адрес и координаты в поля
-                        function putAddressInField () {
+                        function putAddressInField() {
                             $('#est-address').val(alertContent);
                             $('#latitude').val(coords[0]);
                             $('#longitude').val(coords[1]);

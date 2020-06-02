@@ -3,5 +3,5 @@ package spring.app.service.abstraction;
 import java.io.IOException;
 
 public interface GenreDefinerService {
-    String[] defineGenre(String trackAuthor, String trackSong) throws IOException;
+    String[] defineGenre(String trackAuthor) throws IOException;
 }

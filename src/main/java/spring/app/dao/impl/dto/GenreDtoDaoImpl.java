@@ -1,5 +1,6 @@
 package spring.app.dao.impl.dto;
 
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
@@ -18,7 +19,7 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
     @Override
     public List<GenreDto> getAll() {
         return entityManager.createQuery(
-                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g",
+                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved, g.keywords) FROM Genre g",
                 GenreDto.class
         )
                 .getResultList();
@@ -39,4 +40,20 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
         }
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getGenresByKeywords(String foundGenres) {
+        String ftsQuery = "SELECT g.name FROM genres g " +
+                "WHERE to_tsvector(:keys) @@ to_tsquery(g.keywords)";
+        return entityManager.createNativeQuery(ftsQuery)
+                .setParameter("keys", foundGenres)
+                .unwrap(SQLQuery.class)
+                .list();
+    }
+
+    public List<GenreDto> getAllApprovedDto() {
+        return entityManager.createQuery("SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved) FROM Genre g WHERE g.isApproved = true ",
+                GenreDto.class)
+                .getResultList();
+    }
 }

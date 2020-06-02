@@ -34,4 +34,8 @@ public interface CompanyService extends GenericService<Long, Company> {
     Company getCompanyByAddressId(Long id);
 
     List<String> getAllSongsInQueueByCompanyId(long id);
+
+    long getCompanyTimerById(long companyId);
+
+    Company loadWithBannedList(Long id);
 }

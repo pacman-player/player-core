@@ -10,4 +10,7 @@ public interface GenreDtoDao {
 
     boolean isExistByName(String name);
 
+    List<String> getGenresByKeywords(String keywords);
+
+    List<GenreDto> getAllApprovedDto();
 }
