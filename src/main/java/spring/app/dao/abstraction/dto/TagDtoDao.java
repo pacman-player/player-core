@@ -8,6 +8,6 @@ public interface TagDtoDao {
 
     List<TagDto> getAll(int pageSize, int pageNo);
 
-    public Long getRowsCount();
+    Long getRowsCount();
 
 }
