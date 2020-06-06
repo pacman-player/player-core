@@ -176,3 +176,27 @@ $('#addForm').validate({
         }
     },
 });
+
+$('#addCompany').validate({
+    rules: {
+        name: {
+            remote: {
+                url: "/api/registration/check/company",
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                parameterData: {
+                    name: function () {
+                        return $('#name').val()
+                    },
+                },
+            }
+        },
+        required: false,
+    },
+    messages: {
+        name: {
+            remote: "Компания с таким именем существует"
+        }
+    },
+});
