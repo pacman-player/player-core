@@ -69,7 +69,7 @@ public class SongRestController {
     @GetMapping("allSongsByName/{name}")
     public List<SongDto> searchByNameInSongs(@PathVariable String name,
                                              @AuthenticationPrincipal User user) {
-        List<SongDto> songs = songService.listOfSongsByName(name);
+        List<SongDto> songs = songService.listOfSongsDtoByName(name);
         Company userCompany = user.getCompany();
 
         userCompany = companyService.setBannedEntity(userCompany);

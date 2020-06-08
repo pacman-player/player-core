@@ -101,6 +101,13 @@ public class SongDto extends Bannable {
         this.genreName = genreName;
     }
 
+    public SongDto(Long id, String name, Boolean isApproved, String authorName) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+        this.authorName = authorName;
+    }
+
     public SongDto() {
     }
 
@@ -203,13 +210,4 @@ public class SongDto extends Bannable {
                 '}';
     }
 
-    @Override
-    public void setBanned(boolean banned) {
-
-    }
-
-    @Override
-    public boolean isBannedBy(Company company) {
-        return false;
-    }
 }

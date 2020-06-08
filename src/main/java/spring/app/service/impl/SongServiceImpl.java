@@ -184,7 +184,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     }
 
     @Override
-    public List<SongDto> listOfSongsByName(String name) {
+    public List<SongDto> listOfSongsDtoByName(String name) {
         return songDtoDao.listOfSongsByName(name);
     }
 
