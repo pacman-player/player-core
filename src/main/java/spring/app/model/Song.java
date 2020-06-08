@@ -37,6 +37,10 @@ public class Song extends Bannable {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
+
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     //здесь убрал orphanRemoval = true тк не удалялась последняя песня
     private Set<SongQueue> songQueues;
@@ -82,27 +86,31 @@ public class Song extends Bannable {
         this.name = name;
     }
 
-    public Song(Long id, String name, Author author) {
+    public Song(Long id, String name, Author author, Genre genre) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.genre = genre;
     }
 
-    public Song(Long id, String name, Author author, Set<SongQueue> songQueues) {
+    public Song(Long id, String name, Author author, Genre genre, Set<SongQueue> songQueues) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.genre = genre;
         this.songQueues = songQueues;
     }
 
-    public Song(Long id, String name) {
+    public Song(Long id, String name, Genre genre) {
         this.id = id;
         this.name = name;
+        this.genre = genre;
     }
 
-    public Song(String name, Author author) {
+    public Song(String name, Author author, Genre genre) {
         this.name = name;
         this.author = author;
+        this.genre = genre;
     }
 
     public Song(String name) {
@@ -140,6 +148,14 @@ public class Song extends Bannable {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public Set<SongQueue> getSongQueues() {

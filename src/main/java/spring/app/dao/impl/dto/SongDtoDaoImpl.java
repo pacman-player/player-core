@@ -17,7 +17,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
     @Override
     public List<SongDto> getAll() {
         List<SongDto> songDtos = entityManager.createQuery(
-                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, g.name) FROM Song s left JOIN s.author.genres g",
+                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) FROM Song s",
                 SongDto.class
         )
                 .getResultList();
@@ -28,8 +28,8 @@ public class SongDtoDaoImpl implements SongDtoDao {
     @Override
     public List<SongDto> listOfSongsByTag(String tag) {
         List<SongDto> songDtos =  entityManager.createQuery(
-                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, g.name) " +
-                        "FROM Song s INNER JOIN s.tags t left JOIN s.author.genres g WHERE t.name = :name", SongDto.class)
+                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +
+                        "FROM Song s INNER JOIN s.tags t WHERE t.name = :name", SongDto.class)
                 .setParameter("name", tag)
                 .getResultList();
         return songDtos;
@@ -37,8 +37,8 @@ public class SongDtoDaoImpl implements SongDtoDao {
 
     @Override
     public SongDto getById(long songId) {
-        return entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, g.name) " +
-                "FROM Song s left JOIN s.author.genres g where s.id = :id", SongDto.class)
+        return entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.genre.name) " +
+                "FROM Song s where s.id = :id", SongDto.class)
                 .setParameter("id", songId)
                 .setMaxResults(1)
                 .getResultList()
@@ -48,7 +48,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
     @Override
     public List<SongDto> getAllApprovedDto() {
         List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "g.name) FROM Song s left JOIN s.author.genres g  WHERE s.isApproved = true", SongDto.class)
+                "s.genre.name) FROM Song s  WHERE s.isApproved = true", SongDto.class)
                 .getResultList();
         return list;
     }
@@ -56,7 +56,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
     @Override
     public List<SongDto> getAllWithGenreByGenreIdDto(Long id) {
         List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
-                "g.name) FROM Song s left JOIN s.author.genres g WHERE g.id = :id", SongDto.class)
+                "s.genre.name) FROM Song s JOIN s.genre g WHERE g.genre_id = :id", SongDto.class)
                 .setParameter("id", id)
                 .getResultList();
         return list;

@@ -53,6 +53,7 @@ function getSongsTable() {
                 songTable += ('<td><input id="tableSongIsApproved" class="checkbox" type="checkbox" disabled' + checkedBox + '/></td>');
                 songTable += ('<td id="tableSongName">' + listSong[i].name + '</td>');
                 songTable += ('<td id="tableSongAuthor">' + listSong[i].authorName + '</td>');
+                songTable += ('<td id="tableSongGenre">' + listSong[i].genreName + '</td>');
                 songTable += ('<td><a id="editSongBtn' + songId + '" onclick="editSong(' + songId + ')" class="btn btn-sm btn-info" role="button" data-toggle="modal"' +
                     ' data-target="#editSong">Изменить</a></td>');
                 songTable += ('<td><button id="deleteSongBtn" class="btn btn-sm btn-info" type="button">Удалить</button></td>');
@@ -82,6 +83,9 @@ function editSong(id) {
             // $("#updateSongSearchTags").val('newTag1,newTag2,newTag3');
             // $("#updateSongSearchTags").val(editData.searchTags.map(t => t.name).join(", "));
             // $("#updateSongSearchTags").val(editData.searchTags.map(t => t.name));
+            $("#updateSongGenre").val(editData.genreName);
+            //получаем жанр песни и список жанров из БД для edit song
+            getAllGenreForEdit(editData.genreName);
             $("#updateSongApproved").prop('checked', editData.approved);
         },
         error: function (xhr, status, error) {
@@ -109,7 +113,23 @@ $('#select-all').click(function(event) {
     }
 });
 
-
+//получаем жанр песни и список жанров из БД для модалки edit song
+function getAllGenreForEdit(genreName) {
+    //очищаем option в модалке
+    $('#updateSongGenre').empty();
+    var genreForEdit = '';
+    $.getJSON("/api/admin/song/all_genre", function (data) {
+        $.each(data, function (key, value) {
+            genreForEdit += '<option id="' + value.id + '" ';
+            //если жанр из таблицы песен совпадает с жанром из БД - устанавлваем в selected
+            if (genreName == value.name) {
+                genreForEdit += 'selected';
+            }
+            genreForEdit += ' value="' + value.name + '">' + value.name + '</option>';
+        });
+        $('#updateSongGenre').append(genreForEdit);
+    });
+}
 
 //обновляем песню PUT song
 $("#updateSongBtn").click(function (event) {
@@ -124,6 +144,7 @@ function updateSongForm() {
     editSong.name = $("#updateSongName").val();
     editSong.authorName = $("#updateSongAuthor").val();
     editSong.searchTags = $("#updateSongSearchTags").val().split(",");
+    editSong.genreName = $("#updateSongGenre option:selected").val();
     $.ajax({
         method: 'PUT',
         url: '/api/admin/song/update_song',
@@ -183,6 +204,7 @@ function addSongForm() {
     addSong.name = $('#addSongName').val();
     addSong.authorName = $('#addSongAuthor').val();
     addSong.searchTags = $('#addSongTags').val().split(',');
+    addSong.genreName = $('#addSongGenre').val();
     $.ajax({
         method: 'POST',
         url: '/api/admin/song/add_song',
@@ -201,7 +223,23 @@ function addSongForm() {
     });
 }
 
+//получаем все жанры песни из БД на выбор
+$('#add-song-nav').click(function () {
+    getAllGenreForAdd();
+});
 
+function getAllGenreForAdd() {
+    //очищаю жанры option
+    $('#addSongGenre').empty();
+    var genreForAdd = '';
+    $.getJSON("/api/admin/song/all_genre", function (data) {
+        $.each(data, function (key, value) {
+            genreForAdd += '<option ';
+            genreForAdd += ' value="' + value.name + '">' + value.name + '</option>';
+        });
+        $('#addSongGenre').append(genreForAdd);
+    });
+}
 
 
 

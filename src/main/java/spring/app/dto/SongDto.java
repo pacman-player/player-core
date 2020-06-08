@@ -108,11 +108,10 @@ public class SongDto extends Bannable {
         this.id = song.getId();
         this.name = song.getName();
         this.authorName = song.getAuthor().getName();
-        if (song.getAuthor().getAuthorGenres() == null) {// если у автора нет жанра (жанр был удален, например),
+        if (song.getGenre() == null) {// если у автора нет жанра (жанр был удален, например),
             this.genreName = "";      // то возвращаем пустую строк иначе ошибка на фронте
         } else {
-            this.genreName = song.getAuthor().getAuthorGenres().toString();
-        //song.getGenre().getName();
+            this.genreName = song.getGenre().getName();
         }
         this.searchTags = song.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toSet());
         this.createdAt = song.getCreatedAt();

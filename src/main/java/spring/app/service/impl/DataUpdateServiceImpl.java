@@ -69,7 +69,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         Song song = songService.getByName(songName);
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
-            song = new Song(songName, author);
+            song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
             Set<Tag> tags = tagService.findTags(authorName + ' ' + songName);
             song.setTags(tags);
             songService.save(song);

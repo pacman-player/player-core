@@ -16,7 +16,6 @@ import spring.app.service.abstraction.SongCompilationService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
@@ -47,8 +46,7 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 
         List<Song> songs = dao.getSongsByGenre(genreForDelete);
         for (Song song : songs) {
-            //song.setGenre(notDefinedGenre);
-            song.getAuthor().setAuthorGenres((Set<Genre>) notDefinedGenre);
+            song.setGenre(notDefinedGenre);
         }
         dao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
         dao.deleteReferenceFromCompanyByGenre(genreForDelete);

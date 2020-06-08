@@ -62,7 +62,6 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //        return song;
 //    }
 
-    //TODO: кандидат на удаление, не используется, аналогичный метод есть в SongDtoDaoImpl
     @Override
     public List<Song> getAllWithGenreByGenreId(Long id) {
         TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
