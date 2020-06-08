@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    getTable();
+    getEstablishments();
 
     let formAddEst = $("#establishmentsAddForm");
     let fieldNameAddEstName = $("#addName");
@@ -7,7 +7,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         if (formAddEst.valid()) {
-            addEstablishments(formAddEst, fieldNameAddEstName);
+            addEstablishment(formAddEst, fieldNameAddEstName);
             formAddEst.trigger("reset");
         }
     })
@@ -46,8 +46,43 @@ $("#establishmentsAddForm").validate({
     }
 });
 
+$('#setDefaultEstablishmentBtn').on('click', function (event) {
+    event.preventDefault();
 
-function addEstablishments(form, field) {
+    let option = $('#defaultEstablishmentSelect :selected');
+    let id = option.val();
+    let name = option.text();
+    let isDefault = option.data('default');
+
+    if (isDefault === true) {
+        return;
+    }
+
+    let establishment = {};
+    establishment['id'] = id;
+    establishment['name'] = name;
+    establishment['default'] = isDefault;
+
+    $.ajax({
+        method: "POST",
+        url: "/api/admin/set_default_establishment",
+        data: JSON.stringify(establishment),
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        success: () => {
+            alert('SUCCESS!!!');
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    });
+});
+
+
+function addEstablishment(form, field) {
     let estMessage = field.val();
     $.ajax({
         method: "POST",
@@ -60,13 +95,14 @@ function addEstablishments(form, field) {
         },
         complete: () => {
             $("#tab-establishments-panel").tab("show");
-            getTable();
+            getEstablishments();
         },
         success: () => {
             notification(
                 "add-establishment" + estMessage,
                 ` Заведение ${estMessage} добавлено`,
-                "establishments-panel");
+                "establishments-panel"
+            );
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -115,7 +151,7 @@ function editButton(id, name) {
                 },
                 complete: () => {
                     theModal.modal("hide");
-                    getTable();
+                    getEstablishments();
                 },
                 success: () => {
                     notification(
@@ -143,7 +179,7 @@ function deleteButton(id) {
             "Content-Type": "application/json",
         },
         complete: () => {
-            getTable();
+            getEstablishments();
         },
         success: () => {
             notification(
@@ -164,7 +200,7 @@ function deleteButton(id) {
 }
 
 
-function getTable() {
+function getEstablishments() {
     $.ajax({
         method: "GET",
         url: "/api/admin/all_establishments",
@@ -175,16 +211,24 @@ function getTable() {
         },
         dataType: "JSON",
         success: function (list) {
-            let tableBody = $("#establishmentsTable tbody");
+            fillEstablishmentsTable(list);
+            fillDefaultEstablishmentSelect(list);
+        }
+    });
+}
 
-            tableBody.empty();
-            for (let i = 0; i < list.length; i++) {
-                // vars that contains object's fields
-                let id = list[i].id;
-                let name = list[i].name;
 
-                let tr = $("<tr/>");
-                tr.append(`
+function fillEstablishmentsTable(list) {
+    let tableBody = $("#establishmentsTable tbody");
+    tableBody.empty();
+    
+    for (let i = 0; i < list.length; i++) {
+        let id = list[i].id;
+        let name = list[i].name;
+        let isDefault = list[i].default;
+
+        let tr = $("<tr/>");
+        tr.append(`
                             <td> ${id} </td>
                             <td> ${name} </td>
                             <td>
@@ -198,13 +242,27 @@ function getTable() {
                             <td>
                                 <button type="button"
                                         class="btn btn-sm btn-info"
-                                        id="deleteEstBtn"
-                                        onclick="deleteButton(${id})">
+                                        id="deleteEstBtn" ` +
+                                        (isDefault === true ? `disabled ` : ``) +
+                                        `onclick="deleteButton(${id})">
                                     Удалить
                                 </button>
                             </td>`);
-                tableBody.append(tr);
-            }
-        }
-    });
+        tableBody.append(tr);
+    }
+}
+
+function fillDefaultEstablishmentSelect(list) {
+    let defaultEstablishmentSelect = $('#defaultEstablishmentSelect');
+    defaultEstablishmentSelect.empty();
+
+    for (let i = 0; i < list.length; i++) {
+        let id = list[i].id;
+        let name = list[i].name;
+        let isDefault = list[i].default;
+
+        let option = isDefault === true ? `<option value="${id}" data-default="true" selected>${name}</option>` :
+                                          `<option value="${id}" data-default="false">${name}</option>`;
+        defaultEstablishmentSelect.append(option);
+    }
 }

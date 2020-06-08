@@ -374,8 +374,8 @@ public class TestDataInit {
         genres2.add(pop);
         genres2.add(rap);
         // создаем типы организаций
-        OrgType orgType1 = new OrgType("Кальян-бар");
-        OrgType orgType2 = new OrgType("Ресторан");
+        OrgType orgType1 = new OrgType("Кальян-бар", false);
+        OrgType orgType2 = new OrgType("Ресторан", true);
         // необходимо уточнить логику этого функционала. Дополнительный фильтр по жанрам на основе огранизаций?
         orgType1.setGenres(genres1);
         orgType2.setGenres(genres2);

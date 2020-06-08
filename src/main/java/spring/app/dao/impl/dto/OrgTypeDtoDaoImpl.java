@@ -19,16 +19,12 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @SuppressWarnings("unchecked")
     public List<OrgTypeDto> getAll() {
-        List<OrgTypeDto> orgTypeDtoList = entityManager.createQuery(
-                "SELECT o.id, o.name, g.name " +
-                        "FROM OrgType o LEFT JOIN o.genres g"
-        )
-                .unwrap(Query.class)
-                .setResultTransformer(new OrgTypeDtoTransformer())
-                .list();
-
-        return orgTypeDtoList;
+        return entityManager.createQuery("SELECT o.id, o.name, o.isDefault, g.name FROM OrgType o LEFT JOIN o.genres g")
+                            .unwrap(Query.class)
+                            .setResultTransformer(new OrgTypeDtoTransformer())
+                            .list();
     }
 
 
@@ -41,9 +37,10 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
         public Object transformTuple(Object[] tuple, String[] aliaces) {
             long id = (long) tuple[0];
             String name = (String) tuple[1];
-            String genre = (String) tuple[2];
+            boolean isDefault = (boolean) tuple[2];
+            String genre = (String) tuple[3];
 
-            OrgTypeDto orgTypeDto = new OrgTypeDto(id, name);
+            OrgTypeDto orgTypeDto = new OrgTypeDto(id, name, isDefault);
 
             if (!genresMap.containsKey(id)) {
                 roots.add(orgTypeDto);
@@ -52,11 +49,12 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
             if (genre != null) {
                 genresMap.get(id).add(genre);
             }
+
             return orgTypeDto;
         }
 
         @Override
-        public List transformList(List list) {
+        public List<OrgTypeDto> transformList(List list) {
             for (OrgTypeDto orgTypeDto : roots) {
                 List<String> genres = genresMap.get(orgTypeDto.getId());
                 orgTypeDto.setGenres(genres);

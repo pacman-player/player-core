@@ -91,8 +91,7 @@ public class AdminRestController<T> {
     }
 
     @GetMapping(value = "/all_establishments")
-    public @ResponseBody
-    List<OrgTypeDto> getAllEstablishments() {
+    public List<OrgTypeDto> getAllEstablishments() {
         List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
         return list;
     }
@@ -171,6 +170,12 @@ public class AdminRestController<T> {
     public void updateEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("PUT request '/update_establishment' with orgType = {}", orgType);
         orgTypeService.update(orgType);
+    }
+
+    @PostMapping(value = "/set_default_establishment")
+    public void setDefaultEstablishment(@RequestBody OrgTypeDto orgTypeDto) {
+        LOGGER.info("POST request '/set_default_establishment' with orgTypeDto = {} ", orgTypeDto);
+
     }
 
     // Returns false if author with requested name already exists else true

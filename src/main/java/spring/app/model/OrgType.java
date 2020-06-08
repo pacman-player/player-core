@@ -14,11 +14,19 @@ public class OrgType {
     @Column(unique = true)
     private String name;
 
+    @Column(name = "is_default")
+    private Boolean isDefault;
+
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
     @JoinTable(name = "org_type_on_related_genre",
             joinColumns = {@JoinColumn(name = "org_type_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<Genre> genres;
+
+    public OrgType(String name, boolean isDefault) {
+        this.name = name;
+        this.isDefault = isDefault;
+    }
 
     public OrgType(String name) {
         this.name = name;
@@ -34,6 +42,14 @@ public class OrgType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
     }
 
     public Long getId() {
