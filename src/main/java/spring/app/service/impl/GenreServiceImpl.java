@@ -16,6 +16,7 @@ import spring.app.service.abstraction.SongCompilationService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao> implements GenreService {
@@ -33,7 +34,7 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Transactional
     @Override
     public void deleteById(Long id) {
-        Genre notDefinedGenre = getByName("not defined");
+        Genre notDefinedGenre = getByName("Неизвестный жанр");
         Genre genreForDelete = getById(id);
         // в сервисе только таким образом можно пробежать по всем авторам , удалить у них наш жанр и в случае если жанров у них больше нет добавить "не определенный"
         List<Author> authors = new ArrayList<>(genreForDelete.getAuthors());
@@ -46,7 +47,8 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 
         List<Song> songs = dao.getSongsByGenre(genreForDelete);
         for (Song song : songs) {
-            song.setGenre(notDefinedGenre);
+            //song.setGenre(notDefinedGenre);
+            song.getAuthor().setAuthorGenres((Set<Genre>) notDefinedGenre);
         }
         dao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
         dao.deleteReferenceFromCompanyByGenre(genreForDelete);
@@ -76,8 +78,19 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     }
 
     @Override
-    public List<Genre> getAllApprovedGenre() {
-        return dao.getAllApproved();
+    public List<String> getGenreNames(String keywords) {
+        return genreDtoDao.getGenresByKeywords(keywords);
+    }
+
+    @Override
+    public List<GenreDto> getAllApprovedGenreDto() {
+        return genreDtoDao.getAllApprovedDto();
+    }
+
+    @Override
+    @Transactional
+    public void saveBatch(List<Genre> genreList) {
+        dao.saveBatch(genreList);
     }
 
     @Override

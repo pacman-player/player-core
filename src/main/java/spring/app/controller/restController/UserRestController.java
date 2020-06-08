@@ -177,6 +177,7 @@ public class UserRestController {
         companyForUpdate.setStartTime(LocalTime.parse(company.getStartTime()));
         companyForUpdate.setCloseTime(LocalTime.parse(company.getCloseTime()));
         companyForUpdate.setTariff(company.getTariff());
+        companyForUpdate.setRequestSpamCounter(company.getRequestSpamCounter());
         companyService.update(companyForUpdate);
         LOGGER.info("Updated Company = {}", companyForUpdate);
     }

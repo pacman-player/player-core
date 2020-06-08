@@ -18,13 +18,17 @@ import spring.app.service.abstraction.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping(value = "/api/tlg")
 public class TelegramRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(TelegramRestController.class);
+    private final static ConcurrentHashMap<Long, Instant> reqTimer = new ConcurrentHashMap<>();
     private final OrderSongService orderSongService;
     private final TelegramService telegramService;
     private final SongService songService;
@@ -93,10 +97,25 @@ public class TelegramRestController {
      * @throws DecoderException
      */
     @PostMapping(value = "/services_search")
-    public SongResponse servicesSearch(@RequestBody SongRequest songRequest)
+    public ResponseEntity<SongResponse> servicesSearch(@RequestBody SongRequest songRequest)
             throws IOException, BitstreamException, DecoderException {
         LOGGER.info("POST request '/services_search'");
         try {
+            String trackName = songRequest.getAuthorName().toUpperCase() + " - " + songRequest.getSongName().toUpperCase();
+            int trackCounter = songService.getSongCounterVal(trackName);
+            long companyTimer = companyService.getCompanyTimerById(songRequest.getCompanyId());
+            Instant currentTime = Instant.now();
+            Instant prevTime = reqTimer.get(songRequest.getChatId());
+            if (prevTime != null && trackCounter == 0) {
+                long difference = companyTimer - (Duration.between(prevTime, currentTime).toMillis() / 1000);
+                if (difference > 0) {
+                    LOGGER.debug("Следующий заказ для чата {} возможен через {} сек", songRequest.getChatId(), difference);
+                    return ResponseEntity.status(228)
+                            .header("Timer", String.valueOf(difference))
+                            .body(null);
+                }
+            }
+            reqTimer.put(songRequest.getChatId(), currentTime);
             LOGGER.info("Requested song Name = {} and Author = {}",
                     songRequest.getSongName(),
                     songRequest.getAuthorName());
@@ -107,7 +126,7 @@ public class TelegramRestController {
             } else {
                 LOGGER.error("Requested song was NOT found! :(");
             }
-            return songResponse;
+            return ResponseEntity.ok(songResponse);
         } catch (BitstreamException | DecoderException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;

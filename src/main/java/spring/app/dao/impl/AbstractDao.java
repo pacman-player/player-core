@@ -25,6 +25,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         entityManager.persist(entity);
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     public void saveBatch(List<T> entities) {
         for (T entity : entities) {
             entityManager.persist(entity);

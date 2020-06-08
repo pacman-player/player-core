@@ -17,7 +17,7 @@ public interface SongService extends GenericService<Long, Song> {
     //TODO: кандидат на удаление, не используется
 //    Song getByAuthorAndName(String author, String name);
 
-    List<BotSongDto> getBySearchRequests(String author, String name);
+    List<BotSongDto> getBySearchRequests(String author, String name, Long companyId);
 
     List<SongDto> getAllSongsDto();
 
@@ -34,7 +34,7 @@ public interface SongService extends GenericService<Long, Song> {
      *
      * @return List<Song>
      */
-    List<Song> findSongsByGenreId(Long id);
+    List<SongDto> findSongsDtoByGenreId(Long id);
 
     int getLastApprovedSongsPageNumber(int pageSize);
 
@@ -53,4 +53,8 @@ public interface SongService extends GenericService<Long, Song> {
     void deleteTagForSongs(List<Long> songIds, Long tagId);
 
     void resetSongCounter(long songId);
+
+    int getSongCounterVal(String trackName);
+
+    List<SongDto> getAllApprovedSongsDto();
 }

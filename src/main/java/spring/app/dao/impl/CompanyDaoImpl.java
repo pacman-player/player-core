@@ -3,7 +3,6 @@ package spring.app.dao.impl;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Company;
 import spring.app.model.SongQueue;
@@ -106,5 +105,23 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             result = list.stream().map(SongQueue::getSong).map(x -> x.getAuthor().getName() + " - " + x.getName()).collect(Collectors.toList());
         }
         return result;
+    }
+
+    @Override
+    public Company loadWithBannedList(long id) {
+        try {
+            Company company = entityManager.
+                    createQuery("SELECT  DISTINCT c FROM Company c LEFT JOIN FETCH c.bannedGenres g " +
+                            "LEFT JOIN FETCH c.bannedSong s " +
+                            "LEFT JOIN FETCH c.bannedAuthor a " +
+                            "WHERE c.id = :id", Company.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+
+            return company;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

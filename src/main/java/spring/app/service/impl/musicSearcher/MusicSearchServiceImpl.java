@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.app.dao.abstraction.CounterDao;
+import spring.app.model.Song;
 import spring.app.service.abstraction.DataUpdateService;
 import spring.app.service.abstraction.DownloadMusicService;
 import spring.app.service.abstraction.GenreDefinerService;
 import spring.app.service.abstraction.MusicSearchService;
 import spring.app.service.entity.Track;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -68,15 +68,14 @@ public class MusicSearchServiceImpl implements MusicSearchService {
         return null;
     }
 
-    //определяет жанр песни
-    private String[] getGenre(String author, String trackSong) throws IOException {
-        return genreDefiner.defineGenre(author, trackSong);
+    //определяет жанр песни по автору
+    private String[] getGenre(String author) throws IOException {
+        return genreDefiner.defineGenre(author);
     }
 
     //заносит данные скачанной песни в бд и возвращает id песни
-    @Transactional
-    public Long updateData(Track track) throws IOException {
-        String[] genreNames = getGenre(track.getAuthor(), track.getSong());
+    public Song updateData(Track track) throws IOException {
+        String[] genreNames = getGenre(track.getAuthor());
         return dataUpdater.updateData(track.getAuthor(), track.getSong(), genreNames);
     }
 }

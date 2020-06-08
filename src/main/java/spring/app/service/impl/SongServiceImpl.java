@@ -9,9 +9,8 @@ import spring.app.dao.abstraction.TagDao;
 import spring.app.dao.abstraction.dto.SongDtoDao;
 import spring.app.dto.BotSongDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Song;
-import spring.app.model.SongCompilation;
-import spring.app.model.Tag;
+import spring.app.model.*;
+import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.abstraction.SongFileService;
 import spring.app.service.abstraction.SongService;
@@ -25,19 +24,22 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 
     private final SongDtoDao songDtoDao;
     private final TagDao tagDao;
+    private final CounterDao counterDao;
     private final SongCompilationService songCompilationService;
     private final SongFileService songFileService;
-    private final CounterDao counterDao;
+    private final CompanyService companyService;
 
     @Autowired
     public SongServiceImpl(SongDao dao, SongDtoDao songDtoDao, TagDao tagDao, CounterDao counterDao,
-                           SongCompilationService songCompilationService, SongFileService songFileService) {
+                           SongCompilationService songCompilationService, SongFileService songFileService,
+                           CompanyService companyService) {
         super(dao);
         this.songDtoDao = songDtoDao;
         this.tagDao = tagDao;
+        this.counterDao = counterDao;
         this.songCompilationService = songCompilationService;
         this.songFileService = songFileService;
-        this.counterDao = counterDao;
+        this.companyService = companyService;
     }
 
     @Override
@@ -58,20 +60,46 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 //    }
 
     @Override
-    public List<BotSongDto> getBySearchRequests(String author, String name) {
-        return songDtoDao.getBySearchRequests(author, name);
-    }
+    public List<BotSongDto> getBySearchRequests(String authorName, String songName, Long companyId) {
+        List<Long> songIds = dao.getBySearchRequests(authorName, songName);
+        Company company = companyService.getById(companyId);
 
+        List<BotSongDto> res = new ArrayList<>();
+        for (Long id : songIds) {
+            boolean banned = false;
+
+            Song song = dao.getById(id);
+            Author author = song.getAuthor();
+            //Genre genre = song.getGenre();
+
+            for (Genre g : author.getAuthorGenres()) {
+                if (g.isBannedBy(company)) {
+                    banned = true;
+                    break;
+                }
+            }
+
+            if (song.isBannedBy(company) || author.isBannedBy(company)
+                    //|| genre.isBannedBy(company)
+            ) {
+                banned = true;
+            }
+
+            if (!banned) {
+                res.add(new BotSongDto(song.getId(), song.getName(), author.getName()));
+            }
+        }
+        return res;
+    }
 
     @Override
     public List<SongDto> getAllSongsDto() {
         return songDtoDao.getAll();
     }
 
-
     @Override
-    public List<Song> findSongsByGenreId(Long id) {
-        return dao.getAllWithGenreByGenreId(id);
+    public List<SongDto> findSongsDtoByGenreId(Long id) {
+        return songDtoDao.getAllWithGenreByGenreIdDto(id);
     }
 
     @Override
@@ -115,6 +143,11 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
         SongDto dto = songDtoDao.getById(songId);
         String trackName = dto.getAuthorName().toUpperCase() + " - " + dto.getName().toUpperCase();
         counterDao.restart(trackName);
+    }
+
+    @Override
+    public int getSongCounterVal(String trackName) {
+        return counterDao.getValue(trackName);
     }
 
     @Override
@@ -168,5 +201,10 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
             throw new IllegalArgumentException("Incorrect song ids: can't delete tag (id = " + tagId + ") for all songs (ids = {"
                     + songIds + "]).");
         }
+    }
+
+    @Override
+    public List<SongDto> getAllApprovedSongsDto() {
+        return songDtoDao.getAllApprovedDto();
     }
 }

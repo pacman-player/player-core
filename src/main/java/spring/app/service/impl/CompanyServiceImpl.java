@@ -88,4 +88,15 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     public List<String> getAllSongsInQueueByCompanyId(long id) {
         return dao.getAllSongsInQueueByCompanyId(id);
     }
+
+    @Override
+    public long getCompanyTimerById(long companyId) {
+        return companyDtoDao.getTimerById(companyId);
+    }
+
+    @Override
+    public Company loadWithBannedList(Long id) {
+        return dao.loadWithBannedList(id);
+    }
+
 }

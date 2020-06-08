@@ -1,5 +1,6 @@
 package spring.app.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.model.Author;
@@ -24,6 +25,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
     private final TagService tagService;
     private final GenreService genreService;
 
+    @Autowired
     public DataUpdateServiceImpl(AuthorService authorService,
                                  SongService songService,
                                  TagService tagService,
@@ -36,7 +38,7 @@ public class DataUpdateServiceImpl implements DataUpdateService {
 
     @Override
     @Transactional
-    public Long updateData(String authorName, String songName, String[] genreNames) {
+    public Song updateData(String authorName, String songName, String[] genreNames) {
         Set<Genre> authorGenres;
 
         Author author = authorService.getByName(authorName);
@@ -67,12 +69,14 @@ public class DataUpdateServiceImpl implements DataUpdateService {
         Song song = songService.getByName(songName);
         if (song == null || !song.getAuthor().equals(author)) {
             // если песня новая или в БД у нее другой автор, то сохраняем ее в БД с новыми параметрами
-            song = new Song(songName, author, (Genre) authorGenres.toArray()[0]);
+            song = new Song(songName, author);
             Set<Tag> tags = tagService.findTags(authorName + ' ' + songName);
             song.setTags(tags);
             songService.save(song);
         }
         // возвращаем id песни
-        return song.getId();
+        //return song.getId();
+        return song;
+
     }
 }

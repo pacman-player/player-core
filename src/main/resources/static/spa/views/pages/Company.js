@@ -14,6 +14,8 @@ let Company = {
             '                    <input id="est-close-time" required="required" type="time"/><br/>\n' +
             '                    <label for="est-tariff">Тариф за песню&nbsp;</label>\n' +
             '                    <input id="est-tariff" class="money" required="required" type="text"/><br/>\n' +
+            '                    <label for="est-timer">Таймер заказов&nbsp;</label>\n' +
+            '                    <input id="est-timer" class="number" required="required" type="number"/><br/>\n' +
             '                    <label for="est-address">Адрес&nbsp;</label>\n' +
             '                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>\n' +
             '                    <button type="submit" id="button">Поиск</button>\n' +
@@ -45,6 +47,7 @@ let Company = {
                     name: $('#est-name').val(),
                     startTime: $('#est-start-time').val(),
                     tariff: $('#est-tariff').val().replace(/[^0-9]/g, ''),
+                    requestSpamCounter: $('#est-timer').val(),
                     closeTime: $('#est-close-time').val()
                 };
                 console.log(formData.tariff);
@@ -100,6 +103,7 @@ let Company = {
                         $('#est-start-time').val(data.startTime);
                         $('#est-close-time').val(data.closeTime);
                         $('#est-tariff').val(data.tariff);
+                        $('#est-timer').val(data.requestSpamCounter)
                         $('#est-address').val(data.addressCountry + ', ' + data.addressCity + ', ' + data.addressStreet + ', ' + data.addressHouse);
                     }
                 })

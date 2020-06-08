@@ -32,16 +32,14 @@ public class SongRestController {
     }
 
     @GetMapping("allApprovedSongs")
-    public List<Song> getAllApprovedSongs(@AuthenticationPrincipal User user) {
+    public List<SongDto> getAllApprovedSongsDto(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request 'allApprovedSongs'");
-        List<Song> list = songService.getAllApprovedSongs();
-
+        List<SongDto> list = songService.getAllApprovedSongsDto();
         Company company = user.getCompany();
         company = companyService.setBannedEntity(company);
         companyService.checkAndMarkAllBlockedByTheCompany(
                 company,
                 list);
-
         LOGGER.info("Result has {} lines", list.size());
         return list;
     }

@@ -1,7 +1,6 @@
 package spring.app.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
 
@@ -10,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
@@ -62,6 +62,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //        return song;
 //    }
 
+    //TODO: кандидат на удаление, не используется, аналогичный метод есть в SongDtoDaoImpl
     @Override
     public List<Song> getAllWithGenreByGenreId(Long id) {
         TypedQuery<Song> query = entityManager.createQuery("FROM Song WHERE genre_id = :id", Song.class);
@@ -151,6 +152,34 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
                 .setParameter("tag_id", tagId)
                 .setParameter("song_ids", songIds)
                 .executeUpdate();
+    }
+
+
+    @Override
+    public List<Long> getBySearchRequests(String author, String name) {
+        // Version 1
+//        entityManager.createNativeQuery("CREATE EXTENSION pg_trgm");
+//        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS trgm_index_songs ON songs USING gist (songs.search_tags gist_trgm_ops)");
+//        String ftsQuery = "SELECT * FROM songs WHERE songs.search_tags % '" + author + " " + name + "'";
+//        Query query = entityManager.createNativeQuery(ftsQuery, Song.class);
+
+        // Version 2
+//        entityManager.createNativeQuery("CREATE INDEX IF NOT EXISTS fts_index_songs ON songs USING gist (to_tsvector(songs.search_tags))");
+//        String ftsQuery = String.format("SELECT * FROM songs, plainto_tsquery('%s %s') AS q " +
+//                "WHERE to_tsvector(songs.search_tags) @@ q " +
+//                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
+
+        String ftsQuery = "SELECT s.id id FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
+                                                            "INNER JOIN tags t ON ts.tag_id = t.id " +
+                                                            "INNER JOIN authors a ON s.author_id = a.id " +
+                                                            "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                                                            "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
+        List<? extends Number> list = entityManager.createNativeQuery(ftsQuery)
+                                                    .setParameter("searchRequest", author + ' ' + name)
+                                                    .getResultList();
+        List<Long> res = list.stream().map(i -> i.longValue()).collect(Collectors.toList());
+
+        return res;
     }
 
 

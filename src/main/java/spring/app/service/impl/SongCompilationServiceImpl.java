@@ -286,5 +286,10 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         return dao.getSongCompilationByCompilationName(compilationName);
     }
 
+    @Override
+    public List<SongDto> getAvailableSongsForCompilationByIdDto(Long compilationId) {
+        return songCompilationDtoDao.getAvailableContentForCompilationDto(dao.getById(compilationId));
+    }
+
 
 }
