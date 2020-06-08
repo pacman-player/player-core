@@ -122,7 +122,9 @@ public class TelegramServiceImpl implements TelegramService {
                 }
 
                 Company company = companyService.loadWithBannedList(companyId);
-                if (song.getAuthor().isBannedBy(company) || song.getGenre().isBannedBy(company)) {
+                if (song.getAuthor().isBannedBy(company)
+                        //|| song.getGenre().isBannedBy(company)
+                ) {
                     return CompletableFuture.completedFuture(null);
                 }
                 for (Genre genre : song.getAuthor().getAuthorGenres()) {

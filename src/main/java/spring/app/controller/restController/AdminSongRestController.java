@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -66,7 +67,8 @@ public class AdminSongRestController {
         }
         Genre genre = genreService.getByName(songDto.getGenreName());
         if (genre != null) {
-            song.setGenre(genre);
+            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
+                    //setGenre(genre);
         }
         songService.setTags(song, songDto.getSearchTags());
         songService.save(song);
@@ -87,7 +89,7 @@ public class AdminSongRestController {
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
-        song.setGenre(genre);
+        //song.setGenre(genre);
         songService.setTags(song, songDto.getSearchTags());
         songService.update(song);
         LOGGER.info("Updated Song as = {}", song);
@@ -122,7 +124,7 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
         updateObject.forEach((key, value)->{
               if(key!=-1){
                   Song editSong = songService.getById(Long.parseLong(value));
-                  editSong.setGenre(newGenre);
+                  //editSong.setGenre(newGenre);
                   songService.update(editSong);
               }
           });
