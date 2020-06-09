@@ -59,6 +59,11 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
+    public List<CompanyDto> getCompaniesWithoutUsers() {
+        return companyDtoDao.getCompaniesWithoutUsers();
+    }
+
+    @Override
     public boolean isExistCompanyByName(String name) {
         return dao.isExistCompanyByName(name);
     }

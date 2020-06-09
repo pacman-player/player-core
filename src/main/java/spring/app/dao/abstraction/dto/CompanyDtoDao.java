@@ -8,6 +8,8 @@ public interface CompanyDtoDao {
 
     List<CompanyDto> getAllCompanies();
 
+    List<CompanyDto> getCompaniesWithoutUsers();
+
     CompanyDto getById(Long id);
 
     long getTimerById(long companyId);

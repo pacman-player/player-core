@@ -13,10 +13,7 @@ import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
 import spring.app.dto.UserDto;
 import spring.app.model.*;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.OrgTypeService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 import spring.app.util.ResponseBuilder;
 
 import java.time.LocalTime;
@@ -88,6 +85,12 @@ public class AdminRestController<T> {
         List<CompanyDto> list = companyService.getAllCompanies();
 
         return list;
+    }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public @ResponseBody
+    List<CompanyDto> getCompaniesWithoutUsers() {
+        return companyService.getCompaniesWithoutUsers();
     }
 
     @GetMapping(value = "/all_establishments")
@@ -238,10 +241,10 @@ public class AdminRestController<T> {
     @PostMapping(value = "/add_company")
     public void addCompany(@RequestBody CompanyDto companyDto) {
         LOGGER.info("POST request '/add_company'");
-        OrgType orgType = new OrgType(companyDto.getOrgType());
+            OrgType orgType = new OrgType(companyDto.getOrgType());
         Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                 LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.save(company);
+            companyService.save(company);
         LOGGER.info("Added Company = {}", company);
     }
 

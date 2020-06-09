@@ -141,7 +141,7 @@ $(document).ready(function () {
             $(':input', '#addForm').val('');
         }
     });
-
+    getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
         var rls = document.getElementsByClassName("addRls");
@@ -154,8 +154,10 @@ $(document).ready(function () {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
-            'roles': roleListArr
+            'roles': roleListArr,
+            'company' : $('#addCompanyForUser').val()
         };
+        $("#addCompanyForUser option[value = '"+ user.company.id +"']").prop("selected", true);
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",
@@ -475,4 +477,30 @@ function getRoleTable(listRolesBody,rls) {
             }
         }
     });
+}
+// получение компаний, в которых отсутствуют пользователи
+function getCompanyWithoutUser() {
+    $.ajax({
+        // url: "/api/admin/all_companies",
+        url: "/api/admin/companiesWithoutUsers",
+        method: "GET",
+        dataType: "json",
+        success: function (data){
+        var selectBody = $('#addCompanyForUser');
+        selectBody.empty();
+        selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
+        let count = 0;
+        $(data).each(function(i, company){
+            // if (company.userId === null) {
+                selectBody.append(`
+                    <option value="${company.id}" >${company.name}</option>
+                    `);
+                count++;
+            // }
+        })
+            if (count === 0){
+                selectBody.append(`<option disabled selected value="">Вначале создайте компанию</option>`);
+            }
+        },
+    })
 }
