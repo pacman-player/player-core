@@ -143,18 +143,21 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
+        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
         LOGGER.info("POST request '/company'");
         User userId = userService.getById(companyDto.getUserId());
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
-        company.setName(companyDto.getName());
-        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
-        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
-        company.setUser(userId);
-        company.setOrgType(orgType);
-        company.setTariff(companyDto.getTariff());
+            company.setName(companyDto.getName());
+            company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+            company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+            company.setUser(userId);
+            company.setOrgType(orgType);
+            company.setTariff(companyDto.getTariff());
         companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
+        }
+
     }
 
     @PostMapping(value = "/add_establishment")

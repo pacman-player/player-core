@@ -51,7 +51,9 @@ $(document).ready(function () {
 
     $("#editCompanyBtn").click(function (event) {
         event.preventDefault();
-        updateCompanyForm();
+        if($("#company-form").valid()) {
+            updateCompanyForm();
+        }
     });
 
     function updateCompanyForm() {
@@ -65,6 +67,7 @@ $(document).ready(function () {
             userId: $("#updateIdUser").val()
         };
 
+
         $.ajax({
             type: 'POST',
             url: "/api/admin/company",
@@ -74,25 +77,25 @@ $(document).ready(function () {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            async: false,
+            async: true,
             cache: false,
-            complete:
-                function () {
-                    getCompaniesTable();
-                },
             success:
                 function () {
-                    getCompaniesTable();
+
+                    // getCompaniesTable();
                     notification("edit-company" + companyDto.id,
                         "  Изменения компании c id " + companyDto.id + " сохранены",
-                        'companies-panel');
+                        'company-panel');
+                    getCompaniesTable();
+                    $("#tab-company-panel").tab('show');
+                    $('#editCompany').modal('hide');
                 },
             error:
                 function (xhr, status, error) {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-    };
+    }
 
     //modal company form заполнение
     $(document).on('click', '#showEditModalCompaniesBtn', function () {
@@ -343,6 +346,57 @@ function getOrgType(){
 
 }
 
+$('#addCompany').validate({
+    rules: {
+        name: {
+            required: true,
+            pattern: /[a-zA-Z0-9-_.-]$/,
+            remote: {
+                url: "/api/registration/check/company",
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                parameterData: {
+                    name: function () {
+                        return $('#name').val()
+                    },
+                },
+            }
+        },
+    },
+    messages: {
+        name: {
+            remote: "Компания с таким именем существует",
+            pattern: "Название компании может содержать только буквы, цифры, точки, тире и подчеркивание"
+        },
+        required: "Введите название"
+    },
+});
+
+$('#company-form').validate({
+    rules: {
+        name: {
+            remote: {
+                url: "/api/registration/check/company",
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                parameterData: {
+                    name: function () {
+                        return $('#company').val()
+                    },
+                },
+            },
+            required: true,
+        },
+    },
+    messages: {
+        name: {
+            remote: "Компания с таким именем существует",
+            required: "укажите название"
+        }
+    },
+})
 
 // //добавление адреса
 // function addAddress() {

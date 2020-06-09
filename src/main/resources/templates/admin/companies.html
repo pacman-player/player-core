@@ -11,7 +11,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
@@ -141,7 +141,7 @@
                 </div>
 
                 <!--модалка - компания-->
-                <div id="editCompany" class="modal fade">
+                <div id="editCompany" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog" id="editCompany-dialog">
                         <div class="modal-content">
 
@@ -154,8 +154,11 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-
-                                            <form id="company-form">
+<!--                                            <div id="success-edit-message"-->
+<!--                                                 class="alert alert-danger hidden">-->
+<!--                                                <div id="message"></div>-->
+<!--                                            </div>-->
+                                            <form id="company-form" >
                                                 <div class="form-group text-center edit-form">
 
                                                     <label for="updateCompanyId">ID компании</label>
@@ -168,9 +171,9 @@
                                                            type="text" name="id-user" required=""/>
 
                                                     <label for="updateNameCompany">Компания</label>
-                                                    <input id="updateNameCompany" class="form-control" type="text"
-                                                           name="company"
-                                                           required=""/>
+                                                    <input id="updateNameCompany" class="form-control"
+                                                           type="text" required="required"
+                                                           name="name"/>
 
                                                     <label for="updateStartTime">Время открытия</label>
                                                     <input id="updateStartTime" class="form-control" type="time"
@@ -196,9 +199,10 @@
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">Закрыть
                                                         </button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary"
-                                                                type="submit"
-                                                                data-dismiss="modal">
+                                                        <button id="editCompanyBtn" class="btn btn-primary">
+<!--                                                                type="submit"-->
+
+<!--                                                                data-dismiss="modal">-->
                                                             Изменить
                                                         </button>
                                                     </div>
