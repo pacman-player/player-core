@@ -80,7 +80,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         Song song = new Song(songName);
         song.setAuthor(author);
-        song.setGenre(genre);
+        //song.setGenre(genre);
         songService.save(song);
         song = songService.getByName(songName);
 

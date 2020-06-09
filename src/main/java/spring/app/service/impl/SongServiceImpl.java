@@ -70,7 +70,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
 
             Song song = dao.getById(id);
             Author author = song.getAuthor();
-            Genre genre = song.getGenre();
+            //Genre genre = song.getGenre();
 
             for (Genre g : author.getAuthorGenres()) {
                 if (g.isBannedBy(company)) {
@@ -79,7 +79,9 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
                 }
             }
 
-            if (song.isBannedBy(company) || author.isBannedBy(company) || genre.isBannedBy(company)) {
+            if (song.isBannedBy(company) || author.isBannedBy(company)
+                    //|| genre.isBannedBy(company)
+            ) {
                 banned = true;
             }
 
