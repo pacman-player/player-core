@@ -50,7 +50,7 @@ public class SongDto extends Bannable {
     public void setAuthorDto(AuthorDto authorDto) {
         this.authorDto = authorDto;
     }
-    
+
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
         this.isApproved = isApproved;
         this.name = name;

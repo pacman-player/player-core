@@ -81,12 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .permitAll()
                 .and()
-               .addFilterBefore()
                 .logout()
                 .permitAll();
     }
-
-    AntPathRequestMatcher
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
