@@ -24,4 +24,6 @@ public interface CompanyDao extends GenericDao<Long, Company> {
 
     Company loadWithBannedList(long id);
 
+    List<Company> getAllCompaniesByOrgTypeId(long id);
+
 }

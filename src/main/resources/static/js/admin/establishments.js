@@ -10,7 +10,22 @@ $(document).ready(function () {
             addEstablishment(formAddEst, fieldNameAddEstName);
             formAddEst.trigger("reset");
         }
-    })
+    });
+
+    $('#setDefaultEstablishmentBtn').on('click', (event) => {
+       event.preventDefault();
+
+        let option = $('#defaultEstablishmentSelect :selected');
+
+        /* Если заведение уже устанавлено по умолчанию - не делаем AJAX запрос */
+        if (option.data('default') === true) {
+            return;
+        }
+
+        let id = option.val();
+        setDefaultEstablishment(id);
+    });
+
 });
 
 
@@ -46,40 +61,29 @@ $("#establishmentsAddForm").validate({
     }
 });
 
-$('#setDefaultEstablishmentBtn').on('click', function (event) {
-    event.preventDefault();
 
-    let option = $('#defaultEstablishmentSelect :selected');
-    let id = option.val();
-    let name = option.text();
-    let isDefault = option.data('default');
-
-    if (isDefault === true) {
-        return;
-    }
-
-    let establishment = {};
-    establishment['id'] = id;
-    establishment['name'] = name;
-    establishment['default'] = isDefault;
-
+function setDefaultEstablishment(id) {
     $.ajax({
         method: "POST",
         url: "/api/admin/set_default_establishment",
-        data: JSON.stringify(establishment),
-        contentType: "application/json",
+        data: JSON.stringify(id),
+        dataType: 'text',
         headers: {
-            "Accept": "application/json",
+            "Accept": "text/plain",
             "Content-Type": "application/json",
         },
-        success: () => {
-            alert('SUCCESS!!!');
+        complete: () => {
+            $("#tab-establishments-panel").tab("show");
+            getEstablishments();
+        },
+        success: (message) => {
+            notification("set-default-establishment-" + id, message, "establishments-panel");
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
     });
-});
+}
 
 
 function addEstablishment(form, field) {
@@ -111,7 +115,7 @@ function addEstablishment(form, field) {
 }
 
 
-function editButton(id, name) {
+function editButton(id, name, isDefault) {
     let theModal = $("#editEstablishment");
     let form = $("#updateEstForm");
     let fieldId = $("#updateEstablishmentId");
@@ -121,6 +125,7 @@ function editButton(id, name) {
     fieldName.val(name);
 
     theModal.modal("show");
+
     form.validate({
         rules: {
             name: {
@@ -143,7 +148,8 @@ function editButton(id, name) {
                 contentType: "application/json",
                 data: JSON.stringify({
                     id: fieldId.val(),
-                    name: fieldName.val()
+                    name: fieldName.val(),
+                    default: isDefault
                 }),
                 headers: {
                     "Accept": "application/json",
@@ -172,29 +178,24 @@ function deleteButton(id) {
     $.ajax({
         method: "DELETE",
         url: "/api/admin/delete_establishment",
-        contentType: "application/json",
         data: JSON.stringify(id),
+        dataType: 'text',
         headers: {
-            "Accept": "application/json",
+            "Accept": "text/plain",
             "Content-Type": "application/json",
         },
         complete: () => {
             getEstablishments();
         },
-        success: () => {
-            notification(
-                "delete-establishment" + id,
-                ` Заведение c id ${id} удалено`,
-                "establishments-panel");
+        success: (message) => {
+            notification("delete-establishment" + id, message, "establishments-panel");
         },
         error: (xhr, status, error) => {
-            if (xhr.responseText.includes("DataIntegrityViolationException")) {
-                let caution = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
-                alert(caution);
+            if (xhr.status === 403) {
+                alert(xhr.responseText);
             } else {
                 alert(xhr.responseText + "|\n" + status + "|\n" + error);
             }
-
         }
     })
 }
@@ -235,7 +236,7 @@ function fillEstablishmentsTable(list) {
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editEstBtn"
-                                        onclick="editButton(${id}, '${name}')">
+                                        onclick="editButton(${id}, '${name}', ${isDefault})">
                                     Изменить
                                 </button>
                             </td>
@@ -243,7 +244,7 @@ function fillEstablishmentsTable(list) {
                                 <button type="button"
                                         class="btn btn-sm btn-info"
                                         id="deleteEstBtn" ` +
-                                        (isDefault === true ? `disabled ` : ``) +
+                                        (isDefault === true ? `disabled title="Нельзя удалить тип по умолчанию" ` : ``) +
                                         `onclick="deleteButton(${id})">
                                     Удалить
                                 </button>

@@ -80,19 +80,11 @@ public class AdminRestController<T> {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-
-
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<CompanyDto> getAllCompanies() {
         List<CompanyDto> list = companyService.getAllCompanies();
 
-        return list;
-    }
-
-    @GetMapping(value = "/all_establishments")
-    public List<OrgTypeDto> getAllEstablishments() {
-        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
         return list;
     }
 
@@ -160,6 +152,12 @@ public class AdminRestController<T> {
         LOGGER.info("Updated Company = {}", company);
     }
 
+    @GetMapping(value = "/all_establishments")
+    public List<OrgTypeDto> getAllEstablishments() {
+        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
+        return list;
+    }
+
     @PostMapping(value = "/add_establishment")
     public void addEstablishment(@RequestBody OrgType orgType) {
         LOGGER.info("POST request '/add_establishment' with orgType = {}", orgType);
@@ -172,10 +170,48 @@ public class AdminRestController<T> {
         orgTypeService.update(orgType);
     }
 
-    @PostMapping(value = "/set_default_establishment")
-    public void setDefaultEstablishment(@RequestBody OrgTypeDto orgTypeDto) {
-        LOGGER.info("POST request '/set_default_establishment' with orgTypeDto = {} ", orgTypeDto);
+    @PostMapping(value = "/set_default_establishment", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> setDefaultEstablishment(@RequestBody Long id) {
+        LOGGER.info("POST request '/set_default_establishment' with id = {} ", id);
 
+        if (!orgTypeService.isExistById(id)) {
+            return ResponseEntity.badRequest()
+                                 .body("Тип заведения с id=" + id + " не найден");
+        } else {
+            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
+            if (defaultOrgType.getId().equals(id)) {
+                return ResponseEntity.ok("Тип заведения с id=" + id + " уже установлен по умолчанию");
+            } else {
+                orgTypeService.setDefaultOrgTypeById(id);
+                return ResponseEntity.ok("Тип заведения по умолчанию успешно изменён");
+            }
+        }
+    }
+
+    @DeleteMapping(value = "/delete_establishment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> deleteEstablishment(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
+
+        if (!orgTypeService.isExistById(id)) {
+            return ResponseEntity.badRequest()
+                    .body("Тип заведения с id=" + id + " не найден");
+        } else {
+            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
+
+            if (defaultOrgType.getId().equals(id)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                     .body("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
+            } else {
+                companyService.getAllCompaniesByOrgTypeId(id)
+                              .forEach(company -> {
+                                  company.setOrgType(defaultOrgType);
+                                  companyService.update(company);
+                              });
+                orgTypeService.deleteById(id);
+
+                return ResponseEntity.ok("Тип заведения с id=" + id + " успешно удалён");
+            }
+        }
     }
 
     // Returns false if author with requested name already exists else true
@@ -183,12 +219,6 @@ public class AdminRestController<T> {
     public boolean isLoginFree(@RequestParam("name") String name) {
         boolean isLoginFree = (orgTypeService.getByName(name) == null);
         return isLoginFree;
-    }
-
-    @DeleteMapping(value = "/delete_establishment")
-    public void deleteEstablishment(@RequestBody Long id) {
-        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
-        orgTypeService.deleteById(id);
     }
 
     @GetMapping(value = "/all_roles")

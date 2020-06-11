@@ -27,7 +27,6 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
                             .list();
     }
 
-
     private static class OrgTypeDtoTransformer implements ResultTransformer {
 
         private List<OrgTypeDto> roots = new ArrayList<>();

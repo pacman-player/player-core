@@ -16,6 +16,8 @@ public interface CompanyService extends GenericService<Long, Company> {
 
     List<CompanyDto> getAllCompanies();
 
+    List<Company> getAllCompaniesByOrgTypeId(long id);
+
     boolean isExistCompanyByName(String name);
 
     /**

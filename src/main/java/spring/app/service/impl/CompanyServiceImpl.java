@@ -59,6 +59,11 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
+    public List<Company> getAllCompaniesByOrgTypeId(long id) {
+        return dao.getAllCompaniesByOrgTypeId(id);
+    }
+
+    @Override
     public boolean isExistCompanyByName(String name) {
         return dao.isExistCompanyByName(name);
     }

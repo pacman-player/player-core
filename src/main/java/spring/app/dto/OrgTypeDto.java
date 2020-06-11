@@ -57,10 +57,12 @@ public class OrgTypeDto {
 
     @Override
     public String toString() {
-        return String.format(
-            "OrgTypeDto{id=%d, name=%s, isDefault=%b}",
-            id, Objects.toString(name, "null"), isDefault
-        );
+        return "OrgTypeDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isDefault=" + isDefault +
+                ", genres=" + genres +
+                '}';
     }
 }
 
