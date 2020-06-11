@@ -12,7 +12,7 @@ $.ajax({
     },
     dataType: "JSON",
     success: autocompleteCallBack
-})
+});
 
 
 function autocompleteCallBack(tags) {
@@ -37,7 +37,7 @@ function getSongsTable() {
         url: "/api/admin/song/all_songs",
         success: (listSong) => {
             listSong.sort((a, b) => a.id - b.id);
-            console.log(listSong) // для дебага
+            console.log(listSong); // для дебага
             $('#all-songs').empty();
             var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
