@@ -60,7 +60,7 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
 
     @Override
     public List<Song> getSongsByGenre(Genre genre) {
-        TypedQuery<Song> query = entityManager.createQuery("SELECT u FROM Song u WHERE u.genre = :genre", Song.class);
+        TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s left JOIN s.author.genres g WHERE g.name = :genre", Song.class);
         query.setParameter("genre", genre);
         return query.getResultList();
     }
