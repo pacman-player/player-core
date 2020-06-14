@@ -76,6 +76,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
 
     @Override
+    @Transactional
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
         dao.removeSongFromSongCompilation(
                 getSongCompilationById(compilationId),
