@@ -15,8 +15,6 @@ public class DirectorAnswerBuilder<T>{
         this.data = data;
     }
 
-
-
     public void setStatus(HttpStatus status) {
         this.status = status;
     }

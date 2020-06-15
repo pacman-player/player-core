@@ -22,6 +22,13 @@ public class ResponseBuilder<T> extends ResponseEntityExceptionHandler {
 
     DirectorAnswerBuilder<T> directorAnswerBuilder = new DirectorAnswerBuilder<T>();
 
+    public Response<T> error(String message) {
+        directorAnswerBuilder.setStatus(HttpStatus.BAD_REQUEST);
+        directorAnswerBuilder.setMessage(message);
+        ErrorMessageBuilder<T> errorBuilder = new ErrorMessageBuilder<>();
+        directorAnswerBuilder.constructErrorMessage(errorBuilder);
+        return errorBuilder.getResponse();
+    }
 
     public Response<T> Error(Exception ex) {
         directorAnswerBuilder.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);

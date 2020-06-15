@@ -191,16 +191,21 @@ $('#addSongBtn').click(function (event) {
         processData: false,
         mimeType: "multipart/form-data",
         data: formData,
-        complete: () => {
-            $('#addSongName').val('');
-            $('#addSongAuthor').val('');
-            $('#addSongTags').importTags('');
-            $('#addSongFile').val('');
-            $('#tab-song-panel').tab('show');
-            getSongsTable();
-        },
-        success: (message) => {
-            alert(message);
+        dataType: 'json',
+        success: (response) => {
+            if (response.success === true) {
+                notification("add-song", response.data, "song-panel");
+                $('#addSongName').val('');
+                $('#addSongAuthor').val('');
+                $('#addSongTags').importTags('');
+                $('#addSongFile').val('');
+                $('#tab-song-panel').tab('show');
+                getSongsTable();
+            } else if (response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);

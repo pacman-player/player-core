@@ -13,6 +13,7 @@ import spring.app.dto.SongDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.SongFileService;
 import spring.app.service.abstraction.SongService;
 import spring.app.util.ResponseBuilder;
 
@@ -28,14 +29,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/admin/song/")
 public class AdminSongRestController {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongRestController.class);
+
     private final SongService songService;
+    private final SongFileService songFileService;
     private final AuthorService authorService;
     private final GenreService genreService;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
+    public AdminSongRestController(SongService songService, SongFileService songFileService, AuthorService authorService, GenreService genreService) {
         this.songService = songService;
+        this.songFileService = songFileService;
         this.authorService = authorService;
         this.genreService = genreService;
     }
@@ -55,33 +60,25 @@ public class AdminSongRestController {
     Чтобы добавить новую песню сначала проверяю автора на наличие в бд.
      */
     @PostMapping(value = "/add_song")
-    public Response<String> addSong(@ModelAttribute SongDto songDto) throws IOException {
+    public Response<String> addSong(@ModelAttribute SongDto songDto) {
         LOGGER.info("POST request '/add_song'");
 
-        Response<String> response = new Response<>();
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
 
         if (songDto.getName() == null || songDto.getName().isEmpty()) {
-            ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setTextMessage("Введите название песни");
-            response.setErrorMessage(errorMessage);
-            response.setSuccess(false);
-            return response;
+            return responseBuilder.error("Введите название песни");
         }
 
         if (songDto.getAuthorName() == null || songDto.getAuthorName().isEmpty()) {
-            ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setTextMessage("Введите автора песни");
-            response.setErrorMessage(errorMessage);
-            response.setSuccess(false);
-            return response;
+            return responseBuilder.error("Введите автора песни");
         }
 
         if (songDto.getSearchTags() == null || songDto.getSearchTags().size() == 0) {
-            ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setTextMessage("Заполните теги для добавляемой песни");
-            response.setErrorMessage(errorMessage);
-            response.setSuccess(false);
-            return response;
+            return responseBuilder.error("Заполните теги для добавляемой песни");
+        }
+
+        if (songDto.getFile() == null || songDto.getFile().isEmpty()) {
+            return responseBuilder.error("Прикрепите файл с песней");
         }
 
         Song song = new Song(songDto.getName());
@@ -95,24 +92,21 @@ public class AdminSongRestController {
             song.setAuthor(newAuthor);
         }
 
+        songService.setTags(song, songDto.getSearchTags());
+        songService.save(song);
+        song = songService.getByName(song.getName());
 
+        try {
+            songFileService.saveSongFile(song, songDto.getFile());
+        } catch (IOException e) {
+            LOGGER.error("Error happened while saving new song file", e);
+            return responseBuilder.error("Произошла ошибка при сохранении файла");
+        } catch (IllegalArgumentException e) {
+            return responseBuilder.error("Файл имеет некорректный формат, должен быть .mp3");
+        }
 
-//        Song song = new Song(songDto.getName());
-//        Author author = authorService.getByName(songDto.getAuthorName());
-//        if (author != null) {
-//            song.setAuthor(author);
-//        } else {
-//            authorService.save(new Author(songDto.getAuthorName()));
-//            song.setAuthor(authorService.getByName(songDto.getAuthorName()));
-//        }
-//        Genre genre = genreService.getByName(songDto.getGenreName());
-//        if (genre != null) {
-//            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
-//                    //setGenre(genre);
-//        }
-//        songService.setTags(song, songDto.getSearchTags());
-//        songService.save(song);
-//        LOGGER.info("Added Song = {}", song);
+        Response<String> success = responseBuilder.success("Песня успешно добавлена");
+        return success;
     }
 
     /*
