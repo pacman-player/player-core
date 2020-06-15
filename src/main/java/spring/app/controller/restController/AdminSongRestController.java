@@ -45,6 +45,16 @@ public class AdminSongRestController {
         return songService.getAllSongsDto();
     }
 
+    @GetMapping(value = "/songs_out_of_genre")
+    public List<SongDto> getSongsOutOfGenreDto(@RequestParam Long genreId) {
+        return songService.getSongsOutOfGenreDto(genreId);
+    }
+
+    @GetMapping(value = "/songs_of_genre")
+    public List<SongDto> getSongsOfGenreDto(@RequestParam Long genreId) {
+        return songService.findSongsDtoByGenreId(genreId);
+    }
+
     @DeleteMapping(value = "/delete_song/{id}")
     public void deleteSong(@PathVariable("id") Long id) {
         LOGGER.info("DELETE request '/delete_song/{}'", id);
