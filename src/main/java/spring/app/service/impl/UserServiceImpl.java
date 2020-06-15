@@ -1,6 +1,8 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import spring.app.service.abstraction.UserService;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Service
 public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> implements UserService {
@@ -110,12 +114,13 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
 
     @Override
     @Transactional
-    public void update(User user) {
+    public void update(User user)  {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         dao.update(user);
+
     }
 
     @Override

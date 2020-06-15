@@ -144,6 +144,7 @@ let Edit = {
                     success: function () {
                         alert("Данные изменены");
                         getUserData();
+                        forcelogout();
                     },
                     error: function () {
                         alert("Пользователь с такими данными уже существует");
@@ -213,6 +214,20 @@ let Edit = {
 
             }
 
+            function forcelogout() {
+                let form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = 'POST';
+                form.action = '/logout';
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = '_csrf';
+                input.value = csrfToken;
+                form.appendChild(input);
+                form.submit();
+            }
+
+
             // function showLinkAdmin() {
             //     $.ajax({
             //         type: "post",
@@ -274,11 +289,13 @@ let Edit = {
             $('#updateUserDataBtn').click(function (event) {
                 event.preventDefault();
                 updateUserData();
+                forcelogout();
             });
 
             $('#updateUserPasswordBtn').click(function (event) {
                 event.preventDefault();
                 updateUserPassword();
+                forcelogout();
             });
 
             $("#checkUserPasswordBtn").click(function (event) {

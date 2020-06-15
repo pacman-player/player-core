@@ -43,6 +43,8 @@ $(document).ready(function () {
                 success: function () {
                     alert("Данные изменены");
                     getUserData();
+                    forcelogout();
+
                 },
                 error: function () {
                     alert("Пользователь с такими данными уже существует");
@@ -97,12 +99,43 @@ $(document).ready(function () {
                 $("#editUserPass").modal('hide');
                 $("#checkUserCode").modal('hide');
                 // location.reload();
+                forcelogout();
             },
             error: function () {
                 alert("Не удалось изменить пароль");
             }
         });
     }
+
+
+    function forcelogout() {
+
+        $.ajax({
+            contentType: "application/json;",
+            url: "/logout",
+            type: "POST",
+            success: function () {
+                let form = document.createElement('form');
+                document.body.appendChild(form);
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = '_csrf';
+                input.value = csrfToken;
+                form.appendChild(input);
+                form.submit();
+            },
+            error: function () {
+                alert("Не удалось разлогиниться");
+            }
+        });
+
+
+    }
+
+
+
+
+
 
     function showLinkAdmin() {
         $.ajax({

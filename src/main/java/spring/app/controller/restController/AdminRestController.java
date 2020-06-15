@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import spring.app.dto.CompanyDto;
 import spring.app.dto.OrgTypeDto;
 import spring.app.dto.RoleDto;
@@ -19,6 +21,9 @@ import spring.app.service.abstraction.RoleService;
 import spring.app.service.abstraction.UserService;
 import spring.app.util.ResponseBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -107,14 +112,14 @@ public class AdminRestController<T> {
     }
 
     @PutMapping(value = "/update_user")
-    public void updateUser(@RequestBody UserDto userDto) {
+    public void updateUser(@RequestBody UserDto userDto, HttpServletRequest httpServletRequest) {
         LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         // If admin is editing himself, then we need put his renewed account
         // in SecurityContext
         User userAuth = (User) getContext().getAuthentication().getPrincipal();
-        if (userAuth.getId().equals(user.getId())) {
+        if (userAuth.getId().equals(user.getId())) {//если юзер меняет свои же данные а не чужого юзера то выполняется if
             UsernamePasswordAuthenticationToken token =
                     new UsernamePasswordAuthenticationToken(
                             user,
@@ -124,8 +129,21 @@ public class AdminRestController<T> {
             getContext().setAuthentication(token);
         }
         userService.update(user);
+        if (userAuth.getId().equals(user.getId())) {
+            logout(httpServletRequest);//логаут надо вызывать только если меняет самого себя
+        }
         LOGGER.info("Updated User = {}", user);
     }
+
+
+    @RequestMapping(value="/logout",method = RequestMethod.POST)
+    public void logout(HttpServletRequest request){
+        HttpSession httpSession = request.getSession();
+        httpSession.invalidate();
+        //return "redirect:/login";
+    }
+
+
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {

@@ -1,5 +1,6 @@
 package spring.app.service.abstraction;
 
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import spring.app.dao.abstraction.GenericDao;
 
 import java.io.Serializable;
