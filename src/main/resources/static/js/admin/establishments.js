@@ -67,17 +67,21 @@ function setDefaultEstablishment(id) {
         method: "POST",
         url: "/api/admin/set_default_establishment",
         data: JSON.stringify(id),
-        dataType: 'text',
+        dataType: 'json',
         headers: {
-            "Accept": "text/plain",
+            "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        complete: () => {
-            $("#tab-establishments-panel").tab("show");
-            getEstablishments();
-        },
-        success: (message) => {
-            notification("set-default-establishment-" + id, message, "establishments-panel");
+        success: (response) => {
+            if (response.success === true) {
+                notification("set-default-establishment-" + id, response.data, "establishments-panel");
+                $("#tab-establishments-panel").tab("show");
+                getEstablishments();
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -179,23 +183,23 @@ function deleteButton(id) {
         method: "DELETE",
         url: "/api/admin/delete_establishment",
         data: JSON.stringify(id),
-        dataType: 'text',
+        dataType: 'json',
         headers: {
-            "Accept": "text/plain",
+            "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        complete: () => {
-            getEstablishments();
-        },
-        success: (message) => {
-            notification("delete-establishment" + id, message, "establishments-panel");
+        success: (response) => {
+            if (response.success === true) {
+                notification("delete-establishment-" + id, response.data, "establishments-panel");
+                getEstablishments();
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
         },
         error: (xhr, status, error) => {
-            if (xhr.status === 403) {
-                alert(xhr.responseText);
-            } else {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
-            }
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
     })
 }

@@ -171,36 +171,37 @@ public class AdminRestController<T> {
     }
 
     @PostMapping(value = "/set_default_establishment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> setDefaultEstablishment(@RequestBody Long id) {
+    public Response<String> setDefaultEstablishment(@RequestBody Long id) {
         LOGGER.info("POST request '/set_default_establishment' with id = {} ", id);
 
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+
         if (!orgTypeService.isExistById(id)) {
-            return ResponseEntity.badRequest()
-                                 .body("Тип заведения с id=" + id + " не найден");
+            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
         } else {
             OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
             if (defaultOrgType.getId().equals(id)) {
-                return ResponseEntity.ok("Тип заведения с id=" + id + " уже установлен по умолчанию");
+                return responseBuilder.success("Тип заведения с id=" + id + " уже установлен по умолчанию");
             } else {
                 orgTypeService.setDefaultOrgTypeById(id);
-                return ResponseEntity.ok("Тип заведения по умолчанию успешно изменён");
+                return responseBuilder.success("Тип заведения по умолчанию успешно изменён");
             }
         }
     }
 
-    @DeleteMapping(value = "/delete_establishment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> deleteEstablishment(@RequestBody Long id) {
+    @DeleteMapping(value = "/delete_establishment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> deleteEstablishment(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
 
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+
         if (!orgTypeService.isExistById(id)) {
-            return ResponseEntity.badRequest()
-                    .body("Тип заведения с id=" + id + " не найден");
+            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
         } else {
             OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
 
             if (defaultOrgType.getId().equals(id)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                     .body("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
+                return responseBuilder.error("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
             } else {
                 companyService.getAllCompaniesByOrgTypeId(id)
                               .forEach(company -> {
@@ -209,7 +210,7 @@ public class AdminRestController<T> {
                               });
                 orgTypeService.deleteById(id);
 
-                return ResponseEntity.ok("Тип заведения с id=" + id + " успешно удалён");
+                return responseBuilder.success("Тип заведения с id=" + id + " успешно удалён");
             }
         }
     }
