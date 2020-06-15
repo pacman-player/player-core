@@ -16,12 +16,12 @@ $(document).ready(function () {
 
 const errMessages = {
     required: "Укажите название",
-    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире",
+    pattern: "Разрешенные символы: кирилица, латиница, цифры, тире, символ подчеркивания, пробел",
     rangelength: "Количество символов должно быть в диапазоне [3-30]",
     remote: "Имя занято"
 };
 
-const establishmentsNameRegEx = /^[\wА-Яа-я\-]+$/;
+const establishmentsNameRegEx = /^[\wА-Яа-я\-\s]+$/;
 
 
 $("#establishmentsAddForm").validate({
