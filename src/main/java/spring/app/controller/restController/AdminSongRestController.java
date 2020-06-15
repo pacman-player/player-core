@@ -10,13 +10,13 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.AuthorSongGenreListDto;
 import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.Song;
+import spring.app.model.*;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
+import spring.app.util.ResponseBuilder;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,24 +55,64 @@ public class AdminSongRestController {
     Чтобы добавить новую песню сначала проверяю автора на наличие в бд.
      */
     @PostMapping(value = "/add_song")
-    public void addSong(@RequestBody SongDto songDto) {
+    public Response<String> addSong(@ModelAttribute SongDto songDto) throws IOException {
         LOGGER.info("POST request '/add_song'");
+
+        Response<String> response = new Response<>();
+
+        if (songDto.getName() == null || songDto.getName().isEmpty()) {
+            ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setTextMessage("Введите название песни");
+            response.setErrorMessage(errorMessage);
+            response.setSuccess(false);
+            return response;
+        }
+
+        if (songDto.getAuthorName() == null || songDto.getAuthorName().isEmpty()) {
+            ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setTextMessage("Введите автора песни");
+            response.setErrorMessage(errorMessage);
+            response.setSuccess(false);
+            return response;
+        }
+
+        if (songDto.getSearchTags() == null || songDto.getSearchTags().size() == 0) {
+            ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setTextMessage("Заполните теги для добавляемой песни");
+            response.setErrorMessage(errorMessage);
+            response.setSuccess(false);
+            return response;
+        }
+
         Song song = new Song(songDto.getName());
+
         Author author = authorService.getByName(songDto.getAuthorName());
         if (author != null) {
             song.setAuthor(author);
         } else {
             authorService.save(new Author(songDto.getAuthorName()));
-            song.setAuthor(authorService.getByName(songDto.getAuthorName()));
+            Author newAuthor = authorService.getByName(songDto.getAuthorName());
+            song.setAuthor(newAuthor);
         }
-        Genre genre = genreService.getByName(songDto.getGenreName());
-        if (genre != null) {
-            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
-                    //setGenre(genre);
-        }
-        songService.setTags(song, songDto.getSearchTags());
-        songService.save(song);
-        LOGGER.info("Added Song = {}", song);
+
+
+
+//        Song song = new Song(songDto.getName());
+//        Author author = authorService.getByName(songDto.getAuthorName());
+//        if (author != null) {
+//            song.setAuthor(author);
+//        } else {
+//            authorService.save(new Author(songDto.getAuthorName()));
+//            song.setAuthor(authorService.getByName(songDto.getAuthorName()));
+//        }
+//        Genre genre = genreService.getByName(songDto.getGenreName());
+//        if (genre != null) {
+//            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
+//                    //setGenre(genre);
+//        }
+//        songService.setTags(song, songDto.getSearchTags());
+//        songService.save(song);
+//        LOGGER.info("Added Song = {}", song);
     }
 
     /*
@@ -96,12 +136,12 @@ public class AdminSongRestController {
     }
 
 
-@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getById(id));
-    return ResponseEntity.ok(songDto);
-}
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+        SongDto songDto = new SongDto(songService.getById(id));
+        return ResponseEntity.ok(songDto);
+    }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody

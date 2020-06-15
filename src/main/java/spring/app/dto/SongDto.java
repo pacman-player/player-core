@@ -1,5 +1,6 @@
 package spring.app.dto;
 
+import org.springframework.web.multipart.MultipartFile;
 import spring.app.model.*;
 
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ public class SongDto extends Bannable {
     private Set<String> searchTags;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private MultipartFile file;
 
     private AuthorDto authorDto;
     private GenreDto genreDto;
@@ -173,6 +175,14 @@ public class SongDto extends Bannable {
 
     public void setApproved(Boolean approved) {
         isApproved = approved;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     @Override
