@@ -19,7 +19,6 @@ public class SongDto extends Bannable {
     private MultipartFile file;
 
     private AuthorDto authorDto;
-    private GenreDto genreDto;
 
     public SongDto(Long id, String name, String authorName, String genreName, Set<String> searchTags, Timestamp createdAt, Boolean isApproved) {
         this.id = id;
@@ -39,12 +38,11 @@ public class SongDto extends Bannable {
         this.isApproved = isApproved;
     }
 
-    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto, GenreDto genreDto) {
+    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto) {
         this.id = id;
         this.name = name;
         this.isApproved = isApproved;
         this.authorDto = authorDto;
-        this.genreDto = genreDto;
     }
 
     public AuthorDto getAuthorDto() {
@@ -53,14 +51,6 @@ public class SongDto extends Bannable {
 
     public void setAuthorDto(AuthorDto authorDto) {
         this.authorDto = authorDto;
-    }
-
-    public GenreDto getGenreDto() {
-        return genreDto;
-    }
-
-    public void setGenreDto(GenreDto genreDto) {
-        this.genreDto = genreDto;
     }
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
