@@ -76,16 +76,22 @@ function addGenre(form, field) {
 }
 
 
-function editButton(id, name, approved) {
+function editButton(id, name, keywords, approved) {
     let theModal = $("#editGenres");
     let form = $("#editForm");
     let fieldId = $("#updateGenresId");
     let fieldName = $("#updateGenresName");
+    let fieldKeywords = $("#updateGenreKeywords");
     let fieldApproved = $("#updateGenreApproved");
+
+
 
     fieldId.val(id);
     fieldName.val(name);
+    fieldKeywords.val(keywords);
     fieldApproved.prop('checked', approved);
+    // let test = fieldKeywords.val().replace(/ \|/g, ',');
+
 
     theModal.modal("show");
     form.validate({
@@ -116,6 +122,7 @@ function editButton(id, name, approved) {
                 data: JSON.stringify({
                     id: fieldId.val(),
                     name: fieldName.val(),
+                    keywords: test,
                     approved: fieldApproved.prop('checked')
                 }),
                 headers: {
@@ -188,6 +195,9 @@ function getTable() {
                 let approved = genres[i].approved;
                 let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
+                let keywords = genres[i].keywords;
+                //.replace(/ \|/g, ',')
+
                 // parsing fields
                 let tr = $("<tr/>");
                 tr.append(`
@@ -198,7 +208,7 @@ function getTable() {
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}', ${approved})">
+                                        onclick="editButton(${id}, '${name}', '${keywords}', ${approved})">
                                     Изменить
                                 </button>
                             </td>

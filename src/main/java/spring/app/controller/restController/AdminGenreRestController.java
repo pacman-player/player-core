@@ -64,6 +64,7 @@ public class AdminGenreRestController {
         String genreDtoName = genreDto.getName();
         genre.setName(genreDtoName);
         genre.setApproved(genreDto.getApproved());
+        genre.setKeywords(genreDto.getKeywords());
         genreService.update(genre);
         LOGGER.info("Updated Genre with name = {}", genreDtoName);
         try {
@@ -97,6 +98,15 @@ public class AdminGenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
-        return !genreService.isExistByName(name);
+        boolean typeNameFree = false;
+        if (genreService.getByName(name) == null){
+            typeNameFree = !genreService.isExistByName(name);
+        } else if (id.equals(genreService.getByName(name).getId()) ) {
+            typeNameFree = genreService.isExistByName(name);
+        }
+//        else {
+//            typeNameFree = !genreService.isExistByName(name);
+//        }
+        return typeNameFree;
     }
 }
