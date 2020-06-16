@@ -104,9 +104,6 @@ public class AdminGenreRestController {
         } else if (id.equals(genreService.getByName(name).getId()) ) {
             typeNameFree = genreService.isExistByName(name);
         }
-//        else {
-//            typeNameFree = !genreService.isExistByName(name);
-//        }
         return typeNameFree;
     }
 }

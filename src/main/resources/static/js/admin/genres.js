@@ -21,9 +21,12 @@ const errMessages = {
     rangelength: "Количество символов должно быть в диапазоне [3-30]",
     remote: "Имя занято"
 };
+const errMessageKeywords = {
+    pattern: "Ключевые слова должны разделяться символом | и могут содеражать только буквы и тире"
+}
 
-const genreNameRegEx = /[\wА-Яа-я\-]/;
-
+const genreNameRegEx = /^[а-яА-ЯёЁa-zA-Z0-9\s-]+$/;
+const genreKeywordsRegEx = /^[а-яА-ЯёЁa-zA-Z\s-|]+$/;
 
 $("#addForm").validate({
     rules: {
@@ -109,10 +112,15 @@ function editButton(id, name, keywords, approved) {
                         }
                     }
                 },
+            },
+            keywords: {
+                required: true,
+                pattern: genreKeywordsRegEx,
             }
         },
         messages: {
-            name: errMessages
+            name: errMessages,
+            keywords: errMessageKeywords
         },
         submitHandler: () => {
             $.ajax({
