@@ -93,8 +93,6 @@ function editButton(id, name, keywords, approved) {
     fieldName.val(name);
     fieldKeywords.val(keywords);
     fieldApproved.prop('checked', approved);
-    // let test = fieldKeywords.val().replace(/ \|/g, ',');
-
 
     theModal.modal("show");
     form.validate({
@@ -130,7 +128,7 @@ function editButton(id, name, keywords, approved) {
                 data: JSON.stringify({
                     id: fieldId.val(),
                     name: fieldName.val(),
-                    keywords: test,
+                    keywords: fieldKeywords.val(),
                     approved: fieldApproved.prop('checked')
                 }),
                 headers: {
