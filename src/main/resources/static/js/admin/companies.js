@@ -20,8 +20,6 @@ $(document).ready(function () {
                 $("#companiesTable tbody").empty();
                 for (var i = 0; i < listCompanies.length; i++) {
                     let tariff = listCompanies[i].tariff + "";
-                    let pennies = tariff.substr(tariff.length - 2, tariff.length);
-                    tariff = tariff.substr(0, tariff.length - 2) + "," + pennies;
                     console.log(typeof tariff);
                     htmlTable += ('<tr id="listCompanies">');
                     htmlTable += ('<td id="tableCompaniesId">' + listCompanies[i].id + '</td>');
