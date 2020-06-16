@@ -87,7 +87,8 @@ function editButton(id, name, keywords, approved) {
     let fieldKeywords = $("#updateGenreKeywords");
     let fieldApproved = $("#updateGenreApproved");
 
-
+    form.find('.error').removeClass("error");
+    form.find('.form-control error').remove();
 
     fieldId.val(id);
     fieldName.val(name);
