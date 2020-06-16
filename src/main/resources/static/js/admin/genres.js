@@ -83,6 +83,10 @@ function editButton(id, name, approved) {
     let fieldName = $("#updateGenresName");
     let fieldApproved = $("#updateGenreApproved");
 
+    form.find('.error').removeClass("error");
+    form.find('.form-control error').remove();
+    form.find('#updateGenresName-error').remove();
+
     fieldId.val(id);
     fieldName.val(name);
     fieldApproved.prop('checked', approved);
@@ -138,7 +142,7 @@ function editButton(id, name, approved) {
                 }
             })
         }
-    })
+    });
 }
 
 

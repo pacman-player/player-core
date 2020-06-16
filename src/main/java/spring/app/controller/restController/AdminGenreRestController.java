@@ -97,6 +97,9 @@ public class AdminGenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
+        if (genreService.getById(id).getName().equals(name)){
+            return true;
+        }
         return !genreService.isExistByName(name);
     }
 }
