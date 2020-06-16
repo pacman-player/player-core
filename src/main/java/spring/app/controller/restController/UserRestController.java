@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
@@ -93,7 +94,7 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/edit_data")
-    public ResponseEntity<User> editUserData(@RequestBody User newUser){
+    public ResponseEntity<User> editUserData(@RequestBody User newUser) throws Exception {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         LOGGER.info("PUT request '/edit_data' from User = {}", user);
         if(!newUser.getLogin().equals(user.getLogin())) {
@@ -116,7 +117,9 @@ public class UserRestController {
         }
         userService.update(user);
         LOGGER.info("Updated user data for User = {}", user);
+
         return ResponseEntity.ok(user);
+
     }
 
     @PutMapping(value = "/edit_pass")
