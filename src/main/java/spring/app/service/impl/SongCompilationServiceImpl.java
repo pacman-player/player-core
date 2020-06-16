@@ -68,6 +68,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void addSongToSongCompilation(Long compilationId, Long songId) {
         dao.addSongToSongCompilation(
                 getSongCompilationById(compilationId),
@@ -76,6 +77,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
 
     @Override
+    @Transactional
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
         dao.removeSongFromSongCompilation(
                 getSongCompilationById(compilationId),
