@@ -149,6 +149,7 @@ $(document).ready(function () {
             startTime: $('#addOpenTime').val(),
             closeTime: $('#addCloseTime').val(),
             orgType: $('#addOrgType').val(),
+            tariff: $('#addTariffCompany').val(),
             userId: $("#addUserForCompany").val(),
             addressCountry: array[0],
             addressCity: array[1],

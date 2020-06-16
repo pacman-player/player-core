@@ -257,10 +257,12 @@ public class AdminRestController<T> {
                 ));
                 company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                         LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
                 company.setAddress(addressService.getById(addressService.getLastId()));
             } else {
                 company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
                         LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
             }
             companyService.save(company);
         }
