@@ -17,5 +17,4 @@ public interface SongDtoDao {
 
     List<SongDto> getAllApprovedDto();
 
-    List<SongDto> getSongsOutOfGenreDto(Long genreId);
 }

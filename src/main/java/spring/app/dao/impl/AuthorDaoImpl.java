@@ -60,6 +60,11 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
     }
 
     @Override
+    public void delete(Author author) {
+        entityManager.remove(author);
+    }
+
+    @Override
     public boolean isExist(String name) {
         TypedQuery<Author> query = entityManager.createQuery("FROM Author WHERE name = :name", Author.class);
         query.setParameter("name", name);

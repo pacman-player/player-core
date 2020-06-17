@@ -56,5 +56,4 @@ public interface SongService extends GenericService<Long, Song>{
 
     List<SongDto> getAllApprovedSongsDto();
 
-    List<SongDto> getSongsOutOfGenreDto(Long genreId);
 }

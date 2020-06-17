@@ -28,4 +28,10 @@ public interface AuthorService extends GenericService<Long, Author> {
     int getLastApprovedAuthorsPageNumber(int pageSize);
 
     boolean isExist(String name);
+
+    List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
+
+    List<AuthorDto> getAuthorsOfGenre(Long genreID);
+
+    void delete(Author author);
 }

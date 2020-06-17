@@ -106,4 +106,19 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return dao.isExist(name);
     }
 
+    @Override
+    public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
+        return authorDtoDao.getAuthorsOutOfGenre(genreID);
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsOfGenre(Long genreID) {
+        return authorDtoDao.getAuthorsOfGenre(genreID);
+    }
+
+    @Override
+    public void delete(Author author) {
+        dao.delete(author);
+    }
+
 }
