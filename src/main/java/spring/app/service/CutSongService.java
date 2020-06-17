@@ -25,9 +25,9 @@ public class CutSongService {
         decode.decodeFrame(head, bStream);
 
         int timeMS = len * 1000;
-        int numberOfFrames = timeMS / (int)head.ms_per_frame();
-        int numberOfBytesToCut = numberOfFrames  * head.framesize;
-        int numberBytesToSkip = ((start + 1) * 1000) / (int)head.ms_per_frame() * head.framesize;
+        int numberOfFrames = timeMS / (int) head.ms_per_frame();
+        int numberOfBytesToCut = numberOfFrames * head.framesize;
+        int numberBytesToSkip = ((start + 1) * 1000) / (int) head.ms_per_frame() * head.framesize;
         byte[] arr = new byte[in.available()];
 
         in.skip(numberBytesToSkip);

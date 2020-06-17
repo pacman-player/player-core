@@ -117,96 +117,103 @@
                 <div class="content has-text-centered">
                     <div class="container-fluid" style="padding-bottom: 30px">
                         <div class="row">
-<!--                            &lt;!&ndash;центральный блок&ndash;&gt;-->
-                            <button class="close button btn-lg" id="closePlayerBtn" onclick="PopUpHide()"><svg class="bi bi-x" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
-                                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/>
-                            </svg></button>
+                            <!--                            &lt;!&ndash;центральный блок&ndash;&gt;-->
+                            <button class="close button btn-lg" id="closePlayerBtn" onclick="PopUpHide()">
+                                <svg class="bi bi-x" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z"
+                                          clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd"
+                                          d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
                             <!--                            <a href="javascript:PopUpHide()">Закрыть</a>-->
-<!--                            <H3> Мой плейлист</H3>-->
-<!--                            <div class="col-fhd-4 col-xl-5 col-lg-6">-->
-<!--                                <ul class="nav nav-tabs nav-content " role="tablist">-->
-<!--                                    <li id="morning-music-nav" class="active">-->
-<!--                                        <a href="#morning" aria-controls="morning-music-nav" role="tab"-->
-<!--                                           data-toggle="tab">-->
-<!--                                            <h5>Утро</h5>8:00 - 12:00</a>-->
-<!--                                    </li>-->
-<!--                                    <li id="midday-music-nav">-->
-<!--                                        <a href="#midday" aria-controls="midday-music-nav" role="tab"-->
-<!--                                           data-toggle="tab">-->
-<!--                                            <h5>День</h5>12:00 - 18:00</a>-->
-<!--                                    </li>-->
-<!--                                    <li id="evening-music-nav">-->
-<!--                                        <a href="#evening" aria-controls="evening-music-nav" role="tab"-->
-<!--                                           data-toggle="tab">-->
-<!--                                            <h5>Вечер</h5>18:00 - 8:00</a>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
+                            <!--                            <H3> Мой плейлист</H3>-->
+                            <!--                            <div class="col-fhd-4 col-xl-5 col-lg-6">-->
+                            <!--                                <ul class="nav nav-tabs nav-content " role="tablist">-->
+                            <!--                                    <li id="morning-music-nav" class="active">-->
+                            <!--                                        <a href="#morning" aria-controls="morning-music-nav" role="tab"-->
+                            <!--                                           data-toggle="tab">-->
+                            <!--                                            <h5>Утро</h5>8:00 - 12:00</a>-->
+                            <!--                                    </li>-->
+                            <!--                                    <li id="midday-music-nav">-->
+                            <!--                                        <a href="#midday" aria-controls="midday-music-nav" role="tab"-->
+                            <!--                                           data-toggle="tab">-->
+                            <!--                                            <h5>День</h5>12:00 - 18:00</a>-->
+                            <!--                                    </li>-->
+                            <!--                                    <li id="evening-music-nav">-->
+                            <!--                                        <a href="#evening" aria-controls="evening-music-nav" role="tab"-->
+                            <!--                                           data-toggle="tab">-->
+                            <!--                                            <h5>Вечер</h5>18:00 - 8:00</a>-->
+                            <!--                                    </li>-->
+                            <!--                                </ul>-->
 
-<!--                                <div class="tab-content">-->
-<!--                                    <div role="tabpanel" class="tab-pane active" id="morning">-->
-<!--                                        <div class="panel panel-default table-panel">-->
-<!--                                            <div class="tab-content">-->
-<!--                                                <div class="panel-body">-->
-<!--                                                    <h3>Подборки утреннего плейлиста</h3>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div role="tabpanel" class="tab-pane" id="midday">-->
-<!--                                        <div class="panel panel-default table-panel">-->
-<!--                                            <div class="tab-content">-->
-<!--                                                <div class="panel-body">-->
-<!--                                                    <h3>Подборки дневного плейлиста</h3>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div role="tabpanel" class="tab-pane" id="evening">-->
-<!--                                        <div class="panel panel-default table-panel">-->
-<!--                                            <div class="tab-content">-->
-<!--                                                <div class="panel-body">-->
-<!--                                                    <h3>Подборки вечернего плейлиста</h3>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                                <div class="tab-content">-->
+                            <!--                                    <div role="tabpanel" class="tab-pane active" id="morning">-->
+                            <!--                                        <div class="panel panel-default table-panel">-->
+                            <!--                                            <div class="tab-content">-->
+                            <!--                                                <div class="panel-body">-->
+                            <!--                                                    <h3>Подборки утреннего плейлиста</h3>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <div role="tabpanel" class="tab-pane" id="midday">-->
+                            <!--                                        <div class="panel panel-default table-panel">-->
+                            <!--                                            <div class="tab-content">-->
+                            <!--                                                <div class="panel-body">-->
+                            <!--                                                    <h3>Подборки дневного плейлиста</h3>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <div role="tabpanel" class="tab-pane" id="evening">-->
+                            <!--                                        <div class="panel panel-default table-panel">-->
+                            <!--                                            <div class="tab-content">-->
+                            <!--                                                <div class="panel-body">-->
+                            <!--                                                    <h3>Подборки вечернего плейлиста</h3>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                             <!--подборка по жанрам-->
-<!--                            <div id="Genres" class="col-fhd-8 col-xl-7 col-lg-6 row">-->
-<!--&lt;!&ndash;                                <button class="btn" id="allGenBtn">Подборки по жанрам</button>&ndash;&gt;-->
-<!--                            </div>-->
+                            <!--                            <div id="Genres" class="col-fhd-8 col-xl-7 col-lg-6 row">-->
+                            <!--&lt;!&ndash;                                <button class="btn" id="allGenBtn">Подборки по жанрам</button>&ndash;&gt;-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
 
-<!--                <div class="modal fade" id="modalPlaylist">-->
-<!--                    <div class="modal-dialog">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <button class="close" data-dismiss="modal">&times;</button>-->
-<!--                                <h4 id="modalPlaylistName"></h4>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                <table class="table table-condensed table-hover table-striped table-responsive">-->
-<!--                                    <thead>-->
-<!--                                    <tr>-->
-<!--                                        <th>Musics title</th>-->
-<!--                                        <th>Author</th>-->
-<!--                                        <th>Genre</th>-->
-<!--                                        <th style="width: 20%">Options</th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
-<!--                                    <tbody id="modalPlaylistTableBody"></tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                            <div class="modal-footer">-->
-<!--                                <button class="btn" data-dismiss="modal">Close</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <!--                <div class="modal fade" id="modalPlaylist">-->
+                <!--                    <div class="modal-dialog">-->
+                <!--                        <div class="modal-content">-->
+                <!--                            <div class="modal-header">-->
+                <!--                                <button class="close" data-dismiss="modal">&times;</button>-->
+                <!--                                <h4 id="modalPlaylistName"></h4>-->
+                <!--                            </div>-->
+                <!--                            <div class="modal-body">-->
+                <!--                                <table class="table table-condensed table-hover table-striped table-responsive">-->
+                <!--                                    <thead>-->
+                <!--                                    <tr>-->
+                <!--                                        <th>Musics title</th>-->
+                <!--                                        <th>Author</th>-->
+                <!--                                        <th>Genre</th>-->
+                <!--                                        <th style="width: 20%">Options</th>-->
+                <!--                                    </tr>-->
+                <!--                                    </thead>-->
+                <!--                                    <tbody id="modalPlaylistTableBody"></tbody>-->
+                <!--                                </table>-->
+                <!--                            </div>-->
+                <!--                            <div class="modal-footer">-->
+                <!--                                <button class="btn" data-dismiss="modal">Close</button>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <audio controls="controls" id="player" type='audio/mpeg; codecs="MP3"' src=""
                        style="min-width: 500px" hidden="hidden">
                     Your browser doesnt support the audio element/ Please, update your browser or download

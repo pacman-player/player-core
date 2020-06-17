@@ -24,7 +24,7 @@ public class MusicRestController {
 
     @GetMapping("/albums-cover/{musicAuthorId}/{musicTitleId}")
     public ResponseEntity getAlbumsCover(@PathVariable String musicAuthorId,
-                                         @PathVariable String musicTitleId){
+                                         @PathVariable String musicTitleId) {
         return musicService.albumsCover(musicAuthorId, musicTitleId);
     }
 }

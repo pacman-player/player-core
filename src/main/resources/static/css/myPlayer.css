@@ -65,11 +65,13 @@
     cursor: pointer;
     margin-left: 10px;
 }
+
 #volumebar {
     cursor: pointer;
     margin-left: 10px;
     vertical-align: middle;
 }
+
 .container {
     position: relative;
     display: inline-block;

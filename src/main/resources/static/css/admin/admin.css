@@ -35,9 +35,10 @@ body {
     margin-top: 30px;
 }
 
-.list{
+.list {
     padding-top: 20px;
 }
+
 .notify {
     padding: 5px 5px;
     margin-top: 10px;
@@ -51,7 +52,8 @@ body {
     margin-right: -50%;
     transform: translate(-50%, -50%)
 }
-#field{
+
+#field {
     padding: 10px 10px;
 }
 
@@ -127,30 +129,33 @@ body {
     transform: rotate(45deg);
 }
 
-.customcheck input:disabled{
+.customcheck input:disabled {
     background-color: #02cf32;
     border-radius: 10px;
 }
-input[type=checkbox][disabled]{
+
+input[type=checkbox][disabled] {
     background-color: #02cf32;
     border-radius: 10px;
 }
-input[type="checkbox"]:disabled+label
-{
-    color:#02cf32;
+
+input[type="checkbox"]:disabled + label {
+    color: #02cf32;
 }
 
-#check{
-    transform:scale(1.5);
-    opacity:0.9;
-    cursor:pointer;
+#check {
+    transform: scale(1.5);
+    opacity: 0.9;
+    cursor: pointer;
 
 }
-#select-all{
-    transform:scale(1.5);
-    opacity:0.9;
-    cursor:pointer;
+
+#select-all {
+    transform: scale(1.5);
+    opacity: 0.9;
+    cursor: pointer;
 }
+
 .width-auto {
     width: 100%;
     padding-left: 10%;
