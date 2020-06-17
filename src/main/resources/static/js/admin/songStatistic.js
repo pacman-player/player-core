@@ -46,10 +46,5 @@ function getStatisticDiagram(statisticData) {
             containerId: 'statisticDiagram'
         });
         wrapper.draw();
-        /*var data = google.visualization.arrayToDataTable([
-            ['', 'Россия', 'США', 'canada', 'mexico', 'dwdw', 'wdwdwddw', 'dwwd', 'fasasf', 'asasdasd', 'affas'],
-            ['0', 1.3, 70, 12, 24, 43, 12, 123, 54, 12, 41],
-            ['', 'Россия', 'США', 'canada', 'mexico', 'dwdw', 'wdwdwddw', 'dwwd', 'fasasf', 'asasdasd', 'affas']
-        ]);*/
     }
 }

@@ -19,24 +19,18 @@ public class SongStatisticServiceImpl extends AbstractServiceImpl<Long, SongStat
     }
 
     @Override
-    public Long getOrderCountBySongName(String songName) {
-        return dao.getOrderCountBySongName(songName);
-    }
-
-    @Override
     public List<SongStatistic> getSortedTopList(int songsCount, String period) {
         switch (period) {
-            case "day": return dao.getSortedTopListForDay(songsCount);
-            case "week": return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusWeeks(1)));
-            case "month": return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusMonths(1)));
-            case "year": return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusYears(1)));
+            case "day":
+                return dao.getSortedTopListForDay(songsCount);
+            case "week":
+                return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusWeeks(1)));
+            case "month":
+                return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusMonths(1)));
+            case "year":
+                return dao.getSortedTopListForRange(songsCount, Date.valueOf(LocalDate.now().minusYears(1)));
         }
         return dao.getSortedTopListForDay(songsCount);
-    }
-
-    @Override
-    public void save(SongStatistic entity) {
-
     }
 
     @Override
@@ -53,37 +47,8 @@ public class SongStatisticServiceImpl extends AbstractServiceImpl<Long, SongStat
     }
 
     @Override
-    public SongStatistic getById(Long id) {
-        return null;
-    }
-
-    @Override
-    public void update(SongStatistic entity) {
-
-    }
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
-    public boolean isExistById(Long id) {
-        return false;
-    }
-
-    @Override
-    public List<SongStatistic> findByNameContaining(String param) {
-        return null;
-    }
-
-    @Override
     public List<SongStatistic> getAll() {
         return dao.getAll();
     }
 
-    @Override
-    public SongStatistic getRecordById(Long id) {
-        return null;
-    }
 }
