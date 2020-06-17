@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
 
-        private boolean success;
-        private ErrorMessage errorMessage;
-        private T data;
-
+    private boolean success;
+    private ErrorMessage errorMessage;
+    private T data;
 
 
     public boolean isSuccess() {

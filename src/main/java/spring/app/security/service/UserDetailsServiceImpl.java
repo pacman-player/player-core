@@ -9,22 +9,22 @@ import spring.app.model.User;
 import spring.app.service.abstraction.UserService;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {	//сервис, отвечающий за получение аутентификации пользователя
+public class UserDetailsServiceImpl implements UserDetailsService {    //сервис, отвечающий за получение аутентификации пользователя
 
-	private final UserService userService;
+    private final UserService userService;
 
-	@Autowired
-	public UserDetailsServiceImpl(UserService userService) {
-		this.userService = userService;
-	}
+    @Autowired
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		User user = userService.getUserByLogin(login);
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userService.getUserByLogin(login);
 
-		if (user == null) {
-			throw new UsernameNotFoundException("Username " + login + " not found");
-		}
-		return user;
-	}
+        if (user == null) {
+            throw new UsernameNotFoundException("Username " + login + " not found");
+        }
+        return user;
+    }
 }

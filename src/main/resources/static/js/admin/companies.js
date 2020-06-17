@@ -30,7 +30,7 @@ $(document).ready(function () {
                     htmlTable += ('<td id="tableCloseTime">' + listCompanies[i].closeTime + '</td>');
                     htmlTable += ('<td id="tableOrgType">' + listCompanies[i].orgTypeName + '</td>');
                     htmlTable += ('<td id="tableUser">' + listCompanies[i].userLogin + '</td>');
-                    htmlTable += ('<td id="tableTariff">' + tariff + '₽' +  '</td>');
+                    htmlTable += ('<td id="tableTariff">' + tariff + '₽' + '</td>');
                     htmlTable += ('<td><button id="showEditModalCompaniesBtn" class="btn btn-sm btn-info" type="button" data-toggle="modal"' +
                         ' data-target="#editCompany">изменить</button></td>');
                     // htmlTable += ('<td><button id="deleteUser" class="btn btn-sm btn-info" type="button">удалить</button></td>');
@@ -123,7 +123,7 @@ $(document).ready(function () {
                 $('#updateTariff').val(companies.tariff);
                 $("#updateOrgType option[value='" + companies.orgType.id + "'] ").prop("selected", true);
             },
-            error:  function (xhr, status, error) {
+            error: function (xhr, status, error) {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
             }
         })

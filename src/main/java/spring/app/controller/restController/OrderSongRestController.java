@@ -29,10 +29,12 @@ public class OrderSongRestController {
     public void setOrderSongService(OrderSongService orderSongService) {
         this.orderSongService = orderSongService;
     }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
     @Autowired
     public void setCompanyService(CompanyService companyService) {
         this.companyService = companyService;
@@ -40,7 +42,7 @@ public class OrderSongRestController {
 
     @GetMapping(value = "/getOrders")
     public List<String> getOrders() {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = userService.getUserByLogin(user.getUsername());
         Long companyId = user.getCompany().getId();
         List<String> ordersClassified = new ArrayList<>();
@@ -54,7 +56,7 @@ public class OrderSongRestController {
 
     @GetMapping(value = "/getSongsInQueue")
     public List<String> getSongsInQueue() {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = userService.getUserByLogin(user.getUsername());
         Long companyId = user.getCompany().getId();
         List<String> queueList = companyService.getAllSongsInQueueByCompanyId(companyId);

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AddressDto;
 import spring.app.dto.CompanyDto;
+import spring.app.dto.OrgTypeDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.*;
 import spring.app.service.abstraction.*;
@@ -208,7 +209,7 @@ public class RegistrationRestController {
     }
 
     @GetMapping(value = "/get_all_orgTypes")
-    public List<OrgType> getAllOrgTypes() {
-        return orgTypeService.getAll();
+    public List<OrgTypeDto> getAllOrgTypes() {
+        return orgTypeService.getAllOrgTypeDto();
     }
 }
