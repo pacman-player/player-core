@@ -24,8 +24,13 @@ public class AdminTagRestController {
     }
 
     @GetMapping(value = "/all_tags")
-    public List<TagDto> getAllTags() {
-        return tagService.getAllTagDto();
+    public List<TagDto> getAllTags(@RequestParam("size") int pageSize, @RequestParam("page") int pageNo) {
+        return tagService.getAllTagDto(pageSize, pageNo - 1);
+    }
+
+    @GetMapping(value = "/count_tags")
+    public Long getCountTags(){
+        return tagService.getRowsCountTagDto();
     }
 
     @GetMapping(value = "/is_free")
