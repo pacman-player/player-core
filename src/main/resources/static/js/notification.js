@@ -39,7 +39,7 @@ function getNotificationNumber() {
         },
         async: true,
         cache: false,
-       dataType: 'JSON',
+        dataType: 'JSON',
         success: function (listNotification) {
             let text = $('#notification').text();
             var numb = 0;
@@ -86,15 +86,15 @@ $(document).ready(function () {
             },
             async: true,
             cache: false,
-          //  dataType: 'JSON',
+            //  dataType: 'JSON',
             success: function (listNotification) {
                 let notification = '';
                 if (0 < listNotification.length) {
                     let length = listNotification.length - 1;
                     for (let i = 0; i < listNotification.length; i++) {
-                        let active = listNotification[length-i].flag ? "btnNotificationActive" : "btnNotificationNotActive";
-                            notification += (`<div class="elemNotification" id="${listNotification[length-i].id}"><input type="button"
-                                class="${active}"><span class="notificationElement">${listNotification[length-i].message}</span></div>`);
+                        let active = listNotification[length - i].flag ? "btnNotificationActive" : "btnNotificationNotActive";
+                        notification += (`<div class="elemNotification" id="${listNotification[length - i].id}"><input type="button"
+                                class="${active}"><span class="notificationElement">${listNotification[length - i].message}</span></div>`);
                     }
                     getTemplateProcessNotify("default");
                     $("#listNotification").html(notification);
@@ -123,7 +123,7 @@ $(document).ready(function () {
         event.preventDefault();
         $(this).attr("class", "btnNotificationNotActive");
         readNotification($(this).closest("div").attr("id"));
-       // getNotificationNumber();
+        // getNotificationNumber();
     });
 
     //пометить как прочитаное

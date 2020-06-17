@@ -68,6 +68,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     }
 
     @Override
+    @Transactional
     public void addSongToSongCompilation(Long compilationId, Long songId) {
         dao.addSongToSongCompilation(
                 getSongCompilationById(compilationId),
@@ -76,6 +77,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
 
     @Override
+    @Transactional
     public void removeSongFromSongCompilation(Long compilationId, Long songId) {
         dao.removeSongFromSongCompilation(
                 getSongCompilationById(compilationId),
@@ -245,11 +247,11 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
 
     @Override
+    @Transactional
     public void deleteSongCompilation(SongCompilation songCompilation) throws IOException {
         if (songCompilation.getCover() != null) {
             fileUploadService.eraseCurrentFile(songCompilation.getCover());
         }
-
         dao.deleteById(songCompilation.getId());
     }
 
@@ -280,6 +282,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
         return songCompilationDto.getAllCompilationsPlaylistByCompanyIdDto(id, namePlayList);
     }
+
     @Override
     public SongCompilation getSongCompilationByCompilationName(String compilationName) {
         return dao.getSongCompilationByCompilationName(compilationName);
@@ -289,7 +292,6 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     public List<SongDto> getAvailableSongsForCompilationByIdDto(Long compilationId) {
         return songCompilationDtoDao.getAvailableContentForCompilationDto(dao.getById(compilationId));
     }
-
 
 
 }

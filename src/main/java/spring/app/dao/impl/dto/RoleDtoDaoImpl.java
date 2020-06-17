@@ -34,7 +34,7 @@ public class RoleDtoDaoImpl implements RoleDtoDao {
             )
                     .setParameter("name", roleName)
                     .getSingleResult();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
         return roleDto;
@@ -50,7 +50,7 @@ public class RoleDtoDaoImpl implements RoleDtoDao {
             )
                     .setParameter("id", id)
                     .getSingleResult();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
         return roleDto;

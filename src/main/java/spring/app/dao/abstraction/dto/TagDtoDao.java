@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface TagDtoDao {
 
-    List<TagDto> getAll();
+    List<TagDto> getAll(int pageSize, int pageNo);
+
+    Long getRowsCount();
 
 }

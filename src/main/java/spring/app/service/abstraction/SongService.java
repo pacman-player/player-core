@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
-public interface SongService extends GenericService<Long, Song>{
+public interface SongService extends GenericService<Long, Song> {
 
     boolean isExist(String name);
 
@@ -23,7 +23,7 @@ public interface SongService extends GenericService<Long, Song>{
 
     List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo);
 
-    List<Song> getAllSongInSongCompilation(Long id);
+    List<SongDto> getAllSongsByCompilationId(Long id);
 
     List<Song> getAllApprovedSongs();
 
@@ -45,6 +45,8 @@ public interface SongService extends GenericService<Long, Song>{
     void setTags(Song song, String tagString);
 
     void setTags(Song song, Set<String> stringTags);
+
+    List<SongDto> listOfSongsDtoByName(String name);
 
     List<SongDto> listOfSongsByTag(String tag);
 

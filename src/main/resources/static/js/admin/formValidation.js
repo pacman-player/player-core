@@ -29,7 +29,7 @@ $(document).ready(function () {
             success: function (isExistEmail) {
                 if (isExistEmail) {
                     message = "Такой email уже существует";
-                    isValid=false;
+                    isValid = false;
                     document.getElementById('email-error')
                         .innerHTML = '<span class="error">' + message + '</span>';
                 }
@@ -39,7 +39,7 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-        if(isValid){
+        if (isValid) {
             let error = document.getElementById('email-error');
             if (error !== null) {
                 error.innerHTML = '';
@@ -86,7 +86,7 @@ $(document).ready(function () {
                     alert(xhr.responseText + '|\n' + status + '|\n' + error);
                 }
         });
-        if(isValid){
+        if (isValid) {
             let error = document.getElementById('login-error');
             if (error !== null) {
                 error.innerHTML = '';

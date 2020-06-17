@@ -174,8 +174,8 @@ function getAvailableCompilationContentById(compilationId) {
             for (let i = 0; i < songs.length; i++) {
                 let id = songs[i].id;
                 let name = songs[i].name;
-                let author = songs[i].author.name;
-                let genre = songs[i].genre.name;
+                let author = songs[i].authorName;
+                let genre = songs[i].genreName;
 
                 let tr = $("<tr/>");
                 tr.append(`
