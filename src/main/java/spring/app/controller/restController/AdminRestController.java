@@ -8,15 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import spring.app.dto.CompanyDto;
-import spring.app.dto.OrgTypeDto;
-import spring.app.dto.RoleDto;
-import spring.app.dto.UserDto;
+import spring.app.dto.*;
 import spring.app.model.*;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.OrgTypeService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 import spring.app.util.ResponseBuilder;
 
 import java.time.LocalTime;
@@ -35,15 +29,17 @@ public class AdminRestController<T> {
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
     private final ResponseBuilder responseBuilder;
+    private final AddressService addressService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder) {
+                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder, AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.responseBuilder = responseBuilder;
+        this.addressService = addressService;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -146,18 +142,21 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
+        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
         LOGGER.info("POST request '/company'");
         User userId = userService.getById(companyDto.getUserId());
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
-        company.setName(companyDto.getName());
-        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
-        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
-        company.setUser(userId);
-        company.setOrgType(orgType);
-        company.setTariff(companyDto.getTariff());
+            company.setName(companyDto.getName());
+            company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+            company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+            company.setUser(userId);
+            company.setOrgType(orgType);
+            company.setTariff(companyDto.getTariff());
         companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
+        }
+
     }
 
     @PostMapping(value = "/add_establishment")
@@ -234,14 +233,38 @@ public class AdminRestController<T> {
         return responseBuilder.success(roles);
     }
 
-    @PostMapping(value = "/add_company")
-    public void addCompany(@RequestBody CompanyDto companyDto) {
-        LOGGER.info("POST request '/add_company'");
-        OrgType orgType = new OrgType(companyDto.getOrgType());
-        Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
-                LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.save(company);
-        LOGGER.info("Added Company = {}", company);
+    @PostMapping(value = "/add_company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void addCompany(@RequestBody
+                                       CompanyDto companyDto) {
+        if (!companyService.isExistCompanyByName(companyDto.getName())) {
+            OrgType orgType = new OrgType(companyDto.getOrgType());
+            User userId;
+            Company company;
+            if (companyDto.getUserId() == null) {
+                userId = null;
+            } else {
+                userId = userService.getById(companyDto.getUserId());
+            }
+            if (!(companyDto.getAddressCity() == null)) {
+                addressService.save(new Address(
+                        companyDto.getAddressCountry(),
+                        companyDto.getAddressCity(),
+                        companyDto.getAddressStreet(),
+                        companyDto.getAddressHouse(),
+                        companyDto.getAddressLatitude(),
+                        companyDto.getAddressLongitude()
+                ));
+                company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                        LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
+                company.setAddress(addressService.getById(addressService.getLastId()));
+            } else {
+                company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                        LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
+            }
+            companyService.save(company);
+        }
     }
 
     @GetMapping(value = "/check/email")
