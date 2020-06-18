@@ -74,7 +74,7 @@ public class UserDtoDaoImpl implements UserDtoDao {
         @Override
         public Object transformTuple(Object[] tuple, String[] aliacess) {
             long userId = (long) tuple[0];
-            String login =  (String) tuple[1];
+            String login = (String) tuple[1];
             String email = (String) tuple[2];
             String password = (String) tuple[3];
             Boolean enabled = (Boolean) tuple[4];

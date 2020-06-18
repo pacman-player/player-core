@@ -81,7 +81,6 @@ public class AdminRestController<T> {
     }
 
 
-
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<CompanyDto> getAllCompanies() {
@@ -188,7 +187,7 @@ public class AdminRestController<T> {
 
     @GetMapping(value = "/all_roles")
     public Response getAllRoles() {
-       Response response = responseBuilder.success(roleService.getAllRolesDto());
+        Response response = responseBuilder.success(roleService.getAllRolesDto());
         return response;
     }
 

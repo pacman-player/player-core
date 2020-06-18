@@ -313,12 +313,12 @@ $('#editFormGenreSong').on('submit', function () {
     });
 });
 
-let changeGenresBtn = function(event) {
+let changeGenresBtn = function (event) {
     let checkedItems = $('.chcheck:checked').length;
     let checkedAll = $('.chcheckAll:checked').length;
 
-    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll ==0);
-    }
+    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll == 0);
+}
 
 $(document).on("change", ".chcheck", changeGenresBtn);
 $(document).on("change", ".chcheckAll", changeGenresBtn);

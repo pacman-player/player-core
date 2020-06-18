@@ -91,19 +91,19 @@ function editSong(id) {
 }
 
 // Listen for click on toggle checkbox
-$('#select-all').click(function(event) {
+$('#select-all').click(function (event) {
 
-    if(this.checked) {
+    if (this.checked) {
         // Iterate each checkbox
-        $(':checkbox').each(function() {
-            if($(this).is(':visible')){
-                 this.checked = true;
-            }else{
-                this.checked =false;
+        $(':checkbox').each(function () {
+            if ($(this).is(':visible')) {
+                this.checked = true;
+            } else {
+                this.checked = false;
             }
         });
     } else {
-        $(':checkbox').each(function() {
+        $(':checkbox').each(function () {
             this.checked = false;
         });
     }

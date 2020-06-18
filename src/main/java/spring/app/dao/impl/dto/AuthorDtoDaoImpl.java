@@ -66,7 +66,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         @Override
         public Object transformTuple(Object[] tuple, String[] aliaces) {
             long authorId = (long) tuple[0];
-            String name =  (String) tuple[1];
+            String name = (String) tuple[1];
             Timestamp createdAt = (Timestamp) tuple[2];
             Boolean approved = (Boolean) tuple[3];
             String genre = (String) tuple[4];

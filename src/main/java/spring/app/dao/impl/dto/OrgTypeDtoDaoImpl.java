@@ -5,6 +5,7 @@ import org.hibernate.transform.ResultTransformer;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.OrgTypeDtoDao;
 import spring.app.dto.OrgTypeDto;
+import spring.app.model.OrgType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,16 +20,14 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @SuppressWarnings("unchecked")
     public List<OrgTypeDto> getAll() {
-        List<OrgTypeDto> orgTypeDtoList = entityManager.createQuery(
-                "SELECT o.id, o.name, g.name " +
-                        "FROM OrgType o LEFT JOIN o.genres g"
-        )
-                .unwrap(Query.class)
-                .setResultTransformer(new OrgTypeDtoTransformer())
-                .list();
+        String query = "SELECT ot.id, ot.name, g.name FROM OrgType ot LEFT JOIN ot.genres g";
 
-        return orgTypeDtoList;
+        return entityManager.createQuery(query)
+                            .unwrap(Query.class)
+                            .setResultTransformer(new OrgTypeDtoTransformer())
+                            .list();
     }
 
 
@@ -56,7 +55,7 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
         }
 
         @Override
-        public List transformList(List list) {
+        public List<OrgTypeDto> transformList(List list) {
             for (OrgTypeDto orgTypeDto : roots) {
                 List<String> genres = genresMap.get(orgTypeDto.getId());
                 orgTypeDto.setGenres(genres);

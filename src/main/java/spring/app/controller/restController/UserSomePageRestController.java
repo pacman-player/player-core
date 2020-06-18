@@ -28,9 +28,9 @@ public class UserSomePageRestController {
             @RequestParam("songName") String songName,
             @RequestParam("file") MultipartFile file) throws UnsupportedEncodingException {
         LOGGER.info("POST request '/fileUpload' with Song Author = {}, Name = {}, Genre = {}",
-                    songAuthor,
-                    songName,
-                    songGenre);
+                songAuthor,
+                songName,
+                songGenre);
         try {
             ResponseEntity<String> result = fileUploadService.upload(
                     songAuthor,
@@ -39,7 +39,7 @@ public class UserSomePageRestController {
                     file);
             LOGGER.info("Success!");
             return result;
-        } catch (UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage(), e);
             throw e;
         }
