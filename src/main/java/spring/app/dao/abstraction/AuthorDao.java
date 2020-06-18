@@ -16,5 +16,4 @@ public interface AuthorDao extends GenericDao<Long, Author> {
 
     int getLastApprovedPageNumber(int pageSize);
 
-    void delete(Author author);
 }

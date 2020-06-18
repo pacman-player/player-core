@@ -34,5 +34,4 @@ public interface AuthorService extends GenericService<Long, Author> {
 
     List<AuthorDto> getAuthorsOfGenre(Long genreID);
 
-    void delete(Author author);
 }

@@ -60,8 +60,8 @@
                                                 <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
-                                                <th>Добавить песни</th>
-                                                <th>Удалить песни</th>
+                                                <th>Добавить авторов</th>
+                                                <th>Удалить авторов</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -167,14 +167,14 @@
                         </div>
 
                         <!-- Изменение жанра песен относящихся к выбранному жанру (модальное окно) -->
-                        <div id="addSongGenreManagement" class="modal fade">
+                        <div id="addAuthorGenreManagement" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                                 id="btnCloseModal">×
                                         </button>
-                                        <h4 class="modal-title">Добавить песни к жанру</h4>
+                                        <h4 class="modal-title">Список авторов</h4>
                                     </div>
 
                                     <div class="modal-body">
@@ -189,7 +189,7 @@
                                                                 <input id="genreId" type="hidden" name="genreId" value=""/>
                                                                 <input id="operationID" type="hidden" name="operationID" value=""/>
                                                                 <div class="col-md-18">
-                                                                    <table id="listOfSongsByGenre" class="table">
+                                                                    <table id="listOfAuthorsByGenre" class="table">
                                                                         <tr>
                                                                             <td>
                                                                             </td>
@@ -202,8 +202,8 @@
                                                         <div class="form-group text-center edit-form">
                                                             <div class="modal-footer">
                                                                 <button id="changeGenresBtn"
-                                                                        class="btn btn-success"
-                                                                        type="submit" onclick="saveGenreSongs();">
+                                                                        class="btn btn-primary"
+                                                                        type="submit" onclick="saveGenreAuthors();">
                                                                     Добавить
                                                                 </button>
                                                                 <button type="button"

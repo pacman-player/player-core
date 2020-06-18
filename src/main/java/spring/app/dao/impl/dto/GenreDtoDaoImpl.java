@@ -19,18 +19,17 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
 
     @Override
     public List<GenreDto> getAll() {
-        String hql = "SELECT new spring.app.dto.GenreDto(genre.id, genre.name, genre.isApproved, g.keywords) FROM Genre genre";
-
+        String hql = "SELECT new spring.app.dto.GenreDto(genre.id, genre.name, genre.isApproved, genre.keywords) FROM Genre genre";
         return entityManager.createQuery(hql, GenreDto.class)
-                            .getResultList();
+                .getResultList();
     }
 
     //TODO: replace from DtoDao to EntityDao
     @Override
     public boolean isExistByName(String name) {
         long count = entityManager.createQuery("SELECT count(g.id) FROM Genre g WHERE g.name = :name", Long.class)
-                                  .setParameter("name", name)
-                                  .getSingleResult();
+                .setParameter("name", name)
+                .getSingleResult();
 
         return count != 0;
     }

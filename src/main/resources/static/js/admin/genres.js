@@ -213,17 +213,17 @@ function getTable() {
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
-                                        id="addSongsToGenreBtn"
-                                        onclick="addSongsToGenre(${id}, '${name}')">
-                                    Добавить песни
+                                        id="addAuthorsToGenreBtn"
+                                        onclick="addAuthorsToGenre(${id}, '${name}')">
+                                    Добавить авторов
                                 </button>
                             </td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
-                                        id="deleteSongsFromGenreBtn"
-                                        onclick="deleteSongsFromGenre(${id}, '${name}')">
-                                    Удалить песни
+                                        id="deleteAuthorsFromGenreBtn"
+                                        onclick="deleteAuthorsFromGenre(${id}, '${name}')">
+                                    Удалить авторов
                                 </button>
                             </td>
 `);
@@ -234,39 +234,35 @@ function getTable() {
 }
 
 // выводим список всех песен в модальное окно "addsongGenreManagement"
-function getSongsOutOfGenre(genreId) {
-    $.getJSON('/api/admin/song/authors_out_of_genre', {genreId: genreId},
-        function (json) {
-            $('#listOfSongsByGenre').html('');
+function getAuthorsGenre(genreId, url) {
+    $.ajax({
+        method: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(genreId),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        success: function (data) {
+            $('#listOfAuthorsByGenre').html('');
             let tr;
-            $.each(json, function (i, authorDto) {
+            $.each(data, function (i, authorDto) {
                 tr = $('<tr/>');
                 tr.append("<td> <input class='chcheck' id='check' type='checkbox' name='song' value='" +
-                    authorDto.id + "'>" + "   " + authorDto.name + "</td>");
-                $("#listOfSongsByGenre").append(tr);
+                    authorDto[0] + "'>" + "   " + authorDto[1] + "</td>");
+                $("#listOfAuthorsByGenre").append(tr);
             });
-        });
+        }
+    });
 }
 
-function getSongsOfGenre(genreId) {
-    $.getJSON('/api/author/authors_of_genre', {genreId: genreId},
-        function (json) {
-            $('#listOfSongsByGenre').html('');
-            let tr;
-            $.each(json, function (i, songDto) {
-                tr = $('<tr/>');
-                tr.append("<td> <input class='chcheck' id='check' type='checkbox' name='song' value='" +
-                    songDto.id + "'>" + songDto.name + "</td>");
-                $("#listOfSongsByGenre").append(tr);
-            });
-        });
-}
-
-function addSongsToGenre(id) {
-    getSongsOutOfGenre(id);
+function addAuthorsToGenre(id) {
+    getAuthorsGenre(id, '/api/author/authors_out_of_genre');
     document.getElementById("genreId").value = id;
     document.getElementById("operationID").value = "add";
-    let theModal = $("#addSongGenreManagement");
+    document.getElementById("changeGenresBtn").innerText = "Добавить";
+    let theModal = $("#addAuthorGenreManagement");
     // показываем строки с выбраныым ИД жанра
     $('.' + id).show();
     theModal.id = id;
@@ -277,11 +273,12 @@ function addSongsToGenre(id) {
     });
 }
 
-function deleteSongsFromGenre(id, name) {
-    getSongsOfGenre(id);
+function deleteAuthorsFromGenre(id) {
+    getAuthorsGenre(id, '/api/author/authors_of_genre');
     document.getElementById("operationID").value = "delete";
     document.getElementById("genreId").value = id;
-    let theModal = $("#addSongGenreManagement");
+    document.getElementById("changeGenresBtn").innerText = "Удалить";
+    let theModal = $("#addAuthorGenreManagement");
 // показываем строки с выбраныым ИД жанра
     $('.' + id).show();
     theModal.modal("show");
@@ -301,20 +298,17 @@ let updateObject = {};
             updateObject[i] = ($(this).val());
         }
     });
+    updateObject[-2] =  document.getElementById("operationID").value;
     updateObject[-1] =  document.getElementById("genreId").value;
     return updateObject;
 }
 
 
-function saveGenreSongs() {
+function saveGenreAuthors() {
     let updateObject = {};
-    let url = '/api/author/update_authors';
-    if (document.getElementById("operationID").value == "delete") {
-        alert(url = '/api/author/delete_authors')
-    }
     updateObject = pullUpdateObject();
     $.ajax({
-        url: url,
+        url: '/api/author/update_authors',
         data: JSON.stringify(updateObject),
         contentType: "application/json;charset=UTF-8",
         method: 'PUT',
@@ -330,6 +324,7 @@ function saveGenreSongs() {
             updateObject = [];
         },
     });
+    $('#addAuthorGenreManagement').modal('hide');
 }
 
 let changeGenresBtn = function (event) {

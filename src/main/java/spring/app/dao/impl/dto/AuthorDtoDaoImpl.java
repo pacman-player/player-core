@@ -63,9 +63,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         List<AuthorDto> authorDtos = entityManager.createQuery(
                 "SELECT a.id, a.name FROM Author a LEFT JOIN a.genres g WHERE g.id <> :genreID")
                 .setParameter("genreID", genreID)
-                .unwrap(Query.class)
-                .setResultTransformer(new AuthorDtoTransformer())
-                .list();
+                .getResultList();
         return authorDtos;
     }
 
@@ -74,9 +72,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         List<AuthorDto> authorDtos = entityManager.createQuery(
                 "SELECT a.id, a.name FROM Author a LEFT JOIN a.genres g WHERE g.id = :genreID")
                 .setParameter("genreID", genreID)
-                .unwrap(Query.class)
-                .setResultTransformer(new AuthorDtoTransformer())
-                .list();
+                .getResultList();
         return authorDtos;
     }
 

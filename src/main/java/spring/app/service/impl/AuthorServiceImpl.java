@@ -116,9 +116,5 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return authorDtoDao.getAuthorsOfGenre(genreID);
     }
 
-    @Override
-    public void delete(Author author) {
-        dao.delete(author);
-    }
 
 }
