@@ -94,15 +94,17 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        LOGGER.info("POST request '/add_user'");
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
-        user.setRoles(getRoles(userDto.getRoles()));
-        user.setCompany(companyService.getById(Long.parseLong(userDto.getCompany())));
-        userService.save(user);
-        Company company = companyService.getById(Long.parseLong(userDto.getCompany()));
-        company.setUser(user);
-        companyService.update(company);
-        LOGGER.info("Added User = {}", user);
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompany().isEmpty())) {
+            LOGGER.info("POST request '/add_user'");
+            User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+            user.setRoles(getRoles(userDto.getRoles()));
+            user.setCompany(companyService.getById(Long.parseLong(userDto.getCompany())));
+            userService.save(user);
+            Company company = companyService.getById(Long.parseLong(userDto.getCompany()));
+            company.setUser(user);
+            companyService.update(company);
+            LOGGER.info("Added User = {}", user);
+        }
     }
 
     @PutMapping(value = "/update_user")

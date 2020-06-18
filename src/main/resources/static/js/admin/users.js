@@ -181,6 +181,7 @@ $(document).ready(function () {
                     notification("add-user" + user.login.replace(/[^\w]|_/g, ''),
                         " Пользователь " + user.login + " добавлен ",
                         'user-panel');
+                    getCompanyWithoutUser();
                 },
             error:
                 function (xhr, status, error) {
