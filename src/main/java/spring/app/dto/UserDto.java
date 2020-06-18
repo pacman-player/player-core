@@ -12,6 +12,7 @@ public class UserDto {
     private String password;
     private Boolean enabled = true;
     private Set<String> roles;
+    private String company;
 
     public UserDto(Long id, String login, String email, String password, Set<String> roles) {
         this.id = id;
@@ -113,5 +114,13 @@ public class UserDto {
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         result = 31 * result + (roles != null ? roles.hashCode() : 0);
         return result;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

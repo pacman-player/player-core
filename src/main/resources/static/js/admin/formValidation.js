@@ -152,7 +152,11 @@ $('#addForm').validate({
         },
         role: {
             required: true
+        },
+        company: {
+            required: true
         }
+
     },
     messages: {
         email: {
@@ -173,6 +177,9 @@ $('#addForm').validate({
         },
         role: {
             required: "Вы должны выбрать роль для пользователя"
+        },
+        company: {
+            required: "Выберете компанию"
         }
     },
 });
