@@ -284,7 +284,7 @@ function deleteAuthorsFromGenre(id) {
     theModal.modal("show");
     //очищаем option в модалке
     $('#btnClose, #btnCloseModal').click(function () {
-        $('#addAuthorGenreManagement').modal('clear');
+       // $('#addAuthorGenreManagement').modal('clear');
         $('.' + id).hide();
     });
 }
@@ -325,7 +325,7 @@ function saveGenreAuthors() {
             updateObject = [];
         },
     });
-    $('#addAuthorGenreManagement').modal('clear');
+    //$('#addAuthorGenreManagement').modal('clear');
     $('#addAuthorGenreManagement').modal('hide');
 }
 
