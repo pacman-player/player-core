@@ -215,7 +215,7 @@ function getTable() {
                                         class="btn btn-sm btn-info" 
                                         id="addAuthorsToGenreBtn"
                                         onclick="addAuthorsToGenre(${id}, '${name}')">
-                                    Добавить авторов
+                                    Добавить исполнителей
                                 </button>
                             </td>
                             <td>
@@ -223,7 +223,7 @@ function getTable() {
                                         class="btn btn-sm btn-info" 
                                         id="deleteAuthorsFromGenreBtn"
                                         onclick="deleteAuthorsFromGenre(${id}, '${name}')">
-                                    Удалить авторов
+                                    Удалить исполнителей
                                 </button>
                             </td>
 `);
@@ -284,6 +284,7 @@ function deleteAuthorsFromGenre(id) {
     theModal.modal("show");
     //очищаем option в модалке
     $('#btnClose, #btnCloseModal').click(function () {
+        $('#addAuthorGenreManagement').modal('clear');
         $('.' + id).hide();
     });
 }
@@ -324,6 +325,7 @@ function saveGenreAuthors() {
             updateObject = [];
         },
     });
+    $('#addAuthorGenreManagement').modal('clear');
     $('#addAuthorGenreManagement').modal('hide');
 }
 
