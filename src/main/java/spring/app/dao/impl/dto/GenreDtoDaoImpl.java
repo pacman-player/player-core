@@ -2,6 +2,7 @@ package spring.app.dao.impl.dto;
 
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
@@ -20,16 +21,18 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
     @Override
     public List<GenreDto> getAll() {
         String hql = "SELECT new spring.app.dto.GenreDto(genre.id, genre.name, genre.isApproved, genre.keywords) FROM Genre genre";
+
         return entityManager.createQuery(hql, GenreDto.class)
-                .getResultList();
+                            .getResultList();
     }
 
     //TODO: replace from DtoDao to EntityDao
     @Override
+    @Transactional
     public boolean isExistByName(String name) {
         long count = entityManager.createQuery("SELECT count(g.id) FROM Genre g WHERE g.name = :name", Long.class)
-                .setParameter("name", name)
-                .getSingleResult();
+                                  .setParameter("name", name)
+                                  .getSingleResult();
 
         return count != 0;
     }
