@@ -161,8 +161,12 @@ function deleteButton(id) {
                 ` Жанр c id ${id} удален`,
                 "genres-panel");
         },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        error: () => {
+            notification(
+                "delete-genre" + id,
+                `Жанр c id ${id} является жанром по умолчанию`,
+                "genres-panel");
+            $(`#success-alert-delete-genre${id}`).toggleClass('alert-success alert-danger');
         }
     })
 }

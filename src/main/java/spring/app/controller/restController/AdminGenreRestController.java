@@ -4,6 +4,8 @@ package spring.app.controller.restController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
@@ -102,19 +104,25 @@ public class AdminGenreRestController {
     }
 
     @DeleteMapping(value = "/delete_genre")
-    public void deleteGenre(@RequestBody Long id) {
+    public ResponseEntity<String> deleteGenre(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
-        genreService.deleteById(id);
-        LOGGER.info("Deleted Genre = {}", genre.getName());
-        try {
-            String message = "Was deleted genre " + genre.getName();
-            User user = (User) getContext().getAuthentication().getPrincipal();
-            notificationService.save(message, user.getId());
-            LOGGER.info("Sent Notification '{}'", message);
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
-            Thread.currentThread().interrupt();
+        if (genre.getDefault()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            genreService.deleteById(id);
+            LOGGER.info("Deleted Genre = {}", genre.getName());
+            try {
+                String message = "Was deleted genre " + genre.getName();
+                User user = (User) getContext().getAuthentication().getPrincipal();
+                notificationService.save(message, user.getId());
+                LOGGER.info("Sent Notification '{}'", message);
+            } catch (InterruptedException e) {
+                LOGGER.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
