@@ -4,7 +4,6 @@ package spring.app.controller.restController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
@@ -33,6 +32,7 @@ public class AdminGenreRestController {
     @GetMapping(value = "/all_genres")
     public List<GenreDto> getAllGenre() {
         return genreService.getAllGenreDto();
+
     }
 
     @PostMapping(value = "/add_genre")
@@ -92,9 +92,12 @@ public class AdminGenreRestController {
         }
     }
 
-    //TODO: remove id param
     @GetMapping(value = "/is_free")
-    public boolean isTypeNameFree(@RequestParam("name") String name) {
+    public boolean isTypeNameFree(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (genreService.getById(id).getName().equals(name)) {
+            return true;
+        }
         return !genreService.isExistByName(name);
     }
 }
