@@ -12,16 +12,18 @@ public class GenreDto extends Bannable {
     private String name;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private boolean isDefault;
     private String keywords;
 
     public GenreDto() {
     }
 
-public GenreDto(Long id, String name, Boolean isApproved) {
+    public GenreDto(Long id, String name, Boolean isApproved) {
         this.id = id;
         this.name = name;
         this.isApproved = isApproved;
     }
+
     public GenreDto(Long id, String name) {
         this.id = id;
         this.name = name;
@@ -43,11 +45,20 @@ public GenreDto(Long id, String name, Boolean isApproved) {
         this.keywords = keywords;
     }
 
+    public GenreDto(Long id, String name, Boolean isApproved, boolean isDefault, String keywords) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+        this.isDefault = isDefault;
+        this.keywords = keywords;
+    }
+
     //Для легкого и быстрого создания объекта GenreDto из Genre
     public GenreDto(Genre genre) {
         this.id = genre.getId();
         this.name = genre.getName();
         this.createdAt = genre.getCreatedAt();
+        this.isDefault = genre.getDefault();
         this.isApproved = genre.getApproved();
     }
 
@@ -82,6 +93,10 @@ public GenreDto(Long id, String name, Boolean isApproved) {
     public void setApproved(Boolean approved) {
         isApproved = approved;
     }
+
+    public boolean getDefault() {return isDefault;}
+
+    public void setDefault(boolean aDefault) {isDefault = aDefault;}
 
     public String getKeywords() {
         return keywords;

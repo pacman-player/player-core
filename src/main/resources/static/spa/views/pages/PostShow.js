@@ -1,30 +1,30 @@
 //оставил как образец
 
-import Utils from './../../services/Utils.js'
+import Utils        from './../../services/Utils.js'
 
 let getPost = async (id) => {
     const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    try {
-        const response = await fetch(`https://5bb634f6695f8d001496c082.mockapi.io/api/posts/` + id, options)
-        const json = await response.json();
-        // console.log(json)
-        return json
-    } catch (err) {
-        console.log('Error getting documents', err)
-    }
+       method: 'GET',
+       headers: {
+           'Content-Type': 'application/json'
+       }
+   };
+   try {
+       const response = await fetch(`https://5bb634f6695f8d001496c082.mockapi.io/api/posts/` + id, options)
+       const json = await response.json();
+       // console.log(json)
+       return json
+   } catch (err) {
+       console.log('Error getting documents', err)
+   }
 }
 
 let PostShow = {
 
-    render: async () => {
+    render : async () => {
         let request = Utils.parseRequestURL()
         let post = await getPost(request.id)
-
+        
         return /*html*/`
             <section class="section">
                 <h3> Post Id : ${post.id}</h3>

@@ -24,7 +24,7 @@ function notification(notifyId, message, panelId) {
 }
 
 $(document).ready(function () {
-    checkForUserRole();
+   checkForUserRole();
 });
 
 function checkForUserRole() {
@@ -40,7 +40,7 @@ function checkForUserRole() {
         cache: false,
         success:
             function (user) {
-                for (let i = 0; i < user.roles.length; i++) {
+                for(let i = 0; i < user.roles.length; i ++) {
                     if (user.roles[i] === "USER") {
                         $("#headerUserBtn").attr("style", "display: inline");
                     } else {

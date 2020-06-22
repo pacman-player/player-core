@@ -148,7 +148,7 @@ let Filter = {
 
 // функция для добавления/удаления жанра в/из список(а) запрещеных
         $(document).off('click', '.addGenreToFilter');
-        $(document).on('click', '.addGenreToFilter', function () {
+        $(document).on('click', '.addGenreToFilter', function() {
             const $button = $(this);
             // ищем в кнопке атрибут и достаем его значение
             // преобразовываем их в тип соответсвующей функцией

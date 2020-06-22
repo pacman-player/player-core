@@ -71,38 +71,38 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
     }
 
     @Override
-    public List<AuthorDto> findAuthorsByNameContaining(String name) {
+    public List<AuthorDto> findAuthorsByNameContaining (String name){
         return authorDtoDao.findByNameContaining(name);
     }
 
     @Override
-    public List<Author> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
+    public List<Author> getByCreatedDateRange (Timestamp dateFrom, Timestamp dateTo){
         return dao.getByCreatedDateRange(dateFrom, dateTo);
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
+    public List<AuthorDto> getAllAuthors () {
         return authorDtoDao.getAllAuthors();
     }
 
     @Override
-    public List<AuthorDto> getAllApprovedAuthors() {
+    public List<AuthorDto> getAllApprovedAuthors () {
         return authorDtoDao.getAllApproved();
 
     }
 
     @Override
-    public List<Author> getApprovedAuthorsPage(int pageNumber, int pageSize) {
+    public List<Author> getApprovedAuthorsPage ( int pageNumber, int pageSize){
         return dao.getApprovedPage(pageNumber, pageSize);
     }
 
     @Override
-    public int getLastApprovedAuthorsPageNumber(int pageSize) {
+    public int getLastApprovedAuthorsPageNumber ( int pageSize){
         return dao.getLastApprovedPageNumber(pageSize);
     }
 
     @Override
-    public boolean isExist(String name) {
+    public boolean isExist (String name){
         return dao.isExist(name);
     }
 

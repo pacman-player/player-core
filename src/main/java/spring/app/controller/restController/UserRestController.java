@@ -78,7 +78,7 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/get_user")
-    public UserDto getUserData() {
+    public UserDto getUserData(){
         User user = (User) getContext().getAuthentication().getPrincipal();
         return (userService.getUserDtoById(user.getId()));
 
@@ -97,20 +97,20 @@ public class UserRestController {
     public ResponseEntity<User> editUserData(@RequestBody User newUser) throws Exception {
         User user = ((User) getContext().getAuthentication().getPrincipal());
         LOGGER.info("PUT request '/edit_data' from User = {}", user);
-        if (!newUser.getLogin().equals(user.getLogin())) {
+        if(!newUser.getLogin().equals(user.getLogin())) {
             if (userService.getUserByLogin(newUser.getLogin()) == null) {
                 user.setLogin(newUser.getLogin());
                 LOGGER.info("User has changed his login successfully!");
-            } else {
+            }else{
                 LOGGER.info("Bad request: User and Principal logins don't match");
                 return ResponseEntity.badRequest().body(user);
             }
         }
-        if (!newUser.getEmail().equals(user.getEmail())) {
-            if (userService.getUserByEmail(newUser.getEmail()) == null) {
+        if(!newUser.getEmail().equals(user.getEmail())){
+            if(userService.getUserByEmail(newUser.getEmail()) == null){
                 user.setEmail(newUser.getEmail());
                 LOGGER.info("User has changed his email successfully!");
-            } else {
+            }else{
                 LOGGER.info("Bad request: User and Principal emails don't match");
                 return ResponseEntity.badRequest().body(user);
             }
@@ -123,12 +123,12 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/edit_pass")
-    public void editUserPass(@RequestBody String newPassword) {
+    public void editUserPass(@RequestBody String newPassword){
         User user = ((User) getContext().getAuthentication().getPrincipal());
         LOGGER.info("PUT request '/edit_pass' from User = {}", user);
-        newPassword = newPassword.substring(1, newPassword.length() - 1);
-        newPassword = newPassword.replaceAll("##@##", "\"");
-        newPassword = newPassword.replaceAll("##@@##", "\\\\");
+        newPassword = newPassword.substring(1, newPassword.length()-1);
+        newPassword = newPassword.replaceAll("##@##"  , "\"");
+        newPassword = newPassword.replaceAll("##@@##"  ,"\\\\");
 
         user.setPassword(newPassword);
         userService.update(user);
@@ -227,10 +227,10 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/code_check")
-    public ResponseEntity<String> codeCheck(@RequestBody String code) {
+    public ResponseEntity<String> codeCheck(@RequestBody String code){
         LOGGER.info("PUT request '/code_check'");
-        code = code.substring(1, code.length() - 1);
-        if (code.equals(PASSWORD)) {
+        code = code.substring(1, code.length()-1);
+        if(code.equals(PASSWORD)){
             LOGGER.info("Success!");
             return ResponseEntity.ok("Пароль совпадает");
         }
@@ -239,7 +239,7 @@ public class UserRestController {
     }
 
     @PutMapping(value = "/send_mail")
-    public void sendMail() {
+    public void sendMail(){
         User user = ((User) getContext().getAuthentication().getPrincipal());
         LOGGER.info("PUT request '/send_mail' for User = {}", user);
         EmailPasswordGeneration emailPasswordGeneration = new EmailPasswordGeneration();
@@ -252,7 +252,7 @@ public class UserRestController {
                 user.getLogin()
         );
 
-        if (user.getEmail() != null
+        if(user.getEmail() != null
                 && !user.getEmail().equals("user@gmail.com")
                 && !user.getEmail().equals("admin@gmail.com")) {
             emailSender.send(user.getEmail(), "Смена пароля", message);

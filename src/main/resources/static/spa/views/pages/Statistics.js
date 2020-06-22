@@ -1,3 +1,4 @@
+
 let Statistics = {
 
     render: async () => {
@@ -74,7 +75,7 @@ let Statistics = {
                 if (songList.length > 0) {
                     let songQueueHTML = '';
                     for (let s = 0; s < songList.length; s++) {
-                        songQueueHTML += '<tr><td>' + (s + 1) + '\. ' + songList[s] + '</td></tr>';
+                        songQueueHTML += '<tr><td>' + (s + 1) + '\. ' +songList[s] + '</td></tr>';
                     }
                     $("#song-queue-list").empty().append(songQueueHTML);
                 }

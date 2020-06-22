@@ -8,9 +8,7 @@ import java.util.Set;
 
 public interface TagService extends GenericService<Long, Tag> {
 
-    List<TagDto> getAllTagDto(int pageSize, int pageNo);
-
-    Long getRowsCountTagDto();
+    List<TagDto> getAllTagDto();
 
     boolean isExistByName(String name);
 

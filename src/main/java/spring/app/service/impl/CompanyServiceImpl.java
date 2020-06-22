@@ -7,10 +7,8 @@ import spring.app.dao.abstraction.CompanyDao;
 import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.dao.abstraction.dto.CompanyDtoDao;
 import spring.app.dto.CompanyDto;
-import spring.app.dto.SongDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
-import spring.app.model.Song;
 import spring.app.service.abstraction.CompanyService;
 
 import java.util.List;
@@ -73,7 +71,6 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
                 )
         );
     }
-
     @Override
     public Company setBannedEntity(Company company) {
         return dao.getCompanyWithEntityBanned(company.getId());

@@ -9,7 +9,6 @@ import java.util.List;
 public interface AuthorService extends GenericService<Long, Author> {
 
     Author getByName(String name);
-
     /**
      * Возвращает всех авторов, у которых совпадает передаваемое значение
      *

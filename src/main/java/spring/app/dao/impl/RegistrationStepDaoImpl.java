@@ -61,9 +61,9 @@ public class RegistrationStepDaoImpl extends AbstractDao<Long, RegistrationStep>
         List stepsList = q.getResultList();
 
         List<Long> resultList = new ArrayList<>();
-        for (Object num : stepsList
+        for (Object num: stepsList
         ) {
-            resultList.add(((BigInteger) num).longValue());
+            resultList.add(((BigInteger)num).longValue());
         }
         return resultList;
     }
@@ -84,9 +84,9 @@ public class RegistrationStepDaoImpl extends AbstractDao<Long, RegistrationStep>
         List stepsList = q.getResultList();
 
         List<Long> resultList = new ArrayList<>();
-        for (Object num : stepsList
+        for (Object num: stepsList
         ) {
-            resultList.add(((BigInteger) num).longValue());
+            resultList.add(((BigInteger)num).longValue());
         }
         return resultList;
     }

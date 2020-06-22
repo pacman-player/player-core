@@ -10,14 +10,14 @@ import javax.persistence.TypedQuery;
 @Repository
 public class RoleDaoImpl extends AbstractDao<Long, Role> implements RoleDao {
 
-    public RoleDaoImpl() {
-        super(Role.class);
-    }
+	public RoleDaoImpl() {
+		super(Role.class);
+	}
 
-    @Override
-    public Role getRoleByName(String roleName) {
-        TypedQuery<Role> query = entityManager.createQuery("SELECT r FROM Role r WHERE r.name = :name", Role.class);
-        query.setParameter("name", roleName);
-        return query.getSingleResult();
-    }
+	@Override
+	public Role getRoleByName(String roleName) {
+		TypedQuery<Role> query = entityManager.createQuery("SELECT r FROM Role r WHERE r.name = :name", Role.class);
+		query.setParameter("name", roleName);
+		return query.getSingleResult();
+	}
 }

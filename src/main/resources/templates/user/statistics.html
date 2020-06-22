@@ -20,7 +20,6 @@
             min-height: 45px;
             height: 45px;
         }
-
         #scrollable-part {
             height: 300px;
             overflow-y: scroll;
@@ -30,18 +29,18 @@
 </head>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-    (function () {
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/5e3423a0298c395d1ce587b6/default';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/5e3423a0298c395d1ce587b6/default';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
     })();
 </script>
 <!--End of Tawk.to Script-->
-<body class="bg-dark">
+<body  class="bg-dark">
 <div class="container-fluid">
     <div class="row">
         <div class="navbar navbar-inverse navbar-static-top header">
@@ -55,7 +54,7 @@
     <div class="row">
 
         <!--меню слева-->
-        <div id="leftMenu" th:fragment="leftMenu" class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
+        <div id="leftMenu" th:fragment="leftMenu"  class="col-lg-2 col-md-2 col-xs-2 right-bar right-menu">
             <ul class="nav nav-pills nav-stacked nav-content bg-dark">
                 <li>
                     <a href="/user/statistics">Статистика</a>
@@ -82,75 +81,75 @@
         </div>
 
         <!--центральный блок-->
-        <!--        <div class="tab-content">-->
-        <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">
+<!--        <div class="tab-content">-->
+            <div role="tabpanel" class="tab-pane active col-lg-6 col-md-6 col-xs-6 " id="my-selection">
 
-            <H3> Статистика</H3>
+                <H3> Статистика</H3>
 
 
-        </div>
-        <!--        </div>-->
+            </div>
+<!--        </div>-->
 
         <!-- right side stats bar-->
         <div class="container col-lg-4 col-md-4 col-xs-4 col-xl-4" id="right-side-bar">
-            <table class="table bg-white stats-table">
-                <thead>
-                <tr>
-                    <th class="orders-title">Заказы</th>
-                    <th class="orders-type-free text-right small text-secondary">Бесплатных</th>
-                    <th class="orders-type-total text-right">Всего</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="orders-today-label">За сегодня</td>
-                    <td class="orders-today-free text-right text-secondary"><span>0</span></td>
-                    <td class="orders-today-total text-right"><span>0</span></td>
-                </tr>
-                <tr>
-                    <td class="orders-yesterday-label">За вчера</td>
-                    <td class="orders-yesterday-free text-right text-secondary"><span>0</span></td>
-                    <td class="orders-yesterday-total text-right"><span>0</span></td>
-                </tr>
-                <tr>
-                    <td class="orders-week-label">За неделю</td>
-                    <td class="orders-week-free text-right text-secondary"><span>0</span></td>
-                    <td class="orders-week-total text-right"><span>0</span></td>
-                </tr>
-                <tr>
-                    <td class="orders-month-label">За месяц</td>
-                    <td class="orders-month-free text-right text-secondary"><span>0</span></td>
-                    <td class="orders-month-total text-right"><span>0</span></td>
-                </tr>
-                <tr>
-                    <td class="orders-total-label">За все время</td>
-                    <td class="orders-total-free text-right text-secondary"><span>0</span></td>
-                    <td class="orders-total-total text-right"><span>0</span></td>
-                </tr>
-                </tbody>
-            </table>
+                <table class="table bg-white stats-table">
+                    <thead>
+                    <tr>
+                        <th class="orders-title">Заказы</th>
+                        <th class="orders-type-free text-right small text-secondary">Бесплатных</th>
+                        <th class="orders-type-total text-right">Всего</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="orders-today-label">За сегодня</td>
+                        <td class="orders-today-free text-right text-secondary"><span>0</span></td>
+                        <td class="orders-today-total text-right"><span>0</span></td>
+                    </tr>
+                    <tr>
+                        <td class="orders-yesterday-label">За вчера</td>
+                        <td class="orders-yesterday-free text-right text-secondary"><span>0</span></td>
+                        <td class="orders-yesterday-total text-right"><span>0</span></td>
+                    </tr>
+                    <tr>
+                        <td class="orders-week-label">За неделю</td>
+                        <td class="orders-week-free text-right text-secondary"><span>0</span></td>
+                        <td class="orders-week-total text-right"><span>0</span></td>
+                    </tr>
+                    <tr>
+                        <td class="orders-month-label">За месяц</td>
+                        <td class="orders-month-free text-right text-secondary"><span>0</span></td>
+                        <td class="orders-month-total text-right"><span>0</span></td>
+                    </tr>
+                    <tr>
+                        <td class="orders-total-label">За все время</td>
+                        <td class="orders-total-free text-right text-secondary"><span>0</span></td>
+                        <td class="orders-total-total text-right"><span>0</span></td>
+                    </tr>
+                    </tbody>
+                </table>
             <div class="text-center"><h6>Очередь заказов</h6></div>
             <div id="scrollable-part">
                 <table class="table bg-white song-queue-block">
                     <thead>
                     <tr>
-                        <th class="song-queue-block-header">
-                            <span></span>
-                        </th>
+                    <th class="song-queue-block-header">
+                        <span></span>
+                    </th>
                     </tr>
                     </thead>
                     <tbody id="song-queue-list">
                     <tr>
-                        <td class="text-center">
+                    <td class="text-center">
                             Нет песен в очереди
-                        </td>
+                    </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+            </div>
         </div>
     </div>
-</div>
 
 <script type="text/javascript" src="/js/user/statistics.js" rel="stylesheet"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>

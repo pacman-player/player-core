@@ -172,6 +172,7 @@ public class TestDataInit {
         userService.save(bot);
 
         // присваиваем нашим юзерам регистрационные шаги (тут полной регистрации
+
         user = userService.getUserByLoginWithRegStepsCompany("user");
         user2 = userService.getUserByLoginWithRegStepsCompany("user2");
         user.addRegStep(rs1);

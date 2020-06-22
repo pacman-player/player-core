@@ -46,8 +46,8 @@ public class SongRestController {
 
     @GetMapping("approvedSongsPage")
     public List<Song> getApprovedSongsPage(@AuthenticationPrincipal User user,
-                                           @RequestParam(defaultValue = "1") Integer pageNumber,
-                                           @RequestParam(defaultValue = "5") Integer pageSize) {
+                                               @RequestParam(defaultValue = "1") Integer pageNumber,
+                                               @RequestParam(defaultValue = "5") Integer pageSize) {
         LOGGER.info("GET request 'approvedSongsPage'");
         List<Song> songsPage = songService.getApprovedSongsPage(pageNumber, pageSize);
 
@@ -67,14 +67,17 @@ public class SongRestController {
     }
 
     @GetMapping("allSongsByName/{name}")
-    public List<SongDto> searchByNameInSongs(@PathVariable String name,
-                                             @AuthenticationPrincipal User user) {
-        List<SongDto> songs = songService.listOfSongsDtoByName(name);
-        Company userCompany = user.getCompany();
+    public List<Song> searchByNameInSongs(@PathVariable String name,
+                                          @AuthenticationPrincipal User user) {
+        LOGGER.info("GET request 'allSongsByName/{}' by User = {}", name, user);
+        List<Song> songs = songService.findByNameContaining(name);
+        Company usersCompany = user.getCompany();
+        usersCompany = companyService.setBannedEntity(usersCompany);
 
-        userCompany = companyService.setBannedEntity(userCompany);
-        companyService.checkAndMarkAllBlockedByTheCompany(userCompany, songs);
-
+        companyService.checkAndMarkAllBlockedByTheCompany(usersCompany, songs);
+        LOGGER.info("Song list ({} song(s)) was added to ban for the Company = {}",
+                songs.size(),
+                usersCompany.getName());
         return songs;
     }
 

@@ -989,7 +989,7 @@ function playNext() {
             playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex,
                 lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
-            //если в очереди заказанных песен нет песен
+        //если в очереди заказанных песен нет песен
         } else {
 
             //если играем песни в перемешку
@@ -1013,7 +1013,7 @@ function playNext() {
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
-                //если не последняя - играем следующий плейлист
+            //если не последняя - играем следующий плейлист
             } else {
                 let nextPlaylistName = lastPlayedPlaylistName;
                 if (lastPlayedPlaylistName === 'morning') {

@@ -78,8 +78,8 @@ $(document).ready(function () {
                             <td>${id}</td>   
                             <td>${name}</td>
                             <td>${checkTime(createTime.getHours()) + ':' +
-                    checkTime(createTime.getMinutes()) + ':' +
-                    checkTime(createTime.getSeconds())}</td>
+                                    checkTime(createTime.getMinutes()) + ':' + 
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableAuthorsBody.append(tr);
                 }
@@ -94,8 +94,8 @@ $(document).ready(function () {
                             <td>${id}</td>   
                             <td>${name}</td>
                             <td>${checkTime(createTime.getHours()) + ':' +
-                    checkTime(createTime.getMinutes()) + ':' +
-                    checkTime(createTime.getSeconds())}</td>
+                                    checkTime(createTime.getMinutes()) + ':' +
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableSongsBody.append(tr);
                 }
@@ -110,8 +110,8 @@ $(document).ready(function () {
                             <td>${id}</td>   
                             <td>${name}</td>
                             <td>${checkTime(createTime.getHours()) + ':' +
-                    checkTime(createTime.getMinutes()) + ':' +
-                    checkTime(createTime.getSeconds())}</td>
+                                    checkTime(createTime.getMinutes()) + ':' +
+                                    checkTime(createTime.getSeconds())}</td>
                             </td>`);
                     tableGenresBody.append(tr);
                 }

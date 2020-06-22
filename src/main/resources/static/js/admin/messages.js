@@ -50,35 +50,35 @@ $(document).ready(function () {
             'template': $("#addTemplate").val(),
         };
 
-        $.ajax({
-            type: 'POST',
-            url: "/api/admin/message/add_message",
+         $.ajax({
+             type: 'POST',
+                url: "/api/admin/message/add_message",
 
-            contentType: 'application/json;',
-            data: JSON.stringify(message),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            async: true,
-            cache: false,
-            complete:
-                function () {
-                    getTable();
-                    $("#tab-messages-panel").tab('show');
-                },
-            success:
-                function () {
-                    sendNotification();
-                    notification("add-user" + name,
-                        " Сообшение " + name + " добавлен ",
-                        'messages-panel');
-                },
-            error:
-                function (xhr, status, error) {
-                    alert(xhr.responseText + '|\n' + status + '|\n' + error);
-                }
-        });
+                     contentType: 'application/json;',
+                     data: JSON.stringify(message),
+                     headers: {
+                         'Accept': 'application/json',
+                         'Content-Type': 'application/json'
+                     },
+                     async: true,
+                     cache: false,
+                     complete:
+                         function () {
+                             getTable();
+                             $("#tab-messages-panel").tab('show');
+                         },
+                     success:
+                         function () {
+                             sendNotification();
+                             notification("add-user" + name,
+                                 " Сообшение " + name+ " добавлен ",
+                                 'messages-panel');
+                         },
+                     error:
+                         function (xhr, status, error) {
+                             alert(xhr.responseText + '|\n' + status + '|\n' + error);
+                         }
+                 });
 
         //  $("#tab-messages-panel").tab('show');
         // location.reload();
@@ -88,7 +88,7 @@ $(document).ready(function () {
     $(document).on('click', '#deleteMessages', function () {
         var id = $(this).closest("tr").find("#messagesId").text();
         deleteUser(id);
-        // getTable();
+       // getTable();
     });
 
     function deleteUser(id) {
@@ -152,13 +152,13 @@ $(document).ready(function () {
             complete:
                 function () {
                     getTable();
-                    // $("#tab-messages-panel").tab('show');
+                   // $("#tab-messages-panel").tab('show');
                 },
             success:
                 function () {
-                    sendNotification();
+                 sendNotification();
                     notification("add-user" + name,
-                        " ообщение " + name + " обнавлен ",
+                        " ообщение " + name+ " обнавлен ",
                         'messages-panel');
                 },
             error:
@@ -167,7 +167,7 @@ $(document).ready(function () {
                 }
         });
 
-        //  location.reload();
+      //  location.reload();
     };
 
     //modal form заполнение

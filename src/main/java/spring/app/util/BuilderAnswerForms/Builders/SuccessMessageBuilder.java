@@ -14,7 +14,7 @@ public class SuccessMessageBuilder<T> implements BuilderAnswer<T> {
 
     @Override
     public void setSuccessFlag(Boolean successFlag) {
-        this.successFlag = successFlag;
+    this.successFlag = successFlag;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class SuccessMessageBuilder<T> implements BuilderAnswer<T> {
 
     @Override
     public void setData(T data) {
-        this.data = data;
+    this.data = data;
     }
 
     @Override

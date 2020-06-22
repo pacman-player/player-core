@@ -13,7 +13,7 @@ public class ErrorMessageBuilder<T> implements BuilderAnswer<T> {
 
     @Override
     public void setSuccessFlag(Boolean successFlag) {
-        this.successFlag = successFlag;
+    this.successFlag = successFlag;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ErrorMessageBuilder<T> implements BuilderAnswer<T> {
     }
 
 
-    public Response<T> getResponse() {
+    public Response<T> getResponse(){
         Response<T> response = new Response<>();
         response.setSuccess(successFlag);
         response.setErrorMessage(errorMessage);

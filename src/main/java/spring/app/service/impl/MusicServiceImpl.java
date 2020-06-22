@@ -79,7 +79,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public ResponseEntity playMusic(String musicAuthorId, String musicTitleId) {
 
-        File file = new File(musicPath + musicAuthorId + "/" + musicTitleId + ".mp3");
+        File file = new File(musicPath + musicAuthorId +"/" + musicTitleId + ".mp3");
         long length = file.length();
         InputStreamResource inputStreamResource = null;
         try {

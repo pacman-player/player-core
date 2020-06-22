@@ -33,10 +33,10 @@ public class ResponseBuilder<T> extends ResponseEntityExceptionHandler {
     }
 
     public Response<T> success(T data) {
-        directorAnswerBuilder.setStatus(HttpStatus.OK);
-        directorAnswerBuilder.setData(data);
-        SuccessMessageBuilder<T> successBilder = new SuccessMessageBuilder<>();
-        directorAnswerBuilder.constructSuccessMessage(successBilder);
-        return successBilder.getResponse();
+            directorAnswerBuilder.setStatus(HttpStatus.OK);
+            directorAnswerBuilder.setData(data);
+            SuccessMessageBuilder<T> successBilder = new SuccessMessageBuilder<>();
+            directorAnswerBuilder.constructSuccessMessage(successBilder);
+            return successBilder.getResponse();
     }
 }

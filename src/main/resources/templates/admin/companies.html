@@ -11,7 +11,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link rel="shortcut icon" href="#"/>
     <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
@@ -39,10 +39,6 @@
                             <a id="tab-company-panel" href="#company-panel" aria-controls="company-panel" role="tab"
                                data-toggle="tab">Все компании</a>
                         </li>
-                        <li id="add-company-nav">
-                            <a aria-controls="add-company-panel" href="#add-company-panel"  role="tab" data-toggle="tab">
-                                Новая компания</a>
-                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -69,85 +65,15 @@
                                             <tbody></tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-<!--                        <div id="notify"></div>-->
-                        <!--добавление новой компании-->
-                        <div role="tabpanel" class="tab-pane" id="add-company-panel">
-                            <div class="panel panel-default table-panel">
-                                <div class="tab-content">
-                                    <div class="panel-body">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <form id="addCompany">
-                                                        <div class="form-group text-center edit-form">
-                                                            <div>
-                                                            <label for="addCompanyName">Название</label>
-                                                            <input id="addCompanyName" name="name" required="required" type="text"
-                                                                   placeholder="Название" class="form-control"/>
-                                                            </div>
-                                                            <div>
-                                                            <label for="addOrgType">Тип заведения</label>
-                                                            <select  class="form-control"  name="role" id="addOrgType" required="required">
-                                                                    <!--onchange="getAllEstablishments()"-->
-                                                            </select>
-                                                            </div>
-                                                            <div>
-                                                            <label for="addOpenTime">Время открытия</label>
-                                                            <input id="addOpenTime" name="startTime" required="required"  type="time"
-                                                                       placeholder="время открытия" class="form-control"/>
-                                                            </div>
-                                                            <div>
-                                                            <label for="addCloseTime">Время закрытия</label>
-                                                            <input id="addCloseTime" name="closeTime" required="required" type="time"
-                                                                   placeholder="время закрытия" class="form-control" />
-                                                            </div>
-                                                            <div>
-                                                                <label for="addTariffCompany">Тариф</label>
-                                                                <input id="addTariffCompany" name="tariffCompany"
-                                                                       type="text"
-                                                                       placeholder="тариф" class="form-control" />
-                                                            </div>
-                                                            <div>
-                                                            <label for ="addUserForCompany">Пользователь_id</label>
-                                                            <input id="addUserForCompany" name="userId" type="number" class="form-control"/>
-                                                            </div>
-                                                            <div>
-                                                            <label for="addCompanyAddress">Адрес</label>
-                                                            <input id="addCompanyAddress" type="text" placeholder="Введите адрес, или выберите дом на карте" class="form-control"/>
-                                                            </div>
-                                                            <button type="submit" id="buttonFindAddress">Поиск</button>
-                                                            <br/>
-
-                                                            <input id="latitude" type="hidden"/>
-                                                            <input id="longitude" type="hidden"/>
-
-                                                            <div id="mapAddCompanyAddress" style="width: auto; height: 400px"></div><br/>
-
-                                                            <br/>
-                                                            <button type="submit" id="addCompanyAdminBtn"
-                                                                    class="btn btn-success btn-lg">
-                                                                Добавить Компанию
-                                                            </button>
-
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
                 </div>
 
                 <!--модалка - компания-->
-                <div id="editCompany" class="modal fade" data-backdrop="false">
+                <div id="editCompany" class="modal fade">
                     <div class="modal-dialog" id="editCompany-dialog">
                         <div class="modal-content">
 
@@ -160,11 +86,8 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-<!--                                            <div id="success-edit-message"-->
-<!--                                                 class="alert alert-danger hidden">-->
-<!--                                                <div id="message"></div>-->
-<!--                                            </div>-->
-                                            <form id="company-form" >
+
+                                            <form id="company-form">
                                                 <div class="form-group text-center edit-form">
 
                                                     <label for="updateCompanyId">ID компании</label>
@@ -177,9 +100,9 @@
                                                            type="text" name="id-user" required=""/>
 
                                                     <label for="updateNameCompany">Компания</label>
-                                                    <input id="updateNameCompany" class="form-control"
-                                                           type="text" required="required"
-                                                           name="name"/>
+                                                    <input id="updateNameCompany" class="form-control" type="text"
+                                                           name="company"
+                                                           required=""/>
 
                                                     <label for="updateStartTime">Время открытия</label>
                                                     <input id="updateStartTime" class="form-control" type="time"
@@ -205,10 +128,9 @@
                                                         <button type="button" class="btn btn-default"
                                                                 data-dismiss="modal">Закрыть
                                                         </button>
-                                                        <button id="editCompanyBtn" class="btn btn-primary">
-<!--                                                                type="submit"-->
-
-<!--                                                                data-dismiss="modal">-->
+                                                        <button id="editCompanyBtn" class="btn btn-primary"
+                                                                type="submit"
+                                                                data-dismiss="modal">
                                                             Изменить
                                                         </button>
                                                     </div>
@@ -229,10 +151,6 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/js/jquery/jquery.mask.min.js"></script>
@@ -241,9 +159,5 @@
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 <script type="text/javascript" src="/js/notificationsHandler.js" rel="script"></script>
-<script type="text/javascript" src="/js/admin/formValidation.js" rel="script"></script>
-
-
-<script src="https://api-maps.yandex.ru/2.1/?apikey=d447d1ac-67c1-4791-be4a-6c7cb71d1c5e&amp;lang=ru_RU" type="text/javascript"></script>
 </body>
 </html>

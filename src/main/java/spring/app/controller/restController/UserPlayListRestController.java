@@ -62,13 +62,13 @@ public class UserPlayListRestController {
     public List<SongCompilationDto> getAllCompilationsInMiddayPlaylist(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/midday-playlist/get/all-song-compilation' for User = {}", user);
         Company company = userService.getById(user.getId()).getCompany();
-        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(), "middayPlayList");
+        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(),"middayPlayList");
     }
 
     @GetMapping(value = "/evening-playlist/get/all-song-compilation")
     public List<SongCompilationDto> getAllCompilationsInEveningPlaylist(@AuthenticationPrincipal User user) {
         LOGGER.info("GET request '/evening-playlist/get/all-song-compilation' for User = {}", user);
         Company company = userService.getById(user.getId()).getCompany();
-        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(), "eveningPlayList");
+        return company == null ? null : songCompilationService.getAllCompilationsPlaylistByCompanyIdDto(company.getId(),"eveningPlayList");
     }
 }

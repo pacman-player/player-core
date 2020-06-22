@@ -4,9 +4,9 @@ $(function () {
     registrationFirstForm.submit(function (event) {
         event.preventDefault();
         if ($('#registrationFirstForm').valid()) {
-            $.post("/api/registration/user", registrationFirstForm.serialize(), function () {
+            $.post("/api/registration/user", registrationFirstForm.serialize(), function() {
 //                location.assign(location.origin + "/reg_check");
-                window.location.href = '/registration/reg_check?login=' + $("#login").val();
+                    window.location.href = '/registration/reg_check?login=' + $("#login").val();
             });
         }
     })

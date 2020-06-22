@@ -36,9 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/edit")
-    public String getUserEdit() {
-        return "user/edit";
-    }
+    public String getUserEdit() { return "user/edit"; }
 
     @GetMapping("/company")
     public String getUserEstablishment() {

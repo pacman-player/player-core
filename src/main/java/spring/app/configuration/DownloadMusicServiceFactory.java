@@ -17,7 +17,7 @@ import java.util.List;
  * через JMX API.
  * При каждом запросе, считываются значения из конфигурации и
  * формируется список сервисов в методе {@link #getService(String)}, который используется в
- * поиске трека в классе {@link spring.app.service.impl.musicSearcher.MusicSearchServiceImpl}
+ * поиске трека в классе {@link MusicSearchServiceImpl}
  */
 @Configuration
 @ComponentScan("spring.app")

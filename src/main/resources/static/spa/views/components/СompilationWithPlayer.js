@@ -130,8 +130,8 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#allGenBtn', function () {
-        if ($('#allGenBtn').attr("aria-pressed") == "false") {
-            getAllGenre();
+        if($('#allGenBtn').attr("aria-pressed")=="false"){
+        getAllGenre();
             $('#allGenBtn').attr("aria-pressed", "true")
         }
     });

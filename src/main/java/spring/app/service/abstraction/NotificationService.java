@@ -6,7 +6,7 @@ import spring.app.model.Notification;
 
 import java.util.List;
 
-public interface NotificationService extends GenericService<Long, Notification> {
+public interface NotificationService extends GenericService<Long, Notification>{
 
     void save(String message, Long id) throws InterruptedException;
 

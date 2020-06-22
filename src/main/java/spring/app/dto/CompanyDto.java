@@ -14,13 +14,10 @@ public class CompanyDto {
     private Long requestSpamCounter;
     private Long userId;
     private String userLogin;
-    private Long addressId;
     private String addressCountry;
     private String addressCity;
     private String addressStreet;
     private String addressHouse;
-    private double addressLatitude;
-    private double addressLongitude;
 
 
     public CompanyDto() {
@@ -42,51 +39,6 @@ public class CompanyDto {
         this.addressCity = addressCity;
         this.addressStreet = addressStreet;
         this.addressHouse = addressHouse;
-    }
-
-    //конструктор без пользователей
-    public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
-                      Long tariff, Long requestSpamCounter, String addressCountry, String addressCity, String addressStreet, String addressHouse) {
-        this.id = id;
-        this.name = name;
-        this.startTime = startTime.toString();
-        this.closeTime = closeTime.toString();
-        this.orgType = orgType;
-        this.orgTypeName = orgTypeName;
-        this.tariff = tariff;
-        this.requestSpamCounter = requestSpamCounter;
-        this.addressCountry = addressCountry;
-        this.addressCity = addressCity;
-        this.addressStreet = addressStreet;
-        this.addressHouse = addressHouse;
-    }
-
-    //конструктор без адресов
-    public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
-                      Long tariff, Long requestSpamCounter, Long userId, String userLogin) {
-        this.id = id;
-        this.name = name;
-        this.startTime = startTime.toString();
-        this.closeTime = closeTime.toString();
-        this.orgType = orgType;
-        this.orgTypeName = orgTypeName;
-        this.tariff = tariff;
-        this.requestSpamCounter = requestSpamCounter;
-        this.userId = userId;
-        this.userLogin = userLogin;
-    }
-
-    //конструктор без пользователей и адресов
-    public CompanyDto(Long id, String name, LocalTime startTime, LocalTime closeTime, Long orgType, String orgTypeName,
-                      Long tariff, Long requestSpamCounter) {
-        this.id = id;
-        this.name = name;
-        this.startTime = startTime.toString();
-        this.closeTime = closeTime.toString();
-        this.orgType = orgType;
-        this.orgTypeName = orgTypeName;
-        this.tariff = tariff;
-        this.requestSpamCounter = requestSpamCounter;
     }
 
     public Long getId() {
@@ -209,54 +161,9 @@ public class CompanyDto {
                 ", startTime='" + startTime + '\'' +
                 ", closeTime='" + closeTime + '\'' +
                 ", orgType=" + orgType +
-                ", orgTypeName='" + orgTypeName + '\'' +
                 ", tariff=" + tariff +
-                ", requestSpamCounter=" + requestSpamCounter +
                 ", userId=" + userId +
-                ", userLogin='" + userLogin + '\'' +
-                ", addressId=" + addressId +
-                ", addressCountry='" + addressCountry + '\'' +
-                ", addressCity='" + addressCity + '\'' +
-                ", addressStreet='" + addressStreet + '\'' +
-                ", addressHouse='" + addressHouse + '\'' +
                 '}';
     }
-
-    public Long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
-    }
-
-    public double getAddressLatitude() {
-        return addressLatitude;
-    }
-
-    public void setAddressLatitude(double addressLatitude) {
-        this.addressLatitude = addressLatitude;
-    }
-
-    public double getAddressLongitude() {
-        return addressLongitude;
-    }
-
-    public void setAddressLongitude(double addressLongitude) {
-        this.addressLongitude = addressLongitude;
-    }
-
-//    @Override
-//    public String toString() {
-//        return "CompanyDto{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", startTime='" + startTime + '\'' +
-//                ", closeTime='" + closeTime + '\'' +
-//                ", orgType=" + orgType +
-//                ", tariff=" + tariff +
-//                ", userId=" + userId +
-//                '}';
-//    }
 }
 

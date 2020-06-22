@@ -28,9 +28,9 @@ $(document).ready(function () {
     getTable();
     getCompaniesTable();
     var addRolesBody = $("#addListRoles");
-    getRoleTable(addRolesBody, "addRls");
+    getRoleTable(addRolesBody,"addRls");
     var updateRolesBody = $("#updateListRole")
-    getRoleTable(updateRolesBody, "updRls");
+    getRoleTable(updateRolesBody,"updRls");
 
     function getTable() {
         $.ajax({
@@ -449,7 +449,7 @@ $(document).ready(function () {
 
 });
 
-function getRoleTable(listRolesBody, rls) {
+function getRoleTable(listRolesBody,rls) {
     $.ajax({
         method: "GET",
         url: "/api/admin/all_roles",

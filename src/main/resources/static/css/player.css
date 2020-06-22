@@ -1,8 +1,8 @@
 
 .playBtn {
     background-image: url("/img/play-playlist.png");
-    background-color: rgba(251, 255, 248, 0);
-    border-color: rgba(251, 255, 248, 0);
+    background-color: rgba(251,255,248,0);
+    border-color: rgba(251,255,248,0);
     display: inline-block;
     width: 35px;
     height: 35px;
@@ -10,8 +10,8 @@
 
 .pauseBtn {
     background-image: url("/img/pause-playlist.png");
-    background-color: rgba(251, 255, 248, 0);
-    border-color: rgba(251, 255, 248, 0);
+    background-color: rgba(251,255,248,0);
+    border-color: rgba(251,255,248,0);
     width: 35px;
     height: 35px;
     display: none;
@@ -56,13 +56,11 @@
     cursor: pointer;
     margin-left: 10px;
 }
-
 #volumebar {
     cursor: pointer;
     margin-left: 10px;
     vertical-align: middle;
 }
-
 .container {
     position: relative;
     display: inline-block;

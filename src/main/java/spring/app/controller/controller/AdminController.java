@@ -66,11 +66,6 @@ public class AdminController {
     public String getMessage() {
         return "admin/messages";
     }
-
-    @GetMapping("/songStatistic")
-    public String getStatistic() {
-        return "admin/songStatistic";
-    }
 }
 
 

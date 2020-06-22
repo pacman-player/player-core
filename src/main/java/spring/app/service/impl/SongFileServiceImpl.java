@@ -14,13 +14,13 @@ public class SongFileServiceImpl implements SongFileService {
     @Value("${music.path}")
     private String musicPath;
 
-    public void deleteSongFile(Song song) {
+    public void deleteSongFile(Song song){
         String pathSong = musicPath + song.getAuthor().getId() + File.separatorChar + song.getId() + ".mp3";
         File fileSong = new File(pathSong);
         fileSong.delete();
     }
 
-    public void deleteSongFile(Author author) {
+    public void deleteSongFile(Author author){
         File fileDirectory = new File(musicPath + author.getId());
         File[] contents = fileDirectory.listFiles();
         if (contents != null) {

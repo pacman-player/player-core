@@ -24,7 +24,7 @@ public class EmailPasswordGeneration {
         return PASSWORD;
     }
 
-    private static int randomNum(int min, int max) {
+    private static int randomNum(int min, int max){
         Random r = new Random();
         return r.nextInt(max) + min;
     }

@@ -180,7 +180,6 @@ let Edit = {
                     },
                 });
             }
-
             function passEquels() {
                 var newPass = $("#newUserPass").val();
                 var checkPass = $("#updateUserPass").val();

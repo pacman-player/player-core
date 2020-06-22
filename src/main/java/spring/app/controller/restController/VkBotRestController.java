@@ -30,7 +30,7 @@ public class VkBotRestController {
         try {
             vkBotService.sendMessage(conversationDto.getId(), conversationDto.getMessage());
             LOGGER.info("Success!");
-        } catch (ClientException | ApiException e) {
+        } catch (ClientException | ApiException e){
             LOGGER.error(e.getMessage(), e);
             throw e;
         }

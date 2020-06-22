@@ -29,7 +29,7 @@ public class EmailSender {
         this.emailSender = emailSender;
     }
 
-    public void send(String emailTo, String subject, String message) {
+    public void send(String emailTo, String subject, String message){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 

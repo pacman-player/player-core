@@ -47,9 +47,9 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         entityManager.remove(entity);
     }
 
-    public boolean isExistById(PK id) {
+    public boolean isExistById(PK id){
         T entity = entityManager.find(persistentClass, id);
-        return entity != null;
+        return entity!=null;
     }
 
     /**
