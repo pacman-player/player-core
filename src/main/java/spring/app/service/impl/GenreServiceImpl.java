@@ -97,4 +97,16 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     public boolean isExistByName(String name) {
         return genreDtoDao.isExistByName(name);
     }
+
+    @Override
+    @Transactional
+    public void setDefaultGenre(long id){
+        dao.setDefaultGenre(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteDefaultGenre(){
+        dao.deleteDefaultGenre();
+    }
 }

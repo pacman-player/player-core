@@ -19,6 +19,9 @@ public interface GenreDao extends GenericDao<Long, Genre> {
 
     void deleteReferenceFromOrgTypeByGenre(Genre genre);
 
+    void setDefaultGenre(long id);
+
+    void deleteDefaultGenre();
+
     void flush();
 }
-

@@ -21,5 +21,8 @@ public interface GenreService extends GenericService<Long, Genre> {
     boolean isExistByName(String name);
 
     List<String> getGenreNames(String keywords);
-}
 
+    void setDefaultGenre(long id);
+
+    void deleteDefaultGenre();
+}

@@ -81,4 +81,14 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     public void flush() {
         entityManager.flush();
     }
+
+    @Override
+    public void setDefaultGenre(long id){
+        entityManager.createQuery("UPDATE Genre g SET g.isDefault = true WHERE g.id = :id").setParameter("id", id).executeUpdate();
+    }
+
+    @Override
+    public void deleteDefaultGenre(){
+        entityManager.createQuery("UPDATE Genre g SET g.isDefault = false WHERE g.isDefault = true").executeUpdate();
+    }
 }
