@@ -375,6 +375,7 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
         let playing_state = 'on_stop';
         let display_play = 'inline-block';
         let display_pause = 'none';
+        let delete_playlist = 'inline-block';
         if (playlist[i].compilationIndex === lastPlayedCompilationIndex && playListName === lastPlayedPlaylistName) {
             playing_state = 'on_play';
             display_play = 'none';
@@ -382,9 +383,11 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
         }
         let playButton = `<button class="playBtn" style="display: ${display_play}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
         let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
+        let deleteButton = `<button class="deleteBtn" style="display: ${delete_playlist}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="deleteSongCompilationFromPlaylist(\'${playListName}\', ${playlist[i].id})"></button>`;
         let trackBubble = '<div class="d-track__bubble" id="bubble"></div>';
         htmlCompilation += playButton;
         htmlCompilation += pauseButton;
+        htmlCompilation += deleteButton;
         htmlCompilation += trackBubble;
         htmlCompilation += '</div>'
             + '</div>';
@@ -393,6 +396,35 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
     htmlCompilation += ('</div>');
     $(`#${playListName} #${secondId}`).remove();
     $(`#${playListName}`).append(htmlCompilation);
+}
+
+function deleteSongCompilationFromPlaylist(playlistName, idCompilation) {
+    if (confirm('Удалить подборку из плей листа ' + playlistName)) {
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/user/play-list/' + playlistName + '-playlist/delete/song-compilation/' + idCompilation,
+            contentType: "application/json",
+            success: function () {
+                switch (playlistName) {
+                    case 'morning':
+                        //+обновить утренний плейлист
+                        morningPlaylist();
+                        break;
+                    case 'midday':
+                        //+обновить дневной плейлист
+                        middayPlaylist();
+                        break;
+                    case 'evening':
+                        //+обновить вечерний плейлист
+                        eveningPlaylist();
+                        break;
+                }
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText + '|\n' + status + '|\n' + error);
+            }
+        });
+    }
 }
 
 //достаю все песни подборки любого плейлиста и отображаю в модалке
