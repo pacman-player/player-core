@@ -12,7 +12,7 @@ public class UserDto {
     private String password;
     private Boolean enabled = true;
     private Set<String> roles;
-    private String company;
+    private Long companyId;
 
     public UserDto(Long id, String login, String email, String password, Set<String> roles) {
         this.id = id;
@@ -116,11 +116,11 @@ public class UserDto {
         return result;
     }
 
-    public String getCompany() {
-        return company;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }
