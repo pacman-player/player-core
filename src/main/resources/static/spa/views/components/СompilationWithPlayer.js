@@ -7,6 +7,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#allGenBtn', function () {
+        $("#getGenres #songCompilation").remove();
         if ($('#allGenBtn').attr("aria-pressed") == "false") {
             getAllGenre();
             $('#allGenBtn').attr("aria-pressed", "true")
@@ -87,6 +88,8 @@ $(document).ready(function () {
 });
 //Все подборки
 function getAllCompilations(currentGenre) {
+    $("#getGenres #songCompilation").remove();
+    $('#allGenBtn').attr("aria-pressed", "false");
     let genre = currentGenre;
     $.ajax({
         type: 'post',
