@@ -2,6 +2,7 @@ package spring.app.dao.impl.dto;
 
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.dto.GenreDtoDao;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
