@@ -14,10 +14,7 @@ import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.GenreService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/author")
@@ -125,8 +122,13 @@ public class AuthorRestController {
      */
     @PostMapping("/authors_out_of_genre")
     public List<AuthorDto> getAuthorsOutOfGenre(@RequestBody Long genreID) {
-        List<AuthorDto> authors = authorService.getAuthorsOutOfGenre(genreID);
-        return authors;
+        List<AuthorDto> authorsOutGenre = authorService.getAuthorsOutOfGenre(genreID);
+        List<AuthorDto> authorsOfGenre = authorService.getAuthorsOfGenre(genreID);
+        for (AuthorDto authorOf : authorsOfGenre) {
+            authorsOutGenre.removeIf(authorDto -> authorDto.getName().equals(authorOf.getName()));
+        }
+        Set<AuthorDto> authorDtos = new HashSet<>(authorsOutGenre);
+        return new ArrayList<>(authorDtos);
     }
 
     /**

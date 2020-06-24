@@ -250,7 +250,7 @@ function getAuthorsGenre(genreId, url) {
             $.each(data, function (i, authorDto) {
                 tr = $('<tr/>');
                 tr.append("<td> <input class='chcheck' id='check' type='checkbox' name='song' value='" +
-                    authorDto[0] + "'>" + "   " + authorDto[1] + "</td>");
+                    authorDto.id + "'>" + "   " + authorDto.name + "</td>");
                 $("#listOfAuthorsByGenre").append(tr);
             });
         }
