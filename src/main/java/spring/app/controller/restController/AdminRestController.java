@@ -142,7 +142,9 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
-        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
+        if (!companyDto.getName().isEmpty()
+                && !companyService.isExistCompanyByName(companyDto.getName())
+                || companyService.getByCompanyName(companyDto.getName()).getId().equals(companyDto.getId())) {
         LOGGER.info("POST request '/company'");
         User userId = userService.getById(companyDto.getUserId());
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
@@ -157,6 +159,15 @@ public class AdminRestController<T> {
         LOGGER.info("Updated Company = {}", company);
         }
 
+    }
+
+    @GetMapping(value = "/check/company")
+    public boolean isTypeNameFree(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (companyService.getById(id).getName().equals(name)) {
+            return true;
+        }
+        return !companyService.isExistCompanyByName(name);
     }
 
     @PostMapping(value = "/add_establishment")
@@ -276,4 +287,5 @@ public class AdminRestController<T> {
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
+
 }

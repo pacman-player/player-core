@@ -65,6 +65,7 @@ $(document).ready(function () {
             tariff: $("#updateTariff").val().replace(/[^0-9]/g, ''),
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
+            // userEmail: $("#updateUser").val()
         };
 
 
@@ -121,6 +122,21 @@ $(document).ready(function () {
         });
 
         $.ajax({
+            url:"/api/admin/all_users",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                var selectBody = $('#updateIdUser');
+                selectBody.empty();
+                $(data).each(function (i, user) {
+                    selectBody.append(`
+                    <option value="${user.id}">${user.email}</option>
+                    `);
+                })
+            }
+        })
+
+        $.ajax({
             url: '/api/admin/companyById/' + $(this).closest("tr").find("#tableCompaniesId").text(),
             method: "GET",
             dataType: "json",
@@ -129,7 +145,8 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(companies.name);
                 $('#updateStartTime').val(companies.startTime);
                 $('#updateCloseTime').val(companies.closeTime);
-                $('#updateIdUser').val(companies.user.id);
+                // $('#updateIdUser').val(companies.user.id);
+                $("#updateIdUser option[value='"+ companies.user.id+"']").prop("selected", true);
                 $('#updateTariff').val(companies.tariff);
                 $("#updateOrgType option[value='" + companies.orgType.id + "'] ").prop("selected", true);
             },
@@ -347,6 +364,7 @@ function getOrgType(){
 
 }
 
+
 $('#addCompany').validate({
     rules: {
         name: {
@@ -378,7 +396,7 @@ $('#company-form').validate({
     rules: {
         name: {
             remote: {
-                url: "/api/registration/check/company",
+                url: "/api/admin/check/company",
                 type: "GET",
                 cache: false,
                 dataType: "json",
