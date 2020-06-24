@@ -162,7 +162,7 @@ public class AdminRestController<T> {
     }
 
     @GetMapping(value = "/check/company")
-    public boolean isTypeNameFree(@RequestParam("name") String name,
+    public boolean isCompanyExist(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
         if (companyService.getById(id).getName().equals(name)) {
             return true;
