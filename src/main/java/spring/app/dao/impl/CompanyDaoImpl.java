@@ -5,6 +5,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.CompanyDao;
 import spring.app.model.Company;
+import spring.app.model.OrgType;
 import spring.app.model.SongQueue;
 
 import javax.persistence.EntityManager;
@@ -123,5 +124,12 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public List<Company> getAllCompaniesByOrgTypeId(long id) {
+        return entityManager.createQuery("SELECT c FROM Company c LEFT JOIN FETCH c.orgType WHERE c.orgType.id=:id", Company.class)
+                            .setParameter("id", id)
+                            .getResultList();
     }
 }

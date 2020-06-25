@@ -18,21 +18,20 @@ $(document).ready(function () {
             }
         });
     }
+        function updateUserData() {
+            var newUser = {
+                "login":$('#login').val(),
+                "email":$('#email').val()
+            };
 
-    function updateUserData() {
-        var newUser = {
-            "login": $('#login').val(),
-            "email": $('#email').val()
-        };
-
-        if (newUser.login === "") {
-            alert("Введите логин");
-            return;
-        }
-        if (newUser.email === "") {
-            alert("Введите почту");
-            return;
-        }
+            if(newUser.login === "") {
+                alert("Введите логин");
+                return;
+            }
+            if(newUser.email === ""){
+                alert("Введите почту");
+                return;
+            }
 
             $.ajax({
                 contentType: "application/json;",
@@ -66,10 +65,10 @@ $(document).ready(function () {
             data: {"oldPass": oldPass, "newPass": password},
             success: function (isSame) {
                 alert(isSame);
-                oldPass = isSame;
+            oldPass = isSame;
             }
         });
-        if (oldPass === false) {
+        if(oldPass === false){
             alert("Неверно введен текущий пароль");
             return;
         }
@@ -106,6 +105,20 @@ $(document).ready(function () {
                 alert("Не удалось изменить пароль");
             }
         });
+    }
+
+
+    function forcelogout() {
+        let form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = '/logout';
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+        form.submit();
     }
 
     function showLinkAdmin() {

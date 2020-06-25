@@ -31,18 +31,27 @@
 
                 <div role="tabpanel" class="tab-pane active" id="list-establishments">
                     <ul class="nav nav-tabs nav-content" role="tablist">
-                        <li id="user-table-nav" class="active">
-                            <a id="tab-establishments-panel" href="#establishments-panel"
-                               aria-controls="establishments-panel" role="tab" data-toggle="tab">Все заведения</a>
+                        <li class="active">
+                            <a id="tab-establishments-panel" href="#establishments-panel" aria-controls="establishments-panel"
+                               role="tab" data-toggle="tab">
+                                Все заведения
+                            </a>
                         </li>
-                        <li id="add-user-nav">
+                        <li>
                             <a href="#add-establishments-panel" aria-controls="add-establishments-panel" role="tab"
                                data-toggle="tab">
-                                Новое заведение</a>
+                                Новое заведение
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#default-establishment-panel" aria-controls="default-establishment-panel" role="tab"
+                               data-toggle="tab">
+                                Тип заведения по умолчанию
+                            </a>
                         </li>
                     </ul>
 
-                    <div class="tab-content">
+            <div class="tab-content">
 
                         <!-- Список заведений (таблица) -->
                         <div role="tabpanel" class="tab-pane active" id="establishments-panel">
@@ -93,6 +102,35 @@
                                                                 </button>
                                                             </div>
                                                         </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Форма выбора заведения по умолчанию -->
+                        <div id="default-establishment-panel" class="tab-pane" role="tabpanel">
+                            <div class="panel panel-default table-panel">
+                                <div class="tab-content">
+                                    <div class="panel-body">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2 text-center">
+
+                                                    <form id="defaultEstablishmentForm">
+                                                        <div class="form-group edit-form">
+                                                            <label for="defaultEstablishmentSelect">Выберите заведение по умолчанию</label>
+                                                            <select id="defaultEstablishmentSelect" class="form-control">
+                                                                <!-- Заполняется через AJAX -->
+                                                            </select>
+                                                        </div>
+                                                        <button id="setDefaultEstablishmentBtn" class="btn btn-success btn-lg">
+                                                            Сохранить
+                                                        </button>
                                                     </form>
 
                                                 </div>

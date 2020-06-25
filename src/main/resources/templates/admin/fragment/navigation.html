@@ -1,9 +1,12 @@
-<div class="row" th:fragment="adminHeader" xmlns:th="http://www.thymeleaf.org">
+<div class="row" th:fragment="adminHeader" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect5">
     <div class="navbar navbar-inverse navbar-static-top header">
         <a class="navbar-brand" href="#"><b>Pacman player</b></a>
         <ul class="nav navbar-nav">
             <li id="headerUserBtn" style="display: none"><a href="/user/spa">Меню пользователя</a></li>
         </ul>
+        <div type="hidden" id="logged-user"  sec:authentication="name"></div>
+
         <a class="navbar-brand pull-right" href="#" id="logout-btn">Выход</a>
         <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
         <div id="listNotification" class="pull-right"></div>

@@ -341,6 +341,7 @@ public class TestDataInit {
         // создаем набор из жанров для вставки в Тип организации
         Set<Genre> genres1 = new HashSet<>();
         Set<Genre> genres2 = new HashSet<>();
+        Set<Genre> genres3 = new HashSet<>();
 
         Genre rock = genreService.getByName("Рок");
         rock.setKeywords("рок | метал | альтернатива | панк | хардкор");
@@ -373,14 +374,19 @@ public class TestDataInit {
         genres1.add(jazz);
         genres2.add(pop);
         genres2.add(rap);
+        genres3.add(lounge);
+        genres3.add(reggie);
         // создаем типы организаций
-        OrgType orgType1 = new OrgType("Кальян-бар");
-        OrgType orgType2 = new OrgType("Ресторан");
+        OrgType orgType1 = new OrgType("Кальян-бар", false);
+        OrgType orgType2 = new OrgType("Ресторан", true);
+        OrgType orgType3 = new OrgType("Кофейня", false);
         // необходимо уточнить логику этого функционала. Дополнительный фильтр по жанрам на основе огранизаций?
         orgType1.setGenres(genres1);
         orgType2.setGenres(genres2);
+        orgType3.setGenres(genres3);
         orgTypeService.save(orgType1);
         orgTypeService.save(orgType2);
+        orgTypeService.save(orgType3);
 
         // создаем компании для наших пользователей
         Company company1 = new Company("Pacman", LocalTime.of(12, 0), LocalTime.of(6, 0), user, 6500L, 60L, orgType1);
