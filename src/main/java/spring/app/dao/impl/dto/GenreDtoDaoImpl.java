@@ -20,7 +20,7 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
 
     @Override
     public List<GenreDto> getAll() {
-        String hql = "SELECT new spring.app.dto.GenreDto(genre.id, genre.name, genre.isApproved, g.keywords) FROM Genre genre";
+        String hql = "SELECT new spring.app.dto.GenreDto(genre.id, genre.name, genre.isApproved, genre.keywords) FROM Genre genre";
 
         return entityManager.createQuery(hql, GenreDto.class)
                             .getResultList();
