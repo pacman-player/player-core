@@ -434,7 +434,7 @@ function fillModalTableWithPlaylist(modalId, playlistName, songs) {
         let song = songs[i];
         let backgroundColor = song.isFromSongQueue ? 'rgb(232, 195, 195)' : '#ececec';
         let musicTr = $(`<tr style="background-color:${backgroundColor}"></tr>`);
-        let musicTd = `<td>${song.name}</td><td>${song.author.name}</td><td>${song.genre.name}</td>`;
+        let musicTd = `<td>${song.name}</td><td>${song.authorName}</td><td>${song.genreName}</td>`;
         let playing_state_play = 'on_stop';
         let playing_state_pause = 'on_play';
         let display_play = 'inline-block';
@@ -841,12 +841,12 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
         lastPlayedCompilationIndex = compilationIndex;
         lastPlayedMusicIndex = musicIndex;
         let music = allSongsInCurrentPlaylist[musicIndex];
-        player.attr('src', musicUrl + music.author.name + "/" + music.name);
-        $('#albums-cover').attr('src', albumsCoverUrl + music.author.name + "/" + music.name);
+        player.attr('src', musicUrl + music.authorName + "/" + music.name);
+        $('#albums-cover').attr('src', albumsCoverUrl + music.authorName + "/" + music.name);
         let songName = document.getElementById('song-name');
         songName.innerHTML = music.name;
         let songAuthor = document.getElementById('song-author');
-        songAuthor.innerHTML = music.author.name;
+        songAuthor.innerHTML = music.authorName;
         if (isFromSongQueue) {
             $('#playerContainer').css('background-color', 'rgb(232, 195, 195)')
         } else {

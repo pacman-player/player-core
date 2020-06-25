@@ -1,6 +1,8 @@
 package spring.app.dto;
 
-import spring.app.model.*;
+import spring.app.model.Bannable;
+import spring.app.model.Company;
+import spring.app.model.Song;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -11,6 +13,7 @@ public class SongDto extends Bannable {
     private Long id;
     private String name;
     private String authorName;
+    private Long authorId;
     private String genreName;
     private Set<String> searchTags;
     private Timestamp createdAt;
@@ -29,10 +32,11 @@ public class SongDto extends Bannable {
         this.isApproved = isApproved;
     }
 
-    public SongDto(Long id, String name, Boolean isApproved, String authorName, String genreName) {
+    public SongDto(Long id, String name, Boolean isApproved, String authorName, Long authorId, String genreName) {
         this.id = id;
         this.name = name;
         this.authorName = authorName;
+        this.authorId = authorId;
         this.genreName = genreName;
         this.isApproved = isApproved;
     }
@@ -110,7 +114,7 @@ public class SongDto extends Bannable {
             this.genreName = "";      // то возвращаем пустую строк иначе ошибка на фронте
         } else {
             this.genreName = song.getAuthor().getAuthorGenres().toString();
-        //song.getGenre().getName();
+            //song.getGenre().getName();
         }
         this.searchTags = song.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toSet());
         this.createdAt = song.getCreatedAt();
@@ -139,6 +143,14 @@ public class SongDto extends Bannable {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public Set<String> getSearchTags() {
@@ -193,6 +205,7 @@ public class SongDto extends Bannable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", authorName='" + authorName + '\'' +
+                ", authorId='" + authorId + '\'' +
                 ", searchTags='" + searchTags + '\'' +
                 ", genreName='" + genreName + '\'' +
                 ", createdAt=" + createdAt +
