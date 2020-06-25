@@ -89,6 +89,8 @@ function editButton(id, name, keywords, approved) {
 
     form.find('.error').removeClass("error");
     form.find('.form-control error').remove();
+    form.find('#updateGenresName-error').remove();
+    form.find('#updateGenreKeywords-error').remove();
 
     fieldId.val(id);
     fieldName.val(name);
