@@ -294,27 +294,35 @@ function deleteAuthorsFromGenre(id) {
 }
 
 // заполняем массив из выбранных элементов checkbox и выбранного жанра последним эллементом
-function pullUpdateObject() {
-let updateObject = {};
+function pullUpdateAuthors() {
+let updateAuthors = {};
     $('input:checkbox:checked').each(function (i) {
         if ($(this).val() == "on" || null) {
 
         } else {
-            updateObject[i] = ($(this).val());
+            updateAuthors[i] = ($(this).val());
         }
     });
-    updateObject[-2] =  document.getElementById("operationID").value;
-    updateObject[-1] =  document.getElementById("genreId").value;
-    return updateObject;
+    return updateAuthors;
 }
 
+function getAuthorsUrl() {
+    let url = "/api/author/update_authors";
+    if (document.getElementById("operationID").value.equals("delete")) {
+        url = "/api/author/delete_authors";
+    }
+    return url;
+}
 
 function saveGenreAuthors() {
     let updateObject = {};
-    updateObject = pullUpdateObject();
+    let updateAuthors = pullUpdateAuthors();
+    let url = getAuthorsUrl();
+    let genreID = document.getElementById("genreId").value;
     $.ajax({
-        url: '/api/author/update_authors',
-        data: JSON.stringify(updateObject),
+        url: url,
+        data: {updateAuthors: JSON.stringify(updateAuthors),
+               genreId: genreID},
         contentType: "application/json;charset=UTF-8",
         method: 'PUT',
         dataType: 'json',
