@@ -20,11 +20,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {    //сер�
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user;
-        if (login.contains("@")) {
+        User user = userService.getUserByLogin(login);
+        if (user == null) {
             user = userService.getUserByEmail(login);
-        } else {
-            user = userService.getUserByLogin(login);
         }
 
         if (user == null) {
