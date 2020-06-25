@@ -144,26 +144,28 @@ public class AuthorRestController {
     }
 
     /**
-     * список авторов, относящихся к текущему жанру
-     *
-     * @param updateObject
+     * Добавить авторов к жанру
+     * @param updateAuthors
      * @return
      */
     @PutMapping(value = "/update_authors", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updateAuthorsByGenre(@RequestBody Map<Integer, String> updateObject) {
-        Genre genre = genreService.getById(Long.valueOf(updateObject.get(-1)));
-        String operation = updateObject.get(-2);
-        Set<Author> authors = new HashSet<>();
-        updateObject.forEach((key, value) -> {
-            if (key > 0) {
-                authors.add(authorService.getById(Long.parseLong(value)));
-            }
-        });
-        if (operation.equals("add")) {
-            genre.addAuthors(authors);
-        } else {
-            genre.removeAuthors(authors);
-        }
+    public void updateAuthorsByGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
+        Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
+        genre.addAuthors(authors);
+        genreService.update(genre);
+    }
+
+    /**
+     * удалить авторов из жанра
+     * @param updateAuthors
+     * @return
+     */
+    @PutMapping(value = "/delete_authors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteAuthorsFromGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
+        Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
+        genre.removeAuthors(authors);
         genreService.update(genre);
     }
 

@@ -8,6 +8,7 @@ import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.dto.AuthorDtoDao;
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
@@ -15,7 +16,10 @@ import spring.app.service.abstraction.NotificationTemplateService;
 import spring.app.service.abstraction.SongFileService;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
@@ -113,6 +117,13 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
     @Override
     public List<AuthorDto> getAuthorsOfGenre(Long genreID) {
         return authorDtoDao.getAuthorsOfGenre(genreID);
+    }
+
+    @Override
+    public Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors) {
+        Set<Author> authors = new HashSet<>();
+        updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
+        return authors;
     }
 
 
