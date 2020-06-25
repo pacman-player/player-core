@@ -295,7 +295,7 @@ function deleteAuthorsFromGenre(id) {
 
 // заполняем массив из выбранных элементов checkbox и выбранного жанра последним эллементом
 function pullUpdateAuthors() {
-let updateAuthors = {};
+    let updateAuthors = {};
     $('input:checkbox:checked').each(function (i) {
         if ($(this).val() == "on" || null) {
 
@@ -308,21 +308,20 @@ let updateAuthors = {};
 
 function getAuthorsUrl() {
     let url = "/api/author/update_authors";
-    if (document.getElementById("operationID").value.equals("delete")) {
+    if ( document.getElementById("operationID").value == "delete") {
         url = "/api/author/delete_authors";
     }
     return url;
 }
 
 function saveGenreAuthors() {
-    let updateObject = {};
-    let updateAuthors = pullUpdateAuthors();
-    let url = getAuthorsUrl();
+    let updateAuthors = {};
+    updateAuthors = pullUpdateAuthors();
     let genreID = document.getElementById("genreId").value;
+    let url = getAuthorsUrl() + '?id=' + genreID;
     $.ajax({
         url: url,
-        data: {updateAuthors: JSON.stringify(updateAuthors),
-               genreId: genreID},
+        data: JSON.stringify(updateAuthors),
         contentType: "application/json;charset=UTF-8",
         method: 'PUT',
         dataType: 'json',
@@ -331,13 +330,12 @@ function saveGenreAuthors() {
             window.setTimeout(function () {
                 $('.alert-success').alert('close');
             }, 5000);
-            updateObject = [];
+            updateAuthors = [];
         },
         error: function () {
-            updateObject = [];
+            updateAuthors = [];
         },
     });
-    $('#addAuthorGenreManagement').modal('clear');
     $('#addAuthorGenreManagement').modal('hide');
 }
 
@@ -350,4 +348,5 @@ let changeGenresBtn = function (event) {
 
 $(document).on("change", ".chcheck", changeGenresBtn);
 $(document).on("change", ".chcheckAll", changeGenresBtn);
+
 

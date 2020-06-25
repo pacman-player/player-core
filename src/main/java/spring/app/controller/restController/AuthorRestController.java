@@ -147,8 +147,8 @@ public class AuthorRestController {
      * @return
      */
     @PutMapping(value = "/update_authors", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updateAuthorsByGenre(@RequestBody Map<Integer, String> updateAuthors, @RequestParam Long genreId) {
-        Genre genre = genreService.getById(genreId);
+    public void updateAuthorsByGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
         Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
         genre.addAuthors(authors);
         genreService.update(genre);
@@ -160,8 +160,8 @@ public class AuthorRestController {
      * @return
      */
     @PutMapping(value = "/delete_authors", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteAuthorsFromGenre(@RequestBody Map<Integer, String> updateAuthors, @RequestParam Long genreId) {
-        Genre genre = genreService.getById(genreId);
+    public void deleteAuthorsFromGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
         Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
         genre.removeAuthors(authors);
         genreService.update(genre);

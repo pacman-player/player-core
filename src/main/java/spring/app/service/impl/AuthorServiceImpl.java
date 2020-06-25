@@ -121,13 +121,9 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
     }
 
     @Override
-    public Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateObject) {
+    public Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors) {
         Set<Author> authors = new HashSet<>();
-        updateObject.forEach((key, value) -> {
-            if (key > 0) {
-                authors.add(getById(Long.parseLong(value)));
-            }
-        });
+        updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
         return authors;
     }
 
