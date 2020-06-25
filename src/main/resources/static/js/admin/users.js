@@ -154,11 +154,11 @@ $(document).ready(function () {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
-            'company' : $('#addCompanyForUser').val(),
+            'companyId' : $('#addCompanyForUser').val(),
             'roles': roleListArr
 
         };
-        $("#addCompanyForUser option[value = '"+ user.company.id +"']").prop("selected", true);
+        // $("#addCompanyForUser option[value = '"+ user.company.id +"']").prop("selected", true);
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",

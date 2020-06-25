@@ -90,6 +90,14 @@ public class UserDto {
         this.enabled = enabled;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +110,8 @@ public class UserDto {
         if (email != null ? !email.equals(userDto.email) : userDto.email != null) return false;
         if (password != null ? !password.equals(userDto.password) : userDto.password != null) return false;
         if (enabled != null ? !enabled.equals(userDto.enabled) : userDto.enabled != null) return false;
-        return roles != null ? roles.equals(userDto.roles) : userDto.roles == null;
+        if (roles != null ? !roles.equals(userDto.roles) : userDto.roles != null) return false;
+        return companyId != null ? companyId.equals(userDto.companyId) : userDto.companyId == null;
     }
 
     @Override
@@ -113,14 +122,7 @@ public class UserDto {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
         return result;
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 }
