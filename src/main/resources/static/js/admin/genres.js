@@ -83,6 +83,10 @@ function editButton(id, name, approved) {
     let fieldName = $("#updateGenresName");
     let fieldApproved = $("#updateGenreApproved");
 
+    form.find('.error').removeClass("error");
+    form.find('.form-control error').remove();
+    form.find('#updateGenresName-error').remove();
+
     fieldId.val(id);
     fieldName.val(name);
     fieldApproved.prop('checked', approved);
@@ -138,7 +142,7 @@ function editButton(id, name, approved) {
                 }
             })
         }
-    })
+    });
 }
 
 
@@ -309,12 +313,12 @@ $('#editFormGenreSong').on('submit', function () {
     });
 });
 
-let changeGenresBtn = function(event) {
+let changeGenresBtn = function (event) {
     let checkedItems = $('.chcheck:checked').length;
     let checkedAll = $('.chcheckAll:checked').length;
 
-    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll ==0);
-    }
+    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll == 0);
+}
 
 $(document).on("change", ".chcheck", changeGenresBtn);
 $(document).on("change", ".chcheckAll", changeGenresBtn);

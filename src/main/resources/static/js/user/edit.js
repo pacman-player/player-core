@@ -18,20 +18,21 @@ $(document).ready(function () {
             }
         });
     }
-        function updateUserData() {
-            var newUser = {
-                "login":$('#login').val(),
-                "email":$('#email').val()
-            };
 
-            if(newUser.login === "") {
-                alert("Введите логин");
-                return;
-            }
-            if(newUser.email === ""){
-                alert("Введите почту");
-                return;
-            }
+    function updateUserData() {
+        var newUser = {
+            "login": $('#login').val(),
+            "email": $('#email').val()
+        };
+
+        if (newUser.login === "") {
+            alert("Введите логин");
+            return;
+        }
+        if (newUser.email === "") {
+            alert("Введите почту");
+            return;
+        }
 
             $.ajax({
                 contentType: "application/json;",
@@ -65,17 +66,17 @@ $(document).ready(function () {
             data: {"oldPass": oldPass, "newPass": password},
             success: function (isSame) {
                 alert(isSame);
-            oldPass = isSame;
+                oldPass = isSame;
             }
         });
-        if(oldPass === false){
+        if (oldPass === false) {
             alert("Неверно введен текущий пароль");
             return;
         }
 
         var newPass = $("#newUserPass").val();
         var checkPass = $("#updateUserPass").val();
-        if (newPass !== checkPass){
+        if (newPass !== checkPass) {
             alert("Новый пароль не совпадает с подтвержденным");
             return;
         }
@@ -106,36 +107,6 @@ $(document).ready(function () {
             }
         });
     }
-
-
-    function forcelogout() {
-
-        $.ajax({
-            contentType: "application/json;",
-            url: "/logout",
-            type: "POST",
-            success: function () {
-                let form = document.createElement('form');
-                document.body.appendChild(form);
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = '_csrf';
-                input.value = csrfToken;
-                form.appendChild(input);
-                form.submit();
-            },
-            error: function () {
-                alert("Не удалось разлогиниться");
-            }
-        });
-
-
-    }
-
-
-
-
-
 
     function showLinkAdmin() {
         $.ajax({
@@ -174,21 +145,21 @@ $(document).ready(function () {
 
     }
 
-        function sendMail() {
-            var mess = "start";
-            $.ajax({
-                type: 'PUT',
-                url: "/api/user/send_mail",
-                contentType: 'application/json;',
-                data: JSON.stringify(mess),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                async: true,
-                cache: false,
-            });
-        }
+    function sendMail() {
+        var mess = "start";
+        $.ajax({
+            type: 'PUT',
+            url: "/api/user/send_mail",
+            contentType: 'application/json;',
+            data: JSON.stringify(mess),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            async: true,
+            cache: false,
+        });
+    }
 
 
     $('#updateUserDataBtn').click(function (event) {

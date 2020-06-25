@@ -7,7 +7,7 @@ import spring.app.model.Visit;
 
 import java.util.List;
 
-public interface VisitService extends GenericService<Visit.VisitPK,Visit>{
+public interface VisitService extends GenericService<Visit.VisitPK, Visit> {
 
     void addVisit(TelegramUser telegramUser, Company company);
 

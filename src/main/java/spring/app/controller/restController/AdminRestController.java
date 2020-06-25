@@ -7,23 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import spring.app.dto.CompanyDto;
-import spring.app.dto.OrgTypeDto;
-import spring.app.dto.RoleDto;
-import spring.app.dto.UserDto;
+import spring.app.dto.*;
 import spring.app.model.*;
-import spring.app.service.abstraction.CompanyService;
-import spring.app.service.abstraction.OrgTypeService;
-import spring.app.service.abstraction.RoleService;
-import spring.app.service.abstraction.UserService;
+import spring.app.service.abstraction.*;
 import spring.app.util.ResponseBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -40,15 +29,17 @@ public class AdminRestController<T> {
     private final CompanyService companyService;
     private final OrgTypeService orgTypeService;
     private final ResponseBuilder responseBuilder;
+    private final AddressService addressService;
 
     @Autowired
     public AdminRestController(RoleService roleService, UserService userService, CompanyService companyService,
-                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder) {
+                               OrgTypeService orgTypeService, ResponseBuilder responseBuilder, AddressService addressService) {
         this.roleService = roleService;
         this.userService = userService;
         this.companyService = companyService;
         this.orgTypeService = orgTypeService;
         this.responseBuilder = responseBuilder;
+        this.addressService = addressService;
     }
 
     @PutMapping(value = "/ban_user/{id}")
@@ -86,7 +77,6 @@ public class AdminRestController<T> {
     }
 
 
-
     @GetMapping(value = "/all_companies")
     public @ResponseBody
     List<CompanyDto> getAllCompanies() {
@@ -112,7 +102,7 @@ public class AdminRestController<T> {
     }
 
     @PutMapping(value = "/update_user")
-    public void updateUser(@RequestBody UserDto userDto, HttpServletRequest httpServletRequest) {
+    public void updateUser(@RequestBody UserDto userDto) {
         LOGGER.info("PUT request '/update_user'");
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
@@ -129,21 +119,8 @@ public class AdminRestController<T> {
             getContext().setAuthentication(token);
         }
         userService.update(user);
-        if (userAuth.getId().equals(user.getId())) {
-            logout(httpServletRequest);//логаут надо вызывать только если меняет самого себя
-        }
         LOGGER.info("Updated User = {}", user);
     }
-
-
-    @RequestMapping(value="/logout",method = RequestMethod.POST)
-    public void logout(HttpServletRequest request){
-        HttpSession httpSession = request.getSession();
-        httpSession.invalidate();
-        //return "redirect:/login";
-    }
-
-
 
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
@@ -165,18 +142,21 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
+        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
         LOGGER.info("POST request '/company'");
         User userId = userService.getById(companyDto.getUserId());
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
-        company.setName(companyDto.getName());
-        company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
-        company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
-        company.setUser(userId);
-        company.setOrgType(orgType);
-        company.setTariff(companyDto.getTariff());
+            company.setName(companyDto.getName());
+            company.setStartTime(LocalTime.parse(companyDto.getStartTime()));
+            company.setCloseTime(LocalTime.parse(companyDto.getCloseTime()));
+            company.setUser(userId);
+            company.setOrgType(orgType);
+            company.setTariff(companyDto.getTariff());
         companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
+        }
+
     }
 
     @PostMapping(value = "/add_establishment")
@@ -206,7 +186,7 @@ public class AdminRestController<T> {
 
     @GetMapping(value = "/all_roles")
     public Response getAllRoles() {
-       Response response = responseBuilder.success(roleService.getAllRolesDto());
+        Response response = responseBuilder.success(roleService.getAllRolesDto());
         return response;
     }
 
@@ -253,14 +233,38 @@ public class AdminRestController<T> {
         return responseBuilder.success(roles);
     }
 
-    @PostMapping(value = "/add_company")
-    public void addCompany(@RequestBody CompanyDto companyDto) {
-        LOGGER.info("POST request '/add_company'");
-        OrgType orgType = new OrgType(companyDto.getOrgType());
-        Company company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
-                LocalTime.parse(companyDto.getCloseTime()), null, orgType);
-        companyService.save(company);
-        LOGGER.info("Added Company = {}", company);
+    @PostMapping(value = "/add_company", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void addCompany(@RequestBody
+                                       CompanyDto companyDto) {
+        if (!companyService.isExistCompanyByName(companyDto.getName())) {
+            OrgType orgType = new OrgType(companyDto.getOrgType());
+            User userId;
+            Company company;
+            if (companyDto.getUserId() == null) {
+                userId = null;
+            } else {
+                userId = userService.getById(companyDto.getUserId());
+            }
+            if (!(companyDto.getAddressCity() == null)) {
+                addressService.save(new Address(
+                        companyDto.getAddressCountry(),
+                        companyDto.getAddressCity(),
+                        companyDto.getAddressStreet(),
+                        companyDto.getAddressHouse(),
+                        companyDto.getAddressLatitude(),
+                        companyDto.getAddressLongitude()
+                ));
+                company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                        LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
+                company.setAddress(addressService.getById(addressService.getLastId()));
+            } else {
+                company = new Company(companyDto.getName(), LocalTime.parse(companyDto.getStartTime()),
+                        LocalTime.parse(companyDto.getCloseTime()), userId, orgType);
+                company.setTariff(companyDto.getTariff());
+            }
+            companyService.save(company);
+        }
     }
 
     @GetMapping(value = "/check/email")

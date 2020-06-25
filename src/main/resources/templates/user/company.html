@@ -19,14 +19,14 @@
 </head>
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/5e3423a0298c395d1ce587b6/default';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/5e3423a0298c395d1ce587b6/default';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
     })();
 </script>
 <!--End of Tawk.to Script-->
@@ -94,14 +94,16 @@
                     <input id="est-timer" required="required" type="number"/><br/>
 
                     <label for="est-address">Адрес&nbsp;</label>
-                    <input style="width: 700px" id="est-address" type="text" placeholder="Введите адрес, или выберите дом на карте"/>
+                    <input style="width: 700px" id="est-address" type="text"
+                           placeholder="Введите адрес, или выберите дом на карте"/>
                     <button type="submit" id="button">Поиск</button>
                     <br/>
 
                     <input id="latitude" type="hidden"/>
                     <input id="longitude" type="hidden"/>
 
-                    <div id="map" style="width: 800px; height: 400px"></div><br/>
+                    <div id="map" style="width: 800px; height: 400px"></div>
+                    <br/>
 
                     <button class="btn btn-primary" style="margin-left:0" id="est-save-data" type="button">
                         Сохранить
@@ -121,7 +123,8 @@
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
 
-<script src="https://api-maps.yandex.ru/2.1/?apikey=d447d1ac-67c1-4791-be4a-6c7cb71d1c5e&amp;lang=ru_RU" type="text/javascript"></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=d447d1ac-67c1-4791-be4a-6c7cb71d1c5e&amp;lang=ru_RU"
+        type="text/javascript"></script>
 
 </body>
 </html>

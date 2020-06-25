@@ -3,6 +3,7 @@ package spring.app.service.impl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.GenericDao;
+
 import java.io.Serializable;
 import java.util.List;
 

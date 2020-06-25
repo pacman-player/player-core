@@ -46,11 +46,11 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
     }
 
     @Override
-    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id,  String namePlayList) {
+    public List<SongCompilationDto> getAllCompilationsPlaylistByCompanyIdDto(Long id, String namePlayList) {
         List<SongCompilationDto> songCompilationList = entityManager.createQuery(
                 "SELECT s.id, s.name, s.cover " +
                         ",g.name" +
-                        ", son.name from Company c left join c."+namePlayList+" m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
+                        ", son.name from Company c left join c." + namePlayList + " m left join m.songCompilation s join s.genre g left join s.song son where c.id=:id "
 
         ).setParameter("id", id)
                 .unwrap(Query.class)
@@ -103,7 +103,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
         return songCompilationDtoList;
     }
 
-    private class SongCompilationDtoTransformer implements ResultTransformer {
+    private static class SongCompilationDtoTransformer implements ResultTransformer {
         List<SongCompilationDto> root = new ArrayList<>();
         Map<Long, Set<String>> genreMap = new HashMap<>();
         Map<Long, Set<String>> songMap = new HashMap<>();
@@ -134,7 +134,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
         }
 
         @Override
-        public List transformList(List list) {
+        public List<SongCompilationDto> transformList(List list) {
             for (SongCompilationDto songCompilationDto : root) {
                 songCompilationDto.setGenres(genreMap.get(songCompilationDto.getId()));
                 songCompilationDto.setSongs(songMap.get(songCompilationDto.getId()));

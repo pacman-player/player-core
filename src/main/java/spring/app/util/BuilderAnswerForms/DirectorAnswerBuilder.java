@@ -4,7 +4,7 @@ package spring.app.util.BuilderAnswerForms;
 import org.springframework.http.HttpStatus;
 import spring.app.util.BuilderAnswerForms.Builders.BuilderAnswer;
 
-public class DirectorAnswerBuilder<T>{
+public class DirectorAnswerBuilder<T> {
 
     private HttpStatus status;
     private String message;
@@ -14,7 +14,6 @@ public class DirectorAnswerBuilder<T>{
     public void setData(T data) {
         this.data = data;
     }
-
 
 
     public void setStatus(HttpStatus status) {
@@ -30,13 +29,13 @@ public class DirectorAnswerBuilder<T>{
     }
 
 
-    public void constructErrorMessage(BuilderAnswer<T> builderAnswer){
+    public void constructErrorMessage(BuilderAnswer<T> builderAnswer) {
         builderAnswer.setSuccessFlag(false);
-        builderAnswer.setErrorMessage(status,message);
+        builderAnswer.setErrorMessage(status, message);
 
     }
 
-    public void constructSuccessMessage(BuilderAnswer<T> builderAnswer){
+    public void constructSuccessMessage(BuilderAnswer<T> builderAnswer) {
         builderAnswer.setSuccessFlag(true);
         builderAnswer.setData(data);
     }

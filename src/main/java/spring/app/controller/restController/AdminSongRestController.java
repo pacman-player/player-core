@@ -13,6 +13,7 @@ import spring.app.dto.SongDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
+import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
@@ -85,10 +86,12 @@ public class AdminSongRestController {
         LOGGER.info("Changing Song = {}", oldSong);
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
+        Set<SongCompilation> songCompilations = oldSong.getSongCompilations();
         Song song = new Song(songDto.getId(), songDto.getName());
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
+         song.setSongCompilations(songCompilations);
         //song.setGenre(genre);
         songService.setTags(song, songDto.getSearchTags());
         songService.update(song);
@@ -96,12 +99,12 @@ public class AdminSongRestController {
     }
 
 
-@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getById(id));
-    return ResponseEntity.ok(songDto);
-}
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+        SongDto songDto = new SongDto(songService.getById(id));
+        return ResponseEntity.ok(songDto);
+    }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
@@ -121,13 +124,13 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
         Genre newGenre = genreService.getByName(updateObject.get(-1));
-        updateObject.forEach((key, value)->{
-              if(key!=-1){
-                  Song editSong = songService.getById(Long.parseLong(value));
-                  //editSong.setGenre(newGenre);
-                  songService.update(editSong);
-              }
-          });
+        updateObject.forEach((key, value) -> {
+            if (key != -1) {
+                Song editSong = songService.getById(Long.parseLong(value));
+                //editSong.setGenre(newGenre);
+                songService.update(editSong);
+            }
+        });
     }
 
     @DeleteMapping(value = "/delete_tag_for_songs")

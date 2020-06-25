@@ -1,7 +1,7 @@
 //оставил как образец
 
 let getPostsList = async () => {
-     const options = {
+    const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -18,17 +18,17 @@ let getPostsList = async () => {
 }
 
 let Home = {
-    render : async () => {
+    render: async () => {
         let posts = await getPostsList()
         let view =  /*html*/`
             <section class="section">
                 <h3> Домашняя страница </h3>
                 <h5> ниже использую mockAPI в качестве примера </h5>
                 <ul>
-                    ${ posts.map(post => 
-                        /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
-                        ).join('\n ')
-                    }
+                    ${posts.map(post =>
+            /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
+        ).join('\n ')
+        }
                 </ul>
             </section>
         `

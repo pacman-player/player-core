@@ -15,12 +15,21 @@ public class TagDtoDaoImpl implements TagDtoDao {
     EntityManager entityManager;
 
     @Override
-    public List<TagDto> getAll() {
+    public List<TagDto> getAll(int pageSize, int pageNo) {
         return entityManager.createQuery(
                 "SELECT new spring.app.dto.TagDto(t.id, t.name) FROM Tag t",
                 TagDto.class
         )
+                .setMaxResults(pageSize)
+                .setFirstResult(pageNo * pageSize)
                 .getResultList();
     }
 
+    @Override
+    public Long getRowsCount(){
+        return entityManager.createQuery(
+                "SELECT count(t) FROM Tag t", Long.class
+        )
+                .getSingleResult();
+    }
 }
