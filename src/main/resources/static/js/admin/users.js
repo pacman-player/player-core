@@ -139,6 +139,7 @@ $(document).ready(function () {
         if ($('#addForm').valid()) {
             addUser();
             $(':input', '#addForm').val('');
+            $("#addForm").trigger("reset");
         }
     });
     getCompanyWithoutUser();
