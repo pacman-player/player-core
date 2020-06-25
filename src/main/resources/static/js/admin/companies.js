@@ -158,6 +158,7 @@ $(document).ready(function () {
 
     //добавление компании
     getOrgType();
+    getUserEmail();
     function addCompany(){
 
         var array = $('#addCompanyAddress').val().split(', ');
@@ -176,7 +177,7 @@ $(document).ready(function () {
             addressLongitude: $('#longitude').val()
         }
 
-        $("#addOrgType option[value='" + companyFormData.orgType.id + "'] ").prop("selected", true);
+        // $("#addOrgType option[value='" + companyFormData.orgType.id + "'] ").prop("selected", true);
         $.ajax({
             url: '/api/admin/add_company',
             type: "POST",
@@ -364,12 +365,30 @@ function getOrgType(){
 
 }
 
+function getUserEmail(){
+    $.ajax({
+        url:"/api/admin/all_users",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            var selectBody = $('#addUserForCompany');
+            selectBody.empty();
+            selectBody.append(`<option disabled selected value="">выберите пользователя по email</option>`);
+            $(data).each(function (i, user) {
+                selectBody.append(`
+                    <option value="${user.id}">${user.email}</option>
+                    `);
+            })
+        }
+    })
+}
+
 
 $('#addCompany').validate({
     rules: {
         name: {
             required: true,
-            pattern: /[a-zA-Z0-9-_.-]$/,
+            pattern: /[а-яА-яa-zA-Z0-9-_.-]$/,
             remote: {
                 url: "/api/registration/check/company",
                 type: "GET",
