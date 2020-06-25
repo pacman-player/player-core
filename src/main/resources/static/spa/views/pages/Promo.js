@@ -1,4 +1,3 @@
-
 let Promo = {
 
     render: async () => {

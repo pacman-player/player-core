@@ -203,7 +203,6 @@ function getTable() {
                 let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
                 let keywords = genres[i].keywords;
-                //.replace(/ \|/g, ',')
 
                 // parsing fields
                 let tr = $("<tr/>");
@@ -326,12 +325,12 @@ $('#editFormGenreSong').on('submit', function () {
     });
 });
 
-let changeGenresBtn = function(event) {
+let changeGenresBtn = function (event) {
     let checkedItems = $('.chcheck:checked').length;
     let checkedAll = $('.chcheckAll:checked').length;
 
-    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll ==0);
-    }
+    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll == 0);
+}
 
 $(document).on("change", ".chcheck", changeGenresBtn);
 $(document).on("change", ".chcheckAll", changeGenresBtn);

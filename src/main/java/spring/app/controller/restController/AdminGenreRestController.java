@@ -31,7 +31,7 @@ public class AdminGenreRestController {
     }
 
     @GetMapping(value = "/all_genres")
-    public List<GenreDto> getAllGenre(@AuthenticationPrincipal User user) {
+    public List<GenreDto> getAllGenre() {
         return genreService.getAllGenreDto();
 
     }
@@ -98,6 +98,10 @@ public class AdminGenreRestController {
     @GetMapping(value = "/is_free")
     public boolean isTypeNameFree(@RequestParam("name") String name,
                                   @RequestParam("id") Long id) {
+//        if (genreService.getById(id).getName().equals(name)) {
+//            return true;
+//        }
+//        return !genreService.isExistByName(name);
         boolean typeNameFree = false;
         if (genreService.getByName(name) == null){
             typeNameFree = !genreService.isExistByName(name);
