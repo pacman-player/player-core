@@ -37,5 +37,5 @@ public interface AuthorService extends GenericService<Long, Author> {
 
     List<AuthorDto> getAuthorsOfGenre(Long genreID);
 
-    Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateObject);
+    Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors);
 }
