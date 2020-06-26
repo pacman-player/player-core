@@ -10,15 +10,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.GenreDto;
 import spring.app.model.Genre;
-import spring.app.model.SongCompilation;
 import spring.app.model.User;
 import spring.app.service.abstraction.GenreService;
-import spring.app.service.abstraction.SongCompilationService;
 import spring.app.service.impl.NotificationServiceImpl;
-
 import java.util.List;
-import java.util.Set;
-
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RestController
@@ -26,15 +21,12 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 public class AdminGenreRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminGenreRestController.class);
     private GenreService genreService;
-    private SongCompilationService songCompilationService;
     private NotificationServiceImpl notificationService;
 
     @Autowired
     public AdminGenreRestController(GenreService genreService,
-                                    NotificationServiceImpl notificationService,
-                                    SongCompilationService songCompilationService) {
+                                    NotificationServiceImpl notificationService) {
         this.genreService = genreService;
-        this.songCompilationService = songCompilationService;
         this.notificationService = notificationService;
     }
 
@@ -95,11 +87,9 @@ public class AdminGenreRestController {
             String message = "The default genre is " + genre.getName();
             User user = (User) getContext().getAuthentication().getPrincipal();
             notificationService.save(message, user.getId());
-            LOGGER.info("Sent Notification '{}'", message);
         }
         catch (InterruptedException e){
             LOGGER.error(e.getMessage(), e);
-            Thread.currentThread().interrupt();
         }
     }
 
