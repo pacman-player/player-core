@@ -6,6 +6,7 @@ import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface AuthorService extends GenericService<Long, Author> {
@@ -31,6 +32,12 @@ public interface AuthorService extends GenericService<Long, Author> {
     int getLastApprovedAuthorsPageNumber(int pageSize);
 
     boolean isExist(String name);
+
+    List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
+
+    List<AuthorDto> getAuthorsOfGenre(Long genreID);
+
+    Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors);
 
     void setDefaultGenre(long deleteGenreId, long defaultGenreId);
 }

@@ -119,7 +119,7 @@ public class AdminSongRestController {
     }
 
     /*
-        Изменение жанра у нескольких песен
+        Изменение авторов у нескольких песен
     */
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {

@@ -15,9 +15,11 @@ import spring.app.service.abstraction.NotificationService;
 import spring.app.service.abstraction.NotificationTemplateService;
 import spring.app.service.abstraction.SongFileService;
 
-import java.io.File;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -107,6 +109,23 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
     @Override
     public boolean isExist(String name) {
         return dao.isExist(name);
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
+        return authorDtoDao.getAuthorsOutOfGenre(genreID);
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsOfGenre(Long genreID) {
+        return authorDtoDao.getAuthorsOfGenre(genreID);
+    }
+
+    @Override
+    public Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors) {
+        Set<Author> authors = new HashSet<>();
+        updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
+        return authors;
     }
 
     @Override
