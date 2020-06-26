@@ -8,6 +8,7 @@ import spring.app.dao.abstraction.SongDao;
 import spring.app.dao.abstraction.dto.AuthorDtoDao;
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 import spring.app.model.NotificationTemplate;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.NotificationService;
@@ -17,6 +18,7 @@ import spring.app.service.abstraction.SongFileService;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorDao> implements AuthorService {
@@ -101,9 +103,15 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return dao.getLastApprovedPageNumber(pageSize);
     }
 
+
     @Override
     public boolean isExist(String name) {
         return dao.isExist(name);
     }
 
+    @Override
+    @Transactional
+    public void setDefaultGenre(long genreId, long defaultGenreId){
+        dao.setDefaultGenre(genreId, defaultGenreId);
+    }
 }

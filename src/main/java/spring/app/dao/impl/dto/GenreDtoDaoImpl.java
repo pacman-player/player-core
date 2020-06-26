@@ -33,7 +33,7 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
         );
         query.setParameter("name", name);
 
-        if (query.getResultList().get(0).equals(0L)) {
+        if (query.getSingleResult().equals(0L)) {
             return false;
         } else {
             return true;

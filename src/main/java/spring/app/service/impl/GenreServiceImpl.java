@@ -10,11 +10,14 @@ import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
 import spring.app.model.SongCompilation;
+import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,42 +26,28 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 
     private final GenreDtoDao genreDtoDao;
     private final SongCompilationService songCompilationService;
+    private final AuthorService authorService;
 
     @Autowired
-    public GenreServiceImpl(GenreDao dao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService) {
+    public GenreServiceImpl(GenreDao dao, GenreDtoDao genreDtoDao, SongCompilationService songCompilationService, AuthorService authorService) {
         super(dao);
         this.genreDtoDao = genreDtoDao;
         this.songCompilationService = songCompilationService;
+        this.authorService = authorService;
     }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
-        Genre notDefinedGenre = getByName("Неизвестный жанр");
-        Genre genreForDelete = getById(id);
-        // в сервисе только таким образом можно пробежать по всем авторам , удалить у них наш жанр и в случае если жанров у них больше нет добавить "не определенный"
-        List<Author> authors = new ArrayList<>(genreForDelete.getAuthors());
-        for (Author author : authors) {
-            author.getAuthorGenres().remove(genreForDelete);
-            if (author.getAuthorGenres().size() == 0) {
-                author.getAuthorGenres().add(notDefinedGenre);
-            }
+        songCompilationService.setDefaultGenre(id);
+        authorService.setDefaultGenre(id, getDefaultGenreId());
+        if (BigInteger.ONE.equals(dao.countOfGenresInOrgType(id))){
+            dao.deleteReferenceFromOrgTypeByGenre(id);
         }
-
-        List<Song> songs = dao.getSongsByGenre(genreForDelete);
-        for (Song song : songs) {
-            //song.setGenre(notDefinedGenre);
-            song.getAuthor().setAuthorGenres((Set<Genre>) notDefinedGenre);
+        else {
+            dao.setDefaultGenreToOrgType(id, getDefaultGenreId());
         }
-        dao.deleteReferenceFromOrgTypeByGenre(genreForDelete);
-        dao.deleteReferenceFromCompanyByGenre(genreForDelete);
-
-        List<SongCompilation> songCompilationList = new ArrayList<>(genreForDelete.getSongCompilation());
-        for (SongCompilation songCompilation : songCompilationList) {
-            songCompilation.setGenre(notDefinedGenre);
-            genreForDelete.getSongCompilation().remove(songCompilation);
-        }
-        dao.flush();
+        dao.deleteReferenceFromCompanyByGenre(id);
         dao.deleteById(id);
     }
 
@@ -88,6 +77,11 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     }
 
     @Override
+    public long getDefaultGenreId(){
+        return dao.getDefaultGenreId();
+    }
+
+    @Override
     @Transactional
     public void saveBatch(List<Genre> genreList) {
         dao.saveBatch(genreList);
@@ -102,6 +96,12 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Transactional
     public void setDefaultGenre(long id){
         dao.setDefaultGenre(id);
+    }
+
+    @Override
+    @Transactional
+    public void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId){
+        dao.setDefaultGenreToOrgType(deleteGenreId, defaultGenreId);
     }
 
     @Override

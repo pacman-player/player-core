@@ -293,5 +293,9 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
         return songCompilationDtoDao.getAvailableContentForCompilationDto(dao.getById(compilationId));
     }
 
-
+    @Override
+    @Transactional
+    public void setDefaultGenre(long genreId){
+        dao.setDefaultGenre(genreId);
+    }
 }

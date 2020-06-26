@@ -291,7 +291,7 @@ function defaultRadio(id) {
         success: () => {
             notification(
                 "default-genre" + id,
-                ` Жанр с ${id} назначен жанром по умолчанию`,
+                ` Жанр с ID ${id} назначен жанром по умолчанию`,
                 "default-genre-panel");
             $(`.btn.btn-sm.btn-info`).removeAttr("disabled");
             $(`#deleteGenreBtn${id}`).removeAttr("disabled").attr('disabled', 'disabled');

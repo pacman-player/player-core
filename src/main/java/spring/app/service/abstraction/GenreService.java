@@ -16,6 +16,8 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<GenreDto> getAllApprovedGenreDto();
 
+    long getDefaultGenreId();
+
     void saveBatch(List<Genre> genreList);
 
     boolean isExistByName(String name);
@@ -23,6 +25,8 @@ public interface GenreService extends GenericService<Long, Genre> {
     List<String> getGenreNames(String keywords);
 
     void setDefaultGenre(long id);
+
+    void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId);
 
     void deleteDefaultGenre();
 }

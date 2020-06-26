@@ -10,6 +10,7 @@ import spring.app.model.Song;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -66,14 +67,22 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     }
 
     @Override
-    public void deleteReferenceFromOrgTypeByGenre(Genre genre) {
-        TypedQuery<OrgType> queryOrgType = (TypedQuery<OrgType>) entityManager.createNativeQuery("DELETE FROM org_type_on_related_genre WHERE genre_id = " + genre.getId());
+    public long getDefaultGenreId(){
+        long id = (long) entityManager.createQuery("SELECT id FROM Genre WHERE isDefault = true").getSingleResult();
+        return id;
+    }
+
+    @Override
+    public void deleteReferenceFromCompanyByGenre(long id) {
+        TypedQuery<Company> queryOrgType = (TypedQuery<Company>) entityManager.createNativeQuery("DELETE FROM company_on_banned_genre WHERE genre_id = :id");
+        queryOrgType.setParameter("id", id);
         queryOrgType.executeUpdate();
     }
 
     @Override
-    public void deleteReferenceFromCompanyByGenre(Genre genre) {
-        TypedQuery<Company> queryOrgType = (TypedQuery<Company>) entityManager.createNativeQuery("DELETE FROM company_on_banned_genre WHERE genre_id =" + genre.getId());
+    public void deleteReferenceFromOrgTypeByGenre(long id) {
+        TypedQuery<OrgType> queryOrgType = (TypedQuery<OrgType>) entityManager.createNativeQuery("DELETE FROM org_type_on_related_genre WHERE genre_id = :id");
+        queryOrgType.setParameter("id", id);
         queryOrgType.executeUpdate();
     }
 
@@ -87,8 +96,20 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         entityManager.createQuery("UPDATE Genre g SET g.isDefault = true WHERE g.id = :id").setParameter("id", id).executeUpdate();
     }
 
+    public void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId){
+        Query query = entityManager.createNativeQuery("UPDATE org_type_on_related_genre SET genre_id = :defaultGenreId WHERE genre_id = :deleteGenreId");
+        query.setParameter("deleteGenreId", deleteGenreId);
+        query.setParameter("defaultGenreId", defaultGenreId);
+        query.executeUpdate();
+    }
+
     @Override
     public void deleteDefaultGenre(){
         entityManager.createQuery("UPDATE Genre g SET g.isDefault = false WHERE g.isDefault = true").executeUpdate();
+    }
+
+    @Override
+    public BigInteger countOfGenresInOrgType(long deletedGenreId){
+        return (BigInteger) entityManager.createNativeQuery("SELECT COUNT(*) FROM org_type_on_related_genre WHERE genre_id = :deletedGenreId and org_type_id IN (SELECT org_type_id FROM org_type_on_related_genre GROUP BY org_type_id HAVING count(*) > 1)").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
     }
 }

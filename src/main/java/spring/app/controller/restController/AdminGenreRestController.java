@@ -117,10 +117,8 @@ public class AdminGenreRestController {
                 String message = "Was deleted genre " + genre.getName();
                 User user = (User) getContext().getAuthentication().getPrincipal();
                 notificationService.save(message, user.getId());
-                LOGGER.info("Sent Notification '{}'", message);
             } catch (InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);
-                Thread.currentThread().interrupt();
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }

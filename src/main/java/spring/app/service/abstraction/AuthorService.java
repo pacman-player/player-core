@@ -2,9 +2,11 @@ package spring.app.service.abstraction;
 
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 public interface AuthorService extends GenericService<Long, Author> {
 
@@ -29,4 +31,6 @@ public interface AuthorService extends GenericService<Long, Author> {
     int getLastApprovedAuthorsPageNumber(int pageSize);
 
     boolean isExist(String name);
+
+    void setDefaultGenre(long deleteGenreId, long defaultGenreId);
 }
