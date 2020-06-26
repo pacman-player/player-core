@@ -149,6 +149,15 @@ public class Genre extends Bannable {
         this.keywords = keywords;
     }
 
+    public void addAuthors(Set<Author> authors) {
+        authors.removeAll(this.authors);
+        this.authors.addAll(authors);
+    }
+
+    public void removeAuthors(Set<Author> authors) {
+        this.authors.removeAll(authors);
+    }
+
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
