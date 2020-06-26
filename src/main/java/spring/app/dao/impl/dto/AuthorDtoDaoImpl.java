@@ -61,18 +61,22 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
     @Override
     public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
         List<AuthorDto> authorDtos = entityManager.createQuery(
-                "SELECT a.id, a.name FROM Author a LEFT JOIN a.genres g WHERE g.id <> :genreID")
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name FROM Author a LEFT JOIN a.genres g WHERE g.id <> :genreID")
+                .unwrap(Query.class)
                 .setParameter("genreID", genreID)
-                .getResultList();
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
         return authorDtos;
     }
 
     @Override
     public List<AuthorDto> getAuthorsOfGenre(Long genreID) {
         List<AuthorDto> authorDtos = entityManager.createQuery(
-                "SELECT a.id, a.name FROM Author a LEFT JOIN a.genres g WHERE g.id = :genreID")
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name FROM Author a LEFT JOIN a.genres g WHERE g.id = :genreID")
+                .unwrap(Query.class)
                 .setParameter("genreID", genreID)
-                .getResultList();
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
         return authorDtos;
     }
 

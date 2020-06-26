@@ -254,7 +254,7 @@ function getAuthorsGenre(genreId, url) {
             $.each(data, function (i, authorDto) {
                 tr = $('<tr/>');
                 tr.append("<td> <input class='chcheck' id='check' type='checkbox' name='song' value='" +
-                    authorDto[0] + "'>" + "   " + authorDto[1] + "</td>");
+                    authorDto.id + "'>" + "   " + authorDto.name + "</td>");
                 $("#listOfAuthorsByGenre").append(tr);
             });
         }
@@ -288,7 +288,7 @@ function deleteAuthorsFromGenre(id) {
     theModal.modal("show");
     //очищаем option в модалке
     $('#btnClose, #btnCloseModal').click(function () {
-        $('#addAuthorGenreManagement').modal('clear');
+       // $('#addAuthorGenreManagement').modal('clear');
         $('.' + id).hide();
     });
 }
