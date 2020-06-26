@@ -12,6 +12,7 @@ public class UserDto {
     private String password;
     private Boolean enabled = true;
     private Set<String> roles;
+    private Long companyId;
 
     public UserDto(Long id, String login, String email, String password, Set<String> roles) {
         this.id = id;
@@ -22,7 +23,6 @@ public class UserDto {
     }
 
     public UserDto(String login, String email, String password, Set<String> roles) {
-        this.id = id;
         this.login = login;
         this.email = email;
         this.password = password;
@@ -39,6 +39,11 @@ public class UserDto {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
+    }
+    //конструктор для выбора email пользователей без компании getUsersEmailWithoutCompany()
+    public UserDto(Long id, String email) {
+        this.id = id;
+        this.email = email;
     }
 
     public Long getId() {
@@ -89,6 +94,14 @@ public class UserDto {
         this.enabled = enabled;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,7 +114,8 @@ public class UserDto {
         if (email != null ? !email.equals(userDto.email) : userDto.email != null) return false;
         if (password != null ? !password.equals(userDto.password) : userDto.password != null) return false;
         if (enabled != null ? !enabled.equals(userDto.enabled) : userDto.enabled != null) return false;
-        return roles != null ? roles.equals(userDto.roles) : userDto.roles == null;
+        if (roles != null ? !roles.equals(userDto.roles) : userDto.roles != null) return false;
+        return companyId != null ? companyId.equals(userDto.companyId) : userDto.companyId == null;
     }
 
     @Override
@@ -112,6 +126,7 @@ public class UserDto {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
         return result;
     }
 }

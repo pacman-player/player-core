@@ -70,6 +70,12 @@ public class AdminRestController<T> {
         return list;
     }
 
+    @GetMapping(value = "/allUsersEmailWithoutCompany")
+    public @ResponseBody
+    List<UserDto> getUsersEmailWithoutCompany() {
+        return userService.getUsersEmailWithoutCompany();
+    }
+
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
         User user = userService.getById(id);

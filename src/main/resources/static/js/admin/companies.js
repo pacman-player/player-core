@@ -122,7 +122,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url:"/api/admin/all_users",
+            url:"/api/admin/allUsersEmailWithoutCompany",
             method: "GET",
             dataType: "json",
             success: function (data) {
@@ -367,7 +367,8 @@ function getOrgType(){
 
 function getUserEmail(){
     $.ajax({
-        url:"/api/admin/all_users",
+        // url:"/api/admin/all_users",
+        url: "/api/admin/allUsersEmailWithoutCompany",
         method: "GET",
         dataType: "json",
         success: function (data) {

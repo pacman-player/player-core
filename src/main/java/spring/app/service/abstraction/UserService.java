@@ -39,4 +39,6 @@ public interface UserService extends GenericService<Long, User> {
     boolean isExistUserByLogin(String login, long userId);
 
     List<User> getUserByRole(String role);
+
+    List<UserDto> getUsersEmailWithoutCompany();
 }
