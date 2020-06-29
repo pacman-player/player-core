@@ -59,7 +59,19 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
     }
 
     @Override
-    public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
+    public AuthorDto getById(Long id) {
+        AuthorDto authorDto = entityManager.createQuery(
+                "SELECT new spring.app.dto.AuthorDto(a.id, a.name. a.genres, a.createdAt, a.isApproved, a.banned) " +
+                        "FROM Author a WHERE a.id = :authorId",
+                AuthorDto.class
+        )
+                .setParameter("authorId", id)
+                .getSingleResult();
+        return authorDto;
+    }
+
+        @Override
+        public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
         List<AuthorDto> authorDtos = entityManager.createQuery(
                 "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name FROM Author a LEFT JOIN a.genres g WHERE g.id <> :genreID")
                 .unwrap(Query.class)
@@ -78,6 +90,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
                 .setResultTransformer(new AuthorDtoTransformer())
                 .list();
         return authorDtos;
+
     }
 
     private static class AuthorDtoTransformer implements ResultTransformer {

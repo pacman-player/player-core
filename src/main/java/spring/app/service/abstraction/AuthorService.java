@@ -33,6 +33,8 @@ public interface AuthorService extends GenericService<Long, Author> {
 
     boolean isExist(String name);
 
+    AuthorDto getAuthorDtoById(Long id);
+
     List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
 
     List<AuthorDto> getAuthorsOfGenre(Long genreID);

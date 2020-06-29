@@ -426,7 +426,7 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(data.name);
                 $('#updateStartTime').val(data.startTime);
                 $('#updateCloseTime').val(data.closeTime);
-                $('#updateIdUser').val(data.user.id);
+                $('#updateIdUser').val(data.userId);
                 $('#updateOrgType').append(companyList);
                 $('#updateTariff').val(data.tariff);
 

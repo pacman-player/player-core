@@ -110,6 +110,11 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
     }
 
     @Override
+    public AuthorDto getAuthorDtoById(Long id) {
+        return authorDtoDao.getById(id);
+    }
+
+    @Override
     public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
         return authorDtoDao.getAuthorsOutOfGenre(genreID);
     }
@@ -125,6 +130,4 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
         return authors;
     }
-
-
 }

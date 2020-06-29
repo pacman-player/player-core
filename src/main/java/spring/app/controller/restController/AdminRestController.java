@@ -138,15 +138,15 @@ public class AdminRestController<T> {
     }
 
     @GetMapping(value = "/company/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Company> getUserCompany(@PathVariable(value = "id") Long userId) {
-        Company company = userService.getById(userId).getCompany();
-        return ResponseEntity.ok(company);
+    public ResponseEntity<CompanyDto> getUserCompany(@PathVariable(value = "id") Long userId) {
+        CompanyDto companyDto = userService.getUserCompanyDto(userId);
+        return ResponseEntity.ok(companyDto);
     }
 
     @GetMapping(value = "/companyById/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Company> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
-        Company company = companyService.getById(companyId);
-        return ResponseEntity.ok(company);
+    public ResponseEntity<CompanyDto> getUserCompanyById(@PathVariable(value = "id") Long companyId) {
+        CompanyDto companyDto = companyService.getCompanyDtoById(companyId);
+        return ResponseEntity.ok(companyDto);
     }
 
     @PostMapping(value = "/company")

@@ -27,8 +27,7 @@ public class NotificationRestController {
     @GetMapping
     public List<Notification> getNotificationByUserId() {
         User user = (User) getContext().getAuthentication().getPrincipal();
-        List<Notification> list = notificationService.getByUserId(user.getId());
-        return list;
+        return notificationService.getByUserId(user.getId());
     }
 
     @GetMapping("/all")
@@ -37,8 +36,8 @@ public class NotificationRestController {
     }
 
     @GetMapping("/{id}")
-    public Notification getNotificationById(@PathVariable String id) {
-        return notificationService.getById(Long.parseLong(id));
+    public NotificationDto getNotificationById(@PathVariable String id) {
+        return notificationService.getNotificationByIdDto(Long.parseLong(id));
     }
 
     @PostMapping(value = "/read")

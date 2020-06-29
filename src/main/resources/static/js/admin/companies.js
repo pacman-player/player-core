@@ -129,7 +129,7 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(companies.name);
                 $('#updateStartTime').val(companies.startTime);
                 $('#updateCloseTime').val(companies.closeTime);
-                $('#updateIdUser').val(companies.user.id);
+                $('#updateIdUser').val(companies.userId);
                 $('#updateTariff').val(companies.tariff);
                 $("#updateOrgType option[value='" + companies.orgType.id + "'] ").prop("selected", true);
             },
