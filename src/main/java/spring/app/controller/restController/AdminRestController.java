@@ -131,6 +131,15 @@ public class AdminRestController<T> {
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
+        Company company = userService.getById(id).getCompany();
+        if (company != null) {
+            company.setUser(null);
+            companyService.update(company);
+
+            User user = userService.getById(id);
+            user.setCompany(null);
+            userService.update(user);
+        }
         userService.deleteById(id);
     }
 

@@ -12,4 +12,7 @@ public interface AuthorDtoDao {
 
     List<AuthorDto> findByNameContaining(String name);
 
+    List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
+
+    List<AuthorDto> getAuthorsOfGenre(Long genreID);
 }
