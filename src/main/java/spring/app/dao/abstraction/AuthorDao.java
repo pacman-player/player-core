@@ -16,5 +16,5 @@ public interface AuthorDao extends GenericDao<Long, Author> {
 
     int getLastApprovedPageNumber(int pageSize);
 
-    void setDefaultGenre(long genreId, long defaultGenreId);
+    void setDefaultGenre(Long genreId, Long defaultGenreId);
 }

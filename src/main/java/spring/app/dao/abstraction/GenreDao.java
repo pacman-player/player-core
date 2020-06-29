@@ -18,15 +18,15 @@ public interface GenreDao extends GenericDao<Long, Genre> {
 
     long getDefaultGenreId();
 
-    void deleteReferenceFromCompanyByGenre(long id);
+    void deleteReferenceFromCompanyByGenre(Long id);
 
-    void deleteReferenceFromOrgTypeByGenre(long id);
+    void deleteReferenceFromOrgTypeByGenre(Long id);
 
-    BigInteger countOfGenresInOrgType(long deletedGenreId);
+    BigInteger countOfGenresInOrgType(Long deletedGenreId);
 
-    void setDefaultGenre(long id);
+    void setDefaultGenre(Long id);
 
-    void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId);
+    void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId);
 
     void deleteDefaultGenre();
 

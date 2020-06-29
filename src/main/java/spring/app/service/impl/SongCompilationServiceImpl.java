@@ -295,7 +295,7 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
 
     @Override
     @Transactional
-    public void setDefaultGenre(long genreId){
+    public void setDefaultGenre(Long genreId){
         dao.setDefaultGenre(genreId);
     }
 }

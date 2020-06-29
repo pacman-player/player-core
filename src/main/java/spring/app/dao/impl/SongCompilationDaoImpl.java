@@ -85,7 +85,7 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
     }
 
     @Override
-    public void setDefaultGenre(long genreId){
+    public void setDefaultGenre(Long genreId){
         entityManager.createQuery("UPDATE SongCompilation s set s.genre = (FROM Genre g where g.isDefault = true) WHERE s.genre.id = :id").setParameter("id", genreId).executeUpdate();
     }
 }

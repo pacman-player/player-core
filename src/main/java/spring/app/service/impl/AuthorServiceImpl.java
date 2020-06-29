@@ -130,7 +130,7 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
 
     @Override
     @Transactional
-    public void setDefaultGenre(long genreId, long defaultGenreId){
+    public void setDefaultGenre(Long genreId, Long defaultGenreId){
         dao.setDefaultGenre(genreId, defaultGenreId);
     }
 }

@@ -39,5 +39,5 @@ public interface AuthorService extends GenericService<Long, Author> {
 
     Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors);
 
-    void setDefaultGenre(long deleteGenreId, long defaultGenreId);
+    void setDefaultGenre(Long deleteGenreId, Long defaultGenreId);
 }

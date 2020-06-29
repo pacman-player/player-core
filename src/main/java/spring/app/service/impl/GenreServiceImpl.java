@@ -94,13 +94,13 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
 
     @Override
     @Transactional
-    public void setDefaultGenre(long id){
+    public void setDefaultGenre(Long id){
         dao.setDefaultGenre(id);
     }
 
     @Override
     @Transactional
-    public void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId){
+    public void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId){
         dao.setDefaultGenreToOrgType(deleteGenreId, defaultGenreId);
     }
 

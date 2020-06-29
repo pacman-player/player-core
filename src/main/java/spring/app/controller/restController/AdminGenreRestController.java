@@ -77,8 +77,8 @@ public class AdminGenreRestController {
         }
     }
 
-    @PutMapping(value = "/set_default_genre")
-    public void setDefaultGenre(@RequestBody long id){
+    @PatchMapping(value = "/set_default_genre/{id}")
+    public void setDefaultGenre(@PathVariable(name = "id") long id){
         LOGGER.info("PUT request '/set_default_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
         genreService.deleteDefaultGenre();
@@ -94,8 +94,8 @@ public class AdminGenreRestController {
         }
     }
 
-    @DeleteMapping(value = "/delete_genre")
-    public ResponseEntity<String> deleteGenre(@RequestBody Long id) {
+    @DeleteMapping(value = "/delete_genre/{id}")
+    public ResponseEntity<String> deleteGenre(@PathVariable(name = "id") long id) {
         LOGGER.info("DELETE request '/delete_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
         if (genre.getDefault()){

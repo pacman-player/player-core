@@ -161,9 +161,8 @@ function editButton(id, name, keywords, approved) {
 function deleteButton(id) {
     $.ajax({
         method: "DELETE",
-        url: "/api/admin/genre/delete_genre",
+        url: `/api/admin/genre/delete_genre/${id}`,
         contentType: "application/json",
-        data: JSON.stringify(id),
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -293,10 +292,9 @@ function getTable() {
 
 function defaultRadio(id) {
     $.ajax({
-        url: `/api/admin/genre/set_default_genre`,
-        method: 'PUT',
+        url: `/api/admin/genre/set_default_genre/${id}`,
+        method: 'PATCH',
         contentType: "application/json",
-        data: JSON.stringify(id),
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"

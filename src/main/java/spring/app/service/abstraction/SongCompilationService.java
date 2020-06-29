@@ -57,5 +57,5 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
 
     List<SongDto> getAvailableSongsForCompilationByIdDto(Long compilationId);
 
-    void setDefaultGenre(long genreId);
+    void setDefaultGenre(Long genreId);
 }

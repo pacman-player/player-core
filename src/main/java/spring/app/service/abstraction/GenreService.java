@@ -24,9 +24,9 @@ public interface GenreService extends GenericService<Long, Genre> {
 
     List<String> getGenreNames(String keywords);
 
-    void setDefaultGenre(long id);
+    void setDefaultGenre(Long id);
 
-    void setDefaultGenreToOrgType(long deleteGenreId, long defaultGenreId);
+    void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId);
 
     void deleteDefaultGenre();
 }
