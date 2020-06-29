@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.app.dto.SongQueueDto;
+import spring.app.dto.SongDto;
 import spring.app.model.Song;
 import spring.app.model.SongQueue;
 import spring.app.model.User;
@@ -35,11 +36,8 @@ public class UserSongRestController {
     }
 
     @GetMapping(value = "/get/all-song/song-compilation/{id}")
-    public List<Song> getAllSongInSongCompilation(@PathVariable("id") Long id) {
-        LOGGER.info("GET request '/get/all-song/song-compilation/{}'", id);
-        List<Song> list = songService.getAllSongInSongCompilation(id);
-        LOGGER.info("Result has {} lines", list.size());
-        return list;
+    public List<SongDto> getAllSongInSongCompilation(@PathVariable("id") Long id) {
+        return songService.getAllSongsByCompilationId(id);
     }
 
     @GetMapping("/songsInQueue")

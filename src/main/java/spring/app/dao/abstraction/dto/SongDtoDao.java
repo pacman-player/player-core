@@ -8,6 +8,8 @@ public interface SongDtoDao {
 
     List<SongDto> getAll();
 
+    List<SongDto> listOfSongsByName(String name);
+
     List<SongDto> listOfSongsByTag(String tag);
 
     SongDto getById(long songId);

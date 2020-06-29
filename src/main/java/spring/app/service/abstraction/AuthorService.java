@@ -2,13 +2,17 @@ package spring.app.service.abstraction;
 
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface AuthorService extends GenericService<Long, Author> {
 
     Author getByName(String name);
+
     /**
      * Возвращает всех авторов, у которых совпадает передаваемое значение
      *
@@ -30,4 +34,10 @@ public interface AuthorService extends GenericService<Long, Author> {
     boolean isExist(String name);
 
     AuthorDto getAuthorDtoById(Long id);
+
+    List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
+
+    List<AuthorDto> getAuthorsOfGenre(Long genreID);
+
+    Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors);
 }

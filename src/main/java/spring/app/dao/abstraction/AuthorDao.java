@@ -15,4 +15,5 @@ public interface AuthorDao extends GenericDao<Long, Author> {
     List<Author> getApprovedPage(int pageNumber, int pageSize);
 
     int getLastApprovedPageNumber(int pageSize);
+
 }

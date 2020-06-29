@@ -23,8 +23,14 @@ public class TagServiceImpl extends AbstractServiceImpl<Long, Tag, TagDao> imple
 
     @Override
     @Transactional(readOnly = true)
-    public List<TagDto> getAllTagDto() {
-        return tagDtoDao.getAll();
+    public List<TagDto> getAllTagDto(int pageSize, int pageNo) {
+        return tagDtoDao.getAll(pageSize, pageNo);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getRowsCountTagDto() {
+        return tagDtoDao.getRowsCount();
     }
 
     @Override

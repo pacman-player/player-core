@@ -16,8 +16,8 @@ $(document).ready(function () {
             async: true,
             cache: false,
             success: function (userList) {
-                for(let i = 0; i < userList.length; i++)
-                $("#addUser").append(`<option value="${userList[i].id}">${userList[i].login}</option>`)
+                for (let i = 0; i < userList.length; i++)
+                    $("#addUser").append(`<option value="${userList[i].id}">${userList[i].login}</option>`)
             }
 
         });
@@ -136,7 +136,7 @@ $(document).ready(function () {
         let addNotification = {
             'message': $("#addMessage").val(),
             'user': {
-               id: $("#addUser").val()
+                id: $("#addUser").val()
             }
         };
 

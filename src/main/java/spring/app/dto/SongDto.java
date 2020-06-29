@@ -15,9 +15,9 @@ public class SongDto extends Bannable {
     private Set<String> searchTags;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private boolean banned;
 
     private AuthorDto authorDto;
-    private GenreDto genreDto;
 
     public SongDto(Long id, String name, String authorName, String genreName, Set<String> searchTags, Timestamp createdAt, Boolean isApproved) {
         this.id = id;
@@ -37,12 +37,11 @@ public class SongDto extends Bannable {
         this.isApproved = isApproved;
     }
 
-    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto, GenreDto genreDto) {
+    public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto) {
         this.id = id;
         this.name = name;
         this.isApproved = isApproved;
         this.authorDto = authorDto;
-        this.genreDto = genreDto;
     }
 
     public AuthorDto getAuthorDto() {
@@ -51,14 +50,6 @@ public class SongDto extends Bannable {
 
     public void setAuthorDto(AuthorDto authorDto) {
         this.authorDto = authorDto;
-    }
-
-    public GenreDto getGenreDto() {
-        return genreDto;
-    }
-
-    public void setGenreDto(GenreDto genreDto) {
-        this.genreDto = genreDto;
     }
 
     public SongDto(Boolean isApproved, String name, String authorName, String genreName) {
@@ -100,6 +91,13 @@ public class SongDto extends Bannable {
         this.genreName = genreName;
     }
 
+    public SongDto(Long id, String name, Boolean isApproved, String authorName) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+        this.authorName = authorName;
+    }
+
     public SongDto() {
     }
 
@@ -108,10 +106,11 @@ public class SongDto extends Bannable {
         this.id = song.getId();
         this.name = song.getName();
         this.authorName = song.getAuthor().getName();
-        if (song.getGenre() == null) {// если у автора нет жанра (жанр был удален, например),
+        if (song.getAuthor().getAuthorGenres() == null) {// если у автора нет жанра (жанр был удален, например),
             this.genreName = "";      // то возвращаем пустую строк иначе ошибка на фронте
         } else {
-            this.genreName = song.getGenre().getName();
+            this.genreName = song.getAuthor().getAuthorGenres().toString();
+        //song.getGenre().getName();
         }
         this.searchTags = song.getTags().stream().map(tag -> tag.getName()).collect(Collectors.toSet());
         this.createdAt = song.getCreatedAt();
@@ -174,6 +173,20 @@ public class SongDto extends Bannable {
         isApproved = approved;
     }
 
+    public boolean isBanned() {
+        return banned;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedSong().contains(new Song(id, name));
+    }
+
     @Override
     public String toString() {
         return "SongDto{" +
@@ -187,13 +200,4 @@ public class SongDto extends Bannable {
                 '}';
     }
 
-    @Override
-    public void setBanned(boolean banned) {
-
-    }
-
-    @Override
-    public boolean isBannedBy(Company company) {
-        return false;
-    }
 }

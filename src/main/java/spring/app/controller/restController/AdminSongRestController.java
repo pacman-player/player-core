@@ -13,6 +13,7 @@ import spring.app.dto.SongDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 import spring.app.model.Song;
+import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongService;
@@ -21,6 +22,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -66,7 +68,8 @@ public class AdminSongRestController {
         }
         Genre genre = genreService.getByName(songDto.getGenreName());
         if (genre != null) {
-            song.setGenre(genre);
+            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
+                    //setGenre(genre);
         }
         songService.setTags(song, songDto.getSearchTags());
         songService.save(song);
@@ -83,23 +86,25 @@ public class AdminSongRestController {
         LOGGER.info("Changing Song = {}", oldSong);
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
+        Set<SongCompilation> songCompilations = oldSong.getSongCompilations();
         Song song = new Song(songDto.getId(), songDto.getName());
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
-        song.setGenre(genre);
+         song.setSongCompilations(songCompilations);
+        //song.setGenre(genre);
         songService.setTags(song, songDto.getSearchTags());
         songService.update(song);
         LOGGER.info("Updated Song as = {}", song);
     }
 
 
-@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
-    SongDto songDto = new SongDto(songService.getById(id));
-    return ResponseEntity.ok(songDto);
-}
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) {
+        SongDto songDto = new SongDto(songService.getById(id));
+        return ResponseEntity.ok(songDto);
+    }
 
     @GetMapping(value = "/all_genre")
     @ResponseBody
@@ -114,18 +119,18 @@ public ResponseEntity<SongDto> getSongById(@PathVariable(value = "id") Long id) 
     }
 
     /*
-        Изменение жанра у нескольких песен
+        Изменение авторов у нескольких песен
     */
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
         Genre newGenre = genreService.getByName(updateObject.get(-1));
-        updateObject.forEach((key, value)->{
-              if(key!=-1){
-                  Song editSong = songService.getById(Long.parseLong(value));
-                  editSong.setGenre(newGenre);
-                  songService.update(editSong);
-              }
-          });
+        updateObject.forEach((key, value) -> {
+            if (key != -1) {
+                Song editSong = songService.getById(Long.parseLong(value));
+                //editSong.setGenre(newGenre);
+                songService.update(editSong);
+            }
+        });
     }
 
     @DeleteMapping(value = "/delete_tag_for_songs")

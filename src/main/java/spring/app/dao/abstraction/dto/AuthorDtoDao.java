@@ -14,4 +14,7 @@ public interface AuthorDtoDao {
 
     AuthorDto getById(Long id);
 
+    List<AuthorDto> getAuthorsOutOfGenre(Long genreID);
+
+    List<AuthorDto> getAuthorsOfGenre(Long genreID);
 }

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionController<T> {
     ResponseBuilder<T> responseBuilder;
+
     @Autowired
     public void setResponseBuilder(ResponseBuilder<T> responseBuilder) {
         this.responseBuilder = responseBuilder;

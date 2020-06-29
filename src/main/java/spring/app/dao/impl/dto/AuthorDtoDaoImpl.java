@@ -70,6 +70,29 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         return authorDto;
     }
 
+        @Override
+        public List<AuthorDto> getAuthorsOutOfGenre(Long genreID) {
+        List<AuthorDto> authorDtos = entityManager.createQuery(
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name FROM Author a LEFT JOIN a.genres g WHERE g.id <> :genreID")
+                .unwrap(Query.class)
+                .setParameter("genreID", genreID)
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
+        return authorDtos;
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsOfGenre(Long genreID) {
+        List<AuthorDto> authorDtos = entityManager.createQuery(
+                "SELECT a.id, a.name, a.createdAt, a.isApproved, g.name FROM Author a LEFT JOIN a.genres g WHERE g.id = :genreID")
+                .unwrap(Query.class)
+                .setParameter("genreID", genreID)
+                .setResultTransformer(new AuthorDtoTransformer())
+                .list();
+        return authorDtos;
+
+    }
+
     private static class AuthorDtoTransformer implements ResultTransformer {
 
         private List<AuthorDto> roots = new ArrayList<>();
@@ -78,7 +101,7 @@ public class AuthorDtoDaoImpl implements AuthorDtoDao {
         @Override
         public Object transformTuple(Object[] tuple, String[] aliaces) {
             long authorId = (long) tuple[0];
-            String name =  (String) tuple[1];
+            String name = (String) tuple[1];
             Timestamp createdAt = (Timestamp) tuple[2];
             Boolean approved = (Boolean) tuple[3];
             String genre = (String) tuple[4];

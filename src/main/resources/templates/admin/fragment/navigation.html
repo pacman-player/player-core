@@ -58,4 +58,8 @@
     <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/notifications' ? 'active' : ''}">
         <a href="/admin/notifications">Уведомления</a>
     </li>
+
+    <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/songStatistic' ? 'active' : ''}">
+        <a href="/admin/songStatistic">Статистика</a>
+    </li>
 </ul>

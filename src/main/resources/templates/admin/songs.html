@@ -56,7 +56,6 @@
                                                 <th>Разрешена</th>
                                                 <th>Название</th>
                                                 <th>Автор</th>
-                                                <th>Жанр</th>
                                                 <th>Изменить</th>
                                                 <th>Удалить</th>
                                             </tr>
@@ -120,13 +119,6 @@
                                                                                        class="form-control"
                                                                                        type="text"/>
 
-                                                                                <label for="updateSongGenre">Жанр</label>
-                                                                                <select class="form-control"
-                                                                                        id="updateSongGenre"
-                                                                                        name="updateGenre">
-                                                                                    <!--заполняем через js-->
-                                                                                </select>
-
                                                                                 <label for="updateSongApproved">
                                                                                     Разрешена
                                                                                 </label>
@@ -182,11 +174,6 @@
                                                                    class="form-control"
                                                                    type="text"/>
 
-                                                            <label for="addSongGenre">Жанр</label>
-                                                            <select class="form-control" id="addSongGenre"
-                                                                    name="addGenre">
-                                                                <!--заполняем через js-->
-                                                            </select>
                                                             <br/>
                                                             <button type="button" id="addSongBtn"
                                                                     class="btn btn-success btn-lg">
@@ -211,8 +198,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-                                                    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/tags/tagsinput.js" rel="script"></script>
 <script type="text/javascript" src="/js/security.js" rel="script"></script>
 <script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>

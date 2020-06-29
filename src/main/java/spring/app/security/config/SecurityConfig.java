@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
 import spring.app.security.service.UserDetailsServiceImpl;
@@ -36,10 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       http
+        http
                 // Отключим проверку CSRF для подключений нашего бота к серверу.
                 .csrf().ignoringAntMatchers("/api/tlg/**")
-            //    .csrf().disable()
+                //    .csrf().disable()
                 .and()
                 .httpBasic()
                 .and()
@@ -63,13 +64,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/fragment",
                         "/topic",
                         "/app")
-                  .authenticated()
+                .authenticated()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAuthority("USER")
                 .antMatchers("/api/tlg/**").hasAuthority("BOT")
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
-              //  .antMatchers("/api/**").permitAll()
+                //  .antMatchers("/api/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
