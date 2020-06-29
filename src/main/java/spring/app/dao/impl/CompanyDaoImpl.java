@@ -132,4 +132,9 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
                             .setParameter("id", id)
                             .getResultList();
     }
+
+    @Override
+    public void setDefaultOrgTypeToCompany(Long deletedOrgType){
+        entityManager.createQuery("UPDATE Company set orgType = (FROM OrgType WHERE isDefault = true ) WHERE orgType.id = :deletedOrgType").setParameter("deletedOrgType", deletedOrgType).executeUpdate();
+    }
 }

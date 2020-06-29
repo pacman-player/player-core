@@ -40,4 +40,6 @@ public interface CompanyService extends GenericService<Long, Company> {
     long getCompanyTimerById(long companyId);
 
     Company loadWithBannedList(Long id);
+
+    void setDefaultOrgTypeToCompany(Long deletedOrgType);
 }

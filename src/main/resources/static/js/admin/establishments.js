@@ -181,9 +181,7 @@ function editButton(id, name, isDefault) {
 function deleteButton(id) {
     $.ajax({
         method: "DELETE",
-        url: "/api/admin/delete_establishment",
-        data: JSON.stringify(id),
-        dataType: 'json',
+        url: `/api/admin/delete_establishment/${id}`,
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",

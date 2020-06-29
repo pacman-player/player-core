@@ -189,8 +189,8 @@ public class AdminRestController<T> {
         }
     }
 
-    @DeleteMapping(value = "/delete_establishment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> deleteEstablishment(@RequestBody Long id) {
+    @DeleteMapping(value = "/delete_establishment/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> deleteEstablishment(@PathVariable(name = "id") long id) {
         LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
 
         ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
@@ -203,13 +203,8 @@ public class AdminRestController<T> {
             if (defaultOrgType.getId().equals(id)) {
                 return responseBuilder.error("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
             } else {
-                companyService.getAllCompaniesByOrgTypeId(id)
-                              .forEach(company -> {
-                                  company.setOrgType(defaultOrgType);
-                                  companyService.update(company);
-                              });
+                companyService.setDefaultOrgTypeToCompany(id);
                 orgTypeService.deleteById(id);
-
                 return responseBuilder.success("Тип заведения с id=" + id + " успешно удалён");
             }
         }
@@ -224,7 +219,7 @@ public class AdminRestController<T> {
 
     @GetMapping(value = "/all_roles")
     public Response getAllRoles() {
-       Response response = responseBuilder.success(roleService.getAllRolesDto());
+        Response response = responseBuilder.success(roleService.getAllRolesDto());
         return response;
     }
 

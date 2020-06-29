@@ -26,4 +26,5 @@ public interface CompanyDao extends GenericDao<Long, Company> {
 
     List<Company> getAllCompaniesByOrgTypeId(long id);
 
+    void setDefaultOrgTypeToCompany(Long deletedOrgType);
 }
