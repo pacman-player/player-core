@@ -26,7 +26,8 @@ public class Visit {
     @EmbeddedId
     private VisitPK visitPK = new VisitPK();
 
-    public Visit() {}
+    public Visit() {
+    }
 
     public Visit(TelegramUser telegramUser, Company company) {
         this.visitPK = new VisitPK(telegramUser, company);
@@ -86,7 +87,8 @@ public class Visit {
         @OnDelete(action = OnDeleteAction.CASCADE)
         private Company company;
 
-        public VisitPK() {}
+        public VisitPK() {
+        }
 
         public VisitPK(TelegramUser telegramUser, Company company) {
             this.timestamp = new Timestamp(System.currentTimeMillis());

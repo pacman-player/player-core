@@ -3,6 +3,7 @@ $(document).ready(function () {
     //доступ к  ссылки админа
     showLinkAdmin();
     getCompanyData();
+
     // getCompanyAddress();
 
     function updateCompany() {
