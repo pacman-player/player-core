@@ -22,13 +22,15 @@ public interface GenreDao extends GenericDao<Long, Genre> {
 
     void deleteReferenceFromOrgTypeByGenre(Long id);
 
+    void deleteReferenceFromAuthorByGenre(Long id);
+
     BigInteger countOfGenresInOrgType(Long deletedGenreId);
+
+    BigInteger countOfGenresInAuthor(Long deletedGenreId);
 
     void setDefaultGenre(Long id);
 
     void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId);
 
-    void deleteDefaultGenre();
-
-    void flush();
+    void setDefaultGenreToAuthor(Long genreId, Long defaultGenreId);
 }

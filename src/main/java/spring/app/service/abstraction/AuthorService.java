@@ -4,6 +4,7 @@ import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,4 @@ public interface AuthorService extends GenericService<Long, Author> {
     List<AuthorDto> getAuthorsOfGenre(Long genreID);
 
     Set<Author> getUpdateAuthorsOfGenre(Genre genre, Map<Integer, String> updateAuthors);
-
-    void setDefaultGenre(Long deleteGenreId, Long defaultGenreId);
 }

@@ -81,7 +81,6 @@ public class AdminGenreRestController {
     public void setDefaultGenre(@PathVariable(name = "id") long id){
         LOGGER.info("PUT request '/set_default_genre' with id = {}", id);
         Genre genre = genreService.getById(id);
-        genreService.deleteDefaultGenre();
         genreService.setDefaultGenre(id);
         LOGGER.info("The default genre is = {}", genre.getName());
         try{

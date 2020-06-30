@@ -27,6 +27,4 @@ public interface GenreService extends GenericService<Long, Genre> {
     void setDefaultGenre(Long id);
 
     void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId);
-
-    void deleteDefaultGenre();
 }

@@ -15,6 +15,7 @@ import spring.app.service.abstraction.NotificationService;
 import spring.app.service.abstraction.NotificationTemplateService;
 import spring.app.service.abstraction.SongFileService;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
@@ -126,11 +127,5 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         Set<Author> authors = new HashSet<>();
         updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
         return authors;
-    }
-
-    @Override
-    @Transactional
-    public void setDefaultGenre(Long genreId, Long defaultGenreId){
-        dao.setDefaultGenre(genreId, defaultGenreId);
     }
 }

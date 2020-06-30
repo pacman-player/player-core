@@ -40,12 +40,16 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Override
     public void deleteById(Long id) {
         songCompilationService.setDefaultGenre(id);
-        authorService.setDefaultGenre(id, getDefaultGenreId());
         if (BigInteger.ONE.equals(dao.countOfGenresInOrgType(id))){
             dao.deleteReferenceFromOrgTypeByGenre(id);
         }
         else {
             dao.setDefaultGenreToOrgType(id, getDefaultGenreId());
+        }
+        if (BigInteger.ONE.equals(dao.countOfGenresInAuthor(id))) {
+            dao.deleteReferenceFromAuthorByGenre(id);
+        } else {
+            dao.setDefaultGenreToAuthor(id, getDefaultGenreId());
         }
         dao.deleteReferenceFromCompanyByGenre(id);
         dao.deleteById(id);
@@ -102,11 +106,5 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
     @Transactional
     public void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId){
         dao.setDefaultGenreToOrgType(deleteGenreId, defaultGenreId);
-    }
-
-    @Override
-    @Transactional
-    public void deleteDefaultGenre(){
-        dao.deleteDefaultGenre();
     }
 }

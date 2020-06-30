@@ -87,13 +87,13 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     }
 
     @Override
-    public void flush() {
-        entityManager.flush();
+    public void deleteReferenceFromAuthorByGenre(Long id){
+       entityManager.createNativeQuery("DELETE FROM author_on_genre WHERE genre_id = :id").setParameter("id", id).executeUpdate();
     }
 
     @Override
     public void setDefaultGenre(Long id){
-        entityManager.createQuery("UPDATE Genre g SET g.isDefault = true WHERE g.id = :id").setParameter("id", id).executeUpdate();
+        entityManager.createQuery("UPDATE Genre g SET g.isDefault = CASE WHEN g.id=:id THEN true ELSE false END").setParameter("id", id).executeUpdate();
     }
 
     public void setDefaultGenreToOrgType(Long deleteGenreId, Long defaultGenreId){
@@ -104,12 +104,20 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     }
 
     @Override
-    public void deleteDefaultGenre(){
-        entityManager.createQuery("UPDATE Genre g SET g.isDefault = false WHERE g.isDefault = true").executeUpdate();
+    public void setDefaultGenreToAuthor(Long deleteGenreId, Long defaultGenreId){
+        Query query = entityManager.createNativeQuery("UPDATE author_on_genre set genre_id = :defaultGenreId WHERE genre_id = :deleteGenreId");
+        query.setParameter("deleteGenreId", deleteGenreId);
+        query.setParameter("defaultGenreId", defaultGenreId);
+        query.executeUpdate();
     }
 
     @Override
     public BigInteger countOfGenresInOrgType(Long deletedGenreId){
         return (BigInteger) entityManager.createNativeQuery("SELECT COUNT(*) FROM org_type_on_related_genre WHERE genre_id = :deletedGenreId and org_type_id IN (SELECT org_type_id FROM org_type_on_related_genre GROUP BY org_type_id HAVING count(*) > 1)").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
+    }
+
+    @Override
+    public BigInteger countOfGenresInAuthor(Long deletedGenreId){
+        return (BigInteger) entityManager.createNativeQuery("SELECT COUNT(*) FROM author_on_genre WHERE genre_id = :deletedGenreId and author_id IN (SELECT author_id FROM org_type_on_related_genre GROUP BY author_id HAVING count(*) > 1)").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
     }
 }

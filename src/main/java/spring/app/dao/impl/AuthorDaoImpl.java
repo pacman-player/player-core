@@ -9,6 +9,7 @@ import spring.app.model.Genre;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -70,13 +71,5 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void setDefaultGenre(Long deleteGenreId, Long defaultGenreId){
-        Query query = entityManager.createNativeQuery("UPDATE author_on_genre set genre_id = :defaultGenreId WHERE genre_id = :deleteGenreId and author_id IN (SELECT author_id FROM author_on_genre GROUP BY author_id HAVING count(*) < 2)");
-        query.setParameter("deleteGenreId", deleteGenreId);
-        query.setParameter("defaultGenreId", defaultGenreId);
-        query.executeUpdate();
     }
 }
