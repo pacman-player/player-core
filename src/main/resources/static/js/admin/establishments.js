@@ -64,7 +64,7 @@ function addEstablishments(form, field) {
         },
         success: () => {
             notification(
-                "add-establishment" + estMessage,
+                "add-establishment" + estMessage.replace(/\s/g, ''),
                 ` Заведение ${estMessage} добавлено`,
                 "establishments-panel");
         },
