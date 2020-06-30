@@ -21,9 +21,12 @@ const errMessages = {
     rangelength: "Количество символов должно быть в диапазоне [3-30]",
     remote: "Имя занято"
 };
+const errMessageKeywords = {
+    pattern: "Ключевые слова должны разделяться символом | и могут содеражать только буквы и тире"
+}
 
-const genreNameRegEx = /[\wА-Яа-я\-]/;
-
+const genreNameRegEx = /^[а-яА-ЯёЁa-zA-Z0-9\s-]+$/;
+const genreKeywordsRegEx = /^[а-яА-ЯёЁa-zA-Z\s-|]+$/;
 
 $("#addForm").validate({
     rules: {
@@ -76,19 +79,22 @@ function addGenre(form, field) {
 }
 
 
-function editButton(id, name, approved) {
+function editButton(id, name, keywords, approved) {
     let theModal = $("#editGenres");
     let form = $("#editForm");
     let fieldId = $("#updateGenresId");
     let fieldName = $("#updateGenresName");
+    let fieldKeywords = $("#updateGenreKeywords");
     let fieldApproved = $("#updateGenreApproved");
 
     form.find('.error').removeClass("error");
     form.find('.form-control error').remove();
     form.find('#updateGenresName-error').remove();
+    form.find('#updateGenreKeywords-error').remove();
 
     fieldId.val(id);
     fieldName.val(name);
+    fieldKeywords.val(keywords);
     fieldApproved.prop('checked', approved);
 
     theModal.modal("show");
@@ -107,10 +113,15 @@ function editButton(id, name, approved) {
                         }
                     }
                 },
+            },
+            keywords: {
+                required: true,
+                pattern: genreKeywordsRegEx,
             }
         },
         messages: {
-            name: errMessages
+            name: errMessages,
+            keywords: errMessageKeywords
         },
         submitHandler: () => {
             $.ajax({
@@ -120,6 +131,7 @@ function editButton(id, name, approved) {
                 data: JSON.stringify({
                     id: fieldId.val(),
                     name: fieldName.val(),
+                    keywords: fieldKeywords.val(),
                     approved: fieldApproved.prop('checked')
                 }),
                 headers: {
@@ -142,7 +154,7 @@ function editButton(id, name, approved) {
                 }
             })
         }
-    });
+    })
 }
 
 
@@ -192,6 +204,8 @@ function getTable() {
                 let approved = genres[i].approved;
                 let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
+                let keywords = genres[i].keywords;
+
                 // parsing fields
                 let tr = $("<tr/>");
                 tr.append(`
@@ -202,7 +216,7 @@ function getTable() {
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}', ${approved})">
+                                        onclick="editButton(${id}, '${name}', '${keywords}', ${approved})">
                                     Изменить
                                 </button>
                             </td>
