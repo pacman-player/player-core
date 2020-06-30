@@ -73,7 +73,7 @@ public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDa
     }
 
     @Override
-    public void setDefaultGenre(long deleteGenreId, long defaultGenreId){
+    public void setDefaultGenre(Long deleteGenreId, Long defaultGenreId){
         Query query = entityManager.createNativeQuery("UPDATE author_on_genre set genre_id = :defaultGenreId WHERE genre_id = :deleteGenreId and author_id IN (SELECT author_id FROM author_on_genre GROUP BY author_id HAVING count(*) < 2)");
         query.setParameter("deleteGenreId", deleteGenreId);
         query.setParameter("defaultGenreId", defaultGenreId);
