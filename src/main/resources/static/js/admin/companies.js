@@ -65,7 +65,6 @@ $(document).ready(function () {
             tariff: $("#updateTariff").val().replace(/[^0-9]/g, ''),
             orgType: $("#updateOrgType").val(),
             userId: $("#updateIdUser").val()
-            // userEmail: $("#updateUser").val()
         };
 
 
@@ -105,6 +104,8 @@ $(document).ready(function () {
         $('#updateNameCompany').val('');
         $('#updateStartTime').val('');
         $('#updateCloseTime').val('');
+        $('#updateIdUser').val('');
+        var selectBody = $('#updateIdUser');
 
         $.ajax({
             url: "/api/admin/all_establishments",
@@ -126,7 +127,6 @@ $(document).ready(function () {
             method: "GET",
             dataType: "json",
             success: function (data) {
-                var selectBody = $('#updateIdUser');
                 selectBody.empty();
                 $(data).each(function (i, user) {
                     selectBody.append(`
@@ -145,8 +145,12 @@ $(document).ready(function () {
                 $('#updateNameCompany').val(companies.name);
                 $('#updateStartTime').val(companies.startTime);
                 $('#updateCloseTime').val(companies.closeTime);
-                // $('#updateIdUser').val(companies.user.id);
-                $("#updateIdUser option[value='"+ companies.user.id+"']").prop("selected", true);
+                if (companies.user === null) {
+                    selectBody.append(`<option selected value="">не выбран</option>`);
+                } else {
+                    selectBody.append(`<option selected value="${companies.user.id}">${companies.user.email}</option>`);
+                    selectBody.append(`<option value="">не выбран</option>`);
+                }
                 $('#updateTariff').val(companies.tariff);
                 $("#updateOrgType option[value='" + companies.orgType.id + "'] ").prop("selected", true);
             },
@@ -177,7 +181,6 @@ $(document).ready(function () {
             addressLongitude: $('#longitude').val()
         }
 
-        // $("#addOrgType option[value='" + companyFormData.orgType.id + "'] ").prop("selected", true);
         $.ajax({
             url: '/api/admin/add_company',
             type: "POST",
@@ -367,7 +370,6 @@ function getOrgType(){
 
 function getUserEmail(){
     $.ajax({
-        // url:"/api/admin/all_users",
         url: "/api/admin/allUsersEmailWithoutCompany",
         method: "GET",
         dataType: "json",

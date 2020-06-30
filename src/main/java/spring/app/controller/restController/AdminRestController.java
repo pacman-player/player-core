@@ -161,7 +161,10 @@ public class AdminRestController<T> {
                 && !companyService.isExistCompanyByName(companyDto.getName())
                 || companyService.getByCompanyName(companyDto.getName()).getId().equals(companyDto.getId())) {
         LOGGER.info("POST request '/company'");
-        User userId = userService.getById(companyDto.getUserId());
+        User userId = null;
+        if (companyDto.getUserId() != null) {
+            userId = userService.getById(companyDto.getUserId());
+        }
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
             company.setName(companyDto.getName());
