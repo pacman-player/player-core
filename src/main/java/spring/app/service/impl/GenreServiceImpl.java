@@ -47,6 +47,7 @@ public class GenreServiceImpl extends AbstractServiceImpl<Long, Genre, GenreDao>
             dao.setDefaultGenreToOrgType(id, getDefaultGenreId());
         }
         if (BigInteger.ONE.equals(dao.countOfGenresInAuthor(id))) {
+            System.out.println(dao.countOfGenresInAuthor(id));
             dao.deleteReferenceFromAuthorByGenre(id);
         } else {
             dao.setDefaultGenreToAuthor(id, getDefaultGenreId());
