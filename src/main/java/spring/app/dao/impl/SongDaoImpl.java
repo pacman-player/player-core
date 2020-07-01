@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.SongDao;
 import spring.app.model.Song;
@@ -45,6 +46,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(song);
         return song;
     }
 
@@ -74,15 +76,24 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         } catch (NoResultException e) {
             return null;
         }
+        for (Song s :
+                songs) {
+            initLazyFields(s);
+        }
         return songs;
     }
 
     @Override
     public List<Song> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return entityManager
+        List<Song> list = entityManager
                 .createQuery("FROM Song s WHERE s.createdAt >= :dateFrom AND s.createdAt <= :dateTo ORDER BY s.createdAt", Song.class)
                 .setParameter("dateFrom", dateFrom)
                 .setParameter("dateTo", dateTo).getResultList();
+        for (Song s :
+                list) {
+            initLazyFields(s);
+        }
+        return list;
     }
 
     @Override
@@ -91,7 +102,12 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
         TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
-        return query.getResultList();
+        List<Song> list = query.getResultList();
+        for (Song s :
+                list) {
+            initLazyFields(s);
+        }
+        return list;
     }
 
     @Override
@@ -102,7 +118,12 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         TypedQuery<Song> query = entityManager.createQuery(jql, Song.class);
         query.setFirstResult((pageNumber - 1) * pageSize);
         query.setMaxResults(pageSize);
-        return query.getResultList();
+        List<Song> list = query.getResultList();
+        for (Song s :
+                list) {
+            initLazyFields(s);
+        }
+        return list;
     }
 
     @Override
@@ -137,10 +158,15 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         try {
             String hql = "FROM Song s WHERE s.name LIKE :param";
             TypedQuery<Song> query = entityManager.createQuery(hql, Song.class);
-            // знак % обозначает, что перед передаваемым значение может быть, или колько угодно символов, или ноль.
+            // знак % обозначает, что перед передаваемым значение может быть, или сколько угодно символов, или ноль.
             query.setParameter("param", "%" + param + "%");
 
-            return query.getResultList();
+            List<Song> list = query.getResultList();
+            for (Song s :
+                    list) {
+                initLazyFields(s);
+            }
+            return list;
         } catch (NoResultException e) {
             return null;
         }
@@ -170,17 +196,20 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 //                "ORDER BY ts_rank(to_tsvector(songs.search_tags), q) DESC", author, name);
 
         String ftsQuery = "SELECT s.id id FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
-                                                            "INNER JOIN tags t ON ts.tag_id = t.id " +
-                                                            "INNER JOIN authors a ON s.author_id = a.id " +
-                                                            "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
-                                                            "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
+                "INNER JOIN tags t ON ts.tag_id = t.id " +
+                "INNER JOIN authors a ON s.author_id = a.id " +
+                "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) " +
+                "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
         List<? extends Number> list = entityManager.createNativeQuery(ftsQuery)
-                                                    .setParameter("searchRequest", author + ' ' + name)
-                                                    .getResultList();
+                .setParameter("searchRequest", author + ' ' + name)
+                .getResultList();
         List<Long> res = list.stream().map(i -> i.longValue()).collect(Collectors.toList());
 
         return res;
     }
 
-
+    private void initLazyFields(Song song) {
+        Hibernate.initialize(song.getSongCompilations());
+        Hibernate.initialize(song.getTags());
+    }
 }

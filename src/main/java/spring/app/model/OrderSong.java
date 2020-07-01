@@ -13,7 +13,8 @@ public class OrderSong {
 
     private Timestamp timestamp;
 
-    @ManyToOne
+    //    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 

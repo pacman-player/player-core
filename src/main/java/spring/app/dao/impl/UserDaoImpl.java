@@ -1,9 +1,9 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.UserDao;
 import spring.app.model.User;
 
@@ -31,7 +31,9 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         if (userList.isEmpty()) {
             return null;
         }
-        return userList.get(0);
+        User user = userList.get(0);
+        initLazyFields(user);
+        return user;
     }
 
     @Override
@@ -42,7 +44,9 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         if (userList.isEmpty()) {
             return null;
         }
-        return userList.get(0);
+        User user = userList.get(0);
+        initLazyFields(user);
+        return user;
     }
 
     @Override
@@ -56,6 +60,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
             LOGGER.warn(e.getMessage(), e);
             return null;
         }
+        initLazyFields(user);
         return user;
     }
 
@@ -67,7 +72,9 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         if (userList.isEmpty()) {
             return null;
         }
-        return userList.get(0);
+        User user = userList.get(0);
+        initLazyFields(user);
+        return user;
     }
 
     @Override
@@ -78,7 +85,9 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         if (userList.isEmpty()) {
             return null;
         }
-        return userList.get(0);
+        User user = userList.get(0);
+        initLazyFields(user);
+        return user;
     }
 
     @Override
@@ -128,8 +137,15 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
         if (userList.isEmpty()) {
             return null;
         }
+        for (User u :
+                userList) {
+            initLazyFields(u);
+        }
         return userList;
     }
 
-
+    private void initLazyFields(User user) {
+        Hibernate.initialize(user.getRoles());
+        Hibernate.initialize(user.getCompany());
+    }
 }

@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.SongStatisticDao;
 import spring.app.model.SongStatistic;
@@ -19,8 +20,8 @@ public class SongStatisticDaoImpl extends AbstractDao<Long, SongStatistic> imple
     @Override
     public Long getOrderCountBySongName(String songName) {
         try {
-        return (Long) entityManager.createQuery("SELECT orderCount FROM SongStatistic WHERE songName = " + songName)
-                .getSingleResult();
+            return (Long) entityManager.createQuery("SELECT orderCount FROM SongStatistic WHERE songName = " + songName)
+                    .getSingleResult();
         } catch (NoResultException ex) {
             return null;
         }
@@ -29,11 +30,16 @@ public class SongStatisticDaoImpl extends AbstractDao<Long, SongStatistic> imple
     @Override
     public List<SongStatistic> getSortedTopListForDay(int songsCount) {
         try {
-        return entityManager.createQuery("FROM SongStatistic where orderDate = " +
-                ":orderDate order by orderCount desc")
-                .setParameter("orderDate", Date.valueOf(LocalDate.now()))
-                .setMaxResults(songsCount)
-                .getResultList();
+            List<SongStatistic> list = entityManager.createQuery("FROM SongStatistic where orderDate = " +
+                    ":orderDate order by orderCount desc")
+                    .setParameter("orderDate", Date.valueOf(LocalDate.now()))
+                    .setMaxResults(songsCount)
+                    .getResultList();
+            for (SongStatistic ss :
+                    list) {
+                initLazyFields(ss);
+            }
+            return list;
         } catch (NoResultException ex) {
             return null;
         }
@@ -42,12 +48,17 @@ public class SongStatisticDaoImpl extends AbstractDao<Long, SongStatistic> imple
     @Override
     public List<SongStatistic> getSortedTopListForRange(int songsCount, Date orderDate) {
         try {
-            return entityManager.createQuery("FROM SongStatistic where orderDate >= " +
+            List<SongStatistic> list = entityManager.createQuery("FROM SongStatistic where orderDate >= " +
                     ":startDate and <= :limitDate order by orderCount desc")
                     .setParameter("orderDate", Date.valueOf(LocalDate.now()))
                     .setParameter("orderDate", orderDate)
                     .setMaxResults(songsCount)
                     .getResultList();
+            for (SongStatistic ss :
+                    list) {
+                initLazyFields(ss);
+            }
+            return list;
         } catch (NoResultException ex) {
             return null;
         }
@@ -56,14 +67,19 @@ public class SongStatisticDaoImpl extends AbstractDao<Long, SongStatistic> imple
     @Override
     public SongStatistic getSongStatisticByNameAndDate(String songName, Date orderDate) {
         try {
-            return (SongStatistic) entityManager.createQuery("FROM SongStatistic where songName = :songName and " +
+            SongStatistic songStatistic = (SongStatistic) entityManager.createQuery("FROM SongStatistic where songName = :songName and " +
                     "orderDate = :orderDate")
                     .setParameter("songName", songName)
                     .setParameter("orderDate", orderDate)
                     .getSingleResult();
+            initLazyFields(songStatistic);
+            return songStatistic;
         } catch (NoResultException ex) {
             return null;
         }
     }
 
+    private void initLazyFields(SongStatistic ss) {
+        Hibernate.initialize(ss.getSong());
+    }
 }

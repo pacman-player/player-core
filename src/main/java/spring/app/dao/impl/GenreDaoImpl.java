@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.GenreDao;
 import spring.app.model.Company;
@@ -37,17 +38,23 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(genre);
         return genre;
     }
 
-
     @Override
     public List<Genre> getByCreatedDateRange(Timestamp dateFrom, Timestamp dateTo) {
-        return entityManager
+        List<Genre> list = entityManager
                 .createQuery("FROM Genre g WHERE g.createdAt >= :dateFrom AND g.createdAt <= :dateTo ORDER BY g.createdAt", Genre.class)
                 .setParameter("dateFrom", dateFrom)
                 .setParameter("dateTo", dateTo)
                 .getResultList();
+
+        for (Genre g :
+                list) {
+            initLazyFields(g);
+        }
+        return list;
     }
 
     public List<Genre> getAllApproved() {
@@ -55,14 +62,25 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
         genericClassName = genericClassName.substring(genericClassName.lastIndexOf('.') + 1);
         String hql = "FROM " + genericClassName + " as c WHERE c.isApproved = true";
         TypedQuery<Genre> query = entityManager.createQuery(hql, Genre.class);
-        return query.getResultList();
+        List<Genre> list = query.getResultList();
+        for (Genre g :
+                list) {
+            initLazyFields(g);
+        }
+        return list;
     }
 
     @Override
     public List<Song> getSongsByGenre(Genre genre) {
         TypedQuery<Song> query = entityManager.createQuery("SELECT s FROM Song s left JOIN s.author.genres g WHERE g.name = :genre", Song.class);
         query.setParameter("genre", genre);
-        return query.getResultList();
+        List<Song> list = query.getResultList();
+        for (Song s :
+                list) {
+            Hibernate.initialize(s.getSongCompilations());
+            Hibernate.initialize(s.getTags());
+        }
+        return list;
     }
 
     @Override
@@ -80,5 +98,9 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     @Override
     public void flush() {
         entityManager.flush();
+    }
+
+    private void initLazyFields(Genre genre) {
+        Hibernate.initialize(genre.getAuthors());
     }
 }

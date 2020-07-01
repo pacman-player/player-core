@@ -14,7 +14,8 @@ public class OrgType {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "org_type_on_related_genre",
             joinColumns = {@JoinColumn(name = "org_type_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

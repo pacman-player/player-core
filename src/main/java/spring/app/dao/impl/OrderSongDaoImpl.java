@@ -1,8 +1,6 @@
 package spring.app.dao.impl;
 
-import com.vk.api.sdk.exceptions.ApiUploadException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.OrderSongDao;
 import spring.app.model.OrderSong;
 

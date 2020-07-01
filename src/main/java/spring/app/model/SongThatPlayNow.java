@@ -55,11 +55,11 @@ public class SongThatPlayNow {
     @EmbeddedId
     private SongThatPlayNowId songThatPlayNow;
 
-    @ManyToOne(targetEntity = Company.class, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "companyId", insertable = false, updatable = false)
     private Company company;
 
-    @ManyToOne(targetEntity = Song.class, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinColumn(name = "songId", insertable = false, updatable = false)
     private Song song;
 

@@ -79,11 +79,13 @@ public class Visit {
          * Visit ("родитель"), удалять одновременно все записи
          * с ними в таблице visits.
          */
-        @ManyToOne
+//        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         private TelegramUser telegramUser;
 
-        @ManyToOne
+        //        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         private Company company;
 

@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.TagDao;
 import spring.app.model.Tag;
@@ -22,6 +23,10 @@ public class TagDaoImpl extends AbstractDao<Long, Tag> implements TagDao {
         TypedQuery<Tag> query = entityManager.createQuery("FROM Tag WHERE name IN :names", Tag.class);
         query.setParameter("names", names);
         Set<Tag> result = new HashSet<>(query.getResultList());
+        for (Tag t :
+                result) {
+            initLazyFields(t);
+        }
         return result;
     }
 
@@ -40,8 +45,14 @@ public class TagDaoImpl extends AbstractDao<Long, Tag> implements TagDao {
         List<Tag> list = entityManager.createNativeQuery(findTagsQuery, Tag.class)
                 .setParameter("searchRequest", searchRequest)
                 .getResultList();
-
+        for (Tag t :
+                list) {
+            initLazyFields(t);
+        }
         return new HashSet<>(list);
     }
 
+    private void initLazyFields(Tag t) {
+        Hibernate.initialize(t.getSongs());
+    }
 }

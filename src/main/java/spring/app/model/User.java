@@ -40,13 +40,14 @@ public class User implements UserDetails {
     @Column(name = "profile_pic")
     private Blob profilePic;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class)
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     @JsonBackReference
     private Company company;
 
@@ -56,8 +57,8 @@ public class User implements UserDetails {
     @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
-            CascadeType.MERGE},
-            fetch = FetchType.LAZY)
+            CascadeType.MERGE})
+//            fetch = FetchType.LAZY)
     @JoinTable(name = "user_on_registrationstep",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "registration_step_id")})

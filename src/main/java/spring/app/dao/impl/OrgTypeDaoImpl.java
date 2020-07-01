@@ -1,7 +1,7 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.OrgTypeDao;
 import spring.app.model.OrgType;
 
@@ -26,6 +26,7 @@ public class OrgTypeDaoImpl extends AbstractDao<Long, OrgType> implements OrgTyp
         } catch (NoResultException e) {
             return null;
         }
+        Hibernate.initialize(orgType.getGenres());
         return orgType;
     }
 }

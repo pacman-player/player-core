@@ -1,5 +1,6 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,7 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(company);
         return company;
     }
 
@@ -53,6 +55,7 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(company);
         return company;
     }
 
@@ -69,12 +72,14 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
     @Fetch(FetchMode.JOIN)
     public Company getCompanyWithEntityBanned(long id) {
         try {
-            return entityManager.
+            Company company = entityManager.
                     createQuery("FROM Company c WHERE id = :id",
                             Company.class).
                     setParameter("id", id).
                     getSingleResult();
 
+            initLazyFields(company);
+            return company;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -84,11 +89,13 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
     @Override
     public Company getCompanyByAddressId(long id) {
         try {
-            return entityManager.
+            Company company = entityManager.
                     createQuery("FROM Company c WHERE address.id = :id",
                             Company.class).
                     setParameter("id", id).
                     getSingleResult();
+            initLazyFields(company);
+            return company;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -99,6 +106,7 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
     @SuppressWarnings("unchecked")
     public List<String> getAllSongsInQueueByCompanyId(long id) {
         Company company = entityManager.createQuery("SELECT c FROM Company c LEFT JOIN FETCH c.songQueues WHERE c.id = :cId", Company.class).setParameter("cId", id).getSingleResult();
+        initLazyFields(company);
         List<SongQueue> list = new ArrayList<>(company.getSongQueues());
         List<String> result = new ArrayList<>();
         if (!list.isEmpty()) {
@@ -117,11 +125,21 @@ public class CompanyDaoImpl extends AbstractDao<Long, Company> implements Compan
                             "WHERE c.id = :id", Company.class)
                     .setParameter("id", id)
                     .getSingleResult();
-
+            initLazyFields(company);
             return company;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    private void initLazyFields(Company company) {
+        Hibernate.initialize(company.getOrgType());
+        Hibernate.initialize(company.getMorningPlayList());
+        Hibernate.initialize(company.getMiddayPlayList());
+        Hibernate.initialize(company.getEveningPlayList());
+        Hibernate.initialize(company.getBannedGenres());
+        Hibernate.initialize(company.getBannedSong());
+        Hibernate.initialize(company.getBannedAuthor());
     }
 }

@@ -15,7 +15,8 @@ public class Notification {
 
     private Boolean flag;
 
-    @ManyToOne(targetEntity = User.class)
+    //    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
