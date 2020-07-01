@@ -113,11 +113,11 @@ public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
 
     @Override
     public BigInteger countOfGenresInOrgType(Long deletedGenreId){
-        return (BigInteger) entityManager.createNativeQuery("SELECT COUNT(*) FROM org_type_on_related_genre WHERE genre_id = :deletedGenreId and org_type_id IN (SELECT org_type_id FROM org_type_on_related_genre GROUP BY org_type_id HAVING count(*) > 1)").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
+        return (BigInteger) entityManager.createNativeQuery("WITH dup_org_type AS (SELECT org_type_id FROM org_type_on_related_genre GROUP BY org_type_id HAVING COUNT(0) > 1) SELECT COUNT(0) FROM org_type_on_related_genre otrg, dup_org_type dup WHERE otrg.genre_id = :deletedGenreId AND otrg.org_type_id = dup.org_type_id").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
     }
 
     @Override
     public BigInteger countOfGenresInAuthor(Long deletedGenreId){
-        return (BigInteger) entityManager.createNativeQuery("SELECT COUNT(*) FROM author_on_genre WHERE genre_id = :deletedGenreId and author_id IN (SELECT author_id FROM org_type_on_related_genre GROUP BY author_id HAVING count(*) > 1)").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
+        return (BigInteger) entityManager.createNativeQuery("WITH dup_author AS (SELECT author_id FROM author_on_genre GROUP BY author_id HAVING COUNT(0) > 1) SELECT COUNT(0) FROM author_on_genre aog, dup_author dup WHERE aog.genre_id = :deletedGenreId AND aog.author_id = dup.author_id").setParameter("deletedGenreId", deletedGenreId).getSingleResult();
     }
 }
