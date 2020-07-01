@@ -41,6 +41,9 @@ public class Genre extends Bannable {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
+    @Column(name = "is_default")
+    private boolean isDefault;
+
     @Column(name = "approved")
     private Boolean isApproved = false;
 
@@ -65,6 +68,13 @@ public class Genre extends Bannable {
         this.name = name;
         this.isApproved = isApproved;
         this.keywords = keywords;
+    }
+
+    public Genre(String name, Boolean isApproved, boolean isDefault, String keywords) {
+        this.name = name;
+        this.isApproved = isApproved;
+        this.keywords = keywords;
+        this.isDefault = isDefault;
     }
 
     public Set<Author> getAuthors() {
@@ -95,6 +105,8 @@ public class Genre extends Bannable {
         this.name = name;
     }
 
+    public void setDefault(Boolean aDefault) { isDefault = aDefault; }
+
     public Long getId() {
         return id;
     }
@@ -106,6 +118,8 @@ public class Genre extends Bannable {
     public Timestamp getCreatedAt() {
         return createdAt;
     }
+
+    public Boolean getDefault() { return isDefault; }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
@@ -147,6 +161,15 @@ public class Genre extends Bannable {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    public void addAuthors(Set<Author> authors) {
+        authors.removeAll(this.authors);
+        this.authors.addAll(authors);
+    }
+
+    public void removeAuthors(Set<Author> authors) {
+        this.authors.removeAll(authors);
     }
 
     @Override

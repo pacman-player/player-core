@@ -5,6 +5,7 @@ import org.hibernate.transform.ResultTransformer;
 import org.springframework.stereotype.Repository;
 import spring.app.dao.abstraction.dto.OrgTypeDtoDao;
 import spring.app.dto.OrgTypeDto;
+import spring.app.model.OrgType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,7 +49,6 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
             if (genre != null) {
                 genresMap.get(id).add(genre);
             }
-
             return orgTypeDto;
         }
 

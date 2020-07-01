@@ -32,9 +32,12 @@ public class OrgType {
         this.name = name;
     }
 
-    public OrgType(Long id) {this.id = id;}
+    public OrgType(Long id) {
+        this.id = id;
+    }
 
-    public OrgType(){}
+    public OrgType() {
+    }
 
     public void setId(Long id) {
         this.id = id;

@@ -64,7 +64,7 @@ function addroles(form, field) {
         success: () => {
             notification(
                 "add-role" + roleMessage,
-                " Роль "+ roleMessage + " добавлена",
+                " Роль " + roleMessage + " добавлена",
                 "roles-panel");
         },
         error: (xhr, status, error) => {

@@ -11,4 +11,6 @@ public interface CompanyDtoDao {
     CompanyDto getById(Long id);
 
     long getTimerById(long companyId);
+
+    List<CompanyDto> getCompaniesWithoutUsers();
 }

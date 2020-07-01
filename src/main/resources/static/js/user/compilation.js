@@ -358,6 +358,7 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
         let playing_state = 'on_stop';
         let display_play = 'inline-block';
         let display_pause = 'none';
+        let delete_playlist = 'inline-block';
         if (playlist[i].compilationIndex === lastPlayedCompilationIndex && playListName === lastPlayedPlaylistName) {
             playing_state = 'on_play';
             display_play = 'none';
@@ -365,9 +366,11 @@ function fillPlaylistsTab(playListName, secondId, playlist) {
         }
         let playButton = `<button class="playBtn" style="display: ${display_play}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
         let pauseButton = `<button class="pauseBtn" style="display: ${display_pause}" data-playing_state="${playing_state}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="playOrPausePlaylist(\'${playListName}\', ${playlist[i].compilationIndex})"></button>`;
+        let deleteButton = `<button class="deleteBtn" style="display: ${delete_playlist}" data-playlist_id="${playListName}_${playlist[i].compilationIndex}" onclick="deleteCompilationFromPlaylist(\'${playListName}\', ${playlist[i].compilationId})"></button>`;
         let trackBubble = '<div class="d-track__bubble" id="bubble"></div>';
         htmlCompilation += playButton;
         htmlCompilation += pauseButton;
+        htmlCompilation += deleteButton;
         htmlCompilation += trackBubble;
         htmlCompilation += '</div>'
             + '</div>';
@@ -412,6 +415,16 @@ function showAllSongInSongCompilation(compilationListName, id) {
     });
 }
 
+function deleteCompilationFromPlaylist(playlistName, idCompilation) {
+    $.ajax({
+        method: 'DELETE',
+        url: '/api/user/play-list/' + playlistName + '-playlist/delete/song-compilation/' + idCompilation,
+        contentType: "application/json",
+        error: function (xhr, status, error) {
+            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+        }
+    });
+}
 
 //функция для получения из плейлиста плеера список песен определенной подборки,
 // проиндексированных порядковым номером в плейлисте
@@ -989,7 +1002,7 @@ function playNext() {
             playOrPause(lastPlayedPlaylistName, lastPlayedCompilationIndex,
                 lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
-        //если в очереди заказанных песен нет песен
+            //если в очереди заказанных песен нет песен
         } else {
 
             //если играем песни в перемешку
@@ -1013,7 +1026,7 @@ function playNext() {
                 playOrPause(lastPlayedPlaylistName, compilationIndex,
                     lastPlayedMusicIndex + 1, allSongsInCurrentPlaylist[lastPlayedMusicIndex + 1].isFromSongQueue);
 
-            //если не последняя - играем следующий плейлист
+                //если не последняя - играем следующий плейлист
             } else {
                 let nextPlaylistName = lastPlayedPlaylistName;
                 if (lastPlayedPlaylistName === 'morning') {

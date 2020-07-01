@@ -28,9 +28,9 @@ $(document).ready(function () {
     getTable();
     getCompaniesTable();
     var addRolesBody = $("#addListRoles");
-    getRoleTable(addRolesBody,"addRls");
+    getRoleTable(addRolesBody, "addRls");
     var updateRolesBody = $("#updateListRole")
-    getRoleTable(updateRolesBody,"updRls");
+    getRoleTable(updateRolesBody, "updRls");
 
     function getTable() {
         $.ajax({
@@ -139,9 +139,10 @@ $(document).ready(function () {
         if ($('#addForm').valid()) {
             addUser();
             $(':input', '#addForm').val('');
+            $("#addForm").trigger("reset");
         }
     });
-
+    getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
         var rls = document.getElementsByClassName("addRls");
@@ -154,8 +155,11 @@ $(document).ready(function () {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
+            'companyId' : $('#addCompanyForUser').val(),
             'roles': roleListArr
+
         };
+        // $("#addCompanyForUser option[value = '"+ user.company.id +"']").prop("selected", true);
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",
@@ -178,6 +182,7 @@ $(document).ready(function () {
                     notification("add-user" + user.login.replace(/[^\w]|_/g, ''),
                         " Пользователь " + user.login + " добавлен ",
                         'user-panel');
+                    getCompanyWithoutUser();
                 },
             error:
                 function (xhr, status, error) {
@@ -449,7 +454,7 @@ $(document).ready(function () {
 
 });
 
-function getRoleTable(listRolesBody,rls) {
+function getRoleTable(listRolesBody, rls) {
     $.ajax({
         method: "GET",
         url: "/api/admin/all_roles",
@@ -475,4 +480,31 @@ function getRoleTable(listRolesBody,rls) {
             }
         }
     });
+}
+
+// получение компаний, в которых отсутствуют пользователи
+function getCompanyWithoutUser() {
+    $.ajax({
+        // url: "/api/admin/all_companies",
+        url: "/api/admin/companiesWithoutUsers",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            var selectBody = $('#addCompanyForUser');
+            selectBody.empty();
+            selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
+            let count = 0;
+            $(data).each(function (i, company) {
+                // if (company.userId === null) {
+                selectBody.append(`
+                    <option value="${company.id}" >${company.name}</option>
+                    `);
+                count++;
+                // }
+            })
+            if (count === 0) {
+                selectBody.append(`<option disabled selected value="">Нет компаний без пользователя. Сначала создайте компанию</option>`);
+            }
+        },
+    })
 }
