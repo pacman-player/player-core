@@ -15,9 +15,11 @@ import spring.app.service.abstraction.NotificationService;
 import spring.app.service.abstraction.NotificationTemplateService;
 import spring.app.service.abstraction.SongFileService;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Map;
 import java.util.Set;
 
@@ -104,6 +106,7 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         return dao.getLastApprovedPageNumber(pageSize);
     }
 
+
     @Override
     public boolean isExist(String name) {
         return dao.isExist(name);
@@ -125,6 +128,4 @@ public class AuthorServiceImpl extends AbstractServiceImpl<Long, Author, AuthorD
         updateAuthors.forEach((key, value) -> authors.add(getById(Long.parseLong(value))));
         return authors;
     }
-
-
 }
