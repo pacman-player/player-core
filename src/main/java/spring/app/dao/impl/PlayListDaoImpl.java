@@ -1,16 +1,17 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.PlayListDao;
 import spring.app.model.PlayList;
-import spring.app.model.Song;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements PlayListDao {
 
     PlayListDaoImpl() {
@@ -19,7 +20,12 @@ public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements Play
 
     @Override
     public List<PlayList> getAll() {
-        return super.getAll();
+        List<PlayList> list = super.getAll();
+        for (PlayList p :
+                list) {
+            initLazyFields(p);
+        }
+        return list;
     }
 
     @Override
@@ -32,6 +38,11 @@ public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements Play
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(playList);
         return playList;
+    }
+
+    private void initLazyFields(PlayList p) {
+        Hibernate.initialize(p.getSongCompilation());
     }
 }

@@ -1,7 +1,7 @@
 package spring.app.dao.impl;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.SongQueueDao;
 import spring.app.model.Company;
 import spring.app.model.Song;
@@ -10,11 +10,13 @@ import spring.app.model.SongQueue;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
 @Repository
+@Transactional
 public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements SongQueueDao {
     @PersistenceContext
     EntityManager entityManager;
@@ -35,6 +37,7 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
         } catch (NoResultException e) {
             return null;
         }
+        initLazyFields(songQueue);
         return songQueue;
     }
 
@@ -65,6 +68,16 @@ public class SongQueueDaoImpl extends AbstractDao<Long, SongQueue> implements So
 
     @Override
     public List<SongQueue> getByCompanyId(Long id) {
-        return entityManager.createQuery("SELECT sq FROM SongQueue sq WHERE sq.company.id = :id", SongQueue.class).setParameter("id", id).getResultList();
+        List<SongQueue> list = entityManager.createQuery("SELECT sq FROM SongQueue sq WHERE sq.company.id = :id", SongQueue.class).setParameter("id", id).getResultList();
+        for (SongQueue sq :
+                list) {
+            initLazyFields(sq);
+        }
+        return list;
+    }
+
+    private void initLazyFields(SongQueue songQueue) {
+        Hibernate.initialize(songQueue.getSong());
+        Hibernate.initialize(songQueue.getCompany());
     }
 }

@@ -1,5 +1,7 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,7 +16,9 @@ public class OrgType {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Genre.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToMany(targetEntity = Genre.class)
     @JoinTable(name = "org_type_on_related_genre",
             joinColumns = {@JoinColumn(name = "org_type_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

@@ -24,7 +24,8 @@ public class Tag {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
+//    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
+    @ManyToMany(targetEntity = Song.class)
     @JoinTable(name = "tag_on_song",
             joinColumns = {@JoinColumn(name = "tag_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})

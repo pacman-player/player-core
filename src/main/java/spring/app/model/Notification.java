@@ -1,5 +1,7 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,7 +17,9 @@ public class Notification {
 
     private Boolean flag;
 
-    @ManyToOne(targetEntity = User.class)
+    //    @ManyToOne(targetEntity = User.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 

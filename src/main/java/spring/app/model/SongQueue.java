@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "song_queues")
@@ -18,12 +17,16 @@ public class SongQueue {
     private Long position;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Song.class)
+//    @ManyToOne(targetEntity = Song.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Company.class)
+//    @ManyToOne(targetEntity = Company.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id")
     private Company company;
 

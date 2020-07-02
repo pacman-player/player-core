@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "song_statistic")
@@ -26,11 +25,14 @@ public class SongStatistic {
     @Column(name = "order_count")
     private Long orderCount;
 
-    @ManyToOne
+    //    @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "song_id")
     private Song song;
 
-    public SongStatistic() {}
+    public SongStatistic() {
+    }
 
     public SongStatistic(Date orderDate, String songName, Song song) {
         this.orderDate = orderDate;

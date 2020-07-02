@@ -42,14 +42,17 @@ public class Song extends Bannable {
     private Set<SongQueue> songQueues;
 
     //    @Fetch(FetchMode.SUBSELECT) //для решения возможной проблемы N+1 только у ManyToMany, закомментил тк все норм работает
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToMany
     //нельзя ставить у ManyToMany cascade = CascadeType.ALL - сущности все удаляться по цепочке
     @JoinTable(name = "song_compilation_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_compilation_id")})
     private Set<SongCompilation> songCompilations;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Tag.class)
+    //    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Tag.class)
+    @ManyToMany(targetEntity = Tag.class)
     @JoinTable(name = "tag_on_song",
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id")})

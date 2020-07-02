@@ -27,7 +27,9 @@ public class Genre extends Bannable {
     private Set<SongCompilation> songCompilation;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Author.class)
+//    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Author.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToMany(targetEntity = Author.class)
     @JoinTable(name = "author_on_genre",
             joinColumns = {@JoinColumn(name = "genre_id")},
             inverseJoinColumns = {@JoinColumn(name = "author_id")})
