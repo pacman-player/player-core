@@ -17,6 +17,15 @@
     display: none;
 }
 
+.deleteBtn {
+    background-image: url("/img/delete-playlist.png");
+    background-color: rgba(251, 255, 248, 0);
+    border-color: rgba(251, 255, 248, 0);
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+}
+
 #playerContainer {
     position: sticky;
     background: #ececec;
