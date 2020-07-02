@@ -18,12 +18,14 @@ public class SongQueue {
 
     @JsonIgnore
 //    @ManyToOne(targetEntity = Song.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinColumn(name = "song_id")
     private Song song;
 
     @JsonIgnore
 //    @ManyToOne(targetEntity = Company.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id")
     private Company company;

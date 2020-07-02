@@ -38,6 +38,7 @@ public class Company {
     private Long requestSpamCounter; // между заказами посетителей в секундах
 
     //    @ManyToOne(fetch = FetchType.EAGER, targetEntity = OrgType.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = OrgType.class)
     @JoinColumn(name = "org_type_id")
     private OrgType orgType;
@@ -48,6 +49,7 @@ public class Company {
     private Address address;
 
     //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(targetEntity = PlayList.class)
     @JoinTable(name = "morning_company_on_play_list",
             joinColumns = {@JoinColumn(name = "company_id")},
@@ -55,6 +57,7 @@ public class Company {
     private Set<PlayList> morningPlayList;
 
     //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(targetEntity = PlayList.class)
     @JoinTable(name = "midday_company_on_play_list",
             joinColumns = {@JoinColumn(name = "company_id")},
@@ -62,6 +65,7 @@ public class Company {
     private Set<PlayList> middayPlayList;
 
     //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PlayList.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(targetEntity = PlayList.class)
     @JoinTable(name = "evening_company_on_play_list",
             joinColumns = {@JoinColumn(name = "company_id")},

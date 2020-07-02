@@ -9,9 +9,11 @@ import spring.app.model.User;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
     private final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 

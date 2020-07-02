@@ -7,11 +7,13 @@ import spring.app.model.Tag;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Repository
+@Transactional
 public class TagDaoImpl extends AbstractDao<Long, Tag> implements TagDao {
 
     TagDaoImpl() {

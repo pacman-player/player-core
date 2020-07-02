@@ -11,11 +11,13 @@ import spring.app.model.SongQueue;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class CompanyDaoImpl extends AbstractDao<Long, Company> implements CompanyDao {
 
     @PersistenceContext

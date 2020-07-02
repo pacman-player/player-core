@@ -1,6 +1,7 @@
 package spring.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Role implements GrantedAuthority {
 
     @JsonIgnore
 //    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(targetEntity = User.class)
     @JoinTable(name = "permissions",
             joinColumns = {@JoinColumn(name = "role_id")},

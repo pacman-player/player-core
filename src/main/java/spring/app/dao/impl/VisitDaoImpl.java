@@ -7,9 +7,11 @@ import spring.app.model.Visit;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class VisitDaoImpl extends AbstractDao<Visit.VisitPK, Visit> implements VisitDao {
 
     @PersistenceContext

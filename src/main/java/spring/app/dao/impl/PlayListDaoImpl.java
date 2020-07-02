@@ -7,9 +7,11 @@ import spring.app.model.PlayList;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class PlayListDaoImpl extends AbstractDao<Long, PlayList> implements PlayListDao {
 
     PlayListDaoImpl() {

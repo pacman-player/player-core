@@ -26,6 +26,7 @@ public class SongStatistic {
     private Long orderCount;
 
     //    @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "song_id")
     private Song song;

@@ -6,11 +6,13 @@ import spring.app.dao.abstraction.SongStatisticDao;
 import spring.app.model.SongStatistic;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class SongStatisticDaoImpl extends AbstractDao<Long, SongStatistic> implements SongStatisticDao {
 
     SongStatisticDaoImpl() {

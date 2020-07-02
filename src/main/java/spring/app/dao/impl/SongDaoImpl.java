@@ -8,11 +8,13 @@ import spring.app.model.Song;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
 
     SongDaoImpl() {

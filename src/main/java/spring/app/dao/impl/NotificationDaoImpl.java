@@ -6,9 +6,11 @@ import spring.app.dao.abstraction.NotificationDao;
 import spring.app.model.Notification;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class NotificationDaoImpl extends AbstractDao<Long, Notification> implements NotificationDao {
     public NotificationDaoImpl() {
         super(Notification.class);

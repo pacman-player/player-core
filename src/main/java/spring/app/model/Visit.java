@@ -1,5 +1,6 @@
 package spring.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -80,11 +81,13 @@ public class Visit {
          * с ними в таблице visits.
          */
 //        @ManyToOne
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         private TelegramUser telegramUser;
 
         //        @ManyToOne
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         @ManyToOne(fetch = FetchType.LAZY)
         @OnDelete(action = OnDeleteAction.CASCADE)
         private Company company;

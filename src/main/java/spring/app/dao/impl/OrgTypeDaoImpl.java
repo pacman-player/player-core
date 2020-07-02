@@ -7,9 +7,11 @@ import spring.app.model.OrgType;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 
 @Repository
+@Transactional
 public class OrgTypeDaoImpl extends AbstractDao<Long, OrgType> implements OrgTypeDao {
 
     OrgTypeDaoImpl() {

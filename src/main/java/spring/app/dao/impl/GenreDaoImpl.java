@@ -11,10 +11,12 @@ import spring.app.model.Song;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
+@Transactional
 public class GenreDaoImpl extends AbstractDao<Long, Genre> implements GenreDao {
     GenreDaoImpl() {
         super(Genre.class);
