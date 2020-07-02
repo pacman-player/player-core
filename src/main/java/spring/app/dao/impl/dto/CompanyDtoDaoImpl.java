@@ -61,6 +61,26 @@ public class CompanyDtoDaoImpl implements CompanyDtoDao {
     }
 
     @Override
+    public List<CompanyDto> getCompaniesWithoutUsers() {
+        List<CompanyDto> companyDtos = entityManager.createQuery(
+                "SELECT new spring.app.dto.CompanyDto(" +
+                        "c.id, c.name, c.startTime, c.closeTime, c.orgType.id, c.orgType.name, c.tariff, " +
+                        "c.requestSpamCounter,  " +
+                        "c.address.country, c.address.city, c.address.street, c.address.house) FROM Company c where c.user.id is null",
+                CompanyDto.class
+        ).getResultList();
+        Query query = entityManager.createQuery(
+                "SELECT new spring.app.dto.CompanyDto(" +
+                        "c.id, c.name, c.startTime, c.closeTime, c.orgType.id, c.orgType.name, c.tariff, " +
+                        "c.requestSpamCounter) FROM Company c where c.user.id is null and c.address.id is null",
+                CompanyDto.class
+        );
+        companyDtos.addAll(query.getResultList());
+
+        return companyDtos;
+    }
+
+    @Override
     public CompanyDto getById(Long id) {
         CompanyDto companyDto = entityManager.createQuery(
                 "SELECT new spring.app.dto.CompanyDto(c.id, c.name, c.startTime, c.closeTime, c.orgType.id, " +

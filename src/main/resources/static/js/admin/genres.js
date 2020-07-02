@@ -161,9 +161,8 @@ function editButton(id, name, keywords, approved) {
 function deleteButton(id) {
     $.ajax({
         method: "DELETE",
-        url: "/api/admin/genre/delete_genre",
+        url: `/api/admin/genre/delete_genre/${id}`,
         contentType: "application/json",
-        data: JSON.stringify(id),
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -177,8 +176,12 @@ function deleteButton(id) {
                 ` Жанр c id ${id} удален`,
                 "genres-panel");
         },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        error: () => {
+            notification(
+                "delete-genre" + id,
+                `Жанр c id ${id} является жанром по умолчанию`,
+                "genres-panel");
+            $(`#success-alert-delete-genre${id}`).toggleClass('alert-success alert-danger');
         }
     })
 }
@@ -196,7 +199,6 @@ function getTable() {
         dataType: "JSON",
         success: (genres) => {
             let tableBody = $("#genresTable tbody");
-
             tableBody.empty();
             for (let i = 0; i < genres.length; i++) {
                 // vars that contains object's fields
@@ -204,8 +206,8 @@ function getTable() {
                 let approved = genres[i].approved;
                 let checked = genres[i].approved ? "checked" : "";
                 let name = genres[i].name;
+                let isDefault = genres[i].default;
                 let keywords = genres[i].keywords;
-
                 // parsing fields
                 let tr = $("<tr/>");
                 tr.append(`
@@ -223,7 +225,7 @@ function getTable() {
                             <td>
                                 <button type="button"
                                         class="btn btn-sm btn-info"
-                                        id="deleteGenreBtn"
+                                        id="deleteGenreBtn${id}"
                                         onclick="deleteButton(${id})">
                                     Удалить
                                 </button>
@@ -246,9 +248,79 @@ function getTable() {
                             </td>
 `);
                 tableBody.append(tr);
+                if(isDefault){
+                    $(`#deleteGenreBtn${id}`).attr('disabled', 'disabled');
+                }
             }
+            let trs = document.querySelectorAll('#genresTable tbody tr');
+            sortTable(tableBody, trs);
+
+            let defaultTableBody = $("#defaultGenresTable tbody");
+            defaultTableBody.empty();
+
+            for (let i = 0; i < genres.length; i++) {
+                // vars that contains object's fields
+                let id = genres[i].id;
+                let checked = genres[i].approved ? "checked" : "";
+                let name = genres[i].name;
+                let isDefault = genres[i].default;
+                // parsing fields
+                let tr = $("<tr/>");
+                tr.append(`
+                            <td>${id}</td>
+                            <td><input class="checkbox" type="checkbox" disabled ${checked}/></td>
+                            <td>${name}</td>
+                            <td>
+                               <input id="defaultRadio${id}"  
+                                      type="radio"
+                                      name="radAnswer"
+                                      onchange="defaultRadio(${id})"/>
+                            </td>
+`);
+                defaultTableBody.append(tr);
+                if(isDefault){
+                    $(`#defaultRadio${id}`).attr('checked', 'true');
+                }
+            }
+            let defaultTrs = document.querySelectorAll('#defaultGenresTable tbody tr');
+            sortTable(defaultTableBody, defaultTrs);
         }
     });
+}
+
+//Функция делает запрос в контроллер, устанавливающий жанр по умолчанию
+
+function defaultRadio(id) {
+    $.ajax({
+        url: `/api/admin/genre/set_default_genre/${id}`,
+        method: 'PATCH',
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        success: () => {
+            notification(
+                "default-genre" + id,
+                ` Жанр с ID ${id} назначен жанром по умолчанию`,
+                "default-genre-panel");
+            $(`.btn.btn-sm.btn-info`).removeAttr("disabled");
+            $(`#deleteGenreBtn${id}`).removeAttr("disabled").attr('disabled', 'disabled');
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    });
+}
+
+function sortTable(table, trs){
+    let sorted = [...trs].sort(function (a, b) {
+        return a.children[0].innerHTML - b.children[0].innerHTML;
+    });
+    table.innerHTML = '';
+    for (let tr of sorted){
+        table.append(tr);
+    }
 }
 
 // выводим список всех песен в модальное окно "addsongGenreManagement"
@@ -353,12 +425,21 @@ function saveGenreAuthors() {
     $('#addAuthorGenreManagement').modal('hide');
 }
 
-let changeGenresBtn = function (event) {
+//сортировка таблиц
+
+function ArraySort(array, element){
+    array.slice(1)
+        .sort((rowA, rowB) => rowA.cells[0].id > rowB.cells[0].id ? 1 : -1);
+
+}
+
+let changeGenresBtn = function(event) {
     let checkedItems = $('.chcheck:checked').length;
     let checkedAll = $('.chcheckAll:checked').length;
 
-    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll == 0);
+    $('#changeGenresBtn, #updateSongGenre').prop('disabled', checkedItems == 0 && checkedAll ==0);
 }
+
 
 $(document).on("change", ".chcheck", changeGenresBtn);
 $(document).on("change", ".chcheckAll", changeGenresBtn);

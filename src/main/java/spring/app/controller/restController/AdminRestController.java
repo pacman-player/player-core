@@ -100,11 +100,17 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        LOGGER.info("POST request '/add_user'");
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
-        user.setRoles(getRoles(userDto.getRoles()));
-        userService.save(user);
-        LOGGER.info("Added User = {}", user);
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null)) {
+            LOGGER.info("POST request '/add_user'");
+            User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+            user.setRoles(getRoles(userDto.getRoles()));
+            user.setCompany(companyService.getById(userDto.getCompanyId()));
+            userService.save(user);
+            Company company = companyService.getById(userDto.getCompanyId());
+            company.setUser(user);
+            companyService.update(company);
+            LOGGER.info("Added User = {}", user);
+        }
     }
 
     @PutMapping(value = "/update_user")
@@ -177,15 +183,6 @@ public class AdminRestController<T> {
         LOGGER.info("Updated Company = {}", company);
         }
 
-    }
-
-    @GetMapping(value = "/check/company")
-    public boolean isCompanyExist(@RequestParam("name") String name,
-                                  @RequestParam("id") Long id) {
-        if (companyService.getById(id).getName().equals(name)) {
-            return true;
-        }
-        return !companyService.isExistCompanyByName(name);
     }
 
     @PostMapping(value = "/add_establishment")
@@ -305,5 +302,4 @@ public class AdminRestController<T> {
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
-
 }

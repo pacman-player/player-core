@@ -4,6 +4,7 @@ import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;

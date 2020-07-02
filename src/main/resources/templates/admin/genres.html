@@ -44,6 +44,10 @@
                             <a href="#add-genres-panel" aria-controls="add-genres-panel" role="tab" data-toggle="tab">
                                 Новый жанр</a>
                         </li>
+                        <li id="default-genre-nav">
+                            <a href="#default-genre-panel" aria-controls="default-genre-panel" role="tab" data-toggle="tab">
+                                Жанр по умолчанию</a>
+                        </li>
                     </ul>
 
                     <div class="tab-content">
@@ -106,6 +110,30 @@
                             </div>
                         </div>
 
+
+                        <!-- Выбор жанра по умолчанию -->
+                        <div id="default-genre-panel" class="tab-pane" role="tabpanel">
+                            <div role="tabpanel" class="tab-pane active" id="default-genres-panel">
+                                <div class="panel panel-default table-panel">
+                                    <div class="tab-content">
+                                        <div class="panel-body">
+                                            <table id="defaultGenresTable" class="table">
+                                                <thead id="defaultGetGenresTable">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Разрешен</th>
+                                                    <th>Жанр</th>
+                                                    <th>Жанр по умолчанию</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Изменение жанра (модальное окно) -->
                         <div id="editGenres" class="modal fade">
                             <div class="modal-dialog">
@@ -146,8 +174,8 @@
                                                             <label for="updateGenreApproved" class="checkbox-inline">
                                                                 <input id="updateGenreApproved"
                                                                        name="approved"
-                                                                       class="form-check-input"
-                                                                       type="checkbox"/>Разрешен</label>
+                                                                       class="form-control"
+                                                                       type="checkboxform-check-input"/>Разрешен</label>
 
 
                                                             <div class="modal-footer">
@@ -177,8 +205,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                                                id="btnCloseModal">×
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModal">×
                                         </button>
                                         <h4 class="modal-title">Список исполнителей</h4>
                                     </div>
