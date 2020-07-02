@@ -302,4 +302,19 @@ public class AdminRestController<T> {
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
     }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public @ResponseBody
+    List<CompanyDto> getCompaniesWithoutUsers() {
+        return companyService.getCompaniesWithoutUsers();
+    }
+
+    @GetMapping(value = "/check/company")
+    public boolean isCompanyExist(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (companyService.getById(id).getName().equals(name)) {
+            return true;
+        }
+        return !companyService.isExistCompanyByName(name);
+    }
 }
