@@ -4,12 +4,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.app.dao.abstraction.AuthorDao;
 import spring.app.model.Author;
+import spring.app.model.Genre;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class AuthorDaoImpl extends AbstractDao<Long, Author> implements AuthorDao {

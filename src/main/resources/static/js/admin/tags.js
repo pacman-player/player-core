@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getTable();
+    pagination();
 
     let formAddTag = $("#addForm");
     let fieldNameAddTag = $("#addTag");
@@ -163,11 +164,14 @@ function deleteButton(id) {
     })
 }
 
+let pageNo = 1;
+let pageSize = 20;
+let countPages;
 
 function getTable() {
     $.ajax({
         method: "GET",
-        url: "/api/admin/tag/all_tags",
+        url: "/api/admin/tag/all_tags?page=" + pageNo + "&size=" + pageSize,
         contentType: "application/json",
         headers: {
             "Accept": "application/json",
@@ -220,6 +224,106 @@ function getTable() {
     });
 }
 
+function pagination() {
+    $.ajax({
+            method: "GET",
+            url: "/api/admin/tag/count_tags",
+            contentType: "application/json",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            dataType: "JSON",
+            success: (countTags) => {
+
+                countPages = countTags / pageSize;
+
+                let numsPages = $("#pagesNumsTagsList");
+                numsPages.empty();
+                numsPages.append(`
+                    <li 
+                        class="page-item disabled" 
+                        id="prevTagsPage">
+                            <a 
+                                class="page-link" 
+                                href="#">
+                                    Назад
+                            </a>
+                    </li>
+                    <li 
+                        class="page-item active">
+                            <a 
+                                class="page-link" 
+                                href="#" 
+                                onclick="changeTagsPage(1)">
+                                    1
+                            </a>
+                    </li>
+                `);
+
+                for (let i = 1; i < countPages; i++) {
+                    numsPages.append(`
+                        <li 
+                            class="page-item">
+                                <a 
+                                    class="page-link" 
+                                    href="#" 
+                                    onclick="changeTagsPage(${i + 1})">
+                                        ${i + 1}
+                                </a>
+                        </li>
+                                    `);
+                }
+                numsPages.append(`
+                    <li 
+                        class="page-item" 
+                        id="nextTagsPage">
+                            <a 
+                                class="page-link" 
+                                href="#">
+                                    Вперёд
+                            </a>
+                    </li>
+                    `);
+
+                if (countPages == 1) {
+                    $('#prevTagsPage').addClass('disabled');
+                    $('#nextTagsPage').addClass('disabled');
+                }
+            }
+        }
+    )
+}
+
+function changeTagsPage(noPage) {
+    pageNo = noPage;
+    if (pageNo == 1) {
+        $('#prevTagsPage').addClass('disabled');
+    } else {
+        $('#prevTagsPage').removeClass('disabled');
+    }
+    if (pageNo >= countPages) {
+        $('#nextTagsPage').addClass('disabled');
+    } else {
+        $('#nextTagsPage').removeClass('disabled');
+    }
+    getTable();
+}
+
+$('#pagesNumsTagsList')
+    .on('click', 'li:not(#prevTagsPage):not(#nextTagsPage)', function () {
+        $('.pagination li').removeClass('active');
+        $(this).not('#prevTagsPage,#nextTagsPage').addClass('active');
+    })
+    .on('click', 'li#prevTagsPage', function () {
+        $('li.page-item.active').removeClass('active').prev().addClass('active');
+        changeTagsPage(--pageNo);
+    })
+    .on('click', 'li#nextTagsPage', function () {
+        $('li.page-item.active').removeClass('active').next().addClass('active');
+        changeTagsPage(++pageNo);
+    });
+
 function editTagOfSongs(id, name) {
     $('#tagId').val(id);
     $('#tagName').val(name);
@@ -264,7 +368,7 @@ function editTagOfSongs(id, name) {
 let tagId = {};
 let tagName = {};
 let deleteObject = {};
-$('#deleteTagForSongsBtn').on('click', function() {
+$('#deleteTagForSongsBtn').on('click', function () {
     tagId = $('#tagId').val();
     tagName = $('#tagName').val();
 
@@ -285,12 +389,11 @@ $('#deleteTagForSongsBtn').on('click', function() {
 
 $('#deleteTagForSongsForm').on('submit', function (event) {
 
-    if(jQuery.isEmptyObject(deleteObject)) {
+    if (jQuery.isEmptyObject(deleteObject)) {
         alert("Выберите хотя бы одну пеню, чтобы удалить тэг \"" + tagName + '\"');
         event.preventDefault();
         // return false;
-    }
-    else {
+    } else {
         $.ajax({
             url: '/api/admin/song/delete_tag_for_songs',
             data: JSON.stringify(deleteObject),

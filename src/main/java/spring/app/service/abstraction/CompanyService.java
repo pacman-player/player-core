@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 import spring.app.dto.CompanyDto;
+import spring.app.dto.SongDto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 
@@ -15,6 +16,8 @@ public interface CompanyService extends GenericService<Long, Company> {
     Company getByCompanyName(String companyName);
 
     List<CompanyDto> getAllCompanies();
+
+    List<CompanyDto> getCompaniesWithoutUsers();
 
     boolean isExistCompanyByName(String name);
 

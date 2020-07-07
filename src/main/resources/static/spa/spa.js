@@ -1,36 +1,36 @@
 "use strict";
 
-import Home         from './views/pages/Home.js'
-import About        from './views/pages/About.js'
-import Error404     from './views/pages/Error404.js'
-import PostShow     from './views/pages/PostShow.js'
-import Register     from './views/pages/Register.js'
-import Statistics   from "./views/pages/Statistics.js";
-import Filter       from "./views/pages/Filter.js";
-import Company      from "./views/pages/Company.js";
-import Promo        from "./views/pages/Promo.js";
-import Edit         from "./views/pages/Edit.js";
-import Music        from "./views/pages/Music.js";
+import Home from './views/pages/Home.js'
+import About from './views/pages/About.js'
+import Error404 from './views/pages/Error404.js'
+import PostShow from './views/pages/PostShow.js'
+import Register from './views/pages/Register.js'
+import Statistics from "./views/pages/Statistics.js";
+import Filter from "./views/pages/Filter.js";
+import Company from "./views/pages/Company.js";
+import Promo from "./views/pages/Promo.js";
+import Edit from "./views/pages/Edit.js";
+import Music from "./views/pages/Music.js";
 
-import NavBar       from './views/components/NavBar.js'
-import LeftSideBar  from './views/components/LeftSideBar.js'
+import NavBar from './views/components/NavBar.js'
+import LeftSideBar from './views/components/LeftSideBar.js'
 
-import Utils        from './services/Utils.js'
+import Utils from './services/Utils.js'
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 // Список поддерживаемых маршрутов. Любой URL, кроме этих маршрутов, выдаст ошибку 404
 const routes = {
     // '/'             : Home      //оставил как образец
-    '/'             : Statistics
-    , '/about'      : About         //оставил как образец
-    , '/p/:id'      : PostShow      //оставил как образец
-    , '/register'   : Register      //оставил как образец
-    , '/statistics' : Statistics
-    , '/filter'     : Filter
-    , '/company'    : Company
-    , '/promo'      : Promo
-    , '/edit'       : Edit
-    , '/music'       : Music
+    '/': Statistics
+    , '/about': About         //оставил как образец
+    , '/p/:id': PostShow      //оставил как образец
+    , '/register': Register      //оставил как образец
+    , '/statistics': Statistics
+    , '/filter': Filter
+    , '/company': Company
+    , '/promo': Promo
+    , '/edit': Edit
+    , '/music': Music
 };
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
@@ -64,7 +64,7 @@ const router = async () => {
     // Parse the URL and if it has an id part, change it with the string ":id"
     // Проанализируйте URL-адрес и, если он имеет часть id, измените его на строку «: id»
     let parsedURL = (request.resource ? '/' + request.resource : '/') + (request.id ? '/:id' : '') + (request.verb ? '/' + request.verb : '')
-    
+
     // Get the page from our hash of supported routes.
     // If the parsed URL is not in our list of supported routes, select the 404 page instead
     // Получить страницу из нашего хэша поддерживаемых маршрутов.

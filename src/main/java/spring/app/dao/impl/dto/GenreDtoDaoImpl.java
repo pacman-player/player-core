@@ -19,7 +19,7 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
     @Override
     public List<GenreDto> getAll() {
         return entityManager.createQuery(
-                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved, g.keywords) FROM Genre g",
+                "SELECT new spring.app.dto.GenreDto(g.id, g.name, g.isApproved, g.isDefault, g.keywords) FROM Genre g",
                 GenreDto.class
         )
                 .getResultList();
@@ -33,7 +33,7 @@ public class GenreDtoDaoImpl implements GenreDtoDao {
         );
         query.setParameter("name", name);
 
-        if (query.getResultList().get(0).equals(0L)) {
+        if (query.getSingleResult().equals(0L)) {
             return false;
         } else {
             return true;

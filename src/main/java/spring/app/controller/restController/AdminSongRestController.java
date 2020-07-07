@@ -29,9 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/admin/song/")
 public class AdminSongRestController {
-
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongRestController.class);
-
     private final SongService songService;
     private final SongFileService songFileService;
     private final AuthorService authorService;
@@ -82,16 +80,18 @@ public class AdminSongRestController {
         }
 
         Song song = new Song(songDto.getName());
-
         Author author = authorService.getByName(songDto.getAuthorName());
         if (author != null) {
             song.setAuthor(author);
         } else {
             authorService.save(new Author(songDto.getAuthorName()));
-            Author newAuthor = authorService.getByName(songDto.getAuthorName());
-            song.setAuthor(newAuthor);
+            song.setAuthor(authorService.getByName(songDto.getAuthorName()));
         }
-
+        Genre genre = genreService.getByName(songDto.getGenreName());
+        if (genre != null) {
+            song.getAuthor().setAuthorGenres((Set<Genre>) genre);
+                    //setGenre(genre);
+        }
         songService.setTags(song, songDto.getSearchTags());
         songService.save(song);
         song = songService.getByName(song.getName());
@@ -119,10 +119,12 @@ public class AdminSongRestController {
         LOGGER.info("Changing Song = {}", oldSong);
         Author author = oldSong.getAuthor();
         Genre genre = genreService.getByName(songDto.getGenreName());
+        Set<SongCompilation> songCompilations = oldSong.getSongCompilations();
         Song song = new Song(songDto.getId(), songDto.getName());
         Boolean isApproved = songDto.getApproved();
         song.setApproved(isApproved);
         song.setAuthor(author);
+         song.setSongCompilations(songCompilations);
         //song.setGenre(genre);
         songService.setTags(song, songDto.getSearchTags());
         songService.update(song);
@@ -150,18 +152,18 @@ public class AdminSongRestController {
     }
 
     /*
-        Изменение жанра у нескольких песен
+        Изменение авторов у нескольких песен
     */
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {
         Genre newGenre = genreService.getByName(updateObject.get(-1));
-        updateObject.forEach((key, value)->{
-              if(key!=-1){
-                  Song editSong = songService.getById(Long.parseLong(value));
-                  //editSong.setGenre(newGenre);
-                  songService.update(editSong);
-              }
-          });
+        updateObject.forEach((key, value) -> {
+            if (key != -1) {
+                Song editSong = songService.getById(Long.parseLong(value));
+                //editSong.setGenre(newGenre);
+                songService.update(editSong);
+            }
+        });
     }
 
     @DeleteMapping(value = "/delete_tag_for_songs")

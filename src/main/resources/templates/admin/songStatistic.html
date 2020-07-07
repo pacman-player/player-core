@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Статистика прослушиваний</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="shortcut icon" href="#"/>
+    <link href="/css/admin/admin.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/admin/notification.css" type="text/css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload=
+        {'modules':[{'name':'visualization','version':'1.5.0','packages':['corechart']}]}"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-static-top header">
+            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
+            <a class="navbar-brand pull-right" href="/logout">Выход</a>
+            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
+            <div id="listNotification" class="pull-right"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
+            <!--меню слева-->
+            <ul class="nav nav-pills nav-stacked nav-content" th:include="admin/fragment/navigation :: adminNavbar">
+            </ul>
+        </div>
+
+        <div class="col-lg-9 col-md-10 col-xs-10">
+            <div class="tab-content">
+                <!--данные о количестве прослушиваний-->
+                <div role="tabpanel" class="tab-pane active" id="statistic-panel">
+                    <ul class="nav nav-tabs nav-content" role="tablist" onclick="getStatisticData()">
+                        <li id="day-stat-table-nav" class="active">
+                            <a id="tab-statistic-panel" href="day"
+                               aria-controls="day-panel" role="tab"
+                               data-toggle="tab">За день</a>
+                        </li>
+                        <li id="week-stat-table-nav">
+                            <a href="week" aria-controls="week-stat-panel" role="tab" data-toggle="tab">
+                                За неделю</a>
+                        </li>
+                        <li id="month-stat-table-nav">
+                            <a href="month" aria-controls="month-stat-panel" role="tab" data-toggle="tab">
+                                За месяц</a>
+                        </li>
+                        <li id="year-stat-table-nav">
+                            <a href="year" aria-controls="year-stat-panel" role="tab"
+                               data-toggle="tab">
+                                За год</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!--данные о количестве прослушиваний-->
+                        <div role="tabpanel" class="tab-pane active">
+                            <ul class="nav nav-tabs nav-content" role="tablist">
+                                <li id="diagram-nav" class="active">
+                                    <a id="diagram-statistic-panel" href="#panel-diagram"
+                                       aria-controls="panel" role="tab"
+                                       data-toggle="tab">Диаграмма</a>
+                                </li>
+                                <li id="table-nav">
+                                    <a href="#table-panel" aria-controls="table-panel" role="tab"
+                                       data-toggle="tab">
+                                        Список</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <!--таблицы и диаграммы-->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="panel-diagram">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <!--Подключаем диаграмму-->
+                                                <div id="statisticDiagram" style="width: 500px; height: 400px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="table-panel">
+                                    <div class="panel panel-default table-panel">
+                                        <div class="tab-content">
+                                            <div class="panel-body">
+                                                <table id="statistic-table" class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Название песни</th>
+                                                        <th>Количество прослушиваний</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="statisticBody">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script type="text/javascript" src="/js/admin/admin.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/songStatistic.js" rel="script"></script>
+<script type="text/javascript" src="/js/admin/report.js" rel="script"></script>
+<script type="text/javascript" src="/js/notification.js" rel="script"></script>
+<script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+
+</body>
+</html>

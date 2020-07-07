@@ -17,6 +17,7 @@ public class SongDto extends Bannable {
     private Timestamp createdAt;
     private Boolean isApproved;
     private MultipartFile file;
+    private boolean banned;
 
     private AuthorDto authorDto;
 
@@ -90,6 +91,13 @@ public class SongDto extends Bannable {
         this.id = id;
         this.name = name;
         this.genreName = genreName;
+    }
+
+    public SongDto(Long id, String name, Boolean isApproved, String authorName) {
+        this.id = id;
+        this.name = name;
+        this.isApproved = isApproved;
+        this.authorName = authorName;
     }
 
     public SongDto() {
@@ -175,6 +183,20 @@ public class SongDto extends Bannable {
         this.file = file;
     }
 
+    public boolean isBanned() {
+        return banned;
+    }
+
+    @Override
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
+
+    @Override
+    public boolean isBannedBy(Company company) {
+        return company.getBannedSong().contains(new Song(id, name));
+    }
+
     @Override
     public String toString() {
         return "SongDto{" +
@@ -186,15 +208,5 @@ public class SongDto extends Bannable {
                 ", createdAt=" + createdAt +
                 ", isApproved=" + isApproved +
                 '}';
-    }
-
-    @Override
-    public void setBanned(boolean banned) {
-
-    }
-
-    @Override
-    public boolean isBannedBy(Company company) {
-        return false;
     }
 }

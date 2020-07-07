@@ -17,9 +17,11 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +39,7 @@ public class TelegramRestController {
     private final AddressService addressService;
     private final TelegramUserService telegramUserService;
     private final VisitService visitService;
+    private final SongStatisticService songStatisticService;
 
     @Autowired
     public TelegramRestController(TelegramService telegramService,
@@ -46,7 +49,8 @@ public class TelegramRestController {
                                   AddressService addressService,
                                   TelegramUserService telegramUserService,
                                   VisitService visitService,
-                                  OrderSongService orderSongService) {
+                                  OrderSongService orderSongService,
+                                  SongStatisticService songStatisticService) {
         this.telegramService = telegramService;
         this.songService = songService;
         this.companyService = companyService;
@@ -55,6 +59,7 @@ public class TelegramRestController {
         this.telegramUserService = telegramUserService;
         this.visitService = visitService;
         this.orderSongService = orderSongService;
+        this.songStatisticService = songStatisticService;
     }
 
     /**
@@ -216,6 +221,8 @@ public class TelegramRestController {
             songQueueService.save(songQueue);
             // вносим новый заказ для статистики
             orderSongService.save(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
+            //сохранение заказа для статистики прослушиваний
+            songStatisticService.saveOrUpdate(new SongStatistic(Date.valueOf(LocalDate.now()), songById.getName(), songById));
             songQueue = songQueueService.getSongQueueBySongAndCompany(songById, companyById);
             companyById.getSongQueues().add(songQueue);
             companyService.update(companyById);
