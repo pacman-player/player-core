@@ -140,6 +140,7 @@ $(document).ready(function () {
             addUser();
         }
     });
+
     getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
@@ -151,8 +152,9 @@ $(document).ready(function () {
         }
 
         if (roleListArr.length === 0) {
-            alert("Выберете роль");
-            // $('.divForRole').html('не указана роль')
+            var message = "Не указана роль. Назначьте роль"
+            document.getElementById('role-error')
+                .innerHTML = '<span class="error">' + message + '</span>';
             return false;
         }
 
@@ -514,4 +516,8 @@ function getCompanyWithoutUser() {
             }
         },
     })
+}
+function removeError() {
+    let error = document.getElementById('role-error');
+        error.innerHTML = '';
 }

@@ -214,7 +214,8 @@
                                                                     <button class="btn btn-default dropdown-toggle form-control"
                                                                             type="button" id="dropdownRoleCreateMenu"
                                                                             data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="true">Выберете роль
+                                                                            aria-expanded="true"
+                                                                    onclick="removeError()">Выберете роль
                                                                         <span class="caret"></span>
                                                                     </button>
                                                                     <ul id="addListRoles"
@@ -222,6 +223,7 @@
                                                                         aria-labelledby="dropdownRoleCreateMenu">
                                                                     </ul>
                                                                 </div>
+                                                                <div id="role-error"></div>
 <!--                                                                <select id="createUserRole" class="form-control"-->
 <!--                                                                        type="text" required="required" name="role">-->
 <!--                                                                </select>-->
