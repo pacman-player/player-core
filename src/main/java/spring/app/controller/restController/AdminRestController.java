@@ -71,9 +71,10 @@ public class AdminRestController<T> {
     }
 
     @GetMapping(value = "/allUsersEmailWithoutCompany")
-    public @ResponseBody
-    List<UserDto> getUsersEmailWithoutCompany() {
-        return userService.getUsersEmailWithoutCompany();
+    public Response getUsersEmailWithoutCompany() {
+        return responseBuilder.success(userService.getUsersEmailWithoutCompany());
+//    List<UserDto> getUsersEmailWithoutCompany() {
+//        return userService.getUsersEmailWithoutCompany();
     }
 
     @GetMapping("/get_user_by_id/{userId}")
@@ -304,10 +305,10 @@ public class AdminRestController<T> {
     }
 
     @GetMapping(value = "/companiesWithoutUsers")
-    public @ResponseBody
-    List<CompanyDto> getCompaniesWithoutUsers() {
-        return companyService.getCompaniesWithoutUsers();
+    public Response getCompaniesWithoutUsers() {
+        return responseBuilder.success(companyService.getCompaniesWithoutUsers());
     }
+
 
     @GetMapping(value = "/check/company")
     public boolean isCompanyExist(@RequestParam("name") String name,

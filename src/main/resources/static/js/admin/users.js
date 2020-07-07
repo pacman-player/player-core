@@ -488,12 +488,12 @@ function getCompanyWithoutUser() {
         url: "/api/admin/companiesWithoutUsers",
         method: "GET",
         dataType: "json",
-        success: function (data) {
+        success: function (list) {
             var selectBody = $('#addCompanyForUser');
             selectBody.empty();
             selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
             let count = 0;
-            $(data).each(function (i, company) {
+            $(list.data).each(function (i, company) {
                 selectBody.append(`
                     <option value="${company.id}" >${company.name}</option>
                     `);

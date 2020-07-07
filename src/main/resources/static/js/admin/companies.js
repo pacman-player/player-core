@@ -126,9 +126,9 @@ $(document).ready(function () {
             url:"/api/admin/allUsersEmailWithoutCompany",
             method: "GET",
             dataType: "json",
-            success: function (data) {
+            success: function (list) {
                 selectBody.empty();
-                $(data).each(function (i, user) {
+                $(list.data).each(function (i, user) {
                     selectBody.append(`
                     <option value="${user.id}">${user.email}</option>
                     `);
@@ -373,11 +373,11 @@ function getUserEmail(){
         url: "/api/admin/allUsersEmailWithoutCompany",
         method: "GET",
         dataType: "json",
-        success: function (data) {
+        success: function (list) {
             var selectBody = $('#addUserForCompany');
             selectBody.empty();
             selectBody.append(`<option disabled selected value="">выберите пользователя по email</option>`);
-            $(data).each(function (i, user) {
+            $(list.data).each(function (i, user) {
                 selectBody.append(`
                     <option value="${user.id}">${user.email}</option>
                     `);
