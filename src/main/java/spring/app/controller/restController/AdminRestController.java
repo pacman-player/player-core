@@ -94,11 +94,17 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        LOGGER.info("POST request '/add_user'");
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
-        user.setRoles(getRoles(userDto.getRoles()));
-        userService.save(user);
-        LOGGER.info("Added User = {}", user);
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null || userDto.getRoles().isEmpty())) {
+            LOGGER.info("POST request '/add_user'");
+            User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+            user.setRoles(getRoles(userDto.getRoles()));
+            user.setCompany(companyService.getById(userDto.getCompanyId()));
+            userService.save(user);
+            Company company = companyService.getById(userDto.getCompanyId());
+            company.setUser(user);
+            companyService.update(company);
+            LOGGER.info("Added User = {}", user);
+        }
     }
 
     @PutMapping(value = "/update_user")
@@ -166,6 +172,12 @@ public class AdminRestController<T> {
         LOGGER.info("Updated Company = {}", company);
         }
 
+    }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public @ResponseBody
+    List<CompanyDto> getCompaniesWithoutUsers() {
+        return companyService.getCompaniesWithoutUsers();
     }
 
     @PostMapping(value = "/add_establishment")

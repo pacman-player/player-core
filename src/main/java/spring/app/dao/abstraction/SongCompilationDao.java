@@ -24,5 +24,5 @@ public interface SongCompilationDao extends GenericDao<Long, SongCompilation> {
 
     List<SongCompilation> getAllWhereSongIsAprove();
 
-
+    void setDefaultGenre(Long id);
 }

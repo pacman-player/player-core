@@ -138,10 +138,10 @@ $(document).ready(function () {
         event.preventDefault();
         if ($('#addForm').valid()) {
             addUser();
-            $(':input', '#addForm').val('');
         }
     });
 
+    getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
         var rls = document.getElementsByClassName("addRls");
@@ -150,12 +150,23 @@ $(document).ready(function () {
                 roleListArr.push(rls[t].getAttribute("value"));
             }
         }
+
+        if (roleListArr.length === 0) {
+            var message = "Не указана роль. Назначьте роль"
+            document.getElementById('role-error')
+                .innerHTML = '<span class="error">' + message + '</span>';
+            return false;
+        }
+
         var user = {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
             'password': $("#addPassword").val(),
+            'companyId' : $('#addCompanyForUser').val(),
             'roles': roleListArr
+
         };
+        // $("#addCompanyForUser option[value = '"+ user.company.id +"']").prop("selected", true);
         $.ajax({
             type: 'POST',
             url: "/api/admin/add_user",
@@ -178,6 +189,9 @@ $(document).ready(function () {
                     notification("add-user" + user.login.replace(/[^\w]|_/g, ''),
                         " Пользователь " + user.login + " добавлен ",
                         'user-panel');
+                    getCompanyWithoutUser();
+                    $(':input', '#addForm').val('');
+                    $("#addForm").trigger("reset");
                 },
             error:
                 function (xhr, status, error) {
@@ -312,6 +326,7 @@ $(document).ready(function () {
                     notification("delete-user" + id,
                         "  Пользователь c id " + id + " удален",
                         'user-panel');
+                    getCompanyWithoutUser();
                 },
             error:
                 function (xhr, status, error) {
@@ -460,13 +475,12 @@ function getRoleTable(listRolesBody, rls) {
         },
         dataType: "JSON",
         success: function (list) {
-
             listRolesBody.empty();
             let listRoles = $("<div/>");
             for (let i = 0; i < list.data.length; i++) {
                 let name = list.data[i].name;
                 listRoles.append(`
-                <li><input type="checkbox" class="${rls}" value="${name}">${name}</input></li>
+                <li><input type="checkbox" class="${rls}" value="${name}" name="role">${name}</input></li>
                 <li role="separator" class="divider"></li>
                 `
                 );
@@ -475,4 +489,35 @@ function getRoleTable(listRolesBody, rls) {
             }
         }
     });
+}
+
+// получение компаний, в которых отсутствуют пользователи
+function getCompanyWithoutUser() {
+    $.ajax({
+        // url: "/api/admin/all_companies",
+        url: "/api/admin/companiesWithoutUsers",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            var selectBody = $('#addCompanyForUser');
+            selectBody.empty();
+            selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
+            let count = 0;
+            $(data).each(function (i, company) {
+                // if (company.userId === null) {
+                selectBody.append(`
+                    <option value="${company.id}" >${company.name}</option>
+                    `);
+                count++;
+                // }
+            })
+            if (count === 0) {
+                selectBody.append(`<option disabled selected value="">Нет компаний без пользователя. Сначала создайте компанию</option>`);
+            }
+        },
+    })
+}
+function removeError() {
+    let error = document.getElementById('role-error');
+        error.innerHTML = '';
 }
