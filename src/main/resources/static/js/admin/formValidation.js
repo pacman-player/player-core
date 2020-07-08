@@ -154,8 +154,8 @@ $('#addForm').validate({
             required: true
         },
         company: {
-            required: true
-        }
+                required: true
+            }
 
     },
     messages: {

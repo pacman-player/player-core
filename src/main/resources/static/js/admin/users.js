@@ -138,10 +138,9 @@ $(document).ready(function () {
         event.preventDefault();
         if ($('#addForm').valid()) {
             addUser();
-            $(':input', '#addForm').val('');
-            $("#addForm").trigger("reset");
         }
     });
+
     getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
@@ -151,6 +150,14 @@ $(document).ready(function () {
                 roleListArr.push(rls[t].getAttribute("value"));
             }
         }
+
+        if (roleListArr.length === 0) {
+            var message = "Не указана роль. Назначьте роль"
+            document.getElementById('role-error')
+                .innerHTML = '<span class="error">' + message + '</span>';
+            return false;
+        }
+
         var user = {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
@@ -183,6 +190,8 @@ $(document).ready(function () {
                         " Пользователь " + user.login + " добавлен ",
                         'user-panel');
                     getCompanyWithoutUser();
+                    $(':input', '#addForm').val('');
+                    $("#addForm").trigger("reset");
                 },
             error:
                 function (xhr, status, error) {
@@ -317,6 +326,7 @@ $(document).ready(function () {
                     notification("delete-user" + id,
                         "  Пользователь c id " + id + " удален",
                         'user-panel');
+                    getCompanyWithoutUser();
                 },
             error:
                 function (xhr, status, error) {
@@ -465,13 +475,12 @@ function getRoleTable(listRolesBody, rls) {
         },
         dataType: "JSON",
         success: function (list) {
-
             listRolesBody.empty();
             let listRoles = $("<div/>");
             for (let i = 0; i < list.data.length; i++) {
                 let name = list.data[i].name;
                 listRoles.append(`
-                <li><input type="checkbox" class="${rls}" value="${name}">${name}</input></li>
+                <li><input type="checkbox" class="${rls}" value="${name}" name="role">${name}</input></li>
                 <li role="separator" class="divider"></li>
                 `
                 );
@@ -507,4 +516,8 @@ function getCompanyWithoutUser() {
             }
         },
     })
+}
+function removeError() {
+    let error = document.getElementById('role-error');
+        error.innerHTML = '';
 }

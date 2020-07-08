@@ -94,7 +94,7 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null)) {
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null || userDto.getRoles().isEmpty())) {
             LOGGER.info("POST request '/add_user'");
             User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
             user.setRoles(getRoles(userDto.getRoles()));
