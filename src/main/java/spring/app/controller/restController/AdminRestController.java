@@ -70,6 +70,13 @@ public class AdminRestController<T> {
         return list;
     }
 
+    @GetMapping(value = "/allUsersEmailWithoutCompany")
+    public Response getUsersEmailWithoutCompany() {
+        return responseBuilder.success(userService.getUsersEmailWithoutCompany());
+//    List<UserDto> getUsersEmailWithoutCompany() {
+//        return userService.getUsersEmailWithoutCompany();
+    }
+
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
         User user = userService.getById(id);
@@ -157,9 +164,14 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
-        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
+        if (!companyDto.getName().isEmpty()
+                && !companyService.isExistCompanyByName(companyDto.getName())
+                || companyService.getByCompanyName(companyDto.getName()).getId().equals(companyDto.getId())) {
         LOGGER.info("POST request '/company'");
-        User userId = userService.getById(companyDto.getUserId());
+        User userId = null;
+        if (companyDto.getUserId() != null) {
+            userId = userService.getById(companyDto.getUserId());
+        }
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
             company.setName(companyDto.getName());
@@ -172,12 +184,6 @@ public class AdminRestController<T> {
         LOGGER.info("Updated Company = {}", company);
         }
 
-    }
-
-    @GetMapping(value = "/companiesWithoutUsers")
-    public @ResponseBody
-    List<CompanyDto> getCompaniesWithoutUsers() {
-        return companyService.getCompaniesWithoutUsers();
     }
 
     @PostMapping(value = "/add_establishment")
@@ -296,5 +302,20 @@ public class AdminRestController<T> {
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
+    }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public Response getCompaniesWithoutUsers() {
+        return responseBuilder.success(companyService.getCompaniesWithoutUsers());
+    }
+
+
+    @GetMapping(value = "/check/company")
+    public boolean isCompanyExist(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (companyService.getById(id).getName().equals(name)) {
+            return true;
+        }
+        return !companyService.isExistCompanyByName(name);
     }
 }

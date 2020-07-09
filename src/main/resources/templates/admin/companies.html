@@ -111,8 +111,10 @@
                                                                        placeholder="тариф" class="form-control" />
                                                             </div>
                                                             <div>
-                                                            <label for ="addUserForCompany">Пользователь_id</label>
-                                                            <input id="addUserForCompany" name="userId" type="number" class="form-control"/>
+                                                                <label for ="addUserForCompany">Пользователь</label>
+                                                                <select id="addUserForCompany" class="form-control"
+                                                                        name="userId">
+                                                                </select>
                                                             </div>
                                                             <div>
                                                             <label for="addCompanyAddress">Адрес</label>
@@ -172,9 +174,10 @@
                                                            type="text"
                                                            name="id" required=""/>
 
-                                                    <label for="updateIdUser">ID пользователя</label>
-                                                    <input id="updateIdUser" class="form-control"
-                                                           type="text" name="id-user" required=""/>
+                                                    <label for="updateIdUser">Email пользователя</label>
+                                                    <select id="updateIdUser" class="form-control"
+                                                            name="user">
+                                                    </select>
 
                                                     <label for="updateNameCompany">Компания</label>
                                                     <input id="updateNameCompany" class="form-control"
