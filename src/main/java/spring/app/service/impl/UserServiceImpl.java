@@ -1,9 +1,10 @@
 package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +18,8 @@ import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.UserService;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Service
 public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> implements UserService {
@@ -34,6 +32,7 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     private Role userRole;
     private CompanyService companyService;
 
+
     @Autowired
     public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
         super(userDao);
@@ -43,6 +42,9 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
         this.notificationDao = notificationDao;
         this.companyService = companyService;
     }
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -58,6 +60,8 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     public User getUserByLogin(String login) {
         return dao.getUserByLogin(login);
     }
+
+
 
     @Override
     public User getUserByGoogleId(String googleId) {
@@ -100,7 +104,6 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     public List<UserDto> getAllUsers() {
         return userDtoDao.getAllUsers();
     }
-
 
     @Override
     @Transactional
@@ -174,5 +177,38 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
         return dao.getUserByRole(role);
     }
 
+    @Override
+    public List<Long> getAllLoggedInUsers() {
+        final List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
 
+        List<Long> allUsernames = new ArrayList<>();
+        for (final Object principal : allPrincipals) {
+            if (principal instanceof User) {
+                final User user = (User) principal;
+                List<SessionInformation> activeUserSessions = sessionRegistry.getAllSessions(principal, false);
+                if (!activeUserSessions.isEmpty()) {
+                    for (SessionInformation information : activeUserSessions) {
+                        allUsernames.add(user.getId());
+                    }
+                }
+            }
+        }
+        return allUsernames;
+    }
+
+    //Метод для удаления сессии любого пользователя
+    public void expireUserSessions(String username,  HttpServletRequest httpServletRequest) {
+        for (Object principal : sessionRegistry.getAllPrincipals()) {
+            if (principal instanceof User) {
+                UserDetails userDetails = (UserDetails) principal;
+
+                if (userDetails.getUsername().equals(username)) {
+                    for (SessionInformation information : sessionRegistry
+                            .getAllSessions(userDetails, true)) {
+                        information.expireNow();
+                    }
+                }
+            }
+        }
+    }
 }

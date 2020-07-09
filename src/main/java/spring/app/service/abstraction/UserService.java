@@ -1,6 +1,7 @@
 package spring.app.service.abstraction;
 
 
+import javax.servlet.http.HttpServletRequest;
 import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
@@ -39,4 +40,8 @@ public interface UserService extends GenericService<Long, User> {
     boolean isExistUserByLogin(String login, long userId);
 
     List<User> getUserByRole(String role);
+
+    List<Long> getAllLoggedInUsers();
+
+    void expireUserSessions(String username,  HttpServletRequest httpServletRequest);
 }

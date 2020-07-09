@@ -8,10 +8,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import spring.app.security.handlers.CustomAuthenticationFailureHandler;
 import spring.app.security.handlers.CustomAuthenticationSuccessHandler;
 import spring.app.security.service.UserDetailsServiceImpl;
@@ -81,13 +82,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .permitAll()
                 .and()
+                //.addFilterAfter(new CustomFilter(userService), BasicAuthenticationFilter.class)//если он не вызвапется после логина то  вдругое место постаить фильтр?
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .sessionManagement()
+                .invalidSessionUrl("/login")
+                .maximumSessions(-1)
+                .sessionRegistry(sessionRegistry())
+                .expiredUrl("/login")
+        ;
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Autowired
