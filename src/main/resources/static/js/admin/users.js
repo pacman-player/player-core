@@ -209,8 +209,32 @@ $(document).ready(function () {
         }
     });
 
-    function updateUser() {
+    function forcelogout() {
+        let form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = '/logout';
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+        form.submit();
+    }
 
+    var changedUser;
+
+    function amIloggedIn() {
+        let loggedUser = document.getElementById("logged-user");
+        if(loggedUser.innerText === changedUser) {
+            forcelogout();
+        } else {
+            getTable();
+        }
+    }
+
+    function updateUser() {
+        let i = document.getElementById("logged-user")
         var roleListArr = [];
         var rls = document.getElementsByClassName("updRls");
         for (var t = 0; t < rls.length; t++) {
@@ -238,7 +262,7 @@ $(document).ready(function () {
             cache: false,
             complete:
                 function () {
-                    getTable();
+                    amIloggedIn();
                 },
             success:
                 function () {
@@ -342,6 +366,8 @@ $(document).ready(function () {
         $("#updateUserName").val($(this).closest("tr").find("#tableName").text());
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
+
+        changedUser =  $(this).closest("tr").find("#tableName").text();
 
         var curCells = document.getElementsByClassName("updRls");
 

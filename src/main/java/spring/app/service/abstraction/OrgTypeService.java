@@ -11,4 +11,8 @@ public interface OrgTypeService extends GenericService<Long, OrgType> {
     OrgType getByName(String name);
 
     List<OrgTypeDto> getAllOrgTypeDto();
+
+    void setDefaultOrgTypeById(long id);
+
+    OrgType getDefaultOrgType();
 }

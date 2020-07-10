@@ -55,3 +55,4 @@ $(document).on('click', '#logout-btn', function (event) {
     form.appendChild(input);
     form.submit();
 });
+

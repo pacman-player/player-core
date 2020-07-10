@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                                           xmlns:sec="http://org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect5">
 <head>
     <meta charset="utf-8"/>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -43,6 +44,7 @@
                     </ul>
 
                     <div class="tab-content">
+
                         <!--таблица юзеров-->
                         <div role="tabpanel" class="tab-pane active" id="user-panel">
                             <div class="panel panel-default table-panel">

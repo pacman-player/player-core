@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    getTable();
+    getEstablishments();
 
     let formAddEst = $("#establishmentsAddForm");
     let fieldNameAddEstName = $("#addName");
@@ -7,10 +7,25 @@ $(document).ready(function () {
         event.preventDefault();
 
         if (formAddEst.valid()) {
-            addEstablishments(formAddEst, fieldNameAddEstName);
+            addEstablishment(formAddEst, fieldNameAddEstName);
             formAddEst.trigger("reset");
         }
-    })
+    });
+
+    $('#setDefaultEstablishmentBtn').on('click', (event) => {
+       event.preventDefault();
+
+        let option = $('#defaultEstablishmentSelect :selected');
+
+        /* Если заведение уже устанавлено по умолчанию - не делаем AJAX запрос */
+        if (option.data('default') === true) {
+            return;
+        }
+
+        let id = option.val();
+        setDefaultEstablishment(id);
+    });
+
 });
 
 
@@ -47,7 +62,35 @@ $("#establishmentsAddForm").validate({
 });
 
 
-function addEstablishments(form, field) {
+function setDefaultEstablishment(id) {
+    $.ajax({
+        method: "POST",
+        url: "/api/admin/set_default_establishment",
+        data: JSON.stringify(id),
+        dataType: 'json',
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        success: (response) => {
+            if (response.success === true) {
+                notification("set-default-establishment-" + id, response.data, "establishments-panel");
+                $("#tab-establishments-panel").tab("show");
+                getEstablishments();
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        }
+    });
+}
+
+
+function addEstablishment(form, field) {
     let estMessage = field.val();
     $.ajax({
         method: "POST",
@@ -60,13 +103,14 @@ function addEstablishments(form, field) {
         },
         complete: () => {
             $("#tab-establishments-panel").tab("show");
-            getTable();
+            getEstablishments();
         },
         success: () => {
             notification(
                 "add-establishment" + estMessage,
                 ` Заведение ${estMessage} добавлено`,
-                "establishments-panel");
+                "establishments-panel"
+            );
         },
         error: (xhr, status, error) => {
             alert(xhr.responseText + "|\n" + status + "|\n" + error);
@@ -75,7 +119,7 @@ function addEstablishments(form, field) {
 }
 
 
-function editButton(id, name) {
+function editButton(id, name, isDefault) {
     let theModal = $("#editEstablishment");
     let form = $("#updateEstForm");
     let fieldId = $("#updateEstablishmentId");
@@ -85,6 +129,7 @@ function editButton(id, name) {
     fieldName.val(name);
 
     theModal.modal("show");
+
     form.validate({
         rules: {
             name: {
@@ -107,7 +152,8 @@ function editButton(id, name) {
                 contentType: "application/json",
                 data: JSON.stringify({
                     id: fieldId.val(),
-                    name: fieldName.val()
+                    name: fieldName.val(),
+                    default: isDefault
                 }),
                 headers: {
                     "Accept": "application/json",
@@ -115,7 +161,7 @@ function editButton(id, name) {
                 },
                 complete: () => {
                     theModal.modal("hide");
-                    getTable();
+                    getEstablishments();
                 },
                 success: () => {
                     notification(
@@ -136,35 +182,30 @@ function deleteButton(id) {
     $.ajax({
         method: "DELETE",
         url: "/api/admin/delete_establishment",
-        contentType: "application/json",
         data: JSON.stringify(id),
+        dataType: 'json',
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
-        complete: () => {
-            getTable();
-        },
-        success: () => {
-            notification(
-                "delete-establishment" + id,
-                ` Заведение c id ${id} удалено`,
-                "establishments-panel");
+        success: (response) => {
+            if (response.success === true) {
+                notification("delete-establishment-" + id, response.data, "establishments-panel");
+                getEstablishments();
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
         },
         error: (xhr, status, error) => {
-            if (xhr.responseText.includes("DataIntegrityViolationException")) {
-                let caution = "Вы не можете удалить данный тип заведения, т.к. к нему относятся одна или несколько компаний";
-                alert(caution);
-            } else {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
-            }
-
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
     })
 }
 
 
-function getTable() {
+function getEstablishments() {
     $.ajax({
         method: "GET",
         url: "/api/admin/all_establishments",
@@ -175,36 +216,58 @@ function getTable() {
         },
         dataType: "JSON",
         success: function (list) {
-            let tableBody = $("#establishmentsTable tbody");
+            fillEstablishmentsTable(list);
+            fillDefaultEstablishmentSelect(list);
+        }
+    });
+}
 
-            tableBody.empty();
-            for (let i = 0; i < list.length; i++) {
-                // vars that contains object's fields
-                let id = list[i].id;
-                let name = list[i].name;
 
-                let tr = $("<tr/>");
-                tr.append(`
+function fillEstablishmentsTable(list) {
+    let tableBody = $("#establishmentsTable tbody");
+    tableBody.empty();
+    
+    for (let i = 0; i < list.length; i++) {
+        let id = list[i].id;
+        let name = list[i].name;
+        let isDefault = list[i].default;
+
+        let tr = $("<tr/>");
+        tr.append(`
                             <td> ${id} </td>
                             <td> ${name} </td>
                             <td>
                                 <button type="submit" 
                                         class="btn btn-sm btn-info" 
                                         id="editEstBtn"
-                                        onclick="editButton(${id}, '${name}')">
+                                        onclick="editButton(${id}, '${name}', ${isDefault})">
                                     Изменить
                                 </button>
                             </td>
                             <td>
                                 <button type="button"
                                         class="btn btn-sm btn-info"
-                                        id="deleteEstBtn"
-                                        onclick="deleteButton(${id})">
+                                        id="deleteEstBtn" ` +
+                                        (isDefault === true ? `disabled title="Нельзя удалить тип по умолчанию" ` : ``) +
+                                        `onclick="deleteButton(${id})">
                                     Удалить
                                 </button>
                             </td>`);
-                tableBody.append(tr);
-            }
-        }
-    });
+        tableBody.append(tr);
+    }
+}
+
+function fillDefaultEstablishmentSelect(list) {
+    let defaultEstablishmentSelect = $('#defaultEstablishmentSelect');
+    defaultEstablishmentSelect.empty();
+
+    for (let i = 0; i < list.length; i++) {
+        let id = list[i].id;
+        let name = list[i].name;
+        let isDefault = list[i].default;
+
+        let option = isDefault === true ? `<option value="${id}" data-default="true" selected>${name}</option>` :
+                                          `<option value="${id}" data-default="false">${name}</option>`;
+        defaultEstablishmentSelect.append(option);
+    }
 }
