@@ -44,4 +44,6 @@ public interface UserService extends GenericService<Long, User> {
     List<Long> getAllLoggedInUsers();
 
     void expireUserSessions(String username,  HttpServletRequest httpServletRequest);
+
+    List<UserDto> getUsersEmailWithoutCompany();
 }

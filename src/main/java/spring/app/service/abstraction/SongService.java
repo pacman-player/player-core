@@ -57,4 +57,5 @@ public interface SongService extends GenericService<Long, Song> {
     int getSongCounterVal(String trackName);
 
     List<SongDto> getAllApprovedSongsDto();
+
 }

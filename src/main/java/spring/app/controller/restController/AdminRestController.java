@@ -70,6 +70,13 @@ public class AdminRestController<T> {
         return list;
     }
 
+    @GetMapping(value = "/allUsersEmailWithoutCompany")
+    public Response getUsersEmailWithoutCompany() {
+        return responseBuilder.success(userService.getUsersEmailWithoutCompany());
+//    List<UserDto> getUsersEmailWithoutCompany() {
+//        return userService.getUsersEmailWithoutCompany();
+    }
+
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
         User user = userService.getById(id);
@@ -94,11 +101,17 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        LOGGER.info("POST request '/add_user'");
-        User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
-        user.setRoles(getRoles(userDto.getRoles()));
-        userService.save(user);
-        LOGGER.info("Added User = {}", user);
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null || userDto.getRoles().isEmpty())) {
+            LOGGER.info("POST request '/add_user'");
+            User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
+            user.setRoles(getRoles(userDto.getRoles()));
+            user.setCompany(companyService.getById(userDto.getCompanyId()));
+            userService.save(user);
+            Company company = companyService.getById(userDto.getCompanyId());
+            company.setUser(user);
+            companyService.update(company);
+            LOGGER.info("Added User = {}", user);
+        }
     }
 
     @PutMapping(value = "/update_user")
@@ -139,6 +152,15 @@ public class AdminRestController<T> {
     @DeleteMapping(value = "/delete_user")
     public void deleteUser(@RequestBody Long id) {
         LOGGER.info("DELETE request '/delete_user' with id = {}", id);
+        Company company = userService.getById(id).getCompany();
+        if (company != null) {
+            company.setUser(null);
+            companyService.update(company);
+
+            User user = userService.getById(id);
+            user.setCompany(null);
+            userService.update(user);
+        }
         userService.deleteById(id);
     }
 
@@ -156,9 +178,14 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
-        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
+        if (!companyDto.getName().isEmpty()
+                && !companyService.isExistCompanyByName(companyDto.getName())
+                || companyService.getByCompanyName(companyDto.getName()).getId().equals(companyDto.getId())) {
         LOGGER.info("POST request '/company'");
-        User userId = userService.getById(companyDto.getUserId());
+        User userId = null;
+        if (companyDto.getUserId() != null) {
+            userId = userService.getById(companyDto.getUserId());
+        }
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
             company.setName(companyDto.getName());
@@ -289,5 +316,20 @@ public class AdminRestController<T> {
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
+    }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public Response getCompaniesWithoutUsers() {
+        return responseBuilder.success(companyService.getCompaniesWithoutUsers());
+    }
+
+
+    @GetMapping(value = "/check/company")
+    public boolean isCompanyExist(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (companyService.getById(id).getName().equals(name)) {
+            return true;
+        }
+        return !companyService.isExistCompanyByName(name);
     }
 }

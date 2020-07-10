@@ -32,7 +32,6 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     private Role userRole;
     private CompanyService companyService;
 
-
     @Autowired
     public UserServiceImpl(UserDao userDao, UserDtoDao userDtoDao, RoleDao roleDao, NotificationDao notificationDao, CompanyService companyService) {
         super(userDao);
@@ -60,8 +59,6 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     public User getUserByLogin(String login) {
         return dao.getUserByLogin(login);
     }
-
-
 
     @Override
     public User getUserByGoogleId(String googleId) {
@@ -117,13 +114,12 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
 
     @Override
     @Transactional
-    public void update(User user)  {
+    public void update(User user) {
 
         if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         dao.update(user);
-
     }
 
     @Override
@@ -195,6 +191,11 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
         }
         return allUsernames;
     }
+    @Override
+    public List<UserDto> getUsersEmailWithoutCompany() {
+        return userDtoDao.getUsersEmailWithoutCompany();
+    }
+
 
     //Метод для удаления сессии любого пользователя
     public void expireUserSessions(String username,  HttpServletRequest httpServletRequest) {

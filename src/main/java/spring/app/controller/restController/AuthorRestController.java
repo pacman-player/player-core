@@ -2,16 +2,19 @@ package spring.app.controller.restController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import spring.app.dto.AuthorDto;
 import spring.app.model.Author;
 import spring.app.model.Company;
+import spring.app.model.Genre;
 import spring.app.model.User;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.CompanyService;
+import spring.app.service.abstraction.GenreService;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/author")
@@ -19,11 +22,14 @@ public class AuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthorRestController.class);
     private AuthorService authorService;
     private CompanyService companyService;
+    private GenreService genreService;
 
     public AuthorRestController(AuthorService authorService,
-                                CompanyService companyService) {
+                                CompanyService companyService,
+                                GenreService genreService) {
         this.authorService = authorService;
         this.companyService = companyService;
+        this.genreService = genreService;
     }
 
     @GetMapping("allAuthors")
@@ -106,6 +112,61 @@ public class AuthorRestController {
 
         user.setCompany(company);
         LOGGER.info("Removed from ban Author = {}", authorService.getById(authorsId));
+    }
+
+    /**
+     * список авторов, не относящихся к текущему жанру
+     *
+     * @param genreID
+     * @return
+     */
+    @PostMapping("/authors_out_of_genre")
+    public List<AuthorDto> getAuthorsOutOfGenre(@RequestBody Long genreID) {
+        List<AuthorDto> authorsOutGenre = authorService.getAuthorsOutOfGenre(genreID);
+        List<AuthorDto> authorsOfGenre = authorService.getAuthorsOfGenre(genreID);
+        for (AuthorDto authorOf : authorsOfGenre) {
+            authorsOutGenre.removeIf(authorDto -> authorDto.getName().equals(authorOf.getName()));
+        }
+        Set<AuthorDto> authorDtos = new HashSet<>(authorsOutGenre);
+        return new ArrayList<>(authorDtos);
+    }
+
+    /**
+     * список авторов, относящихся к текущему жанру
+     *
+     * @param genreID
+     * @return
+     */
+    @PostMapping("/authors_of_genre")
+    public List<AuthorDto> getAuthorsOfGenre(@RequestBody Long genreID) {
+        List<AuthorDto> authors = authorService.getAuthorsOfGenre(genreID);
+        return authors;
+    }
+
+    /**
+     * Добавить авторов к жанру
+     * @param updateAuthors
+     * @return
+     */
+    @PutMapping(value = "/update_authors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateAuthorsByGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
+        Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
+        genre.addAuthors(authors);
+        genreService.update(genre);
+    }
+
+    /**
+     * удалить авторов из жанра
+     * @param updateAuthors
+     * @return
+     */
+    @PutMapping(value = "/delete_authors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteAuthorsFromGenre(@RequestBody Map<Integer, String> updateAuthors, Long id) {
+        Genre genre = genreService.getById(id);
+        Set<Author> authors = authorService.getUpdateAuthorsOfGenre(genre, updateAuthors);
+        genre.removeAuthors(authors);
+        genreService.update(genre);
     }
 
 }

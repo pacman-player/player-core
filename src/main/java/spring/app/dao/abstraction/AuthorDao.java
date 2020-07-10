@@ -2,6 +2,7 @@ package spring.app.dao.abstraction;
 
 import spring.app.model.Author;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 

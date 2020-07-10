@@ -171,14 +171,16 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     public void setTags(Song song, Set<String> stringTags) {
         Set<String> tags = stringTags.stream().map(String::toLowerCase).collect(Collectors.toSet());
         Set<Tag> foundTags = tagDao.getByNames(tags);
-        List<Tag> newTags = Collections.EMPTY_LIST;
+        List<Tag> newTags = new ArrayList<>();
+
         if (foundTags.size() < tags.size()) {
             for (Tag ft : foundTags) {
                 tags.remove(ft.getName());
             }
-            newTags = tags.stream().map(t -> new Tag(t)).collect(Collectors.toList());
+            newTags = tags.stream().map(Tag::new).collect(Collectors.toList());
             tagDao.saveBatch(newTags);
         }
+
         foundTags.addAll(newTags);
         song.setTags(foundTags);
     }
@@ -207,4 +209,5 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
     public List<SongDto> getAllApprovedSongsDto() {
         return songDtoDao.getAllApprovedDto();
     }
+
 }

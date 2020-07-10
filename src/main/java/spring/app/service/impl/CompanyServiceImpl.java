@@ -61,8 +61,8 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
-    public List<Company> getAllCompaniesByOrgTypeId(long id) {
-        return dao.getAllCompaniesByOrgTypeId(id);
+    public List<CompanyDto> getCompaniesWithoutUsers() {
+        return companyDtoDao.getCompaniesWithoutUsers();
     }
 
     @Override

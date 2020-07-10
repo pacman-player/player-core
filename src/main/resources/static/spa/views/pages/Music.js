@@ -60,6 +60,7 @@ let Music = {
             '<!--подборка по жанрам-->\n' +
             '<div id="getGenres" class="col-fhd-8 col-xl-7 col-lg-6 row">\n' +
             '<button class="btn button bullet" id="allGenBtn" aria-pressed="false">Подборки по жанрам</button>\n' +
+            '<button class="btn button bullet" id="allCompilationsBtn" aria-pressed="false" onclick="getAllCompilations(\''+'Все подборки'+'\');">Все подборки</button>\n' +
             '</div>\n'
     }
     // Весь код, связанный с DOM-взаимодействиями и элементами управления, находится здесь.
