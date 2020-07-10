@@ -5,6 +5,7 @@ import spring.app.dto.UserDto;
 import spring.app.dto.UserRegistrationDto;
 import spring.app.model.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService extends GenericService<Long, User> {
@@ -41,4 +42,8 @@ public interface UserService extends GenericService<Long, User> {
     List<User> getUserByRole(String role);
 
     List<UserDto> getUsersEmailWithoutCompany();
+
+    List<Long> getAllLoggedInUsers();
+
+    void expireUserSessions(String username,  HttpServletRequest httpServletRequest);
 }
