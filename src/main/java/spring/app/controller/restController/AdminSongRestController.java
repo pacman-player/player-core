@@ -10,14 +10,14 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.AuthorSongGenreListDto;
 import spring.app.dto.GenreDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Author;
-import spring.app.model.Genre;
-import spring.app.model.Song;
-import spring.app.model.SongCompilation;
+import spring.app.model.*;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
+import spring.app.service.abstraction.SongFileService;
 import spring.app.service.abstraction.SongService;
+import spring.app.util.ResponseBuilder;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,12 +31,14 @@ import java.util.stream.Collectors;
 public class AdminSongRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminSongRestController.class);
     private final SongService songService;
+    private final SongFileService songFileService;
     private final AuthorService authorService;
     private final GenreService genreService;
 
     @Autowired
-    public AdminSongRestController(SongService songService, AuthorService authorService, GenreService genreService) {
+    public AdminSongRestController(SongService songService, SongFileService songFileService, AuthorService authorService, GenreService genreService) {
         this.songService = songService;
+        this.songFileService = songFileService;
         this.authorService = authorService;
         this.genreService = genreService;
     }
@@ -56,8 +58,27 @@ public class AdminSongRestController {
     Чтобы добавить новую песню сначала проверяю автора на наличие в бд.
      */
     @PostMapping(value = "/add_song")
-    public void addSong(@RequestBody SongDto songDto) {
+    public Response<String> addSong(@ModelAttribute SongDto songDto) {
         LOGGER.info("POST request '/add_song'");
+
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+
+        if (songDto.getName() == null || songDto.getName().isEmpty()) {
+            return responseBuilder.error("Введите название песни");
+        }
+
+        if (songDto.getAuthorName() == null || songDto.getAuthorName().isEmpty()) {
+            return responseBuilder.error("Введите автора песни");
+        }
+
+        if (songDto.getSearchTags() == null || songDto.getSearchTags().size() == 0) {
+            return responseBuilder.error("Заполните теги для добавляемой песни");
+        }
+
+        if (songDto.getFile() == null || songDto.getFile().isEmpty()) {
+            return responseBuilder.error("Прикрепите файл с песней");
+        }
+
         Song song = new Song(songDto.getName());
         Author author = authorService.getByName(songDto.getAuthorName());
         if (author != null) {
@@ -73,7 +94,19 @@ public class AdminSongRestController {
         }
         songService.setTags(song, songDto.getSearchTags());
         songService.save(song);
-        LOGGER.info("Added Song = {}", song);
+        song = songService.getByName(song.getName());
+
+        try {
+            songFileService.saveSongFile(song, songDto.getFile());
+        } catch (IOException e) {
+            LOGGER.error("Error happened while saving new song file", e);
+            return responseBuilder.error("Произошла ошибка при сохранении файла");
+        } catch (IllegalArgumentException e) {
+            return responseBuilder.error("Файл имеет некорректный формат, должен быть .mp3");
+        }
+
+        Response<String> success = responseBuilder.success("Песня успешно добавлена");
+        return success;
     }
 
     /*
@@ -119,7 +152,7 @@ public class AdminSongRestController {
     }
 
     /*
-        Изменение жанра у нескольких песен
+        Изменение авторов у нескольких песен
     */
     @PutMapping(value = "/update_genre", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateGenreOfSongs(@RequestBody Map<Integer, String> updateObject) {

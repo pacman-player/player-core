@@ -14,4 +14,6 @@ public interface UserDtoDao {
 
     UserDto getById(Long id);
 
+    List<UserDto> getUsersEmailWithoutCompany();
+
 }

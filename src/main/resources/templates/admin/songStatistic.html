@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Статистика прослушиваний</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
@@ -18,14 +20,7 @@
 <body>
 <div class="container-fluid">
 
-    <div class="row">
-        <div class="navbar navbar-inverse navbar-static-top header">
-            <a class="navbar-brand" href="#"><b>Pacman player</b></a>
-            <a class="navbar-brand pull-right" href="/logout">Выход</a>
-            <button id="notification" class="navbar-brand pull-right">Уведомлений</button>
-            <div id="listNotification" class="pull-right"></div>
-        </div>
-    </div>
+    <div class="row" th:include="admin/fragment/navigation :: adminHeader"></div>
 
     <div class="row">
         <div class="col-lg-3 col-md-2 col-xs-2 left-bar left-menu">
@@ -122,6 +117,7 @@
 <script type="text/javascript" src="/js/admin/report.js" rel="script"></script>
 <script type="text/javascript" src="/js/notification.js" rel="script"></script>
 <script type="text/javascript" src="/js/stomp.js" rel="script"></script>
+<script type="text/javascript" src="/js/security.js" rel="script"></script>
 
 </body>
 </html>

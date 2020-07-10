@@ -12,7 +12,7 @@ $.ajax({
     },
     dataType: "JSON",
     success: autocompleteCallBack
-})
+});
 
 
 function autocompleteCallBack(tags) {
@@ -32,13 +32,15 @@ function autocompleteCallBack(tags) {
 }
 
 function getSongsTable() {
+    let table = $('#all-songs');
+
     $.ajax({
         method: 'GET',
         url: "/api/admin/song/all_songs",
         success: (listSong) => {
             listSong.sort((a, b) => a.id - b.id);
-            console.log(listSong) // для дебага
-            $('#all-songs').empty();
+            console.log(listSong); // для дебага
+            table.empty();
             var songTable = "";
             for (var i = 0; i < listSong.length; i++) {
                 let checkedBox = "";
@@ -59,7 +61,7 @@ function getSongsTable() {
                 songTable += ('</tr>');
             }
             //добавил тег tbody
-            $('#all-songs').append(songTable);
+            table.append(songTable);
         },
         error: function (xhr, status, error) {
             alert(xhr.responseText + '|\n' + status + '|\n' + error);
@@ -73,7 +75,7 @@ function editSong(id) {
         url: '/api/admin/song/' + id,
         method: 'GET',
         success: function (editData) {
-            console.log(editData)
+            console.log(editData);
             //заполняю модалку
             $("#updateSongId").val(editData.id);
             $("#updateSongName").val(editData.name);
@@ -175,31 +177,41 @@ function deleteSong(id, name) {
 //добавляем новую песню POST song
 $('#addSongBtn').click(function (event) {
     event.preventDefault();
-    addSongForm();
-});
 
-function addSongForm() {
-    var addSong = {};
-    addSong.name = $('#addSongName').val();
-    addSong.authorName = $('#addSongAuthor').val();
-    addSong.searchTags = $('#addSongTags').val().split(',');
+    let formData = new FormData();
+    formData.append('name', $('#addSongName').val());
+    formData.append('authorName', $('#addSongAuthor').val());
+    formData.append('searchTags', $('#addSongTags').val().split(','));
+    formData.append('file', $('#addSongFile').prop("files")[0]);
+
     $.ajax({
-        method: 'POST',
-        url: '/api/admin/song/add_song',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(addSong),
-        success: function () {
-            $('#addSongName').val('');
-            $('#addSongAuthor').val('');
-            $('#addSongTags').importTags('');
-            $('#tab-song-panel').tab('show');
-            getSongsTable();
+        method: "POST",
+        url: "/api/admin/song/add_song",
+        contentType: false,
+        processData: false,
+        mimeType: "multipart/form-data",
+        data: formData,
+        dataType: 'json',
+        success: (response) => {
+            if (response.success === true) {
+                notification("add-song", response.data, "song-panel");
+                $('#addSongName').val('');
+                $('#addSongAuthor').val('');
+                $('#addSongTags').importTags('');
+                $('#addSongFile').val('');
+                $('#tab-song-panel').tab('show');
+                getSongsTable();
+            } else if (response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
         },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText + '|\n' + status + '|\n' + error);
+        error: (xhr, status, error) => {
+            alert(xhr.responseText + "|\n" + status + "|\n" + error);
         }
-    });
-}
+    })
+});
 
 
 

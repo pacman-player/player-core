@@ -145,7 +145,7 @@
                                                                                         </button>
                                                                                         <ul id="updateListRole"
                                                                                             class="dropdown-menu width-auto "
-                                                                                            aria-labelledby="dropdownRoleEditMenu">
+                                                                                            aria-labelledby="dropdownRoleEditMenu" >
 
                                                                                         </ul>
                                                                                     </div>
@@ -184,7 +184,7 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <form id="addForm">
+                                                    <form id="addForm" >
                                                         <div class="form-group text-center edit-form">
                                                             <div>
                                                                 <label for="addEmail">Почта</label>
@@ -205,20 +205,30 @@
                                                                        required="required" name="password"/>
                                                             </div>
                                                             <div>
+                                                                <label for="addCompanyForUser">Компания</label>
+                                                                <select id="addCompanyForUser" class="form-control"
+                                                                        type="text" required="required" name="company">
+                                                                </select>
+                                                            </div>
+                                                            <div>
                                                                 <label for="createUserRole">Роль</label>
-                                                                <div class="dropdown " id="createUserRole">
+                                                                <div class="dropdown" id="createUserRole" >
                                                                     <button class="btn btn-default dropdown-toggle form-control"
                                                                             type="button" id="dropdownRoleCreateMenu"
                                                                             data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="true">
+                                                                            aria-expanded="true"
+                                                                    onclick="removeError()">Выберете роль
                                                                         <span class="caret"></span>
                                                                     </button>
                                                                     <ul id="addListRoles"
-                                                                        class="dropdown-menu width-auto "
+                                                                        class="dropdown-menu width-auto"
                                                                         aria-labelledby="dropdownRoleCreateMenu">
-
                                                                     </ul>
                                                                 </div>
+                                                                <div id="role-error"></div>
+<!--                                                                <select id="createUserRole" class="form-control"-->
+<!--                                                                        type="text" required="required" name="role">-->
+<!--                                                                </select>-->
                                                             </div>
                                                             <br/>
                                                             <button type="submit" id="addUserBtn"
