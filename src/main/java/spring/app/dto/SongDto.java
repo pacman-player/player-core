@@ -3,6 +3,8 @@ package spring.app.dto;
 import spring.app.model.Bannable;
 import spring.app.model.Company;
 import spring.app.model.Song;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -18,6 +20,7 @@ public class SongDto extends Bannable {
     private Set<String> searchTags;
     private Timestamp createdAt;
     private Boolean isApproved;
+    private MultipartFile file;
     private boolean banned;
 
     private AuthorDto authorDto;
@@ -184,6 +187,14 @@ public class SongDto extends Bannable {
         isApproved = approved;
     }
 
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
     public boolean isBanned() {
         return banned;
     }
@@ -211,5 +222,4 @@ public class SongDto extends Bannable {
                 ", isApproved=" + isApproved +
                 '}';
     }
-
 }

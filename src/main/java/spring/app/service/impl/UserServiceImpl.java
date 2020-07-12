@@ -169,5 +169,10 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
         return dao.getUserByRole(role);
     }
 
+    @Override
+    public List<UserDto> getUsersEmailWithoutCompany() {
+        return userDtoDao.getUsersEmailWithoutCompany();
+    }
+
 
 }

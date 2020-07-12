@@ -494,22 +494,19 @@ function getRoleTable(listRolesBody, rls) {
 // получение компаний, в которых отсутствуют пользователи
 function getCompanyWithoutUser() {
     $.ajax({
-        // url: "/api/admin/all_companies",
         url: "/api/admin/companiesWithoutUsers",
         method: "GET",
         dataType: "json",
-        success: function (data) {
+        success: function (list) {
             var selectBody = $('#addCompanyForUser');
             selectBody.empty();
             selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
             let count = 0;
-            $(data).each(function (i, company) {
-                // if (company.userId === null) {
+            $(list.data).each(function (i, company) {
                 selectBody.append(`
                     <option value="${company.id}" >${company.name}</option>
                     `);
                 count++;
-                // }
             })
             if (count === 0) {
                 selectBody.append(`<option disabled selected value="">Нет компаний без пользователя. Сначала создайте компанию</option>`);
