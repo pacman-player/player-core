@@ -13,6 +13,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.ResponseBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -115,8 +116,10 @@ public class AdminRestController<T> {
     }
 
     @PutMapping(value = "/update_user")
-    public void updateUser(@RequestBody UserDto userDto) {
+    public void updateUser(@RequestBody UserDto userDto, HttpServletRequest httpServletRequest) {
         LOGGER.info("PUT request '/update_user'");
+        UserDto oldDtoUser = userService.getUserDtoById(userDto.getId());
+        String oldUserName = oldDtoUser.getLogin();
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         // If admin is editing himself, then we need put his renewed account
@@ -132,6 +135,17 @@ public class AdminRestController<T> {
             getContext().setAuthentication(token);
         }
         userService.update(user);
+
+        if (!userAuth.getId().equals(user.getId())) {
+            List<Long> loggedUsers = userService.getAllLoggedInUsers();
+            Long id = userDto.getId();
+            for (Long activeLogin : loggedUsers) {
+                if (activeLogin.equals(id)) {
+                    userService.expireUserSessions(oldUserName, httpServletRequest);
+                }
+            }
+        }
+
         LOGGER.info("Updated User = {}", user);
     }
 
