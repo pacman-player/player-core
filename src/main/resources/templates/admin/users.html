@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+                                           xmlns:sec="http://org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect5">
 <head>
     <meta charset="utf-8"/>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -182,7 +183,7 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-10 col-xs-10 col-lg-offset-3 col-xs-offset-2">
-                                                    <form id="addForm">
+                                                    <form id="addForm" >
                                                         <div class="form-group text-center edit-form">
                                                             <div>
                                                                 <label for="addEmail">Почта</label>
@@ -214,7 +215,8 @@
                                                                     <button class="btn btn-default dropdown-toggle form-control"
                                                                             type="button" id="dropdownRoleCreateMenu"
                                                                             data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="true">Выберете роль
+                                                                            aria-expanded="true"
+                                                                    onclick="removeError()">Выберете роль
                                                                         <span class="caret"></span>
                                                                     </button>
                                                                     <ul id="addListRoles"
@@ -222,6 +224,7 @@
                                                                         aria-labelledby="dropdownRoleCreateMenu">
                                                                     </ul>
                                                                 </div>
+                                                                <div id="role-error"></div>
 <!--                                                                <select id="createUserRole" class="form-control"-->
 <!--                                                                        type="text" required="required" name="role">-->
 <!--                                                                </select>-->

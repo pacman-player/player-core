@@ -13,6 +13,7 @@ import spring.app.model.*;
 import spring.app.service.abstraction.*;
 import spring.app.util.ResponseBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -70,6 +71,13 @@ public class AdminRestController<T> {
         return list;
     }
 
+    @GetMapping(value = "/allUsersEmailWithoutCompany")
+    public Response getUsersEmailWithoutCompany() {
+        return responseBuilder.success(userService.getUsersEmailWithoutCompany());
+//    List<UserDto> getUsersEmailWithoutCompany() {
+//        return userService.getUsersEmailWithoutCompany();
+    }
+
     @GetMapping("/get_user_by_id/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long id) {
         User user = userService.getById(id);
@@ -85,9 +93,16 @@ public class AdminRestController<T> {
         return list;
     }
 
+    @GetMapping(value = "/all_establishments")
+    public @ResponseBody
+    List<OrgTypeDto> getAllEstablishments() {
+        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
+        return list;
+    }
+
     @PostMapping(value = "/add_user")
     public void addUser(@RequestBody UserDto userDto) {
-        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null)) {
+        if (!(userDto.getLogin().isEmpty() || userDto.getEmail().isEmpty() || userDto.getCompanyId() == null || userDto.getRoles().isEmpty())) {
             LOGGER.info("POST request '/add_user'");
             User user = new User(userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
             user.setRoles(getRoles(userDto.getRoles()));
@@ -101,8 +116,10 @@ public class AdminRestController<T> {
     }
 
     @PutMapping(value = "/update_user")
-    public void updateUser(@RequestBody UserDto userDto) {
+    public void updateUser(@RequestBody UserDto userDto, HttpServletRequest httpServletRequest) {
         LOGGER.info("PUT request '/update_user'");
+        UserDto oldDtoUser = userService.getUserDtoById(userDto.getId());
+        String oldUserName = oldDtoUser.getLogin();
         User user = new User(userDto.getId(), userDto.getEmail(), userDto.getLogin(), userDto.getPassword(), true);
         user.setRoles(getRoles(userDto.getRoles()));
         // If admin is editing himself, then we need put his renewed account
@@ -118,6 +135,17 @@ public class AdminRestController<T> {
             getContext().setAuthentication(token);
         }
         userService.update(user);
+
+        if (!userAuth.getId().equals(user.getId())) {
+            List<Long> loggedUsers = userService.getAllLoggedInUsers();
+            Long id = userDto.getId();
+            for (Long activeLogin : loggedUsers) {
+                if (activeLogin.equals(id)) {
+                    userService.expireUserSessions(oldUserName, httpServletRequest);
+                }
+            }
+        }
+
         LOGGER.info("Updated User = {}", user);
     }
 
@@ -150,9 +178,14 @@ public class AdminRestController<T> {
 
     @PostMapping(value = "/company")
     public void updateUserCompany(@RequestBody CompanyDto companyDto) {
-        if (!companyDto.getName().isEmpty() && !companyService.isExistCompanyByName(companyDto.getName())) {
+        if (!companyDto.getName().isEmpty()
+                && !companyService.isExistCompanyByName(companyDto.getName())
+                || companyService.getByCompanyName(companyDto.getName()).getId().equals(companyDto.getId())) {
         LOGGER.info("POST request '/company'");
-        User userId = userService.getById(companyDto.getUserId());
+        User userId = null;
+        if (companyDto.getUserId() != null) {
+            userId = userService.getById(companyDto.getUserId());
+        }
         OrgType orgType = orgTypeService.getById(companyDto.getOrgType());
         Company company = companyService.getById(companyDto.getId());
             company.setName(companyDto.getName());
@@ -164,18 +197,7 @@ public class AdminRestController<T> {
         companyService.update(company);
         LOGGER.info("Updated Company = {}", company);
         }
-    }
 
-    @GetMapping(value = "/companiesWithoutUsers")
-    public @ResponseBody
-    List<CompanyDto> getCompaniesWithoutUsers() {
-        return companyService.getCompaniesWithoutUsers();
-    }
-
-    @GetMapping(value = "/all_establishments")
-    public List<OrgTypeDto> getAllEstablishments() {
-        List<OrgTypeDto> list = orgTypeService.getAllOrgTypeDto();
-        return list;
     }
 
     @PostMapping(value = "/add_establishment")
@@ -190,51 +212,17 @@ public class AdminRestController<T> {
         orgTypeService.update(orgType);
     }
 
-    @PostMapping(value = "/set_default_establishment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> setDefaultEstablishment(@RequestBody Long id) {
-        LOGGER.info("POST request '/set_default_establishment' with id = {} ", id);
-
-        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
-
-        if (!orgTypeService.isExistById(id)) {
-            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
-        } else {
-            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
-            if (defaultOrgType.getId().equals(id)) {
-                return responseBuilder.success("Тип заведения с id=" + id + " уже установлен по умолчанию");
-            } else {
-                orgTypeService.setDefaultOrgTypeById(id);
-                return responseBuilder.success("Тип заведения по умолчанию успешно изменён");
-            }
-        }
-    }
-
-    @DeleteMapping(value = "/delete_establishment/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> deleteEstablishment(@PathVariable(name = "id") long id) {
-        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
-
-        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
-
-        if (!orgTypeService.isExistById(id)) {
-            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
-        } else {
-            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
-
-            if (defaultOrgType.getId().equals(id)) {
-                return responseBuilder.error("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
-            } else {
-                companyService.setDefaultOrgTypeToCompany(id);
-                orgTypeService.deleteById(id);
-                return responseBuilder.success("Тип заведения с id=" + id + " успешно удалён");
-            }
-        }
-    }
-
     // Returns false if author with requested name already exists else true
     @GetMapping(value = "/establishment/est_type_name_is_free")
     public boolean isLoginFree(@RequestParam("name") String name) {
         boolean isLoginFree = (orgTypeService.getByName(name) == null);
         return isLoginFree;
+    }
+
+    @DeleteMapping(value = "/delete_establishment")
+    public void deleteEstablishment(@RequestBody Long id) {
+        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
+        orgTypeService.deleteById(id);
     }
 
     @GetMapping(value = "/all_roles")
@@ -328,5 +316,20 @@ public class AdminRestController<T> {
     @GetMapping(value = "/check/login")
     public String checkLogin(@RequestParam String login, @RequestParam long id) {
         return Boolean.toString(userService.isExistUserByLogin(login));
+    }
+
+    @GetMapping(value = "/companiesWithoutUsers")
+    public Response getCompaniesWithoutUsers() {
+        return responseBuilder.success(companyService.getCompaniesWithoutUsers());
+    }
+
+
+    @GetMapping(value = "/check/company")
+    public boolean isCompanyExist(@RequestParam("name") String name,
+                                  @RequestParam("id") Long id) {
+        if (companyService.getById(id).getName().equals(name)) {
+            return true;
+        }
+        return !companyService.isExistCompanyByName(name);
     }
 }

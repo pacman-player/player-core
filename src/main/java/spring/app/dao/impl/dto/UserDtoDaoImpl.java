@@ -66,6 +66,24 @@ public class UserDtoDaoImpl implements UserDtoDao {
         return userDto;
     }
 
+    @Override
+    public List<UserDto> getUsersEmailWithoutCompany() {
+        List<UserDto> allUsersDtoWithoutCompany = entityManager.createQuery(
+                "SELECT new spring.app.dto.UserDto( u.id, u.email)" +
+                        "From User u where u.email is not null ",
+                UserDto.class
+        ).getResultList();
+
+        TypedQuery<UserDto> query = entityManager.createQuery(
+                "SELECT new spring.app.dto.UserDto( u.id, u.email)" +
+                        "From User u where u.company.id is not null",
+                UserDto.class
+        );
+        allUsersDtoWithoutCompany.removeAll(query.getResultList());
+
+        return allUsersDtoWithoutCompany;
+    }
+
     private class UserDtoTransformer implements ResultTransformer {
 
         private List<UserDto> roots = new ArrayList<>();

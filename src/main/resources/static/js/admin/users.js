@@ -138,10 +138,9 @@ $(document).ready(function () {
         event.preventDefault();
         if ($('#addForm').valid()) {
             addUser();
-            $(':input', '#addForm').val('');
-            $("#addForm").trigger("reset");
         }
     });
+
     getCompanyWithoutUser();
     function addUser() {
         var roleListArr = [];
@@ -151,6 +150,14 @@ $(document).ready(function () {
                 roleListArr.push(rls[t].getAttribute("value"));
             }
         }
+
+        if (roleListArr.length === 0) {
+            var message = "Не указана роль. Назначьте роль"
+            document.getElementById('role-error')
+                .innerHTML = '<span class="error">' + message + '</span>';
+            return false;
+        }
+
         var user = {
             'email': $("#addEmail").val(),
             'login': $("#addLogin").val(),
@@ -183,6 +190,8 @@ $(document).ready(function () {
                         " Пользователь " + user.login + " добавлен ",
                         'user-panel');
                     getCompanyWithoutUser();
+                    $(':input', '#addForm').val('');
+                    $("#addForm").trigger("reset");
                 },
             error:
                 function (xhr, status, error) {
@@ -200,8 +209,32 @@ $(document).ready(function () {
         }
     });
 
-    function updateUser() {
+    function forcelogout() {
+        let form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = '/logout';
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+        form.submit();
+    }
 
+    var changedUser;
+
+    function amIloggedIn() {
+        let loggedUser = document.getElementById("logged-user");
+        if(loggedUser.innerText === changedUser) {
+            forcelogout();
+        } else {
+            getTable();
+        }
+    }
+
+    function updateUser() {
+        let i = document.getElementById("logged-user")
         var roleListArr = [];
         var rls = document.getElementsByClassName("updRls");
         for (var t = 0; t < rls.length; t++) {
@@ -229,7 +262,7 @@ $(document).ready(function () {
             cache: false,
             complete:
                 function () {
-                    getTable();
+                    amIloggedIn();
                 },
             success:
                 function () {
@@ -244,7 +277,6 @@ $(document).ready(function () {
                 }
         });
     }
-
 
     $(document).on('click', '#editCompanyBtn', function (e) {
         e.preventDefault();
@@ -317,6 +349,7 @@ $(document).ready(function () {
                     notification("delete-user" + id,
                         "  Пользователь c id " + id + " удален",
                         'user-panel');
+                    getCompanyWithoutUser();
                 },
             error:
                 function (xhr, status, error) {
@@ -332,6 +365,8 @@ $(document).ready(function () {
         $("#updateUserName").val($(this).closest("tr").find("#tableName").text());
         $("#updateUserPass").val($(this).closest("tr").find("#tablePass").text());
         $("#updateUserEmail").val($(this).closest("tr").find("#tableEmail").text());
+
+        changedUser =  $(this).closest("tr").find("#tableName").text();
 
         var curCells = document.getElementsByClassName("updRls");
 
@@ -465,13 +500,12 @@ function getRoleTable(listRolesBody, rls) {
         },
         dataType: "JSON",
         success: function (list) {
-
             listRolesBody.empty();
             let listRoles = $("<div/>");
             for (let i = 0; i < list.data.length; i++) {
                 let name = list.data[i].name;
                 listRoles.append(`
-                <li><input type="checkbox" class="${rls}" value="${name}">${name}</input></li>
+                <li><input type="checkbox" class="${rls}" value="${name}" name="role">${name}</input></li>
                 <li role="separator" class="divider"></li>
                 `
                 );
@@ -485,26 +519,27 @@ function getRoleTable(listRolesBody, rls) {
 // получение компаний, в которых отсутствуют пользователи
 function getCompanyWithoutUser() {
     $.ajax({
-        // url: "/api/admin/all_companies",
         url: "/api/admin/companiesWithoutUsers",
         method: "GET",
         dataType: "json",
-        success: function (data) {
+        success: function (list) {
             var selectBody = $('#addCompanyForUser');
             selectBody.empty();
             selectBody.append(`<option disabled selected value="">выберите компанию</option>`);
             let count = 0;
-            $(data).each(function (i, company) {
-                // if (company.userId === null) {
+            $(list.data).each(function (i, company) {
                 selectBody.append(`
                     <option value="${company.id}" >${company.name}</option>
                     `);
                 count++;
-                // }
             })
             if (count === 0) {
                 selectBody.append(`<option disabled selected value="">Нет компаний без пользователя. Сначала создайте компанию</option>`);
             }
         },
     })
+}
+function removeError() {
+    let error = document.getElementById('role-error');
+        error.innerHTML = '';
 }

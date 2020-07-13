@@ -23,7 +23,6 @@ public class UserDto {
     }
 
     public UserDto(String login, String email, String password, Set<String> roles) {
-        this.id = id;
         this.login = login;
         this.email = email;
         this.password = password;
@@ -40,6 +39,11 @@ public class UserDto {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
+    }
+    //конструктор для выбора email пользователей без компании getUsersEmailWithoutCompany()
+    public UserDto(Long id, String email) {
+        this.id = id;
+        this.email = email;
     }
 
     public Long getId() {

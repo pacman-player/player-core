@@ -11,7 +11,6 @@ import spring.app.model.SongCompilation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.security.Timestamp;
 import java.util.*;
 
 @Repository
@@ -22,7 +21,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @Override
     public List<SongDto> getSongsDtoBySongCompilation(String compilationName) {
-        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.author.id, " +
                 "g.name) FROM Song s JOIN s.songCompilations sc left JOIN s.author.genres g WHERE sc.name = :name", SongDto.class)
                 .setParameter("name", compilationName)
                 .getResultList();
@@ -31,7 +30,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @Override
     public List<SongDto> getAllSongsWithCompId(long compilationID) {
-        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.author.id, " +
                 "g.name) FROM Song s JOIN s.songCompilations sc left JOIN s.author.genres g WHERE sc.id = :id", SongDto.class)
                 .setParameter("id", compilationID)
                 .getResultList();
@@ -145,7 +144,7 @@ public class SongCompilationDtoDaoImpl implements SongCompilationDtoDao {
 
     @Override
     public List<SongDto> getAvailableContentForCompilationDto(SongCompilation songCompilation) {
-        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, " +
+        List<SongDto> list = entityManager.createQuery("SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.author.id, " +
                 "g.name) FROM Song s  left JOIN s.author.genres g WHERE g.id = :genreId AND s.isApproved = true AND s NOT IN " +
                 "(SELECT s FROM Song s JOIN s.songCompilations sc WHERE sc.id = :compilationId )", SongDto.class)
                 .setParameter("genreId", songCompilation.getGenre().getId())
