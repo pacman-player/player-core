@@ -2,6 +2,9 @@ package spring.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +18,8 @@ import spring.app.model.Role;
 import spring.app.model.User;
 import spring.app.service.abstraction.CompanyService;
 import spring.app.service.abstraction.UserService;
-
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +43,9 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
         this.notificationDao = notificationDao;
         this.companyService = companyService;
     }
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -172,6 +179,39 @@ public class UserServiceImpl extends AbstractServiceImpl<Long, User, UserDao> im
     @Override
     public List<UserDto> getUsersEmailWithoutCompany() {
         return userDtoDao.getUsersEmailWithoutCompany();
+    }
+
+    @Override
+    public List<Long> getAllLoggedInUsers() {
+        final List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+
+        List<Long> allUsernames = new ArrayList<>();
+        for (final Object principal : allPrincipals) {
+            if (principal instanceof User) {
+                final User user = (User) principal;
+                List<SessionInformation> activeUserSessions = sessionRegistry.getAllSessions(principal, false);
+                if (!activeUserSessions.isEmpty()) {
+                        allUsernames.add(user.getId());
+                }
+            }
+        }
+        return allUsernames;
+    }
+
+    @Override
+    public void expireUserSessions(String username,  HttpServletRequest httpServletRequest) {
+        for (Object principal : sessionRegistry.getAllPrincipals()) {
+            if (principal instanceof User) {
+                UserDetails userDetails = (UserDetails) principal;
+
+                if (userDetails.getUsername().equals(username)) {
+                    for (SessionInformation information : sessionRegistry
+                            .getAllSessions(userDetails, true)) {
+                        information.expireNow();
+                    }
+                }
+            }
+        }
     }
 
 

@@ -48,6 +48,7 @@ $(document).ready(function () {
             error: function () {
                 alert("Пользователь с такими данными уже существует");
                 getUserData();
+                forcelogout();
             }
         });
     }
@@ -98,11 +99,25 @@ $(document).ready(function () {
                 $("#editUserPass").modal('hide');
                 $("#checkUserCode").modal('hide');
                 // location.reload();
+                forcelogout();
             },
             error: function () {
                 alert("Не удалось изменить пароль");
             }
         });
+    }
+
+    function forcelogout() {
+        let form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = '/logout';
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_csrf';
+        input.value = csrfToken;
+        form.appendChild(input);
+        form.submit();
     }
 
     function showLinkAdmin() {
