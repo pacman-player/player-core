@@ -58,4 +58,6 @@ public interface SongCompilationService extends GenericService<Long, SongCompila
     List<SongDto> getAvailableSongsForCompilationByIdDto(Long compilationId);
 
     void setDefaultGenre(Long genreId);
+
+    boolean isExist(String name);
 }
