@@ -109,7 +109,7 @@ function getTable() {
                                 <button type="submit"
                                         class="btn btn-sm btn-info"
                                         id="editGenreBtn"
-                                        onclick="editButton(${id}, '${name}', '${genre}')">
+                                        onclick="editButton(${id}, '${name}', '${genre}', '${cover}')">
                                     Изменить
                                 </button>
                             </td>
@@ -202,8 +202,11 @@ function addCompilation(form, name, cover, genre) {
     let formData = new FormData();
     formData.append("name", name);
     formData.append("genre", genre);
+
     if (cover) {
-        formData.append("cover", cover);
+        if (validate_fileupload(cover)) {
+            formData.append("cover", cover);
+        }
     }
 
     $.ajax({
@@ -220,8 +223,9 @@ function addCompilation(form, name, cover, genre) {
         success: () => {
             console.log(`SONG COMPILATION ${name} ADDED!`)
         },
-        error: (xhr, status, error) => {
-            alert(xhr.responseText + "|\n" + status + "|\n" + error);
+        error: function () {
+            alert("Подборка с таким именем уже существует");
+
         }
     })
 }
@@ -244,18 +248,21 @@ function addSongToCompilation(compilationId, songId) {
 }
 
 
-function editButton(id, name, genre) {
+function editButton(id, name, genre, cover) {
     let fieldGenre = $("#updateCompilationGenre");
     // подгрузка жанров в выпадающий список
     prepareForm(fieldGenre, genre);
-
     let theModal = $("#updateCompilationModal");
     let fieldId = $("#updateCompilationId");
     let fieldName = $("#updateCompilationName");
-    let fieldCover = $("#updateCompilationCover");
+    let fieldCover = $("#compilationCover");////текущая картинка
+    let fieldCoverForUpdate = $("#updateCompilationCover");//новая картинка
 
     fieldId.val(id);
     fieldName.val(name);
+
+    let coverUrl = '/cover/' + cover;//путьдо текущей картинки-обложки
+    fieldCover.replaceWith('<div >\n    <img class="img_wrap" src="'+coverUrl+'" alt="IN YOUR FACE!">\n               </div>');
 
     theModal.modal("show");
 
@@ -264,9 +271,12 @@ function editButton(id, name, genre) {
         formData.append("id", fieldId.val());
         formData.append("name", fieldName.val());
         formData.append("genre", fieldGenre.val());
-        let file = fieldCover.prop("files")[0];
+
+        let file = fieldCoverForUpdate.prop("files")[0];//тут ошибка
         if (file) {
-            formData.append("cover", file);
+            if (validate_fileupload(file)) {
+                formData.append("cover", file);
+            }
         }
         $.ajax({
             method: "POST",
@@ -282,13 +292,30 @@ function editButton(id, name, genre) {
             success: () => {
                 console.log(`SONG COMPILATION ${fieldId.val()} EDITED!`)
             },
-            error: (xhr, status, error) => {
-                alert(xhr.responseText + "|\n" + status + "|\n" + error);
+            error: function () {
+                alert("Подборка с таким именем уже существует");
+
             }
         })
+
     });
 }
 
+function validate_fileupload(file){
+
+    var allowed_extensions = new Array("jpg","png","gif");
+    let fileName = file.name;
+    var file_extension = fileName.split('.').pop().toLowerCase();
+    for(var i = 0; i <= allowed_extensions.length; i++)
+    {
+        if(allowed_extensions[i]==file_extension)
+        {
+            return true; // valid file extension
+        }
+    }
+    alert("Sorry, file format is invalid, allowed extensions are: jpg, png, gif");
+    return false;
+}
 
 function deleteButton(id) {
     $.ajax({

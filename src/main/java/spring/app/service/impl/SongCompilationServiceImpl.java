@@ -298,4 +298,9 @@ public class SongCompilationServiceImpl extends AbstractServiceImpl<Long, SongCo
     public void setDefaultGenre(Long genreId){
         dao.setDefaultGenre(genreId);
     }
+
+    @Override
+    public  boolean isExist(String name) {
+        return dao.isExist(name);
+    }
 }

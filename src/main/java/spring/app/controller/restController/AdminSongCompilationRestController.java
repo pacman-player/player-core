@@ -3,19 +3,17 @@ package spring.app.controller.restController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
-import spring.app.model.Song;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
-
 import java.io.IOException;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/admin/compilation")
@@ -58,7 +56,17 @@ public class AdminSongCompilationRestController {
     }
 
     @PostMapping("/update")
-    public void updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
+    public ResponseEntity<SongCompilationDto> updateCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
+        Long oldId = songCompilationDto.getId();
+        SongCompilation oldSongCompilation = songCompilationService.getSongCompilationById(oldId);
+        String oldCompilationName = oldSongCompilation.getName();
+        String newCompilationName = songCompilationDto.getName();
+        if (!oldCompilationName.equals(newCompilationName)) {
+            if (songCompilationService.isExist(newCompilationName)) {
+                LOGGER.info("SongCompilation is already exists with this", songCompilationDto.getName());
+                return ResponseEntity.badRequest().body(songCompilationDto);
+            }
+        }
         SongCompilation compilation = songCompilationService.getSongCompilationById(songCompilationDto.getId());
         String coverName = uploadCover(songCompilationDto.getCover());
         if (coverName != null) {
@@ -70,22 +78,25 @@ public class AdminSongCompilationRestController {
             compilation.setCover(coverName);
             LOGGER.info("Cover updated for song compilation with ID = {}", compilation.getId());
         }
-
         compilation.setName(songCompilationDto.getName());
         LOGGER.info("Compilation Editing: name set -> {}", songCompilationDto.getName());
         compilation.setGenre(
                 genreService.getByName(songCompilationDto.getGenre()));
         LOGGER.info("Compilation Editing: genre set -> {}", songCompilationDto.getGenre());
-
         songCompilationService.update(compilation);
         LOGGER.info("Song compilation with ID = {} updated successfully", compilation.getId());
+        return ResponseEntity.ok(songCompilationDto);
     }
 
     @PostMapping
-    public void addCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
+    public ResponseEntity<SongCompilationDto> addCompilation(@ModelAttribute SongCompilationDto songCompilationDto) throws IOException {
         LOGGER.info("POST request '/' to add a new SongCompilation with temporary name -> {}",
                 songCompilationDto.getName());
 
+        if (songCompilationService.isExist(songCompilationDto.getName())) {
+            LOGGER.info("SongCompilation is already exists with this", songCompilationDto.getName());
+            return ResponseEntity.badRequest().body(songCompilationDto);
+        }
         SongCompilation songCompilation = new SongCompilation();
         songCompilation.setName(songCompilationDto.getName());
         songCompilation.setGenre(genreService.getByName(songCompilationDto.getGenre()));
@@ -93,9 +104,9 @@ public class AdminSongCompilationRestController {
         if (coverName != null) {
             songCompilation.setCover(coverName);
         }
-
         songCompilationService.save(songCompilation);
         LOGGER.info("SongCompilation name = {} added", songCompilation.getName());
+        return ResponseEntity.ok(songCompilationDto);
     }
 
     @DeleteMapping("/delete")

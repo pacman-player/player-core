@@ -88,4 +88,13 @@ public class SongCompilationDaoImpl extends AbstractDao<Long, SongCompilation> i
     public void setDefaultGenre(Long genreId){
         entityManager.createQuery("UPDATE SongCompilation s set s.genre = (FROM Genre g where g.isDefault = true) WHERE s.genre.id = :id").setParameter("id", genreId).executeUpdate();
     }
+
+    @Override
+    public boolean isExist(String name) {
+        TypedQuery<SongCompilation> query = entityManager.createQuery(
+                "SELECT s FROM SongCompilation s WHERE s.name = :name", SongCompilation.class);
+        query.setParameter("name", name);
+        List<SongCompilation> list = query.getResultList();
+        return !list.isEmpty();
+    }
 }
