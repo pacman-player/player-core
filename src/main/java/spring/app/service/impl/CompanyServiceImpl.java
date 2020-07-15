@@ -66,6 +66,11 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
     }
 
     @Override
+    public List<Company> getAllCompaniesByOrgTypeId(long id) {
+        return dao.getAllCompaniesByOrgTypeId(id);
+    }
+
+    @Override
     public boolean isExistCompanyByName(String name) {
         return dao.isExistCompanyByName(name);
     }
@@ -104,4 +109,9 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Long, Company, Compa
         return dao.loadWithBannedList(id);
     }
 
+    @Override
+    @Transactional
+    public void setDefaultOrgTypeToCompany(Long deletedOrgType){
+         dao.setDefaultOrgTypeToCompany(deletedOrgType);
+    }
 }

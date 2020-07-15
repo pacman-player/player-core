@@ -31,4 +31,16 @@ public class OrgTypeServiceImpl extends AbstractServiceImpl<Long, OrgType, OrgTy
     public List<OrgTypeDto> getAllOrgTypeDto() {
         return orgTypeDtoDao.getAll();
     }
+
+    @Override
+    @Transactional
+    public void setDefaultOrgTypeById(long id) {
+        dao.setDefaultById(id);
+    }
+
+    @Override
+    public OrgType getDefaultOrgType() {
+        return dao.getDefault();
+    }
+
 }

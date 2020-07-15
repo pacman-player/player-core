@@ -332,4 +332,39 @@ public class AdminRestController<T> {
         }
         return !companyService.isExistCompanyByName(name);
     }
+
+    @PostMapping(value = "/set_default_establishment", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> setDefaultEstablishment(@RequestBody Long id) {
+        LOGGER.info("POST request '/set_default_establishment' with id = {} ", id);
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+        if (!orgTypeService.isExistById(id)) {
+            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
+        } else {
+            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
+            if (defaultOrgType.getId().equals(id)) {
+                return responseBuilder.success("Тип заведения с id=" + id + " уже установлен по умолчанию");
+            } else {
+                orgTypeService.setDefaultOrgTypeById(id);
+                return responseBuilder.success("Тип заведения по умолчанию успешно изменён");
+            }
+        }
+    }
+
+    @DeleteMapping(value = "/delete_establishment/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> deleteEstablishment(@PathVariable(name = "id") long id) {
+        LOGGER.info("DELETE request '/delete_establishment' with id = {}", id);
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+        if (!orgTypeService.isExistById(id)) {
+            return responseBuilder.error("Тип заведения с id=" + id + " не найден");
+        } else {
+            OrgType defaultOrgType = orgTypeService.getDefaultOrgType();
+            if (defaultOrgType.getId().equals(id)) {
+                return responseBuilder.error("Нельзя удалить тип по умолчанию. Назначьте другой тип по умолчанию, чтобы удалить этот");
+            } else {
+                companyService.setDefaultOrgTypeToCompany(id);
+                orgTypeService.deleteById(id);
+                return responseBuilder.success("Тип заведения с id=" + id + " успешно удалён");
+            }
+        }
+    }
 }

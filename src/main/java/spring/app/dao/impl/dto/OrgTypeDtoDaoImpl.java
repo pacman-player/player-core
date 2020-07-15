@@ -22,14 +22,11 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
 
     @SuppressWarnings("unchecked")
     public List<OrgTypeDto> getAll() {
-        String query = "SELECT ot.id, ot.name, g.name FROM OrgType ot LEFT JOIN ot.genres g";
-
-        return entityManager.createQuery(query)
+        return entityManager.createQuery("SELECT o.id, o.name, o.isDefault, g.name FROM OrgType o LEFT JOIN o.genres g")
                             .unwrap(Query.class)
                             .setResultTransformer(new OrgTypeDtoTransformer())
                             .list();
     }
-
 
     private static class OrgTypeDtoTransformer implements ResultTransformer {
 
@@ -40,9 +37,10 @@ public class OrgTypeDtoDaoImpl implements OrgTypeDtoDao {
         public Object transformTuple(Object[] tuple, String[] aliaces) {
             long id = (long) tuple[0];
             String name = (String) tuple[1];
-            String genre = (String) tuple[2];
+            boolean isDefault = (boolean) tuple[2];
+            String genre = (String) tuple[3];
 
-            OrgTypeDto orgTypeDto = new OrgTypeDto(id, name);
+            OrgTypeDto orgTypeDto = new OrgTypeDto(id, name, isDefault);
 
             if (!genresMap.containsKey(id)) {
                 roots.add(orgTypeDto);

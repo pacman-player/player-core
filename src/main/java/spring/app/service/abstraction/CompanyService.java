@@ -19,6 +19,8 @@ public interface CompanyService extends GenericService<Long, Company> {
 
     List<CompanyDto> getCompaniesWithoutUsers();
 
+    List<Company> getAllCompaniesByOrgTypeId(long id);
+
     boolean isExistCompanyByName(String name);
 
     /**
@@ -41,4 +43,6 @@ public interface CompanyService extends GenericService<Long, Company> {
     long getCompanyTimerById(long companyId);
 
     Company loadWithBannedList(Long id);
+
+    void setDefaultOrgTypeToCompany(Long deletedOrgType);
 }
