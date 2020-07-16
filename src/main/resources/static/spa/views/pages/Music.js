@@ -49,7 +49,7 @@ let Music = {
             '<div role="tabpanel" class="tab-pane" id="evening">\n' +
             '<div class="panel panel-default table-panel">\n' +
             '<div class="tab-content">\n' +
-            'div class="panel-body">\n' +
+            '<div class="panel-body">\n' +
             '<h3>Подборки вечернего плейлиста</h3>\n' +
             '</div>\n' +
             '</div>\n' +

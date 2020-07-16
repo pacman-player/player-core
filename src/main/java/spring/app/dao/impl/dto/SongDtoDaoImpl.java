@@ -23,7 +23,7 @@ public class SongDtoDaoImpl implements SongDtoDao {
     @Override
     public List<SongDto> getAll() {
         List<SongDto> songDtos = entityManager.createQuery(
-                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, g.name) FROM Song s left JOIN s.author.genres g",
+                "SELECT new spring.app.dto.SongDto(s.id, s.name, s.isApproved, s.author.name, s.author.id, g.name) FROM Song s left JOIN s.author.genres g",
                 SongDto.class
         )
                 .getResultList();

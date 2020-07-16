@@ -44,6 +44,14 @@ public class SongDto extends Bannable {
         this.isApproved = isApproved;
     }
 
+    public SongDto(Long id, String name, Boolean isApproved, String authorName, String genreName) {
+        this.id = id;
+        this.name = name;
+        this.authorName = authorName;
+        this.genreName = genreName;
+        this.isApproved = isApproved;
+    }
+
     public SongDto(Long id, String name, Boolean isApproved, AuthorDto authorDto) {
         this.id = id;
         this.name = name;
