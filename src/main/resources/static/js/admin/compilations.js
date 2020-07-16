@@ -254,7 +254,14 @@ function addSongToCompilation(compilationId, songId) {
         complete: () => {
             getAvailableCompilationContentById(compilationId)
         },
-        success: () => {
+        success: (response) => {
+            if (response.success === true) {
+                notification("addSongInCompilations", response.data, "compilations-panel");
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
             console.log(`SONG ${songId} ADDED TO SONG COMPILATION ${compilationId}!`)
         },
         error: (xhr, status, error) => {

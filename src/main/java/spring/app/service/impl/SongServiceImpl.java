@@ -210,4 +210,9 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
         return songDtoDao.getAllApprovedDto();
     }
 
+    @Override
+    public SongDto getSongDtoById(Long id) {
+        return songDtoDao.getById(id);
+    }
+
 }

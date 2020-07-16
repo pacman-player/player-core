@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.app.dto.SongCompilationDto;
 import spring.app.dto.SongDto;
+import spring.app.model.Genre;
+import spring.app.model.Response;
 import spring.app.model.SongCompilation;
 import spring.app.service.abstraction.FileUploadService;
 import spring.app.service.abstraction.GenreService;
 import spring.app.service.abstraction.SongCompilationService;
+import spring.app.service.abstraction.SongService;
+import spring.app.util.ResponseBuilder;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -23,13 +28,15 @@ public class AdminSongCompilationRestController {
     private final SongCompilationService songCompilationService;
     private final FileUploadService fileUploadService;
     private final GenreService genreService;
+    private final SongService songService;
 
     @Autowired
     public AdminSongCompilationRestController(SongCompilationService songCompilationService,
-                                              FileUploadService fileUploadService, GenreService genreService) {
+                                              FileUploadService fileUploadService, GenreService genreService, SongService songService) {
         this.songCompilationService = songCompilationService;
         this.fileUploadService = fileUploadService;
         this.genreService = genreService;
+        this.songService = songService;
     }
 
     @GetMapping
@@ -50,9 +57,30 @@ public class AdminSongCompilationRestController {
         return songs;
     }
 
-    @PostMapping("/content/add/{compilationId}/{songId}")
-    public void addSongToSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+//    @PostMapping("/content/add/{compilationId}/{songId}")
+//    public void addSongToSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+//        songCompilationService.addSongToSongCompilation(compilationId, songId);
+//    }
+
+    @PostMapping(value = "/content/add/{compilationId}/{songId}")
+    public Response<String> addSongToSongCompilation(@PathVariable Long compilationId, @PathVariable Long songId) {
+        ResponseBuilder<String> responseBuilder = new ResponseBuilder<>();
+        SongDto song = songService.getSongDtoById(songId);
+        Genre genre = genreService.getByName(song.getGenreName());
+        if (!song.getApproved() && !genre.getApproved()){
+            return responseBuilder.error("Песня и жанр не прошли модерацию");
+        }
+        if (!song.getApproved()){
+            return responseBuilder.error("Песня не прошла модерацию");
+        }
+        if (!genre.getApproved()){
+            return responseBuilder.error("Жанр не прошел модерацию");
+        }
+        if (song.getApproved() && genre.getApproved()) {
+            songCompilationService.addSongToSongCompilation(compilationId, songId);
+        }
         songCompilationService.addSongToSongCompilation(compilationId, songId);
+        return responseBuilder.success("Песня добавлена в подборку");
     }
 
     @PostMapping("/update")
