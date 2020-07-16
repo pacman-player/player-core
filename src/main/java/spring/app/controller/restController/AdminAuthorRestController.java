@@ -7,8 +7,10 @@ import spring.app.dto.AuthorDto;
 import spring.app.dto.GenreDto;
 import spring.app.model.Author;
 import spring.app.model.Genre;
+import spring.app.model.Response;
 import spring.app.service.abstraction.AuthorService;
 import spring.app.service.abstraction.GenreService;
+import spring.app.util.ResponseBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,10 +23,12 @@ public class AdminAuthorRestController {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminAuthorRestController.class);
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final ResponseBuilder responseBuilder;
 
-    public AdminAuthorRestController(AuthorService authorService, GenreService genreService) {
+    public AdminAuthorRestController(AuthorService authorService, GenreService genreService, ResponseBuilder responseBuilder) {
         this.authorService = authorService;
         this.genreService = genreService;
+        this.responseBuilder = responseBuilder;
     }
 
     @GetMapping(value = "/all_authors")
@@ -79,6 +83,12 @@ public class AdminAuthorRestController {
     @ResponseBody
     public List<GenreDto> getAllGenre() {
         return genreService.getAllGenreDto();
+    }
+
+    @GetMapping(value="/approvedGenre")
+    @ResponseBody
+    public List<GenreDto> getApprovedGenre(){
+        return genreService.getAllApprovedGenreDto();
     }
 
     private Set<Genre> getGenres(String[] genresArr) {
