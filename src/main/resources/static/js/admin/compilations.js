@@ -21,7 +21,8 @@ $(document).ready(function () {
 
 function prepareForm(dropDownListSelector = $("#addCompilationGenre"), selectedGenre) {
     dropDownListSelector.empty();
-    let genres = getGenres();
+    // let genres = getGenres();
+    let genres = getApprovedGenre();
 
     let selectOptions = "";
     for (let i = 0; i < genres.length; i++) {
@@ -42,6 +43,21 @@ function getGenres() {
     return $.ajax({
         method: 'GET',
         url: "/api/admin/author/all_genre",
+        contentType: "application/json",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        async: false,
+        cache: false,
+        dataType: "JSON"
+    }).responseJSON;
+}
+
+function getApprovedGenre(){
+    return $.ajax({
+        method: 'GET',
+        url: "/api/admin/author/approvedGenre",
         contentType: "application/json",
         headers: {
             "Accept": "application/json",
@@ -238,7 +254,14 @@ function addSongToCompilation(compilationId, songId) {
         complete: () => {
             getAvailableCompilationContentById(compilationId)
         },
-        success: () => {
+        success: (response) => {
+            if (response.success === true) {
+                notification("addSongInCompilations", response.data, "compilations-panel");
+            } else if(response.hasOwnProperty('errorMessage') && response.errorMessage.hasOwnProperty('textMessage')) {
+                alert(response.errorMessage.textMessage);
+            } else {
+                alert(response);
+            }
             console.log(`SONG ${songId} ADDED TO SONG COMPILATION ${compilationId}!`)
         },
         error: (xhr, status, error) => {

@@ -58,4 +58,6 @@ public interface SongService extends GenericService<Long, Song> {
 
     List<SongDto> getAllApprovedSongsDto();
 
+    SongDto getSongDtoById(Long id);
+
 }
