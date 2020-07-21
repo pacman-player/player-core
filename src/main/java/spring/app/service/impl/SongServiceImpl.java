@@ -85,10 +85,11 @@ public class SongServiceImpl extends AbstractServiceImpl<Long, Song, SongDao> im
                 banned = true;
             }
 
-            if (!banned) {
-                res.add(new BotSongDto(song.getId(), song.getName(), author.getName()));
-            } else {
-                res.add(new BotSongDto(true));
+            if (!banned && author.getName().equalsIgnoreCase(authorName)) {
+                res.add(new BotSongDto(song.getId(), song.getName(), author.getName(), false));
+
+            } else if (banned && author.getName().equalsIgnoreCase(authorName)) {
+                res.add(new BotSongDto(song.getId(), song.getName(), author.getName(),true));
             }
         }
         return res;
