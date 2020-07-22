@@ -4,6 +4,7 @@ public class BotSongDto {
 
     private Long songId;
     private String trackName;
+    private boolean banned;
 
     public BotSongDto() {
     }
@@ -17,6 +18,22 @@ public class BotSongDto {
         this.songId = songId;
         this.trackName = songName + " - " + authorName;
     }
+
+    public BotSongDto(Long songId, String trackName, boolean banned) {
+        this.songId = songId;
+        this.trackName = trackName;
+        this.banned = banned;
+    }
+
+    public BotSongDto(Long songId, String songName, String authorName, boolean banned) {
+        this.songId = songId;
+        this.trackName = songName + " - " + authorName;
+        this.banned = banned;
+    }
+
+//    public BotSongDto(boolean banned){
+//        this.banned = banned;
+//    }
 
     public Long getSongId() {
         return songId;
@@ -32,5 +49,13 @@ public class BotSongDto {
 
     public void setTrackName(String trackName) {
         this.trackName = trackName;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 }
