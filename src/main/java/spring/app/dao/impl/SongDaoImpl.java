@@ -172,7 +172,7 @@ public class SongDaoImpl extends AbstractDao<Long, Song> implements SongDao {
         String ftsQuery = "SELECT s.id id FROM songs s INNER JOIN tag_on_song ts ON s.id = ts.song_id " +
                                                             "INNER JOIN tags t ON ts.tag_id = t.id " +
                                                             "INNER JOIN authors a ON s.author_id = a.id " +
-                                                            "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) and s.approved = true and a.approved = true " +
+                                                            "WHERE to_tsvector(:searchRequest) @@ plainto_tsquery(t.name) and s.approved = true " +
                                                             "GROUP BY s.id, a.id ORDER BY count(*) DESC LIMIT 3";
         List<? extends Number> list = entityManager.createNativeQuery(ftsQuery)
                                                     .setParameter("searchRequest", author + ' ' + name)
