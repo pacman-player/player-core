@@ -97,13 +97,8 @@ public class TelegramServiceImpl implements TelegramService {
     @Async
     public CompletableFuture<SongResponse> servicesSearch(SongRequest songRequest) throws IOException, BitstreamException,
             DecoderException {
-        SongResponse songResponse = null;
-        //без задержки почему то не находит песни по сервисам
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        SongResponse songResponse = null;
+        SongResponse songResponse = new SongResponse();
         // Ищем запрошенный трек в музыкальных сервисах
         Track track = musicSearchService.getSong(songRequest.getAuthorName(), songRequest.getSongName());
 
