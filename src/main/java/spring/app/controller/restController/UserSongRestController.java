@@ -17,6 +17,7 @@ import spring.app.service.abstraction.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,7 @@ public class UserSongRestController {
     }
 
     @GetMapping("/songsInQueue")
-    public List<Song> getSongsInSongQueueOfCompany() {
+    public List<SongDto> getSongsInSongQueueOfCompany() {
         LOGGER.info("GET request '/songsInQueue'");
         User authUser = userService.getById(userService.getIdAuthUser());
         Long companyId = authUser.getCompany().getId();
@@ -48,7 +49,15 @@ public class UserSongRestController {
         LOGGER.info("Logged-in User has {} lines in SongQueue list", songQueues.size());
         if (!songQueues.isEmpty()) {
             songQueueService.deleteById(songQueues.get(0).getId());
-            return Arrays.asList(songQueues.get(0).getSong());
+            List<Song> list = Collections.singletonList(songQueues.get(0).getSong());
+            List<SongDto> listSongDto = new ArrayList<>();
+            SongDto songDto;
+            for (Song song : list) {
+                songDto = songService.getSongDtoById(song.getId());
+                songDto.setAuthorId(song.getAuthor().getId());
+                listSongDto.add(songDto);
+            }
+            return listSongDto;
         } else {
             return new ArrayList<>();
         }
