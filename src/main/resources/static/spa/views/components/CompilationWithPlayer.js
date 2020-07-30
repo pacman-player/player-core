@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     $(document).on('click', '#allGenBtn', function () {
         $("#getGenres #songCompilation").remove();
-        if ($('#allGenBtn').attr("aria-pressed") == "false") {
+        if ($('#allGenBtn').attr("aria-pressed") === "false") {
             getAllGenre();
             $('#allGenBtn').attr("aria-pressed", "true")
         }
@@ -868,7 +868,7 @@ function playOrPause(playlistName, compilationIndex, musicIndex, isFromSongQueue
 
         lastPlayedCompilationIndex = compilationIndex;
         lastPlayedMusicIndex = musicIndex;
-        let music = allSongsInCurrentPlaylist[musicIndex];
+        let music = allSongsInCurrentPlaylist[lastPlayedMusicIndex];
         player.attr('src', musicUrl + music.authorId + "/" + music.id);
         $('#albums-cover').attr('src', albumsCoverUrl + music.authorId + "/" + music.id);
         let songName = document.getElementById('song-name');
