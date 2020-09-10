@@ -196,7 +196,7 @@ public class TelegramRestController {
      * @param httpEntity
      */
     @PostMapping("/addSongToQueue")
-    public void addSongToQueue(HttpEntity httpEntity) {
+    public boolean addSongToQueue(HttpEntity httpEntity) {
         LOGGER.info("POST request '/addSongToQueue'");
         // получаем songId и companyId из заголовков Http запроса
         HttpHeaders headers = httpEntity.getHeaders();
@@ -236,6 +236,7 @@ public class TelegramRestController {
             orderSongService.save(new OrderSong(companyById, new Timestamp(System.currentTimeMillis())));
             LOGGER.info("Success!");
         }
+        return true;
     }
 
     @PostMapping("/registerTelegramUserAndVisit")
